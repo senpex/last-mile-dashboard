@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
 import { Button } from "@/components/ui/button";
-import { getDictionaries, initializeDictionaries, getDictionary } from "@/lib/storage";
+import { getDictionaries, initializeDictionaries, getDictionary, clearAllDictionaries } from "@/lib/storage";
 import { Dictionary } from "@/types/dictionary";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
@@ -24,23 +23,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useToast } from "@/hooks/use-toast";
 
 const Dictionaries = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [dictionaries, setDictionaries] = useState<Dictionary[]>([]);
   const [selectedDictionary, setSelectedDictionary] = useState<Dictionary | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
-    // Initialize dictionaries in local storage if they don't exist
+    clearAllDictionaries();
     initializeDictionaries();
     
-    // Load dictionaries from local storage
     loadDictionaries();
   }, []);
 
   const loadDictionaries = () => {
     const loadedDictionaries = getDictionaries();
     setDictionaries(loadedDictionaries);
+    setSelectedDictionary(null);
   };
 
   const handleDictionarySelect = (dictionaryId: string) => {
@@ -49,8 +50,11 @@ const Dictionaries = () => {
   };
 
   const handleImportComplete = () => {
-    // Reload dictionaries after import
     loadDictionaries();
+    toast({
+      title: "Dictionaries updated",
+      description: "Dictionary list has been refreshed"
+    });
   };
 
   return (
