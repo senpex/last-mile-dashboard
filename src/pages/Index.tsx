@@ -21,19 +21,9 @@ const Index = () => {
               Welcome to your last-mile delivery dashboard. Manage and monitor your deliveries efficiently.
             </p>
             
+            {/* Empty dashboard container - cards removed */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Placeholder cards for dashboard content */}
-              {[1, 2, 3, 4, 5, 6].map((item) => (
-                <div 
-                  key={item}
-                  className="bg-card text-card-foreground rounded-lg shadow-sm border border-border p-6 hover:shadow-md transition-all-200"
-                >
-                  <h3 className="font-medium mb-2">Dashboard Card {item}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    This is a placeholder for your delivery dashboard content.
-                  </p>
-                </div>
-              ))}
+              {/* Cards have been removed */}
             </div>
           </div>
         </main>
