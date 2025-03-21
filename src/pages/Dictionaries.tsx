@@ -3,15 +3,23 @@ import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { getDictionaries, initializeDictionaries } from "@/lib/storage";
+import { getDictionaries, initializeDictionaries, getDictionary } from "@/lib/storage";
 import { Dictionary } from "@/types/dictionary";
-import { ListFilter, Edit, Trash2 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { ListFilter } from "lucide-react";
 
 const Dictionaries = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [dictionaries, setDictionaries] = useState<Dictionary[]>([]);
+  const [selectedDictionary, setSelectedDictionary] = useState<Dictionary | null>(null);
 
   useEffect(() => {
     // Initialize dictionaries in local storage if they don't exist
@@ -21,6 +29,11 @@ const Dictionaries = () => {
     const loadedDictionaries = getDictionaries();
     setDictionaries(loadedDictionaries);
   }, []);
+
+  const handleDictionarySelect = (dictionaryId: string) => {
+    const dictionary = getDictionary(dictionaryId);
+    setSelectedDictionary(dictionary || null);
+  };
 
   return (
     <ThemeProvider>
@@ -39,40 +52,56 @@ const Dictionaries = () => {
               </Button>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {dictionaries.map((dictionary) => (
-                <Card key={dictionary.id} className="shadow-sm hover:shadow-md transition-shadow duration-200">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="flex justify-between items-start">
-                      <span>{dictionary.dic_name}</span>
-                      <Badge variant="outline" className="ml-2">
-                        {dictionary.items.length} items
-                      </Badge>
-                    </CardTitle>
-                    <CardDescription>ID: {dictionary.id}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="pb-2">
-                    <div className="flex items-center text-muted-foreground">
-                      <ListFilter className="h-4 w-4 mr-1" />
-                      <span className="text-sm">
-                        {dictionary.items.slice(0, 3).map(item => item.value).join(", ")}
-                        {dictionary.items.length > 3 && "..."}
-                      </span>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="pt-2 flex justify-end space-x-2">
-                    <Button variant="outline" size="sm">
-                      <Edit className="h-4 w-4 mr-1" />
-                      Edit
-                    </Button>
-                    <Button variant="outline" size="sm" className="text-destructive">
-                      <Trash2 className="h-4 w-4 mr-1" />
-                      Delete
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))}
+            <div className="mb-6 w-full max-w-xs">
+              <Select onValueChange={handleDictionarySelect}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a dictionary" />
+                </SelectTrigger>
+                <SelectContent>
+                  {dictionaries.map((dictionary) => (
+                    <SelectItem key={dictionary.id} value={dictionary.id}>
+                      {dictionary.dic_name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
+
+            {selectedDictionary && (
+              <Card className="shadow-sm">
+                <CardHeader>
+                  <CardTitle className="flex justify-between items-center">
+                    <span>{selectedDictionary.dic_name}</span>
+                    <Badge variant="outline">
+                      {selectedDictionary.items.length} items
+                    </Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex items-center text-muted-foreground mb-2">
+                      <ListFilter className="h-4 w-4 mr-2" />
+                      <span className="font-medium">Dictionary Items</span>
+                    </div>
+                    <ul className="space-y-2">
+                      {selectedDictionary.items.map((item) => (
+                        <li key={item.id} className="flex items-center justify-between p-2 rounded-md border">
+                          <div>
+                            <span className="font-medium">{item.value}</span>
+                            {item.description && (
+                              <p className="text-sm text-muted-foreground">{item.description}</p>
+                            )}
+                          </div>
+                          <Badge variant="secondary" className="text-xs">
+                            {item.id}
+                          </Badge>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </main>
       </div>
