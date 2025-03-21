@@ -60,7 +60,7 @@ const Dictionaries = () => {
                 <SelectContent>
                   {dictionaries.map((dictionary) => (
                     <SelectItem key={dictionary.id} value={dictionary.id}>
-                      {dictionary.dic_name}
+                      {dictionary.dic_name} (ID: {dictionary.id})
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -71,7 +71,7 @@ const Dictionaries = () => {
               <Card className="shadow-sm">
                 <CardHeader>
                   <CardTitle className="flex justify-between items-center">
-                    <span>{selectedDictionary.dic_name}</span>
+                    <span>{selectedDictionary.dic_name} (ID: {selectedDictionary.id})</span>
                     <Badge variant="outline">
                       {selectedDictionary.items.length} items
                     </Badge>
