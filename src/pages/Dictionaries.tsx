@@ -33,8 +33,10 @@ const Dictionaries = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    clearAllDictionaries();
-    initializeDictionaries();
+    // Only initialize dictionaries if none exist yet
+    if (getDictionaries().length === 0) {
+      initializeDictionaries();
+    }
     
     loadDictionaries();
   }, []);
