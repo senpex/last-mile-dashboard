@@ -14,7 +14,8 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { ListFilter } from "lucide-react";
+import { ListFilter, Upload } from "lucide-react";
+import DictionaryImport from "@/components/DictionaryImport";
 
 const Dictionaries = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -26,13 +27,22 @@ const Dictionaries = () => {
     initializeDictionaries();
     
     // Load dictionaries from local storage
+    loadDictionaries();
+  }, []);
+
+  const loadDictionaries = () => {
     const loadedDictionaries = getDictionaries();
     setDictionaries(loadedDictionaries);
-  }, []);
+  };
 
   const handleDictionarySelect = (dictionaryId: string) => {
     const dictionary = getDictionary(dictionaryId);
     setSelectedDictionary(dictionary || null);
+  };
+
+  const handleImportComplete = () => {
+    // Reload dictionaries after import
+    loadDictionaries();
   };
 
   return (
@@ -47,9 +57,12 @@ const Dictionaries = () => {
           <div className="animate-fade-in">
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-3xl font-semibold">Dictionaries</h1>
-              <Button>
-                Create Dictionary
-              </Button>
+              <div className="flex gap-2">
+                <DictionaryImport onImportComplete={handleImportComplete} />
+                <Button>
+                  Create Dictionary
+                </Button>
+              </div>
             </div>
             
             <div className="mb-6 w-full max-w-xs">
