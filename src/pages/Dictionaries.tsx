@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -40,7 +41,11 @@ const Dictionaries = () => {
 
   const loadDictionaries = () => {
     const loadedDictionaries = getDictionaries();
-    setDictionaries(loadedDictionaries);
+    // Sort dictionaries by name in ascending order
+    const sortedDictionaries = [...loadedDictionaries].sort((a, b) => 
+      a.dic_name.localeCompare(b.dic_name)
+    );
+    setDictionaries(sortedDictionaries);
     setSelectedDictionary(null);
   };
 
