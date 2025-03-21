@@ -16,6 +16,14 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ListFilter, Upload } from "lucide-react";
 import DictionaryImport from "@/components/DictionaryImport";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const Dictionaries = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -53,21 +61,21 @@ const Dictionaries = () => {
           setCollapsed={setSidebarCollapsed} 
         />
         
-        <main className={`flex-1 transition-all duration-300 p-6 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}>
+        <main className={`flex-1 transition-all duration-300 p-4 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}>
           <div className="animate-fade-in">
-            <div className="flex justify-between items-center mb-6">
-              <h1 className="text-3xl font-semibold">Dictionaries</h1>
+            <div className="flex justify-between items-center mb-4">
+              <h1 className="text-2xl font-medium">Dictionaries</h1>
               <div className="flex gap-2">
                 <DictionaryImport onImportComplete={handleImportComplete} />
-                <Button>
+                <Button size="sm">
                   Create Dictionary
                 </Button>
               </div>
             </div>
             
-            <div className="mb-6 w-full max-w-xs">
+            <div className="mb-4 w-full max-w-xs">
               <Select onValueChange={handleDictionarySelect}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-full text-sm">
                   <SelectValue placeholder="Select a dictionary" />
                 </SelectTrigger>
                 <SelectContent>
@@ -82,35 +90,45 @@ const Dictionaries = () => {
 
             {selectedDictionary && (
               <Card className="shadow-sm">
-                <CardHeader>
-                  <CardTitle className="flex justify-between items-center">
-                    <span>{selectedDictionary.dic_name} (ID: {selectedDictionary.id})</span>
-                    <Badge variant="outline">
+                <CardHeader className="py-3 px-4">
+                  <CardTitle className="flex justify-between items-center text-lg">
+                    <span>{selectedDictionary.dic_name} <span className="text-xs text-muted-foreground">ID: {selectedDictionary.id}</span></span>
+                    <Badge variant="outline" className="text-xs">
                       {selectedDictionary.items.length} items
                     </Badge>
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex items-center text-muted-foreground mb-2">
-                      <ListFilter className="h-4 w-4 mr-2" />
+                <CardContent className="px-3 py-2">
+                  <div className="space-y-1">
+                    <div className="flex items-center text-muted-foreground mb-2 text-xs">
+                      <ListFilter className="h-3 w-3 mr-1" />
                       <span className="font-medium">Dictionary Items</span>
                     </div>
-                    <ul className="space-y-2">
-                      {selectedDictionary.items.map((item) => (
-                        <li key={item.id} className="flex items-center justify-between p-2 rounded-md border">
-                          <div>
-                            <span className="font-medium">{item.value}</span>
-                            {item.description && (
-                              <p className="text-sm text-muted-foreground">{item.description}</p>
-                            )}
-                          </div>
-                          <Badge variant="secondary" className="text-xs">
-                            {item.id}
-                          </Badge>
-                        </li>
-                      ))}
-                    </ul>
+                    
+                    <div className="border rounded-md overflow-hidden">
+                      <Table className="w-full text-xs">
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead className="py-1 px-2 font-medium">Value</TableHead>
+                            <TableHead className="py-1 px-2 font-medium">Description</TableHead>
+                            <TableHead className="py-1 px-2 font-medium w-20 text-right">ID</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {selectedDictionary.items.map((item) => (
+                            <TableRow key={item.id}>
+                              <TableCell className="py-1 px-2 font-medium">{item.value}</TableCell>
+                              <TableCell className="py-1 px-2 text-muted-foreground">{item.description || '-'}</TableCell>
+                              <TableCell className="py-1 px-2 text-right">
+                                <Badge variant="secondary" className="text-[10px]">
+                                  {item.id}
+                                </Badge>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
