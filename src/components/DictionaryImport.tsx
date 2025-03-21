@@ -25,14 +25,24 @@ const DictionaryImport = ({ onImportComplete }: DictionaryImportProps) => {
     reader.onload = (e) => {
       try {
         const data = new Uint8Array(e.target?.result as ArrayBuffer);
-        const workbook = XLSX.read(data, { type: "array" });
+        let jsonData;
+        let sheetName = file.name.split('.')[0]; // Default sheet name from filename
         
-        // Assume first sheet contains the dictionary data
-        const firstSheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[firstSheetName];
-        
-        // Convert to JSON
-        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+        // Check if it's a CSV file or Excel file
+        if (file.name.toLowerCase().endsWith('.csv')) {
+          // Parse CSV
+          const csv = XLSX.read(data, { type: "array" });
+          const csvSheet = csv.Sheets[csv.SheetNames[0]];
+          jsonData = XLSX.utils.sheet_to_json(csvSheet);
+        } else {
+          // Parse Excel
+          const workbook = XLSX.read(data, { type: "array" });
+          // Assume first sheet contains the dictionary data
+          const firstSheetName = workbook.SheetNames[0];
+          sheetName = firstSheetName; // Use sheet name from Excel file
+          const worksheet = workbook.Sheets[firstSheetName];
+          jsonData = XLSX.utils.sheet_to_json(worksheet);
+        }
         
         if (jsonData.length === 0) {
           toast({
@@ -45,12 +55,12 @@ const DictionaryImport = ({ onImportComplete }: DictionaryImportProps) => {
         }
 
         // Process the data and save as dictionary
-        processExcelData(jsonData, firstSheetName);
+        processFileData(jsonData, sheetName);
       } catch (error) {
-        console.error("Error parsing Excel file:", error);
+        console.error("Error parsing file:", error);
         toast({
           title: "Import failed",
-          description: "There was an error processing the Excel file.",
+          description: "There was an error processing the file.",
           variant: "destructive"
         });
         setIsImporting(false);
@@ -69,7 +79,7 @@ const DictionaryImport = ({ onImportComplete }: DictionaryImportProps) => {
     reader.readAsArrayBuffer(file);
   };
 
-  const processExcelData = (jsonData: any[], sheetName: string) => {
+  const processFileData = (jsonData: any[], sheetName: string) => {
     try {
       // Check for required columns: id and value
       const firstRow = jsonData[0];
@@ -77,14 +87,14 @@ const DictionaryImport = ({ onImportComplete }: DictionaryImportProps) => {
       if (!firstRow.id || !firstRow.value) {
         toast({
           title: "Import failed",
-          description: "The Excel file must contain 'id' and 'value' columns.",
+          description: "The file must contain 'id' and 'value' columns.",
           variant: "destructive"
         });
         setIsImporting(false);
         return;
       }
 
-      // Create dictionary items from the Excel data
+      // Create dictionary items from the data
       const items: DictionaryItem[] = jsonData.map(row => ({
         id: String(row.id),
         value: String(row.value),
@@ -111,10 +121,10 @@ const DictionaryImport = ({ onImportComplete }: DictionaryImportProps) => {
       // Notify parent component to refresh the dictionary list
       onImportComplete();
     } catch (error) {
-      console.error("Error processing Excel data:", error);
+      console.error("Error processing data:", error);
       toast({
         title: "Import failed",
-        description: "There was an error processing the data from the Excel file.",
+        description: "There was an error processing the data from the file.",
         variant: "destructive"
       });
     } finally {
@@ -128,7 +138,7 @@ const DictionaryImport = ({ onImportComplete }: DictionaryImportProps) => {
         type="file"
         id="excel-upload"
         className="hidden"
-        accept=".xlsx,.xls"
+        accept=".xlsx,.xls,.csv"
         onChange={handleFileUpload}
         disabled={isImporting}
       />
@@ -136,7 +146,7 @@ const DictionaryImport = ({ onImportComplete }: DictionaryImportProps) => {
         <Button variant="outline" asChild disabled={isImporting}>
           <span>
             <Upload className="mr-2 h-4 w-4" />
-            {isImporting ? "Importing..." : "Import Excel"}
+            {isImporting ? "Importing..." : "Import File"}
           </span>
         </Button>
       </label>
