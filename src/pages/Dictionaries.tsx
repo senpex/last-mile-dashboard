@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
 import { Button } from "@/components/ui/button";
-import { getDictionaries, initializeDictionaries, getDictionary, clearAllDictionaries } from "@/lib/storage";
+import { getDictionaries, clearAllDictionaries, getDictionary } from "@/lib/storage";
 import { Dictionary } from "@/types/dictionary";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
@@ -33,11 +32,8 @@ const Dictionaries = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Only initialize dictionaries if none exist yet
-    if (getDictionaries().length === 0) {
-      initializeDictionaries();
-    }
-    
+    // Force clear all dictionaries on component mount
+    clearAllDictionaries();
     loadDictionaries();
   }, []);
 

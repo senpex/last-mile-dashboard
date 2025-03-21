@@ -8,8 +8,9 @@ const sampleDictionaries: Dictionary[] = [];
 
 export const initializeDictionaries = (): void => {
   // Clear any existing dictionaries and set to empty array
-  localStorage.setItem(DICTIONARIES_KEY, JSON.stringify(sampleDictionaries));
-  console.log("Empty dictionaries initialized in local storage");
+  localStorage.removeItem(DICTIONARIES_KEY);
+  localStorage.setItem(DICTIONARIES_KEY, JSON.stringify([]));
+  console.log("All dictionary data completely cleared from local storage");
 };
 
 export const getDictionaries = (): Dictionary[] => {
@@ -42,6 +43,7 @@ export const deleteDictionary = (id: string): void => {
 };
 
 export const clearAllDictionaries = (): void => {
+  localStorage.removeItem(DICTIONARIES_KEY);
   localStorage.setItem(DICTIONARIES_KEY, JSON.stringify([]));
-  console.log("All dictionaries cleared from local storage");
+  console.log("All dictionaries completely cleared from local storage");
 };
