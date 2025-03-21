@@ -5,39 +5,9 @@ const DICTIONARIES_KEY = "dictionaries";
 
 // Sample dictionary data with correct IDs
 const sampleDictionaries: Dictionary[] = [
-  {
-    id: "2",
-    dic_name: "Delivery Status",
-    items: [
-      { id: "new", value: "New" },
-      { id: "in_progress", value: "In Progress" },
-      { id: "completed", value: "Completed" },
-      { id: "failed", value: "Failed" },
-      { id: "canceled", value: "Canceled" }
-    ]
-  },
-  {
-    id: "3",
-    dic_name: "Vehicle Types",
-    items: [
-      { id: "bike", value: "Bike" },
-      { id: "scooter", value: "Scooter" },
-      { id: "car", value: "Car" },
-      { id: "van", value: "Van" },
-      { id: "truck", value: "Truck" }
-    ]
-  },
-  {
-    id: "6",
-    dic_name: "Payment Methods",
-    items: [
-      { id: "cash", value: "Cash" },
-      { id: "credit_card", value: "Credit Card" },
-      { id: "debit_card", value: "Debit Card" },
-      { id: "bank_transfer", value: "Bank Transfer" },
-      { id: "digital_wallet", value: "Digital Wallet" }
-    ]
-  },
+  // Removed: Delivery Status (id: "2")
+  // Removed: Vehicle Types (id: "3")
+  // Removed: Payment Methods (id: "6")
   {
     id: "9",
     dic_name: "Order Types",
@@ -236,6 +206,13 @@ export const initializeDictionaries = (): void => {
   if (!existingDictionaries) {
     localStorage.setItem(DICTIONARIES_KEY, JSON.stringify(sampleDictionaries));
     console.log("Dictionaries initialized in local storage");
+  } else {
+    // Remove the three dictionaries if they already exist in localStorage
+    const dictionaries = JSON.parse(existingDictionaries) as Dictionary[];
+    const filteredDictionaries = dictionaries.filter(
+      dict => dict.id !== "2" && dict.id !== "3" && dict.id !== "6"
+    );
+    localStorage.setItem(DICTIONARIES_KEY, JSON.stringify(filteredDictionaries));
   }
 };
 
