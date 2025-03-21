@@ -26,7 +26,6 @@ const DictionaryImport = ({ onImportComplete }: DictionaryImportProps) => {
       try {
         const data = new Uint8Array(e.target?.result as ArrayBuffer);
         let jsonData;
-        let sheetName = file.name.split('.')[0]; // Default sheet name from filename
         
         // Check if it's a CSV file or Excel file
         if (file.name.toLowerCase().endsWith('.csv')) {
@@ -39,7 +38,6 @@ const DictionaryImport = ({ onImportComplete }: DictionaryImportProps) => {
           const workbook = XLSX.read(data, { type: "array" });
           // Assume first sheet contains the dictionary data
           const firstSheetName = workbook.SheetNames[0];
-          sheetName = firstSheetName; // Use sheet name from Excel file
           const worksheet = workbook.Sheets[firstSheetName];
           jsonData = XLSX.utils.sheet_to_json(worksheet);
         }
@@ -54,8 +52,8 @@ const DictionaryImport = ({ onImportComplete }: DictionaryImportProps) => {
           return;
         }
 
-        // Process the data and save as dictionary
-        processFileData(jsonData, sheetName);
+        // Process the data with custom columns format
+        processFileWithCustomFormat(jsonData);
       } catch (error) {
         console.error("Error parsing file:", error);
         toast({
@@ -79,43 +77,78 @@ const DictionaryImport = ({ onImportComplete }: DictionaryImportProps) => {
     reader.readAsArrayBuffer(file);
   };
 
-  const processFileData = (jsonData: any[], sheetName: string) => {
+  const processFileWithCustomFormat = (jsonData: any[]) => {
     try {
-      // Check for required columns: id and value
+      // Check for required columns
       const firstRow = jsonData[0];
       
-      if (!firstRow.id || !firstRow.value) {
+      if (!firstRow.id || !firstRow.dic_name || !firstRow.list_name) {
         toast({
           title: "Import failed",
-          description: "The file must contain 'id' and 'value' columns.",
+          description: "The file must contain 'id', 'dic_name', and 'list_name' columns.",
           variant: "destructive"
         });
         setIsImporting(false);
         return;
       }
 
-      // Create dictionary items from the data
-      const items: DictionaryItem[] = jsonData.map(row => ({
-        id: String(row.id),
-        value: String(row.value),
-        description: row.description ? String(row.description) : undefined
-      }));
+      // Group items by dic_name to create separate dictionaries
+      const dictionariesMap: Record<string, {
+        id: string,
+        dic_name: string,
+        items: DictionaryItem[]
+      }> = {};
 
-      // Generate a unique ID for the dictionary
-      const dictionaryId = String(Date.now());
+      jsonData.forEach(row => {
+        const dictionaryId = `${row.id}`;
+        const dictionaryName = `${row.dic_name}`;
+        
+        // Create dictionary if it doesn't exist yet
+        if (!dictionariesMap[dictionaryId]) {
+          dictionariesMap[dictionaryId] = {
+            id: dictionaryId,
+            dic_name: dictionaryName,
+            items: []
+          };
+        }
+        
+        // Add item to the dictionary
+        dictionariesMap[dictionaryId].items.push({
+          id: `${row.list_name.toLowerCase().replace(/\s+/g, '_')}`, // Create ID from list_name
+          value: row.list_name,
+          description: row.list_short || undefined
+        });
+      });
+
+      // Convert map to array of dictionaries
+      const dictionaries = Object.values(dictionariesMap);
       
-      // Create and save the new dictionary
-      const newDictionary: Dictionary = {
-        id: dictionaryId,
-        dic_name: sheetName,
-        items
-      };
+      if (dictionaries.length === 0) {
+        toast({
+          title: "Import failed",
+          description: "No valid dictionaries could be created from the file.",
+          variant: "destructive"
+        });
+        setIsImporting(false);
+        return;
+      }
 
-      saveDictionary(newDictionary);
+      // Save each dictionary to storage
+      let savedCount = 0;
+      dictionaries.forEach(dict => {
+        if (dict.items.length > 0) {
+          saveDictionary({
+            id: dict.id,
+            dic_name: dict.dic_name,
+            items: dict.items
+          });
+          savedCount++;
+        }
+      });
       
       toast({
         title: "Import successful",
-        description: `Imported ${items.length} items into dictionary '${sheetName}'`,
+        description: `Imported ${savedCount} dictionaries with a total of ${jsonData.length} items`,
       });
       
       // Notify parent component to refresh the dictionary list
