@@ -218,7 +218,12 @@ export const initializeDictionaries = (): void => {
 
 export const getDictionaries = (): Dictionary[] => {
   const dictionaries = localStorage.getItem(DICTIONARIES_KEY);
-  return dictionaries ? JSON.parse(dictionaries) : [];
+  const dictionaryList = dictionaries ? JSON.parse(dictionaries) : [];
+  
+  // Sort dictionaries by dic_name in ascending order
+  return dictionaryList.sort((a: Dictionary, b: Dictionary) => 
+    a.dic_name.localeCompare(b.dic_name)
+  );
 };
 
 export const getDictionary = (id: string): Dictionary | undefined => {
