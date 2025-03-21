@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import { useTheme } from "./ThemeProvider";
 import ThemeToggle from "./ThemeToggle";
 import LogoutButton from "./LogoutButton";
-import { ChevronLeft, ChevronRight, Package } from "lucide-react";
+import { ChevronLeft, ChevronRight, Package, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Link, useLocation } from "react-router-dom";
 
 interface SidebarProps {
   collapsed: boolean;
@@ -13,6 +14,7 @@ interface SidebarProps {
 
 const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
   const { theme } = useTheme();
+  const location = useLocation();
   
   // Animation states
   const [mounting, setMounting] = useState(true);
@@ -59,11 +61,11 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
         <nav>
           <ul className="space-y-1 px-2">
             <li>
-              <a 
-                href="#" 
+              <Link 
+                to="/" 
                 className={cn(
                   "sidebar-item",
-                  "active" // Since this is the only item, mark it as active
+                  location.pathname === "/" ? "active" : ""
                 )}
               >
                 <Package className="sidebar-icon" />
@@ -75,7 +77,26 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
                 >
                   Deliveries
                 </span>
-              </a>
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/dictionaries" 
+                className={cn(
+                  "sidebar-item",
+                  location.pathname === "/dictionaries" ? "active" : ""
+                )}
+              >
+                <BookOpen className="sidebar-icon" />
+                <span 
+                  className={cn(
+                    "menu-item-text",
+                    collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+                  )}
+                >
+                  Dictionaries
+                </span>
+              </Link>
             </li>
           </ul>
         </nav>
