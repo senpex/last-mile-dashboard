@@ -1,13 +1,38 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { ThemeProvider } from "@/components/layout/ThemeProvider";
+import Sidebar from "@/components/layout/Sidebar";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <ThemeProvider>
+      <div className="min-h-screen bg-background flex">
+        <Sidebar />
+        
+        <main className="flex-1 ml-[240px] transition-all duration-300 p-6">
+          <div className="animate-fade-in">
+            <h1 className="text-3xl font-semibold mb-6">Deliveries Dashboard</h1>
+            <p className="text-muted-foreground mb-8">
+              Welcome to your last-mile delivery dashboard. Manage and monitor your deliveries efficiently.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Placeholder cards for dashboard content */}
+              {[1, 2, 3, 4, 5, 6].map((item) => (
+                <div 
+                  key={item}
+                  className="bg-card text-card-foreground rounded-lg shadow-sm border border-border p-6 hover:shadow-md transition-all-200"
+                >
+                  <h3 className="font-medium mb-2">Dashboard Card {item}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    This is a placeholder for your delivery dashboard content.
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </main>
       </div>
-    </div>
+    </ThemeProvider>
   );
 };
 
