@@ -3,17 +3,18 @@ import { Dictionary } from "@/types/dictionary";
 
 const DICTIONARIES_KEY = "dictionaries";
 
-// Empty array for dictionaries
-const sampleDictionaries: Dictionary[] = [];
-
 export const initializeDictionaries = (): void => {
-  // Clear any existing dictionaries and set to empty array
-  localStorage.removeItem(DICTIONARIES_KEY);
-  localStorage.setItem(DICTIONARIES_KEY, JSON.stringify([]));
-  console.log("All dictionary data completely cleared from local storage");
+  // Only initialize if dictionaries don't exist in localStorage
+  if (!localStorage.getItem(DICTIONARIES_KEY)) {
+    localStorage.setItem(DICTIONARIES_KEY, JSON.stringify([]));
+    console.log("Dictionaries storage initialized");
+  }
 };
 
 export const getDictionaries = (): Dictionary[] => {
+  // Initialize storage if needed
+  initializeDictionaries();
+  
   const dictionaries = localStorage.getItem(DICTIONARIES_KEY);
   return dictionaries ? JSON.parse(dictionaries) : [];
 };

@@ -1,8 +1,9 @@
+
 import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
 import { Button } from "@/components/ui/button";
-import { getDictionaries, clearAllDictionaries, getDictionary } from "@/lib/storage";
+import { getDictionaries, getDictionary } from "@/lib/storage";
 import { Dictionary } from "@/types/dictionary";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
@@ -32,8 +33,8 @@ const Dictionaries = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Force clear all dictionaries on component mount
-    clearAllDictionaries();
+    // Load dictionaries from local storage on component mount
+    // without clearing them first
     loadDictionaries();
   }, []);
 
