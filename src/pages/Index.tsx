@@ -1,14 +1,20 @@
 
+import { useState } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
 
 const Index = () => {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
   return (
     <ThemeProvider>
       <div className="min-h-screen bg-background flex">
-        <Sidebar />
+        <Sidebar 
+          collapsed={sidebarCollapsed} 
+          setCollapsed={setSidebarCollapsed} 
+        />
         
-        <main className="flex-1 ml-[240px] transition-all duration-300 p-6">
+        <main className={`flex-1 transition-all duration-300 p-6 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}>
           <div className="animate-fade-in">
             <h1 className="text-3xl font-semibold mb-6">Deliveries Dashboard</h1>
             <p className="text-muted-foreground mb-8">
