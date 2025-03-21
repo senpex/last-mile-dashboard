@@ -100,8 +100,10 @@ const DictionaryImport = ({ onImportComplete }: DictionaryImportProps) => {
       }> = {};
 
       jsonData.forEach(row => {
-        const dictionaryId = `${row.id}`;
-        const dictionaryName = `${row.dic_name}`;
+        // Ensure values are strings to prevent type errors
+        const dictionaryId = String(row.id);
+        const dictionaryName = String(row.dic_name);
+        const itemName = String(row.list_name);
         
         // Create dictionary if it doesn't exist yet
         if (!dictionariesMap[dictionaryId]) {
@@ -112,11 +114,11 @@ const DictionaryImport = ({ onImportComplete }: DictionaryImportProps) => {
           };
         }
         
-        // Add item to the dictionary
+        // Add item to the dictionary - ensure everything is a string before operations
         dictionariesMap[dictionaryId].items.push({
-          id: `${row.list_name.toLowerCase().replace(/\s+/g, '_')}`, // Create ID from list_name
-          value: row.list_name,
-          description: row.list_short || undefined
+          id: itemName.toLowerCase().replace(/\s+/g, '_'), // Create ID from list_name
+          value: itemName,
+          description: row.list_short ? String(row.list_short) : undefined
         });
       });
 
