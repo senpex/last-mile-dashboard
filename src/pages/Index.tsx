@@ -16,10 +16,7 @@ const Index = () => {
         
         <main className={`flex-1 transition-all duration-300 p-6 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}>
           <div className="animate-fade-in">
-            <h1 className="text-3xl font-semibold mb-6">Deliveries Dashboard</h1>
-            <p className="text-muted-foreground mb-8">
-              Welcome to your last-mile delivery dashboard. Manage and monitor your deliveries efficiently.
-            </p>
+            <h1 className="text-3xl font-semibold mb-6">Deliveries</h1>
             
             {/* Empty dashboard container - cards removed */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
