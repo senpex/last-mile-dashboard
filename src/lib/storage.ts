@@ -4,9 +4,39 @@ const DICTIONARIES_KEY = "dictionaries";
 
 // Sample dictionary data with correct IDs
 const sampleDictionaries: Dictionary[] = [
-  // Removed: Delivery Status (id: "2")
-  // Removed: Vehicle Types (id: "3")
-  // Removed: Payment Methods (id: "6")
+  {
+    id: "2",
+    dic_name: "Delivery Status",
+    items: [
+      { id: "pending", value: "Pending" },
+      { id: "processing", value: "Processing" },
+      { id: "shipped", value: "Shipped" },
+      { id: "delivered", value: "Delivered" },
+      { id: "cancelled", value: "Cancelled" }
+    ]
+  },
+  {
+    id: "3",
+    dic_name: "Vehicle Types",
+    items: [
+      { id: "car", value: "Car" },
+      { id: "van", value: "Van" },
+      { id: "truck", value: "Truck" },
+      { id: "motorcycle", value: "Motorcycle" },
+      { id: "bicycle", value: "Bicycle" }
+    ]
+  },
+  {
+    id: "6",
+    dic_name: "Payment Methods",
+    items: [
+      { id: "credit", value: "Credit Card" },
+      { id: "debit", value: "Debit Card" },
+      { id: "cash", value: "Cash on Delivery" },
+      { id: "bank", value: "Bank Transfer" },
+      { id: "paypal", value: "PayPal" }
+    ]
+  },
   {
     id: "9",
     dic_name: "Order Types",
@@ -205,23 +235,12 @@ export const initializeDictionaries = (): void => {
   if (!existingDictionaries) {
     localStorage.setItem(DICTIONARIES_KEY, JSON.stringify(sampleDictionaries));
     console.log("Dictionaries initialized in local storage");
-  } else {
-    // Remove the three dictionaries if they already exist in localStorage
-    const dictionaries = JSON.parse(existingDictionaries) as Dictionary[];
-    const filteredDictionaries = dictionaries.filter(
-      dict => dict.id !== "2" && dict.id !== "3" && dict.id !== "6"
-    );
-    localStorage.setItem(DICTIONARIES_KEY, JSON.stringify(filteredDictionaries));
   }
 };
 
 export const getDictionaries = (): Dictionary[] => {
   const dictionaries = localStorage.getItem(DICTIONARIES_KEY);
-  // Always filter out the specific dictionaries whenever fetching from storage
-  const parsedDictionaries = dictionaries ? JSON.parse(dictionaries) : [];
-  return parsedDictionaries.filter(
-    (dict: Dictionary) => dict.id !== "2" && dict.id !== "3" && dict.id !== "6"
-  );
+  return dictionaries ? JSON.parse(dictionaries) : [];
 };
 
 export const getDictionary = (id: string): Dictionary | undefined => {
