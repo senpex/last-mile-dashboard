@@ -1,7 +1,7 @@
 
 import { LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { toast } from "@/components/ui/toast";
+import { toast } from "@/hooks/use-toast";
 
 interface LogoutButtonProps {
   collapsed?: boolean;
@@ -43,3 +43,4 @@ const LogoutButton = ({ collapsed = false }: LogoutButtonProps) => {
 };
 
 export default LogoutButton;
+
