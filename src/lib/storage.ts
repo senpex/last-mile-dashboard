@@ -1,4 +1,3 @@
-
 import { Dictionary } from "@/types/dictionary";
 
 const DICTIONARIES_KEY = "dictionaries";
@@ -218,7 +217,11 @@ export const initializeDictionaries = (): void => {
 
 export const getDictionaries = (): Dictionary[] => {
   const dictionaries = localStorage.getItem(DICTIONARIES_KEY);
-  return dictionaries ? JSON.parse(dictionaries) : [];
+  // Always filter out the specific dictionaries whenever fetching from storage
+  const parsedDictionaries = dictionaries ? JSON.parse(dictionaries) : [];
+  return parsedDictionaries.filter(
+    (dict: Dictionary) => dict.id !== "2" && dict.id !== "3" && dict.id !== "6"
+  );
 };
 
 export const getDictionary = (id: string): Dictionary | undefined => {
