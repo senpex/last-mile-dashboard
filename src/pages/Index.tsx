@@ -27,7 +27,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
-import { Columns, Download, Filter, Search, RotateCw } from "lucide-react";
+import { Columns, Download, Filter, RotateCw, Search } from "lucide-react";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 
 const Index = () => {
@@ -344,22 +344,34 @@ const Index = () => {
                   <Pagination>
                     <PaginationContent>
                       <PaginationItem>
-                        <PaginationLink disabled>
+                        <PaginationLink
+                          className="cursor-not-allowed opacity-50"
+                          aria-disabled="true"
+                        >
                           <span className="sr-only">First page</span>
                           ⟪
                         </PaginationLink>
                       </PaginationItem>
                       <PaginationItem>
-                        <PaginationPrevious disabled />
+                        <PaginationPrevious
+                          className="cursor-not-allowed opacity-50"
+                          aria-disabled="true"
+                        />
                       </PaginationItem>
                       <PaginationItem>
                         <PaginationLink isActive>1</PaginationLink>
                       </PaginationItem>
                       <PaginationItem>
-                        <PaginationNext disabled />
+                        <PaginationNext
+                          className="cursor-not-allowed opacity-50"
+                          aria-disabled="true"
+                        />
                       </PaginationItem>
                       <PaginationItem>
-                        <PaginationLink disabled>
+                        <PaginationLink
+                          className="cursor-not-allowed opacity-50"
+                          aria-disabled="true"
+                        >
                           <span className="sr-only">Last page</span>
                           ⟫
                         </PaginationLink>
