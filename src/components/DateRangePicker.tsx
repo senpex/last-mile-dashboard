@@ -1,3 +1,4 @@
+
 import * as React from "react";
 import { addDays, format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
@@ -91,14 +92,14 @@ export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePicke
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start" alignOffset={0} sideOffset={5}>
-        <div className="flex flex-col max-h-[350px] max-w-[450px]">
+        <div className="flex flex-col max-h-[280px] max-w-[420px]">
           <div className="flex">
-            <div className="w-28 border-r p-1 max-h-[290px] overflow-y-auto">
+            <div className="w-24 border-r p-1 max-h-[230px] overflow-y-auto">
               {datePresets.map((preset) => (
                 <Button
                   key={preset.label}
                   variant="ghost"
-                  className="w-full justify-start text-left mb-1 text-xs h-6 px-2"
+                  className="w-full justify-start text-left mb-1 text-xs h-5 px-2"
                   onClick={() => {
                     applyPreset(
                       preset.days,
@@ -118,7 +119,7 @@ export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePicke
                   <div className="text-xs font-medium mb-1">Start</div>
                   <Button 
                     variant="outline" 
-                    className="w-full justify-start text-left text-xs h-6 mb-1 px-2"
+                    className="w-full justify-start text-left text-xs h-5 mb-1 px-2"
                     onClick={() => {}}
                   >
                     {dateRange?.from ? (
@@ -129,7 +130,7 @@ export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePicke
                   </Button>
                   
                   <Select value={startTime} onValueChange={setStartTime}>
-                    <SelectTrigger className="h-6 text-xs">
+                    <SelectTrigger className="h-5 text-xs">
                       <SelectValue placeholder="12:00 AM" />
                     </SelectTrigger>
                     <SelectContent>
@@ -146,7 +147,7 @@ export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePicke
                   <div className="text-xs font-medium mb-1">End</div>
                   <Button 
                     variant="outline" 
-                    className="w-full justify-start text-left text-xs h-6 mb-1 px-2"
+                    className="w-full justify-start text-left text-xs h-5 mb-1 px-2"
                     onClick={() => {}}
                   >
                     {dateRange?.to ? (
@@ -157,7 +158,7 @@ export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePicke
                   </Button>
                   
                   <Select value={endTime} onValueChange={setEndTime}>
-                    <SelectTrigger className="h-6 text-xs">
+                    <SelectTrigger className="h-5 text-xs">
                       <SelectValue placeholder="11:59 PM" />
                     </SelectTrigger>
                     <SelectContent>
@@ -179,17 +180,17 @@ export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePicke
                   onSelect={onDateRangeChange}
                   numberOfMonths={1}
                   showOutsideDays={false}
-                  className="rounded-md scale-80 origin-top"
+                  className="rounded-md scale-[0.7] origin-top"
                 />
               </div>
             </div>
           </div>
           
-          <div className="border-t p-1 flex justify-end gap-2">
+          <div className="border-t p-1 flex justify-end gap-2 mt-auto">
             <Button
               variant="outline"
               size="sm"
-              className="h-6 text-xs"
+              className="h-5 text-xs"
               onClick={() => {
                 onDateRangeChange(undefined);
                 setIsCalendarOpen(false);
@@ -199,7 +200,7 @@ export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePicke
             </Button>
             <Button
               size="sm"
-              className="h-6 text-xs"
+              className="h-5 text-xs"
               onClick={() => {
                 setIsCalendarOpen(false);
               }}
