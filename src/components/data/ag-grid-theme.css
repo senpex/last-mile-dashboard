@@ -1,0 +1,74 @@
+
+/* Custom AG Grid theme to match our UI */
+.ag-theme-alpine {
+  --ag-font-family: 'Inter var', sans-serif;
+  --ag-font-size: 14px;
+  --ag-header-background-color: var(--muted);
+  --ag-odd-row-background-color: transparent;
+  --ag-row-hover-color: hsl(var(--muted) / 50%);
+  --ag-selected-row-background-color: hsl(var(--muted));
+  --ag-border-color: hsl(var(--border));
+  --ag-row-border-color: hsl(var(--border));
+  --ag-header-column-separator-color: hsl(var(--border));
+  --ag-header-foreground-color: hsl(var(--muted-foreground));
+  --ag-foreground-color: hsl(var(--foreground));
+  --ag-alpine-active-color: hsl(var(--primary));
+  --ag-range-selection-border-color: hsl(var(--primary));
+  --ag-range-selection-background-color: hsl(var(--primary) / 10%);
+  --ag-background-color: transparent;
+  --ag-header-height: 48px;
+  --ag-row-height: 56px;
+  --ag-cell-horizontal-padding: 16px;
+  --ag-borders: none;
+  --ag-border-radius: 6px;
+}
+
+.ag-theme-alpine .ag-header-cell {
+  font-weight: 500;
+}
+
+.ag-theme-alpine .ag-header {
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.ag-theme-alpine .ag-row {
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.ag-theme-alpine .ag-row:last-child {
+  border-bottom: none;
+}
+
+.ag-theme-alpine .ag-paging-panel {
+  border-top: 1px solid hsl(var(--border));
+  padding: 16px;
+  color: hsl(var(--muted-foreground));
+}
+
+.ag-theme-alpine .ag-paging-button {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+.ag-theme-alpine .ag-paging-button:hover {
+  background-color: hsl(var(--accent));
+}
+
+.ag-theme-alpine .ag-paging-button-wrapper.ag-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Dark mode support */
+.dark .ag-theme-alpine {
+  --ag-header-background-color: hsl(var(--muted));
+  --ag-background-color: transparent;
+  --ag-foreground-color: hsl(var(--foreground));
+  --ag-header-foreground-color: hsl(var(--muted-foreground));
+  --ag-border-color: hsl(var(--border));
+  --ag-row-border-color: hsl(var(--border));
+  --ag-odd-row-background-color: transparent;
+  --ag-header-column-separator-color: hsl(var(--border));
+  --ag-row-hover-color: hsl(var(--muted) / 50%);
+}
