@@ -105,18 +105,6 @@ const TableCaption = React.forwardRef<
 ))
 TableCaption.displayName = "TableCaption"
 
-const TableContainer = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("relative w-full overflow-auto rounded-md border", className)}
-    {...props}
-  />
-))
-TableContainer.displayName = "TableContainer"
-
 export {
   Table,
   TableHeader,
@@ -126,5 +114,4 @@ export {
   TableRow,
   TableCell,
   TableCaption,
-  TableContainer,
 }
