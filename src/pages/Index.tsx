@@ -1,3 +1,4 @@
+
 import { useState, useMemo } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -29,10 +30,16 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Columns, Download, Filter, RotateCw, Search } from "lucide-react";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
+import { DateRangePicker } from "@/components/DateRangePicker";
+import { DateRange } from "react-day-picker";
 
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState<string>("10");
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: new Date("2025-03-24T00:00:00"),
+    to: new Date("2025-03-24T23:59:59")
+  });
   
   const availableColumns: ColumnOption[] = [
     { id: "status", label: "Status", default: true },
@@ -184,9 +191,10 @@ const Index = () => {
               
               <div className="flex flex-wrap justify-between items-center gap-2">
                 <div className="flex items-center gap-2">
-                  <Button variant="outline" className="flex items-center gap-2 text-sm h-9">
-                    <span>03/24/2025 12:00 AM - 03/24/2025 11:59 PM</span>
-                  </Button>
+                  <DateRangePicker 
+                    dateRange={dateRange}
+                    onDateRangeChange={setDateRange}
+                  />
                   
                   <Button variant="outline" className="flex items-center gap-2 text-sm h-9">
                     <Filter className="h-4 w-4" />
