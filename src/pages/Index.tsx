@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
 import { Button } from "@/components/ui/button";
@@ -15,11 +15,80 @@ import DeliveriesGrid, { Delivery } from "@/components/data/DeliveriesGrid";
 import { Download, Filter, Search, RotateCw, Columns } from "lucide-react";
 import "../components/data/ag-grid-theme.css";
 
+// Sample data to show in the grid
+const sampleDeliveries: Delivery[] = [
+  {
+    id: 1,
+    status: "Dropoff Complete",
+    pickupTime: "2023-06-10 09:30 AM",
+    pickupLocation: {
+      name: "Coffee Shop",
+      address: "123 Main St, San Francisco"
+    },
+    dropoffTime: "2023-06-10 10:15 AM",
+    dropoffLocation: {
+      name: "Office Building",
+      address: "456 Market St, San Francisco"
+    },
+    price: "$15.50",
+    tip: "$3.00",
+    fees: "$2.50",
+    courier: "John Smith",
+    organization: "SpeedDelivery",
+    distance: "2.3 miles"
+  },
+  {
+    id: 2,
+    status: "Canceled By Customer",
+    pickupTime: "2023-06-10 11:00 AM",
+    pickupLocation: {
+      name: "Sandwich Shop",
+      address: "789 Mission St, San Francisco"
+    },
+    dropoffTime: "N/A",
+    dropoffLocation: {
+      name: "Apartment Complex",
+      address: "101 Harrison St, San Francisco"
+    },
+    price: "$0.00",
+    tip: "$0.00",
+    fees: "$1.50",
+    courier: "Jane Doe",
+    organization: "FastFood",
+    distance: "1.8 miles"
+  },
+  {
+    id: 3,
+    status: "In Transit",
+    pickupTime: "2023-06-10 12:15 PM",
+    pickupLocation: {
+      name: "Grocery Store",
+      address: "222 Valencia St, San Francisco"
+    },
+    dropoffTime: "Estimated 1:00 PM",
+    dropoffLocation: {
+      name: "Residential Home",
+      address: "333 Dolores St, San Francisco"
+    },
+    price: "$22.75",
+    tip: "$4.50",
+    fees: "$3.25",
+    courier: "Mike Johnson",
+    organization: "QuickMart",
+    distance: "3.5 miles"
+  }
+];
+
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [deliveries, setDeliveries] = useState<Delivery[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  
+  // Load sample data when the component mounts
+  useEffect(() => {
+    setDeliveries(sampleDeliveries);
+  }, []);
   
   const totalDeliveries = deliveries.length;
   const totalPages = Math.max(1, Math.ceil(totalDeliveries / rowsPerPage));
