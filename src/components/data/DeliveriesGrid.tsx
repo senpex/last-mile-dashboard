@@ -4,8 +4,9 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { Badge } from "@/components/ui/badge";
+import { ColDef } from "ag-grid-community";
 
-type Delivery = {
+export type Delivery = {
   id: number;
   status: string;
   pickupTime: string;
@@ -33,7 +34,6 @@ type DeliveriesGridProps = {
 // Custom cell renderers
 const StatusCellRenderer = (props: any) => {
   const status = props.value;
-  let variant: "default" | "destructive" | "outline" | "secondary" | null = "default";
   
   if (status === "Dropoff Complete") {
     return (
@@ -59,8 +59,8 @@ const LocationCellRenderer = (props: any) => {
 };
 
 const DeliveriesGrid = ({ deliveries }: DeliveriesGridProps) => {
-  // Define columns
-  const columnDefs = useMemo(() => [
+  // Define columns with proper typing
+  const columnDefs = useMemo<ColDef<Delivery>[]>(() => [
     { 
       headerName: "Status", 
       field: "status", 
@@ -135,10 +135,10 @@ const DeliveriesGrid = ({ deliveries }: DeliveriesGridProps) => {
       headerClass: "text-right",
       cellClass: "text-right"
     }
-  ], []);
+  ] as ColDef<Delivery>[], []);
 
   // Default column definitions
-  const defaultColDef = useMemo(() => ({
+  const defaultColDef = useMemo<ColDef<Delivery>>(() => ({
     resizable: true,
     suppressMovable: false,
     flex: 1
@@ -146,7 +146,7 @@ const DeliveriesGrid = ({ deliveries }: DeliveriesGridProps) => {
 
   return (
     <div className="ag-theme-alpine h-[calc(100vh-210px)] w-full">
-      <AgGridReact
+      <AgGridReact<Delivery>
         rowData={deliveries}
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}

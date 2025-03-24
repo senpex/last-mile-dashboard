@@ -11,30 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import DeliveriesGrid from "@/components/data/DeliveriesGrid";
+import DeliveriesGrid, { Delivery } from "@/components/data/DeliveriesGrid";
 import { Download, Filter, Search, RotateCw, Columns } from "lucide-react";
 import "../components/data/ag-grid-theme.css";
-
-type Delivery = {
-  id: number;
-  status: string;
-  pickupTime: string;
-  pickupLocation: {
-    name: string;
-    address: string;
-  };
-  dropoffTime: string;
-  dropoffLocation: {
-    name: string;
-    address: string;
-  };
-  price: string;
-  tip: string;
-  fees: string;
-  courier: string;
-  organization: string;
-  distance: string;
-};
 
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
