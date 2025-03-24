@@ -88,6 +88,7 @@ const Index = () => {
   // Load sample data when the component mounts
   useEffect(() => {
     setDeliveries(sampleDeliveries);
+    console.log("Setting deliveries:", sampleDeliveries); // Debug log
   }, []);
   
   const totalDeliveries = deliveries.length;
@@ -153,7 +154,11 @@ const Index = () => {
               </div>
               
               {/* AG Grid Table */}
-              <DeliveriesGrid deliveries={deliveries} />
+              {deliveries.length > 0 ? (
+                <DeliveriesGrid deliveries={deliveries} />
+              ) : (
+                <div className="text-center py-10">Loading deliveries...</div>
+              )}
             </div>
           </div>
         </main>

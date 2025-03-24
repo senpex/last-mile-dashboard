@@ -59,11 +59,13 @@ const LocationCellRenderer = (props: any) => {
 };
 
 const DeliveriesGrid = ({ deliveries }: DeliveriesGridProps) => {
-  // Define columns with proper typing - use keyof to ensure type safety
-  const columnDefs = useMemo<ColDef<Delivery>[]>(() => [
+  console.log("DeliveriesGrid received data:", deliveries); // Debug log
+  
+  // Define columns with proper typing
+  const columnDefs = useMemo<ColDef[]>(() => [
     { 
       headerName: "Status", 
-      field: "status" as keyof Delivery, 
+      field: "status", 
       cellRenderer: StatusCellRenderer,
       width: 140,
       sortable: true,
@@ -71,13 +73,13 @@ const DeliveriesGrid = ({ deliveries }: DeliveriesGridProps) => {
     },
     { 
       headerName: "Pickup Time", 
-      field: "pickupTime" as keyof Delivery,
+      field: "pickupTime",
       sortable: true,
       filter: true
     },
     { 
       headerName: "Pickup Location", 
-      field: "pickupLocation" as keyof Delivery, 
+      field: "pickupLocation", 
       cellRenderer: LocationCellRenderer,
       width: 200,
       sortable: true,
@@ -85,13 +87,13 @@ const DeliveriesGrid = ({ deliveries }: DeliveriesGridProps) => {
     },
     { 
       headerName: "Dropoff Time", 
-      field: "dropoffTime" as keyof Delivery,
+      field: "dropoffTime",
       sortable: true,
       filter: true
     },
     { 
       headerName: "Dropoff Location", 
-      field: "dropoffLocation" as keyof Delivery, 
+      field: "dropoffLocation", 
       cellRenderer: LocationCellRenderer,
       width: 200,
       sortable: true,
@@ -99,37 +101,37 @@ const DeliveriesGrid = ({ deliveries }: DeliveriesGridProps) => {
     },
     { 
       headerName: "Price", 
-      field: "price" as keyof Delivery,
+      field: "price",
       sortable: true,
       filter: true
     },
     { 
       headerName: "Tip", 
-      field: "tip" as keyof Delivery,
+      field: "tip",
       sortable: true,
       filter: true
     },
     { 
       headerName: "Fees", 
-      field: "fees" as keyof Delivery,
+      field: "fees",
       sortable: true,
       filter: true
     },
     { 
       headerName: "Courier", 
-      field: "courier" as keyof Delivery,
+      field: "courier",
       sortable: true,
       filter: true
     },
     { 
       headerName: "Organization", 
-      field: "organization" as keyof Delivery,
+      field: "organization",
       sortable: true,
       filter: true
     },
     { 
       headerName: "Distance", 
-      field: "distance" as keyof Delivery,
+      field: "distance",
       sortable: true,
       filter: true,
       headerClass: "text-right",
@@ -138,15 +140,15 @@ const DeliveriesGrid = ({ deliveries }: DeliveriesGridProps) => {
   ], []);
 
   // Default column definitions
-  const defaultColDef = useMemo<ColDef<Delivery>>(() => ({
+  const defaultColDef = useMemo(() => ({
     resizable: true,
     suppressMovable: false,
     flex: 1
   }), []);
 
   return (
-    <div className="ag-theme-alpine h-[calc(100vh-210px)] w-full">
-      <AgGridReact<Delivery>
+    <div className="ag-theme-alpine h-[500px] w-full border rounded">
+      <AgGridReact
         rowData={deliveries}
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
@@ -158,7 +160,6 @@ const DeliveriesGrid = ({ deliveries }: DeliveriesGridProps) => {
         enableCellTextSelection={true}
         suppressRowClickSelection={true}
         suppressCellFocus={true}
-        domLayout="autoHeight"
       />
     </div>
   );
