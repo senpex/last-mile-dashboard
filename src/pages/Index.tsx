@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -132,13 +131,13 @@ const Index = () => {
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-background flex">
+      <div className="min-h-screen bg-background flex flex-col relative">
         <Sidebar 
           collapsed={sidebarCollapsed} 
           setCollapsed={setSidebarCollapsed} 
         />
         
-        <main className={`flex-1 transition-all duration-300 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}>
+        <main className={`flex-1 transition-all duration-300 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'} pb-20`}>
           <div className="animate-fade-in px-4 py-6">
             <div className="flex flex-col space-y-4">
               {/* Header and timezone */}
@@ -246,108 +245,111 @@ const Index = () => {
                   </TableBody>
                 </Table>
               </div>
-              
-              {/* Pagination */}
-              <div className="flex justify-between items-center">
-                <div className="text-sm text-muted-foreground">
-                  Total <span className="bg-muted px-2 py-1 rounded">{totalDeliveries}</span> 
-                  {totalDeliveries > 0 && indexOfFirstItem !== indexOfLastItem && (
-                    <span className="ml-2">
-                      Showing {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, totalDeliveries)} of {totalDeliveries}
-                    </span>
-                  )}
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">Rows per page</span>
-                  <Select 
-                    value={rowsPerPage.toString()} 
-                    onValueChange={handleRowsPerPageChange}
-                  >
-                    <SelectTrigger className="w-[70px] h-8">
-                      <SelectValue placeholder="10" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="10">10</SelectItem>
-                      <SelectItem value="20">20</SelectItem>
-                      <SelectItem value="50">50</SelectItem>
-                      <SelectItem value="100">100</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  
-                  <div className="flex items-center gap-1">
-                    <span className="text-sm">Page {currentPage} of {totalPages}</span>
-                  </div>
-                  
-                  <Pagination>
-                    <PaginationContent>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#"
-                          onClick={(e) => { e.preventDefault(); handlePageChange(1); }}
-                          aria-disabled={currentPage === 1}
-                          className={currentPage === 1 ? "cursor-not-allowed opacity-50" : ""}
-                        >
-                          <span className="sr-only">First page</span>
-                          ⟪
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationPrevious
-                          href="#"
-                          onClick={(e) => { e.preventDefault(); handlePageChange(currentPage - 1); }}
-                          aria-disabled={currentPage === 1}
-                          className={currentPage === 1 ? "cursor-not-allowed opacity-50" : ""}
-                        />
-                      </PaginationItem>
-                      
-                      {getPageLinks().map((page, index) => (
-                        <PaginationItem key={index}>
-                          {page === -1 ? (
-                            <span className="flex h-9 w-9 items-center justify-center">
-                              …
-                            </span>
-                          ) : (
-                            <PaginationLink
-                              href="#"
-                              onClick={(e) => { e.preventDefault(); handlePageChange(page); }}
-                              isActive={currentPage === page}
-                            >
-                              {page}
-                            </PaginationLink>
-                          )}
-                        </PaginationItem>
-                      ))}
-                      
-                      <PaginationItem>
-                        <PaginationNext
-                          href="#"
-                          onClick={(e) => { e.preventDefault(); handlePageChange(currentPage + 1); }}
-                          aria-disabled={currentPage === totalPages}
-                          className={currentPage === totalPages ? "cursor-not-allowed opacity-50" : ""}
-                        />
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#"
-                          onClick={(e) => { e.preventDefault(); handlePageChange(totalPages); }}
-                          aria-disabled={currentPage === totalPages}
-                          className={currentPage === totalPages ? "cursor-not-allowed opacity-50" : ""}
-                        >
-                          <span className="sr-only">Last page</span>
-                          ⟫
-                        </PaginationLink>
-                      </PaginationItem>
-                    </PaginationContent>
-                  </Pagination>
-                </div>
-              </div>
             </div>
           </div>
         </main>
+        
+        {/* Fixed pagination footer */}
+        <div className="fixed bottom-0 left-0 right-0 border-t bg-background shadow-md z-10">
+          <div className={`flex justify-between items-center p-4 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}>
+            <div className="text-sm text-muted-foreground">
+              Total <span className="bg-muted px-2 py-1 rounded">{totalDeliveries}</span> 
+              {totalDeliveries > 0 && indexOfFirstItem !== indexOfLastItem && (
+                <span className="ml-2">
+                  Showing {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, totalDeliveries)} of {totalDeliveries}
+                </span>
+              )}
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">Rows per page</span>
+              <Select 
+                value={rowsPerPage.toString()} 
+                onValueChange={handleRowsPerPageChange}
+              >
+                <SelectTrigger className="w-[70px] h-8">
+                  <SelectValue placeholder="10" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="10">10</SelectItem>
+                  <SelectItem value="20">20</SelectItem>
+                  <SelectItem value="50">50</SelectItem>
+                  <SelectItem value="100">100</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <div className="flex items-center gap-1">
+                <span className="text-sm">Page {currentPage} of {totalPages}</span>
+              </div>
+              
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationLink
+                      href="#"
+                      onClick={(e) => { e.preventDefault(); handlePageChange(1); }}
+                      aria-disabled={currentPage === 1}
+                      className={currentPage === 1 ? "cursor-not-allowed opacity-50" : ""}
+                    >
+                      <span className="sr-only">First page</span>
+                      ⟪
+                    </PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href="#"
+                      onClick={(e) => { e.preventDefault(); handlePageChange(currentPage - 1); }}
+                      aria-disabled={currentPage === 1}
+                      className={currentPage === 1 ? "cursor-not-allowed opacity-50" : ""}
+                    />
+                  </PaginationItem>
+                  
+                  {getPageLinks().map((page, index) => (
+                    <PaginationItem key={index}>
+                      {page === -1 ? (
+                        <span className="flex h-9 w-9 items-center justify-center">
+                          …
+                        </span>
+                      ) : (
+                        <PaginationLink
+                          href="#"
+                          onClick={(e) => { e.preventDefault(); handlePageChange(page); }}
+                          isActive={currentPage === page}
+                        >
+                          {page}
+                        </PaginationLink>
+                      )}
+                    </PaginationItem>
+                  ))}
+                  
+                  <PaginationItem>
+                    <PaginationNext
+                      href="#"
+                      onClick={(e) => { e.preventDefault(); handlePageChange(currentPage + 1); }}
+                      aria-disabled={currentPage === totalPages}
+                      className={currentPage === totalPages ? "cursor-not-allowed opacity-50" : ""}
+                    />
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink
+                      href="#"
+                      onClick={(e) => { e.preventDefault(); handlePageChange(totalPages); }}
+                      aria-disabled={currentPage === totalPages}
+                      className={currentPage === totalPages ? "cursor-not-allowed opacity-50" : ""}
+                    >
+                      <span className="sr-only">Last page</span>
+                      ⟫
+                    </PaginationLink>
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          </div>
+        </div>
       </div>
     </ThemeProvider>
   );
 };
 
 export default Index;
+
