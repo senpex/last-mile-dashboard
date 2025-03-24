@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
 import { Button } from "@/components/ui/button";
@@ -29,12 +28,30 @@ import {
 } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
 import { Columns, Download, Filter, Search, RotateCw } from "lucide-react";
+import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState<string>("10");
-
-  // Sample delivery data based on the screenshot
+  
+  const availableColumns: ColumnOption[] = [
+    { id: "status", label: "Status", default: true },
+    { id: "pickupTime", label: "Pickup Time", default: true },
+    { id: "pickupLocation", label: "Pickup Location", default: true },
+    { id: "dropoffTime", label: "Dropoff Time", default: true },
+    { id: "dropoffLocation", label: "Dropoff Location", default: true },
+    { id: "price", label: "Price", default: true },
+    { id: "tip", label: "Tip", default: true },
+    { id: "fees", label: "Fees", default: false },
+    { id: "courier", label: "Courier", default: true },
+    { id: "organization", label: "Organization", default: true },
+    { id: "distance", label: "Distance", default: true },
+  ];
+  
+  const [visibleColumns, setVisibleColumns] = useState<string[]>(
+    availableColumns.filter(col => col.default).map(col => col.id)
+  );
+  
   const deliveries = [
     {
       id: 1,
@@ -160,13 +177,11 @@ const Index = () => {
         <main className={`flex-1 transition-all duration-300 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}>
           <div className="animate-fade-in px-4 py-6">
             <div className="flex flex-col space-y-4">
-              {/* Header and timezone */}
               <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-semibold">Deliveries</h1>
                 <span className="text-sm text-muted-foreground">All times are displayed using PDT timezone</span>
               </div>
               
-              {/* Filters and actions row */}
               <div className="flex flex-wrap justify-between items-center gap-2">
                 <div className="flex items-center gap-2">
                   <Button variant="outline" className="flex items-center gap-2 text-sm h-9">
@@ -197,68 +212,112 @@ const Index = () => {
                     <RotateCw className="h-4 w-4" />
                   </Button>
                   
-                  <Button variant="outline" size="icon" className="h-9 w-9">
-                    <Columns className="h-4 w-4" />
-                  </Button>
+                  <ColumnSelector 
+                    columns={availableColumns}
+                    visibleColumns={visibleColumns}
+                    setVisibleColumns={setVisibleColumns}
+                  />
                 </div>
               </div>
               
-              {/* Table */}
               <div className="border rounded-md overflow-hidden">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-[140px]">Status</TableHead>
-                      <TableHead>Pickup Time</TableHead>
-                      <TableHead>Pickup Location</TableHead>
-                      <TableHead>Dropoff Time</TableHead>
-                      <TableHead>Dropoff Location</TableHead>
-                      <TableHead>Price</TableHead>
-                      <TableHead>Tip</TableHead>
-                      <TableHead>Fees</TableHead>
-                      <TableHead>Courier</TableHead>
-                      <TableHead>Organization</TableHead>
-                      <TableHead className="text-right">Distance</TableHead>
+                      {visibleColumns.includes("status") && (
+                        <TableHead className="w-[140px]">Status</TableHead>
+                      )}
+                      {visibleColumns.includes("pickupTime") && (
+                        <TableHead>Pickup Time</TableHead>
+                      )}
+                      {visibleColumns.includes("pickupLocation") && (
+                        <TableHead>Pickup Location</TableHead>
+                      )}
+                      {visibleColumns.includes("dropoffTime") && (
+                        <TableHead>Dropoff Time</TableHead>
+                      )}
+                      {visibleColumns.includes("dropoffLocation") && (
+                        <TableHead>Dropoff Location</TableHead>
+                      )}
+                      {visibleColumns.includes("price") && (
+                        <TableHead>Price</TableHead>
+                      )}
+                      {visibleColumns.includes("tip") && (
+                        <TableHead>Tip</TableHead>
+                      )}
+                      {visibleColumns.includes("fees") && (
+                        <TableHead>Fees</TableHead>
+                      )}
+                      {visibleColumns.includes("courier") && (
+                        <TableHead>Courier</TableHead>
+                      )}
+                      {visibleColumns.includes("organization") && (
+                        <TableHead>Organization</TableHead>
+                      )}
+                      {visibleColumns.includes("distance") && (
+                        <TableHead className="text-right">Distance</TableHead>
+                      )}
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {deliveries.map((delivery) => (
                       <TableRow key={delivery.id}>
-                        <TableCell>
-                          <Badge 
-                            variant={delivery.status === "Canceled By Customer" ? "destructive" : "outline"}
-                            className={`${delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}`}
-                          >
-                            {delivery.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>{delivery.pickupTime}</TableCell>
-                        <TableCell>
-                          <div className="flex flex-col">
-                            <span className="font-medium">{delivery.pickupLocation.name}</span>
-                            <span className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>{delivery.dropoffTime}</TableCell>
-                        <TableCell>
-                          <div className="flex flex-col">
-                            <span className="font-medium">{delivery.dropoffLocation.name}</span>
-                            <span className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>{delivery.price}</TableCell>
-                        <TableCell>{delivery.tip}</TableCell>
-                        <TableCell>{delivery.fees}</TableCell>
-                        <TableCell>{delivery.courier}</TableCell>
-                        <TableCell>{delivery.organization}</TableCell>
-                        <TableCell className="text-right">{delivery.distance}</TableCell>
+                        {visibleColumns.includes("status") && (
+                          <TableCell>
+                            <Badge 
+                              variant={delivery.status === "Canceled By Customer" ? "destructive" : "outline"}
+                              className={`${delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}`}
+                            >
+                              {delivery.status}
+                            </Badge>
+                          </TableCell>
+                        )}
+                        {visibleColumns.includes("pickupTime") && (
+                          <TableCell>{delivery.pickupTime}</TableCell>
+                        )}
+                        {visibleColumns.includes("pickupLocation") && (
+                          <TableCell>
+                            <div className="flex flex-col">
+                              <span className="font-medium">{delivery.pickupLocation.name}</span>
+                              <span className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</span>
+                            </div>
+                          </TableCell>
+                        )}
+                        {visibleColumns.includes("dropoffTime") && (
+                          <TableCell>{delivery.dropoffTime}</TableCell>
+                        )}
+                        {visibleColumns.includes("dropoffLocation") && (
+                          <TableCell>
+                            <div className="flex flex-col">
+                              <span className="font-medium">{delivery.dropoffLocation.name}</span>
+                              <span className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</span>
+                            </div>
+                          </TableCell>
+                        )}
+                        {visibleColumns.includes("price") && (
+                          <TableCell>{delivery.price}</TableCell>
+                        )}
+                        {visibleColumns.includes("tip") && (
+                          <TableCell>{delivery.tip}</TableCell>
+                        )}
+                        {visibleColumns.includes("fees") && (
+                          <TableCell>{delivery.fees}</TableCell>
+                        )}
+                        {visibleColumns.includes("courier") && (
+                          <TableCell>{delivery.courier}</TableCell>
+                        )}
+                        {visibleColumns.includes("organization") && (
+                          <TableCell>{delivery.organization}</TableCell>
+                        )}
+                        {visibleColumns.includes("distance") && (
+                          <TableCell className="text-right">{delivery.distance}</TableCell>
+                        )}
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </div>
               
-              {/* Pagination */}
               <div className="flex justify-between items-center">
                 <div className="text-sm text-muted-foreground">
                   Total <span className="bg-muted px-2 py-1 rounded">{deliveries.length}</span>
