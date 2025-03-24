@@ -30,113 +30,31 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Columns, Download, Filter, Search, RotateCw } from "lucide-react";
 
+type Delivery = {
+  id: number;
+  status: string;
+  pickupTime: string;
+  pickupLocation: {
+    name: string;
+    address: string;
+  };
+  dropoffTime: string;
+  dropoffLocation: {
+    name: string;
+    address: string;
+  };
+  price: string;
+  tip: string;
+  fees: string;
+  courier: string;
+  organization: string;
+  distance: string;
+};
+
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState<string>("10");
-
-  // Sample delivery data based on the screenshot
-  const deliveries = [
-    {
-      id: 1,
-      status: "Dropoff Complete",
-      pickupTime: "03/24/2025 12:49 PM",
-      pickupLocation: {
-        name: "Walmart 0100 - Bentonville, AR",
-        address: "406 S WALTON BLVD, BENTONVILLE, AR 72712, US"
-      },
-      dropoffTime: "03/24/2025 08:00 PM",
-      dropoffLocation: {
-        name: "Saranya Natarajan",
-        address: "1600 Emmerson St, Centerton, AR 72719, US"
-      },
-      price: "$33.00",
-      tip: "$0.00",
-      fees: "",
-      courier: "GARY BURTON",
-      organization: "Walmart US Stores",
-      distance: "6.9 mi"
-    },
-    {
-      id: 2,
-      status: "Dropoff Complete",
-      pickupTime: "03/24/2025 11:34 AM",
-      pickupLocation: {
-        name: "Walmart 0100 - Bentonville, AR",
-        address: "406 S WALTON BLVD, BENTONVILLE, AR 72712, US"
-      },
-      dropoffTime: "03/24/2025 08:00 PM",
-      dropoffLocation: {
-        name: "Roma Solis",
-        address: "1051 Little Osage Ave, Bentonville, AR 72713, US"
-      },
-      price: "$33.00",
-      tip: "$0.00",
-      fees: "",
-      courier: "GARY BURTON",
-      organization: "Walmart US Stores",
-      distance: "4.1 mi"
-    },
-    {
-      id: 3,
-      status: "Dropoff Complete",
-      pickupTime: "03/24/2025 11:34 AM",
-      pickupLocation: {
-        name: "Walmart 0100 - Bentonville, AR",
-        address: "406 S WALTON BLVD, BENTONVILLE, AR 72712, US"
-      },
-      dropoffTime: "03/24/2025 08:00 PM",
-      dropoffLocation: {
-        name: "Juan Galarraga",
-        address: "3511 SW Awakening Ave, Bentonville, AR 72713, US"
-      },
-      price: "$25.00",
-      tip: "$0.00",
-      fees: "",
-      courier: "Michael Groves",
-      organization: "Walmart US Stores",
-      distance: "6.1 mi"
-    },
-    {
-      id: 4,
-      status: "Dropoff Complete",
-      pickupTime: "03/24/2025 11:34 AM",
-      pickupLocation: {
-        name: "Walmart 0100 - Bentonville, AR",
-        address: "406 S WALTON BLVD, BENTONVILLE, AR 72712, US"
-      },
-      dropoffTime: "03/24/2025 08:00 PM",
-      dropoffLocation: {
-        name: "Wendy Lancaster",
-        address: "6305 SW Brush Blvd, Bentonville, AR 72713, US"
-      },
-      price: "$33.00",
-      tip: "$0.00",
-      fees: "",
-      courier: "Laura Ramirez",
-      organization: "Walmart US Stores",
-      distance: "7.4 mi"
-    },
-    {
-      id: 5,
-      status: "Canceled By Customer",
-      pickupTime: "03/24/2025 11:20 AM",
-      pickupLocation: {
-        name: "Curry Up Now - Palo Alto",
-        address: "321 Hamilton Ave, Palo Alto, CA 94301, US"
-      },
-      dropoffTime: "03/24/2025 11:40 AM",
-      dropoffLocation: {
-        name: "Duane Morris LLP",
-        address: "260 Homer Ave Ste 202, Palo Alto, CA 94301, USA"
-      },
-      price: "$0.00",
-      tip: "$5.00",
-      fees: "",
-      courier: "",
-      organization: "Curry Up Now",
-      distance: "0.2 mi"
-    }
-  ];
+  const [deliveries, setDeliveries] = useState<Delivery[]>([]);
 
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
@@ -222,38 +140,46 @@ const Index = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {deliveries.map((delivery) => (
-                      <TableRow key={delivery.id}>
-                        <TableCell>
-                          <Badge 
-                            variant={delivery.status === "Canceled By Customer" ? "destructive" : "outline"}
-                            className={`${delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}`}
-                          >
-                            {delivery.status}
-                          </Badge>
+                    {deliveries.length > 0 ? (
+                      deliveries.map((delivery) => (
+                        <TableRow key={delivery.id}>
+                          <TableCell>
+                            <Badge 
+                              variant={delivery.status === "Canceled By Customer" ? "destructive" : "outline"}
+                              className={`${delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}`}
+                            >
+                              {delivery.status}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>{delivery.pickupTime}</TableCell>
+                          <TableCell>
+                            <div className="flex flex-col">
+                              <span className="font-medium">{delivery.pickupLocation.name}</span>
+                              <span className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>{delivery.dropoffTime}</TableCell>
+                          <TableCell>
+                            <div className="flex flex-col">
+                              <span className="font-medium">{delivery.dropoffLocation.name}</span>
+                              <span className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>{delivery.price}</TableCell>
+                          <TableCell>{delivery.tip}</TableCell>
+                          <TableCell>{delivery.fees}</TableCell>
+                          <TableCell>{delivery.courier}</TableCell>
+                          <TableCell>{delivery.organization}</TableCell>
+                          <TableCell className="text-right">{delivery.distance}</TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={11} className="h-24 text-center">
+                          No deliveries found
                         </TableCell>
-                        <TableCell>{delivery.pickupTime}</TableCell>
-                        <TableCell>
-                          <div className="flex flex-col">
-                            <span className="font-medium">{delivery.pickupLocation.name}</span>
-                            <span className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>{delivery.dropoffTime}</TableCell>
-                        <TableCell>
-                          <div className="flex flex-col">
-                            <span className="font-medium">{delivery.dropoffLocation.name}</span>
-                            <span className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>{delivery.price}</TableCell>
-                        <TableCell>{delivery.tip}</TableCell>
-                        <TableCell>{delivery.fees}</TableCell>
-                        <TableCell>{delivery.courier}</TableCell>
-                        <TableCell>{delivery.organization}</TableCell>
-                        <TableCell className="text-right">{delivery.distance}</TableCell>
                       </TableRow>
-                    ))}
+                    )}
                   </TableBody>
                 </Table>
               </div>
@@ -285,22 +211,22 @@ const Index = () => {
                   <Pagination>
                     <PaginationContent>
                       <PaginationItem>
-                        <PaginationLink disabled>
+                        <PaginationLink href="#" aria-disabled={true} className="cursor-not-allowed opacity-50">
                           <span className="sr-only">First page</span>
                           ⟪
                         </PaginationLink>
                       </PaginationItem>
                       <PaginationItem>
-                        <PaginationPrevious disabled />
+                        <PaginationPrevious href="#" aria-disabled={true} className="cursor-not-allowed opacity-50" />
                       </PaginationItem>
                       <PaginationItem>
-                        <PaginationLink isActive>1</PaginationLink>
+                        <PaginationLink href="#" isActive>1</PaginationLink>
                       </PaginationItem>
                       <PaginationItem>
-                        <PaginationNext disabled />
+                        <PaginationNext href="#" aria-disabled={true} className="cursor-not-allowed opacity-50" />
                       </PaginationItem>
                       <PaginationItem>
-                        <PaginationLink disabled>
+                        <PaginationLink href="#" aria-disabled={true} className="cursor-not-allowed opacity-50">
                           <span className="sr-only">Last page</span>
                           ⟫
                         </PaginationLink>
