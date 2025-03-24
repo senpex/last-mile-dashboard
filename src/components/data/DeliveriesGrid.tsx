@@ -50,6 +50,10 @@ const StatusCellRenderer = (props: any) => {
 
 const LocationCellRenderer = (props: any) => {
   const location = props.value;
+  if (!location) {
+    console.error("LocationCellRenderer received undefined value:", props);
+    return <div>Invalid location data</div>;
+  }
   return (
     <div className="flex flex-col">
       <span className="font-medium">{location.name}</span>
@@ -146,21 +150,31 @@ const DeliveriesGrid = ({ deliveries }: DeliveriesGridProps) => {
     flex: 1
   }), []);
 
+  if (!deliveries || deliveries.length === 0) {
+    console.log("No deliveries data available");
+    return <div className="p-4 border rounded text-center">No data available</div>;
+  }
+
   return (
-    <div className="ag-theme-alpine h-[500px] w-full border rounded">
-      <AgGridReact
-        rowData={deliveries}
-        columnDefs={columnDefs}
-        defaultColDef={defaultColDef}
-        animateRows={true}
-        rowSelection="multiple"
-        pagination={true}
-        paginationPageSize={10}
-        paginationPageSizeSelector={[10, 20, 50, 100]}
-        enableCellTextSelection={true}
-        suppressRowClickSelection={true}
-        suppressCellFocus={true}
-      />
+    <div className="relative">
+      <div className="bg-muted/30 p-2 mb-2 rounded text-sm">
+        Showing {deliveries.length} deliveries
+      </div>
+      <div className="ag-theme-alpine h-[600px] w-full border rounded overflow-hidden">
+        <AgGridReact
+          rowData={deliveries}
+          columnDefs={columnDefs}
+          defaultColDef={defaultColDef}
+          animateRows={true}
+          rowSelection="multiple"
+          pagination={true}
+          paginationPageSize={10}
+          paginationPageSizeSelector={[10, 20, 50, 100]}
+          enableCellTextSelection={true}
+          suppressRowClickSelection={true}
+          suppressCellFocus={true}
+        />
+      </div>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -82,23 +81,13 @@ const sampleDeliveries: Delivery[] = [
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [deliveries, setDeliveries] = useState<Delivery[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
   
   // Load sample data when the component mounts
   useEffect(() => {
-    setDeliveries(sampleDeliveries);
-    console.log("Setting deliveries:", sampleDeliveries); // Debug log
+    console.log("Setting sample deliveries:", sampleDeliveries);
+    setDeliveries([...sampleDeliveries]); // Create a new array to force state update
   }, []);
   
-  const totalDeliveries = deliveries.length;
-  const totalPages = Math.max(1, Math.ceil(totalDeliveries / rowsPerPage));
-  
-  // Calculated indexes for pagination
-  const indexOfLastItem = currentPage * rowsPerPage;
-  const indexOfFirstItem = indexOfLastItem - rowsPerPage;
-  const currentDeliveries = deliveries.slice(indexOfFirstItem, indexOfLastItem);
-
   return (
     <ThemeProvider>
       <div className="min-h-screen bg-background flex flex-col relative">
@@ -153,11 +142,18 @@ const Index = () => {
                 </div>
               </div>
               
+              {/* Display debug info */}
+              <div className="p-2 mb-4 bg-muted rounded text-sm">
+                <p>Debug: {deliveries.length} deliveries loaded</p>
+              </div>
+              
               {/* AG Grid Table */}
               {deliveries.length > 0 ? (
                 <DeliveriesGrid deliveries={deliveries} />
               ) : (
-                <div className="text-center py-10">Loading deliveries...</div>
+                <div className="text-center py-10 bg-muted/50 rounded border">
+                  Loading deliveries...
+                </div>
               )}
             </div>
           </div>
