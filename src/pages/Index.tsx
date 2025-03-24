@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
 import { Button } from "@/components/ui/button";
@@ -53,8 +53,30 @@ type Delivery = {
 
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState<string>("10");
   const [deliveries, setDeliveries] = useState<Delivery[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  
+  const totalDeliveries = deliveries.length;
+  const totalPages = Math.max(1, Math.ceil(totalDeliveries / rowsPerPage));
+  
+  // Calculated indexes for pagination
+  const indexOfLastItem = currentPage * rowsPerPage;
+  const indexOfFirstItem = indexOfLastItem - rowsPerPage;
+  const currentDeliveries = deliveries.slice(indexOfFirstItem, indexOfLastItem);
+  
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+  };
+
+  // Handle rows per page change
+  const handleRowsPerPageChange = (value: string) => {
+    const newRowsPerPage = parseInt(value);
+    setRowsPerPage(newRowsPerPage);
+    setCurrentPage(1); // Reset to first page when changing rows per page
+  };
 
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
@@ -65,6 +87,47 @@ const Index = () => {
       default:
         return "default";
     }
+  };
+
+  // Generate page links array for pagination
+  const getPageLinks = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      // Show all pages if total is less than max visible
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Show a subset with ellipsis
+      if (currentPage <= 3) {
+        // Current page is near the start
+        for (let i = 1; i <= 4; i++) {
+          pages.push(i);
+        }
+        pages.push(-1); // Ellipsis indicator
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        // Current page is near the end
+        pages.push(1);
+        pages.push(-1); // Ellipsis indicator
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        // Current page is in the middle
+        pages.push(1);
+        pages.push(-1); // Ellipsis indicator
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(i);
+        }
+        pages.push(-1); // Ellipsis indicator
+        pages.push(totalPages);
+      }
+    }
+    
+    return pages;
   };
 
   return (
@@ -140,8 +203,8 @@ const Index = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {deliveries.length > 0 ? (
-                      deliveries.map((delivery) => (
+                    {currentDeliveries.length > 0 ? (
+                      currentDeliveries.map((delivery) => (
                         <TableRow key={delivery.id}>
                           <TableCell>
                             <Badge 
@@ -187,12 +250,20 @@ const Index = () => {
               {/* Pagination */}
               <div className="flex justify-between items-center">
                 <div className="text-sm text-muted-foreground">
-                  Total <span className="bg-muted px-2 py-1 rounded">{deliveries.length}</span>
+                  Total <span className="bg-muted px-2 py-1 rounded">{totalDeliveries}</span> 
+                  {totalDeliveries > 0 && indexOfFirstItem !== indexOfLastItem && (
+                    <span className="ml-2">
+                      Showing {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, totalDeliveries)} of {totalDeliveries}
+                    </span>
+                  )}
                 </div>
                 
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-muted-foreground">Rows per page</span>
-                  <Select value={rowsPerPage} onValueChange={setRowsPerPage}>
+                  <Select 
+                    value={rowsPerPage.toString()} 
+                    onValueChange={handleRowsPerPageChange}
+                  >
                     <SelectTrigger className="w-[70px] h-8">
                       <SelectValue placeholder="10" />
                     </SelectTrigger>
@@ -205,28 +276,64 @@ const Index = () => {
                   </Select>
                   
                   <div className="flex items-center gap-1">
-                    <span className="text-sm">Page 1 of 1</span>
+                    <span className="text-sm">Page {currentPage} of {totalPages}</span>
                   </div>
                   
                   <Pagination>
                     <PaginationContent>
                       <PaginationItem>
-                        <PaginationLink href="#" aria-disabled={true} className="cursor-not-allowed opacity-50">
+                        <PaginationLink
+                          href="#"
+                          onClick={(e) => { e.preventDefault(); handlePageChange(1); }}
+                          aria-disabled={currentPage === 1}
+                          className={currentPage === 1 ? "cursor-not-allowed opacity-50" : ""}
+                        >
                           <span className="sr-only">First page</span>
                           ⟪
                         </PaginationLink>
                       </PaginationItem>
                       <PaginationItem>
-                        <PaginationPrevious href="#" aria-disabled={true} className="cursor-not-allowed opacity-50" />
+                        <PaginationPrevious
+                          href="#"
+                          onClick={(e) => { e.preventDefault(); handlePageChange(currentPage - 1); }}
+                          aria-disabled={currentPage === 1}
+                          className={currentPage === 1 ? "cursor-not-allowed opacity-50" : ""}
+                        />
+                      </PaginationItem>
+                      
+                      {getPageLinks().map((page, index) => (
+                        <PaginationItem key={index}>
+                          {page === -1 ? (
+                            <span className="flex h-9 w-9 items-center justify-center">
+                              …
+                            </span>
+                          ) : (
+                            <PaginationLink
+                              href="#"
+                              onClick={(e) => { e.preventDefault(); handlePageChange(page); }}
+                              isActive={currentPage === page}
+                            >
+                              {page}
+                            </PaginationLink>
+                          )}
+                        </PaginationItem>
+                      ))}
+                      
+                      <PaginationItem>
+                        <PaginationNext
+                          href="#"
+                          onClick={(e) => { e.preventDefault(); handlePageChange(currentPage + 1); }}
+                          aria-disabled={currentPage === totalPages}
+                          className={currentPage === totalPages ? "cursor-not-allowed opacity-50" : ""}
+                        />
                       </PaginationItem>
                       <PaginationItem>
-                        <PaginationLink href="#" isActive>1</PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationNext href="#" aria-disabled={true} className="cursor-not-allowed opacity-50" />
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink href="#" aria-disabled={true} className="cursor-not-allowed opacity-50">
+                        <PaginationLink
+                          href="#"
+                          onClick={(e) => { e.preventDefault(); handlePageChange(totalPages); }}
+                          aria-disabled={currentPage === totalPages}
+                          className={currentPage === totalPages ? "cursor-not-allowed opacity-50" : ""}
+                        >
                           <span className="sr-only">Last page</span>
                           ⟫
                         </PaginationLink>
