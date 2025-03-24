@@ -59,11 +59,11 @@ const LocationCellRenderer = (props: any) => {
 };
 
 const DeliveriesGrid = ({ deliveries }: DeliveriesGridProps) => {
-  // Define columns with proper typing
+  // Define columns with proper typing - use keyof to ensure type safety
   const columnDefs = useMemo<ColDef<Delivery>[]>(() => [
     { 
       headerName: "Status", 
-      field: "status", 
+      field: "status" as keyof Delivery, 
       cellRenderer: StatusCellRenderer,
       width: 140,
       sortable: true,
@@ -71,13 +71,13 @@ const DeliveriesGrid = ({ deliveries }: DeliveriesGridProps) => {
     },
     { 
       headerName: "Pickup Time", 
-      field: "pickupTime",
+      field: "pickupTime" as keyof Delivery,
       sortable: true,
       filter: true
     },
     { 
       headerName: "Pickup Location", 
-      field: "pickupLocation", 
+      field: "pickupLocation" as keyof Delivery, 
       cellRenderer: LocationCellRenderer,
       width: 200,
       sortable: true,
@@ -85,13 +85,13 @@ const DeliveriesGrid = ({ deliveries }: DeliveriesGridProps) => {
     },
     { 
       headerName: "Dropoff Time", 
-      field: "dropoffTime",
+      field: "dropoffTime" as keyof Delivery,
       sortable: true,
       filter: true
     },
     { 
       headerName: "Dropoff Location", 
-      field: "dropoffLocation", 
+      field: "dropoffLocation" as keyof Delivery, 
       cellRenderer: LocationCellRenderer,
       width: 200,
       sortable: true,
@@ -99,43 +99,43 @@ const DeliveriesGrid = ({ deliveries }: DeliveriesGridProps) => {
     },
     { 
       headerName: "Price", 
-      field: "price",
+      field: "price" as keyof Delivery,
       sortable: true,
       filter: true
     },
     { 
       headerName: "Tip", 
-      field: "tip",
+      field: "tip" as keyof Delivery,
       sortable: true,
       filter: true
     },
     { 
       headerName: "Fees", 
-      field: "fees",
+      field: "fees" as keyof Delivery,
       sortable: true,
       filter: true
     },
     { 
       headerName: "Courier", 
-      field: "courier",
+      field: "courier" as keyof Delivery,
       sortable: true,
       filter: true
     },
     { 
       headerName: "Organization", 
-      field: "organization",
+      field: "organization" as keyof Delivery,
       sortable: true,
       filter: true
     },
     { 
       headerName: "Distance", 
-      field: "distance",
+      field: "distance" as keyof Delivery,
       sortable: true,
       filter: true,
       headerClass: "text-right",
       cellClass: "text-right"
     }
-  ] as ColDef<Delivery>[], []);
+  ], []);
 
   // Default column definitions
   const defaultColDef = useMemo<ColDef<Delivery>>(() => ({
