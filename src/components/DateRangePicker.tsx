@@ -19,7 +19,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogTrigger 
+} from "@/components/ui/dialog";
 
+// Predefined date ranges
 const datePresets = [
   { label: "Today", days: 0, startOfDay: true },
   { label: "Yesterday", days: 1, startOfDay: true },
@@ -43,6 +49,7 @@ export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePicke
   const [startTime, setStartTime] = React.useState("12:00 AM");
   const [endTime, setEndTime] = React.useState("11:59 PM");
   
+  // Create formatted display text for the date range button
   const formatDisplayText = () => {
     if (!dateRange?.from) {
       return "Select date range";
@@ -55,6 +62,7 @@ export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePicke
     return `${format(dateRange.from, "MM/dd/yyyy")} ${startTime}`;
   };
 
+  // Apply a preset date range
   const applyPreset = (days: number, startOfPeriod?: boolean, periodType?: 'week' | 'month') => {
     const today = new Date();
     let from = today;
@@ -68,9 +76,12 @@ export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePicke
       to = addDays(today, -days);
     }
 
+    // TODO: If needed, implement startOfWeek or startOfMonth logic here
+    
     onDateRangeChange({ from, to });
   };
 
+  // Generate time options for select dropdowns (12:00 AM to 11:59 PM)
   const timeOptions = React.useMemo(() => {
     const hours = Array.from({ length: 12 }, (_, i) => i === 0 ? 12 : i);
     const minutes = ["00", "15", "30", "45"];
@@ -84,86 +95,73 @@ export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePicke
   }, []);
 
   return (
-    <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
-      <PopoverTrigger asChild>
+    <Dialog open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+      <DialogTrigger asChild>
         <Button variant="outline" className="flex items-center gap-2 text-sm h-9">
           <CalendarIcon className="h-4 w-4" />
           <span>{formatDisplayText()}</span>
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start" alignOffset={0} sideOffset={5}>
-        <div className="flex flex-col max-h-[280px] max-w-[420px]">
-          <div className="flex">
-            <div className="w-24 border-r p-1 max-h-[230px] overflow-y-auto">
-              {datePresets.map((preset) => (
-                <Button
-                  key={preset.label}
-                  variant="ghost"
-                  className="w-full justify-start text-left mb-1 text-xs h-5 px-2"
-                  onClick={() => {
-                    applyPreset(
-                      preset.days,
-                      preset.startOfDay || preset.startOfWeek || preset.startOfMonth,
-                      preset.startOfWeek ? 'week' : preset.startOfMonth ? 'month' : undefined
-                    );
-                  }}
-                >
-                  {preset.label}
-                </Button>
-              ))}
-            </div>
-            
-            <div className="p-1 flex-1">
-              <div className="grid grid-cols-2 gap-1">
-                <div>
-                  <div className="text-xs font-medium mb-1">Start</div>
-                  <Button 
-                    variant="outline" 
-                    className="w-full justify-start text-left text-xs h-5 mb-1 px-2"
-                    onClick={() => {}}
-                  >
-                    {dateRange?.from ? (
-                      format(dateRange.from, "MMM dd, yyyy")
-                    ) : (
-                      <span>Pick a date</span>
-                    )}
-                  </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[600px] p-0">
+        <div className="flex flex-col md:flex-row">
+          {/* Presets column */}
+          <div className="w-full md:w-40 border-r p-4">
+            {datePresets.map((preset) => (
+              <Button
+                key={preset.label}
+                variant="ghost"
+                className="w-full justify-start text-left mb-1"
+                onClick={() => {
+                  applyPreset(
+                    preset.days,
+                    preset.startOfDay || preset.startOfWeek || preset.startOfMonth,
+                    preset.startOfWeek ? 'week' : preset.startOfMonth ? 'month' : undefined
+                  );
+                }}
+              >
+                {preset.label}
+              </Button>
+            ))}
+          </div>
+          
+          {/* Calendar and time inputs */}
+          <div className="flex-1 p-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <div className="mb-2 font-medium">Start</div>
+                <div className="flex flex-col gap-2">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" className="w-full justify-start text-left">
+                        {dateRange?.from ? (
+                          format(dateRange.from, "MMM dd, yyyy")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        initialFocus
+                        mode="single"
+                        selected={dateRange?.from}
+                        onSelect={(date) => 
+                          onDateRangeChange({ 
+                            from: date, 
+                            to: dateRange?.to 
+                          })
+                        }
+                      />
+                    </PopoverContent>
+                  </Popover>
                   
                   <Select value={startTime} onValueChange={setStartTime}>
-                    <SelectTrigger className="h-5 text-xs">
+                    <SelectTrigger>
                       <SelectValue placeholder="12:00 AM" />
                     </SelectTrigger>
                     <SelectContent>
                       {timeOptions.map((time) => (
-                        <SelectItem key={time} value={time} className="text-xs">
-                          {time}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <div>
-                  <div className="text-xs font-medium mb-1">End</div>
-                  <Button 
-                    variant="outline" 
-                    className="w-full justify-start text-left text-xs h-5 mb-1 px-2"
-                    onClick={() => {}}
-                  >
-                    {dateRange?.to ? (
-                      format(dateRange.to, "MMM dd, yyyy")
-                    ) : (
-                      <span>Pick a date</span>
-                    )}
-                  </Button>
-                  
-                  <Select value={endTime} onValueChange={setEndTime}>
-                    <SelectTrigger className="h-5 text-xs">
-                      <SelectValue placeholder="11:59 PM" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {timeOptions.map((time) => (
-                        <SelectItem key={time} value={time} className="text-xs">
+                        <SelectItem key={time} value={time}>
                           {time}
                         </SelectItem>
                       ))}
@@ -172,44 +170,85 @@ export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePicke
                 </div>
               </div>
               
-              <div className="mt-1">
-                <Calendar
-                  mode="range"
-                  defaultMonth={dateRange?.from}
-                  selected={dateRange}
-                  onSelect={onDateRangeChange}
-                  numberOfMonths={1}
-                  showOutsideDays={false}
-                  className="rounded-md scale-[0.7] origin-top"
-                />
+              <div>
+                <div className="mb-2 font-medium">End</div>
+                <div className="flex flex-col gap-2">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" className="w-full justify-start text-left">
+                        {dateRange?.to ? (
+                          format(dateRange.to, "MMM dd, yyyy")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        initialFocus
+                        mode="single"
+                        selected={dateRange?.to}
+                        onSelect={(date) =>
+                          onDateRangeChange({
+                            from: dateRange?.from,
+                            to: date,
+                          })
+                        }
+                        disabled={(date) =>
+                          dateRange?.from ? date < dateRange.from : false
+                        }
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  
+                  <Select value={endTime} onValueChange={setEndTime}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="11:59 PM" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {timeOptions.map((time) => (
+                        <SelectItem key={time} value={time}>
+                          {time}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
-          </div>
-          
-          <div className="border-t p-1 flex justify-end gap-2 mt-auto">
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-5 text-xs"
-              onClick={() => {
-                onDateRangeChange(undefined);
-                setIsCalendarOpen(false);
-              }}
-            >
-              Reset
-            </Button>
-            <Button
-              size="sm"
-              className="h-5 text-xs"
-              onClick={() => {
-                setIsCalendarOpen(false);
-              }}
-            >
-              Apply
-            </Button>
+            
+            <div className="grid grid-cols-2 gap-4 mt-4">
+              <Calendar
+                mode="range"
+                defaultMonth={dateRange?.from}
+                selected={dateRange}
+                onSelect={onDateRangeChange}
+                numberOfMonths={2}
+                showOutsideDays={false}
+              />
+            </div>
+            
+            <div className="flex justify-end mt-4 gap-2">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  onDateRangeChange(undefined);
+                  setIsCalendarOpen(false);
+                }}
+              >
+                Reset
+              </Button>
+              <Button
+                onClick={() => {
+                  setIsCalendarOpen(false);
+                }}
+              >
+                Apply
+              </Button>
+            </div>
           </div>
         </div>
-      </PopoverContent>
-    </Popover>
+      </DialogContent>
+    </Dialog>
   );
 }
