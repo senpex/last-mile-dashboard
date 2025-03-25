@@ -14,20 +14,20 @@ const ThemeToggle = ({ collapsed = false }: ThemeToggleProps) => {
     <button
       onClick={toggleTheme}
       className={cn(
-        "w-full flex items-center gap-3 px-3 py-2 rounded-md",
+        "w-full flex items-center gap-2 px-2 py-1.5 rounded-md", // Reduced gap and padding
         "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-        "transition-all-200"
+        "transition-all-200 text-sm" // Added text-sm
       )}
       aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
     >
       {theme === "dark" ? (
-        <Moon className="w-5 h-5" />
+        <Moon className="w-4 h-4" /> // Reduced icon size
       ) : (
-        <Sun className="w-5 h-5" />
+        <Sun className="w-4 h-4" /> // Reduced icon size
       )}
       <span 
         className={cn(
-          "menu-item-text",
+          "menu-item-text text-sm", // Added text-sm
           collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
         )}
       >
