@@ -727,22 +727,3 @@ const Deliveries = () => {
       orderName: "Furniture Delivery",
       status: "Repeated Order",
       pickupTime: "03/24/2025 08:00 AM",
-      pickupLocation: {
-        name: "Rooms To Go - Rogers",
-        address: "4408 W Walnut St, Rogers, AR 72756, US"
-      },
-      dropoffTime: "03/24/2025 09:30 AM",
-      dropoffLocation: {
-        name: "Bentonville Apartments",
-        address: "1801 SW Regional Airport Blvd, Bentonville, AR 72712, US"
-      },
-      price: "$499.99",
-      tip: "$50.00",
-      fees: "$29.99",
-      courier: "",
-      organization: "Rooms To Go",
-      distance: "6.3 mi"
-    }
-  ];
-
-  useEffect
