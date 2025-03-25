@@ -1,5 +1,6 @@
-import * as React from "react"
 
+import * as React from "react"
+import { ResizablePanel, ResizableHandle } from "@/components/ui/resizable"
 import { cn } from "@/lib/utils"
 
 const Table = React.forwardRef<
@@ -68,17 +69,41 @@ TableRow.displayName = "TableRow"
 
 const TableHead = React.forwardRef<
   HTMLTableCellElement,
-  React.ThHTMLAttributes<HTMLTableCellElement>
->(({ className, ...props }, ref) => (
-  <th
-    ref={ref}
-    className={cn(
-      "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
-      className
-    )}
-    {...props}
-  />
-))
+  React.ThHTMLAttributes<HTMLTableCellElement> & {
+    resizable?: boolean
+  }
+>(({ className, resizable, children, ...props }, ref) => {
+  return resizable ? (
+    <th
+      ref={ref}
+      className={cn(
+        "group h-12 px-0 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
+        className
+      )}
+      {...props}
+    >
+      <div className="flex w-full items-center">
+        <div className="px-4 w-full">
+          {children}
+        </div>
+        <div className="flex h-full items-center justify-center">
+          <ResizableHandle withHandle className="h-4 bg-transparent" />
+        </div>
+      </div>
+    </th>
+  ) : (
+    <th
+      ref={ref}
+      className={cn(
+        "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </th>
+  )
+})
 TableHead.displayName = "TableHead"
 
 const TableCell = React.forwardRef<
