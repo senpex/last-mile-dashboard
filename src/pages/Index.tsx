@@ -27,10 +27,16 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
-import { Columns, Filter, Search } from "lucide-react";
+import { Clock, Columns, Filter, Search } from "lucide-react";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { DateRange } from "react-day-picker";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { TimezonePicker } from "@/components/TimezonePicker";
 
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -39,7 +45,8 @@ const Index = () => {
     from: new Date("2025-03-24T00:00:00"),
     to: new Date("2025-03-24T23:59:59")
   });
-  
+  const [timezone, setTimezone] = useState<string>("America/New_York");
+
   const availableColumns: ColumnOption[] = [
     { id: "status", label: "Status", default: true },
     { id: "pickupTime", label: "Pickup Time", default: true },
@@ -185,7 +192,9 @@ const Index = () => {
             <div className="flex flex-col space-y-4">
               <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-semibold">Deliveries</h1>
-                <span className="text-sm text-muted-foreground">All times are displayed using PDT timezone</span>
+                <span className="text-sm text-muted-foreground">
+                  All times are displayed using {timezone.replace('_', ' ')} timezone
+                </span>
               </div>
               
               <div className="flex flex-wrap justify-between items-center gap-2">
@@ -210,6 +219,11 @@ const Index = () => {
                       className="pl-8 h-9 w-[240px]"
                     />
                   </div>
+                  
+                  <TimezonePicker 
+                    selectedTimezone={timezone}
+                    onTimezoneChange={setTimezone}
+                  />
                   
                   <ColumnSelector 
                     columns={availableColumns}
