@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -755,20 +754,12 @@ const Index = () => {
       dropoffTime: "03/24/2025 07:15 PM",
       dropoffLocation: {
         name: "Stephanie Harris",
-        address: "987 SW Paddington Ave, Bentonville, AR 72712, US"
-      },
-      price: "$45.99",
-      tip: "$8.00",
-      fees: "$3.99",
-      courier: "Carlos Rodriguez",
-      organization: "Taziki's Mediterranean Cafe",
-      distance: "8.2 mi"
-    }
+        address: "987 SW Paddington Ave, Bentonville, AR 72712,
   ];
 
   return (
     <ThemeProvider>
-      <Sidebar collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed} />
+      <Sidebar collapsed={sidebarCollapsed} onCollapse={setSidebarCollapsed} />
       {/* Rest of component JSX */}
     </ThemeProvider>
   );
