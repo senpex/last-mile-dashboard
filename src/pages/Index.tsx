@@ -1,4 +1,3 @@
-
 import { useState, useMemo } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -28,7 +27,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
-import { Columns, Download, Filter, RotateCw, Search } from "lucide-react";
+import { Columns, Filter, Search } from "lucide-react";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { DateRange } from "react-day-picker";
@@ -211,14 +210,6 @@ const Index = () => {
                       className="pl-8 h-9 w-[240px]"
                     />
                   </div>
-                  
-                  <Button variant="outline" size="icon" className="h-9 w-9">
-                    <Download className="h-4 w-4" />
-                  </Button>
-                  
-                  <Button variant="outline" size="icon" className="h-9 w-9">
-                    <RotateCw className="h-4 w-4" />
-                  </Button>
                   
                   <ColumnSelector 
                     columns={availableColumns}
