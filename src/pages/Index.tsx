@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -421,7 +422,7 @@ const Index = () => {
               </div>
               
               <div className="border rounded-md">
-                <ScrollArea orientation="both" className="h-[600px]">
+                <ScrollArea orientation="both" className="h-[calc(100vh-250px)]">
                   <div className="min-w-max">
                     <Table>
                       <TableHeader>
@@ -599,4 +600,3 @@ const Index = () => {
 };
 
 export default Index;
-
