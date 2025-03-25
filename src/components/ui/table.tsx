@@ -74,6 +74,7 @@ const TableHead = React.forwardRef<
     onDragStart?: React.DragEventHandler<HTMLTableCellElement>;
     onDragOver?: React.DragEventHandler<HTMLTableCellElement>;
     onDrop?: React.DragEventHandler<HTMLTableCellElement>;
+    onDragEnd?: React.DragEventHandler<HTMLTableCellElement>;
     dragOver?: boolean;
   }
 >(({ className, dragOver, draggable, ...props }, ref) => (
@@ -85,6 +86,7 @@ const TableHead = React.forwardRef<
       draggable && "cursor-move",
       className
     )}
+    draggable={draggable}
     {...props}
   />
 ))
