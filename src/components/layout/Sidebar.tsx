@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from "./ThemeProvider";
 import ThemeToggle from "./ThemeToggle";
 import LogoutButton from "./LogoutButton";
-import { ChevronLeft, ChevronRight, Package, BookOpen } from "lucide-react";
+import { ChevronLeft, ChevronRight, Package, BookOpen, Truck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
 
@@ -69,6 +69,25 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
                 )}
               >
                 <Package className="sidebar-icon" />
+                <span 
+                  className={cn(
+                    "menu-item-text",
+                    collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+                  )}
+                >
+                  Dashboard
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/deliveries" 
+                className={cn(
+                  "sidebar-item",
+                  location.pathname === "/deliveries" ? "active" : ""
+                )}
+              >
+                <Truck className="sidebar-icon" />
                 <span 
                   className={cn(
                     "menu-item-text",
