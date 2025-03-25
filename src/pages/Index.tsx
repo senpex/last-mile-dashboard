@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
 import { Button } from "@/components/ui/button";
@@ -45,7 +45,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState<string>("10");
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date("2025-03-24T00:00:00"),
     to: new Date("2025-03-24T23:59:59")
@@ -1111,16 +1110,10 @@ const Index = () => {
 
       console.log(`Found ${searchResults.length} results for "${debouncedSearchTerm}"`);
       setFilteredDeliveries(searchResults);
-      setCurrentPage(1); // Reset to first page on new search
     } else if (debouncedSearchTerm.length === 0) {
       setFilteredDeliveries(deliveries);
     }
   }, [debouncedSearchTerm, deliveries]);
-
-  // Reset to page 1 when rows per page changes
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [rowsPerPage]);
 
   const availableColumns: ColumnOption[] = [
     { id: "status", label: "Status", default: true },
@@ -1159,22 +1152,6 @@ const Index = () => {
       return newOrder.filter(column => visibleColumns.includes(column));
     });
   }, [visibleColumns]);
-
-  // Pagination calculations
-  const pageCount = useMemo(() => {
-    return Math.ceil(filteredDeliveries.length / parseInt(rowsPerPage));
-  }, [filteredDeliveries.length, rowsPerPage]);
-
-  const paginatedDeliveries = useMemo(() => {
-    const startIndex = (currentPage - 1) * parseInt(rowsPerPage);
-    const endIndex = startIndex + parseInt(rowsPerPage);
-    return filteredDeliveries.slice(startIndex, endIndex);
-  }, [filteredDeliveries, currentPage, rowsPerPage]);
-
-  const handlePageChange = (page: number) => {
-    if (page < 1 || page > pageCount) return;
-    setCurrentPage(page);
-  };
 
   const handleDragStart = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
     setDraggedColumn(columnId);
@@ -1269,91 +1246,6 @@ const Index = () => {
     }
   };
 
-  // Generate pagination items
-  const renderPaginationItems = () => {
-    const items = [];
-    const maxVisiblePages = 5; // Maximum pages to show before using ellipsis
-    
-    if (pageCount <= maxVisiblePages) {
-      // If total pages are less than max visible, show all pages
-      for (let i = 1; i <= pageCount; i++) {
-        items.push(
-          <PaginationItem key={i}>
-            <PaginationLink 
-              isActive={currentPage === i}
-              onClick={() => handlePageChange(i)}
-            >
-              {i}
-            </PaginationLink>
-          </PaginationItem>
-        );
-      }
-    } else {
-      // Add first page
-      items.push(
-        <PaginationItem key={1}>
-          <PaginationLink 
-            isActive={currentPage === 1}
-            onClick={() => handlePageChange(1)}
-          >
-            1
-          </PaginationLink>
-        </PaginationItem>
-      );
-      
-      // Add ellipsis if needed before middle pages
-      if (currentPage > 3) {
-        items.push(
-          <PaginationItem key="ellipsis-start">
-            <PaginationEllipsis />
-          </PaginationItem>
-        );
-      }
-      
-      // Add middle pages
-      const startPage = Math.max(2, currentPage - 1);
-      const endPage = Math.min(pageCount - 1, currentPage + 1);
-      
-      for (let i = startPage; i <= endPage; i++) {
-        if (i <= pageCount - 1 && i >= 2) {
-          items.push(
-            <PaginationItem key={i}>
-              <PaginationLink 
-                isActive={currentPage === i}
-                onClick={() => handlePageChange(i)}
-              >
-                {i}
-              </PaginationLink>
-            </PaginationItem>
-          );
-        }
-      }
-      
-      // Add ellipsis if needed after middle pages
-      if (currentPage < pageCount - 2) {
-        items.push(
-          <PaginationItem key="ellipsis-end">
-            <PaginationEllipsis />
-          </PaginationItem>
-        );
-      }
-      
-      // Add last page
-      items.push(
-        <PaginationItem key={pageCount}>
-          <PaginationLink 
-            isActive={currentPage === pageCount}
-            onClick={() => handlePageChange(pageCount)}
-          >
-            {pageCount}
-          </PaginationLink>
-        </PaginationItem>
-      );
-    }
-    
-    return items;
-  };
-
   return (
     <ThemeProvider>
       <div className="bg-background flex h-screen overflow-hidden">
@@ -1440,8 +1332,8 @@ const Index = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {paginatedDeliveries.length > 0 ? (
-                        paginatedDeliveries.map((delivery) => (
+                      {filteredDeliveries.length > 0 ? (
+                        filteredDeliveries.map((delivery) => (
                           <TableRow key={delivery.id}>
                             {sortedColumns.map(columnId => {
                               switch (columnId) {
@@ -1520,7 +1412,7 @@ const Index = () => {
           
           <div className="border-t bg-background px-4 py-3 flex justify-between items-center shadow-sm">
             <div className="text-sm text-muted-foreground">
-              Showing <span className="font-medium">{paginatedDeliveries.length > 0 ? (currentPage - 1) * parseInt(rowsPerPage) + 1 : 0}</span> to <span className="font-medium">{Math.min(currentPage * parseInt(rowsPerPage), filteredDeliveries.length)}</span> of <span className="bg-muted px-2 py-1 rounded">{filteredDeliveries.length}</span> results
+              Total <span className="bg-muted px-2 py-1 rounded">{filteredDeliveries.length}</span>
             </div>
             
             <div className="flex items-center gap-2">
@@ -1537,13 +1429,14 @@ const Index = () => {
                 </SelectContent>
               </Select>
               
+              
+              
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>
                     <PaginationLink
-                      onClick={() => handlePageChange(1)}
-                      disabled={currentPage === 1}
-                      className={currentPage === 1 ? "cursor-not-allowed opacity-50" : ""}
+                      className="cursor-not-allowed opacity-50"
+                      aria-disabled="true"
                     >
                       <span className="sr-only">First page</span>
                       ⟪
@@ -1551,26 +1444,23 @@ const Index = () => {
                   </PaginationItem>
                   <PaginationItem>
                     <PaginationPrevious
-                      onClick={() => handlePageChange(currentPage - 1)}
-                      disabled={currentPage === 1}
-                      className={currentPage === 1 ? "cursor-not-allowed opacity-50" : ""}
+                      className="cursor-not-allowed opacity-50"
+                      aria-disabled="true"
                     />
                   </PaginationItem>
-                  
-                  {renderPaginationItems()}
-                  
+                  <PaginationItem>
+                    <PaginationLink isActive>1</PaginationLink>
+                  </PaginationItem>
                   <PaginationItem>
                     <PaginationNext
-                      onClick={() => handlePageChange(currentPage + 1)}
-                      disabled={currentPage === pageCount || pageCount === 0}
-                      className={currentPage === pageCount || pageCount === 0 ? "cursor-not-allowed opacity-50" : ""}
+                      className="cursor-not-allowed opacity-50"
+                      aria-disabled="true"
                     />
                   </PaginationItem>
                   <PaginationItem>
                     <PaginationLink
-                      onClick={() => handlePageChange(pageCount)}
-                      disabled={currentPage === pageCount || pageCount === 0}
-                      className={currentPage === pageCount || pageCount === 0 ? "cursor-not-allowed opacity-50" : ""}
+                      className="cursor-not-allowed opacity-50"
+                      aria-disabled="true"
                     >
                       <span className="sr-only">Last page</span>
                       ⟫
