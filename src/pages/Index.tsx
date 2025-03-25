@@ -533,7 +533,7 @@ const Index = () => {
             </div>
             
             <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">Rows per page</span>
+              <span className="text-sm text-muted-foreground whitespace-nowrap">Rows per page</span>
               <Select value={rowsPerPage} onValueChange={setRowsPerPage}>
                 <SelectTrigger className="w-[70px] h-8">
                   <SelectValue placeholder="10" />
