@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -56,7 +55,6 @@ const Index = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
   const [filteredDeliveries, setFilteredDeliveries] = useState<any[]>([]);
 
-  // Original data
   const deliveries = [
     {
       id: 1,
@@ -180,34 +178,29 @@ const Index = () => {
     }
   }, []);
 
-  // Initialize filteredDeliveries with all deliveries
   useEffect(() => {
     setFilteredDeliveries(deliveries);
     console.log("Initial deliveries loaded:", deliveries.length);
   }, []);
 
-  // Debounce search term
   useEffect(() => {
-    // Clear previous timeout
     const timer = setTimeout(() => {
       if (searchTerm.length >= 4 || searchTerm.length === 0) {
         setDebouncedSearchTerm(searchTerm);
         console.log("Search term debounced:", searchTerm);
       }
-    }, 1500); // 1.5 second delay
+    }, 1500);
 
     return () => {
       clearTimeout(timer);
     };
   }, [searchTerm]);
 
-  // Search functionality
   useEffect(() => {
     if (debouncedSearchTerm.length >= 4) {
       console.log("Performing search for:", debouncedSearchTerm);
 
       const searchResults = deliveries.filter(delivery => {
-        // Convert all delivery fields to an array of strings for searching
         const searchableFields = [
           delivery.packageId,
           delivery.orderName,
@@ -226,7 +219,6 @@ const Index = () => {
           delivery.distance
         ];
 
-        // Check if any field includes the search term (case insensitive)
         return searchableFields.some(field => 
           field && field.toString().toLowerCase().includes(debouncedSearchTerm.toLowerCase())
         );
@@ -235,8 +227,6 @@ const Index = () => {
       console.log(`Found ${searchResults.length} results for "${debouncedSearchTerm}"`);
       setFilteredDeliveries(searchResults);
     } else if (debouncedSearchTerm.length === 0) {
-      // If search is cleared, show all deliveries
-      console.log("Search cleared, showing all deliveries");
       setFilteredDeliveries(deliveries);
     }
   }, [debouncedSearchTerm, deliveries]);
@@ -456,7 +446,7 @@ const Index = () => {
                       })}
                     </TableRow>
                   </TableHeader>
-                  <TableBody>
+                  <TableBody scrollable={true} maxHeight="400px">
                     {filteredDeliveries.length > 0 ? (
                       filteredDeliveries.map((delivery) => (
                         <TableRow key={delivery.id}>

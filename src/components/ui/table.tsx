@@ -2,11 +2,12 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 const Table = React.forwardRef<
   HTMLTableElement,
-  React.HTMLAttributes<HTMLTableElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLTableElement> & { scrollable?: boolean }
+>(({ className, scrollable = false, ...props }, ref) => (
   <div className="relative w-full overflow-auto">
     <table
       ref={ref}
@@ -27,14 +28,28 @@ TableHeader.displayName = "TableHeader"
 
 const TableBody = React.forwardRef<
   HTMLTableSectionElement,
-  React.HTMLAttributes<HTMLTableSectionElement>
->(({ className, ...props }, ref) => (
-  <tbody
-    ref={ref}
-    className={cn("[&_tr:last-child]:border-0", className)}
-    {...props}
-  />
-))
+  React.HTMLAttributes<HTMLTableSectionElement> & { scrollable?: boolean; maxHeight?: string }
+>(({ className, scrollable = false, maxHeight = "400px", ...props }, ref) => {
+  if (scrollable) {
+    return (
+      <ScrollArea className={cn("h-[var(--table-body-height,400px)]", maxHeight !== "400px" && `h-[${maxHeight}]`)}>
+        <tbody
+          ref={ref}
+          className={cn("[&_tr:last-child]:border-0", className)}
+          {...props}
+        />
+      </ScrollArea>
+    )
+  }
+  
+  return (
+    <tbody
+      ref={ref}
+      className={cn("[&_tr:last-child]:border-0", className)}
+      {...props}
+    />
+  )
+})
 TableBody.displayName = "TableBody"
 
 const TableFooter = React.forwardRef<
@@ -81,7 +96,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
+      "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 whitespace-nowrap",
       dragOver && "border-t-2 border-primary",
       draggable && "cursor-move",
       className
