@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
 import { Button } from "@/components/ui/button";
@@ -11,10 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  ResizablePanelGroup,
-  ResizablePanel,
-} from "@/components/ui/resizable";
 import {
   Select,
   SelectContent,
@@ -241,63 +237,39 @@ const Index = () => {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <ResizablePanelGroup direction="horizontal">
-                        {visibleColumns.includes("status") && (
-                          <ResizablePanel defaultSize={15} minSize={10}>
-                            <TableHead resizable>Status</TableHead>
-                          </ResizablePanel>
-                        )}
-                        {visibleColumns.includes("pickupTime") && (
-                          <ResizablePanel defaultSize={15} minSize={10}>
-                            <TableHead resizable>Pickup Time</TableHead>
-                          </ResizablePanel>
-                        )}
-                        {visibleColumns.includes("pickupLocation") && (
-                          <ResizablePanel defaultSize={20} minSize={15}>
-                            <TableHead resizable>Pickup Location</TableHead>
-                          </ResizablePanel>
-                        )}
-                        {visibleColumns.includes("dropoffTime") && (
-                          <ResizablePanel defaultSize={15} minSize={10}>
-                            <TableHead resizable>Dropoff Time</TableHead>
-                          </ResizablePanel>
-                        )}
-                        {visibleColumns.includes("dropoffLocation") && (
-                          <ResizablePanel defaultSize={20} minSize={15}>
-                            <TableHead resizable>Dropoff Location</TableHead>
-                          </ResizablePanel>
-                        )}
-                        {visibleColumns.includes("price") && (
-                          <ResizablePanel defaultSize={10} minSize={5}>
-                            <TableHead resizable>Price</TableHead>
-                          </ResizablePanel>
-                        )}
-                        {visibleColumns.includes("tip") && (
-                          <ResizablePanel defaultSize={10} minSize={5}>
-                            <TableHead resizable>Tip</TableHead>
-                          </ResizablePanel>
-                        )}
-                        {visibleColumns.includes("fees") && (
-                          <ResizablePanel defaultSize={10} minSize={5}>
-                            <TableHead resizable>Fees</TableHead>
-                          </ResizablePanel>
-                        )}
-                        {visibleColumns.includes("courier") && (
-                          <ResizablePanel defaultSize={15} minSize={10}>
-                            <TableHead resizable>Courier</TableHead>
-                          </ResizablePanel>
-                        )}
-                        {visibleColumns.includes("organization") && (
-                          <ResizablePanel defaultSize={15} minSize={10}>
-                            <TableHead resizable>Organization</TableHead>
-                          </ResizablePanel>
-                        )}
-                        {visibleColumns.includes("distance") && (
-                          <ResizablePanel defaultSize={10} minSize={5}>
-                            <TableHead resizable className="text-right">Distance</TableHead>
-                          </ResizablePanel>
-                        )}
-                      </ResizablePanelGroup>
+                      {visibleColumns.includes("status") && (
+                        <TableHead className="w-[140px]">Status</TableHead>
+                      )}
+                      {visibleColumns.includes("pickupTime") && (
+                        <TableHead>Pickup Time</TableHead>
+                      )}
+                      {visibleColumns.includes("pickupLocation") && (
+                        <TableHead>Pickup Location</TableHead>
+                      )}
+                      {visibleColumns.includes("dropoffTime") && (
+                        <TableHead>Dropoff Time</TableHead>
+                      )}
+                      {visibleColumns.includes("dropoffLocation") && (
+                        <TableHead>Dropoff Location</TableHead>
+                      )}
+                      {visibleColumns.includes("price") && (
+                        <TableHead>Price</TableHead>
+                      )}
+                      {visibleColumns.includes("tip") && (
+                        <TableHead>Tip</TableHead>
+                      )}
+                      {visibleColumns.includes("fees") && (
+                        <TableHead>Fees</TableHead>
+                      )}
+                      {visibleColumns.includes("courier") && (
+                        <TableHead>Courier</TableHead>
+                      )}
+                      {visibleColumns.includes("organization") && (
+                        <TableHead>Organization</TableHead>
+                      )}
+                      {visibleColumns.includes("distance") && (
+                        <TableHead className="text-right">Distance</TableHead>
+                      )}
                     </TableRow>
                   </TableHeader>
                   <TableBody>
