@@ -33,15 +33,15 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
     <aside 
       className={cn(
         "fixed left-0 top-0 h-screen flex flex-col transition-all-300 z-10 bg-sidebar shadow-lg",
-        collapsed ? "w-[56px]" : "w-[192px]", // Reduced from 70px to 56px and 240px to 192px
+        collapsed ? "w-[70px]" : "w-[240px]",
         mounting ? "animate-slide-in-left" : ""
       )}
     >
       {/* Sidebar Header */}
-      <div className="h-12 border-b border-sidebar-border flex items-center justify-between px-3"> {/* Reduced padding */}
+      <div className="h-16 border-b border-sidebar-border flex items-center justify-between px-4">
         <h1 
           className={cn(
-            "font-semibold text-sidebar-foreground transition-opacity-300 text-sm", // Reduced font size
+            "font-semibold text-sidebar-foreground transition-opacity-300",
             collapsed ? "opacity-0 w-0" : "opacity-100"
           )}
         >
@@ -49,29 +49,29 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
         </h1>
         <button 
           onClick={toggleSidebar}
-          className="w-6 h-6 rounded-full flex items-center justify-center bg-sidebar-accent hover:bg-sidebar-accent/80 text-sidebar-accent-foreground transition-all-200"
+          className="w-8 h-8 rounded-full flex items-center justify-center bg-sidebar-accent hover:bg-sidebar-accent/80 text-sidebar-accent-foreground transition-all-200"
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
-          {collapsed ? <ChevronRight className="w-3 h-3 pointer-events-none" /> : <ChevronLeft className="w-3 h-3 pointer-events-none" />}
+          {collapsed ? <ChevronRight className="w-4 h-4 pointer-events-none" /> : <ChevronLeft className="w-4 h-4 pointer-events-none" />}
         </button>
       </div>
       
       {/* Sidebar Content - Menu Items */}
-      <div className="flex-1 overflow-y-auto hide-scrollbar py-3"> {/* Reduced padding */}
+      <div className="flex-1 overflow-y-auto hide-scrollbar py-4">
         <nav>
-          <ul className="space-y-1 px-1"> {/* Reduced padding */}
+          <ul className="space-y-1 px-2">
             <li>
               <Link 
                 to="/" 
                 className={cn(
-                  "sidebar-item text-sm", // Added text-sm
+                  "sidebar-item",
                   location.pathname === "/" ? "active" : ""
                 )}
               >
-                <Package className="sidebar-icon w-4 h-4" /> {/* Reduced icon size */}
+                <Package className="sidebar-icon" />
                 <span 
                   className={cn(
-                    "menu-item-text text-sm", // Added text-sm
+                    "menu-item-text",
                     collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
                   )}
                 >
@@ -83,14 +83,14 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
               <Link 
                 to="/dictionaries" 
                 className={cn(
-                  "sidebar-item text-sm", // Added text-sm
+                  "sidebar-item",
                   location.pathname === "/dictionaries" ? "active" : ""
                 )}
               >
-                <BookOpen className="sidebar-icon w-4 h-4" /> {/* Reduced icon size */}
+                <BookOpen className="sidebar-icon" />
                 <span 
                   className={cn(
-                    "menu-item-text text-sm", // Added text-sm
+                    "menu-item-text",
                     collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
                   )}
                 >
@@ -103,7 +103,7 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
       </div>
       
       {/* Sidebar Footer */}
-      <div className="border-t border-sidebar-border p-3 space-y-2"> {/* Reduced padding */}
+      <div className="border-t border-sidebar-border p-4 space-y-2">
         <ThemeToggle collapsed={collapsed} />
         <LogoutButton collapsed={collapsed} />
       </div>
