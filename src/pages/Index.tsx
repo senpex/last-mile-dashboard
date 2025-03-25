@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -52,7 +51,6 @@ const Index = () => {
   const [statusDictionary, setStatusDictionary] = useState<Dictionary | null>(null);
 
   useEffect(() => {
-    // Fetch the status dictionary (dictionary 19)
     const dictionary = getDictionary("19");
     if (dictionary) {
       setStatusDictionary(dictionary);
@@ -64,7 +62,7 @@ const Index = () => {
 
   const availableColumns: ColumnOption[] = [
     { id: "status", label: "Status", default: true },
-    { id: "packageId", label: "Package ID", default: true },
+    { id: "packageId", label: "ID", default: true },
     { id: "orderName", label: "Order name", default: true },
     { id: "pickupTime", label: "Pickup Time", default: true },
     { id: "pickupLocation", label: "Pickup Location", default: true },
@@ -296,7 +294,7 @@ const Index = () => {
                         <TableHead className="w-[140px]">Status</TableHead>
                       )}
                       {visibleColumns.includes("packageId") && (
-                        <TableHead>Package ID</TableHead>
+                        <TableHead>ID</TableHead>
                       )}
                       {visibleColumns.includes("orderName") && (
                         <TableHead>Order name</TableHead>
