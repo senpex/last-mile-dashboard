@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -435,11 +436,11 @@ const Index = () => {
                             onDragOver={(e) => handleDragOver(e, columnId)}
                             onDragEnd={handleDragEnd}
                             onDrop={(e) => handleDrop(e, columnId)}
-                            className={columnId === "distance" ? "text-right" : ""}
+                            className={`${columnId === "distance" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
                           >
-                            <div className="flex items-center gap-1">
-                              <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
-                              {column.label}
+                            <div className="flex items-center gap-1 overflow-hidden">
+                              <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
+                              <span className="truncate">{column.label}</span>
                             </div>
                           </TableHead>
                         );
