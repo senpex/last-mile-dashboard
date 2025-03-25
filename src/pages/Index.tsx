@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+
+import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
 import { Button } from "@/components/ui/button";
@@ -37,6 +38,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { TimezonePicker } from "@/components/TimezonePicker";
+import { getDictionary } from "@/lib/storage";
+import { Dictionary, DictionaryItem } from "@/types/dictionary";
 
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -46,6 +49,18 @@ const Index = () => {
     to: new Date("2025-03-24T23:59:59")
   });
   const [timezone, setTimezone] = useState<string>("America/New_York");
+  const [statusDictionary, setStatusDictionary] = useState<Dictionary | null>(null);
+
+  useEffect(() => {
+    // Fetch the status dictionary (dictionary 19)
+    const dictionary = getDictionary("19");
+    if (dictionary) {
+      setStatusDictionary(dictionary);
+      console.log("Loaded status dictionary:", dictionary);
+    } else {
+      console.warn("Dictionary with ID 19 not found");
+    }
+  }, []);
 
   const availableColumns: ColumnOption[] = [
     { id: "status", label: "Status", default: true },
@@ -168,6 +183,15 @@ const Index = () => {
     }
   ];
 
+  // Function to get the status display value from the dictionary
+  const getStatusDisplay = (statusValue: string): DictionaryItem | undefined => {
+    if (!statusDictionary) return undefined;
+    
+    return statusDictionary.items.find(item => 
+      item.value.toLowerCase() === statusValue.toLowerCase()
+    );
+  };
+
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
       case "Dropoff Complete":
@@ -281,7 +305,9 @@ const Index = () => {
                               variant={delivery.status === "Canceled By Customer" ? "destructive" : "outline"}
                               className={`${delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}`}
                             >
-                              {delivery.status}
+                              {statusDictionary 
+                                ? getStatusDisplay(delivery.status)?.value || delivery.status
+                                : delivery.status}
                             </Badge>
                           </TableCell>
                         )}
