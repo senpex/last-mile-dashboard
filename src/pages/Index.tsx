@@ -1350,7 +1350,7 @@ const Index = () => {
                                 case "packageId":
                                   return (
                                     <TableCell key={columnId}>
-                                      <span className="font-mono text-sm">{delivery.packageId}</span>
+                                      <span className="font-sans text-sm">{delivery.packageId}</span>
                                     </TableCell>
                                   );
                                 case "orderName":
