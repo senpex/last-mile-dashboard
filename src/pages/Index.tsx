@@ -37,6 +37,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { TimezonePicker } from "@/components/TimezonePicker";
+import { 
+  ResizablePanelGroup, 
+  ResizablePanel, 
+  ResizableHandle 
+} from "@/components/ui/resizable";
 
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -234,101 +239,210 @@ const Index = () => {
               </div>
               
               <div className="border rounded-md overflow-hidden">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      {visibleColumns.includes("status") && (
-                        <TableHead className="w-[140px]">Status</TableHead>
-                      )}
-                      {visibleColumns.includes("pickupTime") && (
-                        <TableHead>Pickup Time</TableHead>
-                      )}
-                      {visibleColumns.includes("pickupLocation") && (
-                        <TableHead>Pickup Location</TableHead>
-                      )}
-                      {visibleColumns.includes("dropoffTime") && (
-                        <TableHead>Dropoff Time</TableHead>
-                      )}
-                      {visibleColumns.includes("dropoffLocation") && (
-                        <TableHead>Dropoff Location</TableHead>
-                      )}
-                      {visibleColumns.includes("price") && (
-                        <TableHead>Price</TableHead>
-                      )}
-                      {visibleColumns.includes("tip") && (
-                        <TableHead>Tip</TableHead>
-                      )}
-                      {visibleColumns.includes("fees") && (
-                        <TableHead>Fees</TableHead>
-                      )}
-                      {visibleColumns.includes("courier") && (
-                        <TableHead>Courier</TableHead>
-                      )}
-                      {visibleColumns.includes("organization") && (
-                        <TableHead>Organization</TableHead>
-                      )}
-                      {visibleColumns.includes("distance") && (
-                        <TableHead className="text-right">Distance</TableHead>
-                      )}
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {deliveries.map((delivery) => (
-                      <TableRow key={delivery.id}>
-                        {visibleColumns.includes("status") && (
-                          <TableCell>
-                            <Badge 
-                              variant={delivery.status === "Canceled By Customer" ? "destructive" : "outline"}
-                              className={`${delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}`}
-                            >
-                              {delivery.status}
-                            </Badge>
-                          </TableCell>
-                        )}
-                        {visibleColumns.includes("pickupTime") && (
-                          <TableCell>{delivery.pickupTime}</TableCell>
-                        )}
-                        {visibleColumns.includes("pickupLocation") && (
-                          <TableCell>
-                            <div className="flex flex-col">
-                              <span className="font-medium">{delivery.pickupLocation.name}</span>
-                              <span className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</span>
-                            </div>
-                          </TableCell>
-                        )}
-                        {visibleColumns.includes("dropoffTime") && (
-                          <TableCell>{delivery.dropoffTime}</TableCell>
-                        )}
-                        {visibleColumns.includes("dropoffLocation") && (
-                          <TableCell>
-                            <div className="flex flex-col">
-                              <span className="font-medium">{delivery.dropoffLocation.name}</span>
-                              <span className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</span>
-                            </div>
-                          </TableCell>
-                        )}
-                        {visibleColumns.includes("price") && (
-                          <TableCell>{delivery.price}</TableCell>
-                        )}
-                        {visibleColumns.includes("tip") && (
-                          <TableCell>{delivery.tip}</TableCell>
-                        )}
-                        {visibleColumns.includes("fees") && (
-                          <TableCell>{delivery.fees}</TableCell>
-                        )}
-                        {visibleColumns.includes("courier") && (
-                          <TableCell>{delivery.courier}</TableCell>
-                        )}
-                        {visibleColumns.includes("organization") && (
-                          <TableCell>{delivery.organization}</TableCell>
-                        )}
-                        {visibleColumns.includes("distance") && (
-                          <TableCell className="text-right">{delivery.distance}</TableCell>
-                        )}
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                <ResizablePanelGroup direction="horizontal" className="w-full">
+                  {visibleColumns.map((columnId, index) => (
+                    <React.Fragment key={columnId}>
+                      {index > 0 && <ResizableHandle withHandle />}
+                      <ResizablePanel defaultSize={100 / visibleColumns.length}>
+                        <div className="w-full">
+                          {index === 0 ? (
+                            <Table>
+                              <TableHeader>
+                                <TableRow>
+                                  {columnId === "status" && (
+                                    <TableHead className="w-[140px]">Status</TableHead>
+                                  )}
+                                  {columnId === "pickupTime" && (
+                                    <TableHead>Pickup Time</TableHead>
+                                  )}
+                                  {columnId === "pickupLocation" && (
+                                    <TableHead>Pickup Location</TableHead>
+                                  )}
+                                  {columnId === "dropoffTime" && (
+                                    <TableHead>Dropoff Time</TableHead>
+                                  )}
+                                  {columnId === "dropoffLocation" && (
+                                    <TableHead>Dropoff Location</TableHead>
+                                  )}
+                                  {columnId === "price" && (
+                                    <TableHead>Price</TableHead>
+                                  )}
+                                  {columnId === "tip" && (
+                                    <TableHead>Tip</TableHead>
+                                  )}
+                                  {columnId === "fees" && (
+                                    <TableHead>Fees</TableHead>
+                                  )}
+                                  {columnId === "courier" && (
+                                    <TableHead>Courier</TableHead>
+                                  )}
+                                  {columnId === "organization" && (
+                                    <TableHead>Organization</TableHead>
+                                  )}
+                                  {columnId === "distance" && (
+                                    <TableHead className="text-right">Distance</TableHead>
+                                  )}
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                {deliveries.map((delivery) => (
+                                  <TableRow key={delivery.id}>
+                                    {columnId === "status" && (
+                                      <TableCell>
+                                        <Badge 
+                                          variant={delivery.status === "Canceled By Customer" ? "destructive" : "outline"}
+                                          className={`${delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}`}
+                                        >
+                                          {delivery.status}
+                                        </Badge>
+                                      </TableCell>
+                                    )}
+                                    {columnId === "pickupTime" && (
+                                      <TableCell>{delivery.pickupTime}</TableCell>
+                                    )}
+                                    {columnId === "pickupLocation" && (
+                                      <TableCell>
+                                        <div className="flex flex-col">
+                                          <span className="font-medium">{delivery.pickupLocation.name}</span>
+                                          <span className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</span>
+                                        </div>
+                                      </TableCell>
+                                    )}
+                                    {columnId === "dropoffTime" && (
+                                      <TableCell>{delivery.dropoffTime}</TableCell>
+                                    )}
+                                    {columnId === "dropoffLocation" && (
+                                      <TableCell>
+                                        <div className="flex flex-col">
+                                          <span className="font-medium">{delivery.dropoffLocation.name}</span>
+                                          <span className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</span>
+                                        </div>
+                                      </TableCell>
+                                    )}
+                                    {columnId === "price" && (
+                                      <TableCell>{delivery.price}</TableCell>
+                                    )}
+                                    {columnId === "tip" && (
+                                      <TableCell>{delivery.tip}</TableCell>
+                                    )}
+                                    {columnId === "fees" && (
+                                      <TableCell>{delivery.fees}</TableCell>
+                                    )}
+                                    {columnId === "courier" && (
+                                      <TableCell>{delivery.courier}</TableCell>
+                                    )}
+                                    {columnId === "organization" && (
+                                      <TableCell>{delivery.organization}</TableCell>
+                                    )}
+                                    {columnId === "distance" && (
+                                      <TableCell className="text-right">{delivery.distance}</TableCell>
+                                    )}
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          ) : (
+                            <Table>
+                              <TableHeader>
+                                <TableRow>
+                                  {columnId === "status" && (
+                                    <TableHead className="w-[140px]">Status</TableHead>
+                                  )}
+                                  {columnId === "pickupTime" && (
+                                    <TableHead>Pickup Time</TableHead>
+                                  )}
+                                  {columnId === "pickupLocation" && (
+                                    <TableHead>Pickup Location</TableHead>
+                                  )}
+                                  {columnId === "dropoffTime" && (
+                                    <TableHead>Dropoff Time</TableHead>
+                                  )}
+                                  {columnId === "dropoffLocation" && (
+                                    <TableHead>Dropoff Location</TableHead>
+                                  )}
+                                  {columnId === "price" && (
+                                    <TableHead>Price</TableHead>
+                                  )}
+                                  {columnId === "tip" && (
+                                    <TableHead>Tip</TableHead>
+                                  )}
+                                  {columnId === "fees" && (
+                                    <TableHead>Fees</TableHead>
+                                  )}
+                                  {columnId === "courier" && (
+                                    <TableHead>Courier</TableHead>
+                                  )}
+                                  {columnId === "organization" && (
+                                    <TableHead>Organization</TableHead>
+                                  )}
+                                  {columnId === "distance" && (
+                                    <TableHead className="text-right">Distance</TableHead>
+                                  )}
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                {deliveries.map((delivery) => (
+                                  <TableRow key={`${delivery.id}-${columnId}`}>
+                                    {columnId === "status" && (
+                                      <TableCell>
+                                        <Badge 
+                                          variant={delivery.status === "Canceled By Customer" ? "destructive" : "outline"}
+                                          className={`${delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}`}
+                                        >
+                                          {delivery.status}
+                                        </Badge>
+                                      </TableCell>
+                                    )}
+                                    {columnId === "pickupTime" && (
+                                      <TableCell>{delivery.pickupTime}</TableCell>
+                                    )}
+                                    {columnId === "pickupLocation" && (
+                                      <TableCell>
+                                        <div className="flex flex-col">
+                                          <span className="font-medium">{delivery.pickupLocation.name}</span>
+                                          <span className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</span>
+                                        </div>
+                                      </TableCell>
+                                    )}
+                                    {columnId === "dropoffTime" && (
+                                      <TableCell>{delivery.dropoffTime}</TableCell>
+                                    )}
+                                    {columnId === "dropoffLocation" && (
+                                      <TableCell>
+                                        <div className="flex flex-col">
+                                          <span className="font-medium">{delivery.dropoffLocation.name}</span>
+                                          <span className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</span>
+                                        </div>
+                                      </TableCell>
+                                    )}
+                                    {columnId === "price" && (
+                                      <TableCell>{delivery.price}</TableCell>
+                                    )}
+                                    {columnId === "tip" && (
+                                      <TableCell>{delivery.tip}</TableCell>
+                                    )}
+                                    {columnId === "fees" && (
+                                      <TableCell>{delivery.fees}</TableCell>
+                                    )}
+                                    {columnId === "courier" && (
+                                      <TableCell>{delivery.courier}</TableCell>
+                                    )}
+                                    {columnId === "organization" && (
+                                      <TableCell>{delivery.organization}</TableCell>
+                                    )}
+                                    {columnId === "distance" && (
+                                      <TableCell className="text-right">{delivery.distance}</TableCell>
+                                    )}
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          )}
+                        </div>
+                      </ResizablePanel>
+                    </React.Fragment>
+                  ))}
+                </ResizablePanelGroup>
               </div>
               
               <div className="flex justify-between items-center">
