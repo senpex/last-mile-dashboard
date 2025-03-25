@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -56,7 +55,6 @@ const Index = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
   const [filteredDeliveries, setFilteredDeliveries] = useState<any[]>([]);
 
-  // Original data
   const deliveries = [
     {
       id: 1,
@@ -180,34 +178,29 @@ const Index = () => {
     }
   }, []);
 
-  // Initialize filteredDeliveries with all deliveries
   useEffect(() => {
     setFilteredDeliveries(deliveries);
     console.log("Initial deliveries loaded:", deliveries.length);
   }, []);
 
-  // Debounce search term
   useEffect(() => {
-    // Clear previous timeout
     const timer = setTimeout(() => {
       if (searchTerm.length >= 4 || searchTerm.length === 0) {
         setDebouncedSearchTerm(searchTerm);
         console.log("Search term debounced:", searchTerm);
       }
-    }, 1500); // 1.5 second delay
+    }, 1500);
 
     return () => {
       clearTimeout(timer);
     };
   }, [searchTerm]);
 
-  // Search functionality
   useEffect(() => {
     if (debouncedSearchTerm.length >= 4) {
       console.log("Performing search for:", debouncedSearchTerm);
 
       const searchResults = deliveries.filter(delivery => {
-        // Convert all delivery fields to an array of strings for searching
         const searchableFields = [
           delivery.packageId,
           delivery.orderName,
@@ -226,7 +219,6 @@ const Index = () => {
           delivery.distance
         ];
 
-        // Check if any field includes the search term (case insensitive)
         return searchableFields.some(field => 
           field && field.toString().toLowerCase().includes(debouncedSearchTerm.toLowerCase())
         );
@@ -235,8 +227,6 @@ const Index = () => {
       console.log(`Found ${searchResults.length} results for "${debouncedSearchTerm}"`);
       setFilteredDeliveries(searchResults);
     } else if (debouncedSearchTerm.length === 0) {
-      // If search is cleared, show all deliveries
-      console.log("Search cleared, showing all deliveries");
       setFilteredDeliveries(deliveries);
     }
   }, [debouncedSearchTerm, deliveries]);
@@ -374,14 +364,14 @@ const Index = () => {
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-background flex">
+      <div className="bg-background flex h-screen overflow-hidden">
         <Sidebar 
           collapsed={sidebarCollapsed} 
           setCollapsed={setSidebarCollapsed} 
         />
         
-        <main className={`flex-1 transition-all duration-300 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}>
-          <div className="animate-fade-in px-4 py-6">
+        <main className={`flex-1 overflow-auto transition-all duration-300 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}>
+          <div className="animate-fade-in px-4 py-6 overflow-auto">
             <div className="flex flex-col space-y-4">
               <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-semibold">Deliveries</h1>
