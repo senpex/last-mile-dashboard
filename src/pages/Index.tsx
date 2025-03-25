@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -12,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -56,7 +56,6 @@ const Index = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
   const [filteredDeliveries, setFilteredDeliveries] = useState<any[]>([]);
 
-  // Original data
   const deliveries = [
     {
       id: 1,
@@ -180,34 +179,29 @@ const Index = () => {
     }
   }, []);
 
-  // Initialize filteredDeliveries with all deliveries
   useEffect(() => {
     setFilteredDeliveries(deliveries);
     console.log("Initial deliveries loaded:", deliveries.length);
   }, []);
 
-  // Debounce search term
   useEffect(() => {
-    // Clear previous timeout
     const timer = setTimeout(() => {
       if (searchTerm.length >= 4 || searchTerm.length === 0) {
         setDebouncedSearchTerm(searchTerm);
         console.log("Search term debounced:", searchTerm);
       }
-    }, 1500); // 1.5 second delay
+    }, 1500);
 
     return () => {
       clearTimeout(timer);
     };
   }, [searchTerm]);
 
-  // Search functionality
   useEffect(() => {
     if (debouncedSearchTerm.length >= 4) {
       console.log("Performing search for:", debouncedSearchTerm);
 
       const searchResults = deliveries.filter(delivery => {
-        // Convert all delivery fields to an array of strings for searching
         const searchableFields = [
           delivery.packageId,
           delivery.orderName,
@@ -226,7 +220,6 @@ const Index = () => {
           delivery.distance
         ];
 
-        // Check if any field includes the search term (case insensitive)
         return searchableFields.some(field => 
           field && field.toString().toLowerCase().includes(debouncedSearchTerm.toLowerCase())
         );
@@ -235,7 +228,6 @@ const Index = () => {
       console.log(`Found ${searchResults.length} results for "${debouncedSearchTerm}"`);
       setFilteredDeliveries(searchResults);
     } else if (debouncedSearchTerm.length === 0) {
-      // If search is cleared, show all deliveries
       console.log("Search cleared, showing all deliveries");
       setFilteredDeliveries(deliveries);
     }
@@ -428,108 +420,112 @@ const Index = () => {
                 </div>
               </div>
               
-              <div className="border rounded-md overflow-hidden">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      {sortedColumns.map(columnId => {
-                        const column = availableColumns.find(col => col.id === columnId);
-                        if (!column) return null;
-                        
-                        return (
-                          <TableHead 
-                            key={columnId}
-                            draggable={true}
-                            dragOver={dragOverColumn === columnId}
-                            onDragStart={(e) => handleDragStart(e, columnId)}
-                            onDragOver={(e) => handleDragOver(e, columnId)}
-                            onDragEnd={handleDragEnd}
-                            onDrop={(e) => handleDrop(e, columnId)}
-                            className={columnId === "distance" ? "text-right" : ""}
-                          >
-                            <div className="flex items-center gap-1">
-                              <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
-                              {column.label}
-                            </div>
-                          </TableHead>
-                        );
-                      })}
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredDeliveries.length > 0 ? (
-                      filteredDeliveries.map((delivery) => (
-                        <TableRow key={delivery.id}>
+              <div className="border rounded-md">
+                <ScrollArea orientation="both" className="h-[600px]">
+                  <div className="min-w-max">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
                           {sortedColumns.map(columnId => {
-                            switch (columnId) {
-                              case "status":
-                                return (
-                                  <TableCell key={columnId}>
-                                    <Badge 
-                                      variant={getStatusBadgeVariant(delivery.status) as any}
-                                      className={`${delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}`}
-                                    >
-                                      {getStatusDisplay(delivery.status)}
-                                    </Badge>
-                                  </TableCell>
-                                );
-                              case "packageId":
-                                return (
-                                  <TableCell key={columnId}>
-                                    <span className="font-mono text-sm">{delivery.packageId}</span>
-                                  </TableCell>
-                                );
-                              case "orderName":
-                                return <TableCell key={columnId}>{delivery.orderName}</TableCell>;
-                              case "pickupTime":
-                                return <TableCell key={columnId}>{delivery.pickupTime}</TableCell>;
-                              case "pickupLocation":
-                                return (
-                                  <TableCell key={columnId}>
-                                    <div className="flex flex-col">
-                                      <span className="font-medium">{delivery.pickupLocation.name}</span>
-                                      <span className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</span>
-                                    </div>
-                                  </TableCell>
-                                );
-                              case "dropoffTime":
-                                return <TableCell key={columnId}>{delivery.dropoffTime}</TableCell>;
-                              case "dropoffLocation":
-                                return (
-                                  <TableCell key={columnId}>
-                                    <div className="flex flex-col">
-                                      <span className="font-medium">{delivery.dropoffLocation.name}</span>
-                                      <span className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</span>
-                                    </div>
-                                  </TableCell>
-                                );
-                              case "price":
-                                return <TableCell key={columnId}>{delivery.price}</TableCell>;
-                              case "tip":
-                                return <TableCell key={columnId}>{delivery.tip}</TableCell>;
-                              case "fees":
-                                return <TableCell key={columnId}>{delivery.fees}</TableCell>;
-                              case "courier":
-                                return <TableCell key={columnId}>{delivery.courier}</TableCell>;
-                              case "organization":
-                                return <TableCell key={columnId}>{delivery.organization}</TableCell>;
-                              case "distance":
-                                return <TableCell key={columnId} className="text-right">{delivery.distance}</TableCell>;
-                              default:
-                                return <TableCell key={columnId}></TableCell>;
-                            }
+                            const column = availableColumns.find(col => col.id === columnId);
+                            if (!column) return null;
+                            
+                            return (
+                              <TableHead 
+                                key={columnId}
+                                draggable={true}
+                                dragOver={dragOverColumn === columnId}
+                                onDragStart={(e) => handleDragStart(e, columnId)}
+                                onDragOver={(e) => handleDragOver(e, columnId)}
+                                onDragEnd={handleDragEnd}
+                                onDrop={(e) => handleDrop(e, columnId)}
+                                className={`${columnId === "distance" ? "text-right" : ""} whitespace-nowrap`}
+                              >
+                                <div className="flex items-center gap-1">
+                                  <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
+                                  {column.label}
+                                </div>
+                              </TableHead>
+                            );
                           })}
                         </TableRow>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell colSpan={sortedColumns.length} className="h-24 text-center">
-                          No results found
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredDeliveries.length > 0 ? (
+                          filteredDeliveries.map((delivery) => (
+                            <TableRow key={delivery.id}>
+                              {sortedColumns.map(columnId => {
+                                switch (columnId) {
+                                  case "status":
+                                    return (
+                                      <TableCell key={columnId}>
+                                        <Badge 
+                                          variant={getStatusBadgeVariant(delivery.status) as any}
+                                          className={`${delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}`}
+                                        >
+                                          {getStatusDisplay(delivery.status)}
+                                        </Badge>
+                                      </TableCell>
+                                    );
+                                  case "packageId":
+                                    return (
+                                      <TableCell key={columnId}>
+                                        <span className="font-mono text-sm">{delivery.packageId}</span>
+                                      </TableCell>
+                                    );
+                                  case "orderName":
+                                    return <TableCell key={columnId}>{delivery.orderName}</TableCell>;
+                                  case "pickupTime":
+                                    return <TableCell key={columnId}>{delivery.pickupTime}</TableCell>;
+                                  case "pickupLocation":
+                                    return (
+                                      <TableCell key={columnId}>
+                                        <div className="flex flex-col">
+                                          <span className="font-medium">{delivery.pickupLocation.name}</span>
+                                          <span className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</span>
+                                        </div>
+                                      </TableCell>
+                                    );
+                                  case "dropoffTime":
+                                    return <TableCell key={columnId}>{delivery.dropoffTime}</TableCell>;
+                                  case "dropoffLocation":
+                                    return (
+                                      <TableCell key={columnId}>
+                                        <div className="flex flex-col">
+                                          <span className="font-medium">{delivery.dropoffLocation.name}</span>
+                                          <span className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</span>
+                                        </div>
+                                      </TableCell>
+                                    );
+                                  case "price":
+                                    return <TableCell key={columnId}>{delivery.price}</TableCell>;
+                                  case "tip":
+                                    return <TableCell key={columnId}>{delivery.tip}</TableCell>;
+                                  case "fees":
+                                    return <TableCell key={columnId}>{delivery.fees}</TableCell>;
+                                  case "courier":
+                                    return <TableCell key={columnId}>{delivery.courier}</TableCell>;
+                                  case "organization":
+                                    return <TableCell key={columnId}>{delivery.organization}</TableCell>;
+                                  case "distance":
+                                    return <TableCell key={columnId} className="text-right">{delivery.distance}</TableCell>;
+                                  default:
+                                    return <TableCell key={columnId}></TableCell>;
+                                }
+                              })}
+                            </TableRow>
+                          ))
+                        ) : (
+                          <TableRow>
+                            <TableCell colSpan={sortedColumns.length} className="h-24 text-center">
+                              No results found
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </ScrollArea>
               </div>
               
               <div className="flex justify-between items-center">
@@ -603,3 +599,4 @@ const Index = () => {
 };
 
 export default Index;
+
