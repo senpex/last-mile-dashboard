@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -1412,7 +1411,7 @@ const Index = () => {
           
           <div className="border-t bg-background px-4 py-3 flex justify-between items-center shadow-sm">
             <div className="text-sm text-muted-foreground">
-              Total <span className="bg-muted px-2 py-1 rounded">{filteredDeliveries.length}</span>
+              Total: <span className="bg-muted px-2 py-1 rounded">{filteredDeliveries.length}</span>
             </div>
             
             <div className="flex items-center gap-2">
