@@ -1,3 +1,4 @@
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
@@ -68,12 +69,20 @@ TableRow.displayName = "TableRow"
 
 const TableHead = React.forwardRef<
   HTMLTableCellElement,
-  React.ThHTMLAttributes<HTMLTableCellElement>
->(({ className, ...props }, ref) => (
+  React.ThHTMLAttributes<HTMLTableCellElement> & { 
+    draggable?: boolean;
+    onDragStart?: React.DragEventHandler<HTMLTableCellElement>;
+    onDragOver?: React.DragEventHandler<HTMLTableCellElement>;
+    onDrop?: React.DragEventHandler<HTMLTableCellElement>;
+    dragOver?: boolean;
+  }
+>(({ className, dragOver, draggable, ...props }, ref) => (
   <th
     ref={ref}
     className={cn(
       "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
+      dragOver && "border-t-2 border-primary",
+      draggable && "cursor-move",
       className
     )}
     {...props}
