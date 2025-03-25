@@ -28,10 +28,15 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
-import { Columns, Download, Filter, RotateCw, Search } from "lucide-react";
+import { Columns, Download, Filter, RotateCw, Search, Globe } from "lucide-react";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { DateRange } from "react-day-picker";
+import { 
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -40,6 +45,29 @@ const Index = () => {
     from: new Date("2025-03-24T00:00:00"),
     to: new Date("2025-03-24T23:59:59")
   });
+  const [currentTimeZone, setCurrentTimeZone] = useState<string>("America/Los_Angeles");
+  
+  // Common timezones
+  const timeZones = [
+    { value: "America/Los_Angeles", label: "Pacific Time (PT)" },
+    { value: "America/Denver", label: "Mountain Time (MT)" },
+    { value: "America/Chicago", label: "Central Time (CT)" },
+    { value: "America/New_York", label: "Eastern Time (ET)" },
+    { value: "America/Anchorage", label: "Alaska Time" },
+    { value: "Pacific/Honolulu", label: "Hawaii Time" },
+    { value: "Europe/London", label: "GMT/UTC" },
+    { value: "Europe/Paris", label: "Central European Time" },
+    { value: "Asia/Tokyo", label: "Japan Standard Time" },
+    { value: "Asia/Shanghai", label: "China Standard Time" },
+    { value: "Asia/Kolkata", label: "India Standard Time" },
+    { value: "Australia/Sydney", label: "Australian Eastern Time" },
+  ];
+  
+  // Get timezone display text
+  const getTimeZoneDisplayText = () => {
+    const zone = timeZones.find(tz => tz.value === currentTimeZone);
+    return zone ? zone.label : currentTimeZone;
+  };
   
   const availableColumns: ColumnOption[] = [
     { id: "status", label: "Status", default: true },
@@ -186,7 +214,9 @@ const Index = () => {
             <div className="flex flex-col space-y-4">
               <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-semibold">Deliveries</h1>
-                <span className="text-sm text-muted-foreground">All times are displayed using PDT timezone</span>
+                <span className="text-sm text-muted-foreground">
+                  All times are displayed using {getTimeZoneDisplayText()} timezone
+                </span>
               </div>
               
               <div className="flex flex-wrap justify-between items-center gap-2">
@@ -211,6 +241,29 @@ const Index = () => {
                       className="pl-8 h-9 w-[240px]"
                     />
                   </div>
+                  
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" size="icon" className="h-9 w-9" title="Change timezone">
+                        <Globe className="h-4 w-4" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[240px] p-2">
+                      <div className="text-sm font-medium mb-2">Select Timezone</div>
+                      <Select value={currentTimeZone} onValueChange={setCurrentTimeZone}>
+                        <SelectTrigger className="h-8 text-xs">
+                          <SelectValue placeholder="Select timezone" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {timeZones.map((timezone) => (
+                            <SelectItem key={timezone.value} value={timezone.value} className="text-xs">
+                              {timezone.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </PopoverContent>
+                  </Popover>
                   
                   <Button variant="outline" size="icon" className="h-9 w-9">
                     <Download className="h-4 w-4" />
