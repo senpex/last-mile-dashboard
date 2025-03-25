@@ -59,7 +59,6 @@ const Index = () => {
   const [displayedDeliveries, setDisplayedDeliveries] = useState<any[]>([]);
 
   const deliveries = [
-    // Original 5 records
     {
       id: 1,
       packageId: "WMT-10042501",
@@ -170,7 +169,6 @@ const Index = () => {
       organization: "Curry Up Now",
       distance: "0.2 mi"
     },
-    // 40 new records with various statuses
     {
       id: 6,
       packageId: "TGT-80031245",
@@ -728,3 +726,231 @@ const Index = () => {
       status: "Repeated Order",
       pickupTime: "03/24/2025 08:00 AM",
       pickupLocation: {
+        name: "Rooms To Go - Rogers",
+        address: "4408 W Walnut St, Rogers, AR 72756, US"
+      },
+      dropoffTime: "03/24/2025 10:00 AM",
+      dropoffLocation: {
+        name: "Michael Brown",
+        address: "501 SW D St, Bentonville, AR 72712, US"
+      },
+      price: "$499.99",
+      tip: "$50.00",
+      fees: "$29.99",
+      courier: "Robert Johnson",
+      organization: "Rooms To Go",
+      distance: "6.8 mi"
+    }
+  ];
+
+  const totalPages = Math.ceil(filteredDeliveries.length / Number(rowsPerPage));
+  
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * Number(rowsPerPage);
+    const endIndex = startIndex + Number(rowsPerPage);
+    setDisplayedDeliveries(filteredDeliveries.slice(startIndex, endIndex));
+  }, [filteredDeliveries, currentPage, rowsPerPage]);
+
+  const generatePageLinks = () => {
+    const pageLinks = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageLinks.push(i);
+      }
+    } else {
+      pageLinks.push(1);
+      
+      let startPage = Math.max(2, currentPage - Math.floor(maxVisiblePages / 2));
+      let endPage = Math.min(totalPages - 1, startPage + maxVisiblePages - 3);
+      
+      if (endPage === totalPages - 1) {
+        startPage = Math.max(2, endPage - (maxVisiblePages - 3));
+      }
+      
+      if (startPage > 2) {
+        pageLinks.push("ellipsis1");
+      }
+      
+      for (let i = startPage; i <= endPage; i++) {
+        pageLinks.push(i);
+      }
+      
+      if (endPage < totalPages - 1) {
+        pageLinks.push("ellipsis2");
+      }
+      
+      pageLinks.push(totalPages);
+    }
+    
+    return pageLinks;
+  };
+
+  return (
+    <div className="flex h-screen w-full overflow-hidden bg-background">
+      <Sidebar collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} />
+      <div className="flex flex-1 flex-col overflow-hidden">
+        <div className="py-4 px-6 border-b">
+          <h1 className="text-2xl font-bold tracking-tight">Delivery Tracker</h1>
+        </div>
+        <div className="flex-1 overflow-auto p-6">
+          <div className="mb-6 flex flex-wrap gap-4 justify-between items-center">
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="relative">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder="Search deliveries..."
+                  className="w-[250px] pl-8"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              <DateRangePicker
+                dateRange={dateRange}
+                onChange={setDateRange}
+              />
+              <TimezonePicker
+                timezone={timezone}
+                onChange={setTimezone}
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm">
+                <Filter className="mr-2 h-4 w-4" />
+                Filter
+              </Button>
+              <ColumnSelector />
+            </div>
+          </div>
+          <div className="rounded-md border">
+            <ScrollArea className="h-[calc(100vh-300px)] rounded-md">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[120px]">Package ID</TableHead>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Pickup Time</TableHead>
+                    <TableHead>Pickup Location</TableHead>
+                    <TableHead>Dropoff Time</TableHead>
+                    <TableHead>Dropoff Location</TableHead>
+                    <TableHead>Price</TableHead>
+                    <TableHead>Tip</TableHead>
+                    <TableHead>Fees</TableHead>
+                    <TableHead>Courier</TableHead>
+                    <TableHead>Organization</TableHead>
+                    <TableHead className="text-right">Distance</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {displayedDeliveries.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={13} className="h-24 text-center">
+                        No results.
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    displayedDeliveries.map((delivery) => (
+                      <TableRow key={delivery.id}>
+                        <TableCell className="font-medium">{delivery.packageId}</TableCell>
+                        <TableCell>{delivery.orderName}</TableCell>
+                        <TableCell>
+                          <Badge variant="outline">{delivery.status}</Badge>
+                        </TableCell>
+                        <TableCell>{delivery.pickupTime}</TableCell>
+                        <TableCell>
+                          <div className="font-medium">{delivery.pickupLocation.name}</div>
+                          <div className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</div>
+                        </TableCell>
+                        <TableCell>{delivery.dropoffTime}</TableCell>
+                        <TableCell>
+                          <div className="font-medium">{delivery.dropoffLocation.name}</div>
+                          <div className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</div>
+                        </TableCell>
+                        <TableCell>{delivery.price}</TableCell>
+                        <TableCell>{delivery.tip}</TableCell>
+                        <TableCell>{delivery.fees}</TableCell>
+                        <TableCell>{delivery.courier}</TableCell>
+                        <TableCell>{delivery.organization}</TableCell>
+                        <TableCell className="text-right">{delivery.distance}</TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </ScrollArea>
+          </div>
+          <div className="mt-4 flex items-center justify-between px-2">
+            <div className="text-sm text-muted-foreground">
+              Total: {filteredDeliveries.length} records
+            </div>
+            <div className="flex items-center space-x-6 lg:space-x-8">
+              <div className="flex items-center space-x-2">
+                <p className="text-sm font-medium">Rows per page</p>
+                <Select
+                  value={rowsPerPage}
+                  onValueChange={setRowsPerPage}
+                >
+                  <SelectTrigger className="h-8 w-[70px]">
+                    <SelectValue placeholder={rowsPerPage} />
+                  </SelectTrigger>
+                  <SelectContent side="top">
+                    {["10", "20", "30", "40", "50"].map((pageSize) => (
+                      <SelectItem key={pageSize} value={pageSize}>
+                        {pageSize}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious 
+                      onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                      aria-disabled={currentPage === 1}
+                      className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                    />
+                  </PaginationItem>
+                  
+                  {generatePageLinks().map((page, index) => {
+                    if (page === "ellipsis1" || page === "ellipsis2") {
+                      return (
+                        <PaginationItem key={`ellipsis-${index}`}>
+                          <PaginationEllipsis />
+                        </PaginationItem>
+                      );
+                    }
+                    
+                    return (
+                      <PaginationItem key={index}>
+                        <PaginationLink 
+                          isActive={currentPage === page}
+                          onClick={() => setCurrentPage(Number(page))}
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    );
+                  })}
+                  
+                  <PaginationItem>
+                    <PaginationNext 
+                      onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                      aria-disabled={currentPage === totalPages}
+                      className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Index;
