@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -728,4 +729,265 @@ const Deliveries = () => {
       pickupTime: "03/24/2025 08:00 AM",
       pickupLocation: {
         name: "Rooms To Go - Rogers",
-        address: "44
+        address: "4408 W Walnut St, Rogers, AR 72756, US"
+      },
+      dropoffTime: "03/24/2025 10:00 AM",
+      dropoffLocation: {
+        name: "Jackson Family",
+        address: "452 NW Greenfield Ave, Bentonville, AR 72712, US"
+      },
+      price: "$499.99",
+      tip: "$50.00",
+      fees: "$24.99",
+      courier: "Robert Johnson",
+      organization: "Rooms To Go",
+      distance: "7.3 mi"
+    },
+    // ... continue with the rest of your delivery records
+  ];
+
+  // Load status dictionary
+  useEffect(() => {
+    const loadStatusDictionary = async () => {
+      try {
+        const dictionary = await getDictionary("19");
+        setStatusDictionary(dictionary);
+        console.info("Loaded status dictionary:", dictionary);
+      } catch (error) {
+        console.error("Failed to load status dictionary:", error);
+      }
+    };
+    
+    loadStatusDictionary();
+  }, []);
+
+  // Handle search debounce
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+      console.info("Search term debounced:", searchTerm);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  // Filter deliveries based on search term
+  useEffect(() => {
+    const filtered = deliveries.filter((delivery) => {
+      if (debouncedSearchTerm === "") return true;
+      
+      const searchLower = debouncedSearchTerm.toLowerCase();
+      return (
+        delivery.packageId.toLowerCase().includes(searchLower) ||
+        delivery.orderName.toLowerCase().includes(searchLower) ||
+        delivery.status.toLowerCase().includes(searchLower) ||
+        delivery.pickupLocation.name.toLowerCase().includes(searchLower) ||
+        delivery.pickupLocation.address.toLowerCase().includes(searchLower) ||
+        delivery.dropoffLocation.name.toLowerCase().includes(searchLower) ||
+        delivery.dropoffLocation.address.toLowerCase().includes(searchLower) ||
+        (delivery.courier && delivery.courier.toLowerCase().includes(searchLower)) ||
+        delivery.organization.toLowerCase().includes(searchLower)
+      );
+    });
+    
+    setFilteredDeliveries(filtered);
+    setCurrentPage(1); // Reset to first page when search changes
+    console.info("Initial deliveries loaded:", filtered.length);
+  }, [debouncedSearchTerm, deliveries]);
+
+  // Get current page items
+  const indexOfLastItem = currentPage * Number(rowsPerPage);
+  const indexOfFirstItem = indexOfLastItem - Number(rowsPerPage);
+  const currentItems = filteredDeliveries.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Function to render status badge with correct color
+  const renderStatusBadge = (status: string) => {
+    let variant: "default" | "secondary" | "destructive" | "outline" | "success" | "warning" = "default";
+    
+    if (status.toLowerCase().includes("complete")) {
+      variant = "success";
+    } else if (status.toLowerCase().includes("transit") || status.toLowerCase().includes("picking")) {
+      variant = "default";
+    } else if (status.toLowerCase().includes("cancel")) {
+      variant = "destructive";
+    } else if (status.toLowerCase().includes("wait")) {
+      variant = "warning";
+    } else if (status.toLowerCase().includes("draft") || status.toLowerCase().includes("scheduled")) {
+      variant = "secondary";
+    } else if (status.toLowerCase().includes("unavailable") || status.toLowerCase().includes("not given")) {
+      variant = "outline";
+    }
+    
+    return <Badge variant={variant}>{status}</Badge>;
+  };
+
+  return (
+    <ThemeProvider defaultTheme="light" storageKey="app-theme">
+      <div className="flex h-screen">
+        <Sidebar collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed} />
+        <div className="flex-1 overflow-auto p-6">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold">Deliveries</h1>
+            <p className="text-muted-foreground">View and manage all deliveries</p>
+          </div>
+
+          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="relative w-full max-w-sm">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search deliveries..."
+                className="pl-8"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <DateRangePicker
+                value={dateRange}
+                onValueChange={setDateRange}
+                align="end"
+              />
+              <TimezonePicker
+                selectedTimezone={timezone}
+                onTimezoneChange={setTimezone}
+              />
+              <Button variant="outline" size="icon" className="h-9 w-9">
+                <Filter className="h-4 w-4" />
+              </Button>
+              <ColumnSelector 
+                columns={[
+                  { id: "packageId", label: "Package ID", default: true },
+                  { id: "orderName", label: "Order Name", default: true },
+                  { id: "status", label: "Status", default: true },
+                  { id: "pickupTime", label: "Pickup Time", default: true },
+                  { id: "pickupLocation", label: "Pickup Location", default: true },
+                  { id: "dropoffTime", label: "Dropoff Time", default: true },
+                  { id: "dropoffLocation", label: "Dropoff Location", default: true },
+                  { id: "price", label: "Price", default: false },
+                  { id: "tip", label: "Tip", default: false },
+                  { id: "fees", label: "Fees", default: false },
+                  { id: "courier", label: "Courier", default: true },
+                  { id: "organization", label: "Organization", default: false },
+                  { id: "distance", label: "Distance", default: true },
+                ]}
+                visibleColumns={["packageId", "orderName", "status", "pickupTime", "pickupLocation", "dropoffTime", "dropoffLocation", "courier", "distance"]}
+                setVisibleColumns={() => {}}
+              />
+            </div>
+          </div>
+
+          <div className="rounded-md border">
+            <div className="relative overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Package ID</TableHead>
+                    <TableHead>Order Name</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Pickup Time</TableHead>
+                    <TableHead>Pickup Location</TableHead>
+                    <TableHead>Dropoff Time</TableHead>
+                    <TableHead>Dropoff Location</TableHead>
+                    <TableHead>Courier</TableHead>
+                    <TableHead>Distance</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {currentItems.length > 0 ? (
+                    currentItems.map((delivery) => (
+                      <TableRow key={delivery.id}>
+                        <TableCell className="font-mono">{delivery.packageId}</TableCell>
+                        <TableCell>{delivery.orderName}</TableCell>
+                        <TableCell>{renderStatusBadge(delivery.status)}</TableCell>
+                        <TableCell>{delivery.pickupTime}</TableCell>
+                        <TableCell>
+                          <div>
+                            <div className="font-medium">{delivery.pickupLocation.name}</div>
+                            <div className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</div>
+                          </div>
+                        </TableCell>
+                        <TableCell>{delivery.dropoffTime}</TableCell>
+                        <TableCell>
+                          <div>
+                            <div className="font-medium">{delivery.dropoffLocation.name}</div>
+                            <div className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</div>
+                          </div>
+                        </TableCell>
+                        <TableCell>{delivery.courier || "—"}</TableCell>
+                        <TableCell>{delivery.distance}</TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={9} className="h-24 text-center">
+                        No results found.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+
+          <div className="mt-4 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Select value={rowsPerPage} onValueChange={setRowsPerPage}>
+                <SelectTrigger className="h-8 w-[70px]">
+                  <SelectValue placeholder="10" />
+                </SelectTrigger>
+                <SelectContent side="top">
+                  <SelectItem value="10">10</SelectItem>
+                  <SelectItem value="20">20</SelectItem>
+                  <SelectItem value="50">50</SelectItem>
+                  <SelectItem value="100">100</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-sm text-muted-foreground">
+                Showing {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filteredDeliveries.length)} of {filteredDeliveries.length}
+              </p>
+            </div>
+
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious 
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    aria-disabled={currentPage === 1}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                  />
+                </PaginationItem>
+                {/* Show pagination numbers */}
+                {Array.from({ length: Math.min(5, Math.ceil(filteredDeliveries.length / Number(rowsPerPage))) }, (_, i) => (
+                  <PaginationItem key={i}>
+                    <PaginationLink
+                      isActive={currentPage === i + 1}
+                      onClick={() => setCurrentPage(i + 1)}
+                    >
+                      {i + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                {/* Show ellipsis if more than 5 pages */}
+                {Math.ceil(filteredDeliveries.length / Number(rowsPerPage)) > 5 && (
+                  <PaginationItem>
+                    <span className="flex h-9 w-9 items-center justify-center">...</span>
+                  </PaginationItem>
+                )}
+                <PaginationItem>
+                  <PaginationNext 
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(filteredDeliveries.length / Number(rowsPerPage))))}
+                    aria-disabled={currentPage === Math.ceil(filteredDeliveries.length / Number(rowsPerPage))}
+                    className={currentPage === Math.ceil(filteredDeliveries.length / Number(rowsPerPage)) ? "pointer-events-none opacity-50" : ""}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
+        </div>
+      </div>
+    </ThemeProvider>
+  );
+};
+
+export default Deliveries;
