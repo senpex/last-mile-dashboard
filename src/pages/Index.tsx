@@ -1,3 +1,4 @@
+
 import { useState, useMemo } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -240,6 +241,29 @@ const Index = () => {
                       className="pl-8 h-9 w-[240px]"
                     />
                   </div>
+                  
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" size="icon" className="h-9 w-9" title="Change timezone">
+                        <Globe className="h-4 w-4" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[240px] p-2">
+                      <div className="text-sm font-medium mb-2">Select Timezone</div>
+                      <Select value={currentTimeZone} onValueChange={setCurrentTimeZone}>
+                        <SelectTrigger className="h-8 text-xs">
+                          <SelectValue placeholder="Select timezone" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {timeZones.map((timezone) => (
+                            <SelectItem key={timezone.value} value={timezone.value} className="text-xs">
+                              {timezone.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </PopoverContent>
+                  </Popover>
                   
                   <Button variant="outline" size="icon" className="h-9 w-9">
                     <Download className="h-4 w-4" />
