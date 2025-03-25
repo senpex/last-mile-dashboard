@@ -546,9 +546,7 @@ const Index = () => {
                 </SelectContent>
               </Select>
               
-              <div className="flex items-center gap-1">
-                <span className="text-sm">Page 1 of 1</span>
-              </div>
+              
               
               <Pagination>
                 <PaginationContent>
