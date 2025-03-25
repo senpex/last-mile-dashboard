@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -179,35 +180,34 @@ const Index = () => {
     }
   }, []);
 
-  // Set initial filtered deliveries
+  // Initialize filteredDeliveries with all deliveries
   useEffect(() => {
     setFilteredDeliveries(deliveries);
+    console.log("Initial deliveries loaded:", deliveries.length);
   }, []);
 
   // Debounce search term
   useEffect(() => {
-    // Only perform search if search term is at least 4 characters
-    if (searchTerm.length < 4) {
-      setFilteredDeliveries(deliveries);
-      return;
-    }
-
-    const debounceTimer = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
+    // Clear previous timeout
+    const timer = setTimeout(() => {
+      if (searchTerm.length >= 4 || searchTerm.length === 0) {
+        setDebouncedSearchTerm(searchTerm);
+        console.log("Search term debounced:", searchTerm);
+      }
     }, 1500); // 1.5 second delay
 
     return () => {
-      clearTimeout(debounceTimer);
+      clearTimeout(timer);
     };
-  }, [searchTerm, deliveries]);
+  }, [searchTerm]);
 
   // Search functionality
   useEffect(() => {
     if (debouncedSearchTerm.length >= 4) {
-      console.log("Searching for:", debouncedSearchTerm);
+      console.log("Performing search for:", debouncedSearchTerm);
 
       const searchResults = deliveries.filter(delivery => {
-        // Search in all fields as a string
+        // Convert all delivery fields to an array of strings for searching
         const searchableFields = [
           delivery.packageId,
           delivery.orderName,
@@ -226,14 +226,17 @@ const Index = () => {
           delivery.distance
         ];
 
-        // Combine all fields into a single string and check if it includes the search term
+        // Check if any field includes the search term (case insensitive)
         return searchableFields.some(field => 
           field && field.toString().toLowerCase().includes(debouncedSearchTerm.toLowerCase())
         );
       });
 
+      console.log(`Found ${searchResults.length} results for "${debouncedSearchTerm}"`);
       setFilteredDeliveries(searchResults);
-    } else {
+    } else if (debouncedSearchTerm.length === 0) {
+      // If search is cleared, show all deliveries
+      console.log("Search cleared, showing all deliveries");
       setFilteredDeliveries(deliveries);
     }
   }, [debouncedSearchTerm, deliveries]);
