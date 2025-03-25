@@ -768,7 +768,7 @@ const Index = () => {
 
   return (
     <ThemeProvider>
-      <Sidebar collapsed={sidebarCollapsed} onCollapse={setSidebarCollapsed} />
+      <Sidebar collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed} />
       {/* Rest of component JSX */}
     </ThemeProvider>
   );
