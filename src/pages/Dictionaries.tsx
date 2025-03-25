@@ -1,80 +1,150 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+
+import { useState, useEffect } from "react";
+import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
+import { Button } from "@/components/ui/button";
+import { getDictionaries, getDictionary } from "@/lib/storage";
+import { Dictionary } from "@/types/dictionary";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { ListFilter, Upload } from "lucide-react";
+import DictionaryImport from "@/components/DictionaryImport";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useToast } from "@/hooks/use-toast";
 
 const Dictionaries = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [dictionaries, setDictionaries] = useState<Dictionary[]>([]);
+  const [selectedDictionary, setSelectedDictionary] = useState<Dictionary | null>(null);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Load dictionaries from local storage on component mount
+    // without clearing them first
+    loadDictionaries();
+  }, []);
+
+  const loadDictionaries = () => {
+    const loadedDictionaries = getDictionaries();
+    // Sort dictionaries by name in ascending order
+    const sortedDictionaries = [...loadedDictionaries].sort((a, b) => 
+      a.dic_name.localeCompare(b.dic_name)
+    );
+    setDictionaries(sortedDictionaries);
+    setSelectedDictionary(null);
+  };
+
+  const handleDictionarySelect = (dictionaryId: string) => {
+    const dictionary = getDictionary(dictionaryId);
+    setSelectedDictionary(dictionary || null);
+  };
+
+  const handleImportComplete = () => {
+    loadDictionaries();
+    toast({
+      title: "Dictionaries updated",
+      description: "Dictionary list has been refreshed"
+    });
+  };
 
   return (
-    <div className="flex h-screen bg-background">
-      <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
-      
-      {/* Main content area - adjusted margin to match smaller sidebar */}
-      <div 
-        className={cn(
-          "flex-1 transition-all duration-300 overflow-auto",
-          collapsed ? "ml-[56px]" : "ml-[192px]" // Updated from 70px/240px to 56px/192px
-        )}
-      >
-        <div className="p-4 md:p-6 max-w-7xl mx-auto">
-          <h1 className="text-2xl font-bold tracking-tight">Dictionaries</h1>
-          <p className="text-muted-foreground mt-1">Manage your reference data.</p>
-          
-          {/* Actions */}
-          <div className="mt-4 flex justify-end">
-            <Button>Add Dictionary</Button>
-          </div>
-          
-          {/* List of dictionaries */}
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Colors</CardTitle>
-                <CardDescription>List of supported colors.</CardDescription>
-              </CardHeader>
-              <CardContent className="grid gap-4">
-                <div className="flex items-center space-x-2">
-                  <Switch id="colors" defaultChecked />
-                  <Label htmlFor="colors">Enabled</Label>
-                </div>
-              </CardContent>
-            </Card>
+    <ThemeProvider>
+      <div className="min-h-screen bg-background flex">
+        <Sidebar 
+          collapsed={sidebarCollapsed} 
+          setCollapsed={setSidebarCollapsed} 
+        />
+        
+        <main className={`flex-1 transition-all duration-300 p-4 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}>
+          <div className="animate-fade-in">
+            <div className="flex justify-between items-center mb-4">
+              <h1 className="text-2xl font-medium">Dictionaries</h1>
+              <div className="flex gap-2">
+                <DictionaryImport onImportComplete={handleImportComplete} />
+                <Button size="sm">
+                  Create Dictionary
+                </Button>
+              </div>
+            </div>
+            
+            <div className="mb-4 w-full max-w-xs">
+              <Select onValueChange={handleDictionarySelect}>
+                <SelectTrigger className="w-full text-sm">
+                  <SelectValue placeholder="Select a dictionary" />
+                </SelectTrigger>
+                <SelectContent>
+                  {dictionaries.map((dictionary) => (
+                    <SelectItem key={dictionary.id} value={dictionary.id}>
+                      {dictionary.dic_name} (ID: {dictionary.id})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Sizes</CardTitle>
-                <CardDescription>Available sizes for products.</CardDescription>
-              </CardHeader>
-              <CardContent className="grid gap-4">
-                <div className="flex items-center space-x-2">
-                  <Switch id="sizes" />
-                  <Label htmlFor="sizes">Enabled</Label>
-                </div>
-              </CardContent>
-            </Card>
-
-             <Card>
-              <CardHeader>
-                <CardTitle>Materials</CardTitle>
-                <CardDescription>Acceptable product materials.</CardDescription>
-              </CardHeader>
-              <CardContent className="grid gap-4">
-                <div className="flex items-center space-x-2">
-                  <Switch id="materials" defaultChecked />
-                  <Label htmlFor="materials">Enabled</Label>
-                </div>
-              </CardContent>
-            </Card>
+            {selectedDictionary && (
+              <Card className="shadow-sm">
+                <CardHeader className="py-3 px-4">
+                  <CardTitle className="flex justify-between items-center text-lg">
+                    <span>{selectedDictionary.dic_name} <span className="text-xs text-muted-foreground">ID: {selectedDictionary.id}</span></span>
+                    <Badge variant="outline" className="text-xs">
+                      {selectedDictionary.items.length} items
+                    </Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="px-3 py-2">
+                  <div className="space-y-1">
+                    <div className="flex items-center text-muted-foreground mb-2 text-xs">
+                      <ListFilter className="h-3 w-3 mr-1" />
+                      <span className="font-medium">Dictionary Items</span>
+                    </div>
+                    
+                    <div className="border rounded-md overflow-hidden">
+                      <Table className="w-full text-xs">
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead className="py-1 px-2 font-medium">Value</TableHead>
+                            <TableHead className="py-1 px-2 font-medium">Description</TableHead>
+                            <TableHead className="py-1 px-2 font-medium w-20 text-right">ID</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {selectedDictionary.items.map((item) => (
+                            <TableRow key={item.id}>
+                              <TableCell className="py-1 px-2 font-medium">{item.value}</TableCell>
+                              <TableCell className="py-1 px-2 text-muted-foreground">{item.description || '-'}</TableCell>
+                              <TableCell className="py-1 px-2 text-right">
+                                <Badge variant="secondary" className="text-[10px]">
+                                  {item.id}
+                                </Badge>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
-        </div>
+        </main>
       </div>
-    </div>
+    </ThemeProvider>
   );
 };
 
