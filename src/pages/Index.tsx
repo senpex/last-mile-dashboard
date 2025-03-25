@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -727,4 +728,50 @@ const Index = () => {
       pickupTime: "03/24/2025 08:00 AM",
       pickupLocation: {
         name: "Rooms To Go - Rogers",
-        address: "4408 W Walnut St, Rogers, AR 72
+        address: "4408 W Walnut St, Rogers, AR 72756, US"
+      },
+      dropoffTime: "03/24/2025 10:00 AM",
+      dropoffLocation: {
+        name: "Mark Henderson",
+        address: "543 NW Oak Ridge Ave, Bentonville, AR 72712, US"
+      },
+      price: "$899.99",
+      tip: "$50.00",
+      fees: "$49.99",
+      courier: "",
+      organization: "Rooms To Go",
+      distance: "7.3 mi"
+    },
+    {
+      id: 32,
+      packageId: "QBD-45678912",
+      orderName: "Restaurant Order",
+      status: "Accepted Repeated Order",
+      pickupTime: "03/24/2025 06:30 PM",
+      pickupLocation: {
+        name: "Taziki's Mediterranean Cafe - Rogers",
+        address: "2203 S Promenade Blvd, Rogers, AR 72758, US"
+      },
+      dropoffTime: "03/24/2025 07:15 PM",
+      dropoffLocation: {
+        name: "Stephanie Harris",
+        address: "987 SW Paddington Ave, Bentonville, AR 72712, US"
+      },
+      price: "$45.99",
+      tip: "$8.00",
+      fees: "$3.99",
+      courier: "Carlos Rodriguez",
+      organization: "Taziki's Mediterranean Cafe",
+      distance: "8.2 mi"
+    }
+  ];
+
+  return (
+    <ThemeProvider>
+      <Sidebar collapsed={sidebarCollapsed} onCollapse={setSidebarCollapsed} />
+      {/* Rest of component JSX */}
+    </ThemeProvider>
+  );
+};
+
+export default Index;
