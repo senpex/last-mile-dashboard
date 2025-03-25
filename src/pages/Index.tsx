@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
 import { Button } from "@/components/ui/button";
@@ -183,21 +182,40 @@ const Index = () => {
     }
   ];
 
-  // Function to get the status display value from the dictionary
-  const getStatusDisplay = (statusValue: string): DictionaryItem | undefined => {
-    if (!statusDictionary) return undefined;
+  const statusMapping: Record<string, string> = {
+    "Dropoff Complete": "completed",
+    "Canceled By Customer": "cancelled_order",
+    "In Transit": "in_transit",
+    "Picking Up": "started_working",
+    "Arrived For Pickup": "arrived_for_pickup"
+  };
+
+  const getStatusDisplay = (statusValue: string): string => {
+    if (!statusDictionary) return statusValue;
     
-    return statusDictionary.items.find(item => 
-      item.value.toLowerCase() === statusValue.toLowerCase()
+    const dictionaryId = statusMapping[statusValue];
+    if (!dictionaryId) return statusValue;
+    
+    const dictionaryItem = statusDictionary.items.find(item => 
+      item.id === dictionaryId
     );
+    
+    return dictionaryItem ? dictionaryItem.value : statusValue;
   };
 
   const getStatusBadgeVariant = (status: string) => {
-    switch (status) {
-      case "Dropoff Complete":
+    const dictionaryId = statusMapping[status];
+    
+    switch (dictionaryId) {
+      case "completed":
         return "success";
-      case "Canceled By Customer":
+      case "cancelled_order":
         return "destructive";
+      case "in_transit":
+        return "default";
+      case "started_working":
+      case "arrived_for_pickup":
+        return "warning";
       default:
         return "default";
     }
@@ -302,12 +320,10 @@ const Index = () => {
                         {visibleColumns.includes("status") && (
                           <TableCell>
                             <Badge 
-                              variant={delivery.status === "Canceled By Customer" ? "destructive" : "outline"}
+                              variant={getStatusBadgeVariant(delivery.status) as any}
                               className={`${delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}`}
                             >
-                              {statusDictionary 
-                                ? getStatusDisplay(delivery.status)?.value || delivery.status
-                                : delivery.status}
+                              {getStatusDisplay(delivery.status)}
                             </Badge>
                           </TableCell>
                         )}
@@ -428,3 +444,4 @@ const Index = () => {
 };
 
 export default Index;
+
