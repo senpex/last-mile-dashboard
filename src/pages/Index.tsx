@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -63,6 +64,8 @@ const Index = () => {
 
   const availableColumns: ColumnOption[] = [
     { id: "status", label: "Status", default: true },
+    { id: "packageId", label: "Package ID", default: true },
+    { id: "orderName", label: "Order name", default: true },
     { id: "pickupTime", label: "Pickup Time", default: true },
     { id: "pickupLocation", label: "Pickup Location", default: true },
     { id: "dropoffTime", label: "Dropoff Time", default: true },
@@ -82,6 +85,8 @@ const Index = () => {
   const deliveries = [
     {
       id: 1,
+      packageId: "WMT-10042501",
+      orderName: "Grocery Delivery",
       status: "Dropoff Complete",
       pickupTime: "03/24/2025 12:49 PM",
       pickupLocation: {
@@ -102,6 +107,8 @@ const Index = () => {
     },
     {
       id: 2,
+      packageId: "WMT-10042502",
+      orderName: "Weekly Essentials",
       status: "Dropoff Complete",
       pickupTime: "03/24/2025 11:34 AM",
       pickupLocation: {
@@ -122,6 +129,8 @@ const Index = () => {
     },
     {
       id: 3,
+      packageId: "WMT-10042503",
+      orderName: "Pantry Restock",
       status: "Dropoff Complete",
       pickupTime: "03/24/2025 11:34 AM",
       pickupLocation: {
@@ -142,6 +151,8 @@ const Index = () => {
     },
     {
       id: 4,
+      packageId: "WMT-10042504",
+      orderName: "Home Essentials",
       status: "Dropoff Complete",
       pickupTime: "03/24/2025 11:34 AM",
       pickupLocation: {
@@ -162,6 +173,8 @@ const Index = () => {
     },
     {
       id: 5,
+      packageId: "CUN-21980357",
+      orderName: "Lunch Order",
       status: "Canceled By Customer",
       pickupTime: "03/24/2025 11:20 AM",
       pickupLocation: {
@@ -282,6 +295,12 @@ const Index = () => {
                       {visibleColumns.includes("status") && (
                         <TableHead className="w-[140px]">Status</TableHead>
                       )}
+                      {visibleColumns.includes("packageId") && (
+                        <TableHead>Package ID</TableHead>
+                      )}
+                      {visibleColumns.includes("orderName") && (
+                        <TableHead>Order name</TableHead>
+                      )}
                       {visibleColumns.includes("pickupTime") && (
                         <TableHead>Pickup Time</TableHead>
                       )}
@@ -326,6 +345,14 @@ const Index = () => {
                               {getStatusDisplay(delivery.status)}
                             </Badge>
                           </TableCell>
+                        )}
+                        {visibleColumns.includes("packageId") && (
+                          <TableCell>
+                            <span className="font-mono text-sm">{delivery.packageId}</span>
+                          </TableCell>
+                        )}
+                        {visibleColumns.includes("orderName") && (
+                          <TableCell>{delivery.orderName}</TableCell>
                         )}
                         {visibleColumns.includes("pickupTime") && (
                           <TableCell>{delivery.pickupTime}</TableCell>
@@ -444,4 +471,3 @@ const Index = () => {
 };
 
 export default Index;
-
