@@ -62,10 +62,10 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
           <ul className="space-y-1 px-2">
             <li>
               <Link 
-                to="/" 
+                to="/deliveries" 
                 className={cn(
                   "sidebar-item",
-                  location.pathname === "/" ? "active" : ""
+                  location.pathname === "/deliveries" ? "active" : ""
                 )}
               >
                 <Package className="sidebar-icon" />
