@@ -55,6 +55,10 @@ const Deliveries = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
   const [filteredDeliveries, setFilteredDeliveries] = useState<any[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [activeColumns, setActiveColumns] = useState<string[]>([
+    "packageId", "orderName", "status", "pickupTime", "dropoffTime", "price"
+  ]);
 
   const deliveries = [
     {
@@ -741,11 +745,4 @@ const Deliveries = () => {
     }
   ];
 
-  return (
-    <div>
-      {/* Component JSX */}
-    </div>
-  );
-};
-
-export default Deliveries;
+  useEffect
