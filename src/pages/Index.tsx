@@ -728,4 +728,4 @@ const Index = () => {
       pickupTime: "03/24/2025 08:00 AM",
       pickupLocation: {
         name: "Rooms To Go - Rogers",
-        address: "4408 W Walnut St
+        address: "4408
