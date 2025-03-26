@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { GripVertical, Plus } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
-import TransportIcon from "@/components/icons/TransportIcon";
+import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 
