@@ -1,3 +1,4 @@
+
 import { Layout } from "@/components/layout/Layout";
 import { Table } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,8 +26,14 @@ const DriversPage = () => {
   }, []);
 
   // Transport icon mapping
-  const getTransportIcon = (type: string) => {
+  const getTransportIcon = (type: string | undefined) => {
     console.log("Getting icon for transport type:", type); // Debug: Log the transport type
+    
+    // Guard against undefined type
+    if (!type) {
+      console.log("Transport type is undefined, using default icon");
+      return <Car className="h-5 w-5 text-gray-500" />;
+    }
     
     const lowercaseType = type.toLowerCase();
     const iconMap: {[key: string]: React.ReactNode} = {
@@ -116,7 +123,7 @@ const DriversPage = () => {
                             <div 
                               key={transportId} 
                               className="flex items-center justify-center p-2 rounded-md bg-muted" 
-                              title={transportTypes[transportId]}
+                              title={transportTypes[transportId] || 'Unknown transport'}
                             >
                               {getTransportIcon(transportTypes[transportId])}
                             </div>
