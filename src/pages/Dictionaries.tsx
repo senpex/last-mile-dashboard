@@ -17,7 +17,6 @@ import {
   ListFilter, 
   Upload,
   Car,
-  Pickup,
   Bus,
   Truck,
   Bike,
@@ -76,7 +75,7 @@ const Dictionaries = () => {
     
     const typeToIconMap: {[key: string]: React.ReactNode} = {
       'car': <Car className="h-4 w-4 text-blue-600" />,
-      'suv': <Pickup className="h-4 w-4 text-teal-600" />,
+      'suv': <Truck className="h-4 w-4 text-teal-600" />,
       'bus': <Bus className="h-4 w-4 text-green-600" />,
       'truck': <Truck className="h-4 w-4 text-red-600" />,
       'pickup_truck': <Truck className="h-4 w-4 text-orange-600" />,

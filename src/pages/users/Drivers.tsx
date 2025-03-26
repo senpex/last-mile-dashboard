@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { 
   Plus, 
   Car, 
-  Pickup,
   Bus,
   Truck, 
   Bike, 
@@ -53,7 +52,7 @@ const DriversPage = () => {
     
     const typeToIconMap: {[key: string]: React.ReactNode} = {
       'car': <Car className="h-5 w-5 text-blue-600" />,
-      'suv': <Pickup className="h-5 w-5 text-teal-600" />,
+      'suv': <Truck className="h-5 w-5 text-teal-600" />,
       'bus': <Bus className="h-5 w-5 text-green-600" />,
       'truck': <Truck className="h-5 w-5 text-red-600" />,
       'pickup_truck': <Truck className="h-5 w-5 text-orange-600" />,
