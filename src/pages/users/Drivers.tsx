@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -203,7 +204,7 @@ const DriversPage = () => {
           <CardContent>
             <ScrollArea orientation="horizontal">
               <Table>
-                <TableHeader>
+                <TableHeader className="bg-muted/50">
                   <TableRow>
                     {sortedColumns.map((columnId) => {
                       const column = availableColumns.find(col => col.id === columnId);
@@ -218,7 +219,7 @@ const DriversPage = () => {
                           onDragOver={(e) => handleDragOver(e, columnId)}
                           onDragEnd={handleDragEnd}
                           onDrop={(e) => handleDrop(e, columnId)}
-                          className="whitespace-nowrap"
+                          className="whitespace-nowrap uppercase text-xs tracking-wider text-muted-foreground font-semibold"
                         >
                           {column.label}
                         </TableHead>
@@ -285,3 +286,4 @@ const DriversPage = () => {
 };
 
 export default DriversPage;
+
