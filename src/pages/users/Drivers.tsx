@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { Table } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,20 +28,19 @@ const DriversPage = () => {
   const getTransportIcon = (type: string) => {
     console.log("Getting icon for transport type:", type); // Debug: Log the transport type
     
-    switch(type.toLowerCase()) {
-      case 'car':
-        return <Car className="h-5 w-5 text-blue-600" />;
-      case 'bus':
-        return <Bus className="h-5 w-5 text-green-600" />;
-      case 'truck':
-        return <Truck className="h-5 w-5 text-red-600" />;
-      case 'bike':
-      case 'bicycle':
-        return <Bike className="h-5 w-5 text-purple-600" />;
-      default:
-        console.log("No matching icon for type:", type); // Debug: Log when no match is found
-        return <Car className="h-5 w-5 text-gray-500" />;
-    }
+    const lowercaseType = type.toLowerCase();
+    const iconMap: {[key: string]: React.ReactNode} = {
+      'car': <Car className="h-5 w-5 text-blue-600" />,
+      'suv': <Car className="h-5 w-5 text-teal-600" />,
+      'bus': <Bus className="h-5 w-5 text-green-600" />,
+      'truck': <Truck className="h-5 w-5 text-red-600" />,
+      'pickup_truck': <Truck className="h-5 w-5 text-orange-600" />,
+      'bike': <Bike className="h-5 w-5 text-purple-600" />,
+      'bicycle': <Bike className="h-5 w-5 text-purple-600" />,
+    };
+
+    // Default to Car icon if no specific match found
+    return iconMap[lowercaseType] || <Car className="h-5 w-5 text-gray-500" />;
   };
 
   const drivers = [
@@ -120,9 +118,7 @@ const DriversPage = () => {
                               className="flex items-center justify-center p-2 rounded-md bg-muted" 
                               title={transportTypes[transportId]}
                             >
-                              {transportTypes[transportId] ? 
-                                getTransportIcon(transportTypes[transportId]) : 
-                                <span className="text-xs text-muted-foreground">?</span>}
+                              {getTransportIcon(transportTypes[transportId])}
                             </div>
                           );
                         })}
