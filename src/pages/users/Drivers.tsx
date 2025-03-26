@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -180,19 +179,17 @@ const DriversPage = () => {
     <Layout>
       <div className="container mx-auto p-6">
         <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-2xl font-bold">Drivers Management</h1>
-            <div className="flex items-center gap-2">
-              <Button size="sm" className="flex items-center gap-1">
-                <Plus className="w-3 h-3" />
-                Add Driver
-              </Button>
-              <ColumnSelector
-                columns={availableColumns}
-                visibleColumns={visibleColumns}
-                setVisibleColumns={setVisibleColumns}
-              />
-            </div>
+          <h1 className="text-2xl font-bold mb-4">Drivers Management</h1>
+          <div className="flex items-center gap-2 mb-4">
+            <Button size="sm" className="flex items-center gap-1">
+              <Plus className="w-3 h-3" />
+              Add Driver
+            </Button>
+            <ColumnSelector
+              columns={availableColumns}
+              visibleColumns={visibleColumns}
+              setVisibleColumns={setVisibleColumns}
+            />
           </div>
         </div>
 
