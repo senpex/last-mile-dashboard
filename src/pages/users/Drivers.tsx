@@ -221,6 +221,8 @@ const DriversPage = () => {
                 <Plus className="w-3 h-3" />
                 Add Driver
               </Button>
+            </div>
+            <div className="flex items-center gap-2">
               <div className="relative">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -231,8 +233,6 @@ const DriversPage = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
-            </div>
-            <div className="flex justify-end">
               <ColumnSelector
                 columns={availableColumns}
                 visibleColumns={visibleColumns}
