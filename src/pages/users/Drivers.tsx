@@ -15,6 +15,8 @@ type StripeStatus = 'Unverified' | 'Pending' | 'Verified';
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{[key: string]: string}>({});
   const [transportIcons, setTransportIcons] = useState<{[key: string]: string | undefined}>({});
+  const [statusDictionary, setStatusDictionary] = useState<{[key: string]: string}>({});
+  const [statusColors, setStatusColors] = useState<{[key: string]: string}>({});
   const [isLoading, setIsLoading] = useState(true);
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
@@ -43,6 +45,7 @@ const DriversPage = () => {
 
   useEffect(() => {
     loadTransportDictionary();
+    loadStatusDictionary();
   }, []);
 
   useEffect(() => {
@@ -70,7 +73,7 @@ const DriversPage = () => {
       name: "John Doe", 
       email: "john.doe@example.com", 
       phone: "(123) 456-7890", 
-      status: "Active",
+      status: "1",
       transports: ["1", "3"],
       rating: 4.8,
       stripe: getRandomStripeStatus()
@@ -80,7 +83,7 @@ const DriversPage = () => {
       name: "Jane Smith", 
       email: "jane.smith@example.com", 
       phone: "(123) 456-7891", 
-      status: "On leave",
+      status: "2",
       transports: ["2"],
       rating: 3.5,
       stripe: getRandomStripeStatus()
@@ -90,7 +93,7 @@ const DriversPage = () => {
       name: "Mike Johnson", 
       email: "mike.johnson@example.com", 
       phone: "(123) 456-7892", 
-      status: "Active",
+      status: "1",
       transports: ["4", "5"],
       rating: 5.0,
       stripe: getRandomStripeStatus()
@@ -136,6 +139,36 @@ const DriversPage = () => {
       console.log("Transport dictionary not found or empty for ID: 2");
     }
     setIsLoading(false);
+  };
+
+  const loadStatusDictionary = () => {
+    const statusDict = getDictionary("6");
+    
+    if (statusDict && statusDict.items.length > 0) {
+      console.log("Status Dictionary Items:", statusDict.items);
+      const statuses: {[key: string]: string} = {};
+      const colors: {[key: string]: string} = {};
+      
+      statusDict.items.forEach(item => {
+        statuses[item.id] = item.value;
+        
+        if (item.value.toLowerCase().includes('active')) {
+          colors[item.id] = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+        } else if (item.value.toLowerCase().includes('leave') || item.value.toLowerCase().includes('pause')) {
+          colors[item.id] = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+        } else if (item.value.toLowerCase().includes('inactive') || item.value.toLowerCase().includes('suspend')) {
+          colors[item.id] = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+        } else {
+          colors[item.id] = 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
+        }
+      });
+      
+      setStatusDictionary(statuses);
+      setStatusColors(colors);
+      console.log("Loaded status types:", statuses);
+    } else {
+      console.log("Status dictionary not found or empty for ID: 6");
+    }
   };
 
   const getRandomTransportIcon = () => {
@@ -242,6 +275,17 @@ const DriversPage = () => {
     );
   };
 
+  const renderStatus = (statusId: string) => {
+    const statusText = statusDictionary[statusId] || `Unknown (${statusId})`;
+    const statusColorClass = statusColors[statusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
+    
+    return (
+      <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColorClass}`}>
+        {statusText}
+      </div>
+    );
+  };
+
   return (
     <Layout>
       <div className="container mx-auto p-6">
@@ -339,11 +383,7 @@ const DriversPage = () => {
                       )}
                       {sortedColumns.includes("status") && (
                         <TableCell>
-                          <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                            driver.status === "Active" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300" : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
-                          }`}>
-                            {driver.status}
-                          </div>
+                          {renderStatus(driver.status)}
                         </TableCell>
                       )}
                       {sortedColumns.includes("stripe") && (
