@@ -57,8 +57,8 @@ const DriversPage = () => {
       <div className="flex items-center justify-center">
         <TransportIcon 
           transportType={randomType}
-          size={20}
-          className="h-5 w-5"
+          size={14}  // Reduced from 20 to 14 (30% reduction)
+          className="h-[14px] w-[14px]"  // Corresponding Tailwind classes
         />
       </div>
     );
