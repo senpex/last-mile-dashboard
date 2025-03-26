@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { GripVertical, Plus } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
-import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
+import TransportIcon from "@/components/icons/TransportIcon";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 
@@ -180,7 +181,7 @@ const DriversPage = () => {
       <div className="container mx-auto p-6">
         <div className="mb-6">
           <h1 className="text-2xl font-bold mb-4">Drivers Management</h1>
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-2">  {/* Changed mb-4 to mb-2 */}
             <Button size="sm" className="flex items-center gap-1">
               <Plus className="w-3 h-3" />
               Add Driver
