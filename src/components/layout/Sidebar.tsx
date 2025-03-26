@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from "./ThemeProvider";
 import ThemeToggle from "./ThemeToggle";
 import LogoutButton from "./LogoutButton";
-import { ChevronLeft, ChevronRight, Package, BookOpen, Bot, LayoutDashboard, UserRound } from "lucide-react";
+import { ChevronLeft, ChevronRight, Package, BookOpen, Bot, LayoutDashboard, UserRound, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
 
@@ -17,6 +17,7 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
   const location = useLocation();
   
   const [mounting, setMounting] = useState(true);
+  const [usersMenuOpen, setUsersMenuOpen] = useState(false);
   
   useEffect(() => {
     const timer = setTimeout(() => setMounting(false), 300);
@@ -25,6 +26,10 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
+  };
+
+  const toggleUsersMenu = () => {
+    setUsersMenuOpen(!usersMenuOpen);
   };
 
   return (
@@ -93,6 +98,59 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
                   Deliveries
                 </span>
               </Link>
+            </li>
+            <li>
+              <button
+                onClick={toggleUsersMenu}
+                className={cn(
+                  "sidebar-item w-full text-left",
+                  location.pathname.includes("/users") ? "active" : ""
+                )}
+              >
+                <Users className="sidebar-icon" />
+                <span 
+                  className={cn(
+                    "menu-item-text",
+                    collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+                  )}
+                >
+                  User Management
+                </span>
+                {!collapsed && (
+                  <ChevronRight 
+                    className={cn(
+                      "ml-auto w-4 h-4 transition-transform",
+                      usersMenuOpen ? "rotate-90" : ""
+                    )} 
+                  />
+                )}
+              </button>
+              {!collapsed && usersMenuOpen && (
+                <ul className="mt-1 ml-6 space-y-1">
+                  <li>
+                    <Link 
+                      to="/users/drivers" 
+                      className={cn(
+                        "sidebar-item text-sm",
+                        location.pathname === "/users/drivers" ? "active" : ""
+                      )}
+                    >
+                      <span>Drivers</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link 
+                      to="/users/clients" 
+                      className={cn(
+                        "sidebar-item text-sm",
+                        location.pathname === "/users/clients" ? "active" : ""
+                      )}
+                    >
+                      <span>Clients</span>
+                    </Link>
+                  </li>
+                </ul>
+              )}
             </li>
             <li>
               <Link 
