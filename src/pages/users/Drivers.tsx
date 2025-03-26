@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -74,7 +75,7 @@ const DriversPage = () => {
       email: "john.doe@example.com", 
       phone: "(123) 456-7890", 
       status: "online",
-      transports: ["1", "3"],
+      transports: ["1", "3", "pickup_truck", "9ft_cargo_van"],
       rating: 4.8,
       stripe: getRandomStripeStatus()
     },
