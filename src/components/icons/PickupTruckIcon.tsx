@@ -25,15 +25,17 @@ const PickupTruckIcon: React.FC<PickupTruckIconProps> = ({
       strokeLinejoin="round"
       className={className}
     >
-      {/* Base of the pickup truck */}
-      <path d="M3,12 L3,17 L6,17 M21,17 L18,17" />
       {/* Cabin */}
-      <path d="M3,12 L8,7 L12,7 L12,17" />
+      <path d="M4,12 L4,17 L7,17 M4,12 L8,8 L12,8 L12,17" />
       {/* Cargo bed */}
-      <path d="M12,12 L20,12 L21,17 L12,17 L12,12" />
+      <path d="M12,8 L16,8 L19,12 L20,17 L12,17 L12,8" />
+      {/* Bottom line */}
+      <path d="M3,17 L21,17" />
       {/* Wheels */}
-      <circle cx="7.5" cy="17" r="1.5" />
-      <circle cx="16.5" cy="17" r="1.5" />
+      <circle cx="7.5" cy="17" r="2" />
+      <circle cx="16.5" cy="17" r="2" />
+      {/* Window */}
+      <path d="M8,8 L8,12 L12,12 L12,8" />
     </svg>
   );
 };
