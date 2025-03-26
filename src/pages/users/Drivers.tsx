@@ -1,12 +1,14 @@
+
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus, Star, StarHalf, StarOff } from "lucide-react";
+import { GripVertical, Plus, Search } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
+import { Input } from "@/components/ui/input";
 
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{[key: string]: string}>({});
@@ -14,6 +16,8 @@ const DriversPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [filteredDrivers, setFilteredDrivers] = useState<any[]>([]);
 
   const availableColumns: ColumnOption[] = [
     { id: "id", label: "ID", default: true },
@@ -51,6 +55,55 @@ const DriversPage = () => {
       return newOrder.filter(column => visibleColumns.includes(column));
     });
   }, [visibleColumns]);
+
+  const drivers = [
+    { 
+      id: 5432, 
+      name: "John Doe", 
+      email: "john.doe@example.com", 
+      phone: "(123) 456-7890", 
+      status: "Active",
+      transports: ["1", "3"],
+      rating: 4.8
+    },
+    { 
+      id: 6543, 
+      name: "Jane Smith", 
+      email: "jane.smith@example.com", 
+      phone: "(123) 456-7891", 
+      status: "On leave",
+      transports: ["2"],
+      rating: 3.5 
+    },
+    { 
+      id: 7654, 
+      name: "Mike Johnson", 
+      email: "mike.johnson@example.com", 
+      phone: "(123) 456-7892", 
+      status: "Active",
+      transports: ["4", "5"],
+      rating: 5.0
+    },
+  ];
+
+  useEffect(() => {
+    if (searchTerm.length >= 3) {
+      const filtered = drivers.filter(driver => 
+        driver.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        driver.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        driver.phone.includes(searchTerm) ||
+        driver.id.toString().includes(searchTerm)
+      );
+      setFilteredDrivers(filtered);
+    } else {
+      setFilteredDrivers(drivers);
+    }
+  }, [searchTerm]);
+
+  // Initialize filtered drivers with all drivers
+  useEffect(() => {
+    setFilteredDrivers(drivers);
+  }, []);
 
   const loadTransportDictionary = () => {
     const transportDict = getDictionary("2");
@@ -149,36 +202,6 @@ const DriversPage = () => {
 
   const sortedColumns = getSortedVisibleColumns();
 
-  const drivers = [
-    { 
-      id: 5432, 
-      name: "John Doe", 
-      email: "john.doe@example.com", 
-      phone: "(123) 456-7890", 
-      status: "Active",
-      transports: ["1", "3"],
-      rating: 4.8
-    },
-    { 
-      id: 6543, 
-      name: "Jane Smith", 
-      email: "jane.smith@example.com", 
-      phone: "(123) 456-7891", 
-      status: "On leave",
-      transports: ["2"],
-      rating: 3.5 
-    },
-    { 
-      id: 7654, 
-      name: "Mike Johnson", 
-      email: "mike.johnson@example.com", 
-      phone: "(123) 456-7892", 
-      status: "Active",
-      transports: ["4", "5"],
-      rating: 5.0
-    },
-  ];
-
   const renderRating = (rating: number) => {
     return (
       <div className="flex items-center">
@@ -193,10 +216,22 @@ const DriversPage = () => {
         <div className="space-y-4">
           <h1 className="text-2xl font-bold">Drivers Management</h1>
           <div className="flex items-center justify-between">
-            <Button size="sm" className="flex items-center gap-1 text-xs px-2 py-1">
-              <Plus className="w-3 h-3" />
-              Add Driver
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button size="sm" className="flex items-center gap-1 text-xs px-2 py-1">
+                <Plus className="w-3 h-3" />
+                Add Driver
+              </Button>
+              <div className="relative">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder="Search drivers..."
+                  className="w-[200px] pl-8 text-xs h-8"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+            </div>
             <div className="flex justify-end">
               <ColumnSelector
                 columns={availableColumns}
@@ -236,7 +271,7 @@ const DriversPage = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {drivers.map((driver) => (
+                  {filteredDrivers.map((driver) => (
                     <TableRow key={driver.id}>
                       {sortedColumns.includes("id") && (
                         <TableCell className="font-mono">{driver.id}</TableCell>

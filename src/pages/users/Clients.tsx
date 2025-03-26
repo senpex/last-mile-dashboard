@@ -1,15 +1,18 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus } from "lucide-react";
+import { GripVertical, Plus, Search } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
+import { Input } from "@/components/ui/input";
 
 const ClientsPage = () => {
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [filteredClients, setFilteredClients] = useState<any[]>([]);
 
   const availableColumns: ColumnOption[] = [
     { id: "id", label: "ID", default: true },
@@ -35,7 +38,7 @@ const ClientsPage = () => {
     { id: 34567, name: "Robert Brown", contact: "Robert Brown", email: "robert.brown@example.com", phone: "(123) 456-7892", type: "Individual" },
   ];
 
-  React.useEffect(() => {
+  useEffect(() => {
     setColumnOrder(prevOrder => {
       const newOrder = [...prevOrder];
       
@@ -48,6 +51,27 @@ const ClientsPage = () => {
       return newOrder.filter(column => visibleColumns.includes(column));
     });
   }, [visibleColumns]);
+
+  // Initialize filtered clients with all clients
+  useEffect(() => {
+    setFilteredClients(clients);
+  }, []);
+
+  // Filter clients when search term changes
+  useEffect(() => {
+    if (searchTerm.length >= 3) {
+      const filtered = clients.filter(client => 
+        client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        client.contact.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        client.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        client.phone.includes(searchTerm) ||
+        client.id.toString().includes(searchTerm)
+      );
+      setFilteredClients(filtered);
+    } else {
+      setFilteredClients(clients);
+    }
+  }, [searchTerm]);
 
   const handleDragStart = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
     setDraggedColumn(columnId);
@@ -110,10 +134,22 @@ const ClientsPage = () => {
           <h1 className="text-2xl font-bold">Clients Management</h1>
           
           <div className="flex items-center justify-between">
-            <Button size="sm" className="flex items-center gap-1 text-xs px-2 py-1">
-              <Plus className="w-3 h-3" />
-              Add Client
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button size="sm" className="flex items-center gap-1 text-xs px-2 py-1">
+                <Plus className="w-3 h-3" />
+                Add Client
+              </Button>
+              <div className="relative">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder="Search clients..."
+                  className="w-[200px] pl-8 text-xs h-8"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+            </div>
             <div className="flex justify-end">
               <ColumnSelector
                 columns={availableColumns}
@@ -153,7 +189,7 @@ const ClientsPage = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {clients.map((client) => (
+                  {filteredClients.map((client) => (
                     <TableRow key={client.id}>
                       {sortedColumns.includes("id") && (
                         <TableCell className="font-mono">{client.id}</TableCell>
