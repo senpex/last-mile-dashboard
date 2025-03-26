@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { Table } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -44,7 +43,7 @@ const ClientsPage = () => {
               <tbody>
                 {clients.map((client) => (
                   <tr key={client.id}>
-                    <td className="font-mono">{client.id}</td>
+                    <td className="font-sans font-mono">{client.id}</td>
                     <td>{client.name}</td>
                     <td>{client.contact}</td>
                     <td>{client.email}</td>

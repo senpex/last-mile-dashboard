@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { Table } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -43,7 +42,7 @@ const DriversPage = () => {
               <tbody>
                 {drivers.map((driver) => (
                   <tr key={driver.id}>
-                    <td className="font-mono">{driver.id}</td>
+                    <td className="font-sans font-mono">{driver.id}</td>
                     <td>{driver.name}</td>
                     <td>{driver.email}</td>
                     <td>{driver.phone}</td>
