@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table } from "@/components/ui/table";
@@ -18,7 +17,6 @@ import {
   User,
   Tractor,
   Motorcycle,
-  Sailboat,
   Shuttle,
   Snowflake,
   Car as SuvIcon,

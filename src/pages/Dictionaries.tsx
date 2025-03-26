@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
@@ -85,7 +84,6 @@ const Dictionaries = () => {
   };
 
   const getTransportIcon = (transportType: string, iconName?: string) => {
-    // If an explicit icon name is provided, use that first
     if (iconName) {
       const lowerCaseIcon = iconName.toLowerCase();
       
@@ -120,7 +118,6 @@ const Dictionaries = () => {
       }
     }
     
-    // Fall back to transport type if no icon match
     const lowerCaseType = transportType.toLowerCase();
     
     const typeToIconMap: {[key: string]: React.ReactNode} = {
