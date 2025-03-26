@@ -26,20 +26,21 @@ const PickupTruckIcon: React.FC<PickupTruckIconProps> = ({
       className={className}
     >
       {/* Cabin */}
-      <path d="M4,8 L8,8 L8,17 L4,17 L4,8 Z" />
+      <path d="M3,12 L3,17 L8,17 L8,8 L6,8 C4.34,8 3,9.34 3,11 L3,12z" />
+      
+      {/* Hood */}
+      <path d="M8,8 L10,3 L14,3 L16,8" />
       
       {/* Cargo bed */}
-      <path d="M10,8 L18,8 L20,12 L20,17 L10,17 L10,8 Z" />
+      <path d="M8,8 L16,8 L19,11 L21,11 L21,17 L8,17 L8,8z" />
       
-      {/* Bottom line */}
-      <line x1="3" y1="17" x2="21" y2="17" />
-      
-      {/* Windshield */}
-      <line x1="6" y1="8" x2="6" y2="12" />
+      {/* Wheel wells */}
+      <path d="M5,14 C5,12.89 5.89,12 7,12 C8.11,12 9,12.89 9,14" strokeWidth="1" />
+      <path d="M14,14 C14,12.89 14.89,12 16,12 C17.11,12 18,12.89 18,14" strokeWidth="1" />
       
       {/* Wheels */}
-      <circle cx="7" cy="17" r="2" fill="none" />
-      <circle cx="17" cy="17" r="2" fill="none" />
+      <circle cx="7" cy="17" r="2" />
+      <circle cx="17" cy="17" r="2" />
     </svg>
   );
 };
