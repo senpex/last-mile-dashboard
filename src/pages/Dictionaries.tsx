@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -18,6 +17,7 @@ import {
   ListFilter, 
   Upload,
   Car,
+  Suv,
   Bus,
   Truck,
   Bike,
@@ -26,7 +26,7 @@ import {
   FerrisWheel,
   Ship,
   Plane,
-  User
+  User 
 } from "lucide-react";
 import DictionaryImport from "@/components/DictionaryImport";
 import {
@@ -46,14 +46,11 @@ const Dictionaries = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Load dictionaries from local storage on component mount
-    // without clearing them first
     loadDictionaries();
   }, []);
 
   const loadDictionaries = () => {
     const loadedDictionaries = getDictionaries();
-    // Sort dictionaries by name in ascending order
     const sortedDictionaries = [...loadedDictionaries].sort((a, b) => 
       a.dic_name.localeCompare(b.dic_name)
     );
@@ -73,14 +70,13 @@ const Dictionaries = () => {
       description: "Dictionary list has been refreshed"
     });
   };
-  
-  // Get the appropriate icon based on transport type
+
   const getTransportIcon = (transportType: string) => {
     const lowerCaseType = transportType.toLowerCase();
     
     const typeToIconMap: {[key: string]: React.ReactNode} = {
       'car': <Car className="h-4 w-4 text-blue-600" />,
-      'suv': <Car className="h-4 w-4 text-teal-600" />,
+      'suv': <Suv className="h-4 w-4 text-teal-600" />,
       'bus': <Bus className="h-4 w-4 text-green-600" />,
       'truck': <Truck className="h-4 w-4 text-red-600" />,
       'pickup_truck': <Truck className="h-4 w-4 text-orange-600" />,
@@ -162,7 +158,6 @@ const Dictionaries = () => {
                             <TableRow key={item.id}>
                               <TableCell className="py-1 px-2 font-medium">{item.value}</TableCell>
                               <TableCell className="py-1 px-2 text-muted-foreground">
-                                {/* Display icons for transport types dictionary (ID: 2) */}
                                 {selectedDictionary.id === "2" ? (
                                   <div className="flex items-center gap-2">
                                     {getTransportIcon(item.value)}
