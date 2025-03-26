@@ -16,6 +16,11 @@ import { toast } from "sonner";
 type StripeStatus = 'Unverified' | 'Pending' | 'Verified';
 type HireStatus = string;
 
+const getRandomStripeStatus = (): StripeStatus => {
+  const statuses: StripeStatus[] = ['Unverified', 'Pending', 'Verified'];
+  return statuses[Math.floor(Math.random() * statuses.length)];
+};
+
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{[key: string]: string}>({});
   const [transportIcons, setTransportIcons] = useState<{[key: string]: string | undefined}>({});
@@ -84,6 +89,18 @@ const DriversPage = () => {
     availableColumns.filter(col => col.default).map(col => col.id)
   );
 
+  const handleHireStatusChange = (driverId: number, newStatus: string) => {
+    setDrivers(prevDrivers => {
+      return prevDrivers.map(driver => {
+        if (driver.id === driverId) {
+          toast.success(`Driver ${driver.name}'s hire status updated to ${hireStatusDictionary[newStatus] || newStatus}`);
+          return { ...driver, hireStatus: newStatus };
+        }
+        return driver;
+      });
+    });
+  };
+
   useEffect(() => {
     loadTransportDictionary();
     loadStatusDictionary();
@@ -103,11 +120,6 @@ const DriversPage = () => {
       return newOrder.filter(column => visibleColumns.includes(column));
     });
   }, [visibleColumns]);
-
-  const getRandomStripeStatus = (): StripeStatus => {
-    const statuses: StripeStatus[] = ['Unverified', 'Pending', 'Verified'];
-    return statuses[Math.floor(Math.random() * statuses.length)];
-  };
 
   const getRandomHireStatus = (): string => {
     const hireStatusKeys = Object.keys(hireStatusDictionary);
