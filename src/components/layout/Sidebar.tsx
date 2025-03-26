@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from "./ThemeProvider";
 import ThemeToggle from "./ThemeToggle";
 import LogoutButton from "./LogoutButton";
-import { ChevronLeft, ChevronRight, Package, BookOpen, Bot, LayoutDashboard, UserRound, Users } from "lucide-react";
+import { ChevronLeft, ChevronRight, Package, BookOpen, Bot, LayoutDashboard, UserRound, Users, TowerControl } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
 
@@ -96,6 +96,25 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
                   )}
                 >
                   Deliveries
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/communication-tower" 
+                className={cn(
+                  "sidebar-item",
+                  location.pathname === "/communication-tower" ? "active" : ""
+                )}
+              >
+                <TowerControl className="sidebar-icon" />
+                <span 
+                  className={cn(
+                    "menu-item-text",
+                    collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+                  )}
+                >
+                  Communication Tower
                 </span>
               </Link>
             </li>

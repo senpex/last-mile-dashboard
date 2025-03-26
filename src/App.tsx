@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import DriversPage from "./pages/users/Drivers";
 import ClientsPage from "./pages/users/Clients";
+import CommunicationTower from "./pages/CommunicationTower";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="/profile" element={<Profile />} />
             <Route path="/users/drivers" element={<DriversPage />} />
             <Route path="/users/clients" element={<ClientsPage />} />
+            <Route path="/communication-tower" element={<CommunicationTower />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
