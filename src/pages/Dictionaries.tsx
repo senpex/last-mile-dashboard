@@ -30,6 +30,7 @@ import {
   User 
 } from "lucide-react";
 import PickupTruckIcon from "@/components/icons/PickupTruckIcon";
+import CargoVanIcon from "@/components/icons/CargoVanIcon";
 import DictionaryImport from "@/components/DictionaryImport";
 import {
   Table,
@@ -82,6 +83,8 @@ const Dictionaries = () => {
       'bus': <Bus className="h-4 w-4 text-green-600" />,
       'truck': <Truck className="h-4 w-4 text-red-600" />,
       'pickup_truck': <PickupTruckIcon className="h-4 w-4 text-orange-600" size={16} />,
+      'cargo_van': <CargoVanIcon className="h-4 w-4 text-amber-600" size={16} />,
+      '9ft_cargo_van': <CargoVanIcon className="h-4 w-4 text-amber-600" size={16} />,
       'bike': <Bike className="h-4 w-4 text-purple-600" />,
       'bicycle': <Bike className="h-4 w-4 text-indigo-600" />,
       'train': <Train className="h-4 w-4 text-cyan-600" />,

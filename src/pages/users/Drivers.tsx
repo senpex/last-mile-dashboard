@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table } from "@/components/ui/table";
@@ -17,6 +18,7 @@ import {
   User 
 } from "lucide-react";
 import PickupTruckIcon from "@/components/icons/PickupTruckIcon";
+import CargoVanIcon from "@/components/icons/CargoVanIcon";
 import { getDictionary } from "@/lib/storage";
 import { useEffect, useState } from "react";
 
@@ -58,6 +60,8 @@ const DriversPage = () => {
       'bus': <Bus className="h-5 w-5 text-green-600" />,
       'truck': <Truck className="h-5 w-5 text-red-600" />,
       'pickup_truck': <PickupTruckIcon className="h-5 w-5 text-orange-600" size={20} />,
+      'cargo_van': <CargoVanIcon className="h-5 w-5 text-amber-600" size={20} />,
+      '9ft_cargo_van': <CargoVanIcon className="h-5 w-5 text-amber-600" size={20} />,
       'bike': <Bike className="h-5 w-5 text-purple-600" />,
       'bicycle': <Bike className="h-5 w-5 text-indigo-600" />,
       'train': <Train className="h-5 w-5 text-cyan-600" />,
