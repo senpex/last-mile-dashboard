@@ -29,13 +29,13 @@ const ColumnSelector = ({
   setVisibleColumns,
 }: ColumnSelectorProps) => {
   const toggleColumn = (columnId: string) => {
-    if (visibleColumns.includes(columnId)) {
+    if (visibleColumns && visibleColumns.includes(columnId)) {
       // Don't allow removing the last visible column
       if (visibleColumns.length > 1) {
         setVisibleColumns(visibleColumns.filter((id) => id !== columnId));
       }
     } else {
-      setVisibleColumns([...visibleColumns, columnId]);
+      setVisibleColumns([...(visibleColumns || []), columnId]);
     }
   };
 
@@ -56,7 +56,7 @@ const ColumnSelector = ({
         {columns.map((column) => (
           <DropdownMenuCheckboxItem
             key={column.id}
-            checked={visibleColumns.includes(column.id)}
+            checked={visibleColumns ? visibleColumns.includes(column.id) : false}
             onCheckedChange={() => toggleColumn(column.id)}
           >
             {column.label}
