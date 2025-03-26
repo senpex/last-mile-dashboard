@@ -107,6 +107,7 @@ const ClientsPage = () => {
       <div className="container mx-auto p-6">
         <div className="space-y-4">
           <h1 className="text-2xl font-bold">Clients Management</h1>
+          
           <div className="flex items-center justify-between">
             <Button size="sm" className="flex items-center gap-1">
               <Plus className="w-3 h-3" />
@@ -121,7 +122,7 @@ const ClientsPage = () => {
             </div>
           </div>
 
-          <div className="border rounded-md overflow-hidden">
+          <div className="border rounded-md">
             <ScrollArea orientation="horizontal">
               <Table>
                 <TableHeader className="bg-muted/50">
