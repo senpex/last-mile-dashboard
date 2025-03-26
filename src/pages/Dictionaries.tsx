@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
@@ -17,7 +16,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { 
   ListFilter, 
-  Upload,
   Car,
   Bus,
   Truck,
@@ -38,9 +36,6 @@ import VanIcon from "@/components/icons/VanIcon";
 import LimousineIcon from "@/components/icons/LimousineIcon";
 import AtvIcon from "@/components/icons/AtvIcon";
 import ScooterIcon from "@/components/icons/ScooterIcon";
-import MotorcycleIcon from "@/components/icons/MotorcycleIcon";
-import ShuttleIcon from "@/components/icons/ShuttleIcon";
-import SailboatIcon from "@/components/icons/SailboatIcon";
 import CargoVanIcon from "@/components/icons/CargoVanIcon";
 import BoxTruckIcon from "@/components/icons/BoxTruckIcon";
 import RefrigeratedVanIcon from "@/components/icons/RefrigeratedVanIcon";
@@ -99,11 +94,9 @@ const Dictionaries = () => {
         'pickup_truck': <PickupTruckIcon className="h-4 w-4 text-orange-600" size={16} />,
         'bike': <Bike className="h-4 w-4 text-purple-600" />,
         'bicycle': <Bike className="h-4 w-4 text-indigo-600" />,
-        'motorcycle': <MotorcycleIcon className="h-4 w-4 text-pink-600" size={16} />,
         'scooter': <ScooterIcon className="h-4 w-4 text-rose-600" size={16} />,
         'train': <Train className="h-4 w-4 text-cyan-600" />,
         'ferry': <Ship className="h-4 w-4 text-blue-800" />,
-        'sailboat': <SailboatIcon className="h-4 w-4 text-blue-400" size={16} />,
         'airplane': <Plane className="h-4 w-4 text-sky-600" />,
         'amusement': <FerrisWheel className="h-4 w-4 text-amber-600" />,
         'helper': <User className="h-4 w-4 text-violet-600" />,
@@ -111,7 +104,6 @@ const Dictionaries = () => {
         'van': <VanIcon className="h-4 w-4 text-gray-600" size={16} />,
         'limousine': <LimousineIcon className="h-4 w-4 text-gray-800" size={16} />,
         'atv': <AtvIcon className="h-4 w-4 text-brown-600" size={16} />,
-        'shuttle': <ShuttleIcon className="h-4 w-4 text-indigo-800" size={16} />,
         'snow': <Snowflake className="h-4 w-4 text-blue-300" />,
         'electric': <Leaf className="h-4 w-4 text-green-500" />,
         'maintenance': <Wrench className="h-4 w-4 text-gray-700" />
@@ -132,11 +124,9 @@ const Dictionaries = () => {
       'pickup_truck': <PickupTruckIcon className="h-4 w-4 text-orange-600" size={16} />,
       'bike': <Bike className="h-4 w-4 text-purple-600" />,
       'bicycle': <Bike className="h-4 w-4 text-indigo-600" />,
-      'motorcycle': <MotorcycleIcon className="h-4 w-4 text-pink-600" size={16} />,
       'scooter': <ScooterIcon className="h-4 w-4 text-rose-600" size={16} />,
       'train': <Train className="h-4 w-4 text-cyan-600" />,
       'ferry': <Ship className="h-4 w-4 text-blue-800" />,
-      'sailboat': <SailboatIcon className="h-4 w-4 text-blue-400" size={16} />,
       'airplane': <Plane className="h-4 w-4 text-sky-600" />,
       'amusement': <FerrisWheel className="h-4 w-4 text-amber-600" />,
       'helper': <User className="h-4 w-4 text-violet-600" />,
@@ -144,7 +134,6 @@ const Dictionaries = () => {
       'van': <VanIcon className="h-4 w-4 text-gray-600" size={16} />,
       'limousine': <LimousineIcon className="h-4 w-4 text-gray-800" size={16} />,
       'atv': <AtvIcon className="h-4 w-4 text-brown-600" size={16} />,
-      'shuttle': <ShuttleIcon className="h-4 w-4 text-indigo-800" size={16} />,
       'snow': <Snowflake className="h-4 w-4 text-blue-300" />,
       'electric': <Leaf className="h-4 w-4 text-green-500" />,
       'maintenance': <Wrench className="h-4 w-4 text-gray-700" />
