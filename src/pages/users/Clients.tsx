@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -52,12 +51,10 @@ const ClientsPage = () => {
     });
   }, [visibleColumns]);
 
-  // Initialize filtered clients with all clients
   useEffect(() => {
     setFilteredClients(clients);
   }, []);
 
-  // Filter clients when search term changes
   useEffect(() => {
     if (searchTerm.length >= 3) {
       const filtered = clients.filter(client => 
@@ -139,6 +136,8 @@ const ClientsPage = () => {
                 <Plus className="w-3 h-3" />
                 Add Client
               </Button>
+            </div>
+            <div className="flex items-center gap-2">
               <div className="relative">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -149,8 +148,6 @@ const ClientsPage = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
-            </div>
-            <div className="flex justify-end">
               <ColumnSelector
                 columns={availableColumns}
                 visibleColumns={visibleColumns}
