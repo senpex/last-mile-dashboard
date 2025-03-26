@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table } from "@/components/ui/table";
@@ -26,7 +27,14 @@ import VanIcon from "@/components/icons/VanIcon";
 import LimousineIcon from "@/components/icons/LimousineIcon";
 import AtvIcon from "@/components/icons/AtvIcon";
 import ScooterIcon from "@/components/icons/ScooterIcon";
-import { getDictionary } from "@/lib/storage";
+import MotorcycleIcon from "@/components/icons/MotorcycleIcon";
+import ShuttleIcon from "@/components/icons/ShuttleIcon";
+import SailboatIcon from "@/components/icons/SailboatIcon";
+import CargoVanIcon from "@/components/icons/CargoVanIcon";
+import BoxTruckIcon from "@/components/icons/BoxTruckIcon";
+import RefrigeratedVanIcon from "@/components/icons/RefrigeratedVanIcon";
+import { getDictionary, saveDictionary } from "@/lib/storage";
+import { Dictionary } from "@/types/dictionary";
 
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{[key: string]: string}>({});
@@ -34,13 +42,37 @@ const DriversPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Initialize transport dictionary with our specific transport types if it doesn't exist
     const transportDict = getDictionary("2");
-    if (transportDict) {
-      console.log("Transport Dictionary Items:", transportDict.items);
+    
+    if (!transportDict) {
+      const newTransportDict: Dictionary = {
+        id: "2",
+        dic_name: "Transport_types",
+        items: [
+          { id: "1", value: "Helper", icon: "helper" },
+          { id: "2", value: "Car", icon: "car" },
+          { id: "3", value: "SUV", icon: "suv" },
+          { id: "4", value: "Pickup Truck", icon: "pickup_truck" },
+          { id: "5", value: "9ft Cargo Van", icon: "cargo_van" },
+          { id: "6", value: "10ft Box Truck", icon: "box_truck_10ft" },
+          { id: "7", value: "Refrigerated Van", icon: "refrigerated_van" },
+          { id: "8", value: "15ft Box Truck", icon: "box_truck_15ft" },
+          { id: "9", value: "17ft Box Truck", icon: "box_truck_17ft" }
+        ]
+      };
+      saveDictionary(newTransportDict);
+      console.log("Created new transport dictionary:", newTransportDict);
+    }
+    
+    // Load dictionary (either existing or newly created)
+    const loadedDict = getDictionary("2");
+    if (loadedDict) {
+      console.log("Transport Dictionary Items:", loadedDict.items);
       const types: {[key: string]: string} = {};
       const icons: {[key: string]: string | undefined} = {};
       
-      transportDict.items.forEach(item => {
+      loadedDict.items.forEach(item => {
         types[item.id] = item.value;
         icons[item.id] = item.icon;
       });
@@ -70,19 +102,24 @@ const DriversPage = () => {
         'pickup_truck': <PickupTruckIcon className="h-5 w-5 text-orange-600" size={20} />,
         'bike': <Bike className="h-5 w-5 text-purple-600" />,
         'bicycle': <Bike className="h-5 w-5 text-indigo-600" />,
-        'motorcycle': <MotorcycleIcon className="h-5 w-5 text-pink-600" />,
+        'motorcycle': <MotorcycleIcon className="h-5 w-5 text-pink-600" size={20} />,
         'scooter': <ScooterIcon className="h-5 w-5 text-rose-600" size={20} />,
         'train': <Train className="h-5 w-5 text-cyan-600" />,
         'ferry': <Ship className="h-5 w-5 text-blue-800" />,
-        'sailboat': <SailboatIcon className="h-5 w-5 text-blue-400" />,
+        'sailboat': <SailboatIcon className="h-5 w-5 text-blue-400" size={20} />,
         'airplane': <Plane className="h-5 w-5 text-sky-600" />,
         'amusement': <FerrisWheel className="h-5 w-5 text-amber-600" />,
         'helper': <User className="h-5 w-5 text-violet-600" />,
         'tractor': <Tractor className="h-5 w-5 text-green-800" />,
         'van': <VanIcon className="h-5 w-5 text-gray-600" size={20} />,
+        'cargo_van': <CargoVanIcon className="h-5 w-5 text-blue-700" size={20} />,
+        'box_truck_10ft': <BoxTruckIcon className="h-5 w-5 text-amber-700" size={20} variant="10ft" />,
+        'box_truck_15ft': <BoxTruckIcon className="h-5 w-5 text-amber-700" size={20} variant="15ft" />,
+        'box_truck_17ft': <BoxTruckIcon className="h-5 w-5 text-amber-700" size={20} variant="17ft" />,
+        'refrigerated_van': <RefrigeratedVanIcon className="h-5 w-5 text-cyan-600" size={20} />,
         'limousine': <LimousineIcon className="h-5 w-5 text-gray-800" size={20} />,
         'atv': <AtvIcon className="h-5 w-5 text-brown-600" size={20} />,
-        'shuttle': <ShuttleIcon className="h-5 w-5 text-indigo-800" />,
+        'shuttle': <ShuttleIcon className="h-5 w-5 text-indigo-800" size={20} />,
         'snow': <Snowflake className="h-5 w-5 text-blue-300" />,
         'electric': <Leaf className="h-5 w-5 text-green-500" />,
         'maintenance': <Wrench className="h-5 w-5 text-gray-700" />
@@ -101,21 +138,28 @@ const DriversPage = () => {
       'bus': <Bus className="h-5 w-5 text-green-600" />,
       'truck': <Truck className="h-5 w-5 text-red-600" />,
       'pickup_truck': <PickupTruckIcon className="h-5 w-5 text-orange-600" size={20} />,
+      'pickup truck': <PickupTruckIcon className="h-5 w-5 text-orange-600" size={20} />,
       'bike': <Bike className="h-5 w-5 text-purple-600" />,
       'bicycle': <Bike className="h-5 w-5 text-indigo-600" />,
-      'motorcycle': <MotorcycleIcon className="h-5 w-5 text-pink-600" />,
+      'motorcycle': <MotorcycleIcon className="h-5 w-5 text-pink-600" size={20} />,
       'scooter': <ScooterIcon className="h-5 w-5 text-rose-600" size={20} />,
       'train': <Train className="h-5 w-5 text-cyan-600" />,
       'ferry': <Ship className="h-5 w-5 text-blue-800" />,
-      'sailboat': <SailboatIcon className="h-5 w-5 text-blue-400" />,
+      'sailboat': <SailboatIcon className="h-5 w-5 text-blue-400" size={20} />,
       'airplane': <Plane className="h-5 w-5 text-sky-600" />,
       'amusement': <FerrisWheel className="h-5 w-5 text-amber-600" />,
       'helper': <User className="h-5 w-5 text-violet-600" />,
       'tractor': <Tractor className="h-5 w-5 text-green-800" />,
       'van': <VanIcon className="h-5 w-5 text-gray-600" size={20} />,
+      '9ft cargo van': <CargoVanIcon className="h-5 w-5 text-blue-700" size={20} />,
+      'cargo van': <CargoVanIcon className="h-5 w-5 text-blue-700" size={20} />,
+      '10ft box truck': <BoxTruckIcon className="h-5 w-5 text-amber-700" size={20} variant="10ft" />,
+      '15ft box truck': <BoxTruckIcon className="h-5 w-5 text-amber-700" size={20} variant="15ft" />,
+      '17ft box truck': <BoxTruckIcon className="h-5 w-5 text-amber-700" size={20} variant="17ft" />,
+      'refrigerated van': <RefrigeratedVanIcon className="h-5 w-5 text-cyan-600" size={20} />,
       'limousine': <LimousineIcon className="h-5 w-5 text-gray-800" size={20} />,
       'atv': <AtvIcon className="h-5 w-5 text-brown-600" size={20} />,
-      'shuttle': <ShuttleIcon className="h-5 w-5 text-indigo-800" />,
+      'shuttle': <ShuttleIcon className="h-5 w-5 text-indigo-800" size={20} />,
       'snow': <Snowflake className="h-5 w-5 text-blue-300" />,
       'electric': <Leaf className="h-5 w-5 text-green-500" />,
       'maintenance': <Wrench className="h-5 w-5 text-gray-700" />
