@@ -15,6 +15,7 @@ import {
   Plane,
   User 
 } from "lucide-react";
+import PickupTruckIcon from "@/components/icons/PickupTruckIcon";
 import { getDictionary } from "@/lib/storage";
 import { useEffect, useState } from "react";
 
@@ -55,7 +56,7 @@ const DriversPage = () => {
       'suv': <Truck className="h-5 w-5 text-teal-600" />,
       'bus': <Bus className="h-5 w-5 text-green-600" />,
       'truck': <Truck className="h-5 w-5 text-red-600" />,
-      'pickup_truck': <Truck className="h-5 w-5 text-orange-600" />,
+      'pickup_truck': <PickupTruckIcon className="h-5 w-5 text-orange-600" />,
       'bike': <Bike className="h-5 w-5 text-purple-600" />,
       'bicycle': <Bike className="h-5 w-5 text-indigo-600" />,
       'train': <Train className="h-5 w-5 text-cyan-600" />,
