@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { Table } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,29 +16,18 @@ import {
 } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
 import { useEffect, useState } from "react";
-import { DictionaryItem } from "@/types/dictionary";
-
-interface TransportInfo {
-  id: string;
-  value: string;
-  description?: string;
-}
 
 const DriversPage = () => {
-  const [transportTypes, setTransportTypes] = useState<{[key: string]: TransportInfo}>({});
+  const [transportTypes, setTransportTypes] = useState<{[key: string]: string}>({});
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Load transport types from the dictionary
     const transportDict = getDictionary("2");
     if (transportDict) {
-      const types: {[key: string]: TransportInfo} = {};
-      transportDict.items.forEach((item: DictionaryItem) => {
-        types[item.id] = {
-          id: item.id,
-          value: item.value,
-          description: item.description
-        };
+      const types: {[key: string]: string} = {};
+      transportDict.items.forEach(item => {
+        types[item.id] = item.value;
       });
       setTransportTypes(types);
       console.log("Loaded transport types:", types); // Debug: Log the loaded transport types
@@ -48,12 +36,12 @@ const DriversPage = () => {
       
       // Initialize the transport dictionary with some default values for testing
       const defaultTypes = {
-        "1": { id: "1", value: "car", description: "Standard passenger car" },
-        "2": { id: "2", value: "suv", description: "Sport utility vehicle" },
-        "3": { id: "3", value: "bus", description: "Public transport bus" },
-        "4": { id: "4", value: "truck", description: "Heavy goods vehicle" },
-        "5": { id: "5", value: "pickup_truck", description: "Light duty truck" },
-        "6": { id: "6", value: "bike", description: "Motorcycle or bicycle" }
+        "1": "car",
+        "2": "suv",
+        "3": "bus",
+        "4": "truck",
+        "5": "pickup_truck",
+        "6": "bike"
       };
       setTransportTypes(defaultTypes);
       console.log("Using default transport types:", defaultTypes);
@@ -62,8 +50,11 @@ const DriversPage = () => {
   }, []);
 
   const getTransportIcon = (transportId: string) => {
-    const transportInfo = transportTypes[transportId];
-    if (!transportInfo) {
+    const transportType = transportTypes[transportId];
+    console.log(`Getting icon for transport ID: ${transportId}, type: ${transportType}`);
+    
+    // If type is undefined, return a question mark icon
+    if (!transportType) {
       return <HelpCircle className="h-5 w-5 text-gray-500" />;
     }
     
@@ -83,7 +74,7 @@ const DriversPage = () => {
     };
 
     // Match icon based on the actual transport type name
-    const lowerCaseType = transportInfo.value.toLowerCase();
+    const lowerCaseType = transportType.toLowerCase();
     return typeToIconMap[lowerCaseType] || <HelpCircle className="h-5 w-5 text-gray-500" />;
   };
 
@@ -153,22 +144,13 @@ const DriversPage = () => {
                     <td>
                       <div className="flex items-center gap-2">
                         {driver.transports.map((transportId) => {
-                          const transportInfo = transportTypes[transportId];
                           return (
                             <div 
                               key={transportId} 
-                              className="flex items-center gap-2 p-2 rounded-md bg-muted group relative"
-                              title={transportInfo?.description || `Transport ID: ${transportId}`}
+                              className="flex items-center justify-center p-2 rounded-md bg-muted" 
+                              title={transportTypes[transportId] || `Transport ID: ${transportId}`}
                             >
                               {getTransportIcon(transportId)}
-                              <span className="text-xs hidden md:block">{transportInfo?.value || transportId}</span>
-                              
-                              {/* Show description tooltip on hover */}
-                              <div className="absolute bottom-full left-0 mb-2 w-48 p-2 bg-popover rounded shadow-lg 
-                                opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity z-50 text-xs">
-                                <strong>{transportInfo?.value || 'Unknown'}</strong>
-                                <p>{transportInfo?.description || 'No description available'}</p>
-                              </div>
                             </div>
                           );
                         })}
