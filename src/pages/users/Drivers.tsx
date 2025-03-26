@@ -1,8 +1,7 @@
-
 import React, { useEffect, useState } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
@@ -197,10 +196,6 @@ const DriversPage = () => {
         </div>
 
         <Card>
-          <CardHeader>
-            <CardTitle>Drivers</CardTitle>
-            <CardDescription>Manage your delivery drivers and their current status.</CardDescription>
-          </CardHeader>
           <CardContent>
             <ScrollArea orientation="horizontal">
               <Table>
@@ -286,4 +281,3 @@ const DriversPage = () => {
 };
 
 export default DriversPage;
-
