@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -59,7 +58,6 @@ const Deliveries = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const deliveries = [
-    // Original 5 records
     {
       id: 1,
       packageId: "WMT-10042501",
@@ -170,7 +168,6 @@ const Deliveries = () => {
       organization: "Curry Up Now",
       distance: "0.2 mi"
     },
-    // 40 new records with various statuses
     {
       id: 6,
       packageId: "TGT-80031245",
@@ -742,11 +739,9 @@ const Deliveries = () => {
       courier: "Robert Johnson",
       organization: "Rooms To Go",
       distance: "7.3 mi"
-    },
-    // ... continue with the rest of your delivery records
+    }
   ];
 
-  // Load status dictionary
   useEffect(() => {
     const loadStatusDictionary = async () => {
       try {
@@ -761,7 +756,6 @@ const Deliveries = () => {
     loadStatusDictionary();
   }, []);
 
-  // Handle search debounce
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
@@ -771,7 +765,6 @@ const Deliveries = () => {
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  // Filter deliveries based on search term
   useEffect(() => {
     const filtered = deliveries.filter((delivery) => {
       if (debouncedSearchTerm === "") return true;
@@ -791,16 +784,14 @@ const Deliveries = () => {
     });
     
     setFilteredDeliveries(filtered);
-    setCurrentPage(1); // Reset to first page when search changes
+    setCurrentPage(1);
     console.info("Initial deliveries loaded:", filtered.length);
   }, [debouncedSearchTerm, deliveries]);
 
-  // Get current page items
   const indexOfLastItem = currentPage * Number(rowsPerPage);
   const indexOfFirstItem = indexOfLastItem - Number(rowsPerPage);
   const currentItems = filteredDeliveries.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Function to render status badge with correct color
   const renderStatusBadge = (status: string) => {
     let variant: "default" | "secondary" | "destructive" | "outline" | "success" | "warning" = "default";
     
@@ -822,7 +813,7 @@ const Deliveries = () => {
   };
 
   return (
-    <ThemeProvider defaultTheme="light" storageKey="app-theme">
+    <ThemeProvider>
       <div className="flex h-screen">
         <Sidebar collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed} />
         <div className="flex-1 overflow-auto p-6">
@@ -844,9 +835,8 @@ const Deliveries = () => {
             </div>
             <div className="flex items-center gap-2">
               <DateRangePicker
-                value={dateRange}
-                onValueChange={setDateRange}
-                align="end"
+                dateRange={dateRange}
+                onDateRangeChange={setDateRange}
               />
               <TimezonePicker
                 selectedTimezone={timezone}
@@ -957,7 +947,6 @@ const Deliveries = () => {
                     className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
                   />
                 </PaginationItem>
-                {/* Show pagination numbers */}
                 {Array.from({ length: Math.min(5, Math.ceil(filteredDeliveries.length / Number(rowsPerPage))) }, (_, i) => (
                   <PaginationItem key={i}>
                     <PaginationLink
@@ -968,7 +957,6 @@ const Deliveries = () => {
                     </PaginationLink>
                   </PaginationItem>
                 ))}
-                {/* Show ellipsis if more than 5 pages */}
                 {Math.ceil(filteredDeliveries.length / Number(rowsPerPage)) > 5 && (
                   <PaginationItem>
                     <span className="flex h-9 w-9 items-center justify-center">...</span>
