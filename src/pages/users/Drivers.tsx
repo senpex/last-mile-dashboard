@@ -216,19 +216,19 @@ const DriversPage = () => {
         <div className="space-y-4">
           <h1 className="text-2xl font-bold">Drivers Management</h1>
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Button size="sm" className="flex items-center gap-1 text-xs px-2 py-1">
+            <div className="flex items-center h-9 gap-2">
+              <Button size="sm" className="flex items-center gap-1 text-xs px-2 py-1 h-9">
                 <Plus className="w-3 h-3" />
                 Add Driver
               </Button>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="relative">
+            <div className="flex items-center h-9 gap-2">
+              <div className="relative h-9">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                   type="search"
                   placeholder="Search drivers..."
-                  className="w-[200px] pl-8 text-xs h-8"
+                  className="w-[200px] pl-8 text-xs h-9"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
