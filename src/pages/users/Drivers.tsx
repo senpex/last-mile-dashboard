@@ -9,14 +9,18 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 type StripeStatus = 'Unverified' | 'Pending' | 'Verified';
+type HireStatus = string;
 
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{[key: string]: string}>({});
   const [transportIcons, setTransportIcons] = useState<{[key: string]: string | undefined}>({});
   const [statusDictionary, setStatusDictionary] = useState<{[key: string]: string}>({});
   const [statusColors, setStatusColors] = useState<{[key: string]: string}>({});
+  const [hireStatusDictionary, setHireStatusDictionary] = useState<{[key: string]: string}>({});
   const [isLoading, setIsLoading] = useState(true);
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
@@ -31,6 +35,7 @@ const DriversPage = () => {
     { id: "transport", label: "Transport", default: true },
     { id: "rating", label: "Rating", default: true },
     { id: "status", label: "Status", default: true },
+    { id: "hireStatus", label: "Hire status", default: true },
     { id: "stripe", label: "Stripe", default: true },
     { id: "actions", label: "Actions", default: true },
   ];
@@ -46,6 +51,7 @@ const DriversPage = () => {
   useEffect(() => {
     loadTransportDictionary();
     loadStatusDictionary();
+    loadHireStatusDictionary();
   }, []);
 
   useEffect(() => {
@@ -67,6 +73,13 @@ const DriversPage = () => {
     return statuses[Math.floor(Math.random() * statuses.length)];
   };
 
+  const getRandomHireStatus = (): string => {
+    const hireStatusKeys = Object.keys(hireStatusDictionary);
+    if (hireStatusKeys.length === 0) return "pending";
+    const randomKey = hireStatusKeys[Math.floor(Math.random() * hireStatusKeys.length)];
+    return randomKey;
+  };
+
   const drivers = [
     { 
       id: 5432, 
@@ -76,7 +89,8 @@ const DriversPage = () => {
       status: "online",
       transports: ["1", "3", "pickup_truck", "9ft_cargo_van"],
       rating: 4.8,
-      stripe: getRandomStripeStatus()
+      stripe: getRandomStripeStatus(),
+      hireStatus: "active"
     },
     { 
       id: 6543, 
@@ -86,7 +100,8 @@ const DriversPage = () => {
       status: "offline",
       transports: ["2"],
       rating: 3.5,
-      stripe: getRandomStripeStatus()
+      stripe: getRandomStripeStatus(),
+      hireStatus: "pending"
     },
     { 
       id: 7654, 
@@ -96,7 +111,8 @@ const DriversPage = () => {
       status: "busy",
       transports: ["4", "5"],
       rating: 5.0,
-      stripe: getRandomStripeStatus()
+      stripe: getRandomStripeStatus(),
+      hireStatus: "rejected"
     },
   ];
 
@@ -168,6 +184,30 @@ const DriversPage = () => {
       console.log("Loaded status types:", statuses);
     } else {
       console.log("Status dictionary not found or empty for ID: 6");
+    }
+  };
+
+  const loadHireStatusDictionary = () => {
+    const hireStatusDict = getDictionary("1455");
+    
+    if (hireStatusDict && hireStatusDict.items.length > 0) {
+      console.log("Hire Status Dictionary Items:", hireStatusDict.items);
+      const statuses: {[key: string]: string} = {};
+      
+      hireStatusDict.items.forEach(item => {
+        statuses[item.id] = item.value;
+      });
+      
+      setHireStatusDictionary(statuses);
+      console.log("Loaded hire status types:", statuses);
+    } else {
+      console.log("Hire status dictionary not found or empty for ID: 1455");
+      setHireStatusDictionary({
+        "active": "Active",
+        "pending": "Pending Review",
+        "rejected": "Rejected",
+        "suspended": "Suspended"
+      });
     }
   };
 
@@ -286,6 +326,35 @@ const DriversPage = () => {
     );
   };
 
+  const renderHireStatus = (statusId: string, driverId: number) => {
+    if (Object.keys(hireStatusDictionary).length === 0) {
+      return <div className="text-sm text-muted-foreground">Loading...</div>;
+    }
+    
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
+            {hireStatusDictionary[statusId] || statusId}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="w-48">
+          {Object.entries(hireStatusDictionary).map(([key, value]) => (
+            <DropdownMenuItem 
+              key={key}
+              onClick={() => {
+                console.log(`Changed driver ${driverId} hire status to: ${key}`);
+              }}
+              className={statusId === key ? "bg-muted" : ""}
+            >
+              {value}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  };
+
   return (
     <Layout>
       <div className="container mx-auto p-6">
@@ -384,6 +453,11 @@ const DriversPage = () => {
                       {sortedColumns.includes("status") && (
                         <TableCell>
                           {renderStatus(driver.status)}
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("hireStatus") && (
+                        <TableCell>
+                          {renderHireStatus(driver.hireStatus, driver.id)}
                         </TableCell>
                       )}
                       {sortedColumns.includes("stripe") && (
