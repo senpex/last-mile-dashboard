@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -109,7 +110,7 @@ const ClientsPage = () => {
           <h1 className="text-2xl font-bold">Clients Management</h1>
           
           <div className="flex items-center justify-between">
-            <Button size="sm" className="flex items-center gap-1">
+            <Button size="sm" className="flex items-center gap-1 text-xs px-2 py-1">
               <Plus className="w-3 h-3" />
               Add Client
             </Button>
