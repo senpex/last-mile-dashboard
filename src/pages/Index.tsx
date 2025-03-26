@@ -744,7 +744,7 @@ const Index = () => {
 
   return (
     <ThemeProvider>
-      <Sidebar collapsed={sidebarCollapsed} onCollapse={setSidebarCollapsed} />
+      <Sidebar collapsed={sidebarCollapsed} />
       <div className="flex flex-col h-screen">
         {/* Rest of component code */}
       </div>
