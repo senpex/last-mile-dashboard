@@ -27,9 +27,6 @@ import {
   Plane,
   User,
   Tractor,
-  Motorcycle,
-  Sailboat,
-  Shuttle,
   Snowflake,
   Car as SuvIcon,
   Leaf,
@@ -50,6 +47,72 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
+
+const MotorcycleIcon = ({ className = "", size = 24 }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M5 16l-3 6h2l2-4" />
+    <path d="M5.5 12H10l4 4.5V20" />
+    <path d="M14 12h1.5a3.5 3.5 0 0 0 0-7h-3L16 12" />
+    <circle cx="5" cy="15" r="1" />
+    <circle cx="18" cy="15" r="1" />
+  </svg>
+);
+
+const ShuttleIcon = ({ className = "", size = 24 }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M3 6h18v10H3z" />
+    <path d="M3 16h18" />
+    <path d="M8 6v10" />
+    <path d="M16 6v10" />
+    <path d="M12 6v10" />
+    <path d="M4 3v3" />
+    <path d="M20 3v3" />
+    <path d="M5 16v2" />
+    <path d="M19 16v2" />
+  </svg>
+);
+
+const SailboatIcon = ({ className = "", size = 24 }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M22 18H2a4 4 0 0 0 4 4h12a4 4 0 0 0 4-4Z" />
+    <path d="M21 18c0-1.87-1.5-6-9-6-7.5 0-9 4.13-9 6" />
+    <path d="M12 2v16" />
+    <path d="M4 11s1.5-5 8-5 8 5 8 5" />
+  </svg>
+);
 
 const Dictionaries = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -95,11 +158,11 @@ const Dictionaries = () => {
         'pickup_truck': <PickupTruckIcon className="h-4 w-4 text-orange-600" size={16} />,
         'bike': <Bike className="h-4 w-4 text-purple-600" />,
         'bicycle': <Bike className="h-4 w-4 text-indigo-600" />,
-        'motorcycle': <Motorcycle className="h-4 w-4 text-pink-600" />,
+        'motorcycle': <MotorcycleIcon className="h-4 w-4 text-pink-600" size={16} />,
         'scooter': <ScooterIcon className="h-4 w-4 text-rose-600" size={16} />,
         'train': <Train className="h-4 w-4 text-cyan-600" />,
         'ferry': <Ship className="h-4 w-4 text-blue-800" />,
-        'sailboat': <Sailboat className="h-4 w-4 text-blue-400" />,
+        'sailboat': <SailboatIcon className="h-4 w-4 text-blue-400" />,
         'airplane': <Plane className="h-4 w-4 text-sky-600" />,
         'amusement': <FerrisWheel className="h-4 w-4 text-amber-600" />,
         'helper': <User className="h-4 w-4 text-violet-600" />,
@@ -107,7 +170,7 @@ const Dictionaries = () => {
         'van': <VanIcon className="h-4 w-4 text-gray-600" size={16} />,
         'limousine': <LimousineIcon className="h-4 w-4 text-gray-800" size={16} />,
         'atv': <AtvIcon className="h-4 w-4 text-brown-600" size={16} />,
-        'shuttle': <Shuttle className="h-4 w-4 text-indigo-800" />,
+        'shuttle': <ShuttleIcon className="h-4 w-4 text-indigo-800" />,
         'snow': <Snowflake className="h-4 w-4 text-blue-300" />,
         'electric': <Leaf className="h-4 w-4 text-green-500" />,
         'maintenance': <Wrench className="h-4 w-4 text-gray-700" />
@@ -128,11 +191,11 @@ const Dictionaries = () => {
       'pickup_truck': <PickupTruckIcon className="h-4 w-4 text-orange-600" size={16} />,
       'bike': <Bike className="h-4 w-4 text-purple-600" />,
       'bicycle': <Bike className="h-4 w-4 text-indigo-600" />,
-      'motorcycle': <Motorcycle className="h-4 w-4 text-pink-600" />,
+      'motorcycle': <MotorcycleIcon className="h-4 w-4 text-pink-600" size={16} />,
       'scooter': <ScooterIcon className="h-4 w-4 text-rose-600" size={16} />,
       'train': <Train className="h-4 w-4 text-cyan-600" />,
       'ferry': <Ship className="h-4 w-4 text-blue-800" />,
-      'sailboat': <Sailboat className="h-4 w-4 text-blue-400" />,
+      'sailboat': <SailboatIcon className="h-4 w-4 text-blue-400" />,
       'airplane': <Plane className="h-4 w-4 text-sky-600" />,
       'amusement': <FerrisWheel className="h-4 w-4 text-amber-600" />,
       'helper': <User className="h-4 w-4 text-violet-600" />,
@@ -140,7 +203,7 @@ const Dictionaries = () => {
       'van': <VanIcon className="h-4 w-4 text-gray-600" size={16} />,
       'limousine': <LimousineIcon className="h-4 w-4 text-gray-800" size={16} />,
       'atv': <AtvIcon className="h-4 w-4 text-brown-600" size={16} />,
-      'shuttle': <Shuttle className="h-4 w-4 text-indigo-800" />,
+      'shuttle': <ShuttleIcon className="h-4 w-4 text-indigo-800" />,
       'snow': <Snowflake className="h-4 w-4 text-blue-300" />,
       'electric': <Leaf className="h-4 w-4 text-green-500" />,
       'maintenance': <Wrench className="h-4 w-4 text-gray-700" />
