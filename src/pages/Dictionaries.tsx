@@ -14,7 +14,19 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { ListFilter, Upload } from "lucide-react";
+import { 
+  ListFilter, 
+  Upload,
+  Car,
+  Bus,
+  Truck,
+  Bike,
+  HelpCircle,
+  Train,
+  Ship,
+  Plane,
+  FerrisWheel
+} from "lucide-react";
 import DictionaryImport from "@/components/DictionaryImport";
 import {
   Table,
@@ -59,6 +71,27 @@ const Dictionaries = () => {
       title: "Dictionaries updated",
       description: "Dictionary list has been refreshed"
     });
+  };
+  
+  // Get the appropriate icon based on transport type
+  const getTransportIcon = (transportType: string) => {
+    const lowerCaseType = transportType.toLowerCase();
+    
+    const typeToIconMap: {[key: string]: React.ReactNode} = {
+      'car': <Car className="h-4 w-4 text-blue-600" />,
+      'suv': <Car className="h-4 w-4 text-teal-600" />,
+      'bus': <Bus className="h-4 w-4 text-green-600" />,
+      'truck': <Truck className="h-4 w-4 text-red-600" />,
+      'pickup_truck': <Truck className="h-4 w-4 text-orange-600" />,
+      'bike': <Bike className="h-4 w-4 text-purple-600" />,
+      'bicycle': <Bike className="h-4 w-4 text-indigo-600" />,
+      'train': <Train className="h-4 w-4 text-cyan-600" />,
+      'ferry': <Ship className="h-4 w-4 text-blue-800" />,
+      'airplane': <Plane className="h-4 w-4 text-sky-600" />,
+      'amusement': <FerrisWheel className="h-4 w-4 text-amber-600" />
+    };
+    
+    return typeToIconMap[lowerCaseType] || <HelpCircle className="h-4 w-4 text-gray-500" />;
   };
 
   return (
@@ -126,7 +159,17 @@ const Dictionaries = () => {
                           {selectedDictionary.items.map((item) => (
                             <TableRow key={item.id}>
                               <TableCell className="py-1 px-2 font-medium">{item.value}</TableCell>
-                              <TableCell className="py-1 px-2 text-muted-foreground">{item.description || '-'}</TableCell>
+                              <TableCell className="py-1 px-2 text-muted-foreground">
+                                {/* Display icons for transport types dictionary (ID: 2) */}
+                                {selectedDictionary.id === "2" ? (
+                                  <div className="flex items-center gap-2">
+                                    {getTransportIcon(item.value)}
+                                    <span>{item.description || '-'}</span>
+                                  </div>
+                                ) : (
+                                  item.description || '-'
+                                )}
+                              </TableCell>
                               <TableCell className="py-1 px-2 text-right">
                                 <Badge variant="secondary" className="text-[10px]">
                                   {item.id}
