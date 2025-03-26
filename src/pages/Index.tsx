@@ -1,8 +1,7 @@
+
 import React, { useState, useEffect, useCallback } from "react";
-import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -27,19 +26,13 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Columns, Filter, GripVertical, Search } from "lucide-react";
+import { Filter } from "lucide-react";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { DateRange } from "react-day-picker";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { TimezonePicker } from "@/components/TimezonePicker";
 import { getDictionary } from "@/lib/storage";
-import { Dictionary, DictionaryItem } from "@/types/dictionary";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Dictionary } from "@/types/dictionary";
 import TableSearch from "@/components/table/TableSearch";
 
 const Index = () => {
@@ -50,11 +43,14 @@ const Index = () => {
   });
   const [timezone, setTimezone] = useState<string>("America/New_York");
   const [statusDictionary, setStatusDictionary] = useState<Dictionary | null>(null);
-  const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
-  const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredDeliveries, setFilteredDeliveries] = useState<any[]>([]);
+  const [visibleColumns, setVisibleColumns] = useState<string[]>([
+    "packageId", "orderName", "status", "pickupLocation", 
+    "dropoffLocation", "price", "courier", "organization"
+  ]);
 
+  // Define deliveries data
   const deliveries = [
     {
       id: 1,
@@ -802,8 +798,8 @@ const Index = () => {
                   onDateRangeChange={setDateRange}
                 />
                 <TimezonePicker 
-                  value={timezone} 
-                  onChange={setTimezone} 
+                  selectedTimezone={timezone} 
+                  onTimezoneChange={setTimezone} 
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -820,15 +816,17 @@ const Index = () => {
                 </Select>
                 <ColumnSelector 
                   columns={[
-                    { id: "packageId", label: "Package ID" },
-                    { id: "orderName", label: "Order Name" },
-                    { id: "status", label: "Status" },
-                    { id: "pickupLocation", label: "Pickup Location" },
-                    { id: "dropoffLocation", label: "Dropoff Location" },
-                    { id: "price", label: "Price" },
-                    { id: "courier", label: "Courier" },
-                    { id: "organization", label: "Organization" }
-                  ]} 
+                    { id: "packageId", label: "Package ID", default: true },
+                    { id: "orderName", label: "Order Name", default: true },
+                    { id: "status", label: "Status", default: true },
+                    { id: "pickupLocation", label: "Pickup Location", default: true },
+                    { id: "dropoffLocation", label: "Dropoff Location", default: true },
+                    { id: "price", label: "Price", default: true },
+                    { id: "courier", label: "Courier", default: true },
+                    { id: "organization", label: "Organization", default: true }
+                  ]}
+                  visibleColumns={visibleColumns}
+                  setVisibleColumns={setVisibleColumns}
                 />
               </div>
             </div>
@@ -838,41 +836,49 @@ const Index = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Package ID</TableHead>
-                  <TableHead>Order Name</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Pickup</TableHead>
-                  <TableHead>Dropoff</TableHead>
-                  <TableHead>Price</TableHead>
-                  <TableHead>Courier</TableHead>
-                  <TableHead>Organization</TableHead>
+                  {visibleColumns.includes("packageId") && <TableHead>Package ID</TableHead>}
+                  {visibleColumns.includes("orderName") && <TableHead>Order Name</TableHead>}
+                  {visibleColumns.includes("status") && <TableHead>Status</TableHead>}
+                  {visibleColumns.includes("pickupLocation") && <TableHead>Pickup</TableHead>}
+                  {visibleColumns.includes("dropoffLocation") && <TableHead>Dropoff</TableHead>}
+                  {visibleColumns.includes("price") && <TableHead>Price</TableHead>}
+                  {visibleColumns.includes("courier") && <TableHead>Courier</TableHead>}
+                  {visibleColumns.includes("organization") && <TableHead>Organization</TableHead>}
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredDeliveries.slice(0, Number(rowsPerPage)).map((delivery) => (
                   <TableRow key={delivery.id}>
-                    <TableCell className="font-medium">{delivery.packageId}</TableCell>
-                    <TableCell>{delivery.orderName}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="capitalize">
-                        {delivery.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex flex-col">
-                        <span className="font-medium">{delivery.pickupLocation.name}</span>
-                        <span className="text-sm text-muted-foreground">{delivery.pickupTime}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex flex-col">
-                        <span className="font-medium">{delivery.dropoffLocation.name}</span>
-                        <span className="text-sm text-muted-foreground">{delivery.dropoffTime}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>{delivery.price}</TableCell>
-                    <TableCell>{delivery.courier || "-"}</TableCell>
-                    <TableCell>{delivery.organization}</TableCell>
+                    {visibleColumns.includes("packageId") && 
+                      <TableCell className="font-medium">{delivery.packageId}</TableCell>}
+                    {visibleColumns.includes("orderName") && 
+                      <TableCell>{delivery.orderName}</TableCell>}
+                    {visibleColumns.includes("status") && 
+                      <TableCell>
+                        <Badge variant="outline" className="capitalize">
+                          {delivery.status}
+                        </Badge>
+                      </TableCell>}
+                    {visibleColumns.includes("pickupLocation") && 
+                      <TableCell>
+                        <div className="flex flex-col">
+                          <span className="font-medium">{delivery.pickupLocation.name}</span>
+                          <span className="text-sm text-muted-foreground">{delivery.pickupTime}</span>
+                        </div>
+                      </TableCell>}
+                    {visibleColumns.includes("dropoffLocation") && 
+                      <TableCell>
+                        <div className="flex flex-col">
+                          <span className="font-medium">{delivery.dropoffLocation.name}</span>
+                          <span className="text-sm text-muted-foreground">{delivery.dropoffTime}</span>
+                        </div>
+                      </TableCell>}
+                    {visibleColumns.includes("price") && 
+                      <TableCell>{delivery.price}</TableCell>}
+                    {visibleColumns.includes("courier") && 
+                      <TableCell>{delivery.courier || "-"}</TableCell>}
+                    {visibleColumns.includes("organization") && 
+                      <TableCell>{delivery.organization}</TableCell>}
                   </TableRow>
                 ))}
               </TableBody>
