@@ -19,23 +19,29 @@ const DriversPage = () => {
         types[item.id] = item.value;
       });
       setTransportTypes(types);
+      console.log("Loaded transport types:", types); // Debug: Log the loaded transport types
+    } else {
+      console.log("Transport dictionary not found for ID: 2"); // Debug: Log if dictionary not found
     }
   }, []);
 
   // Transport icon mapping
   const getTransportIcon = (type: string) => {
+    console.log("Getting icon for transport type:", type); // Debug: Log the transport type
+    
     switch(type.toLowerCase()) {
       case 'car':
-        return <Car className="h-4 w-4" />;
+        return <Car className="h-5 w-5 text-blue-600" />;
       case 'bus':
-        return <Bus className="h-4 w-4" />;
+        return <Bus className="h-5 w-5 text-green-600" />;
       case 'truck':
-        return <Truck className="h-4 w-4" />;
+        return <Truck className="h-5 w-5 text-red-600" />;
       case 'bike':
       case 'bicycle':
-        return <Bike className="h-4 w-4" />;
+        return <Bike className="h-5 w-5 text-purple-600" />;
       default:
-        return <Car className="h-4 w-4" />;
+        console.log("No matching icon for type:", type); // Debug: Log when no match is found
+        return <Car className="h-5 w-5 text-gray-500" />;
     }
   };
 
@@ -103,12 +109,23 @@ const DriversPage = () => {
                     <td>{driver.email}</td>
                     <td>{driver.phone}</td>
                     <td>
-                      <div className="flex items-center gap-1">
-                        {driver.transports.map((transportId) => (
-                          <div key={transportId} className="flex items-center p-1 rounded-md bg-muted" title={transportTypes[transportId]}>
-                            {transportTypes[transportId] && getTransportIcon(transportTypes[transportId])}
-                          </div>
-                        ))}
+                      <div className="flex items-center gap-2">
+                        {driver.transports.map((transportId) => {
+                          // Debug: log the values used for rendering
+                          console.log(`Transport ID: ${transportId}, Type: ${transportTypes[transportId]}`);
+                          
+                          return (
+                            <div 
+                              key={transportId} 
+                              className="flex items-center justify-center p-2 rounded-md bg-muted" 
+                              title={transportTypes[transportId]}
+                            >
+                              {transportTypes[transportId] ? 
+                                getTransportIcon(transportTypes[transportId]) : 
+                                <span className="text-xs text-muted-foreground">?</span>}
+                            </div>
+                          );
+                        })}
                       </div>
                     </td>
                     <td>
