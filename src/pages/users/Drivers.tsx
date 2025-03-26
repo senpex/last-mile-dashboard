@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus } from "lucide-react";
+import { GripVertical, Plus, Star, StarHalf, StarOff } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -22,6 +21,7 @@ const DriversPage = () => {
     { id: "email", label: "Email", default: true },
     { id: "phone", label: "Phone", default: true },
     { id: "transport", label: "Transport", default: true },
+    { id: "rating", label: "Rating", default: true },
     { id: "status", label: "Status", default: true },
     { id: "actions", label: "Actions", default: true },
   ];
@@ -156,7 +156,8 @@ const DriversPage = () => {
       email: "john.doe@example.com", 
       phone: "(123) 456-7890", 
       status: "Active",
-      transports: ["1", "3"]
+      transports: ["1", "3"],
+      rating: 4.8
     },
     { 
       id: 6543, 
@@ -164,7 +165,8 @@ const DriversPage = () => {
       email: "jane.smith@example.com", 
       phone: "(123) 456-7891", 
       status: "On leave",
-      transports: ["2"] 
+      transports: ["2"],
+      rating: 3.5 
     },
     { 
       id: 7654, 
@@ -172,9 +174,31 @@ const DriversPage = () => {
       email: "mike.johnson@example.com", 
       phone: "(123) 456-7892", 
       status: "Active",
-      transports: ["4", "5"]
+      transports: ["4", "5"],
+      rating: 5.0
     },
   ];
+
+  const renderRating = (rating: number) => {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+    
+    return (
+      <div className="flex items-center">
+        <span className="mr-2 font-medium">{rating.toFixed(1)}</span>
+        <div className="flex text-yellow-500">
+          {[...Array(fullStars)].map((_, i) => (
+            <Star key={`full-${i}`} className="w-4 h-4 fill-yellow-500" />
+          ))}
+          {hasHalfStar && <StarHalf key="half" className="w-4 h-4 fill-yellow-500" />}
+          {[...Array(emptyStars)].map((_, i) => (
+            <StarOff key={`empty-${i}`} className="w-4 h-4 text-gray-300" />
+          ))}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <Layout>
@@ -252,6 +276,11 @@ const DriversPage = () => {
                               </div>
                             ))}
                           </div>
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("rating") && (
+                        <TableCell>
+                          {renderRating(driver.rating)}
                         </TableCell>
                       )}
                       {sortedColumns.includes("status") && (
