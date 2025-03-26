@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { Table } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +9,6 @@ import {
   Truck, 
   Bike, 
   HelpCircle,
-  Tram,
   Train,
   FerrisWheel, 
   Ship,
@@ -51,7 +49,6 @@ const DriversPage = () => {
     setIsLoading(false);
   }, []);
 
-  // Transport icon mapping based on the transport type value rather than ID
   const getTransportIcon = (transportId: string) => {
     const transportType = transportTypes[transportId];
     console.log(`Getting icon for transport ID: ${transportId}, type: ${transportType}`);
@@ -70,7 +67,6 @@ const DriversPage = () => {
       'pickup_truck': <Truck className="h-5 w-5 text-orange-600" />,
       'bike': <Bike className="h-5 w-5 text-purple-600" />,
       'bicycle': <Bike className="h-5 w-5 text-indigo-600" />,
-      'tram': <Tram className="h-5 w-5 text-pink-600" />,
       'train': <Train className="h-5 w-5 text-cyan-600" />,
       'ferry': <Ship className="h-5 w-5 text-blue-800" />,
       'airplane': <Plane className="h-5 w-5 text-sky-600" />,
