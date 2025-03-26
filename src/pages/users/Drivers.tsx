@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,74 +27,6 @@ import LimousineIcon from "@/components/icons/LimousineIcon";
 import AtvIcon from "@/components/icons/AtvIcon";
 import ScooterIcon from "@/components/icons/ScooterIcon";
 import { getDictionary } from "@/lib/storage";
-import { useEffect, useState } from "react";
-
-// Create custom icons for motorcycle and shuttle since they're not available in lucide-react
-const MotorcycleIcon = ({ className = "", size = 24 }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    <path d="M5 16l-3 6h2l2-4" />
-    <path d="M5.5 12H10l4 4.5V20" />
-    <path d="M14 12h1.5a3.5 3.5 0 0 0 0-7h-3L16 12" />
-    <circle cx="5" cy="15" r="1" />
-    <circle cx="18" cy="15" r="1" />
-  </svg>
-);
-
-const ShuttleIcon = ({ className = "", size = 24 }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    <path d="M3 6h18v10H3z" />
-    <path d="M3 16h18" />
-    <path d="M8 6v10" />
-    <path d="M16 6v10" />
-    <path d="M12 6v10" />
-    <path d="M4 3v3" />
-    <path d="M20 3v3" />
-    <path d="M5 16v2" />
-    <path d="M19 16v2" />
-  </svg>
-);
-
-const SailboatIcon = ({ className = "", size = 24 }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    <path d="M22 18H2a4 4 0 0 0 4 4h12a4 4 0 0 0 4-4Z" />
-    <path d="M21 18c0-1.87-1.5-6-9-6-7.5 0-9 4.13-9 6" />
-    <path d="M12 2v16" />
-    <path d="M4 11s1.5-5 8-5 8 5 8 5" />
-  </svg>
-);
 
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{[key: string]: string}>({});
@@ -105,6 +36,7 @@ const DriversPage = () => {
   useEffect(() => {
     const transportDict = getDictionary("2");
     if (transportDict) {
+      console.log("Transport Dictionary Items:", transportDict.items);
       const types: {[key: string]: string} = {};
       const icons: {[key: string]: string | undefined} = {};
       
@@ -119,22 +51,11 @@ const DriversPage = () => {
       console.log("Loaded transport icons:", icons);
     } else {
       console.log("Transport dictionary not found for ID: 2");
-      const defaultTypes = {
-        "1": "car",
-        "2": "suv",
-        "3": "bus",
-        "4": "truck",
-        "5": "pickup_truck",
-        "6": "bike"
-      };
-      setTransportTypes(defaultTypes);
-      console.log("Using default transport types:", defaultTypes);
     }
     setIsLoading(false);
   }, []);
 
   const getTransportIcon = (transportId: string) => {
-    // First check if we have an explicit icon from the dictionary
     const iconName = transportIcons[transportId];
     const transportType = transportTypes[transportId];
     
@@ -172,7 +93,6 @@ const DriversPage = () => {
       }
     }
     
-    // Fall back to transport type if no icon match
     const lowerCaseType = transportType?.toLowerCase();
     
     const typeToIconMap: {[key: string]: React.ReactNode} = {
