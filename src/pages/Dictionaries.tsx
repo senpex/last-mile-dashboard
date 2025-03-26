@@ -26,9 +26,21 @@ import {
   FerrisWheel,
   Ship,
   Plane,
-  User 
+  User,
+  Tractor,
+  Motorcycle,
+  Sailboat,
+  Shuttle,
+  Snowflake,
+  Car as SuvIcon,
+  Leaf,
+  Wrench
 } from "lucide-react";
 import PickupTruckIcon from "@/components/icons/PickupTruckIcon";
+import VanIcon from "@/components/icons/VanIcon";
+import LimousineIcon from "@/components/icons/LimousineIcon";
+import AtvIcon from "@/components/icons/AtvIcon";
+import ScooterIcon from "@/components/icons/ScooterIcon";
 import DictionaryImport from "@/components/DictionaryImport";
 import {
   Table,
@@ -79,17 +91,28 @@ const Dictionaries = () => {
       
       const iconMap: {[key: string]: React.ReactNode} = {
         'car': <Car className="h-4 w-4 text-blue-600" />,
-        'suv': <Truck className="h-4 w-4 text-teal-600" />,
+        'suv': <SuvIcon className="h-4 w-4 text-teal-600" />,
         'bus': <Bus className="h-4 w-4 text-green-600" />,
         'truck': <Truck className="h-4 w-4 text-red-600" />,
         'pickup_truck': <PickupTruckIcon className="h-4 w-4 text-orange-600" size={16} />,
         'bike': <Bike className="h-4 w-4 text-purple-600" />,
         'bicycle': <Bike className="h-4 w-4 text-indigo-600" />,
+        'motorcycle': <Motorcycle className="h-4 w-4 text-pink-600" />,
+        'scooter': <ScooterIcon className="h-4 w-4 text-rose-600" size={16} />,
         'train': <Train className="h-4 w-4 text-cyan-600" />,
         'ferry': <Ship className="h-4 w-4 text-blue-800" />,
+        'sailboat': <Sailboat className="h-4 w-4 text-blue-400" />,
         'airplane': <Plane className="h-4 w-4 text-sky-600" />,
         'amusement': <FerrisWheel className="h-4 w-4 text-amber-600" />,
-        'helper': <User className="h-4 w-4 text-violet-600" />
+        'helper': <User className="h-4 w-4 text-violet-600" />,
+        'tractor': <Tractor className="h-4 w-4 text-green-800" />,
+        'van': <VanIcon className="h-4 w-4 text-gray-600" size={16} />,
+        'limousine': <LimousineIcon className="h-4 w-4 text-gray-800" size={16} />,
+        'atv': <AtvIcon className="h-4 w-4 text-brown-600" size={16} />,
+        'shuttle': <Shuttle className="h-4 w-4 text-indigo-800" />,
+        'snow': <Snowflake className="h-4 w-4 text-blue-300" />,
+        'electric': <Leaf className="h-4 w-4 text-green-500" />,
+        'maintenance': <Wrench className="h-4 w-4 text-gray-700" />
       };
       
       if (iconMap[lowerCaseIcon]) {
@@ -102,17 +125,28 @@ const Dictionaries = () => {
     
     const typeToIconMap: {[key: string]: React.ReactNode} = {
       'car': <Car className="h-4 w-4 text-blue-600" />,
-      'suv': <Truck className="h-4 w-4 text-teal-600" />,
+      'suv': <SuvIcon className="h-4 w-4 text-teal-600" />,
       'bus': <Bus className="h-4 w-4 text-green-600" />,
       'truck': <Truck className="h-4 w-4 text-red-600" />,
       'pickup_truck': <PickupTruckIcon className="h-4 w-4 text-orange-600" size={16} />,
       'bike': <Bike className="h-4 w-4 text-purple-600" />,
       'bicycle': <Bike className="h-4 w-4 text-indigo-600" />,
+      'motorcycle': <Motorcycle className="h-4 w-4 text-pink-600" />,
+      'scooter': <ScooterIcon className="h-4 w-4 text-rose-600" size={16} />,
       'train': <Train className="h-4 w-4 text-cyan-600" />,
       'ferry': <Ship className="h-4 w-4 text-blue-800" />,
+      'sailboat': <Sailboat className="h-4 w-4 text-blue-400" />,
       'airplane': <Plane className="h-4 w-4 text-sky-600" />,
       'amusement': <FerrisWheel className="h-4 w-4 text-amber-600" />,
-      'helper': <User className="h-4 w-4 text-violet-600" />
+      'helper': <User className="h-4 w-4 text-violet-600" />,
+      'tractor': <Tractor className="h-4 w-4 text-green-800" />,
+      'van': <VanIcon className="h-4 w-4 text-gray-600" size={16} />,
+      'limousine': <LimousineIcon className="h-4 w-4 text-gray-800" size={16} />,
+      'atv': <AtvIcon className="h-4 w-4 text-brown-600" size={16} />,
+      'shuttle': <Shuttle className="h-4 w-4 text-indigo-800" />,
+      'snow': <Snowflake className="h-4 w-4 text-blue-300" />,
+      'electric': <Leaf className="h-4 w-4 text-green-500" />,
+      'maintenance': <Wrench className="h-4 w-4 text-gray-700" />
     };
     
     return typeToIconMap[lowerCaseType] || <PickupTruckIcon className="h-4 w-4 text-gray-500" size={16} />;
