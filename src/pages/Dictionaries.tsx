@@ -23,9 +23,10 @@ import {
   Bike,
   HelpCircle,
   Train,
+  FerrisWheel,
   Ship,
   Plane,
-  FerrisWheel
+  User
 } from "lucide-react";
 import DictionaryImport from "@/components/DictionaryImport";
 import {
@@ -88,7 +89,8 @@ const Dictionaries = () => {
       'train': <Train className="h-4 w-4 text-cyan-600" />,
       'ferry': <Ship className="h-4 w-4 text-blue-800" />,
       'airplane': <Plane className="h-4 w-4 text-sky-600" />,
-      'amusement': <FerrisWheel className="h-4 w-4 text-amber-600" />
+      'amusement': <FerrisWheel className="h-4 w-4 text-amber-600" />,
+      'helper': <User className="h-4 w-4 text-violet-600" />
     };
     
     return typeToIconMap[lowerCaseType] || <HelpCircle className="h-4 w-4 text-gray-500" />;
