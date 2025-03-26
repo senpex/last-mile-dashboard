@@ -3,7 +3,19 @@ import { Layout } from "@/components/layout/Layout";
 import { Table } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Car, Bus, Truck, Bike, HelpCircle, TruckIcon } from "lucide-react";
+import { 
+  Plus, 
+  Car, 
+  Bus, 
+  Truck, 
+  Bike, 
+  HelpCircle,
+  Tram,
+  Train,
+  FerrisWheel, 
+  Ship,
+  Plane
+} from "lucide-react";
 import { getDictionary } from "@/lib/storage";
 import { useEffect, useState } from "react";
 
@@ -39,7 +51,7 @@ const DriversPage = () => {
     setIsLoading(false);
   }, []);
 
-  // Transport icon mapping
+  // Transport icon mapping based on the transport type value rather than ID
   const getTransportIcon = (transportId: string) => {
     const transportType = transportTypes[transportId];
     console.log(`Getting icon for transport ID: ${transportId}, type: ${transportType}`);
@@ -49,19 +61,25 @@ const DriversPage = () => {
       return <HelpCircle className="h-5 w-5 text-gray-500" />;
     }
     
-    // Use the transport ID directly to determine the icon
-    const iconMap: {[key: string]: React.ReactNode} = {
-      // Map each transport ID to its appropriate icon
-      '1': <Car className="h-5 w-5 text-blue-600" />,
-      '2': <Car className="h-5 w-5 text-teal-600" />,
-      '3': <Bus className="h-5 w-5 text-green-600" />,
-      '4': <Truck className="h-5 w-5 text-red-600" />,
-      '5': <Truck className="h-5 w-5 text-orange-600" />,
-      '6': <Bike className="h-5 w-5 text-purple-600" />
+    // Map based on the transport type value (not ID)
+    const typeToIconMap: {[key: string]: React.ReactNode} = {
+      'car': <Car className="h-5 w-5 text-blue-600" />,
+      'suv': <Car className="h-5 w-5 text-teal-600" />,
+      'bus': <Bus className="h-5 w-5 text-green-600" />,
+      'truck': <Truck className="h-5 w-5 text-red-600" />,
+      'pickup_truck': <Truck className="h-5 w-5 text-orange-600" />,
+      'bike': <Bike className="h-5 w-5 text-purple-600" />,
+      'bicycle': <Bike className="h-5 w-5 text-indigo-600" />,
+      'tram': <Tram className="h-5 w-5 text-pink-600" />,
+      'train': <Train className="h-5 w-5 text-cyan-600" />,
+      'ferry': <Ship className="h-5 w-5 text-blue-800" />,
+      'airplane': <Plane className="h-5 w-5 text-sky-600" />,
+      'amusement': <FerrisWheel className="h-5 w-5 text-amber-600" />
     };
 
-    // Return the icon for the transport ID, or a default icon if not found
-    return iconMap[transportId] || <Car className="h-5 w-5 text-gray-500" />;
+    // Match icon based on the actual transport type name
+    const lowerCaseType = transportType.toLowerCase();
+    return typeToIconMap[lowerCaseType] || <HelpCircle className="h-5 w-5 text-gray-500" />;
   };
 
   const drivers = [
