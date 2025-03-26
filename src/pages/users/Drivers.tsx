@@ -42,28 +42,23 @@ const DriversPage = () => {
     setIsLoading(false);
   };
 
-  const getTransportIcon = (transportId: string) => {
-    const iconName = transportIcons[transportId];
+  const getRandomTransportIcon = () => {
+    // Get all available transport icon types
+    const transportTypes: TransportType[] = [
+      'helper', 'car', 'suv', 'pickup_truck', '9ft_cargo_van',
+      '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'
+    ];
     
-    if (iconName) {
-      return (
-        <div className="flex items-center justify-center">
-          <TransportIcon 
-            transportType={iconName.toLowerCase() as TransportType}
-            size={20}
-            className="h-5 w-5"
-          />
-        </div>
-      );
-    }
+    // Select a random transport type
+    const randomIndex = Math.floor(Math.random() * transportTypes.length);
+    const randomType = transportTypes[randomIndex];
     
-    // Fallback to default icon
     return (
       <div className="flex items-center justify-center">
         <TransportIcon 
-          transportType="helper" 
-          size={20} 
-          className="h-5 w-5 text-gray-500"
+          transportType={randomType}
+          size={20}
+          className="h-5 w-5"
         />
       </div>
     );
@@ -140,7 +135,7 @@ const DriversPage = () => {
                             className="flex items-center justify-center p-2 rounded-md bg-muted" 
                             title={transportTypes[transportId] || `Transport ID: ${transportId}`}
                           >
-                            {getTransportIcon(transportId)}
+                            {getRandomTransportIcon()}
                           </div>
                         ))}
                       </div>
