@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -743,7 +744,7 @@ const Index = () => {
 
   return (
     <ThemeProvider>
-      <Sidebar collapsed={sidebarCollapsed} onCollapse={setSidebarCollapsed} />
+      <Sidebar collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed} />
       <div className="flex flex-col h-screen">
         {/* Rest of component JSX */}
       </div>
