@@ -1,25 +1,59 @@
-
 import React, { useEffect, useState } from 'react';
 import { Layout } from "@/components/layout/Layout";
-import { Table } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { getDictionary, saveDictionary } from "@/lib/storage";
-import { Dictionary, DictionaryItem } from "@/types/dictionary";
+import { getDictionary } from "@/lib/storage";
+import { Dictionary } from "@/types/dictionary";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{[key: string]: string}>({});
   const [transportIcons, setTransportIcons] = useState<{[key: string]: string | undefined}>({});
   const [isLoading, setIsLoading] = useState(true);
+  const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
+  const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
+
+  const availableColumns: ColumnOption[] = [
+    { id: "id", label: "ID", default: true },
+    { id: "name", label: "Name", default: true },
+    { id: "email", label: "Email", default: true },
+    { id: "phone", label: "Phone", default: true },
+    { id: "transport", label: "Transport", default: true },
+    { id: "status", label: "Status", default: true },
+    { id: "actions", label: "Actions", default: true },
+  ];
+  
+  const [visibleColumns, setVisibleColumns] = useState<string[]>(
+    availableColumns.filter(col => col.default).map(col => col.id)
+  );
+  
+  const [columnOrder, setColumnOrder] = useState<string[]>(
+    availableColumns.filter(col => col.default).map(col => col.id)
+  );
 
   useEffect(() => {
     loadTransportDictionary();
   }, []);
 
+  useEffect(() => {
+    setColumnOrder(prevOrder => {
+      const newOrder = [...prevOrder];
+      
+      visibleColumns.forEach(column => {
+        if (!newOrder.includes(column)) {
+          newOrder.push(column);
+        }
+      });
+      
+      return newOrder.filter(column => visibleColumns.includes(column));
+    });
+  }, [visibleColumns]);
+
   const loadTransportDictionary = () => {
-    // Get the transport dictionary
     const transportDict = getDictionary("2");
     
     if (transportDict && transportDict.items.length > 0) {
@@ -43,13 +77,11 @@ const DriversPage = () => {
   };
 
   const getRandomTransportIcon = () => {
-    // Get all available transport icon types
     const transportTypes: TransportType[] = [
       'helper', 'car', 'suv', 'pickup_truck', '9ft_cargo_van',
       '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'
     ];
     
-    // Select a random transport type
     const randomIndex = Math.floor(Math.random() * transportTypes.length);
     const randomType = transportTypes[randomIndex];
     
@@ -57,12 +89,66 @@ const DriversPage = () => {
       <div className="flex items-center justify-center">
         <TransportIcon 
           transportType={randomType}
-          size={14}  // Reduced from 20 to 14 (30% reduction)
-          className="h-[14px] w-[14px]"  // Corresponding Tailwind classes
+          size={14} 
+          className="h-[14px] w-[14px]"
         />
       </div>
     );
   };
+
+  const handleDragStart = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
+    setDraggedColumn(columnId);
+    
+    e.dataTransfer.setData('text/plain', columnId);
+    
+    const dragImage = new Image();
+    dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+    e.dataTransfer.setDragImage(dragImage, 0, 0);
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
+    e.preventDefault();
+    if (draggedColumn && draggedColumn !== columnId) {
+      setDragOverColumn(columnId);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLTableCellElement>, targetColumnId: string) => {
+    e.preventDefault();
+    
+    if (!draggedColumn || draggedColumn === targetColumnId) {
+      setDraggedColumn(null);
+      setDragOverColumn(null);
+      return;
+    }
+    
+    const updatedOrder = [...columnOrder];
+    const draggedIndex = updatedOrder.indexOf(draggedColumn);
+    const targetIndex = updatedOrder.indexOf(targetColumnId);
+    
+    if (draggedIndex !== -1 && targetIndex !== -1) {
+      updatedOrder.splice(draggedIndex, 1);
+      updatedOrder.splice(targetIndex, 0, draggedColumn);
+      
+      setColumnOrder(updatedOrder);
+    }
+    
+    setDraggedColumn(null);
+    setDragOverColumn(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedColumn(null);
+    setDragOverColumn(null);
+  };
+
+  const getSortedVisibleColumns = () => {
+    return visibleColumns
+      .filter(column => columnOrder.includes(column))
+      .sort((a, b) => columnOrder.indexOf(a) - columnOrder.indexOf(b));
+  };
+
+  const sortedColumns = getSortedVisibleColumns();
 
   const drivers = [
     { 
@@ -96,10 +182,17 @@ const DriversPage = () => {
       <div className="container mx-auto p-6">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold">Drivers Management</h1>
-          <Button className="flex items-center gap-2">
-            <Plus className="w-4 h-4" />
-            Add Driver
-          </Button>
+          <div className="flex items-center gap-2">
+            <ColumnSelector
+              columns={availableColumns}
+              visibleColumns={visibleColumns}
+              setVisibleColumns={setVisibleColumns}
+            />
+            <Button className="flex items-center gap-2">
+              <Plus className="w-4 h-4" />
+              Add Driver
+            </Button>
+          </div>
         </div>
 
         <Card>
@@ -108,54 +201,82 @@ const DriversPage = () => {
             <CardDescription>Manage your delivery drivers and their current status.</CardDescription>
           </CardHeader>
           <CardContent>
-            <Table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Transport</th>
-                  <th>Status</th>
-                  <th className="text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {drivers.map((driver) => (
-                  <tr key={driver.id}>
-                    <td className="font-sans font-mono">{driver.id}</td>
-                    <td>{driver.name}</td>
-                    <td>{driver.email}</td>
-                    <td>{driver.phone}</td>
-                    <td>
-                      <div className="flex items-center gap-2">
-                        {driver.transports.map((transportId) => (
-                          <div 
-                            key={transportId} 
-                            className="flex items-center justify-center p-2 rounded-md bg-muted" 
-                            title={transportTypes[transportId] || `Transport ID: ${transportId}`}
-                          >
-                            {getRandomTransportIcon()}
+            <ScrollArea orientation="horizontal">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    {sortedColumns.map((columnId) => {
+                      const column = availableColumns.find(col => col.id === columnId);
+                      if (!column) return null;
+                      
+                      return (
+                        <TableHead 
+                          key={columnId}
+                          draggable={true}
+                          dragOver={dragOverColumn === columnId}
+                          onDragStart={(e) => handleDragStart(e, columnId)}
+                          onDragOver={(e) => handleDragOver(e, columnId)}
+                          onDragEnd={handleDragEnd}
+                          onDrop={(e) => handleDrop(e, columnId)}
+                          className="whitespace-nowrap"
+                        >
+                          {column.label}
+                        </TableHead>
+                      );
+                    })}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {drivers.map((driver) => (
+                    <TableRow key={driver.id}>
+                      {sortedColumns.includes("id") && (
+                        <TableCell className="font-mono">{driver.id}</TableCell>
+                      )}
+                      {sortedColumns.includes("name") && (
+                        <TableCell>{driver.name}</TableCell>
+                      )}
+                      {sortedColumns.includes("email") && (
+                        <TableCell>{driver.email}</TableCell>
+                      )}
+                      {sortedColumns.includes("phone") && (
+                        <TableCell>{driver.phone}</TableCell>
+                      )}
+                      {sortedColumns.includes("transport") && (
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            {driver.transports.map((transportId) => (
+                              <div 
+                                key={transportId} 
+                                className="flex items-center justify-center p-2 rounded-md bg-muted" 
+                                title={transportTypes[transportId] || `Transport ID: ${transportId}`}
+                              >
+                                {getRandomTransportIcon()}
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                    </td>
-                    <td>
-                      <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        driver.status === "Active" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300" : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
-                      }`}>
-                        {driver.status}
-                      </div>
-                    </td>
-                    <td className="text-right">
-                      <Button variant="ghost" size="sm">
-                        Edit
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("status") && (
+                        <TableCell>
+                          <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                            driver.status === "Active" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300" : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
+                          }`}>
+                            {driver.status}
+                          </div>
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("actions") && (
+                        <TableCell className="text-right">
+                          <Button variant="ghost" size="sm">
+                            Edit
+                          </Button>
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </ScrollArea>
           </CardContent>
         </Card>
       </div>
