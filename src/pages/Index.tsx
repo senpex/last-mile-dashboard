@@ -728,3 +728,28 @@ const Index = () => {
         name: "Rooms To Go - Rogers",
         address: "4408 W Walnut St, Rogers, AR 72756, US"
       },
+      dropoffTime: "03/24/2025 10:30 AM",
+      dropoffLocation: {
+        name: "Christine Miller",
+        address: "2401 SW Aviation Dr, Bentonville, AR 72712, US"
+      },
+      price: "$499.99",
+      tip: "$50.00",
+      fees: "$15.99",
+      courier: "Robert Davis",
+      organization: "Rooms To Go",
+      distance: "7.2 mi"
+    }
+  ];
+
+  return (
+    <ThemeProvider>
+      <Sidebar collapsed={sidebarCollapsed} onCollapse={setSidebarCollapsed} />
+      <div className="flex flex-col h-screen">
+        {/* Rest of component code */}
+      </div>
+    </ThemeProvider>
+  );
+};
+
+export default Index;
