@@ -61,14 +61,18 @@ const Dictionaries = () => {
   };
 
   const getTransportIcon = (iconName?: string) => {
-    if (iconName) {
+    if (iconName && iconName.trim() !== '') {
       try {
-        // Make sure iconName is a valid TransportType
-        return <TransportIcon 
-          transportType={iconName.toLowerCase() as TransportType} 
-          className="h-5 w-5" 
-          size={20} 
-        />;
+        // Create specific check for transport dictionary and valid icon name
+        return (
+          <div className="flex items-center justify-center">
+            <TransportIcon 
+              transportType={iconName.toLowerCase() as TransportType} 
+              className="h-6 w-6" 
+              size={24} 
+            />
+          </div>
+        );
       } catch (error) {
         console.error("Error rendering transport icon:", error);
         return null;
@@ -135,7 +139,7 @@ const Dictionaries = () => {
                           <TableRow>
                             <TableHead className="py-1 px-2 font-medium">Value</TableHead>
                             <TableHead className="py-1 px-2 font-medium">Description</TableHead>
-                            <TableHead className="py-1 px-2 font-medium">Icon</TableHead>
+                            <TableHead className="py-1 px-2 font-medium text-center">Icon</TableHead>
                             <TableHead className="py-1 px-2 font-medium w-20 text-right">ID</TableHead>
                           </TableRow>
                         </TableHeader>
@@ -146,11 +150,11 @@ const Dictionaries = () => {
                               <TableCell className="py-1 px-2 text-muted-foreground">
                                 {item.description || '-'}
                               </TableCell>
-                              <TableCell className="py-1 px-2">
-                                {selectedDictionary.id === "2" && (
-                                  <div className="flex items-center justify-center">
-                                    {getTransportIcon(item.icon)}
-                                  </div>
+                              <TableCell className="py-1 px-2 text-center">
+                                {selectedDictionary.id === "2" && item.icon ? (
+                                  getTransportIcon(item.icon)
+                                ) : (
+                                  item.icon ? <span className="text-xs text-muted-foreground">{item.icon}</span> : '-'
                                 )}
                               </TableCell>
                               <TableCell className="py-1 px-2 text-right">
