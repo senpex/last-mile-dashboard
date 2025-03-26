@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
@@ -62,8 +63,12 @@ const Dictionaries = () => {
   const getTransportIcon = (iconName?: string) => {
     if (iconName) {
       try {
-        const iconType = iconName.toLowerCase() as TransportType;
-        return <TransportIcon transportType={iconType} className="h-4 w-4" size={16} />;
+        // Make sure iconName is a valid TransportType
+        return <TransportIcon 
+          transportType={iconName.toLowerCase() as TransportType} 
+          className="h-5 w-5" 
+          size={20} 
+        />;
       } catch (error) {
         console.error("Error rendering transport icon:", error);
         return null;
