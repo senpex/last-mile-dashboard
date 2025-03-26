@@ -108,17 +108,19 @@ const ClientsPage = () => {
     <Layout>
       <div className="container mx-auto p-6">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">Clients Management</h1>
-          <div className="flex items-center gap-2">
-            <ColumnSelector
-              columns={availableColumns}
-              visibleColumns={visibleColumns}
-              setVisibleColumns={setVisibleColumns}
-            />
-            <Button className="flex items-center gap-2">
-              <Plus className="w-4 h-4" />
-              Add Client
-            </Button>
+          <div className="flex items-center gap-4">
+            <h1 className="text-2xl font-bold">Clients Management</h1>
+            <div className="flex items-center gap-2">
+              <Button size="sm" className="flex items-center gap-1">
+                <Plus className="w-3 h-3" />
+                Add Client
+              </Button>
+              <ColumnSelector
+                columns={availableColumns}
+                visibleColumns={visibleColumns}
+                setVisibleColumns={setVisibleColumns}
+              />
+            </div>
           </div>
         </div>
 
