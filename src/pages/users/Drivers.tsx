@@ -73,7 +73,7 @@ const DriversPage = () => {
       name: "John Doe", 
       email: "john.doe@example.com", 
       phone: "(123) 456-7890", 
-      status: "1",
+      status: "online",
       transports: ["1", "3"],
       rating: 4.8,
       stripe: getRandomStripeStatus()
@@ -83,7 +83,7 @@ const DriversPage = () => {
       name: "Jane Smith", 
       email: "jane.smith@example.com", 
       phone: "(123) 456-7891", 
-      status: "2",
+      status: "offline",
       transports: ["2"],
       rating: 3.5,
       stripe: getRandomStripeStatus()
@@ -93,7 +93,7 @@ const DriversPage = () => {
       name: "Mike Johnson", 
       email: "mike.johnson@example.com", 
       phone: "(123) 456-7892", 
-      status: "1",
+      status: "busy",
       transports: ["4", "5"],
       rating: 5.0,
       stripe: getRandomStripeStatus()
@@ -152,11 +152,11 @@ const DriversPage = () => {
       statusDict.items.forEach(item => {
         statuses[item.id] = item.value;
         
-        if (item.value.toLowerCase().includes('active')) {
+        if (item.value.toLowerCase().includes('online')) {
           colors[item.id] = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-        } else if (item.value.toLowerCase().includes('leave') || item.value.toLowerCase().includes('pause')) {
+        } else if (item.value.toLowerCase().includes('busy')) {
           colors[item.id] = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
-        } else if (item.value.toLowerCase().includes('inactive') || item.value.toLowerCase().includes('suspend')) {
+        } else if (item.value.toLowerCase().includes('offline')) {
           colors[item.id] = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
         } else {
           colors[item.id] = 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
