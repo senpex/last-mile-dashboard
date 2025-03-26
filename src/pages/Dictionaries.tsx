@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
@@ -22,7 +21,6 @@ import {
   Bus,
   Truck,
   Bike,
-  HelpCircle,
   Train,
   FerrisWheel,
   Ship,
@@ -91,7 +89,7 @@ const Dictionaries = () => {
       'helper': <User className="h-4 w-4 text-violet-600" />
     };
     
-    return typeToIconMap[lowerCaseType] || <HelpCircle className="h-4 w-4 text-gray-500" />;
+    return typeToIconMap[lowerCaseType] || <PickupTruckIcon className="h-4 w-4 text-gray-500" size={16} />;
   };
 
   return (
