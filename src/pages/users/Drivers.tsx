@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -9,6 +8,9 @@ import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+
+type StripeStatus = 'Unverified' | 'Pending' | 'Verified';
 
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{[key: string]: string}>({});
@@ -27,6 +29,7 @@ const DriversPage = () => {
     { id: "transport", label: "Transport", default: true },
     { id: "rating", label: "Rating", default: true },
     { id: "status", label: "Status", default: true },
+    { id: "stripe", label: "Stripe", default: true },
     { id: "actions", label: "Actions", default: true },
   ];
   
@@ -56,6 +59,11 @@ const DriversPage = () => {
     });
   }, [visibleColumns]);
 
+  const getRandomStripeStatus = (): StripeStatus => {
+    const statuses: StripeStatus[] = ['Unverified', 'Pending', 'Verified'];
+    return statuses[Math.floor(Math.random() * statuses.length)];
+  };
+
   const drivers = [
     { 
       id: 5432, 
@@ -64,7 +72,8 @@ const DriversPage = () => {
       phone: "(123) 456-7890", 
       status: "Active",
       transports: ["1", "3"],
-      rating: 4.8
+      rating: 4.8,
+      stripe: getRandomStripeStatus()
     },
     { 
       id: 6543, 
@@ -73,7 +82,8 @@ const DriversPage = () => {
       phone: "(123) 456-7891", 
       status: "On leave",
       transports: ["2"],
-      rating: 3.5 
+      rating: 3.5,
+      stripe: getRandomStripeStatus()
     },
     { 
       id: 7654, 
@@ -82,7 +92,8 @@ const DriversPage = () => {
       phone: "(123) 456-7892", 
       status: "Active",
       transports: ["4", "5"],
-      rating: 5.0
+      rating: 5.0,
+      stripe: getRandomStripeStatus()
     },
   ];
 
@@ -100,7 +111,6 @@ const DriversPage = () => {
     }
   }, [searchTerm]);
 
-  // Initialize filtered drivers with all drivers
   useEffect(() => {
     setFilteredDrivers(drivers);
   }, []);
@@ -210,6 +220,28 @@ const DriversPage = () => {
     );
   };
 
+  const renderStripeStatus = (status: StripeStatus) => {
+    let badgeVariant: "default" | "secondary" | "destructive" | "outline" | "success" | "warning" = "default";
+    
+    switch(status) {
+      case "Verified":
+        badgeVariant = "success";
+        break;
+      case "Pending":
+        badgeVariant = "warning";
+        break;
+      case "Unverified":
+        badgeVariant = "outline";
+        break;
+    }
+    
+    return (
+      <Badge variant={badgeVariant}>
+        {status}
+      </Badge>
+    );
+  };
+
   return (
     <Layout>
       <div className="container mx-auto p-6">
@@ -312,6 +344,11 @@ const DriversPage = () => {
                           }`}>
                             {driver.status}
                           </div>
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("stripe") && (
+                        <TableCell>
+                          {renderStripeStatus(driver.stripe)}
                         </TableCell>
                       )}
                       {sortedColumns.includes("actions") && (
