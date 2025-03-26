@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
-import Sidebar from "@/components/layout/Sidebar";
+import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -44,7 +43,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import TableSearch from "@/components/table/TableSearch";
 
 const Index = () => {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState<string>("10");
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date("2025-03-24T00:00:00"),
@@ -742,13 +740,167 @@ const Index = () => {
     }
   ];
 
+  const handleSearch = useCallback((value: string) => {
+    setSearchTerm(value);
+    
+    if (!value.trim()) {
+      setFilteredDeliveries(deliveries);
+      return;
+    }
+    
+    const lowerCaseSearch = value.toLowerCase();
+    const filtered = deliveries.filter(delivery => 
+      delivery.packageId.toLowerCase().includes(lowerCaseSearch) ||
+      delivery.orderName.toLowerCase().includes(lowerCaseSearch) ||
+      delivery.status.toLowerCase().includes(lowerCaseSearch) ||
+      delivery.pickupLocation.name.toLowerCase().includes(lowerCaseSearch) ||
+      delivery.dropoffLocation.name.toLowerCase().includes(lowerCaseSearch) ||
+      (delivery.courier && delivery.courier.toLowerCase().includes(lowerCaseSearch)) ||
+      delivery.organization.toLowerCase().includes(lowerCaseSearch)
+    );
+    
+    setFilteredDeliveries(filtered);
+  }, [deliveries]);
+
+  useEffect(() => {
+    setFilteredDeliveries(deliveries);
+  }, [deliveries]);
+
+  useEffect(() => {
+    const loadStatusDictionary = async () => {
+      const dict = await getDictionary("status");
+      setStatusDictionary(dict);
+    };
+    
+    loadStatusDictionary();
+  }, []);
+
   return (
-    <ThemeProvider>
-      <Sidebar collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed} />
-      <div className="flex flex-col h-screen">
-        {/* Rest of component JSX */}
+    <Layout>
+      <div className="flex flex-col h-full p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold">Deliveries</h1>
+          <div className="flex items-center gap-4">
+            <TableSearch 
+              onSearch={handleSearch} 
+              placeholder="Search deliveries..." 
+              minSearchLength={3} 
+            />
+            <Button variant="outline" size="sm">
+              <Filter className="w-4 h-4 mr-2" />
+              Filters
+            </Button>
+          </div>
+        </div>
+
+        <div className="bg-card rounded-lg shadow overflow-hidden flex-1">
+          <div className="p-4 border-b">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <DateRangePicker
+                  dateRange={dateRange}
+                  onDateRangeChange={setDateRange}
+                />
+                <TimezonePicker 
+                  value={timezone} 
+                  onChange={setTimezone} 
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <Select value={rowsPerPage} onValueChange={setRowsPerPage}>
+                  <SelectTrigger className="w-[100px]">
+                    <SelectValue placeholder="Rows" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="10">10 rows</SelectItem>
+                    <SelectItem value="20">20 rows</SelectItem>
+                    <SelectItem value="50">50 rows</SelectItem>
+                    <SelectItem value="100">100 rows</SelectItem>
+                  </SelectContent>
+                </Select>
+                <ColumnSelector 
+                  columns={[
+                    { id: "packageId", label: "Package ID" },
+                    { id: "orderName", label: "Order Name" },
+                    { id: "status", label: "Status" },
+                    { id: "pickupLocation", label: "Pickup Location" },
+                    { id: "dropoffLocation", label: "Dropoff Location" },
+                    { id: "price", label: "Price" },
+                    { id: "courier", label: "Courier" },
+                    { id: "organization", label: "Organization" }
+                  ]} 
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Package ID</TableHead>
+                  <TableHead>Order Name</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Pickup</TableHead>
+                  <TableHead>Dropoff</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>Courier</TableHead>
+                  <TableHead>Organization</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredDeliveries.slice(0, Number(rowsPerPage)).map((delivery) => (
+                  <TableRow key={delivery.id}>
+                    <TableCell className="font-medium">{delivery.packageId}</TableCell>
+                    <TableCell>{delivery.orderName}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="capitalize">
+                        {delivery.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-col">
+                        <span className="font-medium">{delivery.pickupLocation.name}</span>
+                        <span className="text-sm text-muted-foreground">{delivery.pickupTime}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-col">
+                        <span className="font-medium">{delivery.dropoffLocation.name}</span>
+                        <span className="text-sm text-muted-foreground">{delivery.dropoffTime}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>{delivery.price}</TableCell>
+                    <TableCell>{delivery.courier || "-"}</TableCell>
+                    <TableCell>{delivery.organization}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+
+          <div className="p-4 border-t">
+            <Pagination>
+              <PaginationContent>
+                <PaginationPrevious href="#" />
+                <PaginationItem>
+                  <PaginationLink href="#" isActive>
+                    1
+                  </PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#">2</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#">3</PaginationLink>
+                </PaginationItem>
+                <PaginationNext href="#" />
+              </PaginationContent>
+            </Pagination>
+          </div>
+        </div>
       </div>
-    </ThemeProvider>
+    </Layout>
   );
 };
 
