@@ -37,6 +37,12 @@ import VanIcon from "@/components/icons/VanIcon";
 import LimousineIcon from "@/components/icons/LimousineIcon";
 import AtvIcon from "@/components/icons/AtvIcon";
 import ScooterIcon from "@/components/icons/ScooterIcon";
+import MotorcycleIcon from "@/components/icons/MotorcycleIcon";
+import ShuttleIcon from "@/components/icons/ShuttleIcon";
+import SailboatIcon from "@/components/icons/SailboatIcon";
+import CargoVanIcon from "@/components/icons/CargoVanIcon";
+import BoxTruckIcon from "@/components/icons/BoxTruckIcon";
+import RefrigeratedVanIcon from "@/components/icons/RefrigeratedVanIcon";
 import DictionaryImport from "@/components/DictionaryImport";
 import {
   Table,
