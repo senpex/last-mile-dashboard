@@ -5,14 +5,14 @@ import { Button } from "@/components/ui/button";
 import { 
   Plus, 
   Car, 
-  Bus, 
   Truck, 
   Bike, 
   HelpCircle,
   Train,
   FerrisWheel, 
   Ship,
-  Plane
+  Plane,
+  User 
 } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
 import { useEffect, useState } from "react";
@@ -22,7 +22,6 @@ const DriversPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Load transport types from the dictionary
     const transportDict = getDictionary("2");
     if (transportDict) {
       const types: {[key: string]: string} = {};
@@ -30,11 +29,9 @@ const DriversPage = () => {
         types[item.id] = item.value;
       });
       setTransportTypes(types);
-      console.log("Loaded transport types:", types); // Debug: Log the loaded transport types
+      console.log("Loaded transport types:", types);
     } else {
-      console.log("Transport dictionary not found for ID: 2"); // Debug: Log if dictionary not found
-      
-      // Initialize the transport dictionary with some default values for testing
+      console.log("Transport dictionary not found for ID: 2");
       const defaultTypes = {
         "1": "car",
         "2": "suv",
@@ -49,17 +46,14 @@ const DriversPage = () => {
     setIsLoading(false);
   }, []);
 
-  // Transport icon mapping based on the transport type value rather than ID
   const getTransportIcon = (transportId: string) => {
     const transportType = transportTypes[transportId];
     console.log(`Getting icon for transport ID: ${transportId}, type: ${transportType}`);
     
-    // If type is undefined, return a question mark icon
     if (!transportType) {
       return <HelpCircle className="h-5 w-5 text-gray-500" />;
     }
     
-    // Map based on the transport type value (not ID)
     const typeToIconMap: {[key: string]: React.ReactNode} = {
       'car': <Car className="h-5 w-5 text-blue-600" />,
       'suv': <Car className="h-5 w-5 text-teal-600" />,
@@ -71,10 +65,10 @@ const DriversPage = () => {
       'train': <Train className="h-5 w-5 text-cyan-600" />,
       'ferry': <Ship className="h-5 w-5 text-blue-800" />,
       'airplane': <Plane className="h-5 w-5 text-sky-600" />,
-      'amusement': <FerrisWheel className="h-5 w-5 text-amber-600" />
+      'amusement': <FerrisWheel className="h-5 w-5 text-amber-600" />,
+      'helper': <User className="h-5 w-5 text-violet-600" />
     };
 
-    // Match icon based on the actual transport type name
     const lowerCaseType = transportType.toLowerCase();
     return typeToIconMap[lowerCaseType] || <HelpCircle className="h-5 w-5 text-gray-500" />;
   };
@@ -86,7 +80,7 @@ const DriversPage = () => {
       email: "john.doe@example.com", 
       phone: "(123) 456-7890", 
       status: "Active",
-      transports: ["1", "3"] // IDs from Transport_types dictionary
+      transports: ["1", "3"]
     },
     { 
       id: 6543, 
