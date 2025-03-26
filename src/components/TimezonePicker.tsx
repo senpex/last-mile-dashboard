@@ -19,9 +19,6 @@ export function TimezonePicker({ selectedTimezone, onTimezoneChange }: TimezoneP
   // Find the current timezone offset
   const currentTimezoneInfo = timezones.find(tz => tz.value === selectedTimezone);
   const offsetDisplay = currentTimezoneInfo ? currentTimezoneInfo.offset : '';
-  
-  // Get label for display
-  const timezoneLabel = currentTimezoneInfo ? currentTimezoneInfo.label : selectedTimezone.replace('_', ' ');
 
   return (
     <Popover>
@@ -33,7 +30,7 @@ export function TimezonePicker({ selectedTimezone, onTimezoneChange }: TimezoneP
       <PopoverContent className="w-[300px] p-0" align="end">
         <div className="p-3 border-b bg-muted/50">
           <div className="font-medium">Select timezone</div>
-          <div className="text-sm text-muted-foreground">Current: {timezoneLabel} {offsetDisplay}</div>
+          <div className="text-sm text-muted-foreground">Current: {selectedTimezone.replace('_', ' ')} {offsetDisplay}</div>
         </div>
         <ScrollArea className="h-80">
           <div className="p-2">
