@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 
 type StripeStatus = 'Unverified' | 'Pending' | 'Verified';
 type HireStatus = string;
@@ -26,6 +27,41 @@ const DriversPage = () => {
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filteredDrivers, setFilteredDrivers] = useState<any[]>([]);
+  const [drivers, setDrivers] = useState([
+    { 
+      id: 5432, 
+      name: "John Doe", 
+      email: "john.doe@example.com", 
+      phone: "(123) 456-7890", 
+      status: "online",
+      transports: ["1", "3", "pickup_truck", "9ft_cargo_van"],
+      rating: 4.8,
+      stripe: getRandomStripeStatus(),
+      hireStatus: "active"
+    },
+    { 
+      id: 6543, 
+      name: "Jane Smith", 
+      email: "jane.smith@example.com", 
+      phone: "(123) 456-7891", 
+      status: "offline",
+      transports: ["2"],
+      rating: 3.5,
+      stripe: getRandomStripeStatus(),
+      hireStatus: "pending"
+    },
+    { 
+      id: 7654, 
+      name: "Mike Johnson", 
+      email: "mike.johnson@example.com", 
+      phone: "(123) 456-7892", 
+      status: "busy",
+      transports: ["4", "5"],
+      rating: 5.0,
+      stripe: getRandomStripeStatus(),
+      hireStatus: "rejected"
+    },
+  ]);
 
   const availableColumns: ColumnOption[] = [
     { id: "id", label: "ID", default: true },
@@ -80,42 +116,6 @@ const DriversPage = () => {
     return randomKey;
   };
 
-  const drivers = [
-    { 
-      id: 5432, 
-      name: "John Doe", 
-      email: "john.doe@example.com", 
-      phone: "(123) 456-7890", 
-      status: "online",
-      transports: ["1", "3", "pickup_truck", "9ft_cargo_van"],
-      rating: 4.8,
-      stripe: getRandomStripeStatus(),
-      hireStatus: "active"
-    },
-    { 
-      id: 6543, 
-      name: "Jane Smith", 
-      email: "jane.smith@example.com", 
-      phone: "(123) 456-7891", 
-      status: "offline",
-      transports: ["2"],
-      rating: 3.5,
-      stripe: getRandomStripeStatus(),
-      hireStatus: "pending"
-    },
-    { 
-      id: 7654, 
-      name: "Mike Johnson", 
-      email: "mike.johnson@example.com", 
-      phone: "(123) 456-7892", 
-      status: "busy",
-      transports: ["4", "5"],
-      rating: 5.0,
-      stripe: getRandomStripeStatus(),
-      hireStatus: "rejected"
-    },
-  ];
-
   useEffect(() => {
     if (searchTerm.length >= 3) {
       const filtered = drivers.filter(driver => 
@@ -128,11 +128,11 @@ const DriversPage = () => {
     } else {
       setFilteredDrivers(drivers);
     }
-  }, [searchTerm]);
+  }, [searchTerm, drivers]);
 
   useEffect(() => {
     setFilteredDrivers(drivers);
-  }, []);
+  }, [drivers]);
 
   const loadTransportDictionary = () => {
     const transportDict = getDictionary("2");
@@ -342,9 +342,7 @@ const DriversPage = () => {
           {Object.entries(hireStatusDictionary).map(([key, value]) => (
             <DropdownMenuItem 
               key={key}
-              onClick={() => {
-                console.log(`Changed driver ${driverId} hire status to: ${key}`);
-              }}
+              onClick={() => handleHireStatusChange(driverId, key)}
               className={statusId === key ? "bg-muted" : ""}
             >
               {value}
