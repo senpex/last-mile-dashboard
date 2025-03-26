@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
@@ -71,7 +72,32 @@ const Dictionaries = () => {
     });
   };
 
-  const getTransportIcon = (transportType: string) => {
+  const getTransportIcon = (transportType: string, iconName?: string) => {
+    // If an explicit icon name is provided, use that first
+    if (iconName) {
+      const lowerCaseIcon = iconName.toLowerCase();
+      
+      const iconMap: {[key: string]: React.ReactNode} = {
+        'car': <Car className="h-4 w-4 text-blue-600" />,
+        'suv': <Truck className="h-4 w-4 text-teal-600" />,
+        'bus': <Bus className="h-4 w-4 text-green-600" />,
+        'truck': <Truck className="h-4 w-4 text-red-600" />,
+        'pickup_truck': <PickupTruckIcon className="h-4 w-4 text-orange-600" size={16} />,
+        'bike': <Bike className="h-4 w-4 text-purple-600" />,
+        'bicycle': <Bike className="h-4 w-4 text-indigo-600" />,
+        'train': <Train className="h-4 w-4 text-cyan-600" />,
+        'ferry': <Ship className="h-4 w-4 text-blue-800" />,
+        'airplane': <Plane className="h-4 w-4 text-sky-600" />,
+        'amusement': <FerrisWheel className="h-4 w-4 text-amber-600" />,
+        'helper': <User className="h-4 w-4 text-violet-600" />
+      };
+      
+      if (iconMap[lowerCaseIcon]) {
+        return iconMap[lowerCaseIcon];
+      }
+    }
+    
+    // Fall back to transport type if no icon match
     const lowerCaseType = transportType.toLowerCase();
     
     const typeToIconMap: {[key: string]: React.ReactNode} = {
@@ -150,6 +176,7 @@ const Dictionaries = () => {
                           <TableRow>
                             <TableHead className="py-1 px-2 font-medium">Value</TableHead>
                             <TableHead className="py-1 px-2 font-medium">Description</TableHead>
+                            <TableHead className="py-1 px-2 font-medium">Icon</TableHead>
                             <TableHead className="py-1 px-2 font-medium w-20 text-right">ID</TableHead>
                           </TableRow>
                         </TableHeader>
@@ -158,13 +185,13 @@ const Dictionaries = () => {
                             <TableRow key={item.id}>
                               <TableCell className="py-1 px-2 font-medium">{item.value}</TableCell>
                               <TableCell className="py-1 px-2 text-muted-foreground">
-                                {selectedDictionary.id === "2" ? (
-                                  <div className="flex items-center gap-2">
-                                    {getTransportIcon(item.value)}
-                                    <span>{item.description || '-'}</span>
+                                {item.description || '-'}
+                              </TableCell>
+                              <TableCell className="py-1 px-2">
+                                {selectedDictionary.id === "2" && (
+                                  <div className="flex items-center justify-center">
+                                    {getTransportIcon(item.value, item.icon)}
                                   </div>
-                                ) : (
-                                  item.description || '-'
                                 )}
                               </TableCell>
                               <TableCell className="py-1 px-2 text-right">
