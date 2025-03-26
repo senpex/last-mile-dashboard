@@ -161,17 +161,16 @@ const Dictionaries = () => {
                         <TableBody>
                           {selectedDictionary.items.map((item) => (
                             <TableRow key={item.id}>
-                              <TableCell className="py-1 px-2 font-medium">
-                                {selectedDictionary.id === "2" && (
+                              <TableCell className="py-1 px-2 font-medium">{item.value}</TableCell>
+                              <TableCell className="py-1 px-2 text-muted-foreground">
+                                {selectedDictionary.id === "2" ? (
                                   <div className="flex items-center gap-2">
                                     {getTransportIcon(item.value)}
-                                    <span>{item.value}</span>
+                                    <span>{item.description || '-'}</span>
                                   </div>
+                                ) : (
+                                  item.description || '-'
                                 )}
-                                {selectedDictionary.id !== "2" && item.value}
-                              </TableCell>
-                              <TableCell className="py-1 px-2 text-muted-foreground">
-                                {item.description || '-'}
                               </TableCell>
                               <TableCell className="py-1 px-2 text-right">
                                 <Badge variant="secondary" className="text-[10px]">
