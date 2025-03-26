@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import AgentAI from "./pages/AgentAI";
 import Dictionaries from "./pages/Dictionaries";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/agent-ai" element={<AgentAI />} />
             <Route path="/dictionaries" element={<Dictionaries />} />
+            <Route path="/profile" element={<Profile />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
