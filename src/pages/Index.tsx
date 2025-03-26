@@ -65,6 +65,7 @@ const Index = () => {
       status: "Dropoff Complete",
       pickupTime: "03/24/2025 12:49 PM",
       pickupLocation: {
+        name: "Walmart 0100 - Bentonville, AR",
         address: "406 S WALTON BLVD, BENTONVILLE, AR 72712, US"
       },
       dropoffTime: "03/24/2025 08:00 PM",
@@ -86,6 +87,7 @@ const Index = () => {
       status: "Dropoff Complete",
       pickupTime: "03/24/2025 11:34 AM",
       pickupLocation: {
+        name: "Walmart 0100 - Bentonville, AR",
         address: "406 S WALTON BLVD, BENTONVILLE, AR 72712, US"
       },
       dropoffTime: "03/24/2025 08:00 PM",
@@ -107,6 +109,7 @@ const Index = () => {
       status: "Dropoff Complete",
       pickupTime: "03/24/2025 11:34 AM",
       pickupLocation: {
+        name: "Walmart 0100 - Bentonville, AR",
         address: "406 S WALTON BLVD, BENTONVILLE, AR 72712, US"
       },
       dropoffTime: "03/24/2025 08:00 PM",
@@ -128,6 +131,7 @@ const Index = () => {
       status: "Dropoff Complete",
       pickupTime: "03/24/2025 11:34 AM",
       pickupLocation: {
+        name: "Walmart 0100 - Bentonville, AR",
         address: "406 S WALTON BLVD, BENTONVILLE, AR 72712, US"
       },
       dropoffTime: "03/24/2025 08:00 PM",
@@ -149,6 +153,7 @@ const Index = () => {
       status: "Canceled By Customer",
       pickupTime: "03/24/2025 11:20 AM",
       pickupLocation: {
+        name: "Curry Up Now - Palo Alto",
         address: "321 Hamilton Ave, Palo Alto, CA 94301, US"
       },
       dropoffTime: "03/24/2025 11:40 AM",
@@ -171,6 +176,7 @@ const Index = () => {
       status: "In Transit",
       pickupTime: "03/24/2025 10:15 AM",
       pickupLocation: {
+        name: "Target Store #5372 - Rogers, AR",
         address: "2404 W Pleasant Crossing Dr, Rogers, AR 72758, US"
       },
       dropoffTime: "03/24/2025 12:30 PM",
@@ -192,6 +198,7 @@ const Index = () => {
       status: "Arrived For Pickup",
       pickupTime: "03/24/2025 09:30 AM",
       pickupLocation: {
+        name: "Walmart Supercenter - Pea Ridge, AR",
         address: "240 Slack St, Pea Ridge, AR 72751, US"
       },
       dropoffTime: "03/24/2025 11:15 AM",
@@ -213,6 +220,7 @@ const Index = () => {
       status: "Picking Up",
       pickupTime: "03/24/2025 11:00 AM",
       pickupLocation: {
+        name: "Amazon Locker - Bentonville",
         address: "3701 SE Dodson Rd, Bentonville, AR 72712, US"
       },
       dropoffTime: "03/24/2025 12:45 PM",
@@ -234,6 +242,7 @@ const Index = () => {
       status: "Recipient Unavailable",
       pickupTime: "03/24/2025 01:30 PM",
       pickupLocation: {
+        name: "Ulta Beauty - Rogers",
         address: "4208 S Pleasant Crossing Blvd, Rogers, AR 72758, US"
       },
       dropoffTime: "03/24/2025 03:15 PM",
@@ -255,6 +264,7 @@ const Index = () => {
       status: "Draft Order",
       pickupTime: "03/24/2025 05:45 PM",
       pickupLocation: {
+        name: "Grubhub - Bentonville",
         address: "1400 SE Walton Blvd, Bentonville, AR 72712, US"
       },
       dropoffTime: "03/24/2025 06:30 PM",
@@ -276,6 +286,7 @@ const Index = () => {
       status: "Paid Order",
       pickupTime: "03/24/2025 09:15 AM",
       pickupLocation: {
+        name: "Crate & Barrel - Pinnacle Hills",
         address: "2203 S Promenade Blvd, Rogers, AR 72758, US"
       },
       dropoffTime: "03/24/2025 11:30 AM",
@@ -297,6 +308,7 @@ const Index = () => {
       status: "Courier Selected",
       pickupTime: "03/24/2025 02:00 PM",
       pickupLocation: {
+        name: "PetSmart - Rogers",
         address: "4207 Pleasant Crossing Blvd, Rogers, AR 72758, US"
       },
       dropoffTime: "03/24/2025 03:45 PM",
@@ -318,6 +330,7 @@ const Index = () => {
       status: "Item Not Given",
       pickupTime: "03/24/2025 10:45 AM",
       pickupLocation: {
+        name: "Lowe's Home Improvement - Rogers",
         address: "3721 W Walnut St, Rogers, AR 72756, US"
       },
       dropoffTime: "03/24/2025 12:15 PM",
@@ -339,6 +352,7 @@ const Index = () => {
       status: "Reported Order",
       pickupTime: "03/24/2025 11:30 AM",
       pickupLocation: {
+        name: "Buy Buy Baby - Rogers",
         address: "2203 Promenade Blvd, Rogers, AR 72758, US"
       },
       dropoffTime: "03/24/2025 01:15 PM",
@@ -360,6 +374,7 @@ const Index = () => {
       status: "Waiting For Pay",
       pickupTime: "03/24/2025 03:15 PM",
       pickupLocation: {
+        name: "Whole Foods Market - Rogers",
         address: "3425 N Market St, Rogers, AR 72756, US"
       },
       dropoffTime: "03/24/2025 04:45 PM",
@@ -381,6 +396,7 @@ const Index = () => {
       status: "Cancelled By Admin",
       pickupTime: "03/24/2025 01:00 PM",
       pickupLocation: {
+        name: "Bath & Body Works - Pinnacle Hills",
         address: "2203 S Promenade Blvd, Rogers, AR 72758, US"
       },
       dropoffTime: "03/24/2025 02:30 PM",
@@ -402,6 +418,7 @@ const Index = () => {
       status: "Scheduled Order",
       pickupTime: "03/25/2025 09:00 AM",
       pickupLocation: {
+        name: "Tractor Supply Co. - Bentonville",
         address: "1401 SW Regional Airport Blvd, Bentonville, AR 72712, US"
       },
       dropoffTime: "03/25/2025 10:30 AM",
@@ -423,6 +440,7 @@ const Index = () => {
       status: "Repeated Order",
       pickupTime: "03/24/2025 02:30 PM",
       pickupLocation: {
+        name: "Barnes & Noble - Rogers",
         address: "2795 W Walnut St, Rogers, AR 72756, US"
       },
       dropoffTime: "03/24/2025 04:00 PM",
@@ -444,6 +462,7 @@ const Index = () => {
       status: "Forgot",
       pickupTime: "03/24/2025 11:00 AM",
       pickupLocation: {
+        name: "Home Depot - Rogers",
         address: "3721 W Walnut St, Rogers, AR 72756, US"
       },
       dropoffTime: "03/24/2025 12:30 PM",
@@ -465,6 +484,7 @@ const Index = () => {
       status: "Started Working",
       pickupTime: "03/24/2025 10:15 AM",
       pickupLocation: {
+        name: "CVS Pharmacy - Bentonville",
         address: "100 SW 14th St, Bentonville, AR 72712, US"
       },
       dropoffTime: "03/24/2025 11:00 AM",
@@ -486,6 +506,7 @@ const Index = () => {
       status: "Accepted Repeated Order",
       pickupTime: "03/24/2025 08:30 AM",
       pickupLocation: {
+        name: "The Bakery - Downtown Bentonville",
         address: "104 SW A St, Bentonville, AR 72712, US"
       },
       dropoffTime: "03/24/2025 09:15 AM",
@@ -507,6 +528,7 @@ const Index = () => {
       status: "Draft Order",
       pickupTime: "03/24/2025 03:00 PM",
       pickupLocation: {
+        name: "American Eagle - Pinnacle Hills",
         address: "2203 S Promenade Blvd, Rogers, AR 72758, US"
       },
       dropoffTime: "03/24/2025 04:30 PM",
@@ -528,6 +550,7 @@ const Index = () => {
       status: "Paid Order",
       pickupTime: "03/24/2025 12:30 PM",
       pickupLocation: {
+        name: "Williams-Sonoma - Pinnacle Hills",
         address: "2203 S Promenade Blvd, Rogers, AR 72758, US"
       },
       dropoffTime: "03/24/2025 02:00 PM",
@@ -549,6 +572,7 @@ const Index = () => {
       status: "In Transit",
       pickupTime: "03/24/2025 09:45 AM",
       pickupLocation: {
+        name: "Starbucks - Bentonville Square",
         address: "200 E Central Ave, Bentonville, AR 72712, US"
       },
       dropoffTime: "03/24/2025 10:15 AM",
@@ -570,6 +594,7 @@ const Index = () => {
       status: "Dropoff Complete",
       pickupTime: "03/24/2025 11:15 AM",
       pickupLocation: {
+        name: "Apple Store - Pinnacle Hills",
         address: "2203 S Promenade Blvd, Rogers, AR 72758, US"
       },
       dropoffTime: "03/24/2025 12:45 PM",
@@ -591,6 +616,7 @@ const Index = () => {
       status: "Courier Selected",
       pickupTime: "03/24/2025 01:45 PM",
       pickupLocation: {
+        name: "Kohl's - Rogers",
         address: "4200 W Green Acres Rd, Rogers, AR 72758, US"
       },
       dropoffTime: "03/24/2025 03:15 PM",
@@ -612,6 +638,7 @@ const Index = () => {
       status: "Canceled By Customer",
       pickupTime: "03/24/2025 12:15 PM",
       pickupLocation: {
+        name: "Burger King - Bentonville",
         address: "1800 S Walton Blvd, Bentonville, AR 72712, US"
       },
       dropoffTime: "03/24/2025 12:45 PM",
@@ -633,6 +660,7 @@ const Index = () => {
       status: "Waiting For Pay",
       pickupTime: "03/24/2025 02:30 PM",
       pickupLocation: {
+        name: "Dick's Sporting Goods - Rogers",
         address: "2203 Promenade Blvd, Rogers, AR 72758, US"
       },
       dropoffTime: "03/24/2025 04:00 PM",
@@ -654,6 +682,7 @@ const Index = () => {
       status: "Item Not Given",
       pickupTime: "03/24/2025 10:30 AM",
       pickupLocation: {
+        name: "Office Depot - Rogers",
         address: "4408 W Walnut St, Rogers, AR 72756, US"
       },
       dropoffTime: "03/24/2025 12:00 PM",
@@ -675,6 +704,7 @@ const Index = () => {
       status: "Scheduled Order",
       pickupTime: "03/25/2025 10:00 AM",
       pickupLocation: {
+        name: "Party City - Rogers",
         address: "4409 W Walnut St, Rogers, AR 72756, US"
       },
       dropoffTime: "03/25/2025 11:30 AM",
@@ -696,6 +726,7 @@ const Index = () => {
       status: "Repeated Order",
       pickupTime: "03/24/2025 08:00 AM",
       pickupLocation: {
+        name: "Rooms To Go - Rogers",
         address: "4408 W Walnut St, Rogers, AR 72756, US"
       },
       dropoffTime: "03/24/2025 10:00 AM",
@@ -717,6 +748,7 @@ const Index = () => {
       status: "Accepted Repeated Order",
       pickupTime: "03/24/2025 06:30 PM",
       pickupLocation: {
+        name: "Taziki's Mediterranean Cafe - Rogers",
         address: "2203 S Promenade Blvd, Rogers, AR 72758, US"
       },
       dropoffTime: "03/24/2025 07:15 PM",
@@ -738,6 +770,7 @@ const Index = () => {
       status: "Started Working",
       pickupTime: "03/24/2025 12:45 PM",
       pickupLocation: {
+        name: "GNC - Rogers",
         address: "2203 S Promenade Blvd, Rogers, AR 72758, US"
       },
       dropoffTime: "03/24/2025 02:15 PM",
@@ -759,6 +792,7 @@ const Index = () => {
       status: "In Transit",
       pickupTime: "03/24/2025 11:30 AM",
       pickupLocation: {
+        name: "Verizon Wireless - Rogers",
         address: "4408 W Walnut St, Rogers, AR 72756, US"
       },
       dropoffTime: "03/24/2025 01:00 PM",
@@ -780,6 +814,7 @@ const Index = () => {
       status: "Arrived For Pickup",
       pickupTime: "03/24/2025 09:15 AM",
       pickupLocation: {
+        name: "Warby Parker - Rogers",
         address: "2203 S Promenade Blvd, Rogers, AR 72758, US"
       },
       dropoffTime: "03/24/2025 10:45 AM",
@@ -801,6 +836,7 @@ const Index = () => {
       status: "Forgotten",
       pickupTime: "03/24/2025 07:00 PM",
       pickupLocation: {
+        name: "The Preacher's Son - Bentonville",
         address: "201 NW A St, Bentonville, AR 72712, US"
       },
       dropoffTime: "03/24/2025 07:30 PM",
@@ -822,6 +858,7 @@ const Index = () => {
       status: "Recipient Unavailable",
       pickupTime: "03/24/2025 01:15 PM",
       pickupLocation: {
+        name: "Hobby Lobby - Rogers",
         address: "4409 W Walnut St, Rogers, AR 72756, US"
       },
       dropoffTime: "03/24/2025 02:45 PM",
@@ -843,6 +880,7 @@ const Index = () => {
       status: "Waiting For Pay",
       pickupTime: "03/24/2025 05:30 PM",
       pickupLocation: {
+        name: "KFC - Bentonville",
         address: "1702 S Walton Blvd, Bentonville, AR 72712, US"
       },
       dropoffTime: "03/24/2025 06:00 PM",
@@ -864,6 +902,7 @@ const Index = () => {
       status: "Dropoff Complete",
       pickupTime: "03/24/2025 10:00 AM",
       pickupLocation: {
+        name: "FedEx Office - Bentonville",
         address: "1400 SE Walton Blvd, Bentonville, AR 72712, US"
       },
       dropoffTime: "03/24/2025 10:45 AM",
@@ -885,6 +924,7 @@ const Index = () => {
       status: "Reported Order",
       pickupTime: "03/24/2025 11:45 AM",
       pickupLocation: {
+        name: "Florist - Downtown Bentonville",
         address: "106 SW A St, Bentonville, AR 72712, US"
       },
       dropoffTime: "03/24/2025 12:30 PM",
@@ -906,6 +946,7 @@ const Index = () => {
       status: "Paid Order",
       pickupTime: "03/24/2025 02:15 PM",
       pickupLocation: {
+        name: "Kay Jewelers - Pinnacle Hills",
         address: "2203 S Promenade Blvd, Rogers, AR 72758, US"
       },
       dropoffTime: "03/24/2025 03:45 PM",
@@ -927,6 +968,7 @@ const Index = () => {
       status: "Draft Order",
       pickupTime: "03/24/2025 03:30 PM",
       pickupLocation: {
+        name: "Guitar Center - Rogers",
         address: "3700 N Bloomington St, Rogers, AR 72756, US"
       },
       dropoffTime: "03/24/2025 05:00 PM",
@@ -948,6 +990,7 @@ const Index = () => {
       status: "Scheduled Order",
       pickupTime: "03/25/2025 11:30 AM",
       pickupLocation: {
+        name: "Best Buy - Rogers",
         address: "4301 W Walnut St, Rogers, AR 72756, US"
       },
       dropoffTime: "03/25/2025 01:00 PM",
@@ -969,6 +1012,7 @@ const Index = () => {
       status: "Courier Selected",
       pickupTime: "03/24/2025 09:30 AM",
       pickupLocation: {
+        name: "Toys R Us - Rogers",
         address: "2203 S Promenade Blvd, Rogers, AR 72758, US"
       },
       dropoffTime: "03/24/2025 11:00 AM",
@@ -990,6 +1034,7 @@ const Index = () => {
       status: "Arrived For Pickup",
       pickupTime: "03/24/2025 10:15 AM",
       pickupLocation: {
+        name: "Westwood Gardens - Bentonville",
         address: "807 N Walton Blvd, Bentonville, AR 72712, US"
       },
       dropoffTime: "03/24/2025 11:45 AM",
@@ -1044,6 +1089,7 @@ const Index = () => {
           delivery.orderName,
           delivery.status,
           delivery.pickupTime,
+          delivery.pickupLocation.name,
           delivery.pickupLocation.address,
           delivery.dropoffTime,
           delivery.dropoffLocation.name,
@@ -1315,6 +1361,7 @@ const Index = () => {
                                   return (
                                     <TableCell key={columnId}>
                                       <div className="flex flex-col">
+                                        <span className="font-medium">{delivery.pickupLocation.name}</span>
                                         <span className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</span>
                                       </div>
                                     </TableCell>
