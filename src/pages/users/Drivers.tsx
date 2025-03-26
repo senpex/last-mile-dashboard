@@ -178,9 +178,9 @@ const DriversPage = () => {
   return (
     <Layout>
       <div className="container mx-auto p-6">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold mb-4">Drivers Management</h1>
-          <div className="flex items-center justify-between mb-2">
+        <div className="space-y-4">
+          <h1 className="text-2xl font-bold">Drivers Management</h1>
+          <div className="flex items-center justify-between">
             <Button size="sm" className="flex items-center gap-1">
               <Plus className="w-3 h-3" />
               Add Driver
@@ -193,88 +193,88 @@ const DriversPage = () => {
               />
             </div>
           </div>
-        </div>
 
-        <div className="border rounded-md overflow-hidden mb-4">
-          <ScrollArea orientation="horizontal">
-            <Table>
-              <TableHeader className="bg-muted/50">
-                <TableRow>
-                  {sortedColumns.map((columnId) => {
-                    const column = availableColumns.find(col => col.id === columnId);
-                    if (!column) return null;
-                    
-                    return (
-                      <TableHead 
-                        key={columnId}
-                        draggable={true}
-                        dragOver={dragOverColumn === columnId}
-                        onDragStart={(e) => handleDragStart(e, columnId)}
-                        onDragOver={(e) => handleDragOver(e, columnId)}
-                        onDragEnd={handleDragEnd}
-                        onDrop={(e) => handleDrop(e, columnId)}
-                        className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
-                      >
-                        <div className="flex items-center gap-1 overflow-hidden">
-                          <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
-                          <span className="truncate">{column.label}</span>
-                        </div>
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {drivers.map((driver) => (
-                  <TableRow key={driver.id}>
-                    {sortedColumns.includes("id") && (
-                      <TableCell className="font-mono">{driver.id}</TableCell>
-                    )}
-                    {sortedColumns.includes("name") && (
-                      <TableCell>{driver.name}</TableCell>
-                    )}
-                    {sortedColumns.includes("email") && (
-                      <TableCell>{driver.email}</TableCell>
-                    )}
-                    {sortedColumns.includes("phone") && (
-                      <TableCell>{driver.phone}</TableCell>
-                    )}
-                    {sortedColumns.includes("transport") && (
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          {driver.transports.map((transportId) => (
-                            <div 
-                              key={transportId} 
-                              className="flex items-center justify-center p-2 rounded-md bg-muted" 
-                              title={transportTypes[transportId] || `Transport ID: ${transportId}`}
-                            >
-                              {getRandomTransportIcon()}
-                            </div>
-                          ))}
-                        </div>
-                      </TableCell>
-                    )}
-                    {sortedColumns.includes("status") && (
-                      <TableCell>
-                        <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                          driver.status === "Active" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300" : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
-                        }`}>
-                          {driver.status}
-                        </div>
-                      </TableCell>
-                    )}
-                    {sortedColumns.includes("actions") && (
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="sm">
-                          Edit
-                        </Button>
-                      </TableCell>
-                    )}
+          <div className="border rounded-md overflow-hidden">
+            <ScrollArea orientation="horizontal">
+              <Table>
+                <TableHeader className="bg-muted/50">
+                  <TableRow>
+                    {sortedColumns.map((columnId) => {
+                      const column = availableColumns.find(col => col.id === columnId);
+                      if (!column) return null;
+                      
+                      return (
+                        <TableHead 
+                          key={columnId}
+                          draggable={true}
+                          dragOver={dragOverColumn === columnId}
+                          onDragStart={(e) => handleDragStart(e, columnId)}
+                          onDragOver={(e) => handleDragOver(e, columnId)}
+                          onDragEnd={handleDragEnd}
+                          onDrop={(e) => handleDrop(e, columnId)}
+                          className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
+                        >
+                          <div className="flex items-center gap-1 overflow-hidden">
+                            <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
+                            <span className="truncate">{column.label}</span>
+                          </div>
+                        </TableHead>
+                      );
+                    })}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </ScrollArea>
+                </TableHeader>
+                <TableBody>
+                  {drivers.map((driver) => (
+                    <TableRow key={driver.id}>
+                      {sortedColumns.includes("id") && (
+                        <TableCell className="font-mono">{driver.id}</TableCell>
+                      )}
+                      {sortedColumns.includes("name") && (
+                        <TableCell>{driver.name}</TableCell>
+                      )}
+                      {sortedColumns.includes("email") && (
+                        <TableCell>{driver.email}</TableCell>
+                      )}
+                      {sortedColumns.includes("phone") && (
+                        <TableCell>{driver.phone}</TableCell>
+                      )}
+                      {sortedColumns.includes("transport") && (
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            {driver.transports.map((transportId) => (
+                              <div 
+                                key={transportId} 
+                                className="flex items-center justify-center p-2 rounded-md bg-muted" 
+                                title={transportTypes[transportId] || `Transport ID: ${transportId}`}
+                              >
+                                {getRandomTransportIcon()}
+                              </div>
+                            ))}
+                          </div>
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("status") && (
+                        <TableCell>
+                          <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                            driver.status === "Active" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300" : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
+                          }`}>
+                            {driver.status}
+                          </div>
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("actions") && (
+                        <TableCell className="text-right">
+                          <Button variant="ghost" size="sm">
+                            Edit
+                          </Button>
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </ScrollArea>
+          </div>
         </div>
       </div>
     </Layout>
