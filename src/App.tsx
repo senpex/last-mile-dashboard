@@ -8,6 +8,7 @@ import { ThemeProvider } from "./components/layout/ThemeProvider";
 import Index from "./pages/Index";
 import AgentAI from "./pages/AgentAI";
 import Dictionaries from "./pages/Dictionaries";
+import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/" element={<Index />} />
             <Route path="/agent-ai" element={<AgentAI />} />
             <Route path="/dictionaries" element={<Dictionaries />} />

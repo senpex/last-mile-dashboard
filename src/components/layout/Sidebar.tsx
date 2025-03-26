@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { useTheme } from "./ThemeProvider";
 import ThemeToggle from "./ThemeToggle";
 import LogoutButton from "./LogoutButton";
-import { ChevronLeft, ChevronRight, Package, BookOpen, Bot } from "lucide-react";
+import { ChevronLeft, ChevronRight, Package, BookOpen, Bot, LayoutDashboard } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
 
@@ -16,11 +15,9 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
   const { theme } = useTheme();
   const location = useLocation();
   
-  // Animation states
   const [mounting, setMounting] = useState(true);
   
   useEffect(() => {
-    // Allow initial mounting animation
     const timer = setTimeout(() => setMounting(false), 300);
     return () => clearTimeout(timer);
   }, []);
@@ -37,7 +34,6 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
         mounting ? "animate-slide-in-left" : ""
       )}
     >
-      {/* Sidebar Header */}
       <div className="h-16 border-b border-sidebar-border flex items-center justify-between px-4">
         <h1 
           className={cn(
@@ -56,10 +52,28 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
         </button>
       </div>
       
-      {/* Sidebar Content - Menu Items */}
       <div className="flex-1 overflow-y-auto hide-scrollbar py-4">
         <nav>
           <ul className="space-y-1 px-2">
+            <li>
+              <Link 
+                to="/dashboard" 
+                className={cn(
+                  "sidebar-item",
+                  location.pathname === "/dashboard" ? "active" : ""
+                )}
+              >
+                <LayoutDashboard className="sidebar-icon" />
+                <span 
+                  className={cn(
+                    "menu-item-text",
+                    collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+                  )}
+                >
+                  Dashboard
+                </span>
+              </Link>
+            </li>
             <li>
               <Link 
                 to="/" 
@@ -121,7 +135,6 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
         </nav>
       </div>
       
-      {/* Sidebar Footer */}
       <div className="border-t border-sidebar-border p-4 space-y-2">
         <ThemeToggle collapsed={collapsed} />
         <LogoutButton collapsed={collapsed} />
