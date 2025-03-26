@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { 
   Plus, 
   Car, 
+  Bus,
   Truck, 
   Bike, 
   HelpCircle,
