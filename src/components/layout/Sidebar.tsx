@@ -75,7 +75,7 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
                     collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
                   )}
                 >
-                  Dashboard
+                  Deliveries
                 </span>
               </Link>
             </li>
