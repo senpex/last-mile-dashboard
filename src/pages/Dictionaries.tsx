@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
@@ -80,7 +81,7 @@ const Dictionaries = () => {
       'suv': <Truck className="h-4 w-4 text-teal-600" />,
       'bus': <Bus className="h-4 w-4 text-green-600" />,
       'truck': <Truck className="h-4 w-4 text-red-600" />,
-      'pickup_truck': <PickupTruckIcon className="h-4 w-4 text-orange-600" />,
+      'pickup_truck': <PickupTruckIcon className="h-4 w-4 text-orange-600" size={16} />,
       'bike': <Bike className="h-4 w-4 text-purple-600" />,
       'bicycle': <Bike className="h-4 w-4 text-indigo-600" />,
       'train': <Train className="h-4 w-4 text-cyan-600" />,
