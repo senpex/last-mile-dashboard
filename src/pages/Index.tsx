@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -56,6 +57,33 @@ const Index = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
   const [filteredDeliveries, setFilteredDeliveries] = useState<any[]>([]);
+  const [visibleColumns, setVisibleColumns] = useState<string[]>([
+    "packageId",
+    "orderName",
+    "status",
+    "pickupTime", 
+    "dropoffTime",
+    "courier",
+    "price"
+  ]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Column definitions
+  const columnOptions: ColumnOption[] = [
+    { id: "packageId", label: "Package ID" },
+    { id: "orderName", label: "Order Name" },
+    { id: "status", label: "Status" },
+    { id: "pickupTime", label: "Pickup Time" },
+    { id: "dropoffTime", label: "Dropoff Time" },
+    { id: "pickupLocation", label: "Pickup Location" },
+    { id: "dropoffLocation", label: "Dropoff Location" },
+    { id: "price", label: "Price" },
+    { id: "tip", label: "Tip" },
+    { id: "fees", label: "Fees" },
+    { id: "courier", label: "Courier" },
+    { id: "organization", label: "Organization" },
+    { id: "distance", label: "Distance" }
+  ];
 
   const deliveries = [
     {
@@ -742,13 +770,342 @@ const Index = () => {
     }
   ];
 
+  // Fetch status dictionary on component mount
+  useEffect(() => {
+    const fetchStatusDictionary = async () => {
+      try {
+        const dictionary = await getDictionary("delivery_statuses");
+        setStatusDictionary(dictionary);
+      } catch (error) {
+        console.error("Failed to load status dictionary:", error);
+      }
+    };
+    
+    fetchStatusDictionary();
+  }, []);
+
+  // Handle search term debouncing
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+    
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  // Filter deliveries based on search term
+  useEffect(() => {
+    if (!debouncedSearchTerm.trim()) {
+      setFilteredDeliveries(deliveries);
+    } else {
+      const lowercaseSearch = debouncedSearchTerm.toLowerCase();
+      const filtered = deliveries.filter(delivery => {
+        return (
+          delivery.packageId.toLowerCase().includes(lowercaseSearch) ||
+          delivery.orderName.toLowerCase().includes(lowercaseSearch) ||
+          delivery.status.toLowerCase().includes(lowercaseSearch) ||
+          (delivery.courier && delivery.courier.toLowerCase().includes(lowercaseSearch)) ||
+          (delivery.organization && delivery.organization.toLowerCase().includes(lowercaseSearch))
+        );
+      });
+      setFilteredDeliveries(filtered);
+    }
+    setCurrentPage(1); // Reset to first page when search changes
+  }, [debouncedSearchTerm, deliveries]);
+
+  // Initialize filtered deliveries with all deliveries
+  useEffect(() => {
+    setFilteredDeliveries(deliveries);
+  }, [deliveries]);
+
+  // Handle column visibility change
+  const handleColumnVisibilityChange = (columns: string[]) => {
+    setVisibleColumns(columns);
+  };
+
+  // Get status badge color based on status
+  const getStatusBadgeColor = (status: string) => {
+    const statusMap: Record<string, string> = {
+      "Dropoff Complete": "bg-green-500 hover:bg-green-600",
+      "In Transit": "bg-blue-500 hover:bg-blue-600",
+      "Picking Up": "bg-yellow-500 hover:bg-yellow-600",
+      "Arrived For Pickup": "bg-purple-500 hover:bg-purple-600",
+      "Canceled By Customer": "bg-red-500 hover:bg-red-600",
+      "Recipient Unavailable": "bg-orange-500 hover:bg-orange-600",
+      "Draft Order": "bg-gray-500 hover:bg-gray-600",
+      "Paid Order": "bg-emerald-500 hover:bg-emerald-600",
+      "Courier Selected": "bg-cyan-500 hover:bg-cyan-600",
+      "Item Not Given": "bg-rose-500 hover:bg-rose-600",
+      "Reported Order": "bg-pink-500 hover:bg-pink-600",
+      "Waiting For Pay": "bg-amber-500 hover:bg-amber-600",
+      "Cancelled By Admin": "bg-red-700 hover:bg-red-800",
+      "Scheduled Order": "bg-indigo-500 hover:bg-indigo-600",
+      "Repeated Order": "bg-teal-500 hover:bg-teal-600",
+      "Forgot": "bg-stone-500 hover:bg-stone-600",
+      "Started Working": "bg-sky-500 hover:bg-sky-600",
+      "Accepted Repeated Order": "bg-lime-500 hover:bg-lime-600"
+    };
+    
+    return statusMap[status] || "bg-gray-500 hover:bg-gray-600";
+  };
+
+  // Calculate pagination
+  const startIndex = (currentPage - 1) * parseInt(rowsPerPage);
+  const endIndex = startIndex + parseInt(rowsPerPage);
+  const paginatedDeliveries = filteredDeliveries.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredDeliveries.length / parseInt(rowsPerPage));
+
   return (
-    <ThemeProvider>
+    <div className="flex h-screen overflow-hidden">
       <Sidebar collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed} />
-      <div className="flex flex-col h-screen">
-        {/* Rest of component code */}
+      <div className="flex flex-col flex-1 overflow-hidden" style={{ marginLeft: sidebarCollapsed ? "70px" : "240px" }}>
+        <div className="p-6 flex-1 overflow-auto">
+          <div className="flex flex-col space-y-6">
+            <div className="flex justify-between items-center">
+              <h1 className="text-3xl font-bold">Deliveries</h1>
+              <Button>New Delivery</Button>
+            </div>
+            
+            <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 sm:items-center">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                <Input 
+                  placeholder="Search deliveries..." 
+                  className="pl-10" 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              
+              <div className="flex space-x-2">
+                <DateRangePicker 
+                  date={dateRange} 
+                  onDateChange={setDateRange} 
+                />
+                
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" size="icon">
+                      <Clock size={18} />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80">
+                    <div className="space-y-2">
+                      <h3 className="font-medium">Timezone</h3>
+                      <TimezonePicker 
+                        timezone={timezone} 
+                        setTimezone={setTimezone} 
+                      />
+                    </div>
+                  </PopoverContent>
+                </Popover>
+                
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" size="icon">
+                      <Filter size={18} />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80">
+                    <div className="space-y-4">
+                      <h3 className="font-medium">Filters</h3>
+                      <div className="space-y-2">
+                        <label className="text-sm">Status</label>
+                        <Select>
+                          <SelectTrigger>
+                            <SelectValue placeholder="All statuses" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">All statuses</SelectItem>
+                            <SelectItem value="completed">Completed</SelectItem>
+                            <SelectItem value="in-transit">In Transit</SelectItem>
+                            <SelectItem value="scheduled">Scheduled</SelectItem>
+                            <SelectItem value="canceled">Canceled</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+                
+                <ColumnSelector 
+                  options={columnOptions}
+                  visibleColumns={visibleColumns}
+                  onChange={handleColumnVisibilityChange}
+                />
+              </div>
+            </div>
+            
+            <div className="border rounded-lg overflow-hidden">
+              <ScrollArea className="h-[calc(100vh-300px)]">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      {visibleColumns.includes("packageId") && (
+                        <TableHead className="w-[120px]">Package ID</TableHead>
+                      )}
+                      {visibleColumns.includes("orderName") && (
+                        <TableHead>Order Name</TableHead>
+                      )}
+                      {visibleColumns.includes("status") && (
+                        <TableHead>Status</TableHead>
+                      )}
+                      {visibleColumns.includes("pickupTime") && (
+                        <TableHead>Pickup Time</TableHead>
+                      )}
+                      {visibleColumns.includes("dropoffTime") && (
+                        <TableHead>Dropoff Time</TableHead>
+                      )}
+                      {visibleColumns.includes("pickupLocation") && (
+                        <TableHead>Pickup Location</TableHead>
+                      )}
+                      {visibleColumns.includes("dropoffLocation") && (
+                        <TableHead>Dropoff Location</TableHead>
+                      )}
+                      {visibleColumns.includes("price") && (
+                        <TableHead className="text-right">Price</TableHead>
+                      )}
+                      {visibleColumns.includes("tip") && (
+                        <TableHead className="text-right">Tip</TableHead>
+                      )}
+                      {visibleColumns.includes("fees") && (
+                        <TableHead className="text-right">Fees</TableHead>
+                      )}
+                      {visibleColumns.includes("courier") && (
+                        <TableHead>Courier</TableHead>
+                      )}
+                      {visibleColumns.includes("organization") && (
+                        <TableHead>Organization</TableHead>
+                      )}
+                      {visibleColumns.includes("distance") && (
+                        <TableHead className="text-right">Distance</TableHead>
+                      )}
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {paginatedDeliveries.map((delivery) => (
+                      <TableRow key={delivery.id} className="cursor-pointer hover:bg-muted/50">
+                        {visibleColumns.includes("packageId") && (
+                          <TableCell className="font-medium">{delivery.packageId}</TableCell>
+                        )}
+                        {visibleColumns.includes("orderName") && (
+                          <TableCell>{delivery.orderName}</TableCell>
+                        )}
+                        {visibleColumns.includes("status") && (
+                          <TableCell>
+                            <Badge className={getStatusBadgeColor(delivery.status)}>
+                              {delivery.status}
+                            </Badge>
+                          </TableCell>
+                        )}
+                        {visibleColumns.includes("pickupTime") && (
+                          <TableCell>{delivery.pickupTime}</TableCell>
+                        )}
+                        {visibleColumns.includes("dropoffTime") && (
+                          <TableCell>{delivery.dropoffTime}</TableCell>
+                        )}
+                        {visibleColumns.includes("pickupLocation") && (
+                          <TableCell>
+                            <div className="flex flex-col">
+                              <span className="font-medium">{delivery.pickupLocation.name}</span>
+                              <span className="text-muted-foreground text-xs">{delivery.pickupLocation.address}</span>
+                            </div>
+                          </TableCell>
+                        )}
+                        {visibleColumns.includes("dropoffLocation") && (
+                          <TableCell>
+                            <div className="flex flex-col">
+                              <span className="font-medium">{delivery.dropoffLocation.name}</span>
+                              <span className="text-muted-foreground text-xs">{delivery.dropoffLocation.address}</span>
+                            </div>
+                          </TableCell>
+                        )}
+                        {visibleColumns.includes("price") && (
+                          <TableCell className="text-right">{delivery.price}</TableCell>
+                        )}
+                        {visibleColumns.includes("tip") && (
+                          <TableCell className="text-right">{delivery.tip}</TableCell>
+                        )}
+                        {visibleColumns.includes("fees") && (
+                          <TableCell className="text-right">{delivery.fees}</TableCell>
+                        )}
+                        {visibleColumns.includes("courier") && (
+                          <TableCell>{delivery.courier}</TableCell>
+                        )}
+                        {visibleColumns.includes("organization") && (
+                          <TableCell>{delivery.organization}</TableCell>
+                        )}
+                        {visibleColumns.includes("distance") && (
+                          <TableCell className="text-right">{delivery.distance}</TableCell>
+                        )}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </ScrollArea>
+            </div>
+            
+            <div className="flex justify-between items-center">
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-muted-foreground">Rows per page:</span>
+                <Select value={rowsPerPage} onValueChange={setRowsPerPage}>
+                  <SelectTrigger className="w-[70px]">
+                    <SelectValue>{rowsPerPage}</SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="10">10</SelectItem>
+                    <SelectItem value="20">20</SelectItem>
+                    <SelectItem value="50">50</SelectItem>
+                    <SelectItem value="100">100</SelectItem>
+                  </SelectContent>
+                </Select>
+                <span className="text-sm text-muted-foreground">
+                  Showing {startIndex + 1}-{Math.min(endIndex, filteredDeliveries.length)} of {filteredDeliveries.length}
+                </span>
+              </div>
+              
+              <Pagination>
+                <PaginationContent>
+                  <PaginationPrevious 
+                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                  />
+                  
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                    let pageNumber;
+                    if (totalPages <= 5) {
+                      pageNumber = i + 1;
+                    } else if (currentPage <= 3) {
+                      pageNumber = i + 1;
+                    } else if (currentPage >= totalPages - 2) {
+                      pageNumber = totalPages - 4 + i;
+                    } else {
+                      pageNumber = currentPage - 2 + i;
+                    }
+                    
+                    return (
+                      <PaginationItem key={pageNumber}>
+                        <PaginationLink 
+                          isActive={currentPage === pageNumber}
+                          onClick={() => setCurrentPage(pageNumber)}
+                        >
+                          {pageNumber}
+                        </PaginationLink>
+                      </PaginationItem>
+                    );
+                  })}
+                  
+                  <PaginationNext 
+                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                  />
+                </PaginationContent>
+              </Pagination>
+            </div>
+          </div>
+        </div>
       </div>
-    </ThemeProvider>
+    </div>
   );
 };
 
