@@ -1,15 +1,16 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { GripVertical, Plus } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
+import TableSearch from "@/components/table/TableSearch";
 
 const ClientsPage = () => {
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const availableColumns: ColumnOption[] = [
     { id: "id", label: "ID", default: true },
@@ -103,6 +104,23 @@ const ClientsPage = () => {
 
   const sortedColumns = getSortedVisibleColumns();
 
+  const handleSearch = (value: string) => {
+    setSearchQuery(value);
+  };
+
+  const filteredClients = clients.filter(client => {
+    if (searchQuery.length < 3) return true;
+    
+    const query = searchQuery.toLowerCase();
+    return (
+      client.name.toLowerCase().includes(query) ||
+      client.contact.toLowerCase().includes(query) ||
+      client.email.toLowerCase().includes(query) ||
+      client.phone.includes(query) ||
+      client.id.toString().includes(query)
+    );
+  });
+
   return (
     <Layout>
       <div className="container mx-auto p-6">
@@ -110,10 +128,16 @@ const ClientsPage = () => {
           <h1 className="text-2xl font-bold">Clients Management</h1>
           
           <div className="flex items-center justify-between">
-            <Button size="sm" className="flex items-center gap-1 text-xs px-2 py-1">
-              <Plus className="w-3 h-3" />
-              Add Client
-            </Button>
+            <div className="flex items-center gap-3">
+              <Button size="sm" className="flex items-center gap-1 text-xs px-2 py-1">
+                <Plus className="w-3 h-3" />
+                Add Client
+              </Button>
+              <TableSearch 
+                onSearch={handleSearch} 
+                placeholder="Search clients..." 
+              />
+            </div>
             <div className="flex justify-end">
               <ColumnSelector
                 columns={availableColumns}
@@ -153,7 +177,7 @@ const ClientsPage = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {clients.map((client) => (
+                  {filteredClients.map((client) => (
                     <TableRow key={client.id}>
                       {sortedColumns.includes("id") && (
                         <TableCell className="font-mono">{client.id}</TableCell>
@@ -188,6 +212,13 @@ const ClientsPage = () => {
                       )}
                     </TableRow>
                   ))}
+                  {filteredClients.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={sortedColumns.length} className="h-24 text-center">
+                        No clients found matching your search.
+                      </TableCell>
+                    </TableRow>
+                  )}
                 </TableBody>
               </Table>
             </ScrollArea>
