@@ -3,13 +3,13 @@ import { Layout } from "@/components/layout/Layout";
 import { Table } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { UserRound, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 
 const DriversPage = () => {
   const drivers = [
-    { id: 1, name: "John Doe", email: "john.doe@example.com", phone: "(123) 456-7890", status: "Active" },
-    { id: 2, name: "Jane Smith", email: "jane.smith@example.com", phone: "(123) 456-7891", status: "On leave" },
-    { id: 3, name: "Mike Johnson", email: "mike.johnson@example.com", phone: "(123) 456-7892", status: "Active" },
+    { id: 5432, name: "John Doe", email: "john.doe@example.com", phone: "(123) 456-7890", status: "Active" },
+    { id: 6543, name: "Jane Smith", email: "jane.smith@example.com", phone: "(123) 456-7891", status: "On leave" },
+    { id: 7654, name: "Mike Johnson", email: "mike.johnson@example.com", phone: "(123) 456-7892", status: "Active" },
   ];
 
   return (
@@ -32,7 +32,7 @@ const DriversPage = () => {
             <Table>
               <thead>
                 <tr>
-                  <th className="w-[50px]"></th>
+                  <th>ID</th>
                   <th>Name</th>
                   <th>Email</th>
                   <th>Phone</th>
@@ -43,11 +43,7 @@ const DriversPage = () => {
               <tbody>
                 {drivers.map((driver) => (
                   <tr key={driver.id}>
-                    <td>
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-                        <UserRound className="h-4 w-4 text-primary" />
-                      </div>
-                    </td>
+                    <td className="font-mono">{driver.id}</td>
                     <td>{driver.name}</td>
                     <td>{driver.email}</td>
                     <td>{driver.phone}</td>

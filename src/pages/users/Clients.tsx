@@ -3,13 +3,13 @@ import { Layout } from "@/components/layout/Layout";
 import { Table } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { UserRound, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 
 const ClientsPage = () => {
   const clients = [
-    { id: 1, name: "Acme Corp", contact: "Alex Johnson", email: "alex@acmecorp.com", phone: "(123) 456-7890", type: "Business" },
-    { id: 2, name: "TechStart", contact: "Sarah Lee", email: "sarah@techstart.com", phone: "(123) 456-7891", type: "Business" },
-    { id: 3, name: "Robert Brown", contact: "Robert Brown", email: "robert.brown@example.com", phone: "(123) 456-7892", type: "Individual" },
+    { id: 1234, name: "Acme Corp", contact: "Alex Johnson", email: "alex@acmecorp.com", phone: "(123) 456-7890", type: "Business" },
+    { id: 23456, name: "TechStart", contact: "Sarah Lee", email: "sarah@techstart.com", phone: "(123) 456-7891", type: "Business" },
+    { id: 34567, name: "Robert Brown", contact: "Robert Brown", email: "robert.brown@example.com", phone: "(123) 456-7892", type: "Individual" },
   ];
 
   return (
@@ -32,7 +32,7 @@ const ClientsPage = () => {
             <Table>
               <thead>
                 <tr>
-                  <th className="w-[50px]"></th>
+                  <th>ID</th>
                   <th>Name</th>
                   <th>Contact Person</th>
                   <th>Email</th>
@@ -44,11 +44,7 @@ const ClientsPage = () => {
               <tbody>
                 {clients.map((client) => (
                   <tr key={client.id}>
-                    <td>
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-                        <UserRound className="h-4 w-4 text-primary" />
-                      </div>
-                    </td>
+                    <td className="font-mono">{client.id}</td>
                     <td>{client.name}</td>
                     <td>{client.contact}</td>
                     <td>{client.email}</td>
