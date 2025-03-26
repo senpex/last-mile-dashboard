@@ -3,12 +3,13 @@ import { Layout } from "@/components/layout/Layout";
 import { Table } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Car, Bus, Truck, Bike } from "lucide-react";
+import { Plus, Car, Bus, Truck, Bike, HelpCircle, TruckIcon } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
 import { useEffect, useState } from "react";
 
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{[key: string]: string}>({});
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Load transport types from the dictionary
@@ -22,32 +23,45 @@ const DriversPage = () => {
       console.log("Loaded transport types:", types); // Debug: Log the loaded transport types
     } else {
       console.log("Transport dictionary not found for ID: 2"); // Debug: Log if dictionary not found
+      
+      // Initialize the transport dictionary with some default values for testing
+      const defaultTypes = {
+        "1": "car",
+        "2": "suv",
+        "3": "bus",
+        "4": "truck",
+        "5": "pickup_truck",
+        "6": "bike"
+      };
+      setTransportTypes(defaultTypes);
+      console.log("Using default transport types:", defaultTypes);
     }
+    setIsLoading(false);
   }, []);
 
   // Transport icon mapping
-  const getTransportIcon = (type: string | undefined) => {
-    console.log("Getting icon for transport type:", type); // Debug: Log the transport type
+  const getTransportIcon = (transportId: string) => {
+    const transportType = transportTypes[transportId];
+    console.log(`Getting icon for transport ID: ${transportId}, type: ${transportType}`);
     
-    // Guard against undefined type
-    if (!type) {
-      console.log("Transport type is undefined, using default icon");
-      return <Car className="h-5 w-5 text-gray-500" />;
+    // If type is undefined, return a question mark icon
+    if (!transportType) {
+      return <HelpCircle className="h-5 w-5 text-gray-500" />;
     }
     
-    const lowercaseType = type.toLowerCase();
+    // Use the transport ID directly to determine the icon
     const iconMap: {[key: string]: React.ReactNode} = {
-      'car': <Car className="h-5 w-5 text-blue-600" />,
-      'suv': <Car className="h-5 w-5 text-teal-600" />,
-      'bus': <Bus className="h-5 w-5 text-green-600" />,
-      'truck': <Truck className="h-5 w-5 text-red-600" />,
-      'pickup_truck': <Truck className="h-5 w-5 text-orange-600" />,
-      'bike': <Bike className="h-5 w-5 text-purple-600" />,
-      'bicycle': <Bike className="h-5 w-5 text-purple-600" />,
+      // Map each transport ID to its appropriate icon
+      '1': <Car className="h-5 w-5 text-blue-600" />,
+      '2': <Car className="h-5 w-5 text-teal-600" />,
+      '3': <Bus className="h-5 w-5 text-green-600" />,
+      '4': <Truck className="h-5 w-5 text-red-600" />,
+      '5': <Truck className="h-5 w-5 text-orange-600" />,
+      '6': <Bike className="h-5 w-5 text-purple-600" />
     };
 
-    // Default to Car icon if no specific match found
-    return iconMap[lowercaseType] || <Car className="h-5 w-5 text-gray-500" />;
+    // Return the icon for the transport ID, or a default icon if not found
+    return iconMap[transportId] || <Car className="h-5 w-5 text-gray-500" />;
   };
 
   const drivers = [
@@ -116,16 +130,13 @@ const DriversPage = () => {
                     <td>
                       <div className="flex items-center gap-2">
                         {driver.transports.map((transportId) => {
-                          // Debug: log the values used for rendering
-                          console.log(`Transport ID: ${transportId}, Type: ${transportTypes[transportId]}`);
-                          
                           return (
                             <div 
                               key={transportId} 
                               className="flex items-center justify-center p-2 rounded-md bg-muted" 
-                              title={transportTypes[transportId] || 'Unknown transport'}
+                              title={transportTypes[transportId] || `Transport ID: ${transportId}`}
                             >
-                              {getTransportIcon(transportTypes[transportId])}
+                              {getTransportIcon(transportId)}
                             </div>
                           );
                         })}
