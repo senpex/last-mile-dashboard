@@ -14,16 +14,7 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { 
-  ListFilter, 
-  Car,
-  User,
-  Car as SuvIcon,
-} from "lucide-react";
-import PickupTruckIcon from "@/components/icons/PickupTruckIcon";
-import VanIcon from "@/components/icons/VanIcon";
-import BoxTruckIcon from "@/components/icons/BoxTruckIcon";
-import RefrigeratedVanIcon from "@/components/icons/RefrigeratedVanIcon";
+import { ListFilter } from "lucide-react";
 import DictionaryImport from "@/components/DictionaryImport";
 import {
   Table,
@@ -34,6 +25,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
+import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 
 const Dictionaries = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -69,40 +61,15 @@ const Dictionaries = () => {
 
   const getTransportIcon = (transportType: string, iconName?: string) => {
     if (iconName) {
-      const lowerCaseIcon = iconName.toLowerCase();
-      
-      const iconMap: {[key: string]: React.ReactNode} = {
-        'helper': <User className="h-4 w-4 text-violet-600" />,
-        'car': <Car className="h-4 w-4 text-blue-600" />,
-        'suv': <SuvIcon className="h-4 w-4 text-teal-600" />,
-        'pickup_truck': <PickupTruckIcon className="h-4 w-4 text-orange-600" size={16} />,
-        '9ft_cargo_van': <VanIcon className="h-4 w-4 text-gray-600" size={16} />,
-        '10ft_box_truck': <BoxTruckIcon className="h-4 w-4 text-red-600" size={16} variant="10ft" />,
-        '15ft_box_truck': <BoxTruckIcon className="h-4 w-4 text-red-600" size={16} variant="15ft" />,
-        '17ft_box_truck': <BoxTruckIcon className="h-4 w-4 text-red-600" size={16} variant="17ft" />,
-        'refrigerated_van': <RefrigeratedVanIcon className="h-4 w-4 text-blue-300" size={16} />
-      };
-      
-      if (iconMap[lowerCaseIcon]) {
-        return iconMap[lowerCaseIcon];
-      }
+      const iconType = iconName.toLowerCase() as TransportType;
+      return <TransportIcon transportType={iconType} className="h-4 w-4" size={16} />;
     }
     
-    const lowerCaseType = transportType.toLowerCase();
+    const formattedType = transportType
+      .toLowerCase()
+      .replace(/ /g, '_') as TransportType;
     
-    const typeToIconMap: {[key: string]: React.ReactNode} = {
-      'helper': <User className="h-4 w-4 text-violet-600" />,
-      'car': <Car className="h-4 w-4 text-blue-600" />,
-      'suv': <SuvIcon className="h-4 w-4 text-teal-600" />,
-      'pickup truck': <PickupTruckIcon className="h-4 w-4 text-orange-600" size={16} />,
-      '9ft cargo van': <VanIcon className="h-4 w-4 text-gray-600" size={16} />,
-      '10ft box truck': <BoxTruckIcon className="h-4 w-4 text-red-600" size={16} variant="10ft" />,
-      '15ft box truck': <BoxTruckIcon className="h-4 w-4 text-red-600" size={16} variant="15ft" />,
-      '17ft box truck': <BoxTruckIcon className="h-4 w-4 text-red-600" size={16} variant="17ft" />,
-      'refrigerated van': <RefrigeratedVanIcon className="h-4 w-4 text-blue-300" size={16} />
-    };
-    
-    return typeToIconMap[lowerCaseType] || <PickupTruckIcon className="h-4 w-4 text-gray-500" size={16} />;
+    return <TransportIcon transportType={formattedType} className="h-4 w-4" size={16} />;
   };
 
   return (
