@@ -350,7 +350,7 @@ const DriversPage = () => {
                   {filteredDrivers.map((driver) => (
                     <TableRow key={driver.id}>
                       {sortedColumns.includes("id") && (
-                        <TableCell className="font-mono">{driver.id}</TableCell>
+                        <TableCell className="font-sans">{driver.id}</TableCell>
                       )}
                       {sortedColumns.includes("name") && (
                         <TableCell>{driver.name}</TableCell>

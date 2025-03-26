@@ -189,7 +189,7 @@ const ClientsPage = () => {
                   {filteredClients.map((client) => (
                     <TableRow key={client.id}>
                       {sortedColumns.includes("id") && (
-                        <TableCell className="font-mono">{client.id}</TableCell>
+                        <TableCell className="font-sans">{client.id}</TableCell>
                       )}
                       {sortedColumns.includes("name") && (
                         <TableCell>{client.name}</TableCell>
