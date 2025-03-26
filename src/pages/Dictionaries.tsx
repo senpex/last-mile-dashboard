@@ -59,17 +59,17 @@ const Dictionaries = () => {
     });
   };
 
-  const getTransportIcon = (transportType: string, iconName?: string) => {
+  const getTransportIcon = (iconName?: string) => {
     if (iconName) {
-      const iconType = iconName.toLowerCase() as TransportType;
-      return <TransportIcon transportType={iconType} className="h-4 w-4" size={16} />;
+      try {
+        const iconType = iconName.toLowerCase() as TransportType;
+        return <TransportIcon transportType={iconType} className="h-4 w-4" size={16} />;
+      } catch (error) {
+        console.error("Error rendering transport icon:", error);
+        return null;
+      }
     }
-    
-    const formattedType = transportType
-      .toLowerCase()
-      .replace(/ /g, '_') as TransportType;
-    
-    return <TransportIcon transportType={formattedType} className="h-4 w-4" size={16} />;
+    return null;
   };
 
   return (
@@ -144,7 +144,7 @@ const Dictionaries = () => {
                               <TableCell className="py-1 px-2">
                                 {selectedDictionary.id === "2" && (
                                   <div className="flex items-center justify-center">
-                                    {getTransportIcon(item.value, item.icon)}
+                                    {getTransportIcon(item.icon)}
                                   </div>
                                 )}
                               </TableCell>

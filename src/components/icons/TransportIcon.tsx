@@ -3,12 +3,11 @@ import React from 'react';
 import { 
   User,
   Car as CarIcon,
+  Truck,
+  RefrigeratorIcon,
+  PackageOpen,
   LucideProps 
 } from 'lucide-react';
-import PickupTruckIcon from './PickupTruckIcon';
-import CargoVanIcon from './CargoVanIcon';
-import BoxTruckIcon from './BoxTruckIcon';
-import RefrigeratedVanIcon from './RefrigeratedVanIcon';
 
 export type TransportType = 
   | 'helper'
@@ -44,19 +43,19 @@ const TransportIcon: React.FC<TransportIconProps> = ({
     case 'suv':
       return <CarIcon className={`text-teal-600 ${iconClasses}`} size={iconSize} {...props} />;
     case 'pickup_truck':
-      return <PickupTruckIcon className={`text-orange-600 ${iconClasses}`} size={iconSize} {...props} />;
+      return <Truck className={`text-orange-600 ${iconClasses}`} size={iconSize} {...props} />;
     case '9ft_cargo_van':
-      return <CargoVanIcon className={`text-blue-700 ${iconClasses}`} size={iconSize} {...props} />;
+      return <Truck className={`text-blue-700 ${iconClasses}`} size={iconSize} strokeWidth={1.5} {...props} />;
     case '10ft_box_truck':
-      return <BoxTruckIcon className={`text-red-600 ${iconClasses}`} size={iconSize} variant="10ft" {...props} />;
+      return <Truck className={`text-red-600 ${iconClasses}`} size={iconSize} strokeWidth={1.75} {...props} />;
     case '15ft_box_truck':
-      return <BoxTruckIcon className={`text-red-600 ${iconClasses}`} size={iconSize} variant="15ft" {...props} />;
+      return <Truck className={`text-red-700 ${iconClasses}`} size={iconSize} strokeWidth={2} {...props} />;
     case '17ft_box_truck':
-      return <BoxTruckIcon className={`text-red-600 ${iconClasses}`} size={iconSize} variant="17ft" {...props} />;
+      return <Truck className={`text-red-800 ${iconClasses}`} size={iconSize} strokeWidth={2.25} {...props} />;
     case 'refrigerated_van':
-      return <RefrigeratedVanIcon className={`text-blue-300 ${iconClasses}`} size={iconSize} {...props} />;
+      return <RefrigeratorIcon className={`text-blue-300 ${iconClasses}`} size={iconSize} {...props} />;
     default:
-      return <User className={`text-gray-500 ${iconClasses}`} size={iconSize} {...props} />;
+      return <PackageOpen className={`text-gray-500 ${iconClasses}`} size={iconSize} {...props} />;
   }
 };
 

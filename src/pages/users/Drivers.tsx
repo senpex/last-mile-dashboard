@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table } from "@/components/ui/table";
@@ -35,6 +36,22 @@ const DriversPage = () => {
       };
       saveDictionary(newTransportDict);
       console.log("Created new transport dictionary:", newTransportDict);
+    } else {
+      // Update the existing dictionary to ensure all icons are set correctly
+      const updatedItems = transportDict.items.map(item => {
+        // Convert the item value to a valid icon name if icon is missing
+        if (!item.icon) {
+          const iconName = item.value.toLowerCase().replace(/ /g, '_');
+          return { ...item, icon: iconName };
+        }
+        return item;
+      });
+      
+      if (JSON.stringify(updatedItems) !== JSON.stringify(transportDict.items)) {
+        const updatedDict = { ...transportDict, items: updatedItems };
+        saveDictionary(updatedDict);
+        console.log("Updated transport dictionary icons:", updatedDict);
+      }
     }
     
     // Load dictionary (either existing or newly created)
@@ -172,4 +189,3 @@ const DriversPage = () => {
 };
 
 export default DriversPage;
-
