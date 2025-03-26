@@ -57,7 +57,6 @@ const Index = () => {
   const [filteredDeliveries, setFilteredDeliveries] = useState<any[]>([]);
 
   const deliveries = [
-    // Original 5 records
     {
       id: 1,
       packageId: "WMT-10042501",
@@ -168,7 +167,6 @@ const Index = () => {
       organization: "Curry Up Now",
       distance: "0.2 mi"
     },
-    // 40 new records with various statuses
     {
       id: 6,
       packageId: "TGT-80031245",
@@ -729,4 +727,28 @@ const Index = () => {
         name: "Rooms To Go - Rogers",
         address: "4408 W Walnut St, Rogers, AR 72756, US"
       },
-      dropoffTime
+      dropoffTime: "03/24/2025 10:00 AM",
+      dropoffLocation: {
+        name: "Jennifer Martinez",
+        address: "721 NW Elmwood St, Bentonville, AR 72712, US"
+      },
+      price: "$349.99",
+      tip: "$35.00",
+      fees: "$19.99",
+      courier: "Robert Johnson",
+      organization: "Rooms To Go",
+      distance: "8.2 mi"
+    }
+  ];
+
+  return (
+    <ThemeProvider>
+      <Sidebar collapsed={sidebarCollapsed} onCollapse={setSidebarCollapsed} />
+      <div className="flex flex-col h-screen">
+        {/* Rest of component JSX */}
+      </div>
+    </ThemeProvider>
+  );
+};
+
+export default Index;
