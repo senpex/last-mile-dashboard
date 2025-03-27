@@ -1304,26 +1304,25 @@ const Index = () => {
               </div>
               
               <div className="flex items-center justify-between">
-                <h2 className="text-sm font-semibold text-black">Views:</h2>
-              </div>
-              
-              <div className="mb-4">
-                <Tabs value={activeView} onValueChange={setActiveView} className="w-auto">
-                  <TabsList className="inline-flex h-9 w-auto bg-muted space-x-1">
-                    <TabsTrigger 
-                      value="main" 
-                      className="px-4 rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                    >
-                      Main view
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="attention" 
-                      className="px-4 rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                    >
-                      Attention Required
-                    </TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-sm font-semibold text-black mr-2">Views:</h2>
+                  <Tabs value={activeView} onValueChange={setActiveView} className="w-auto">
+                    <TabsList className="inline-flex h-8 bg-muted space-x-1">
+                      <TabsTrigger 
+                        value="main" 
+                        className="px-3 text-xs rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                      >
+                        Main view
+                      </TabsTrigger>
+                      <TabsTrigger 
+                        value="attention" 
+                        className="px-3 text-xs rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                      >
+                        Attention Required
+                      </TabsTrigger>
+                    </TabsList>
+                  </Tabs>
+                </div>
               </div>
               
               <div className="border rounded-md overflow-hidden mb-4">
