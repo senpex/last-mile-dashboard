@@ -1309,11 +1309,17 @@ const Index = () => {
               
               <div className="mb-4">
                 <Tabs value={activeView} onValueChange={setActiveView} className="w-auto">
-                  <TabsList className="inline-flex h-9 w-auto bg-muted">
-                    <TabsTrigger value="main" className="px-4 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                  <TabsList className="inline-flex h-9 w-auto bg-muted space-x-1">
+                    <TabsTrigger 
+                      value="main" 
+                      className="px-4 rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                    >
                       Main view
                     </TabsTrigger>
-                    <TabsTrigger value="attention" className="px-4 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                    <TabsTrigger 
+                      value="attention" 
+                      className="px-4 rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                    >
                       Attention Required
                     </TabsTrigger>
                   </TabsList>
