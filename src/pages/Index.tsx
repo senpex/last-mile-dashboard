@@ -40,6 +40,7 @@ import { TimezonePicker } from "@/components/TimezonePicker";
 import { getDictionary } from "@/lib/storage";
 import { Dictionary, DictionaryItem } from "@/types/dictionary";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -55,6 +56,7 @@ const Index = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
   const [filteredDeliveries, setFilteredDeliveries] = useState<any[]>([]);
+  const [activeView, setActiveView] = useState<string>("main");
 
   const deliveries = [
     // Original 5 records
@@ -1303,6 +1305,19 @@ const Index = () => {
               
               <div className="flex items-center justify-between">
                 <h2 className="text-sm font-semibold text-black">Views:</h2>
+              </div>
+              
+              <div className="mb-4">
+                <Tabs value={activeView} onValueChange={setActiveView} className="w-auto">
+                  <TabsList className="inline-flex h-9 w-auto bg-muted">
+                    <TabsTrigger value="main" className="px-4 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                      Main view
+                    </TabsTrigger>
+                    <TabsTrigger value="attention" className="px-4 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                      Attention Required
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
               </div>
               
               <div className="border rounded-md overflow-hidden mb-4">
