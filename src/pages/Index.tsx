@@ -1302,7 +1302,7 @@ const Index = () => {
               </div>
               
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-muted-foreground">Views:</h2>
+                <h2 className="text-sm font-semibold text-black">Views:</h2>
               </div>
               
               <div className="border rounded-md overflow-hidden mb-4">
