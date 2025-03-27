@@ -1301,6 +1301,10 @@ const Index = () => {
                 </div>
               </div>
               
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-muted-foreground">Views:</h2>
+              </div>
+              
               <div className="border rounded-md overflow-hidden mb-4">
                 <ScrollArea orientation="horizontal">
                   <Table>
@@ -1427,8 +1431,6 @@ const Index = () => {
                   <SelectItem value="100">100</SelectItem>
                 </SelectContent>
               </Select>
-              
-              
               
               <Pagination>
                 <PaginationContent>
