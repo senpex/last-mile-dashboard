@@ -796,7 +796,7 @@ const DriversPage = () => {
   return (
     <Layout>
       <div className="container mx-auto p-6">
-        <div className="space-y-4">
+        <div className="space-y-6">
           <h1 className="text-2xl font-bold">Drivers Management</h1>
           <div className="flex items-center justify-between">
             <div className="flex items-center h-9 gap-2">
@@ -875,114 +875,4 @@ const DriversPage = () => {
                               <div 
                                 key={transportId} 
                                 className="flex items-center justify-center p-2 rounded-md bg-muted" 
-                                title={transportTypes[transportId] || `Transport ID: ${transportId}`}
-                              >
-                                <TransportIcon 
-                                  transportType={transportId as TransportType} 
-                                  size={14} 
-                                  className="h-[14px] w-[14px]"
-                                />
-                              </div>
-                            ))}
-                          </div>
-                        </TableCell>
-                      )}
-                      {sortedColumns.includes("rating") && (
-                        <TableCell>
-                          {renderRating(driver.rating)}
-                        </TableCell>
-                      )}
-                      {sortedColumns.includes("status") && (
-                        <TableCell>
-                          {renderStatus(driver.status)}
-                        </TableCell>
-                      )}
-                      {sortedColumns.includes("hireStatus") && (
-                        <TableCell>
-                          {renderHireStatus(driver.hireStatus, driver.id)}
-                        </TableCell>
-                      )}
-                      {sortedColumns.includes("stripe") && (
-                        <TableCell>
-                          {renderStripeStatus(driver.stripe)}
-                        </TableCell>
-                      )}
-                      {sortedColumns.includes("actions") && (
-                        <TableCell className="text-right">
-                          <Button variant="ghost" size="sm">
-                            Edit
-                          </Button>
-                        </TableCell>
-                      )}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </ScrollArea>
-          
-          <div className="border-t pt-2 h-[36px] flex items-center justify-between">
-            <Pagination>
-              <PaginationInfo 
-                total={totalItems} 
-                pageSize={pageSize} 
-                currentPage={currentPage} 
-              />
-              
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious 
-                    href="#" 
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlePageChange(currentPage - 1);
-                    }}
-                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-                  />
-                </PaginationItem>
-                
-                {getPageNumbers().map((page, i) => (
-                  <PaginationItem key={i}>
-                    {page === -1 || page === -2 ? (
-                      <PaginationEllipsis />
-                    ) : (
-                      <PaginationLink 
-                        href="#" 
-                        isActive={page === currentPage}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handlePageChange(page);
-                        }}
-                      >
-                        {page}
-                      </PaginationLink>
-                    )}
-                  </PaginationItem>
-                ))}
-                
-                <PaginationItem>
-                  <PaginationNext 
-                    href="#" 
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlePageChange(currentPage + 1);
-                    }}
-                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-              
-              <PaginationSize 
-                sizes={pageSizeOptions} 
-                pageSize={pageSize} 
-                onChange={handlePageSizeChange} 
-              />
-            </Pagination>
-          </div>
-        </div>
-      </div>
-    </Layout>
-  );
-};
-
-export default DriversPage;
+                                title={transportTypes[transportId] || `Transport ID: ${transportId
