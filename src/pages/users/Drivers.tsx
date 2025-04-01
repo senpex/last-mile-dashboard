@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   Pagination, 
   PaginationContent, 
@@ -296,7 +297,7 @@ const DriversPage = () => {
       transports: generateRandomTransports(),
       rating: generateRandomRating(),
       stripe: getRandomStripeStatus(),
-      hireStatus: "pending"
+      hireStatus: "rejected"
     },
     { 
       id: 8019, 
@@ -760,100 +761,102 @@ const DriversPage = () => {
             </div>
           </div>
 
-          <TableContainer height="h-[calc(100vh-250px)]">
-            <Table>
-              <TableHeader className="bg-muted/50">
-                <TableRow>
-                  {sortedColumns.map((columnId) => {
-                    const column = availableColumns.find(col => col.id === columnId);
-                    if (!column) return null;
-                    
-                    return (
-                      <TableHead 
-                        key={columnId}
-                        draggable={true}
-                        dragOver={dragOverColumn === columnId}
-                        onDragStart={(e) => handleDragStart(e, columnId)}
-                        onDragOver={(e) => handleDragOver(e, columnId)}
-                        onDragEnd={handleDragEnd}
-                        onDrop={(e) => handleDrop(e, columnId)}
-                        className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
-                      >
-                        <div className="flex items-center gap-1 overflow-hidden">
-                          <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
-                          <span className="truncate">{column.label}</span>
-                        </div>
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredDrivers.map((driver) => (
-                  <TableRow key={driver.id}>
-                    {sortedColumns.includes("id") && (
-                      <TableCell className="font-sans">{driver.id}</TableCell>
-                    )}
-                    {sortedColumns.includes("name") && (
-                      <TableCell>{driver.name}</TableCell>
-                    )}
-                    {sortedColumns.includes("email") && (
-                      <TableCell>{driver.email}</TableCell>
-                    )}
-                    {sortedColumns.includes("phone") && (
-                      <TableCell>{driver.phone}</TableCell>
-                    )}
-                    {sortedColumns.includes("transport") && (
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          {driver.transports.map((transportId) => (
-                            <div 
-                              key={transportId} 
-                              className="flex items-center justify-center p-2 rounded-md bg-muted" 
-                              title={transportTypes[transportId] || `Transport ID: ${transportId}`}
-                            >
-                              <TransportIcon 
-                                transportType={transportId as TransportType} 
-                                size={14} 
-                                className="h-[14px] w-[14px]"
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      </TableCell>
-                    )}
-                    {sortedColumns.includes("rating") && (
-                      <TableCell>
-                        {renderRating(driver.rating)}
-                      </TableCell>
-                    )}
-                    {sortedColumns.includes("status") && (
-                      <TableCell>
-                        {renderStatus(driver.status)}
-                      </TableCell>
-                    )}
-                    {sortedColumns.includes("hireStatus") && (
-                      <TableCell>
-                        {renderHireStatus(driver.hireStatus, driver.id)}
-                      </TableCell>
-                    )}
-                    {sortedColumns.includes("stripe") && (
-                      <TableCell>
-                        {renderStripeStatus(driver.stripe)}
-                      </TableCell>
-                    )}
-                    {sortedColumns.includes("actions") && (
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="sm">
-                          Edit
-                        </Button>
-                      </TableCell>
-                    )}
+          <ScrollArea orientation="both">
+            <TableContainer stickyHeader={false} height="h-[calc(100vh-250px)]">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    {sortedColumns.map((columnId) => {
+                      const column = availableColumns.find(col => col.id === columnId);
+                      if (!column) return null;
+                      
+                      return (
+                        <TableHead 
+                          key={columnId}
+                          draggable={true}
+                          dragOver={dragOverColumn === columnId}
+                          onDragStart={(e) => handleDragStart(e, columnId)}
+                          onDragOver={(e) => handleDragOver(e, columnId)}
+                          onDragEnd={handleDragEnd}
+                          onDrop={(e) => handleDrop(e, columnId)}
+                          className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
+                        >
+                          <div className="flex items-center gap-1 overflow-hidden">
+                            <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
+                            <span className="truncate">{column.label}</span>
+                          </div>
+                        </TableHead>
+                      );
+                    })}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHeader>
+                <TableBody>
+                  {filteredDrivers.map((driver) => (
+                    <TableRow key={driver.id}>
+                      {sortedColumns.includes("id") && (
+                        <TableCell className="font-sans">{driver.id}</TableCell>
+                      )}
+                      {sortedColumns.includes("name") && (
+                        <TableCell>{driver.name}</TableCell>
+                      )}
+                      {sortedColumns.includes("email") && (
+                        <TableCell>{driver.email}</TableCell>
+                      )}
+                      {sortedColumns.includes("phone") && (
+                        <TableCell>{driver.phone}</TableCell>
+                      )}
+                      {sortedColumns.includes("transport") && (
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            {driver.transports.map((transportId) => (
+                              <div 
+                                key={transportId} 
+                                className="flex items-center justify-center p-2 rounded-md bg-muted" 
+                                title={transportTypes[transportId] || `Transport ID: ${transportId}`}
+                              >
+                                <TransportIcon 
+                                  transportType={transportId as TransportType} 
+                                  size={14} 
+                                  className="h-[14px] w-[14px]"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("rating") && (
+                        <TableCell>
+                          {renderRating(driver.rating)}
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("status") && (
+                        <TableCell>
+                          {renderStatus(driver.status)}
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("hireStatus") && (
+                        <TableCell>
+                          {renderHireStatus(driver.hireStatus, driver.id)}
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("stripe") && (
+                        <TableCell>
+                          {renderStripeStatus(driver.stripe)}
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("actions") && (
+                        <TableCell className="text-right">
+                          <Button variant="ghost" size="sm">
+                            Edit
+                          </Button>
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </ScrollArea>
           
           <div className="mt-4">
             <Pagination>
