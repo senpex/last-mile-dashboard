@@ -797,7 +797,7 @@ const DriversPage = () => {
   return (
     <Layout>
       <div className="container mx-auto p-6">
-        <div className="space-y-6">
+        <div className="flex flex-col h-[calc(100vh-120px)] space-y-4">
           <h1 className="text-2xl font-bold">Drivers Management</h1>
           <div className="flex items-center justify-between">
             <div className="flex items-center h-9 gap-2">
@@ -825,8 +825,8 @@ const DriversPage = () => {
             </div>
           </div>
 
-          <ScrollArea orientation="both">
-            <TableContainer stickyHeader={false} height="h-[calc(100vh-250px)]">
+          <ScrollArea className="flex-grow" orientation="both">
+            <TableContainer stickyHeader={false} height="h-full">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -889,21 +889,29 @@ const DriversPage = () => {
                         </TableCell>
                       )}
                       {sortedColumns.includes("rating") && (
-                        <TableCell>{renderRating(driver.rating)}</TableCell>
+                        <TableCell>
+                          {renderRating(driver.rating)}
+                        </TableCell>
                       )}
                       {sortedColumns.includes("status") && (
-                        <TableCell>{renderStatus(driver.status)}</TableCell>
+                        <TableCell>
+                          {renderStatus(driver.status)}
+                        </TableCell>
                       )}
                       {sortedColumns.includes("hireStatus") && (
-                        <TableCell>{renderHireStatus(driver.hireStatus, driver.id)}</TableCell>
+                        <TableCell>
+                          {renderHireStatus(driver.hireStatus, driver.id)}
+                        </TableCell>
                       )}
                       {sortedColumns.includes("stripe") && (
-                        <TableCell>{renderStripeStatus(driver.stripe)}</TableCell>
+                        <TableCell>
+                          {renderStripeStatus(driver.stripe)}
+                        </TableCell>
                       )}
                       {sortedColumns.includes("actions") && (
-                        <TableCell>
-                          <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
-                            View
+                        <TableCell className="text-right">
+                          <Button variant="ghost" size="sm">
+                            Edit
                           </Button>
                         </TableCell>
                       )}
@@ -914,30 +922,38 @@ const DriversPage = () => {
             </TableContainer>
           </ScrollArea>
           
-          {/* Pagination Controls */}
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center space-y-2 md:space-y-0 pt-3">
-            <PaginationSize 
-              sizes={pageSizeOptions}
-              pageSize={pageSize}
-              onChange={handlePageSizeChange}
-            />
-            
-            <Pagination>
+          <div className="border-t flex items-center h-[36px]">
+            <Pagination className="w-full">
+              <PaginationInfo 
+                total={totalItems} 
+                pageSize={pageSize} 
+                currentPage={currentPage} 
+              />
+              
               <PaginationContent>
-                {currentPage > 1 && (
-                  <PaginationItem>
-                    <PaginationPrevious onClick={() => handlePageChange(currentPage - 1)} />
-                  </PaginationItem>
-                )}
+                <PaginationItem>
+                  <PaginationPrevious 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage - 1);
+                    }}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                  />
+                </PaginationItem>
                 
                 {getPageNumbers().map((page, i) => (
                   <PaginationItem key={i}>
                     {page === -1 || page === -2 ? (
                       <PaginationEllipsis />
                     ) : (
-                      <PaginationLink
+                      <PaginationLink 
+                        href="#" 
                         isActive={page === currentPage}
-                        onClick={() => handlePageChange(page)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handlePageChange(page);
+                        }}
                       >
                         {page}
                       </PaginationLink>
@@ -945,19 +961,24 @@ const DriversPage = () => {
                   </PaginationItem>
                 ))}
                 
-                {currentPage < totalPages && (
-                  <PaginationItem>
-                    <PaginationNext onClick={() => handlePageChange(currentPage + 1)} />
-                  </PaginationItem>
-                )}
+                <PaginationItem>
+                  <PaginationNext 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage + 1);
+                    }}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                  />
+                </PaginationItem>
               </PaginationContent>
+              
+              <PaginationSize 
+                sizes={pageSizeOptions} 
+                pageSize={pageSize} 
+                onChange={handlePageSizeChange} 
+              />
             </Pagination>
-            
-            <PaginationInfo
-              total={totalItems}
-              pageSize={pageSize}
-              currentPage={currentPage}
-            />
           </div>
         </div>
       </div>
