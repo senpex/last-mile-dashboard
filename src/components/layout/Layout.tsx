@@ -6,7 +6,8 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-export const Layout = ({ children }: LayoutProps) => {
+// Changed from export const Layout to export default function Layout
+export default function Layout({ children }: LayoutProps) {
   const [collapsed, setCollapsed] = useState(false);
   
   return (
@@ -20,4 +21,4 @@ export const Layout = ({ children }: LayoutProps) => {
       </main>
     </div>
   );
-};
+}
