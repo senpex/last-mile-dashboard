@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { GripVertical, Plus, Search } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import { 
+  Pagination, 
+  PaginationContent, 
+  PaginationItem, 
+  PaginationLink, 
+  PaginationNext, 
+  PaginationPrevious 
+} from "@/components/ui/pagination";
 
 type StripeStatus = 'Unverified' | 'Pending' | 'Verified';
 type HireStatus = string;
@@ -19,6 +26,33 @@ type HireStatus = string;
 const getRandomStripeStatus = (): StripeStatus => {
   const statuses: StripeStatus[] = ['Unverified', 'Pending', 'Verified'];
   return statuses[Math.floor(Math.random() * statuses.length)];
+};
+
+const generateRandomPhone = (): string => {
+  const areaCode = Math.floor(Math.random() * 900) + 100;
+  const prefix = Math.floor(Math.random() * 900) + 100;
+  const lineNumber = Math.floor(Math.random() * 9000) + 1000;
+  return `(${areaCode}) ${prefix}-${lineNumber}`;
+};
+
+const generateRandomTransports = (): string[] => {
+  const transportIds = ['1', '2', '3', '4', '5', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
+  const count = Math.floor(Math.random() * 3) + 1;
+  const result: string[] = [];
+  
+  for (let i = 0; i < count; i++) {
+    const randomIndex = Math.floor(Math.random() * transportIds.length);
+    const transportId = transportIds[randomIndex];
+    if (!result.includes(transportId)) {
+      result.push(transportId);
+    }
+  }
+  
+  return result;
+};
+
+const generateRandomRating = (): number => {
+  return Number((Math.random() * 2 + 3).toFixed(1));
 };
 
 const DriversPage = () => {
@@ -66,6 +100,336 @@ const DriversPage = () => {
       stripe: getRandomStripeStatus(),
       hireStatus: "rejected"
     },
+    { 
+      id: 8001, 
+      name: "Alice Williams", 
+      email: "alice.w@example.com", 
+      phone: generateRandomPhone(), 
+      status: "online",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "active"
+    },
+    { 
+      id: 8002, 
+      name: "Robert Miller", 
+      email: "robert.m@example.com", 
+      phone: generateRandomPhone(), 
+      status: "busy",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "active"
+    },
+    { 
+      id: 8003, 
+      name: "Emily Davis", 
+      email: "emily.d@example.com", 
+      phone: generateRandomPhone(), 
+      status: "offline",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "pending"
+    },
+    { 
+      id: 8004, 
+      name: "James Wilson", 
+      email: "james.w@example.com", 
+      phone: generateRandomPhone(), 
+      status: "online",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "rejected"
+    },
+    { 
+      id: 8005, 
+      name: "Sarah Taylor", 
+      email: "sarah.t@example.com", 
+      phone: generateRandomPhone(), 
+      status: "busy",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "active"
+    },
+    { 
+      id: 8006, 
+      name: "Daniel Anderson", 
+      email: "daniel.a@example.com", 
+      phone: generateRandomPhone(), 
+      status: "offline",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "pending"
+    },
+    { 
+      id: 8007, 
+      name: "Olivia Thomas", 
+      email: "olivia.t@example.com", 
+      phone: generateRandomPhone(), 
+      status: "online",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "active"
+    },
+    { 
+      id: 8008, 
+      name: "Matthew Jackson", 
+      email: "matthew.j@example.com", 
+      phone: generateRandomPhone(), 
+      status: "busy",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "rejected"
+    },
+    { 
+      id: 8009, 
+      name: "Sophia White", 
+      email: "sophia.w@example.com", 
+      phone: generateRandomPhone(), 
+      status: "offline",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "active"
+    },
+    { 
+      id: 8010, 
+      name: "David Harris", 
+      email: "david.h@example.com", 
+      phone: generateRandomPhone(), 
+      status: "online",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "pending"
+    },
+    { 
+      id: 8011, 
+      name: "Emma Martin", 
+      email: "emma.m@example.com", 
+      phone: generateRandomPhone(), 
+      status: "busy",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "active"
+    },
+    { 
+      id: 8012, 
+      name: "Andrew Thompson", 
+      email: "andrew.t@example.com", 
+      phone: generateRandomPhone(), 
+      status: "offline",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "rejected"
+    },
+    { 
+      id: 8013, 
+      name: "Isabella Garcia", 
+      email: "isabella.g@example.com", 
+      phone: generateRandomPhone(), 
+      status: "online",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "active"
+    },
+    { 
+      id: 8014, 
+      name: "Joshua Martinez", 
+      email: "joshua.m@example.com", 
+      phone: generateRandomPhone(), 
+      status: "busy",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "pending"
+    },
+    { 
+      id: 8015, 
+      name: "Charlotte Robinson", 
+      email: "charlotte.r@example.com", 
+      phone: generateRandomPhone(), 
+      status: "offline",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "active"
+    },
+    { 
+      id: 8016, 
+      name: "Christopher Clark", 
+      email: "chris.c@example.com", 
+      phone: generateRandomPhone(), 
+      status: "online",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "rejected"
+    },
+    { 
+      id: 8017, 
+      name: "Amelia Rodriguez", 
+      email: "amelia.r@example.com", 
+      phone: generateRandomPhone(), 
+      status: "busy",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "active"
+    },
+    { 
+      id: 8018, 
+      name: "Joseph Lewis", 
+      email: "joseph.l@example.com", 
+      phone: generateRandomPhone(), 
+      status: "offline",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "pending"
+    },
+    { 
+      id: 8019, 
+      name: "Mia Walker", 
+      email: "mia.w@example.com", 
+      phone: generateRandomPhone(), 
+      status: "online",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "active"
+    },
+    { 
+      id: 8020, 
+      name: "Ethan Hall", 
+      email: "ethan.h@example.com", 
+      phone: generateRandomPhone(), 
+      status: "busy",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "rejected"
+    },
+    { 
+      id: 8021, 
+      name: "Harper Young", 
+      email: "harper.y@example.com", 
+      phone: generateRandomPhone(), 
+      status: "offline",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "active"
+    },
+    { 
+      id: 8022, 
+      name: "Alexander Allen", 
+      email: "alex.a@example.com", 
+      phone: generateRandomPhone(), 
+      status: "online",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "pending"
+    },
+    { 
+      id: 8023, 
+      name: "Abigail King", 
+      email: "abigail.k@example.com", 
+      phone: generateRandomPhone(), 
+      status: "busy",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "active"
+    },
+    { 
+      id: 8024, 
+      name: "Benjamin Wright", 
+      email: "ben.w@example.com", 
+      phone: generateRandomPhone(), 
+      status: "offline",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "rejected"
+    },
+    { 
+      id: 8025, 
+      name: "Sofia Scott", 
+      email: "sofia.s@example.com", 
+      phone: generateRandomPhone(), 
+      status: "online",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "active"
+    },
+    { 
+      id: 8026, 
+      name: "William Green", 
+      email: "william.g@example.com", 
+      phone: generateRandomPhone(), 
+      status: "busy",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "pending"
+    },
+    { 
+      id: 8027, 
+      name: "Elizabeth Baker", 
+      email: "elizabeth.b@example.com", 
+      phone: generateRandomPhone(), 
+      status: "offline",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "active"
+    },
+    { 
+      id: 8028, 
+      name: "Michael Adams", 
+      email: "michael.a@example.com", 
+      phone: generateRandomPhone(), 
+      status: "online",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "rejected"
+    },
+    { 
+      id: 8029, 
+      name: "Camila Nelson", 
+      email: "camila.n@example.com", 
+      phone: generateRandomPhone(), 
+      status: "busy",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "active"
+    },
+    { 
+      id: 8030, 
+      name: "Jacob Hill", 
+      email: "jacob.h@example.com", 
+      phone: generateRandomPhone(), 
+      status: "offline",
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripe: getRandomStripeStatus(),
+      hireStatus: "pending"
+    }
   ]);
 
   const availableColumns: ColumnOption[] = [
@@ -396,97 +760,121 @@ const DriversPage = () => {
             </div>
           </div>
 
-          <div className="border rounded-md overflow-hidden">
-            <ScrollArea orientation="horizontal">
-              <Table>
-                <TableHeader className="bg-muted/50">
-                  <TableRow>
-                    {sortedColumns.map((columnId) => {
-                      const column = availableColumns.find(col => col.id === columnId);
-                      if (!column) return null;
-                      
-                      return (
-                        <TableHead 
-                          key={columnId}
-                          draggable={true}
-                          dragOver={dragOverColumn === columnId}
-                          onDragStart={(e) => handleDragStart(e, columnId)}
-                          onDragOver={(e) => handleDragOver(e, columnId)}
-                          onDragEnd={handleDragEnd}
-                          onDrop={(e) => handleDrop(e, columnId)}
-                          className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
-                        >
-                          <div className="flex items-center gap-1 overflow-hidden">
-                            <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
-                            <span className="truncate">{column.label}</span>
-                          </div>
-                        </TableHead>
-                      );
-                    })}
+          <TableContainer height="h-[calc(100vh-250px)]">
+            <Table>
+              <TableHeader className="bg-muted/50">
+                <TableRow>
+                  {sortedColumns.map((columnId) => {
+                    const column = availableColumns.find(col => col.id === columnId);
+                    if (!column) return null;
+                    
+                    return (
+                      <TableHead 
+                        key={columnId}
+                        draggable={true}
+                        dragOver={dragOverColumn === columnId}
+                        onDragStart={(e) => handleDragStart(e, columnId)}
+                        onDragOver={(e) => handleDragOver(e, columnId)}
+                        onDragEnd={handleDragEnd}
+                        onDrop={(e) => handleDrop(e, columnId)}
+                        className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
+                      >
+                        <div className="flex items-center gap-1 overflow-hidden">
+                          <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
+                          <span className="truncate">{column.label}</span>
+                        </div>
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredDrivers.map((driver) => (
+                  <TableRow key={driver.id}>
+                    {sortedColumns.includes("id") && (
+                      <TableCell className="font-sans">{driver.id}</TableCell>
+                    )}
+                    {sortedColumns.includes("name") && (
+                      <TableCell>{driver.name}</TableCell>
+                    )}
+                    {sortedColumns.includes("email") && (
+                      <TableCell>{driver.email}</TableCell>
+                    )}
+                    {sortedColumns.includes("phone") && (
+                      <TableCell>{driver.phone}</TableCell>
+                    )}
+                    {sortedColumns.includes("transport") && (
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          {driver.transports.map((transportId) => (
+                            <div 
+                              key={transportId} 
+                              className="flex items-center justify-center p-2 rounded-md bg-muted" 
+                              title={transportTypes[transportId] || `Transport ID: ${transportId}`}
+                            >
+                              <TransportIcon 
+                                transportType={transportId as TransportType} 
+                                size={14} 
+                                className="h-[14px] w-[14px]"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </TableCell>
+                    )}
+                    {sortedColumns.includes("rating") && (
+                      <TableCell>
+                        {renderRating(driver.rating)}
+                      </TableCell>
+                    )}
+                    {sortedColumns.includes("status") && (
+                      <TableCell>
+                        {renderStatus(driver.status)}
+                      </TableCell>
+                    )}
+                    {sortedColumns.includes("hireStatus") && (
+                      <TableCell>
+                        {renderHireStatus(driver.hireStatus, driver.id)}
+                      </TableCell>
+                    )}
+                    {sortedColumns.includes("stripe") && (
+                      <TableCell>
+                        {renderStripeStatus(driver.stripe)}
+                      </TableCell>
+                    )}
+                    {sortedColumns.includes("actions") && (
+                      <TableCell className="text-right">
+                        <Button variant="ghost" size="sm">
+                          Edit
+                        </Button>
+                      </TableCell>
+                    )}
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredDrivers.map((driver) => (
-                    <TableRow key={driver.id}>
-                      {sortedColumns.includes("id") && (
-                        <TableCell className="font-sans">{driver.id}</TableCell>
-                      )}
-                      {sortedColumns.includes("name") && (
-                        <TableCell>{driver.name}</TableCell>
-                      )}
-                      {sortedColumns.includes("email") && (
-                        <TableCell>{driver.email}</TableCell>
-                      )}
-                      {sortedColumns.includes("phone") && (
-                        <TableCell>{driver.phone}</TableCell>
-                      )}
-                      {sortedColumns.includes("transport") && (
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            {driver.transports.map((transportId) => (
-                              <div 
-                                key={transportId} 
-                                className="flex items-center justify-center p-2 rounded-md bg-muted" 
-                                title={transportTypes[transportId] || `Transport ID: ${transportId}`}
-                              >
-                                {getRandomTransportIcon()}
-                              </div>
-                            ))}
-                          </div>
-                        </TableCell>
-                      )}
-                      {sortedColumns.includes("rating") && (
-                        <TableCell>
-                          {renderRating(driver.rating)}
-                        </TableCell>
-                      )}
-                      {sortedColumns.includes("status") && (
-                        <TableCell>
-                          {renderStatus(driver.status)}
-                        </TableCell>
-                      )}
-                      {sortedColumns.includes("hireStatus") && (
-                        <TableCell>
-                          {renderHireStatus(driver.hireStatus, driver.id)}
-                        </TableCell>
-                      )}
-                      {sortedColumns.includes("stripe") && (
-                        <TableCell>
-                          {renderStripeStatus(driver.stripe)}
-                        </TableCell>
-                      )}
-                      {sortedColumns.includes("actions") && (
-                        <TableCell className="text-right">
-                          <Button variant="ghost" size="sm">
-                            Edit
-                          </Button>
-                        </TableCell>
-                      )}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </ScrollArea>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          
+          <div className="mt-4">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious href="#" />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#" isActive>1</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#">2</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#">3</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationNext href="#" />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
           </div>
         </div>
       </div>
