@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
@@ -743,8 +742,8 @@ const DriversPage = () => {
 
   return (
     <Layout showFooter={false}>
-      <div className="w-full"> {/* Replaced container with full width */}
-        <div className="flex flex-col h-[calc(100vh-56px)] space-y-4 px-6"> {/* Kept horizontal padding on content */}
+      <div className="w-full">
+        <div className="flex flex-col h-[calc(100vh-56px)] space-y-4 px-6">
           <h1 className="text-2xl font-bold">Drivers Management</h1>
           
           <div className="flex items-center justify-between">
@@ -870,8 +869,8 @@ const DriversPage = () => {
             </TableContainer>
           </ScrollArea>
 
-          <div className="border-t bg-background px-4 py-3 flex justify-between items-center shadow-sm flex-shrink-0 w-full">
-            <div className="text-sm text-muted-foreground">
+          <div className="border-t bg-background py-3 flex justify-between items-center shadow-sm flex-shrink-0 w-full">
+            <div className="text-sm text-muted-foreground px-6">
               Total: <span className="bg-muted px-2 py-1 rounded">{filteredDrivers.length}</span>
             </div>
             
@@ -913,7 +912,7 @@ const DriversPage = () => {
               </PaginationContent>
             </Pagination>
             
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 px-6">
               <span className="text-sm text-muted-foreground whitespace-nowrap">Rows per page</span>
               <Select
                 value={rowsPerPage}
