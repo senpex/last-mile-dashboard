@@ -826,7 +826,7 @@ const DriversPage = () => {
           </div>
 
           <ScrollArea className="flex-grow" orientation="both">
-            <TableContainer stickyHeader={false} height="h-full">
+            <TableContainer stickyHeader={false} height="h-[calc(100vh-220px)]">
               <Table>
                 <TableHeader>
                   <TableRow>
