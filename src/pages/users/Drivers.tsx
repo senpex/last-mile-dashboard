@@ -796,7 +796,7 @@ const DriversPage = () => {
   return (
     <Layout>
       <div className="container mx-auto p-6">
-        <div className="flex flex-col h-[calc(100vh-108px)] space-y-4">
+        <div className="flex flex-col h-[calc(100vh-96px)] space-y-4">
           <h1 className="text-2xl font-bold">Drivers Management</h1>
           <div className="flex items-center justify-between">
             <div className="flex items-center h-9 gap-2">
