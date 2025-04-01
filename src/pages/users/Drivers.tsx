@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
@@ -742,8 +743,8 @@ const DriversPage = () => {
 
   return (
     <Layout showFooter={false}>
-      <div className="container mx-auto p-6">
-        <div className="flex flex-col h-[calc(100vh-56px)] space-y-4">
+      <div className="w-full"> {/* Replaced container with full width */}
+        <div className="flex flex-col h-[calc(100vh-56px)] space-y-4 px-6"> {/* Kept horizontal padding on content */}
           <h1 className="text-2xl font-bold">Drivers Management</h1>
           
           <div className="flex items-center justify-between">
