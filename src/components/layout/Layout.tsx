@@ -4,9 +4,10 @@ import Sidebar from "./Sidebar";
 
 interface LayoutProps {
   children: React.ReactNode;
+  showFooter?: boolean;
 }
 
-export const Layout = ({ children }: LayoutProps) => {
+export const Layout = ({ children, showFooter = true }: LayoutProps) => {
   const [collapsed, setCollapsed] = useState(false);
   
   return (
