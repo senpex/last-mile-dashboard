@@ -21,12 +21,14 @@ type ColumnSelectorProps = {
   columns: ColumnOption[];
   visibleColumns: string[];
   setVisibleColumns: (columns: string[]) => void;
+  size?: "default" | "sm" | "lg" | "icon";
 };
 
 const ColumnSelector = ({
   columns,
   visibleColumns,
   setVisibleColumns,
+  size = "icon",
 }: ColumnSelectorProps) => {
   const toggleColumn = (columnId: string) => {
     if (visibleColumns.includes(columnId)) {
@@ -46,11 +48,12 @@ const ColumnSelector = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="h-9 w-9">
+        <Button variant="outline" size={size} className={size === "icon" ? "h-9 w-9" : ""}>
           <Columns className="h-4 w-4" />
+          {size !== "icon" && <span className="ml-2">Columns</span>}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuLabel>Table Columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {columns.map((column) => (

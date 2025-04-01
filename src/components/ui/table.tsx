@@ -7,7 +7,7 @@ const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto">
+  <div className="w-full">
     <table
       ref={ref}
       className={cn("w-full caption-bottom text-sm", className)}
@@ -21,7 +21,7 @@ const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
+  <thead ref={ref} className={cn("[&_tr]:border-b sticky top-0 bg-background z-10", className)} {...props} />
 ))
 TableHeader.displayName = "TableHeader"
 
@@ -44,7 +44,7 @@ const TableFooter = React.forwardRef<
   <tfoot
     ref={ref}
     className={cn(
-      "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
+      "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0 sticky bottom-0 bg-background z-10",
       className
     )}
     {...props}
@@ -116,6 +116,25 @@ const TableCaption = React.forwardRef<
 ))
 TableCaption.displayName = "TableCaption"
 
+// Create a wrapper component for tables that provides the scrollable container
+const TableContainer = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & {
+    height?: string;
+  }
+>(({ className, height = "h-[calc(100vh-230px)]", ...props }, ref) => (
+  <div 
+    ref={ref}
+    className={cn(
+      "relative w-full overflow-auto border rounded-md", 
+      height, 
+      className
+    )} 
+    {...props} 
+  />
+))
+TableContainer.displayName = "TableContainer"
+
 export {
   Table,
   TableHeader,
@@ -125,4 +144,5 @@ export {
   TableRow,
   TableCell,
   TableCaption,
+  TableContainer
 }
