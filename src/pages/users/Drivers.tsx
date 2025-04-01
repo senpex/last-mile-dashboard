@@ -12,6 +12,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { 
+  Pagination, 
+  PaginationContent, 
+  PaginationItem, 
+  PaginationLink, 
+  PaginationNext, 
+  PaginationPrevious 
+} from "@/components/ui/pagination";
 
 type StripeStatus = 'Unverified' | 'Pending' | 'Verified';
 type HireStatus = string;
@@ -449,6 +457,7 @@ const DriversPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const pageSizeOptions = [5, 10, 20, 30, 50];
+  const [rowsPerPage, setRowsPerPage] = useState<string>("10");
 
   const handleHireStatusChange = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => {
@@ -855,6 +864,65 @@ const DriversPage = () => {
               </Table>
             </TableContainer>
           </ScrollArea>
+
+          <div className="border-t bg-background px-4 py-3 flex justify-between items-center shadow-sm flex-shrink-0">
+            <div className="text-sm text-muted-foreground">
+              Total: <span className="bg-muted px-2 py-1 rounded">{filteredDrivers.length}</span>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground whitespace-nowrap">Rows per page</span>
+              <Select value={rowsPerPage} onValueChange={setRowsPerPage}>
+                <SelectTrigger className="w-[70px] h-8">
+                  <SelectValue placeholder="10" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="10">10</SelectItem>
+                  <SelectItem value="20">20</SelectItem>
+                  <SelectItem value="50">50</SelectItem>
+                  <SelectItem value="100">100</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationLink
+                      className="cursor-not-allowed opacity-50"
+                      aria-disabled="true"
+                    >
+                      <span className="sr-only">First page</span>
+                      ⟪
+                    </PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      className="cursor-not-allowed opacity-50"
+                      aria-disabled="true"
+                    />
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink isActive>1</PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationNext
+                      className="cursor-not-allowed opacity-50"
+                      aria-disabled="true"
+                    />
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink
+                      className="cursor-not-allowed opacity-50"
+                      aria-disabled="true"
+                    >
+                      <span className="sr-only">Last page</span>
+                      ⟫
+                    </PaginationLink>
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          </div>
         </div>
       </div>
     </Layout>
