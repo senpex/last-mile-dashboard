@@ -1,17 +1,34 @@
+
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { GripVertical, Plus, Search } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 import { Input } from "@/components/ui/input";
+import { 
+  Pagination, 
+  PaginationContent, 
+  PaginationItem, 
+  PaginationLink, 
+  PaginationNext, 
+  PaginationPrevious,
+  PaginationEllipsis,
+  PaginationInfo,
+  PaginationSize
+} from "@/components/ui/pagination";
 
 const ClientsPage = () => {
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filteredClients, setFilteredClients] = useState<any[]>([]);
+  
+  // Add pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const pageSizeOptions = [5, 10, 20, 30, 50];
 
   const availableColumns: ColumnOption[] = [
     { id: "id", label: "ID", default: true },
@@ -35,7 +52,84 @@ const ClientsPage = () => {
     { id: 1234, name: "Acme Corp", contact: "Alex Johnson", email: "alex@acmecorp.com", phone: "(123) 456-7890", type: "Business" },
     { id: 23456, name: "TechStart", contact: "Sarah Lee", email: "sarah@techstart.com", phone: "(123) 456-7891", type: "Business" },
     { id: 34567, name: "Robert Brown", contact: "Robert Brown", email: "robert.brown@example.com", phone: "(123) 456-7892", type: "Individual" },
+    // Let's add more clients to demonstrate pagination
+    { id: 45678, name: "Global Industries", contact: "Michael Chen", email: "m.chen@globalind.com", phone: "(123) 456-7893", type: "Business" },
+    { id: 56789, name: "Next Level Tech", contact: "Emily Wong", email: "emily@nextleveltech.com", phone: "(123) 456-7894", type: "Business" },
+    { id: 67890, name: "David Smith", contact: "David Smith", email: "david.smith@example.com", phone: "(123) 456-7895", type: "Individual" },
+    { id: 78901, name: "Modern Solutions", contact: "Jessica Taylor", email: "j.taylor@modernsol.com", phone: "(123) 456-7896", type: "Business" },
+    { id: 89012, name: "Jennifer Adams", contact: "Jennifer Adams", email: "jennifer.adams@example.com", phone: "(123) 456-7897", type: "Individual" },
+    { id: 90123, name: "Peak Performance", contact: "Daniel Wilson", email: "daniel@peakperf.com", phone: "(123) 456-7898", type: "Business" },
+    { id: 10234, name: "Smart Systems", contact: "Rachel Green", email: "rachel@smartsystems.com", phone: "(123) 456-7899", type: "Business" },
+    { id: 11234, name: "Future Tech", contact: "Steve Rogers", email: "steve@futuretech.com", phone: "(123) 456-7810", type: "Business" },
+    { id: 12345, name: "Lisa Johnson", contact: "Lisa Johnson", email: "lisa.johnson@example.com", phone: "(123) 456-7811", type: "Individual" },
   ];
+
+  // Calculate pagination info
+  const totalItems = filteredClients.length;
+  const totalPages = Math.ceil(totalItems / pageSize);
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = Math.min(startIndex + pageSize, totalItems);
+  const currentItems = filteredClients.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+  };
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(1); // Reset to first page when changing page size
+  };
+
+  // Generate page numbers
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      // If total pages are less than max visible, show all pages
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Always show first page
+      pages.push(1);
+      
+      // Calculate start and end of middle pages
+      let start = Math.max(2, currentPage - 1);
+      let end = Math.min(totalPages - 1, currentPage + 1);
+      
+      // Adjust if we're near the start
+      if (currentPage <= 3) {
+        end = Math.min(4, totalPages - 1);
+      }
+      
+      // Adjust if we're near the end
+      if (currentPage >= totalPages - 2) {
+        start = Math.max(totalPages - 3, 2);
+      }
+      
+      // Add ellipsis after first page if needed
+      if (start > 2) {
+        pages.push(-1); // -1 represents ellipsis
+      }
+      
+      // Add middle pages
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+      
+      // Add ellipsis before last page if needed
+      if (end < totalPages - 1) {
+        pages.push(-2); // -2 represents ellipsis to differentiate from first ellipsis
+      }
+      
+      // Always show last page
+      pages.push(totalPages);
+    }
+    
+    return pages;
+  };
 
   useEffect(() => {
     setColumnOrder(prevOrder => {
@@ -158,72 +252,133 @@ const ClientsPage = () => {
 
           <div className="border rounded-md">
             <ScrollArea orientation="horizontal">
-              <Table>
-                <TableHeader className="bg-muted/50">
-                  <TableRow>
-                    {sortedColumns.map((columnId) => {
-                      const column = availableColumns.find(col => col.id === columnId);
-                      if (!column) return null;
-                      
-                      return (
-                        <TableHead 
-                          key={columnId}
-                          draggable={true}
-                          dragOver={dragOverColumn === columnId}
-                          onDragStart={(e) => handleDragStart(e, columnId)}
-                          onDragOver={(e) => handleDragOver(e, columnId)}
-                          onDragEnd={handleDragEnd}
-                          onDrop={(e) => handleDrop(e, columnId)}
-                          className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
-                        >
-                          <div className="flex items-center gap-1 overflow-hidden">
-                            <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
-                            <span className="truncate">{column.label}</span>
-                          </div>
-                        </TableHead>
-                      );
-                    })}
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredClients.map((client) => (
-                    <TableRow key={client.id}>
-                      {sortedColumns.includes("id") && (
-                        <TableCell className="font-sans">{client.id}</TableCell>
-                      )}
-                      {sortedColumns.includes("name") && (
-                        <TableCell>{client.name}</TableCell>
-                      )}
-                      {sortedColumns.includes("contact") && (
-                        <TableCell>{client.contact}</TableCell>
-                      )}
-                      {sortedColumns.includes("email") && (
-                        <TableCell>{client.email}</TableCell>
-                      )}
-                      {sortedColumns.includes("phone") && (
-                        <TableCell>{client.phone}</TableCell>
-                      )}
-                      {sortedColumns.includes("type") && (
-                        <TableCell>
-                          <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                            client.type === "Business" ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300" : "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300"
-                          }`}>
-                            {client.type}
-                          </div>
-                        </TableCell>
-                      )}
-                      {sortedColumns.includes("actions") && (
-                        <TableCell className="text-right">
-                          <Button variant="ghost" size="sm">
-                            Edit
-                          </Button>
-                        </TableCell>
-                      )}
+              <TableContainer stickyHeader={false}>
+                <Table>
+                  <TableHeader className="bg-muted/50">
+                    <TableRow>
+                      {sortedColumns.map((columnId) => {
+                        const column = availableColumns.find(col => col.id === columnId);
+                        if (!column) return null;
+                        
+                        return (
+                          <TableHead 
+                            key={columnId}
+                            draggable={true}
+                            dragOver={dragOverColumn === columnId}
+                            onDragStart={(e) => handleDragStart(e, columnId)}
+                            onDragOver={(e) => handleDragOver(e, columnId)}
+                            onDragEnd={handleDragEnd}
+                            onDrop={(e) => handleDrop(e, columnId)}
+                            className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
+                          >
+                            <div className="flex items-center gap-1 overflow-hidden">
+                              <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
+                              <span className="truncate">{column.label}</span>
+                            </div>
+                          </TableHead>
+                        );
+                      })}
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {currentItems.map((client) => (
+                      <TableRow key={client.id}>
+                        {sortedColumns.includes("id") && (
+                          <TableCell className="font-sans">{client.id}</TableCell>
+                        )}
+                        {sortedColumns.includes("name") && (
+                          <TableCell>{client.name}</TableCell>
+                        )}
+                        {sortedColumns.includes("contact") && (
+                          <TableCell>{client.contact}</TableCell>
+                        )}
+                        {sortedColumns.includes("email") && (
+                          <TableCell>{client.email}</TableCell>
+                        )}
+                        {sortedColumns.includes("phone") && (
+                          <TableCell>{client.phone}</TableCell>
+                        )}
+                        {sortedColumns.includes("type") && (
+                          <TableCell>
+                            <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                              client.type === "Business" ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300" : "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300"
+                            }`}>
+                              {client.type}
+                            </div>
+                          </TableCell>
+                        )}
+                        {sortedColumns.includes("actions") && (
+                          <TableCell className="text-right">
+                            <Button variant="ghost" size="sm">
+                              Edit
+                            </Button>
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </ScrollArea>
+          </div>
+
+          <div className="border-t pt-4">
+            <Pagination>
+              <PaginationInfo 
+                total={totalItems} 
+                pageSize={pageSize} 
+                currentPage={currentPage} 
+              />
+              
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage - 1);
+                    }}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                  />
+                </PaginationItem>
+                
+                {getPageNumbers().map((page, i) => (
+                  <PaginationItem key={i}>
+                    {page === -1 || page === -2 ? (
+                      <PaginationEllipsis />
+                    ) : (
+                      <PaginationLink 
+                        href="#" 
+                        isActive={page === currentPage}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handlePageChange(page);
+                        }}
+                      >
+                        {page}
+                      </PaginationLink>
+                    )}
+                  </PaginationItem>
+                ))}
+                
+                <PaginationItem>
+                  <PaginationNext 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage + 1);
+                    }}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+              
+              <PaginationSize 
+                sizes={pageSizeOptions} 
+                pageSize={pageSize} 
+                onChange={handlePageSizeChange} 
+              />
+            </Pagination>
           </div>
         </div>
       </div>

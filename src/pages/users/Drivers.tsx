@@ -18,7 +18,9 @@ import {
   PaginationItem, 
   PaginationLink, 
   PaginationNext, 
-  PaginationPrevious 
+  PaginationPrevious,
+  PaginationInfo,
+  PaginationSize
 } from "@/components/ui/pagination";
 
 type StripeStatus = 'Unverified' | 'Pending' | 'Verified';
@@ -454,6 +456,10 @@ const DriversPage = () => {
     availableColumns.filter(col => col.default).map(col => col.id)
   );
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const pageSizeOptions = [5, 10, 20, 30, 50];
+
   const handleHireStatusChange = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => {
       return prevDrivers.map(driver => {
@@ -730,6 +736,62 @@ const DriversPage = () => {
     );
   };
 
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+      
+      let start = Math.max(2, currentPage - 1);
+      let end = Math.min(totalPages - 1, currentPage + 1);
+      
+      if (currentPage <= 3) {
+        end = Math.min(4, totalPages - 1);
+      }
+      
+      if (currentPage >= totalPages - 2) {
+        start = Math.max(totalPages - 3, 2);
+      }
+      
+      if (start > 2) {
+        pages.push(-1);
+      }
+      
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+      
+      if (end < totalPages - 1) {
+        pages.push(-2);
+      }
+      
+      pages.push(totalPages);
+    }
+    
+    return pages;
+  };
+
+  const totalItems = filteredDrivers.length;
+  const totalPages = Math.ceil(totalItems / pageSize);
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = Math.min(startIndex + pageSize, totalItems);
+  const currentItems = filteredDrivers.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+  };
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(1);
+  };
+
   return (
     <Layout>
       <div className="container mx-auto p-6">
@@ -791,7 +853,7 @@ const DriversPage = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredDrivers.map((driver) => (
+                  {currentItems.map((driver) => (
                     <TableRow key={driver.id}>
                       {sortedColumns.includes("id") && (
                         <TableCell className="font-sans">{driver.id}</TableCell>
@@ -858,25 +920,62 @@ const DriversPage = () => {
             </TableContainer>
           </ScrollArea>
           
-          <div className="mt-4">
+          <div className="border-t pt-4">
             <Pagination>
+              <PaginationInfo 
+                total={totalItems} 
+                pageSize={pageSize} 
+                currentPage={currentPage} 
+              />
+              
               <PaginationContent>
                 <PaginationItem>
-                  <PaginationPrevious href="#" />
+                  <PaginationPrevious 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage - 1);
+                    }}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                  />
                 </PaginationItem>
+                
+                {getPageNumbers().map((page, i) => (
+                  <PaginationItem key={i}>
+                    {page === -1 || page === -2 ? (
+                      <PaginationEllipsis />
+                    ) : (
+                      <PaginationLink 
+                        href="#" 
+                        isActive={page === currentPage}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handlePageChange(page);
+                        }}
+                      >
+                        {page}
+                      </PaginationLink>
+                    )}
+                  </PaginationItem>
+                ))}
+                
                 <PaginationItem>
-                  <PaginationLink href="#" isActive>1</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">2</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">3</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationNext href="#" />
+                  <PaginationNext 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage + 1);
+                    }}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                  />
                 </PaginationItem>
               </PaginationContent>
+              
+              <PaginationSize 
+                sizes={pageSizeOptions} 
+                pageSize={pageSize} 
+                onChange={handlePageSizeChange} 
+              />
             </Pagination>
           </div>
         </div>
