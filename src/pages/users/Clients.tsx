@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
@@ -18,6 +17,7 @@ import {
   PaginationInfo,
   PaginationSize
 } from "@/components/ui/pagination";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const ClientsPage = () => {
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
@@ -25,7 +25,6 @@ const ClientsPage = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filteredClients, setFilteredClients] = useState<any[]>([]);
   
-  // Add pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const pageSizeOptions = [5, 10, 20, 30, 50];
@@ -52,7 +51,6 @@ const ClientsPage = () => {
     { id: 1234, name: "Acme Corp", contact: "Alex Johnson", email: "alex@acmecorp.com", phone: "(123) 456-7890", type: "Business" },
     { id: 23456, name: "TechStart", contact: "Sarah Lee", email: "sarah@techstart.com", phone: "(123) 456-7891", type: "Business" },
     { id: 34567, name: "Robert Brown", contact: "Robert Brown", email: "robert.brown@example.com", phone: "(123) 456-7892", type: "Individual" },
-    // Let's add more clients to demonstrate pagination
     { id: 45678, name: "Global Industries", contact: "Michael Chen", email: "m.chen@globalind.com", phone: "(123) 456-7893", type: "Business" },
     { id: 56789, name: "Next Level Tech", contact: "Emily Wong", email: "emily@nextleveltech.com", phone: "(123) 456-7894", type: "Business" },
     { id: 67890, name: "David Smith", contact: "David Smith", email: "david.smith@example.com", phone: "(123) 456-7895", type: "Individual" },
@@ -64,7 +62,6 @@ const ClientsPage = () => {
     { id: 12345, name: "Lisa Johnson", contact: "Lisa Johnson", email: "lisa.johnson@example.com", phone: "(123) 456-7811", type: "Individual" },
   ];
 
-  // Calculate pagination info
   const totalItems = filteredClients.length;
   const totalPages = Math.ceil(totalItems / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
@@ -78,53 +75,43 @@ const ClientsPage = () => {
 
   const handlePageSizeChange = (size: number) => {
     setPageSize(size);
-    setCurrentPage(1); // Reset to first page when changing page size
+    setCurrentPage(1);
   };
 
-  // Generate page numbers
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
     
     if (totalPages <= maxVisiblePages) {
-      // If total pages are less than max visible, show all pages
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }
     } else {
-      // Always show first page
       pages.push(1);
       
-      // Calculate start and end of middle pages
       let start = Math.max(2, currentPage - 1);
       let end = Math.min(totalPages - 1, currentPage + 1);
       
-      // Adjust if we're near the start
       if (currentPage <= 3) {
         end = Math.min(4, totalPages - 1);
       }
       
-      // Adjust if we're near the end
       if (currentPage >= totalPages - 2) {
         start = Math.max(totalPages - 3, 2);
       }
       
-      // Add ellipsis after first page if needed
       if (start > 2) {
-        pages.push(-1); // -1 represents ellipsis
+        pages.push(-1);
       }
       
-      // Add middle pages
       for (let i = start; i <= end; i++) {
         pages.push(i);
       }
       
-      // Add ellipsis before last page if needed
       if (end < totalPages - 1) {
-        pages.push(-2); // -2 represents ellipsis to differentiate from first ellipsis
+        pages.push(-2);
       }
       
-      // Always show last page
       pages.push(totalPages);
     }
     
@@ -322,14 +309,12 @@ const ClientsPage = () => {
             </ScrollArea>
           </div>
 
-          <div className="border-t pt-4">
-            <Pagination>
-              <PaginationInfo 
-                total={totalItems} 
-                pageSize={pageSize} 
-                currentPage={currentPage} 
-              />
-              
+          <div className="border-t pt-4 flex justify-between items-center">
+            <div className="text-sm text-muted-foreground">
+              Showing {startIndex + 1}-{endIndex} of {totalItems} items
+            </div>
+            
+            <Pagination className="flex-1 flex justify-center">
               <PaginationContent>
                 <PaginationItem>
                   <PaginationPrevious 
@@ -372,13 +357,26 @@ const ClientsPage = () => {
                   />
                 </PaginationItem>
               </PaginationContent>
-              
-              <PaginationSize 
-                sizes={pageSizeOptions} 
-                pageSize={pageSize} 
-                onChange={handlePageSizeChange} 
-              />
             </Pagination>
+            
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground whitespace-nowrap">Rows per page</span>
+              <Select 
+                value={pageSize.toString()} 
+                onValueChange={(value) => handlePageSizeChange(parseInt(value))}
+              >
+                <SelectTrigger className="w-[70px] h-8">
+                  <SelectValue placeholder={pageSize.toString()} />
+                </SelectTrigger>
+                <SelectContent>
+                  {pageSizeOptions.map((size) => (
+                    <SelectItem key={size} value={size.toString()}>
+                      {size}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
       </div>

@@ -18,7 +18,10 @@ import {
   PaginationItem, 
   PaginationLink, 
   PaginationNext, 
-  PaginationPrevious 
+  PaginationPrevious,
+  PaginationEllipsis,
+  PaginationInfo,
+  PaginationSize
 } from "@/components/ui/pagination";
 
 type StripeStatus = 'Unverified' | 'Pending' | 'Verified';
@@ -870,9 +873,50 @@ const DriversPage = () => {
               Total: <span className="bg-muted px-2 py-1 rounded">{filteredDrivers.length}</span>
             </div>
             
+            <Pagination className="flex-1 flex justify-center">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationLink
+                    className="cursor-not-allowed opacity-50"
+                    aria-disabled="true"
+                  >
+                    <span className="sr-only">First page</span>
+                    ⟪
+                  </PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationPrevious
+                    className="cursor-not-allowed opacity-50"
+                    aria-disabled="true"
+                  />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink isActive>1</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationNext
+                    className="cursor-not-allowed opacity-50"
+                    aria-disabled="true"
+                  />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink
+                    className="cursor-not-allowed opacity-50"
+                    aria-disabled="true"
+                  >
+                    <span className="sr-only">Last page</span>
+                    ⟫
+                  </PaginationLink>
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+            
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground whitespace-nowrap">Rows per page</span>
-              <Select value={rowsPerPage} onValueChange={setRowsPerPage}>
+              <Select
+                value={rowsPerPage}
+                onValueChange={setRowsPerPage}
+              >
                 <SelectTrigger className="w-[70px] h-8">
                   <SelectValue placeholder="10" />
                 </SelectTrigger>
@@ -883,44 +927,6 @@ const DriversPage = () => {
                   <SelectItem value="100">100</SelectItem>
                 </SelectContent>
               </Select>
-              
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationLink
-                      className="cursor-not-allowed opacity-50"
-                      aria-disabled="true"
-                    >
-                      <span className="sr-only">First page</span>
-                      ⟪
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationPrevious
-                      className="cursor-not-allowed opacity-50"
-                      aria-disabled="true"
-                    />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink isActive>1</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationNext
-                      className="cursor-not-allowed opacity-50"
-                      aria-disabled="true"
-                    />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink
-                      className="cursor-not-allowed opacity-50"
-                      aria-disabled="true"
-                    >
-                      <span className="sr-only">Last page</span>
-                      ⟫
-                    </PaginationLink>
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
             </div>
           </div>
         </div>
