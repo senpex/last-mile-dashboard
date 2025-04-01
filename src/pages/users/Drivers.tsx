@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
@@ -19,6 +20,7 @@ import {
   PaginationLink, 
   PaginationNext, 
   PaginationPrevious,
+  PaginationEllipsis,
   PaginationInfo,
   PaginationSize
 } from "@/components/ui/pagination";
