@@ -921,7 +921,7 @@ const DriversPage = () => {
             </TableContainer>
           </ScrollArea>
           
-          <div className="border-t pt-2 h-[36px] flex items-center justify-between">
+          <div className="border-t pt-4 h-[36px] flex items-center justify-between">
             <Pagination>
               <PaginationInfo 
                 total={totalItems} 
