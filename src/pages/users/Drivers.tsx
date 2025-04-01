@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import Layout from "@/components/layout/Layout"; // Changed from import { Layout }
+import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { GripVertical, Plus, Search } from "lucide-react";
@@ -875,4 +876,93 @@ const DriversPage = () => {
                               <div 
                                 key={transportId} 
                                 className="flex items-center justify-center p-2 rounded-md bg-muted" 
-                                title={transportTypes[transportId] || `Transport
+                                title={transportTypes[transportId] || `Transport ID: ${transportId}`}
+                              >
+                                <TransportIcon 
+                                  transportType={transportId as TransportType} 
+                                  size={14} 
+                                  className="h-[14px] w-[14px]"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("rating") && (
+                        <TableCell>{renderRating(driver.rating)}</TableCell>
+                      )}
+                      {sortedColumns.includes("status") && (
+                        <TableCell>{renderStatus(driver.status)}</TableCell>
+                      )}
+                      {sortedColumns.includes("hireStatus") && (
+                        <TableCell>{renderHireStatus(driver.hireStatus, driver.id)}</TableCell>
+                      )}
+                      {sortedColumns.includes("stripe") && (
+                        <TableCell>{renderStripeStatus(driver.stripe)}</TableCell>
+                      )}
+                      {sortedColumns.includes("actions") && (
+                        <TableCell>
+                          <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
+                            View
+                          </Button>
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </ScrollArea>
+          
+          {/* Pagination Controls */}
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center space-y-2 md:space-y-0 pt-3">
+            <PaginationSize 
+              sizes={pageSizeOptions}
+              pageSize={pageSize}
+              onChange={handlePageSizeChange}
+            />
+            
+            <Pagination>
+              <PaginationContent>
+                {currentPage > 1 && (
+                  <PaginationItem>
+                    <PaginationPrevious onClick={() => handlePageChange(currentPage - 1)} />
+                  </PaginationItem>
+                )}
+                
+                {getPageNumbers().map((page, i) => (
+                  <PaginationItem key={i}>
+                    {page === -1 || page === -2 ? (
+                      <PaginationEllipsis />
+                    ) : (
+                      <PaginationLink
+                        isActive={page === currentPage}
+                        onClick={() => handlePageChange(page)}
+                      >
+                        {page}
+                      </PaginationLink>
+                    )}
+                  </PaginationItem>
+                ))}
+                
+                {currentPage < totalPages && (
+                  <PaginationItem>
+                    <PaginationNext onClick={() => handlePageChange(currentPage + 1)} />
+                  </PaginationItem>
+                )}
+              </PaginationContent>
+            </Pagination>
+            
+            <PaginationInfo
+              total={totalItems}
+              pageSize={pageSize}
+              currentPage={currentPage}
+            />
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
+};
+
+export default DriversPage;
