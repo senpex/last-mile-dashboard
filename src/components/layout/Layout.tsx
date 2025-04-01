@@ -14,7 +14,7 @@ export const Layout = ({ children, showFooter = true }: LayoutProps) => {
     <div className="flex h-screen overflow-hidden bg-background">
       <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
       <main 
-        className="flex-1 overflow-auto transition-all ml-[70px]"
+        className="flex-1 flex flex-col overflow-hidden transition-all"
         style={{ marginLeft: collapsed ? "70px" : "240px" }}
       >
         {children}
