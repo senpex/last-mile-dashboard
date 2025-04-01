@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
@@ -922,7 +921,7 @@ const DriversPage = () => {
             </TableContainer>
           </ScrollArea>
           
-          <div className="border-t pt-4">
+          <div className="border-t pt-4 h-[72px] flex items-center justify-between">
             <Pagination>
               <PaginationInfo 
                 total={totalItems} 
