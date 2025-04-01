@@ -12,17 +12,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { 
-  Pagination, 
-  PaginationContent, 
-  PaginationItem, 
-  PaginationLink, 
-  PaginationNext, 
-  PaginationPrevious,
-  PaginationEllipsis,
-  PaginationInfo,
-  PaginationSize
-} from "@/components/ui/pagination";
 
 type StripeStatus = 'Unverified' | 'Pending' | 'Verified';
 type HireStatus = string;
@@ -737,61 +726,7 @@ const DriversPage = () => {
     );
   };
 
-  const getPageNumbers = () => {
-    const pages = [];
-    const maxVisiblePages = 5;
-    
-    if (totalPages <= maxVisiblePages) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      pages.push(1);
-      
-      let start = Math.max(2, currentPage - 1);
-      let end = Math.min(totalPages - 1, currentPage + 1);
-      
-      if (currentPage <= 3) {
-        end = Math.min(4, totalPages - 1);
-      }
-      
-      if (currentPage >= totalPages - 2) {
-        start = Math.max(totalPages - 3, 2);
-      }
-      
-      if (start > 2) {
-        pages.push(-1);
-      }
-      
-      for (let i = start; i <= end; i++) {
-        pages.push(i);
-      }
-      
-      if (end < totalPages - 1) {
-        pages.push(-2);
-      }
-      
-      pages.push(totalPages);
-    }
-    
-    return pages;
-  };
-
   const totalItems = filteredDrivers.length;
-  const totalPages = Math.ceil(totalItems / pageSize);
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = Math.min(startIndex + pageSize, totalItems);
-  const currentItems = filteredDrivers.slice(startIndex, endIndex);
-
-  const handlePageChange = (page: number) => {
-    if (page < 1 || page > totalPages) return;
-    setCurrentPage(page);
-  };
-
-  const handlePageSizeChange = (size: number) => {
-    setPageSize(size);
-    setCurrentPage(1);
-  };
 
   return (
     <Layout showFooter={false}>
@@ -854,7 +789,7 @@ const DriversPage = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {currentItems.map((driver) => (
+                  {filteredDrivers.map((driver) => (
                     <TableRow key={driver.id}>
                       {sortedColumns.includes("id") && (
                         <TableCell className="font-sans">{driver.id}</TableCell>
@@ -874,4 +809,56 @@ const DriversPage = () => {
                             {driver.transports.map((transportId) => (
                               <div 
                                 key={transportId} 
-                                className="flex items-center justify-center p-
+                                className="flex items-center justify-center p-2 rounded-md bg-muted" 
+                                title={transportTypes[transportId] || `Transport ID: ${transportId}`}
+                              >
+                                <TransportIcon 
+                                  transportType={transportId as TransportType} 
+                                  size={14} 
+                                  className="h-[14px] w-[14px]"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("rating") && (
+                        <TableCell>
+                          {renderRating(driver.rating)}
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("status") && (
+                        <TableCell>
+                          {renderStatus(driver.status)}
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("hireStatus") && (
+                        <TableCell>
+                          {renderHireStatus(driver.hireStatus, driver.id)}
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("stripe") && (
+                        <TableCell>
+                          {renderStripeStatus(driver.stripe)}
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("actions") && (
+                        <TableCell className="text-right">
+                          <Button variant="ghost" size="sm">
+                            Edit
+                          </Button>
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </ScrollArea>
+        </div>
+      </div>
+    </Layout>
+  );
+};
+
+export default DriversPage;
