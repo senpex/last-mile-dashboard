@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -1256,7 +1257,8 @@ const Index = () => {
         />
         
         <main className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}>
-          <div className="px-4 py-6 flex-1 overflow-auto">
+          {/* Fixed header with filters */}
+          <div className="px-4 py-6 flex-shrink-0 border-b">
             <div className="flex flex-col space-y-4">
               <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-semibold">Deliveries</h1>
@@ -1324,116 +1326,120 @@ const Index = () => {
                   </Tabs>
                 </div>
               </div>
-              
-              <div className="border rounded-md overflow-hidden mb-4">
-                <ScrollArea orientation="horizontal">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        {sortedColumns.map(columnId => {
-                          const column = availableColumns.find(col => col.id === columnId);
-                          if (!column) return null;
-                          
-                          return (
-                            <TableHead 
-                              key={columnId}
-                              draggable={true}
-                              dragOver={dragOverColumn === columnId}
-                              onDragStart={(e) => handleDragStart(e, columnId)}
-                              onDragOver={(e) => handleDragOver(e, columnId)}
-                              onDragEnd={handleDragEnd}
-                              onDrop={(e) => handleDrop(e, columnId)}
-                              className={`${columnId === "distance" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
-                            >
-                              <div className="flex items-center gap-1 overflow-hidden">
-                                <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
-                                <span className="truncate">{column.label}</span>
-                              </div>
-                            </TableHead>
-                          );
-                        })}
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filteredDeliveries.length > 0 ? (
-                        filteredDeliveries.map((delivery) => (
-                          <TableRow key={delivery.id}>
-                            {sortedColumns.map(columnId => {
-                              switch (columnId) {
-                                case "status":
-                                  return (
-                                    <TableCell key={columnId}>
-                                      <Badge 
-                                        variant={getStatusBadgeVariant(delivery.status) as any}
-                                        className={`${delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}`}
-                                      >
-                                        {getStatusDisplay(delivery.status)}
-                                      </Badge>
-                                    </TableCell>
-                                  );
-                                case "packageId":
-                                  return (
-                                    <TableCell key={columnId}>
-                                      <span className="font-sans text-sm">{delivery.packageId}</span>
-                                    </TableCell>
-                                  );
-                                case "orderName":
-                                  return <TableCell key={columnId}>{delivery.orderName}</TableCell>;
-                                case "pickupTime":
-                                  return <TableCell key={columnId}>{delivery.pickupTime}</TableCell>;
-                                case "pickupLocation":
-                                  return (
-                                    <TableCell key={columnId}>
-                                      <div className="flex flex-col">
-                                        <span className="font-medium">{delivery.pickupLocation.name}</span>
-                                        <span className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</span>
-                                      </div>
-                                    </TableCell>
-                                  );
-                                case "dropoffTime":
-                                  return <TableCell key={columnId}>{delivery.dropoffTime}</TableCell>;
-                                case "dropoffLocation":
-                                  return (
-                                    <TableCell key={columnId}>
-                                      <div className="flex flex-col">
-                                        <span className="font-medium">{delivery.dropoffLocation.name}</span>
-                                        <span className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</span>
-                                      </div>
-                                    </TableCell>
-                                  );
-                                case "price":
-                                  return <TableCell key={columnId}>{delivery.price}</TableCell>;
-                                case "tip":
-                                  return <TableCell key={columnId}>{delivery.tip}</TableCell>;
-                                case "fees":
-                                  return <TableCell key={columnId}>{delivery.fees}</TableCell>;
-                                case "courier":
-                                  return <TableCell key={columnId}>{delivery.courier}</TableCell>;
-                                case "organization":
-                                  return <TableCell key={columnId}>{delivery.organization}</TableCell>;
-                                case "distance":
-                                  return <TableCell key={columnId} className="text-right">{delivery.distance}</TableCell>;
-                                default:
-                                  return <TableCell key={columnId}></TableCell>;
-                              }
-                            })}
-                          </TableRow>
-                        ))
-                      ) : (
-                        <TableRow>
-                          <TableCell colSpan={sortedColumns.length} className="h-24 text-center">
-                            No results found
-                          </TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </ScrollArea>
-              </div>
             </div>
           </div>
           
-          <div className="border-t bg-background px-4 py-3 flex justify-between items-center shadow-sm">
+          {/* Scrollable table area */}
+          <div className="flex-1 overflow-auto px-4">
+            <div className="border rounded-md overflow-hidden my-4">
+              <ScrollArea orientation="both">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      {sortedColumns.map(columnId => {
+                        const column = availableColumns.find(col => col.id === columnId);
+                        if (!column) return null;
+                        
+                        return (
+                          <TableHead 
+                            key={columnId}
+                            draggable={true}
+                            dragOver={dragOverColumn === columnId}
+                            onDragStart={(e) => handleDragStart(e, columnId)}
+                            onDragOver={(e) => handleDragOver(e, columnId)}
+                            onDragEnd={handleDragEnd}
+                            onDrop={(e) => handleDrop(e, columnId)}
+                            className={`${columnId === "distance" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
+                          >
+                            <div className="flex items-center gap-1 overflow-hidden">
+                              <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
+                              <span className="truncate">{column.label}</span>
+                            </div>
+                          </TableHead>
+                        );
+                      })}
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredDeliveries.length > 0 ? (
+                      filteredDeliveries.map((delivery) => (
+                        <TableRow key={delivery.id}>
+                          {sortedColumns.map(columnId => {
+                            switch (columnId) {
+                              case "status":
+                                return (
+                                  <TableCell key={columnId}>
+                                    <Badge 
+                                      variant={getStatusBadgeVariant(delivery.status) as any}
+                                      className={`${delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}`}
+                                    >
+                                      {getStatusDisplay(delivery.status)}
+                                    </Badge>
+                                  </TableCell>
+                                );
+                              case "packageId":
+                                return (
+                                  <TableCell key={columnId}>
+                                    <span className="font-sans text-sm">{delivery.packageId}</span>
+                                  </TableCell>
+                                );
+                              case "orderName":
+                                return <TableCell key={columnId}>{delivery.orderName}</TableCell>;
+                              case "pickupTime":
+                                return <TableCell key={columnId}>{delivery.pickupTime}</TableCell>;
+                              case "pickupLocation":
+                                return (
+                                  <TableCell key={columnId}>
+                                    <div className="flex flex-col">
+                                      <span className="font-medium">{delivery.pickupLocation.name}</span>
+                                      <span className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</span>
+                                    </div>
+                                  </TableCell>
+                                );
+                              case "dropoffTime":
+                                return <TableCell key={columnId}>{delivery.dropoffTime}</TableCell>;
+                              case "dropoffLocation":
+                                return (
+                                  <TableCell key={columnId}>
+                                    <div className="flex flex-col">
+                                      <span className="font-medium">{delivery.dropoffLocation.name}</span>
+                                      <span className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</span>
+                                    </div>
+                                  </TableCell>
+                                );
+                              case "price":
+                                return <TableCell key={columnId}>{delivery.price}</TableCell>;
+                              case "tip":
+                                return <TableCell key={columnId}>{delivery.tip}</TableCell>;
+                              case "fees":
+                                return <TableCell key={columnId}>{delivery.fees}</TableCell>;
+                              case "courier":
+                                return <TableCell key={columnId}>{delivery.courier}</TableCell>;
+                              case "organization":
+                                return <TableCell key={columnId}>{delivery.organization}</TableCell>;
+                              case "distance":
+                                return <TableCell key={columnId} className="text-right">{delivery.distance}</TableCell>;
+                              default:
+                                return <TableCell key={columnId}></TableCell>;
+                            }
+                          })}
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={sortedColumns.length} className="h-24 text-center">
+                          No results found
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </ScrollArea>
+            </div>
+          </div>
+          
+          {/* Fixed footer with pagination */}
+          <div className="border-t bg-background px-4 py-3 flex justify-between items-center shadow-sm flex-shrink-0">
             <div className="text-sm text-muted-foreground">
               Total: <span className="bg-muted px-2 py-1 rounded">{filteredDeliveries.length}</span>
             </div>
