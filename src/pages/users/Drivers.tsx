@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
@@ -796,7 +797,7 @@ const DriversPage = () => {
   return (
     <Layout>
       <div className="container mx-auto p-6">
-        <div className="space-y-4">
+        <div className="flex flex-col h-[calc(100vh-120px)] space-y-4">
           <h1 className="text-2xl font-bold">Drivers Management</h1>
           <div className="flex items-center justify-between">
             <div className="flex items-center h-9 gap-2">
@@ -824,8 +825,8 @@ const DriversPage = () => {
             </div>
           </div>
 
-          <ScrollArea orientation="both">
-            <TableContainer stickyHeader={false} height="h-[calc(100vh-250px)]">
+          <ScrollArea className="flex-grow" orientation="both">
+            <TableContainer stickyHeader={false} height="h-full">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -921,8 +922,8 @@ const DriversPage = () => {
             </TableContainer>
           </ScrollArea>
           
-          <div className="border-t pt-4 h-[36px] flex items-center justify-between">
-            <Pagination>
+          <div className="border-t flex items-center h-[36px]">
+            <Pagination className="w-full">
               <PaginationInfo 
                 total={totalItems} 
                 pageSize={pageSize} 
