@@ -309,7 +309,7 @@ const ClientsPage = () => {
             </ScrollArea>
           </div>
 
-          <div className="border-t pt-4 flex justify-between items-center">
+          <div className="border-t pt-4 flex justify-between items-center w-full">
             <div className="text-sm text-muted-foreground">
               Showing {startIndex + 1}-{endIndex} of {totalItems} items
             </div>
