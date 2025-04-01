@@ -745,6 +745,7 @@ const DriversPage = () => {
       <div className="container mx-auto p-6">
         <div className="flex flex-col h-[calc(100vh-56px)] space-y-4">
           <h1 className="text-2xl font-bold">Drivers Management</h1>
+          
           <div className="flex items-center justify-between">
             <div className="flex items-center h-9 gap-2">
               <Button size="sm" className="flex items-center gap-1 text-xs px-2 py-1 h-9">
@@ -868,7 +869,7 @@ const DriversPage = () => {
             </TableContainer>
           </ScrollArea>
 
-          <div className="border-t bg-background px-4 py-3 flex justify-between items-center shadow-sm flex-shrink-0">
+          <div className="border-t bg-background px-4 py-3 flex justify-between items-center shadow-sm flex-shrink-0 w-full">
             <div className="text-sm text-muted-foreground">
               Total: <span className="bg-muted px-2 py-1 rounded">{filteredDrivers.length}</span>
             </div>
