@@ -1,20 +1,31 @@
 
 import { Layout } from "@/components/layout/Layout";
-import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff } from "lucide-react";
+import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 import React, { useState } from 'react';
 
 const Profile = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isAddRuleDialogOpen, setIsAddRuleDialogOpen] = useState(false);
+  const [newRule, setNewRule] = useState('');
 
   const togglePasswordVisibility = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
     setter((prev) => !prev);
+  };
+
+  const handleAddRule = () => {
+    // Here you would normally save the rule to your data store
+    // For this example, we'll just close the dialog
+    setNewRule('');
+    setIsAddRuleDialogOpen(false);
   };
 
   return (
@@ -206,6 +217,16 @@ const Profile = () => {
                             Orders cancelled by drivers
                           </label>
                         </div>
+                        <div className="mt-4">
+                          <Button 
+                            variant="outline" 
+                            className="flex items-center gap-2"
+                            onClick={() => setIsAddRuleDialogOpen(true)}
+                          >
+                            <Plus className="w-4 h-4" />
+                            Add Rule
+                          </Button>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -261,6 +282,35 @@ const Profile = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Add Rule Dialog */}
+      <Dialog open={isAddRuleDialogOpen} onOpenChange={setIsAddRuleDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add New Attention Required Rule</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <label htmlFor="new-rule" className="text-sm font-medium block mb-2">
+              Rule Description
+            </label>
+            <Textarea 
+              id="new-rule" 
+              placeholder="Describe the condition when attention is required..." 
+              value={newRule}
+              onChange={(e) => setNewRule(e.target.value)}
+              className="w-full"
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsAddRuleDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleAddRule}>
+              Save Rule
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 };
