@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { UserRound, Settings, AlertTriangle, Info } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -91,7 +90,6 @@ const Profile = () => {
           
           <TabsContent value="system-settings">
             <div className="bg-card rounded-lg shadow p-6">
-              {/* Nested tabs for System Settings */}
               <Tabs defaultValue="attention-required" className="w-full">
                 <TabsList className="mb-4">
                   <TabsTrigger value="attention-required" className="flex items-center gap-2">
@@ -110,9 +108,9 @@ const Profile = () => {
                       <h3 className="text-lg font-medium mb-4">Attention Required Criteria</h3>
                       <div className="space-y-4">
                         <div className="flex items-center space-x-2">
-                          <Checkbox id="delivery-delay" />
-                          <label htmlFor="delivery-delay" className="text-sm font-medium">
-                            Flag deliveries delayed by more than 30 minutes
+                          <Checkbox id="order-pickup-notification" />
+                          <label htmlFor="order-pickup-notification" className="text-sm font-medium">
+                            Flag orders 15 minutes before the pickup with no driver
                           </label>
                         </div>
                         <div className="flex items-center space-x-2">
