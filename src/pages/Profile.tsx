@@ -116,7 +116,7 @@ const Profile = () => {
                         <div className="flex items-center space-x-2">
                           <Checkbox id="low-stock" />
                           <label htmlFor="low-stock" className="text-sm font-medium">
-                            Highlight inventory items below minimum stock level
+                            Driver is running late for more than 15 minutes
                           </label>
                         </div>
                         <div className="flex items-center space-x-2">
