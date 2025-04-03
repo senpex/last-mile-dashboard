@@ -1,5 +1,6 @@
+
 import { Layout } from "@/components/layout/Layout";
-import { UserRound, Settings, AlertTriangle, Info, Lock, Eye, EyeOff, Bot } from "lucide-react";
+import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -213,33 +214,37 @@ const Profile = () => {
                 <TabsContent value="automations">
                   <Card>
                     <CardContent className="pt-6">
-                      <h3 className="text-lg font-medium mb-4">Lorem Ipsum</h3>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                      </p>
+                      <h3 className="text-lg font-medium mb-4">Automatic Actions</h3>
                       <div className="space-y-4">
-                        <div>
-                          <label className="text-sm font-medium block mb-1">Setting One</label>
-                          <Input placeholder="Enter value" />
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium block mb-1">Setting Two</label>
-                          <Input placeholder="Enter value" />
-                        </div>
                         <div className="flex items-center space-x-2">
-                          <Checkbox id="option-one" />
-                          <label htmlFor="option-one" className="text-sm font-medium">
-                            Enable Option One
+                          <Checkbox id="auto-close-order" />
+                          <label htmlFor="auto-close-order" className="text-sm font-medium">
+                            Close order automatically after delivery is confirmed
                           </label>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <Checkbox id="option-two" />
-                          <label htmlFor="option-two" className="text-sm font-medium">
-                            Enable Option Two
+                          <Checkbox id="auto-commission-increase" />
+                          <label htmlFor="auto-commission-increase" className="text-sm font-medium">
+                            Increase driver commission by 10% if driver arrives 10 minutes before pickup
                           </label>
                         </div>
-                        <div className="mt-6">
-                          <Button>Apply Settings</Button>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="auto-assign-driver" />
+                          <label htmlFor="auto-assign-driver" className="text-sm font-medium">
+                            Automatically assign nearest driver when order is created
+                          </label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="auto-notify-delay" />
+                          <label htmlFor="auto-notify-delay" className="text-sm font-medium">
+                            Send notification to customer if driver is delayed by more than 5 minutes
+                          </label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="auto-reschedule" />
+                          <label htmlFor="auto-reschedule" className="text-sm font-medium">
+                            Attempt to reschedule if order is at risk of cancellation
+                          </label>
                         </div>
                       </div>
                     </CardContent>
