@@ -1,13 +1,21 @@
-
 import { Layout } from "@/components/layout/Layout";
-import { UserRound, Settings, AlertTriangle, Info, Lock } from "lucide-react";
+import { UserRound, Settings, AlertTriangle, Info, Lock, Eye, EyeOff } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import React, { useState } from 'react';
 
 const Profile = () => {
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const togglePasswordVisibility = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
+    setter((prev) => !prev);
+  };
+
   return (
     <Layout>
       <div className="container mx-auto p-6">
@@ -86,30 +94,60 @@ const Profile = () => {
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
+                      <div className="relative">
                         <label className="text-sm font-medium block mb-1">Current Password</label>
-                        <input 
-                          type="password" 
-                          className="w-full px-3 py-2 border border-input rounded-md" 
-                          placeholder="Enter current password" 
-                        />
+                        <div className="relative">
+                          <input 
+                            type={showCurrentPassword ? "text" : "password"} 
+                            className="w-full px-3 py-2 border border-input rounded-md pr-10" 
+                            placeholder="Enter current password" 
+                          />
+                          <button 
+                            type="button"
+                            className="absolute inset-y-0 right-0 px-3 flex items-center"
+                            onClick={() => togglePasswordVisibility(setShowCurrentPassword)}
+                          >
+                            {showCurrentPassword ? <EyeOff className="w-4 h-4 text-muted-foreground" /> : <Eye className="w-4 h-4 text-muted-foreground" />}
+                          </button>
+                        </div>
                       </div>
+                      
                       <div className="md:col-span-2"></div>
-                      <div>
+                      
+                      <div className="relative">
                         <label className="text-sm font-medium block mb-1">New Password</label>
-                        <input 
-                          type="password" 
-                          className="w-full px-3 py-2 border border-input rounded-md" 
-                          placeholder="Enter new password" 
-                        />
+                        <div className="relative">
+                          <input 
+                            type={showNewPassword ? "text" : "password"} 
+                            className="w-full px-3 py-2 border border-input rounded-md pr-10" 
+                            placeholder="Enter new password" 
+                          />
+                          <button 
+                            type="button"
+                            className="absolute inset-y-0 right-0 px-3 flex items-center"
+                            onClick={() => togglePasswordVisibility(setShowNewPassword)}
+                          >
+                            {showNewPassword ? <EyeOff className="w-4 h-4 text-muted-foreground" /> : <Eye className="w-4 h-4 text-muted-foreground" />}
+                          </button>
+                        </div>
                       </div>
-                      <div>
+                      
+                      <div className="relative">
                         <label className="text-sm font-medium block mb-1">Confirm New Password</label>
-                        <input 
-                          type="password" 
-                          className="w-full px-3 py-2 border border-input rounded-md" 
-                          placeholder="Confirm new password" 
-                        />
+                        <div className="relative">
+                          <input 
+                            type={showConfirmPassword ? "text" : "password"} 
+                            className="w-full px-3 py-2 border border-input rounded-md pr-10" 
+                            placeholder="Confirm new password" 
+                          />
+                          <button 
+                            type="button"
+                            className="absolute inset-y-0 right-0 px-3 flex items-center"
+                            onClick={() => togglePasswordVisibility(setShowConfirmPassword)}
+                          >
+                            {showConfirmPassword ? <EyeOff className="w-4 h-4 text-muted-foreground" /> : <Eye className="w-4 h-4 text-muted-foreground" />}
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
