@@ -1,3 +1,4 @@
+
 import { Layout } from "@/components/layout/Layout";
 import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -15,13 +16,14 @@ const Profile = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isAddRuleDialogOpen, setIsAddRuleDialogOpen] = useState(false);
   const [newRule, setNewRule] = useState('');
+  const [ruleName, setRuleName] = useState('');
   const [isEditMode, setIsEditMode] = useState(false);
   const [editRuleIndex, setEditRuleIndex] = useState<number | null>(null);
   const [attentionRules, setAttentionRules] = useState([
-    "Flag orders 15 minutes before the pickup with no driver",
-    "Driver is running late for more than 15 minutes",
-    "No drivers found for the order",
-    "Orders cancelled by drivers"
+    { name: "Late Order Alert", query: "Flag orders 15 minutes before the pickup with no driver" },
+    { name: "Driver Delay", query: "Driver is running late for more than 15 minutes" },
+    { name: "No Driver", query: "No drivers found for the order" },
+    { name: "Cancelled Orders", query: "Orders cancelled by drivers" }
   ]);
 
   const togglePasswordVisibility = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
@@ -32,22 +34,30 @@ const Profile = () => {
     if (isEditMode && editRuleIndex !== null) {
       // Edit existing rule
       const updatedRules = [...attentionRules];
-      updatedRules[editRuleIndex] = newRule;
+      updatedRules[editRuleIndex] = { 
+        name: ruleName,
+        query: newRule 
+      };
       setAttentionRules(updatedRules);
     } else {
       // Add new rule
-      setAttentionRules([...attentionRules, newRule]);
+      setAttentionRules([...attentionRules, { 
+        name: ruleName || `Rule ${attentionRules.length + 1}`,
+        query: newRule 
+      }]);
     }
     
     // Reset and close dialog
     setNewRule('');
+    setRuleName('');
     setIsEditMode(false);
     setEditRuleIndex(null);
     setIsAddRuleDialogOpen(false);
   };
 
   const handleEditRule = (index: number) => {
-    setNewRule(attentionRules[index]);
+    setNewRule(attentionRules[index].query);
+    setRuleName(attentionRules[index].name);
     setIsEditMode(true);
     setEditRuleIndex(index);
     setIsAddRuleDialogOpen(true);
@@ -223,7 +233,7 @@ const Profile = () => {
                             <div className="flex-1 flex items-center space-x-2">
                               <Checkbox id={`rule-${index}`} />
                               <label htmlFor={`rule-${index}`} className="text-sm font-medium">
-                                {rule}
+                                {rule.name}: {rule.query}
                               </label>
                             </div>
                             <Button
@@ -244,6 +254,7 @@ const Profile = () => {
                             onClick={() => {
                               setIsEditMode(false);
                               setNewRule('');
+                              setRuleName('');
                               setIsAddRuleDialogOpen(true);
                             }}
                           >
@@ -313,23 +324,37 @@ const Profile = () => {
           <DialogHeader>
             <DialogTitle>{isEditMode ? "Edit Rule" : "New Rule"}</DialogTitle>
           </DialogHeader>
-          <div className="py-4">
-            <label htmlFor="new-rule" className="text-sm font-medium block mb-2">
-              Text to SQL
-            </label>
-            <Textarea 
-              id="new-rule" 
-              placeholder="Write SQL query or description..." 
-              value={newRule}
-              onChange={(e) => setNewRule(e.target.value)}
-              className="w-full"
-            />
+          <div className="space-y-4 py-4">
+            <div>
+              <label htmlFor="rule-name" className="text-sm font-medium block mb-2">
+                Rule Name
+              </label>
+              <Input
+                id="rule-name"
+                placeholder="Enter rule name..."
+                value={ruleName}
+                onChange={(e) => setRuleName(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="new-rule" className="text-sm font-medium block mb-2">
+                Text to SQL
+              </label>
+              <Textarea 
+                id="new-rule" 
+                placeholder="Write SQL query or description..." 
+                value={newRule}
+                onChange={(e) => setNewRule(e.target.value)}
+                className="w-full"
+              />
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => {
               setIsAddRuleDialogOpen(false);
               setIsEditMode(false);
               setNewRule('');
+              setRuleName('');
             }}>
               Cancel
             </Button>
