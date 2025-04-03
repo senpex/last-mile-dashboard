@@ -175,7 +175,7 @@ const Profile = () => {
               
               <div className="flex justify-end pt-6">
                 <button className="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md">
-                  Save All Settings
+                  Save
                 </button>
               </div>
             </div>
