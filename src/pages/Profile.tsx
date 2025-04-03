@@ -170,9 +170,9 @@ const Profile = () => {
                     <AlertTriangle className="w-4 h-4" />
                     AR Orders
                   </TabsTrigger>
-                  <TabsTrigger value="lorem-ipsum" className="flex items-center gap-2">
+                  <TabsTrigger value="automations" className="flex items-center gap-2">
                     <Info className="w-4 h-4" />
-                    Lorem Ipsum
+                    Automations
                   </TabsTrigger>
                 </TabsList>
                 
@@ -210,7 +210,7 @@ const Profile = () => {
                   </Card>
                 </TabsContent>
                 
-                <TabsContent value="lorem-ipsum">
+                <TabsContent value="automations">
                   <Card>
                     <CardContent className="pt-6">
                       <h3 className="text-lg font-medium mb-4">Lorem Ipsum</h3>
