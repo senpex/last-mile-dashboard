@@ -94,6 +94,24 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Apply zoom scaling to all elements in the main content area */
+  main {
+    font-size: calc(1rem * var(--zoom-level, 1));
+  }
+  
+  /* Scale UI components based on zoom level */
+  .card, 
+  .button, 
+  .input, 
+  .select,
+  .form-element,
+  .container,
+  .data-table,
+  .ui-element {
+    transform-origin: top left;
+    transform: scale(var(--zoom-level, 1));
+  }
 }
 
 /* Custom CSS for sidebar items */

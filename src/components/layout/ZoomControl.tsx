@@ -5,6 +5,10 @@ import { Slider } from "@/components/ui/slider";
 import { useZoom } from "./ZoomProvider";
 import { cn } from "@/lib/utils";
 
+// Zoom constants (must match ZoomProvider.tsx)
+const MIN_ZOOM = 0.7;
+const MAX_ZOOM = 1.3;
+
 interface ZoomControlProps {
   collapsed?: boolean;
 }
@@ -17,11 +21,11 @@ const ZoomControl = ({ collapsed = false }: ZoomControlProps) => {
   };
 
   const decreaseZoom = () => {
-    setZoom(Math.max(0.5, zoom - 0.1));
+    setZoom(Math.max(MIN_ZOOM, zoom - 0.1));
   };
 
   const increaseZoom = () => {
-    setZoom(Math.min(1.5, zoom + 0.1));
+    setZoom(Math.min(MAX_ZOOM, zoom + 0.1));
   };
 
   return (
@@ -44,8 +48,8 @@ const ZoomControl = ({ collapsed = false }: ZoomControlProps) => {
           <div className="flex-1">
             <Slider
               value={[zoom]}
-              min={0.5}
-              max={1.5}
+              min={MIN_ZOOM}
+              max={MAX_ZOOM}
               step={0.05}
               onValueChange={handleZoomChange}
               className="w-full"
