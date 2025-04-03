@@ -733,3 +733,4 @@ export const useDeliveries = () => {
         address: "987 SW Paddington Ave, Bentonville, AR 72712, US"
       },
       price: "$52.95",
+      tip
