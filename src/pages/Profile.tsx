@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -316,11 +315,11 @@ const Profile = () => {
           </DialogHeader>
           <div className="py-4">
             <label htmlFor="new-rule" className="text-sm font-medium block mb-2">
-              Rule Description
+              Text to SQL
             </label>
             <Textarea 
               id="new-rule" 
-              placeholder="Describe the condition when attention is required..." 
+              placeholder="Write SQL query or description..." 
               value={newRule}
               onChange={(e) => setNewRule(e.target.value)}
               className="w-full"
