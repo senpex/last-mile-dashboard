@@ -1,5 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
-import { UserRound, Settings, AlertTriangle, Info, Lock, Eye, EyeOff } from "lucide-react";
+import { UserRound, Settings, AlertTriangle, Info, Lock, Eye, EyeOff, Bot } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -171,7 +171,7 @@ const Profile = () => {
                     AR Orders
                   </TabsTrigger>
                   <TabsTrigger value="automations" className="flex items-center gap-2">
-                    <Info className="w-4 h-4" />
+                    <Bot className="w-4 h-4" />
                     Automations
                   </TabsTrigger>
                 </TabsList>
