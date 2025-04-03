@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
@@ -17,7 +18,6 @@ import {
   PaginationInfo,
   PaginationSize
 } from "@/components/ui/pagination";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const ClientsPage = () => {
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
@@ -314,12 +314,28 @@ const ClientsPage = () => {
 
         <div className="border-t mt-auto w-full">
           <div className="px-6 py-4 flex justify-between items-center">
-            <div className="text-sm text-muted-foreground">
-              Showing {startIndex + 1}-{endIndex} of {totalItems} items
-            </div>
+            <PaginationInfo 
+              total={totalItems} 
+              pageSize={pageSize} 
+              currentPage={currentPage} 
+            />
             
             <Pagination className="flex-1 flex justify-center">
               <PaginationContent>
+                <PaginationItem>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(1);
+                    }}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === 1}
+                  >
+                    <span className="sr-only">First page</span>
+                    ⟪
+                  </PaginationLink>
+                </PaginationItem>
                 <PaginationItem>
                   <PaginationPrevious 
                     href="#" 
@@ -328,6 +344,7 @@ const ClientsPage = () => {
                       handlePageChange(currentPage - 1);
                     }}
                     className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === 1}
                   />
                 </PaginationItem>
                 
@@ -358,29 +375,31 @@ const ClientsPage = () => {
                       handlePageChange(currentPage + 1);
                     }}
                     className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === totalPages}
                   />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(totalPages);
+                    }}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === totalPages}
+                  >
+                    <span className="sr-only">Last page</span>
+                    ⟫
+                  </PaginationLink>
                 </PaginationItem>
               </PaginationContent>
             </Pagination>
             
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground whitespace-nowrap">Rows per page</span>
-              <Select 
-                value={pageSize.toString()} 
-                onValueChange={(value) => handlePageSizeChange(parseInt(value))}
-              >
-                <SelectTrigger className="w-[70px] h-8">
-                  <SelectValue placeholder={pageSize.toString()} />
-                </SelectTrigger>
-                <SelectContent>
-                  {pageSizeOptions.map((size) => (
-                    <SelectItem key={size} value={size.toString()}>
-                      {size}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <PaginationSize
+              sizes={pageSizeOptions}
+              pageSize={pageSize}
+              onChange={handlePageSizeChange}
+            />
           </div>
         </div>
       </div>

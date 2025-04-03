@@ -25,6 +25,9 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
+  PaginationEllipsis,
+  PaginationInfo,
+  PaginationSize
 } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Columns, Filter, GripVertical, Search } from "lucide-react";
@@ -44,7 +47,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState<string>("10");
+  const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date("2025-03-24T00:00:00"),
     to: new Date("2025-03-24T23:59:59")
@@ -57,6 +61,7 @@ const Index = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
   const [filteredDeliveries, setFilteredDeliveries] = useState<any[]>([]);
   const [activeView, setActiveView] = useState<string>("main");
+  const pageSizeOptions = [10, 20, 50, 100];
 
   const deliveries = [
     // Original 5 records
@@ -1111,10 +1116,68 @@ const Index = () => {
 
       console.log(`Found ${searchResults.length} results for "${debouncedSearchTerm}"`);
       setFilteredDeliveries(searchResults);
+      setCurrentPage(1); // Reset to first page when search results change
     } else if (debouncedSearchTerm.length === 0) {
       setFilteredDeliveries(deliveries);
     }
   }, [debouncedSearchTerm, deliveries]);
+
+  // Pagination calculations
+  const totalItems = filteredDeliveries.length;
+  const totalPages = Math.ceil(totalItems / pageSize);
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = Math.min(startIndex + pageSize, totalItems);
+  const currentItems = filteredDeliveries.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+  };
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(1); // Reset to first page when page size changes
+  };
+
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+      
+      let start = Math.max(2, currentPage - 1);
+      let end = Math.min(totalPages - 1, currentPage + 1);
+      
+      if (currentPage <= 3) {
+        end = Math.min(4, totalPages - 1);
+      }
+      
+      if (currentPage >= totalPages - 2) {
+        start = Math.max(totalPages - 3, 2);
+      }
+      
+      if (start > 2) {
+        pages.push(-1); // Add ellipsis after first page
+      }
+      
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+      
+      if (end < totalPages - 1) {
+        pages.push(-2); // Add ellipsis before last page
+      }
+      
+      pages.push(totalPages);
+    }
+    
+    return pages;
+  };
 
   const availableColumns: ColumnOption[] = [
     { id: "status", label: "Status", default: true },
@@ -1360,8 +1423,8 @@ const Index = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filteredDeliveries.length > 0 ? (
-                      filteredDeliveries.map((delivery) => (
+                    {currentItems.length > 0 ? (
+                      currentItems.map((delivery) => (
                         <TableRow key={delivery.id}>
                           {sortedColumns.map(columnId => {
                             switch (columnId) {
@@ -1439,16 +1502,23 @@ const Index = () => {
           
           {/* Fixed footer with pagination */}
           <div className="border-t bg-background px-4 py-3 flex justify-between items-center shadow-sm flex-shrink-0">
-            <div className="text-sm text-muted-foreground">
-              Total: <span className="bg-muted px-2 py-1 rounded">{filteredDeliveries.length}</span>
-            </div>
+            <PaginationInfo 
+              total={totalItems} 
+              pageSize={pageSize} 
+              currentPage={currentPage} 
+            />
             
             <Pagination className="flex-1 flex justify-center">
               <PaginationContent>
                 <PaginationItem>
                   <PaginationLink
-                    className="cursor-not-allowed opacity-50"
-                    aria-disabled="true"
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(1);
+                    }}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === 1}
                   >
                     <span className="sr-only">First page</span>
                     ⟪
@@ -1456,23 +1526,55 @@ const Index = () => {
                 </PaginationItem>
                 <PaginationItem>
                   <PaginationPrevious
-                    className="cursor-not-allowed opacity-50"
-                    aria-disabled="true"
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage - 1);
+                    }}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === 1}
                   />
                 </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink isActive>1</PaginationLink>
-                </PaginationItem>
+                
+                {getPageNumbers().map((page, i) => (
+                  <PaginationItem key={i}>
+                    {page === -1 || page === -2 ? (
+                      <PaginationEllipsis />
+                    ) : (
+                      <PaginationLink 
+                        href="#" 
+                        isActive={page === currentPage}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handlePageChange(page);
+                        }}
+                      >
+                        {page}
+                      </PaginationLink>
+                    )}
+                  </PaginationItem>
+                ))}
+                
                 <PaginationItem>
                   <PaginationNext
-                    className="cursor-not-allowed opacity-50"
-                    aria-disabled="true"
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage + 1);
+                    }}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === totalPages}
                   />
                 </PaginationItem>
                 <PaginationItem>
                   <PaginationLink
-                    className="cursor-not-allowed opacity-50"
-                    aria-disabled="true"
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(totalPages);
+                    }}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === totalPages}
                   >
                     <span className="sr-only">Last page</span>
                     ⟫
@@ -1481,20 +1583,11 @@ const Index = () => {
               </PaginationContent>
             </Pagination>
             
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground whitespace-nowrap">Rows per page</span>
-              <Select value={rowsPerPage} onValueChange={setRowsPerPage}>
-                <SelectTrigger className="w-[70px] h-8">
-                  <SelectValue placeholder="10" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="10">10</SelectItem>
-                  <SelectItem value="20">20</SelectItem>
-                  <SelectItem value="50">50</SelectItem>
-                  <SelectItem value="100">100</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <PaginationSize
+              sizes={pageSizeOptions}
+              pageSize={pageSize}
+              onChange={handlePageSizeChange}
+            />
           </div>
         </main>
       </div>
