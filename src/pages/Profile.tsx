@@ -225,7 +225,7 @@ const Profile = () => {
                 <TabsContent value="attention-required">
                   <Card>
                     <CardContent className="pt-6">
-                      <h3 className="text-lg font-medium mb-4">Attention Required Criteria</h3>
+                      <h3 className="text-lg font-medium mb-4">Attention Required Orders</h3>
                       <div className="space-y-4">
                         {attentionRules.map((rule, index) => (
                           <div key={index} className="flex items-center">
