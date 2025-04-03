@@ -1,5 +1,6 @@
+
 import { Layout } from "@/components/layout/Layout";
-import { UserRound, Settings, AlertTriangle, Info } from "lucide-react";
+import { UserRound, Settings, AlertTriangle, Info, Lock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -76,6 +77,41 @@ const Profile = () => {
                       className="w-full px-3 py-2 border border-input rounded-md min-h-[100px]"
                       defaultValue="Delivery manager with 5+ years of experience in logistics and transportation."
                     />
+                  </div>
+                  
+                  <div className="pt-6 border-t">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Lock className="w-4 h-4 text-primary" />
+                      <h3 className="text-md font-medium">Change Password</h3>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm font-medium block mb-1">Current Password</label>
+                        <input 
+                          type="password" 
+                          className="w-full px-3 py-2 border border-input rounded-md" 
+                          placeholder="Enter current password" 
+                        />
+                      </div>
+                      <div className="md:col-span-2"></div>
+                      <div>
+                        <label className="text-sm font-medium block mb-1">New Password</label>
+                        <input 
+                          type="password" 
+                          className="w-full px-3 py-2 border border-input rounded-md" 
+                          placeholder="Enter new password" 
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium block mb-1">Confirm New Password</label>
+                        <input 
+                          type="password" 
+                          className="w-full px-3 py-2 border border-input rounded-md" 
+                          placeholder="Confirm new password" 
+                        />
+                      </div>
+                    </div>
                   </div>
                   
                   <div className="flex justify-end pt-4">
