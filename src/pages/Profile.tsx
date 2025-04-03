@@ -1,6 +1,6 @@
 
 import { Layout } from "@/components/layout/Layout";
-import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus } from "lucide-react";
+import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -16,16 +16,42 @@ const Profile = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isAddRuleDialogOpen, setIsAddRuleDialogOpen] = useState(false);
   const [newRule, setNewRule] = useState('');
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editRuleIndex, setEditRuleIndex] = useState<number | null>(null);
+  const [attentionRules, setAttentionRules] = useState([
+    "Flag orders 15 minutes before the pickup with no driver",
+    "Driver is running late for more than 15 minutes",
+    "No drivers found for the order",
+    "Orders cancelled by drivers"
+  ]);
 
   const togglePasswordVisibility = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
     setter((prev) => !prev);
   };
 
   const handleAddRule = () => {
-    // Here you would normally save the rule to your data store
-    // For this example, we'll just close the dialog
+    if (isEditMode && editRuleIndex !== null) {
+      // Edit existing rule
+      const updatedRules = [...attentionRules];
+      updatedRules[editRuleIndex] = newRule;
+      setAttentionRules(updatedRules);
+    } else {
+      // Add new rule
+      setAttentionRules([...attentionRules, newRule]);
+    }
+    
+    // Reset and close dialog
     setNewRule('');
+    setIsEditMode(false);
+    setEditRuleIndex(null);
     setIsAddRuleDialogOpen(false);
+  };
+
+  const handleEditRule = (index: number) => {
+    setNewRule(attentionRules[index]);
+    setIsEditMode(true);
+    setEditRuleIndex(index);
+    setIsAddRuleDialogOpen(true);
   };
 
   return (
@@ -193,35 +219,34 @@ const Profile = () => {
                     <CardContent className="pt-6">
                       <h3 className="text-lg font-medium mb-4">Attention Required Criteria</h3>
                       <div className="space-y-4">
-                        <div className="flex items-center space-x-2">
-                          <Checkbox id="order-pickup-notification" />
-                          <label htmlFor="order-pickup-notification" className="text-sm font-medium">
-                            Flag orders 15 minutes before the pickup with no driver
-                          </label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Checkbox id="low-stock" />
-                          <label htmlFor="low-stock" className="text-sm font-medium">
-                            Driver is running late for more than 15 minutes
-                          </label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Checkbox id="driver-overtime" />
-                          <label htmlFor="driver-overtime" className="text-sm font-medium">
-                            No drivers found for the order
-                          </label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Checkbox id="maintenance-due" />
-                          <label htmlFor="maintenance-due" className="text-sm font-medium">
-                            Orders cancelled by drivers
-                          </label>
-                        </div>
+                        {attentionRules.map((rule, index) => (
+                          <div key={index} className="flex items-center">
+                            <div className="flex-1 flex items-center space-x-2">
+                              <Checkbox id={`rule-${index}`} />
+                              <label htmlFor={`rule-${index}`} className="text-sm font-medium">
+                                {rule}
+                              </label>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleEditRule(index)}
+                              className="ml-2"
+                            >
+                              <Pencil className="h-4 w-4" />
+                              <span className="sr-only">Edit rule</span>
+                            </Button>
+                          </div>
+                        ))}
                         <div className="mt-4">
                           <Button 
                             variant="outline" 
                             className="flex items-center gap-2"
-                            onClick={() => setIsAddRuleDialogOpen(true)}
+                            onClick={() => {
+                              setIsEditMode(false);
+                              setNewRule('');
+                              setIsAddRuleDialogOpen(true);
+                            }}
                           >
                             <Plus className="w-4 h-4" />
                             Add Rule
@@ -283,11 +308,11 @@ const Profile = () => {
         </Tabs>
       </div>
 
-      {/* Add Rule Dialog */}
+      {/* Rule Dialog */}
       <Dialog open={isAddRuleDialogOpen} onOpenChange={setIsAddRuleDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Add New Attention Required Rule</DialogTitle>
+            <DialogTitle>{isEditMode ? "Edit Rule" : "New Rule"}</DialogTitle>
           </DialogHeader>
           <div className="py-4">
             <label htmlFor="new-rule" className="text-sm font-medium block mb-2">
@@ -302,11 +327,15 @@ const Profile = () => {
             />
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsAddRuleDialogOpen(false)}>
+            <Button variant="outline" onClick={() => {
+              setIsAddRuleDialogOpen(false);
+              setIsEditMode(false);
+              setNewRule('');
+            }}>
               Cancel
             </Button>
             <Button onClick={handleAddRule}>
-              Save Rule
+              Save
             </Button>
           </DialogFooter>
         </DialogContent>
