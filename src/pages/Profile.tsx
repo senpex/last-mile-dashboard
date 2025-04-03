@@ -1,7 +1,11 @@
 
 import { Layout } from "@/components/layout/Layout";
-import { UserRound, Settings } from "lucide-react";
+import { UserRound, Settings, AlertTriangle, Info } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const Profile = () => {
   return (
@@ -87,85 +91,96 @@ const Profile = () => {
           
           <TabsContent value="system-settings">
             <div className="bg-card rounded-lg shadow p-6">
-              <h2 className="text-xl font-medium mb-4">System Settings</h2>
-              
-              <div className="space-y-6">
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Display</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium block mb-1">Language</label>
-                      <select className="w-full px-3 py-2 border border-input rounded-md bg-background">
-                        <option value="en">English</option>
-                        <option value="es">Spanish</option>
-                        <option value="fr">French</option>
-                        <option value="de">German</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium block mb-1">Time Zone</label>
-                      <select className="w-full px-3 py-2 border border-input rounded-md bg-background">
-                        <option value="utc">UTC (GMT+0)</option>
-                        <option value="est">Eastern Standard Time (GMT-5)</option>
-                        <option value="pst">Pacific Standard Time (GMT-8)</option>
-                        <option value="cet">Central European Time (GMT+1)</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
+              {/* Nested tabs for System Settings */}
+              <Tabs defaultValue="attention-required" className="w-full">
+                <TabsList className="mb-4">
+                  <TabsTrigger value="attention-required" className="flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4" />
+                    Attention Required Criteria
+                  </TabsTrigger>
+                  <TabsTrigger value="lorem-ipsum" className="flex items-center gap-2">
+                    <Info className="w-4 h-4" />
+                    Lorem Ipsum
+                  </TabsTrigger>
+                </TabsList>
                 
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Notifications</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm font-medium">Email Notifications</label>
-                      <input type="checkbox" className="h-4 w-4" defaultChecked />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm font-medium">Push Notifications</label>
-                      <input type="checkbox" className="h-4 w-4" defaultChecked />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm font-medium">SMS Notifications</label>
-                      <input type="checkbox" className="h-4 w-4" />
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Security</h3>
-                  <div className="space-y-3">
-                    <div>
-                      <label className="text-sm font-medium block mb-1">Change Password</label>
-                      <div className="space-y-2">
-                        <input 
-                          type="password" 
-                          placeholder="Current Password" 
-                          className="w-full px-3 py-2 border border-input rounded-md" 
-                        />
-                        <input 
-                          type="password" 
-                          placeholder="New Password" 
-                          className="w-full px-3 py-2 border border-input rounded-md" 
-                        />
-                        <input 
-                          type="password" 
-                          placeholder="Confirm New Password" 
-                          className="w-full px-3 py-2 border border-input rounded-md" 
-                        />
+                <TabsContent value="attention-required">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-medium mb-4">Attention Required Criteria</h3>
+                      <div className="space-y-4">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="delivery-delay" />
+                          <label htmlFor="delivery-delay" className="text-sm font-medium">
+                            Flag deliveries delayed by more than 30 minutes
+                          </label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="low-stock" />
+                          <label htmlFor="low-stock" className="text-sm font-medium">
+                            Highlight inventory items below minimum stock level
+                          </label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="driver-overtime" />
+                          <label htmlFor="driver-overtime" className="text-sm font-medium">
+                            Alert when drivers exceed daily working hours
+                          </label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="maintenance-due" />
+                          <label htmlFor="maintenance-due" className="text-sm font-medium">
+                            Notify when vehicle maintenance is due
+                          </label>
+                        </div>
+                        <div className="mt-6">
+                          <Button>Save Criteria</Button>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm font-medium">Two-Factor Authentication</label>
-                      <input type="checkbox" className="h-4 w-4" />
-                    </div>
-                  </div>
-                </div>
-              </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                
+                <TabsContent value="lorem-ipsum">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-medium mb-4">Lorem Ipsum</h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                      </p>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="text-sm font-medium block mb-1">Setting One</label>
+                          <Input placeholder="Enter value" />
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium block mb-1">Setting Two</label>
+                          <Input placeholder="Enter value" />
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="option-one" />
+                          <label htmlFor="option-one" className="text-sm font-medium">
+                            Enable Option One
+                          </label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="option-two" />
+                          <label htmlFor="option-two" className="text-sm font-medium">
+                            Enable Option Two
+                          </label>
+                        </div>
+                        <div className="mt-6">
+                          <Button>Apply Settings</Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
               
               <div className="flex justify-end pt-6">
                 <button className="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md">
-                  Save Settings
+                  Save All Settings
                 </button>
               </div>
             </div>
