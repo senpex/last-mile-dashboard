@@ -1,3 +1,4 @@
+
 import { Layout } from "@/components/layout/Layout";
 import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,8 +15,11 @@ const Profile = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isAddRuleDialogOpen, setIsAddRuleDialogOpen] = useState(false);
+  const [isAddAutomationDialogOpen, setIsAddAutomationDialogOpen] = useState(false);
   const [newRule, setNewRule] = useState('');
   const [ruleName, setRuleName] = useState('');
+  const [newAutomation, setNewAutomation] = useState('');
+  const [automationName, setAutomationName] = useState('');
   const [isEditMode, setIsEditMode] = useState(false);
   const [editRuleIndex, setEditRuleIndex] = useState<number | null>(null);
   const [attentionRules, setAttentionRules] = useState([
@@ -23,6 +27,13 @@ const Profile = () => {
     { name: "Driver Delay", query: "Driver is running late for more than 15 minutes" },
     { name: "No Driver", query: "No drivers found for the order" },
     { name: "Cancelled Orders", query: "Orders cancelled by drivers" }
+  ]);
+  const [automations, setAutomations] = useState([
+    { name: "Auto Close Order", description: "Close order automatically after delivery is confirmed" },
+    { name: "Commission Boost", description: "Increase driver commission by 10% if driver arrives 10 minutes before pickup" },
+    { name: "Auto Assign", description: "Automatically assign nearest driver when order is created" },
+    { name: "Customer Notifications", description: "Send notification to customer if driver is delayed by more than 5 minutes" },
+    { name: "Reschedule At Risk", description: "Attempt to reschedule if order is at risk of cancellation" }
   ]);
 
   const togglePasswordVisibility = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
@@ -52,6 +63,19 @@ const Profile = () => {
     setIsEditMode(false);
     setEditRuleIndex(null);
     setIsAddRuleDialogOpen(false);
+  };
+  
+  const handleAddAutomation = () => {
+    // Add new automation
+    setAutomations([...automations, { 
+      name: automationName || `Automation ${automations.length + 1}`,
+      description: newAutomation 
+    }]);
+    
+    // Reset and close dialog
+    setNewAutomation('');
+    setAutomationName('');
+    setIsAddAutomationDialogOpen(false);
   };
 
   const handleEditRule = (index: number) => {
@@ -262,35 +286,27 @@ const Profile = () => {
                     <CardContent className="pt-6">
                       <h3 className="text-lg font-medium mb-4">Automatic Actions</h3>
                       <div className="space-y-4">
-                        <div className="flex items-center space-x-2">
-                          <Checkbox id="auto-close-order" />
-                          <label htmlFor="auto-close-order" className="text-sm font-medium">
-                            Close order automatically after delivery is confirmed
-                          </label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Checkbox id="auto-commission-increase" />
-                          <label htmlFor="auto-commission-increase" className="text-sm font-medium">
-                            Increase driver commission by 10% if driver arrives 10 minutes before pickup
-                          </label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Checkbox id="auto-assign-driver" />
-                          <label htmlFor="auto-assign-driver" className="text-sm font-medium">
-                            Automatically assign nearest driver when order is created
-                          </label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Checkbox id="auto-notify-delay" />
-                          <label htmlFor="auto-notify-delay" className="text-sm font-medium">
-                            Send notification to customer if driver is delayed by more than 5 minutes
-                          </label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Checkbox id="auto-reschedule" />
-                          <label htmlFor="auto-reschedule" className="text-sm font-medium">
-                            Attempt to reschedule if order is at risk of cancellation
-                          </label>
+                        {automations.map((automation, index) => (
+                          <div key={index} className="flex items-center space-x-2">
+                            <Checkbox id={`auto-${index}`} />
+                            <label htmlFor={`auto-${index}`} className="text-sm font-medium">
+                              {automation.name}: {automation.description}
+                            </label>
+                          </div>
+                        ))}
+                        <div className="mt-4">
+                          <Button 
+                            variant="outline" 
+                            className="flex items-center gap-2"
+                            onClick={() => {
+                              setNewAutomation('');
+                              setAutomationName('');
+                              setIsAddAutomationDialogOpen(true);
+                            }}
+                          >
+                            <Plus className="w-4 h-4" />
+                            Add Automation
+                          </Button>
                         </div>
                       </div>
                     </CardContent>
@@ -349,6 +365,52 @@ const Profile = () => {
               Cancel
             </Button>
             <Button onClick={handleAddRule}>
+              Save
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Automation Dialog */}
+      <Dialog open={isAddAutomationDialogOpen} onOpenChange={setIsAddAutomationDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>New Automation</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div>
+              <label htmlFor="automation-name" className="text-sm font-medium block mb-2">
+                Automation Name
+              </label>
+              <Input
+                id="automation-name"
+                placeholder="Enter automation name..."
+                value={automationName}
+                onChange={(e) => setAutomationName(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="new-automation" className="text-sm font-medium block mb-2">
+                Description
+              </label>
+              <Textarea 
+                id="new-automation" 
+                placeholder="Describe what this automation should do..." 
+                value={newAutomation}
+                onChange={(e) => setNewAutomation(e.target.value)}
+                className="w-full"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => {
+              setIsAddAutomationDialogOpen(false);
+              setNewAutomation('');
+              setAutomationName('');
+            }}>
+              Cancel
+            </Button>
+            <Button onClick={handleAddAutomation}>
               Save
             </Button>
           </DialogFooter>
