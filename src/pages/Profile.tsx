@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -236,15 +235,6 @@ const Profile = () => {
                                 {rule.name}: {rule.query}
                               </label>
                             </div>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleEditRule(index)}
-                              className="ml-2"
-                            >
-                              <Pencil className="h-4 w-4" />
-                              <span className="sr-only">Edit rule</span>
-                            </Button>
                           </div>
                         ))}
                         <div className="mt-4">
