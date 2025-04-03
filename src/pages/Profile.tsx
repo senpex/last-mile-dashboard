@@ -122,7 +122,7 @@ const Profile = () => {
                         <div className="flex items-center space-x-2">
                           <Checkbox id="driver-overtime" />
                           <label htmlFor="driver-overtime" className="text-sm font-medium">
-                            Alert when drivers exceed daily working hours
+                            No drivers found for the order
                           </label>
                         </div>
                         <div className="flex items-center space-x-2">
