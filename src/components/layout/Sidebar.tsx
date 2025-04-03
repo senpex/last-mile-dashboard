@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "./ThemeProvider";
 import ThemeToggle from "./ThemeToggle";
+import ZoomControl from "./ZoomControl";
 import LogoutButton from "./LogoutButton";
 import { ChevronLeft, ChevronRight, Package, BookOpen, Bot, LayoutDashboard, UserRound, Users, TowerControl } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -233,6 +234,7 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
       </div>
       
       <div className="border-t border-sidebar-border p-4 space-y-2">
+        <ZoomControl collapsed={collapsed} />
         <ThemeToggle collapsed={collapsed} />
         <LogoutButton collapsed={collapsed} />
       </div>
