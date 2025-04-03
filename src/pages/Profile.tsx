@@ -94,7 +94,7 @@ const Profile = () => {
                 <TabsList className="mb-4">
                   <TabsTrigger value="attention-required" className="flex items-center gap-2">
                     <AlertTriangle className="w-4 h-4" />
-                    Attention Required Criteria
+                    AR Orders
                   </TabsTrigger>
                   <TabsTrigger value="lorem-ipsum" className="flex items-center gap-2">
                     <Info className="w-4 h-4" />
