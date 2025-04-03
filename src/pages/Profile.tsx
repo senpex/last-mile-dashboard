@@ -131,9 +131,6 @@ const Profile = () => {
                             Orders cancelled by drivers
                           </label>
                         </div>
-                        <div className="mt-6">
-                          <Button>Save Criteria</Button>
-                        </div>
                       </div>
                     </CardContent>
                   </Card>
