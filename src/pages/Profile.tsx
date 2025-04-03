@@ -128,7 +128,7 @@ const Profile = () => {
                         <div className="flex items-center space-x-2">
                           <Checkbox id="maintenance-due" />
                           <label htmlFor="maintenance-due" className="text-sm font-medium">
-                            Notify when vehicle maintenance is due
+                            Orders cancelled by drivers
                           </label>
                         </div>
                         <div className="mt-6">
