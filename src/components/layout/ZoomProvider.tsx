@@ -28,6 +28,12 @@ export const ZoomProvider = ({ children }: { children: React.ReactNode }) => {
     
     // Save zoom preference
     localStorage.setItem("zoom", zoom.toString());
+    
+    // Force a repaint to ensure changes are applied
+    document.body.style.transform = 'translateZ(0)';
+    setTimeout(() => {
+      document.body.style.transform = '';
+    }, 0);
   }, [zoom]);
 
   // Create a wrapped setZoom function that enforces min/max values

@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -99,18 +98,21 @@
   main {
     font-size: calc(1rem * var(--zoom-level, 1));
   }
-  
-  /* Scale UI components based on zoom level */
+}
+
+@layer components {
+  /* Make sure UI components scale with zoom level */
   .card, 
   .button, 
-  .input, 
-  .select,
-  .form-element,
-  .container,
-  .data-table,
-  .ui-element {
+  input, 
+  select,
+  button,
+  .form-field,
+  .data-display,
+  table,
+  .dialog-content {
     transform-origin: top left;
-    transform: scale(var(--zoom-level, 1));
+    transition: transform 0.2s ease-out;
   }
 }
 
@@ -190,4 +192,15 @@ button {
 
 button > svg {
   pointer-events: none;
+}
+
+/* Apply zoom to all elements in the main content area */
+main > * {
+  transition: all 0.2s ease-out;
+}
+
+/* Ensure content scales properly with zoom */
+.zoom-content {
+  transform-origin: top left;
+  transform: scale(var(--zoom-level, 1));
 }

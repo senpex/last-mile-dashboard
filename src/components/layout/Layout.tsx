@@ -17,14 +17,20 @@ export const Layout = ({ children, showFooter = true }: LayoutProps) => {
         className="flex-1 flex flex-col overflow-hidden transition-all"
         style={{ 
           marginLeft: collapsed ? "70px" : "240px",
-          transform: `scale(var(--zoom-level, 1))`,
-          transformOrigin: "top left",
           height: "100vh",
           width: "calc(100vw - (var(--sidebar-width, 240px)))",
           overflow: "auto"
         }}
       >
-        {children}
+        <div 
+          className="zoom-content w-full h-full"
+          style={{
+            transformOrigin: "top left",
+            transform: `scale(var(--zoom-level, 1))`
+          }}
+        >
+          {children}
+        </div>
       </main>
     </div>
   );
