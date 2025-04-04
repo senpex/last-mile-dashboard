@@ -422,6 +422,17 @@ const DriversPage = () => {
   const [chatOpen, setChatOpen] = useState(false);
   const [driversWithMessages, setDriversWithMessages] = useState<number[]>([]);
 
+  const updateDriverHireStatus = (driverId: number, newStatus: string) => {
+    setDrivers(prevDrivers => 
+      prevDrivers.map(driver => 
+        driver.id === driverId ? { ...driver, hireStatus: newStatus } : driver
+      )
+    );
+    
+    const statusLabel = hireStatusDictionary[newStatus] || newStatus;
+    toast.success(`Driver status updated to ${statusLabel}`);
+  };
+
   useEffect(() => {
     loadTransportDictionary();
     loadStatusDictionary();
@@ -668,12 +679,36 @@ const DriversPage = () => {
       </div>;
   };
 
-  const renderHireStatus = (hireStatusId: string) => {
+  const renderHireStatus = (hireStatusId: string, driverId: number) => {
     const hireStatusText = hireStatusDictionary[hireStatusId] || `Unknown (${hireStatusId})`;
     const hireStatusColorClass = hireStatusColors[hireStatusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
-    return <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${hireStatusColorClass}`}>
-        {hireStatusText}
-      </div>;
+    
+    return (
+      <div className="flex items-center gap-2">
+        <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${hireStatusColorClass}`}>
+          {hireStatusText}
+        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+              <span className="sr-only">Change hire status</span>
+              <ChevronDown className="h-3 w-3" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-[160px]">
+            {Object.entries(hireStatusDictionary).map(([key, value]) => (
+              <DropdownMenuItem 
+                key={key}
+                onClick={() => updateDriverHireStatus(driverId, key)}
+                className={hireStatusId === key ? "bg-muted" : ""}
+              >
+                {value}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    );
   };
 
   return <Layout showFooter={false}>
@@ -737,7 +772,7 @@ const DriversPage = () => {
                               {renderStatus(driver.status)}
                             </TableCell>}
                           {sortedColumns.includes("hireStatus") && <TableCell>
-                              {renderHireStatus(driver.hireStatus)}
+                              {renderHireStatus(driver.hireStatus, driver.id)}
                             </TableCell>}
                           {sortedColumns.includes("actions") && <TableCell>
                               <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
