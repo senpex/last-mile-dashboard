@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
@@ -711,7 +712,8 @@ const DriversPage = () => {
     );
   };
 
-  return <Layout showFooter={false}>
+  return (
+    <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
         <div className="px-6 py-6 flex-1 overflow-auto">
           <div className="space-y-4">
@@ -742,12 +744,23 @@ const DriversPage = () => {
                         {sortedColumns.map((columnId) => {
                           const column = availableColumns.find(col => col.id === columnId);
                           if (!column) return null;
-                          return <TableHead key={columnId} draggable={true} dragOver={dragOverColumn === columnId} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}>
-                            <div className="flex items-center gap-1 overflow-hidden">
-                              <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
-                              <span className="truncate">{column.label}</span>
-                            </div>
-                          </TableHead>;
+                          return (
+                            <TableHead 
+                              key={columnId} 
+                              draggable={true} 
+                              dragOver={dragOverColumn === columnId} 
+                              onDragStart={e => handleDragStart(e, columnId)} 
+                              onDragOver={e => handleDragOver(e, columnId)} 
+                              onDragEnd={handleDragEnd} 
+                              onDrop={e => handleDrop(e, columnId)} 
+                              className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
+                            >
+                              <div className="flex items-center gap-1 overflow-hidden">
+                                <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
+                                <span className="truncate">{column.label}</span>
+                              </div>
+                            </TableHead>
+                          );
                         })}
                       </TableRow>
                     </TableHeader>
@@ -758,21 +771,129 @@ const DriversPage = () => {
                           {sortedColumns.includes("name") && <TableCell>{driver.name}</TableCell>}
                           {sortedColumns.includes("email") && <TableCell>{driver.email}</TableCell>}
                           {sortedColumns.includes("phone") && <TableCell>{driver.phone}</TableCell>}
-                          {sortedColumns.includes("transport") && <TableCell>
+                          {sortedColumns.includes("transport") && 
+                            <TableCell>
                               <div className="flex items-center gap-2">
-                                {driver.transports.map(transportId => <div key={transportId} className="flex items-center justify-center p-2 rounded-md bg-muted" title={transportTypes[transportId] || `Transport ID: ${transportId}`}>
+                                {driver.transports.map(transportId => (
+                                  <div key={transportId} className="flex items-center justify-center p-2 rounded-md bg-muted" title={transportTypes[transportId] || `Transport ID: ${transportId}`}>
                                     <TransportIcon transportType={transportId as TransportType} size={14} className="h-[14px] w-[14px]" />
-                                  </div>)}
+                                  </div>
+                                ))}
                               </div>
-                            </TableCell>}
-                          {sortedColumns.includes("rating") && <TableCell>
+                            </TableCell>
+                          }
+                          {sortedColumns.includes("rating") && 
+                            <TableCell>
                               {renderRating(driver.rating)}
-                            </TableCell>}
-                          {sortedColumns.includes("status") && <TableCell>
+                            </TableCell>
+                          }
+                          {sortedColumns.includes("status") && 
+                            <TableCell>
                               {renderStatus(driver.status)}
-                            </TableCell>}
-                          {sortedColumns.includes("hireStatus") && <TableCell>
+                            </TableCell>
+                          }
+                          {sortedColumns.includes("hireStatus") && 
+                            <TableCell>
                               {renderHireStatus(driver.hireStatus, driver.id)}
-                            </TableCell>}
-                          {sortedColumns.includes("actions") && <TableCell>
-                              <Button variant="outline" size="sm" className
+                            </TableCell>
+                          }
+                          {sortedColumns.includes("actions") && 
+                            <TableCell>
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                className="flex items-center gap-1 text-xs" 
+                                onClick={() => handleCourierClick(driver.name)}
+                              >
+                                <MessageCircle className="w-3 h-3" />
+                                {driversWithMessages.includes(driver.id) && (
+                                  <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                                  </span>
+                                )}
+                                Chat
+                              </Button>
+                            </TableCell>
+                          }
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </ScrollArea>
+              
+              <div className="p-4 border-t">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious 
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                      />
+                    </PaginationItem>
+                    
+                    {getPageNumbers().map((pageNum, index) => (
+                      pageNum < 0 ? (
+                        <PaginationEllipsis key={`ellipsis-${index}`} />
+                      ) : (
+                        <PaginationItem key={pageNum}>
+                          <PaginationLink 
+                            isActive={pageNum === currentPage}
+                            onClick={() => handlePageChange(pageNum)}
+                            className="cursor-pointer"
+                          >
+                            {pageNum}
+                          </PaginationLink>
+                        </PaginationItem>
+                      )
+                    ))}
+                    
+                    <PaginationItem>
+                      <PaginationNext 
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                  
+                  <div className="flex items-center gap-2 ml-auto">
+                    <span className="text-sm text-muted-foreground">
+                      Showing {startIndex + 1}-{endIndex} of {totalItems} items
+                    </span>
+                    <Select
+                      value={pageSize.toString()}
+                      onValueChange={(val) => handlePageSizeChange(parseInt(val))}
+                    >
+                      <SelectTrigger className="h-8 w-[80px]">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {pageSizeOptions.map((size) => (
+                          <SelectItem key={size} value={size.toString()}>
+                            {size}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <span className="text-sm text-muted-foreground">per page</span>
+                  </div>
+                </Pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {chatOpen && selectedCourier && (
+        <CourierChat 
+          courierName={selectedCourier}
+          isOpen={chatOpen}
+          onClose={handleChatClose}
+        />
+      )}
+    </Layout>
+  );
+};
+
+export default DriversPage;
