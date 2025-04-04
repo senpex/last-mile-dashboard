@@ -750,12 +750,7 @@ const DriversPage = () => {
                   <TableBody>
                     {currentItems.map(driver => <TableRow key={driver.id}>
                         {sortedColumns.includes("id") && <TableCell className="font-sans">{driver.id}</TableCell>}
-                        {sortedColumns.includes("name") && <TableCell>
-                            <button className="hover:underline flex items-center gap-2" onClick={() => handleCourierClick(driver.name)}>
-                              {driver.name}
-                              {driversWithMessages.includes(driver.id) && <MessageCircle className="text-red-500" size={18} strokeWidth={2} />}
-                            </button>
-                          </TableCell>}
+                        {sortedColumns.includes("name")}
                         {sortedColumns.includes("email") && <TableCell>{driver.email}</TableCell>}
                         {sortedColumns.includes("phone") && <TableCell>{driver.phone}</TableCell>}
                         {sortedColumns.includes("transport") && <TableCell>
