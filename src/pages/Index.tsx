@@ -30,7 +30,7 @@ import {
   PaginationSize
 } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Columns, Filter, GripVertical, MessageCircle, Search } from "lucide-react";
+import { Clock, Columns, Filter, GripVertical, Search } from "lucide-react";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { DateRange } from "react-day-picker";
@@ -65,7 +65,6 @@ const Index = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedCourier, setSelectedCourier] = useState("");
   const pageSizeOptions = [10, 20, 50, 100];
-  const [couriersWithMessages, setCouriersWithMessages] = useState<string[]>([]);
 
   const deliveries = [
     // Original 5 records
@@ -1062,20 +1061,6 @@ const Index = () => {
     }
   ];
 
-  // Add useEffect to randomly add message indicators to some couriers
-  useEffect(() => {
-    const couriersWithCouriers = deliveries
-      .filter(d => d.courier && d.courier.trim() !== "")
-      .map(d => d.courier)
-      .filter((value, index, self) => self.indexOf(value) === index); // Get unique couriers
-    
-    // Randomly select around 30% of couriers to have messages
-    const selectedCouriers = couriersWithCouriers
-      .filter(() => Math.random() < 0.3);
-    
-    setCouriersWithMessages(selectedCouriers);
-  }, [deliveries]);
-
   useEffect(() => {
     const dictionary = getDictionary("19");
     if (dictionary) {
@@ -1530,16 +1515,7 @@ const Index = () => {
                                         className="p-0 h-auto font-normal text-primary" 
                                         onClick={() => handleCourierClick(delivery.courier)}
                                       >
-                                        <div className="flex items-center gap-1">
-                                          {delivery.courier}
-                                          {couriersWithMessages.includes(delivery.courier) && (
-                                            <MessageCircle 
-                                              className="text-red-500" 
-                                              size={16} 
-                                              strokeWidth={2}
-                                            />
-                                          )}
-                                        </div>
+                                        {delivery.courier}
                                       </Button>
                                     ) : (
                                       <span>-</span>
