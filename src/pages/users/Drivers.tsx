@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus, Search } from "lucide-react";
+import { GripVertical, Plus, Search, Circle } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
@@ -13,18 +13,23 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis, PaginationInfo, PaginationSize } from "@/components/ui/pagination";
+import CourierChat from '@/components/chat/CourierChat';
+
 type StripeStatus = 'Unverified' | 'Pending' | 'Verified';
 type HireStatus = string;
+
 const getRandomStripeStatus = (): StripeStatus => {
   const statuses: StripeStatus[] = ['Unverified', 'Pending', 'Verified'];
   return statuses[Math.floor(Math.random() * statuses.length)];
 };
+
 const generateRandomPhone = (): string => {
   const areaCode = Math.floor(Math.random() * 900) + 100;
   const prefix = Math.floor(Math.random() * 900) + 100;
   const lineNumber = Math.floor(Math.random() * 9000) + 1000;
   return `(${areaCode}) ${prefix}-${lineNumber}`;
 };
+
 const generateRandomTransports = (): string[] => {
   const transportIds = ['1', '2', '3', '4', '5', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
   const count = Math.floor(Math.random() * 3) + 1;
@@ -38,9 +43,11 @@ const generateRandomTransports = (): string[] => {
   }
   return result;
 };
+
 const generateRandomRating = (): number => {
   return Number((Math.random() * 2 + 3).toFixed(1));
 };
+
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{
     [key: string]: string;
@@ -445,14 +452,59 @@ const DriversPage = () => {
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = Math.min(startIndex + pageSize, totalItems);
   const currentItems = filteredDrivers.slice(startIndex, endIndex);
+  const [selectedCourier, setSelectedCourier] = useState<string | null>(null);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [driversWithMessages, setDriversWithMessages] = useState<number[]>([]);
+
+  useEffect(() => {
+    loadTransportDictionary();
+    loadStatusDictionary();
+    loadHireStatusDictionary();
+  }, []);
+
+  useEffect(() => {
+    setColumnOrder(prevOrder => {
+      const newOrder = [...prevOrder];
+      visibleColumns.forEach(column => {
+        if (!newOrder.includes(column)) {
+          newOrder.push(column);
+        }
+      });
+      return newOrder.filter(column => visibleColumns.includes(column));
+    });
+  }, [visibleColumns]);
+
+  useEffect(() => {
+    if (searchTerm.length >= 3) {
+      const filtered = drivers.filter(driver => driver.name.toLowerCase().includes(searchTerm.toLowerCase()) || driver.email.toLowerCase().includes(searchTerm.toLowerCase()) || driver.phone.includes(searchTerm) || driver.id.toString().includes(searchTerm));
+      setFilteredDrivers(filtered);
+    } else {
+      setFilteredDrivers(drivers);
+    }
+  }, [searchTerm, drivers]);
+
+  useEffect(() => {
+    setFilteredDrivers(drivers);
+  }, [drivers]);
+
+  useEffect(() => {
+    const randomDrivers = drivers
+      .filter(() => Math.random() < 0.3)
+      .map(driver => driver.id);
+    
+    setDriversWithMessages(randomDrivers);
+  }, [drivers]);
+
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
   };
+
   const handlePageSizeChange = (size: number) => {
     setPageSize(size);
     setCurrentPage(1);
   };
+
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -483,6 +535,7 @@ const DriversPage = () => {
     }
     return pages;
   };
+
   const handleHireStatusChange = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => {
       return prevDrivers.map(driver => {
@@ -497,39 +550,17 @@ const DriversPage = () => {
       });
     });
   };
-  useEffect(() => {
-    loadTransportDictionary();
-    loadStatusDictionary();
-    loadHireStatusDictionary();
-  }, []);
-  useEffect(() => {
-    setColumnOrder(prevOrder => {
-      const newOrder = [...prevOrder];
-      visibleColumns.forEach(column => {
-        if (!newOrder.includes(column)) {
-          newOrder.push(column);
-        }
-      });
-      return newOrder.filter(column => visibleColumns.includes(column));
-    });
-  }, [visibleColumns]);
-  const getRandomHireStatus = (): string => {
-    const hireStatusKeys = Object.keys(hireStatusDictionary);
-    if (hireStatusKeys.length === 0) return "pending";
-    const randomKey = hireStatusKeys[Math.floor(Math.random() * hireStatusKeys.length)];
-    return randomKey;
+
+  const handleCourierClick = (name: string) => {
+    setSelectedCourier(name);
+    setChatOpen(true);
   };
-  useEffect(() => {
-    if (searchTerm.length >= 3) {
-      const filtered = drivers.filter(driver => driver.name.toLowerCase().includes(searchTerm.toLowerCase()) || driver.email.toLowerCase().includes(searchTerm.toLowerCase()) || driver.phone.includes(searchTerm) || driver.id.toString().includes(searchTerm));
-      setFilteredDrivers(filtered);
-    } else {
-      setFilteredDrivers(drivers);
-    }
-  }, [searchTerm, drivers]);
-  useEffect(() => {
-    setFilteredDrivers(drivers);
-  }, [drivers]);
+
+  const handleChatClose = () => {
+    setChatOpen(false);
+    setSelectedCourier(null);
+  };
+
   const loadTransportDictionary = () => {
     const transportDict = getDictionary("2");
     if (transportDict && transportDict.items.length > 0) {
@@ -553,6 +584,7 @@ const DriversPage = () => {
     }
     setIsLoading(false);
   };
+
   const loadStatusDictionary = () => {
     const statusDict = getDictionary("6");
     if (statusDict && statusDict.items.length > 0) {
@@ -582,6 +614,7 @@ const DriversPage = () => {
       console.log("Status dictionary not found or empty for ID: 6");
     }
   };
+
   const loadHireStatusDictionary = () => {
     const hireStatusDict = getDictionary("1455");
     if (hireStatusDict && hireStatusDict.items.length > 0) {
@@ -604,6 +637,7 @@ const DriversPage = () => {
       });
     }
   };
+
   const getRandomTransportIcon = () => {
     const transportTypes: TransportType[] = ['helper', 'car', 'suv', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
     const randomIndex = Math.floor(Math.random() * transportTypes.length);
@@ -612,6 +646,7 @@ const DriversPage = () => {
         <TransportIcon transportType={randomType} size={14} className="h-[14px] w-[14px]" />
       </div>;
   };
+
   const handleDragStart = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
     setDraggedColumn(columnId);
     e.dataTransfer.setData('text/plain', columnId);
@@ -619,12 +654,14 @@ const DriversPage = () => {
     dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     e.dataTransfer.setDragImage(dragImage, 0, 0);
   };
+
   const handleDragOver = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
     e.preventDefault();
     if (draggedColumn && draggedColumn !== columnId) {
       setDragOverColumn(columnId);
     }
   };
+
   const handleDrop = (e: React.DragEvent<HTMLTableCellElement>, targetColumnId: string) => {
     e.preventDefault();
     if (!draggedColumn || draggedColumn === targetColumnId) {
@@ -643,19 +680,24 @@ const DriversPage = () => {
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
+
   const handleDragEnd = () => {
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
+
   const getSortedVisibleColumns = () => {
     return visibleColumns.filter(column => columnOrder.includes(column)).sort((a, b) => columnOrder.indexOf(a) - columnOrder.indexOf(b));
   };
+
   const sortedColumns = getSortedVisibleColumns();
+
   const renderRating = (rating: number) => {
     return <div className="flex items-center">
         <span className="font-medium">{rating.toFixed(1)}</span>
       </div>;
   };
+
   const renderStripeStatus = (status: StripeStatus) => {
     let badgeVariant: "default" | "secondary" | "destructive" | "outline" | "success" | "warning" = "default";
     switch (status) {
@@ -673,6 +715,7 @@ const DriversPage = () => {
         {status}
       </Badge>;
   };
+
   const renderStatus = (statusId: string) => {
     const statusText = statusDictionary[statusId] || `Unknown (${statusId})`;
     const statusColorClass = statusColors[statusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
@@ -680,6 +723,7 @@ const DriversPage = () => {
         {statusText}
       </div>;
   };
+
   const renderHireStatus = (statusId: string, driverId: number) => {
     if (Object.keys(hireStatusDictionary).length === 0) {
       return <div className="text-sm text-muted-foreground">Loading...</div>;
@@ -697,7 +741,9 @@ const DriversPage = () => {
         </DropdownMenuContent>
       </DropdownMenu>;
   };
-  return <Layout showFooter={false}>
+
+  return (
+    <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
         <div className="flex-1 overflow-auto">
           <div className="p-6 space-y-4">
@@ -725,48 +771,84 @@ const DriversPage = () => {
                   <TableHeader>
                     <TableRow>
                       {sortedColumns.map(columnId => {
-                      const column = availableColumns.find(col => col.id === columnId);
-                      if (!column) return null;
-                      return <TableHead key={columnId} draggable={true} dragOver={dragOverColumn === columnId} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}>
+                        const column = availableColumns.find(col => col.id === columnId);
+                        if (!column) return null;
+                        return <TableHead key={columnId} draggable={true} dragOver={dragOverColumn === columnId} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}>
                             <div className="flex items-center gap-1 overflow-hidden">
                               <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
                               <span className="truncate">{column.label}</span>
                             </div>
                           </TableHead>;
-                    })}
+                      })}
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {currentItems.map(driver => <TableRow key={driver.id}>
+                    {currentItems.map(driver => (
+                      <TableRow key={driver.id}>
                         {sortedColumns.includes("id") && <TableCell className="font-sans">{driver.id}</TableCell>}
-                        {sortedColumns.includes("name") && <TableCell>{driver.name}</TableCell>}
+                        {sortedColumns.includes("name") && (
+                          <TableCell>
+                            <button 
+                              className="hover:underline flex items-center gap-2" 
+                              onClick={() => handleCourierClick(driver.name)}
+                            >
+                              {driver.name}
+                              {driversWithMessages.includes(driver.id) && (
+                                <Circle 
+                                  className="text-red-500 fill-red-500" 
+                                  size={8} 
+                                  strokeWidth={0}
+                                />
+                              )}
+                            </button>
+                          </TableCell>
+                        )}
                         {sortedColumns.includes("email") && <TableCell>{driver.email}</TableCell>}
                         {sortedColumns.includes("phone") && <TableCell>{driver.phone}</TableCell>}
-                        {sortedColumns.includes("transport") && <TableCell>
+                        {sortedColumns.includes("transport") && (
+                          <TableCell>
                             <div className="flex items-center gap-2">
-                              {driver.transports.map(transportId => <div key={transportId} className="flex items-center justify-center p-2 rounded-md bg-muted" title={transportTypes[transportId] || `Transport ID: ${transportId}`}>
+                              {driver.transports.map(transportId => (
+                                <div 
+                                  key={transportId} 
+                                  className="flex items-center justify-center p-2 rounded-md bg-muted" 
+                                  title={transportTypes[transportId] || `Transport ID: ${transportId}`}
+                                >
                                   <TransportIcon transportType={transportId as TransportType} size={14} className="h-[14px] w-[14px]" />
-                                </div>)}
+                                </div>
+                              ))}
                             </div>
-                          </TableCell>}
-                        {sortedColumns.includes("rating") && <TableCell>
+                          </TableCell>
+                        )}
+                        {sortedColumns.includes("rating") && (
+                          <TableCell>
                             {renderRating(driver.rating)}
-                          </TableCell>}
-                        {sortedColumns.includes("status") && <TableCell>
+                          </TableCell>
+                        )}
+                        {sortedColumns.includes("status") && (
+                          <TableCell>
                             {renderStatus(driver.status)}
-                          </TableCell>}
-                        {sortedColumns.includes("hireStatus") && <TableCell>
+                          </TableCell>
+                        )}
+                        {sortedColumns.includes("hireStatus") && (
+                          <TableCell>
                             {renderHireStatus(driver.hireStatus, driver.id)}
-                          </TableCell>}
-                        {sortedColumns.includes("stripe") && <TableCell>
+                          </TableCell>
+                        )}
+                        {sortedColumns.includes("stripe") && (
+                          <TableCell>
                             {renderStripeStatus(driver.stripe)}
-                          </TableCell>}
-                        {sortedColumns.includes("actions") && <TableCell className="text-right">
+                          </TableCell>
+                        )}
+                        {sortedColumns.includes("actions") && (
+                          <TableCell className="text-right">
                             <Button variant="ghost" size="sm">
                               Edit
                             </Button>
-                          </TableCell>}
-                      </TableRow>)}
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -825,6 +907,19 @@ const DriversPage = () => {
           <PaginationSize sizes={pageSizeOptions} pageSize={pageSize} onChange={handlePageSizeChange} />
         </div>
       </div>
-    </Layout>;
+
+      {selectedCourier && (
+        <CourierChat 
+          open={chatOpen} 
+          onClose={handleChatClose} 
+          courierName={selectedCourier}
+          hasUnreadMessages={driversWithMessages.some(id => 
+            currentItems.find(driver => driver.id === id)?.name === selectedCourier
+          )}
+        />
+      )}
+    </Layout>
+  );
 };
+
 export default DriversPage;
