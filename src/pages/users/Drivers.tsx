@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
-import { Layout } from "@/components/layout/Layout";
+import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus, Search, Circle } from "lucide-react";
+import { GripVertical, Plus, Search } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
@@ -825,3 +826,98 @@ const DriversPage = () => {
                           <TableCell>
                             {renderRating(driver.rating)}
                           </TableCell>
+                        )}
+                        {sortedColumns.includes("status") && (
+                          <TableCell>
+                            {renderStatus(driver.status)}
+                          </TableCell>
+                        )}
+                        {sortedColumns.includes("stripe") && (
+                          <TableCell>
+                            {renderStripeStatus(driver.stripe)}
+                          </TableCell>
+                        )}
+                        {sortedColumns.includes("hireStatus") && (
+                          <TableCell>
+                            {renderHireStatus(driver.hireStatus, driver.id)}
+                          </TableCell>
+                        )}
+                        {sortedColumns.includes("actions") && (
+                          <TableCell>
+                            <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
+                              View
+                            </Button>
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </ScrollArea>
+            
+            {totalPages > 0 && (
+              <div className="mt-4">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious 
+                        onClick={() => handlePageChange(currentPage - 1)} 
+                        className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                      />
+                    </PaginationItem>
+                    
+                    {getPageNumbers().map((page, index) => (
+                      <PaginationItem key={index}>
+                        {page === -1 || page === -2 ? (
+                          <PaginationEllipsis />
+                        ) : (
+                          <PaginationLink 
+                            isActive={page === currentPage}
+                            onClick={() => handlePageChange(page as number)}
+                          >
+                            {page}
+                          </PaginationLink>
+                        )}
+                      </PaginationItem>
+                    ))}
+                    
+                    <PaginationItem>
+                      <PaginationNext 
+                        onClick={() => handlePageChange(currentPage + 1)} 
+                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+                
+                <div className="flex justify-between items-center mt-4">
+                  <PaginationInfo 
+                    total={totalItems} 
+                    pageSize={pageSize} 
+                    currentPage={currentPage} 
+                  />
+                  
+                  <PaginationSize 
+                    sizes={pageSizeOptions} 
+                    pageSize={pageSize} 
+                    onChange={handlePageSizeChange} 
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      
+      {chatOpen && selectedCourier && (
+        <CourierChat
+          courierName={selectedCourier}
+          onClose={handleChatClose}
+        />
+      )}
+    </Layout>
+  );
+};
+
+export default DriversPage;

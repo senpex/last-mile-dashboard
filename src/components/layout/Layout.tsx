@@ -7,7 +7,7 @@ interface LayoutProps {
   showFooter?: boolean;
 }
 
-export const Layout = ({ children, showFooter = true }: LayoutProps) => {
+const Layout = ({ children, showFooter = true }: LayoutProps) => {
   const [collapsed, setCollapsed] = useState(false);
   
   return (
@@ -35,3 +35,6 @@ export const Layout = ({ children, showFooter = true }: LayoutProps) => {
     </div>
   );
 };
+
+export { Layout };
+export default Layout;
