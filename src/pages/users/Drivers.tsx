@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus, Search, MessageCircle, ChevronDown } from "lucide-react";
+import { GripVertical, Plus, Search, MessageCircle, ChevronDown, Check, X, Clock } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
@@ -14,6 +14,8 @@ import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis, PaginationInfo, PaginationSize } from "@/components/ui/pagination";
 import CourierChat from '@/components/chat/CourierChat';
+
+type StripeStatus = 'verified' | 'unverified' | 'pending';
 
 const getRandomPhone = (): string => {
   const areaCode = Math.floor(Math.random() * 900) + 100;
@@ -44,6 +46,12 @@ const generateRandomHireStatus = (): string => {
   const hireStatuses = ['hired', 'left_vm', 'contact_again', 'not_interested', 'blacklist', 'out_of_service'];
   const randomIndex = Math.floor(Math.random() * hireStatuses.length);
   return hireStatuses[randomIndex];
+};
+
+const generateRandomStripeStatus = (): StripeStatus => {
+  const statuses: StripeStatus[] = ['verified', 'unverified', 'pending'];
+  const randomIndex = Math.floor(Math.random() * 3);
+  return statuses[randomIndex];
 };
 
 const DriversPage = () => {
@@ -78,7 +86,8 @@ const DriversPage = () => {
     status: "online",
     hireStatus: "hired",
     transports: ["1", "3", "pickup_truck", "9ft_cargo_van"],
-    rating: 4.8
+    rating: 4.8,
+    stripeStatus: 'verified' as StripeStatus
   }, {
     id: 6543,
     name: "Jane Smith",
@@ -87,7 +96,8 @@ const DriversPage = () => {
     status: "offline",
     hireStatus: "contact_again",
     transports: ["2"],
-    rating: 3.5
+    rating: 3.5,
+    stripeStatus: 'unverified' as StripeStatus
   }, {
     id: 7654,
     name: "Mike Johnson",
@@ -96,7 +106,8 @@ const DriversPage = () => {
     status: "busy",
     hireStatus: "blacklist",
     transports: ["4", "5"],
-    rating: 5.0
+    rating: 5.0,
+    stripeStatus: 'pending' as StripeStatus
   }, {
     id: 8001,
     name: "Alice Williams",
@@ -105,7 +116,8 @@ const DriversPage = () => {
     status: "online",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8002,
     name: "Robert Miller",
@@ -114,7 +126,8 @@ const DriversPage = () => {
     status: "busy",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8003,
     name: "Emily Davis",
@@ -123,7 +136,8 @@ const DriversPage = () => {
     status: "offline",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8004,
     name: "James Wilson",
@@ -132,7 +146,8 @@ const DriversPage = () => {
     status: "online",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8005,
     name: "Sarah Taylor",
@@ -141,7 +156,8 @@ const DriversPage = () => {
     status: "busy",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8006,
     name: "Daniel Anderson",
@@ -150,7 +166,8 @@ const DriversPage = () => {
     status: "offline",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8007,
     name: "Olivia Thomas",
@@ -159,7 +176,8 @@ const DriversPage = () => {
     status: "online",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8008,
     name: "Matthew Jackson",
@@ -168,7 +186,8 @@ const DriversPage = () => {
     status: "busy",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8009,
     name: "Sophia White",
@@ -177,7 +196,8 @@ const DriversPage = () => {
     status: "offline",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8010,
     name: "David Harris",
@@ -186,7 +206,8 @@ const DriversPage = () => {
     status: "online",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8011,
     name: "Emma Martin",
@@ -195,7 +216,8 @@ const DriversPage = () => {
     status: "busy",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8012,
     name: "Andrew Thompson",
@@ -204,7 +226,8 @@ const DriversPage = () => {
     status: "offline",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8013,
     name: "Isabella Garcia",
@@ -213,7 +236,8 @@ const DriversPage = () => {
     status: "online",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8014,
     name: "Joshua Martinez",
@@ -222,7 +246,8 @@ const DriversPage = () => {
     status: "busy",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8015,
     name: "Charlotte Robinson",
@@ -231,7 +256,8 @@ const DriversPage = () => {
     status: "offline",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8016,
     name: "Christopher Clark",
@@ -240,7 +266,8 @@ const DriversPage = () => {
     status: "online",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8017,
     name: "Amelia Rodriguez",
@@ -249,7 +276,8 @@ const DriversPage = () => {
     status: "busy",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8018,
     name: "Joseph Lewis",
@@ -258,7 +286,8 @@ const DriversPage = () => {
     status: "offline",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8019,
     name: "Mia Walker",
@@ -267,7 +296,8 @@ const DriversPage = () => {
     status: "online",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8020,
     name: "Ethan Hall",
@@ -276,7 +306,8 @@ const DriversPage = () => {
     status: "busy",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8021,
     name: "Harper Young",
@@ -285,7 +316,8 @@ const DriversPage = () => {
     status: "offline",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8022,
     name: "Alexander Allen",
@@ -294,7 +326,8 @@ const DriversPage = () => {
     status: "online",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8023,
     name: "Abigail King",
@@ -303,7 +336,8 @@ const DriversPage = () => {
     status: "busy",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8024,
     name: "Benjamin Wright",
@@ -312,7 +346,8 @@ const DriversPage = () => {
     status: "offline",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8025,
     name: "Sofia Scott",
@@ -321,7 +356,8 @@ const DriversPage = () => {
     status: "online",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8026,
     name: "William Green",
@@ -330,7 +366,8 @@ const DriversPage = () => {
     status: "busy",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8027,
     name: "Elizabeth Baker",
@@ -339,7 +376,8 @@ const DriversPage = () => {
     status: "offline",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8028,
     name: "Michael Adams",
@@ -348,7 +386,8 @@ const DriversPage = () => {
     status: "online",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8029,
     name: "Camila Nelson",
@@ -357,7 +396,8 @@ const DriversPage = () => {
     status: "busy",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }, {
     id: 8030,
     name: "Jacob Hill",
@@ -366,7 +406,8 @@ const DriversPage = () => {
     status: "offline",
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
-    rating: generateRandomRating()
+    rating: generateRandomRating(),
+    stripeStatus: generateRandomStripeStatus()
   }]);
 
   const availableColumns: ColumnOption[] = [{
@@ -400,6 +441,10 @@ const DriversPage = () => {
   }, {
     id: "hireStatus",
     label: "Hire Status",
+    default: true
+  }, {
+    id: "stripeStatus",
+    label: "Stripe Status",
     default: true
   }, {
     id: "actions",
@@ -705,6 +750,37 @@ const DriversPage = () => {
     );
   };
 
+  const renderStripeStatus = (status: StripeStatus) => {
+    let bgColor = '';
+    let icon = null;
+    let text = '';
+
+    switch (status) {
+      case 'verified':
+        bgColor = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+        icon = <Check className="h-3.5 w-3.5 mr-1" />;
+        text = 'Verified';
+        break;
+      case 'unverified':
+        bgColor = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+        icon = <X className="h-3.5 w-3.5 mr-1" />;
+        text = 'Unverified';
+        break;
+      case 'pending':
+        bgColor = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+        icon = <Clock className="h-3.5 w-3.5 mr-1" />;
+        text = 'Pending';
+        break;
+    }
+
+    return (
+      <div className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${bgColor}`}>
+        {icon}
+        {text}
+      </div>
+    );
+  };
+
   return <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
         <div className="px-6 py-6 flex-1 overflow-auto">
@@ -767,6 +843,9 @@ const DriversPage = () => {
                             </TableCell>}
                           {sortedColumns.includes("hireStatus") && <TableCell>
                               {renderHireStatus(driver.hireStatus, driver.id)}
+                            </TableCell>}
+                          {sortedColumns.includes("stripeStatus") && <TableCell>
+                              {renderStripeStatus(driver.stripeStatus)}
                             </TableCell>}
                           {sortedColumns.includes("actions") && <TableCell>
                               <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
