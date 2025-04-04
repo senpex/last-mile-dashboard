@@ -358,7 +358,7 @@ const Index = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {currentItems.length > 0 ? (
+                    {currentItems && currentItems.length > 0 ? (
                       currentItems.map((delivery) => (
                         <TableRow key={delivery.id}>
                           {sortedColumns.map(columnId => {
@@ -422,7 +422,7 @@ const Index = () => {
                                         >
                                           {delivery.courier}
                                         </Button>
-                                        {couriersWithMessages.includes(delivery.courier) && (
+                                        {couriersWithMessages && couriersWithMessages.includes(delivery.courier) && (
                                           <Circle 
                                             className="text-red-500 fill-red-500" 
                                             size={14} 
@@ -493,7 +493,7 @@ const Index = () => {
                   />
                 </PaginationItem>
                 
-                {getPageNumbers().map((page, i) => (
+                {getPageNumbers() && getPageNumbers().map((page, i) => (
                   <PaginationItem key={i}>
                     {page === -1 || page === -2 ? (
                       <PaginationEllipsis />
@@ -553,7 +553,7 @@ const Index = () => {
         open={isChatOpen}
         onClose={() => setIsChatOpen(false)}
         courierName={selectedCourier}
-        hasUnreadMessages={couriersWithMessages.includes(selectedCourier)}
+        hasUnreadMessages={couriersWithMessages && couriersWithMessages.includes(selectedCourier)}
       />
     </ThemeProvider>
   );
