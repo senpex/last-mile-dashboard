@@ -23,13 +23,26 @@ const Layout = ({ children, showFooter = true }: LayoutProps) => {
         }}
       >
         <div 
-          className="zoom-content w-full h-full"
+          className="zoom-content w-full h-full flex flex-col"
           style={{
             transformOrigin: "top left",
             transform: `scale(var(--zoom-level, 1))`
           }}
         >
           {children}
+          {showFooter && (
+            <footer className="bg-muted/50 px-6 py-4 mt-auto border-t">
+              <div className="container mx-auto flex justify-between items-center text-sm text-muted-foreground">
+                <div>
+                  © {new Date().getFullYear()} Delivery Management Platform
+                </div>
+                <div className="space-x-4">
+                  <a href="/terms" className="hover:underline">Terms of Service</a>
+                  <a href="/privacy" className="hover:underline">Privacy Policy</a>
+                </div>
+              </div>
+            </footer>
+          )}
         </div>
       </main>
     </div>
