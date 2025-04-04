@@ -1069,9 +1069,10 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    setFilteredDeliveries(deliveries);
+    // Apply initial filtering based on the active view
+    applyFilters(deliveries, debouncedSearchTerm, activeView);
     console.log("Initial deliveries loaded:", deliveries.length);
-  }, []);
+  }, [activeView]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -1087,10 +1088,19 @@ const Index = () => {
   }, [searchTerm]);
 
   useEffect(() => {
-    if (debouncedSearchTerm.length >= 4) {
-      console.log("Performing search for:", debouncedSearchTerm);
+    // Apply filtering when search term changes
+    applyFilters(deliveries, debouncedSearchTerm, activeView);
+  }, [debouncedSearchTerm, activeView]);
 
-      const searchResults = deliveries.filter(delivery => {
+  // Function to apply both search and tab filters
+  const applyFilters = (items: any[], searchTerm: string, activeTab: string) => {
+    let results = [...items];
+    
+    // First filter by search term if present
+    if (searchTerm.length >= 4) {
+      console.log("Performing search for:", searchTerm);
+
+      results = results.filter(delivery => {
         const searchableFields = [
           delivery.packageId,
           delivery.orderName,
@@ -1110,17 +1120,24 @@ const Index = () => {
         ];
 
         return searchableFields.some(field => 
-          field && field.toString().toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+          field && field.toString().toLowerCase().includes(searchTerm.toLowerCase())
         );
       });
-
-      console.log(`Found ${searchResults.length} results for "${debouncedSearchTerm}"`);
-      setFilteredDeliveries(searchResults);
-      setCurrentPage(1); // Reset to first page when search results change
-    } else if (debouncedSearchTerm.length === 0) {
-      setFilteredDeliveries(deliveries);
     }
-  }, [debouncedSearchTerm, deliveries]);
+    
+    // Then filter by the active tab
+    if (activeTab === "attention") {
+      // Only show items with "Canceled By Customer" or "Cancelled By Admin" status for Attention Required tab
+      results = results.filter(delivery => 
+        delivery.status === "Canceled By Customer" || 
+        delivery.status === "Cancelled By Admin"
+      );
+      console.log(`Filtered to ${results.length} cancelled deliveries for Attention Required tab`);
+    }
+    
+    setFilteredDeliveries(results);
+    setCurrentPage(1); // Reset to first page when filters change
+  };
 
   // Pagination calculations
   const totalItems = filteredDeliveries.length;
@@ -1137,6 +1154,12 @@ const Index = () => {
   const handlePageSizeChange = (size: number) => {
     setPageSize(size);
     setCurrentPage(1); // Reset to first page when page size changes
+  };
+
+  // Handle tab change
+  const handleViewChange = (view: string) => {
+    setActiveView(view);
+    // The filtering will be applied by the useEffect that watches activeView
   };
 
   const getPageNumbers = () => {
@@ -1370,7 +1393,7 @@ const Index = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <h2 className="text-sm font-semibold text-black mr-2">Views:</h2>
-                  <Tabs value={activeView} onValueChange={setActiveView} className="w-auto">
+                  <Tabs value={activeView} onValueChange={handleViewChange} className="w-auto">
                     <TabsList className="inline-flex h-8 bg-muted space-x-1">
                       <TabsTrigger 
                         value="main" 
@@ -1406,7 +1429,6 @@ const Index = () => {
                           <TableHead 
                             key={columnId}
                             draggable={true}
-                            dragOver={dragOverColumn === columnId}
                             onDragStart={(e) => handleDragStart(e, columnId)}
                             onDragOver={(e) => handleDragOver(e, columnId)}
                             onDragEnd={handleDragEnd}
