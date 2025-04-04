@@ -34,7 +34,6 @@ export const useDeliveries = () => {
   const [statusDictionary, setStatusDictionary] = useState<Dictionary | null>(null);
 
   const deliveries: Delivery[] = [
-    // Original 5 records
     {
       id: 1,
       packageId: "WMT-10042501",
@@ -733,4 +732,25 @@ export const useDeliveries = () => {
         address: "987 SW Paddington Ave, Bentonville, AR 72712, US"
       },
       price: "$52.95",
-      tip
+      tip: "$10.00",
+      fees: "$3.99",
+      courier: "Christopher Allen",
+      organization: "Taziki's Mediterranean Cafe",
+      distance: "8.9 mi"
+    }
+  ];
+
+  return {
+    filteredDeliveries,
+    setFilteredDeliveries,
+    currentPage,
+    setCurrentPage,
+    pageSize,
+    setPageSize,
+    searchTerm,
+    setSearchTerm,
+    debouncedSearchTerm,
+    setDebouncedSearchTerm,
+    statusDictionary
+  };
+};
