@@ -854,57 +854,6 @@ const DriversPage = () => {
                 </Table>
               </TableContainer>
             </ScrollArea>
-            
-            {totalPages > 0 && (
-              <div className="mt-4">
-                <Pagination>
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious 
-                        onClick={() => handlePageChange(currentPage - 1)} 
-                        className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-                      />
-                    </PaginationItem>
-                    
-                    {getPageNumbers().map((page, index) => (
-                      <PaginationItem key={index}>
-                        {page === -1 || page === -2 ? (
-                          <PaginationEllipsis />
-                        ) : (
-                          <PaginationLink 
-                            isActive={page === currentPage}
-                            onClick={() => handlePageChange(page as number)}
-                          >
-                            {page}
-                          </PaginationLink>
-                        )}
-                      </PaginationItem>
-                    ))}
-                    
-                    <PaginationItem>
-                      <PaginationNext 
-                        onClick={() => handlePageChange(currentPage + 1)} 
-                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-                      />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
-                
-                <div className="flex justify-between items-center mt-4">
-                  <PaginationInfo 
-                    total={totalItems} 
-                    pageSize={pageSize} 
-                    currentPage={currentPage} 
-                  />
-                  
-                  <PaginationSize 
-                    sizes={pageSizeOptions} 
-                    pageSize={pageSize} 
-                    onChange={handlePageSizeChange} 
-                  />
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>
