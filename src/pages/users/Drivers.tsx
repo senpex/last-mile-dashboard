@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   Select,
@@ -142,7 +141,7 @@ const Drivers = () => {
                 <th className="text-left p-4 font-medium text-muted-foreground" style={{ width: '150px' }}>Phone</th>
                 <th className="text-left p-4 font-medium text-muted-foreground" style={{ width: '100px' }}>Status</th>
                 <th className="text-left p-4 font-medium text-muted-foreground" style={{ width: '150px' }}>Location</th>
-                <th className="text-left p-4 font-medium text-muted-foreground" style={{ width: '180px' }}>Organization</th>
+                <th className="text-left p-4 font-medium text-muted-foreground" style={{ width: '200px' }}>Organization</th>
                 <th className="text-right p-4 font-medium text-muted-foreground" style={{ width: '80px' }}>Actions</th>
               </tr>
             </thead>
@@ -174,12 +173,12 @@ const Drivers = () => {
                   </td>
                   <td className="p-4">
                     <div className="flex items-center justify-between">
-                      <span className="truncate">Walmart Inc.</span>
+                      <span className="truncate flex-grow">Walmart Inc.</span>
                       <button 
                         onClick={() => handleChatOpen(driver.name)}
-                        className="flex-shrink-0 ml-2 text-blue-500 hover:text-blue-700"
+                        className="flex-shrink-0 text-blue-500 hover:text-blue-700"
                       >
-                        <MessageCircle className="h-4 w-4" style={{ minWidth: '16px' }} />
+                        <MessageCircle className="h-5 w-5" />
                       </button>
                     </div>
                   </td>
