@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -84,7 +83,6 @@ const Index = () => {
         name: "Saranya Natarajan",
         address: "1600 Emmerson St, Centerton, AR 72719, US"
       },
-      customerName: "Saranya Natarajan",
       price: "$33.00",
       tip: "$0.00",
       fees: "",
@@ -107,7 +105,6 @@ const Index = () => {
         name: "Roma Solis",
         address: "1051 Little Osage Ave, Bentonville, AR 72713, US"
       },
-      customerName: "Roma Solis",
       price: "$33.00",
       tip: "$0.00",
       fees: "",
@@ -130,7 +127,6 @@ const Index = () => {
         name: "Juan Galarraga",
         address: "3511 SW Awakening Ave, Bentonville, AR 72713, US"
       },
-      customerName: "Juan Galarraga",
       price: "$25.00",
       tip: "$0.00",
       fees: "",
@@ -1213,7 +1209,6 @@ const Index = () => {
     { id: "status", label: "Status", default: true },
     { id: "packageId", label: "ID", default: true },
     { id: "orderName", label: "Order name", default: true },
-    { id: "customerName", label: "Customer Name", default: true },
     { id: "pickupTime", label: "Pickup Time", default: true },
     { id: "pickupLocation", label: "Pickup Location", default: true },
     { id: "dropoffTime", label: "Dropoff Time", default: true },
@@ -1483,8 +1478,6 @@ const Index = () => {
                                 );
                               case "orderName":
                                 return <TableCell key={columnId}>{delivery.orderName}</TableCell>;
-                              case "customerName":
-                                return <TableCell key={columnId}>{delivery.customerName || "-"}</TableCell>;
                               case "pickupTime":
                                 return <TableCell key={columnId}>{delivery.pickupTime}</TableCell>;
                               case "pickupLocation":
