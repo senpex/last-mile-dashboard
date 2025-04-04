@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus, Search } from "lucide-react";
+import { GripVertical, Plus, Search, MessageCircle } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
@@ -14,7 +14,6 @@ import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis, PaginationInfo, PaginationSize } from "@/components/ui/pagination";
 import CourierChat from '@/components/chat/CourierChat';
-import { MessageCircle } from 'lucide-react';
 
 type StripeStatus = 'Unverified' | 'Pending' | 'Verified';
 type HireStatus = string;
@@ -630,10 +629,12 @@ const DriversPage = () => {
     } else {
       console.log("Hire status dictionary not found or empty for ID: 1455");
       setHireStatusDictionary({
-        "active": "Active",
-        "pending": "Pending Review",
-        "rejected": "Rejected",
-        "suspended": "Suspended"
+        "hired": "Hired",
+        "left_vm": "Left VM",
+        "contact_again": "Contact Again",
+        "not_interested": "Not Interested",
+        "blacklist": "Blacklist",
+        "out_of_service": "Out of service"
       });
     }
   };
