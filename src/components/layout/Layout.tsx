@@ -36,7 +36,7 @@ const Layout = ({ children, showFooter = true }: LayoutProps) => {
                 <div>
                   © {new Date().getFullYear()} Delivery Management Platform
                 </div>
-                <div className="space-x-4">
+                <div className="flex items-center space-x-4">
                   <a href="/terms" className="hover:underline">Terms of Service</a>
                   <a href="/privacy" className="hover:underline">Privacy Policy</a>
                 </div>
