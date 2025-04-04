@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -30,7 +31,7 @@ import {
   PaginationSize
 } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Columns, Filter, GripVertical, Search } from "lucide-react";
+import { Clock, Columns, Filter, GripVertical, Search, Circle } from "lucide-react";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { DateRange } from "react-day-picker";
