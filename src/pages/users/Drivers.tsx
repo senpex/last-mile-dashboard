@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus, Search, MessageCircle } from "lucide-react";
+import { GripVertical, Plus, Search, MessageCircle, ChevronDown } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
@@ -775,114 +775,4 @@ const DriversPage = () => {
                               {renderHireStatus(driver.hireStatus, driver.id)}
                             </TableCell>}
                           {sortedColumns.includes("actions") && <TableCell>
-                              <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
-                                View
-                              </Button>
-                            </TableCell>}
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </ScrollArea>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t mt-auto w-full">
-          <div className="px-6 py-4 flex justify-between items-center">
-            <PaginationInfo 
-              total={totalItems} 
-              pageSize={pageSize} 
-              currentPage={currentPage} 
-            />
-            
-            <Pagination className="flex-1 flex justify-center">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationLink
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlePageChange(1);
-                    }}
-                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-                    aria-disabled={currentPage === 1}
-                  >
-                    <span className="sr-only">First page</span>
-                    ⟪
-                  </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationPrevious 
-                    href="#" 
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlePageChange(currentPage - 1);
-                    }}
-                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-                    aria-disabled={currentPage === 1}
-                  />
-                </PaginationItem>
-                
-                {getPageNumbers().map((page, i) => (
-                  <PaginationItem key={i}>
-                    {page === -1 || page === -2 ? (
-                      <PaginationEllipsis />
-                    ) : (
-                      <PaginationLink 
-                        href="#" 
-                        isActive={page === currentPage}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handlePageChange(page);
-                        }}
-                      >
-                        {page}
-                      </PaginationLink>
-                    )}
-                  </PaginationItem>
-                ))}
-                
-                <PaginationItem>
-                  <PaginationNext 
-                    href="#" 
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlePageChange(currentPage + 1);
-                    }}
-                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-                    aria-disabled={currentPage === totalPages}
-                  />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlePageChange(totalPages);
-                    }}
-                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-                    aria-disabled={currentPage === totalPages}
-                  >
-                    <span className="sr-only">Last page</span>
-                    ⟫
-                  </PaginationLink>
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-            
-            <PaginationSize
-              sizes={pageSizeOptions}
-              pageSize={pageSize}
-              onChange={handlePageSizeChange}
-            />
-          </div>
-        </div>
-      </div>
-      
-      {chatOpen && selectedCourier && <CourierChat open={chatOpen} courierName={selectedCourier} onClose={handleChatClose} hasUnreadMessages={false} />}
-    </Layout>;
-};
-
-export default DriversPage;
+                              <Button variant="outline" size="sm" className
