@@ -147,16 +147,16 @@ const Drivers = () => {
 
       <div className="rounded-md border">
         <ScrollArea>
-          <Table>
+          <Table className="table-fixed">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[100px]">Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Phone</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead className="w-[200px]">Name</TableHead>
+                <TableHead className="w-[200px]">Email</TableHead>
+                <TableHead className="w-[150px]">Phone</TableHead>
+                <TableHead className="w-[100px]">Status</TableHead>
                 <TableHead className="w-[150px]">Location</TableHead>
-                <TableHead className="w-[180px] min-w-[180px]">Organization</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead className="w-[180px]">Organization</TableHead>
+                <TableHead className="w-[100px] text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -168,10 +168,10 @@ const Drivers = () => {
                         <AvatarImage src={`https://i.pravatar.cc/150?img=${driver.id}`} />
                         <AvatarFallback>{driver.name.slice(0, 2)}</AvatarFallback>
                       </Avatar>
-                      {driver.name}
+                      <span className="truncate">{driver.name}</span>
                     </div>
                   </TableCell>
-                  <TableCell>{driver.email}</TableCell>
+                  <TableCell className="truncate">{driver.email}</TableCell>
                   <TableCell>{driver.phone}</TableCell>
                   <TableCell>
                     <Badge
@@ -180,11 +180,11 @@ const Drivers = () => {
                       {driver.status}
                     </Badge>
                   </TableCell>
-                  <TableCell>{driver.location}</TableCell>
-                  <TableCell className="w-[180px]">
-                    <div className="flex items-center space-x-1">
-                      <span className="truncate">Walmart Inc.</span>
-                      <MessageCircle size={16} className="flex-shrink-0 text-blue-500" />
+                  <TableCell className="truncate">{driver.location}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center space-x-1 w-full">
+                      <span className="truncate max-w-[140px]">Walmart Inc.</span>
+                      <MessageCircle size={16} className="flex-shrink-0 text-blue-500 ml-1" />
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
