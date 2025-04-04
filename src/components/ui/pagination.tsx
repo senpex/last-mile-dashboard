@@ -64,7 +64,7 @@ const PaginationSize = ({
   sizes,
   pageSize,
   onChange
-}: PaginationSizeProps) => <div className="flex items-center gap-2">
+}: PaginationSizeProps) => <div className="flex items-center gap-2 mx-[22px]">
     <span className="text-sm text-muted-foreground">Items per page</span>
     <Select value={pageSize.toString()} onValueChange={value => onChange(parseInt(value))}>
       <SelectTrigger className="h-8 w-16">
