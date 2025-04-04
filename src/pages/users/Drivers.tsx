@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
@@ -854,6 +855,54 @@ const DriversPage = () => {
                 </Table>
               </TableContainer>
             </ScrollArea>
+            
+            {/* Added pagination footer with same styling as the selected element */}
+            <div className="border-t bg-background px-4 py-3 flex justify-between items-center shadow-sm flex-shrink-0">
+              <Pagination className="w-full">
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious 
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                    />
+                  </PaginationItem>
+                  
+                  {getPageNumbers().map((pageNum, i) => (
+                    pageNum === -1 || pageNum === -2 ? (
+                      <PaginationItem key={`ellipsis-${i}`}>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    ) : (
+                      <PaginationItem key={pageNum}>
+                        <PaginationLink
+                          isActive={currentPage === pageNum}
+                          onClick={() => handlePageChange(pageNum)}
+                        >
+                          {pageNum}
+                        </PaginationLink>
+                      </PaginationItem>
+                    )
+                  ))}
+                  
+                  <PaginationItem>
+                    <PaginationNext 
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+                <PaginationSize
+                  sizes={pageSizeOptions}
+                  pageSize={pageSize}
+                  onChange={handlePageSizeChange}
+                />
+                <PaginationInfo
+                  total={totalItems}
+                  pageSize={pageSize}
+                  currentPage={currentPage}
+                />
+              </Pagination>
+            </div>
           </div>
         </div>
       </div>
@@ -871,3 +920,4 @@ const DriversPage = () => {
 };
 
 export default DriversPage;
+
