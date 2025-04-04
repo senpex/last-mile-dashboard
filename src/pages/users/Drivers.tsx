@@ -796,8 +796,8 @@ const DriversPage = () => {
                               {driver.name}
                               {driversWithMessages.includes(driver.id) && (
                                 <MessageCircle 
-                                  className="text-primary" 
-                                  size={12} 
+                                  className="text-red-500" 
+                                  size={36}
                                   strokeWidth={2}
                                 />
                               )}
@@ -825,102 +825,3 @@ const DriversPage = () => {
                           <TableCell>
                             {renderRating(driver.rating)}
                           </TableCell>
-                        )}
-                        {sortedColumns.includes("status") && (
-                          <TableCell>
-                            {renderStatus(driver.status)}
-                          </TableCell>
-                        )}
-                        {sortedColumns.includes("hireStatus") && (
-                          <TableCell>
-                            {renderHireStatus(driver.hireStatus, driver.id)}
-                          </TableCell>
-                        )}
-                        {sortedColumns.includes("stripe") && (
-                          <TableCell>
-                            {renderStripeStatus(driver.stripe)}
-                          </TableCell>
-                        )}
-                        {sortedColumns.includes("actions") && (
-                          <TableCell className="text-right">
-                            <Button variant="ghost" size="sm">
-                              Edit
-                            </Button>
-                          </TableCell>
-                        )}
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </ScrollArea>
-          </div>
-        </div>
-
-        <div className="border-t bg-background py-3 flex justify-between items-center shadow-sm w-full mt-auto mx-0">
-          <PaginationInfo total={totalItems} pageSize={pageSize} currentPage={currentPage} />
-          
-          <Pagination className="flex-1 flex justify-center">
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationLink href="#" onClick={e => {
-                e.preventDefault();
-                handlePageChange(1);
-              }} className={currentPage === 1 ? "pointer-events-none opacity-50" : ""} aria-disabled={currentPage === 1}>
-                  <span className="sr-only">First page</span>
-                  ⟪
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationPrevious href="#" onClick={e => {
-                e.preventDefault();
-                handlePageChange(currentPage - 1);
-              }} className={currentPage === 1 ? "pointer-events-none opacity-50" : ""} aria-disabled={currentPage === 1} />
-              </PaginationItem>
-              
-              {getPageNumbers().map((page, i) => <PaginationItem key={i}>
-                  {page === -1 || page === -2 ? <PaginationEllipsis /> : <PaginationLink href="#" isActive={page === currentPage} onClick={e => {
-                e.preventDefault();
-                handlePageChange(page);
-              }}>
-                      {page}
-                    </PaginationLink>}
-                </PaginationItem>)}
-              
-              <PaginationItem>
-                <PaginationNext href="#" onClick={e => {
-                e.preventDefault();
-                handlePageChange(currentPage + 1);
-              }} className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""} aria-disabled={currentPage === totalPages} />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#" onClick={e => {
-                e.preventDefault();
-                handlePageChange(totalPages);
-              }} className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""} aria-disabled={currentPage === totalPages}>
-                  <span className="sr-only">Last page</span>
-                  ⟫
-                </PaginationLink>
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-          
-          <PaginationSize sizes={pageSizeOptions} pageSize={pageSize} onChange={handlePageSizeChange} />
-        </div>
-      </div>
-
-      {selectedCourier && (
-        <CourierChat 
-          open={chatOpen} 
-          onClose={handleChatClose} 
-          courierName={selectedCourier}
-          hasUnreadMessages={driversWithMessages.some(id => 
-            currentItems.find(driver => driver.id === id)?.name === selectedCourier
-          )}
-        />
-      )}
-    </Layout>
-  );
-};
-
-export default DriversPage;
