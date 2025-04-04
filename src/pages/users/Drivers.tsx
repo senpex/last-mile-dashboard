@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
@@ -798,7 +797,7 @@ const DriversPage = () => {
                               {driversWithMessages.includes(driver.id) && (
                                 <MessageCircle 
                                   className="text-red-500" 
-                                  size={36}
+                                  size={18}
                                   strokeWidth={2}
                                 />
                               )}
