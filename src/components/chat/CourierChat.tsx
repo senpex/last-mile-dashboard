@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { X, Send, Circle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -87,7 +86,7 @@ const CourierChat: React.FC<CourierChatProps> = ({
                 {hasUnreadMessages && (
                   <Circle 
                     className="text-red-500 fill-red-500" 
-                    size={14} 
+                    size={10} 
                     strokeWidth={0}
                   />
                 )}
