@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
 
@@ -154,20 +153,9 @@ const PaginationInfo = ({
   pageSize,
   currentPage,
 }: PaginationInfoProps) => {
-  if (pageSize && currentPage) {
-    const startItem = (currentPage - 1) * pageSize + 1;
-    const endItem = Math.min(currentPage * pageSize, total);
-    
-    return (
-      <div className="text-sm text-muted-foreground">
-        Total: {total}
-      </div>
-    );
-  }
-  
   return (
     <div className="text-sm text-muted-foreground">
-      Total: {total}
+      Total: <span className="bg-muted px-2 py-1 rounded">{total}</span>
     </div>
   );
 };
