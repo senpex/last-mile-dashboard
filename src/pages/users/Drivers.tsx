@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
@@ -87,7 +86,7 @@ const DriversPage = () => {
     id: 8001,
     name: "Alice Williams",
     email: "alice.w@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -95,7 +94,7 @@ const DriversPage = () => {
     id: 8002,
     name: "Robert Miller",
     email: "robert.m@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -103,7 +102,7 @@ const DriversPage = () => {
     id: 8003,
     name: "Emily Davis",
     email: "emily.d@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -111,7 +110,7 @@ const DriversPage = () => {
     id: 8004,
     name: "James Wilson",
     email: "james.w@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -119,7 +118,7 @@ const DriversPage = () => {
     id: 8005,
     name: "Sarah Taylor",
     email: "sarah.t@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -127,7 +126,7 @@ const DriversPage = () => {
     id: 8006,
     name: "Daniel Anderson",
     email: "daniel.a@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -135,7 +134,7 @@ const DriversPage = () => {
     id: 8007,
     name: "Olivia Thomas",
     email: "olivia.t@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -143,7 +142,7 @@ const DriversPage = () => {
     id: 8008,
     name: "Matthew Jackson",
     email: "matthew.j@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -151,7 +150,7 @@ const DriversPage = () => {
     id: 8009,
     name: "Sophia White",
     email: "sophia.w@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -159,7 +158,7 @@ const DriversPage = () => {
     id: 8010,
     name: "David Harris",
     email: "david.h@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -167,7 +166,7 @@ const DriversPage = () => {
     id: 8011,
     name: "Emma Martin",
     email: "emma.m@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -175,7 +174,7 @@ const DriversPage = () => {
     id: 8012,
     name: "Andrew Thompson",
     email: "andrew.t@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -183,7 +182,7 @@ const DriversPage = () => {
     id: 8013,
     name: "Isabella Garcia",
     email: "isabella.g@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -191,7 +190,7 @@ const DriversPage = () => {
     id: 8014,
     name: "Joshua Martinez",
     email: "joshua.m@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -199,7 +198,7 @@ const DriversPage = () => {
     id: 8015,
     name: "Charlotte Robinson",
     email: "charlotte.r@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -207,7 +206,7 @@ const DriversPage = () => {
     id: 8016,
     name: "Christopher Clark",
     email: "chris.c@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -215,7 +214,7 @@ const DriversPage = () => {
     id: 8017,
     name: "Amelia Rodriguez",
     email: "amelia.r@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -223,7 +222,7 @@ const DriversPage = () => {
     id: 8018,
     name: "Joseph Lewis",
     email: "joseph.l@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -231,7 +230,7 @@ const DriversPage = () => {
     id: 8019,
     name: "Mia Walker",
     email: "mia.w@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -239,7 +238,7 @@ const DriversPage = () => {
     id: 8020,
     name: "Ethan Hall",
     email: "ethan.h@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -247,7 +246,7 @@ const DriversPage = () => {
     id: 8021,
     name: "Harper Young",
     email: "harper.y@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -255,7 +254,7 @@ const DriversPage = () => {
     id: 8022,
     name: "Alexander Allen",
     email: "alex.a@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -263,7 +262,7 @@ const DriversPage = () => {
     id: 8023,
     name: "Abigail King",
     email: "abigail.k@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -271,7 +270,7 @@ const DriversPage = () => {
     id: 8024,
     name: "Benjamin Wright",
     email: "ben.w@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -279,7 +278,7 @@ const DriversPage = () => {
     id: 8025,
     name: "Sofia Scott",
     email: "sofia.s@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -287,7 +286,7 @@ const DriversPage = () => {
     id: 8026,
     name: "William Green",
     email: "william.g@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -295,7 +294,7 @@ const DriversPage = () => {
     id: 8027,
     name: "Elizabeth Baker",
     email: "elizabeth.b@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -303,7 +302,7 @@ const DriversPage = () => {
     id: 8028,
     name: "Michael Adams",
     email: "michael.a@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -311,7 +310,7 @@ const DriversPage = () => {
     id: 8029,
     name: "Camila Nelson",
     email: "camila.n@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
@@ -319,7 +318,7 @@ const DriversPage = () => {
     id: 8030,
     name: "Jacob Hill",
     email: "jacob.h@example.com",
-    phone: generateRandomPhone(),
+    phone: getRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
     rating: generateRandomRating()
