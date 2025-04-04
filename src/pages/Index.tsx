@@ -65,9 +65,9 @@ const Index = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedCourier, setSelectedCourier] = useState("");
   const pageSizeOptions = [10, 20, 50, 100];
+  const [couriersWithMessages, setCouriersWithMessages] = useState<string[]>([]);
 
   const deliveries = [
-    // Original 5 records
     {
       id: 1,
       packageId: "WMT-10042501",
@@ -178,7 +178,6 @@ const Index = () => {
       organization: "Curry Up Now",
       distance: "0.2 mi"
     },
-    // 40 new records with various statuses
     {
       id: 6,
       packageId: "TGT-80031245",
@@ -1069,13 +1068,15 @@ const Index = () => {
     } else {
       console.warn("Dictionary with ID 19 not found");
     }
+    
+    const couriersSet = new Set<string>();
+    deliveries.forEach(delivery => {
+      if (delivery.courier && !couriersSet.has(delivery.courier) && Math.random() < 0.3) {
+        couriersSet.add(delivery.courier);
+      }
+    });
+    setCouriersWithMessages(Array.from(couriersSet));
   }, []);
-
-  useEffect(() => {
-    // Apply initial filtering based on the active view
-    applyFilters(deliveries, debouncedSearchTerm, activeView);
-    console.log("Initial deliveries loaded:", deliveries.length);
-  }, [activeView]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -1091,15 +1092,12 @@ const Index = () => {
   }, [searchTerm]);
 
   useEffect(() => {
-    // Apply filtering when search term changes
     applyFilters(deliveries, debouncedSearchTerm, activeView);
   }, [debouncedSearchTerm, activeView]);
 
-  // Function to apply both search and tab filters
   const applyFilters = (items: any[], searchTerm: string, activeTab: string) => {
     let results = [...items];
     
-    // First filter by search term if present
     if (searchTerm.length >= 4) {
       console.log("Performing search for:", searchTerm);
 
@@ -1128,9 +1126,7 @@ const Index = () => {
       });
     }
     
-    // Then filter by the active tab
     if (activeTab === "attention") {
-      // Only show items with "Canceled By Customer" or "Cancelled By Admin" status for Attention Required tab
       results = results.filter(delivery => 
         delivery.status === "Canceled By Customer" || 
         delivery.status === "Cancelled By Admin"
@@ -1139,10 +1135,9 @@ const Index = () => {
     }
     
     setFilteredDeliveries(results);
-    setCurrentPage(1); // Reset to first page when filters change
+    setCurrentPage(1);
   };
 
-  // Pagination calculations
   const totalItems = filteredDeliveries.length;
   const totalPages = Math.ceil(totalItems / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
@@ -1156,13 +1151,11 @@ const Index = () => {
 
   const handlePageSizeChange = (size: number) => {
     setPageSize(size);
-    setCurrentPage(1); // Reset to first page when page size changes
+    setCurrentPage(1);
   };
 
-  // Handle tab change
   const handleViewChange = (view: string) => {
     setActiveView(view);
-    // The filtering will be applied by the useEffect that watches activeView
   };
 
   const getPageNumbers = () => {
@@ -1188,7 +1181,7 @@ const Index = () => {
       }
       
       if (start > 2) {
-        pages.push(-1); // Add ellipsis after first page
+        pages.push(-1);
       }
       
       for (let i = start; i <= end; i++) {
@@ -1196,7 +1189,7 @@ const Index = () => {
       }
       
       if (end < totalPages - 1) {
-        pages.push(-2); // Add ellipsis before last page
+        pages.push(-2);
       }
       
       pages.push(totalPages);
@@ -1337,7 +1330,7 @@ const Index = () => {
   };
 
   const handleCourierClick = (courierName: string) => {
-    if (!courierName) return; // Don't open chat for empty courier names
+    if (!courierName) return;
     setSelectedCourier(courierName);
     setIsChatOpen(true);
   };
@@ -1351,7 +1344,6 @@ const Index = () => {
         />
         
         <main className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}>
-          {/* Fixed header with filters */}
           <div className="px-4 py-6 flex-shrink-0 border-b">
             <div className="flex flex-col space-y-4">
               <div className="flex justify-between items-center">
@@ -1423,7 +1415,6 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Scrollable table area */}
           <div className="flex-1 overflow-auto px-4">
             <div className="border rounded-md overflow-hidden my-4">
               <ScrollArea orientation="both">
@@ -1510,13 +1501,22 @@ const Index = () => {
                                 return (
                                   <TableCell key={columnId}>
                                     {delivery.courier ? (
-                                      <Button 
-                                        variant="link" 
-                                        className="p-0 h-auto font-normal text-primary" 
-                                        onClick={() => handleCourierClick(delivery.courier)}
-                                      >
-                                        {delivery.courier}
-                                      </Button>
+                                      <div className="flex items-center gap-2">
+                                        <Button 
+                                          variant="link" 
+                                          className="p-0 h-auto font-normal text-primary" 
+                                          onClick={() => handleCourierClick(delivery.courier)}
+                                        >
+                                          {delivery.courier}
+                                        </Button>
+                                        {couriersWithMessages.includes(delivery.courier) && (
+                                          <Circle 
+                                            className="text-red-500 fill-red-500" 
+                                            size={14} 
+                                            strokeWidth={0}
+                                          />
+                                        )}
+                                      </div>
                                     ) : (
                                       <span>-</span>
                                     )}
@@ -1545,7 +1545,6 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Fixed footer with pagination */}
           <div className="border-t bg-background px-4 py-3 flex justify-between items-center shadow-sm flex-shrink-0">
             <PaginationInfo 
               total={totalItems} 
@@ -1637,11 +1636,11 @@ const Index = () => {
         </main>
       </div>
 
-      {/* Courier Chat Component */}
       <CourierChat 
         open={isChatOpen}
         onClose={() => setIsChatOpen(false)}
         courierName={selectedCourier}
+        hasUnreadMessages={couriersWithMessages.includes(selectedCourier)}
       />
     </ThemeProvider>
   );
