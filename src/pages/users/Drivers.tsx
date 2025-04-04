@@ -1,17 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableCaption,
-  TableHead,
-  TableHeader,
-  TableRow,
-  TableContainer,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import React, { useState } from 'react';
 import {
   Select,
   SelectContent,
@@ -26,8 +14,8 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-  PaginationEllipsis,
 } from "@/components/ui/pagination";
+import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -38,10 +26,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreVertical, Copy, Edit, Trash, Mail, MessageCircle } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
-import { Link } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { MoreVertical, Copy, Edit, Trash, MessageCircle } from "lucide-react";
 import CourierChat from "@/components/chat/CourierChat";
 
 const Drivers = () => {
@@ -129,6 +115,7 @@ const Drivers = () => {
           placeholder="Search drivers..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          className="max-w-xs"
         />
       </div>
 
@@ -145,85 +132,92 @@ const Drivers = () => {
         </Select>
       </div>
 
-      <div className="rounded-md border overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-muted/50">
-            <tr>
-              <th className="w-[200px] h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</th>
-              <th className="w-[200px] h-12 px-4 text-left align-middle font-medium text-muted-foreground">Email</th>
-              <th className="w-[150px] h-12 px-4 text-left align-middle font-medium text-muted-foreground">Phone</th>
-              <th className="w-[100px] h-12 px-4 text-left align-middle font-medium text-muted-foreground">Status</th>
-              <th className="w-[150px] h-12 px-4 text-left align-middle font-medium text-muted-foreground">Location</th>
-              <th className="w-[180px] h-12 px-4 text-left align-middle font-medium text-muted-foreground">Organization</th>
-              <th className="w-[100px] h-12 px-4 text-right align-middle font-medium text-muted-foreground">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y">
-            {paginatedDrivers.map((driver) => (
-              <tr key={driver.id} className="bg-card hover:bg-muted/50 transition-colors">
-                <td className="p-4 align-middle font-medium">
-                  <div className="flex items-center">
-                    <div className="h-8 w-8 mr-2 flex-shrink-0">
-                      <Avatar className="h-8 w-8">
+      <div className="border rounded-md overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full" style={{ tableLayout: 'fixed' }}>
+            <thead className="bg-muted/50">
+              <tr>
+                <th className="text-left p-4 font-medium text-muted-foreground" style={{ width: '200px' }}>Name</th>
+                <th className="text-left p-4 font-medium text-muted-foreground" style={{ width: '200px' }}>Email</th>
+                <th className="text-left p-4 font-medium text-muted-foreground" style={{ width: '150px' }}>Phone</th>
+                <th className="text-left p-4 font-medium text-muted-foreground" style={{ width: '100px' }}>Status</th>
+                <th className="text-left p-4 font-medium text-muted-foreground" style={{ width: '150px' }}>Location</th>
+                <th className="text-left p-4 font-medium text-muted-foreground" style={{ width: '180px' }}>Organization</th>
+                <th className="text-right p-4 font-medium text-muted-foreground" style={{ width: '80px' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              {paginatedDrivers.map((driver) => (
+                <tr key={driver.id} className="bg-card hover:bg-muted/50 transition-colors">
+                  <td className="p-4 font-medium">
+                    <div className="flex items-center space-x-2">
+                      <Avatar className="h-8 w-8 flex-shrink-0">
                         <AvatarImage src={`https://i.pravatar.cc/150?img=${driver.id}`} />
                         <AvatarFallback>{driver.name.slice(0, 2)}</AvatarFallback>
                       </Avatar>
+                      <span className="truncate">{driver.name}</span>
                     </div>
-                    <span className="truncate">{driver.name}</span>
-                  </div>
-                </td>
-                <td className="p-4 align-middle truncate">{driver.email}</td>
-                <td className="p-4 align-middle">{driver.phone}</td>
-                <td className="p-4 align-middle">
-                  <Badge
-                    variant={driver.status === "Active" ? "outline" : "secondary"}
-                  >
-                    {driver.status}
-                  </Badge>
-                </td>
-                <td className="p-4 align-middle truncate">{driver.location}</td>
-                <td className="p-4 align-middle">
-                  <div className="flex items-center space-x-1">
-                    <span className="truncate max-w-[140px]">Walmart Inc.</span>
-                    <div className="flex-shrink-0 w-4 h-4">
-                      <MessageCircle size={16} className="text-blue-500" />
+                  </td>
+                  <td className="p-4">
+                    <div className="truncate">{driver.email}</div>
+                  </td>
+                  <td className="p-4">{driver.phone}</td>
+                  <td className="p-4">
+                    <Badge
+                      variant={driver.status === "Active" ? "outline" : "secondary"}
+                    >
+                      {driver.status}
+                    </Badge>
+                  </td>
+                  <td className="p-4">
+                    <div className="truncate">{driver.location}</div>
+                  </td>
+                  <td className="p-4">
+                    <div className="flex items-center justify-between">
+                      <span className="truncate">Walmart Inc.</span>
+                      <button 
+                        onClick={() => handleChatOpen(driver.name)}
+                        className="flex-shrink-0 ml-2 text-blue-500 hover:text-blue-700"
+                      >
+                        <MessageCircle className="h-4 w-4" style={{ minWidth: '16px' }} />
+                      </button>
                     </div>
-                  </div>
-                </td>
-                <td className="p-4 align-middle text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
-                        <span className="sr-only">Open menu</span>
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem onClick={() => handleChatOpen(driver.name)}>
-                        <MessageCircle className="mr-2 h-4 w-4" />
-                        Message
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem>
-                        <Copy className="mr-2 h-4 w-4" />
-                        Copy info
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Edit className="mr-2 h-4 w-4" />
-                        Edit driver
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Trash className="mr-2 h-4 w-4" />
-                        Delete driver
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  </td>
+                  <td className="p-4 text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <span className="sr-only">Open menu</span>
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem onClick={() => handleChatOpen(driver.name)}>
+                          <MessageCircle className="mr-2 h-4 w-4" />
+                          Message
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                          <Copy className="mr-2 h-4 w-4" />
+                          Copy info
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Edit className="mr-2 h-4 w-4" />
+                          Edit driver
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Trash className="mr-2 h-4 w-4" />
+                          Delete driver
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div className="flex items-center justify-between mt-4">
@@ -249,16 +243,12 @@ const Drivers = () => {
             
             {getPageNumbers().map((pageNum, i) => (
               <PaginationItem key={i}>
-                {pageNum === -1 || pageNum === -2 ? (
-                  <PaginationEllipsis />
-                ) : (
-                  <PaginationLink
-                    isActive={pageNum === page}
-                    onClick={() => handlePageChange(pageNum)}
-                  >
-                    {pageNum}
-                  </PaginationLink>
-                )}
+                <PaginationLink
+                  isActive={pageNum === page}
+                  onClick={() => handlePageChange(pageNum)}
+                >
+                  {pageNum}
+                </PaginationLink>
               </PaginationItem>
             ))}
             
