@@ -15,18 +15,22 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis, PaginationInfo, PaginationSize } from "@/components/ui/pagination";
 import CourierChat from '@/components/chat/CourierChat';
 import { MessageCircle } from 'lucide-react';
+
 type StripeStatus = 'Unverified' | 'Pending' | 'Verified';
 type HireStatus = string;
+
 const getRandomStripeStatus = (): StripeStatus => {
   const statuses: StripeStatus[] = ['Unverified', 'Pending', 'Verified'];
   return statuses[Math.floor(Math.random() * statuses.length)];
 };
+
 const generateRandomPhone = (): string => {
   const areaCode = Math.floor(Math.random() * 900) + 100;
   const prefix = Math.floor(Math.random() * 900) + 100;
   const lineNumber = Math.floor(Math.random() * 9000) + 1000;
   return `(${areaCode}) ${prefix}-${lineNumber}`;
 };
+
 const generateRandomTransports = (): string[] => {
   const transportIds = ['1', '2', '3', '4', '5', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
   const count = Math.floor(Math.random() * 3) + 1;
@@ -40,9 +44,11 @@ const generateRandomTransports = (): string[] => {
   }
   return result;
 };
+
 const generateRandomRating = (): number => {
   return Number((Math.random() * 2 + 3).toFixed(1));
 };
+
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{
     [key: string]: string;
@@ -395,6 +401,7 @@ const DriversPage = () => {
     stripe: getRandomStripeStatus(),
     hireStatus: "pending"
   }]);
+
   const availableColumns: ColumnOption[] = [{
     id: "id",
     label: "ID",
@@ -436,6 +443,7 @@ const DriversPage = () => {
     label: "Actions",
     default: true
   }];
+
   const [visibleColumns, setVisibleColumns] = useState<string[]>(availableColumns.filter(col => col.default).map(col => col.id));
   const [columnOrder, setColumnOrder] = useState<string[]>(availableColumns.filter(col => col.default).map(col => col.id));
   const [currentPage, setCurrentPage] = useState(1);
@@ -450,11 +458,13 @@ const DriversPage = () => {
   const [selectedCourier, setSelectedCourier] = useState<string | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [driversWithMessages, setDriversWithMessages] = useState<number[]>([]);
+
   useEffect(() => {
     loadTransportDictionary();
     loadStatusDictionary();
     loadHireStatusDictionary();
   }, []);
+
   useEffect(() => {
     setColumnOrder(prevOrder => {
       const newOrder = [...prevOrder];
@@ -466,6 +476,7 @@ const DriversPage = () => {
       return newOrder.filter(column => visibleColumns.includes(column));
     });
   }, [visibleColumns]);
+
   useEffect(() => {
     if (searchTerm.length >= 3) {
       const filtered = drivers.filter(driver => driver.name.toLowerCase().includes(searchTerm.toLowerCase()) || driver.email.toLowerCase().includes(searchTerm.toLowerCase()) || driver.phone.includes(searchTerm) || driver.id.toString().includes(searchTerm));
@@ -474,21 +485,26 @@ const DriversPage = () => {
       setFilteredDrivers(drivers);
     }
   }, [searchTerm, drivers]);
+
   useEffect(() => {
     setFilteredDrivers(drivers);
   }, [drivers]);
+
   useEffect(() => {
     const randomDrivers = drivers.filter(() => Math.random() < 0.3).map(driver => driver.id);
     setDriversWithMessages(randomDrivers);
   }, [drivers]);
+
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
   };
+
   const handlePageSizeChange = (size: number) => {
     setPageSize(size);
     setCurrentPage(1);
   };
+
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -519,6 +535,7 @@ const DriversPage = () => {
     }
     return pages;
   };
+
   const handleHireStatusChange = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => {
       return prevDrivers.map(driver => {
@@ -533,14 +550,17 @@ const DriversPage = () => {
       });
     });
   };
+
   const handleCourierClick = (name: string) => {
     setSelectedCourier(name);
     setChatOpen(true);
   };
+
   const handleChatClose = () => {
     setChatOpen(false);
     setSelectedCourier(null);
   };
+
   const loadTransportDictionary = () => {
     const transportDict = getDictionary("2");
     if (transportDict && transportDict.items.length > 0) {
@@ -564,6 +584,7 @@ const DriversPage = () => {
     }
     setIsLoading(false);
   };
+
   const loadStatusDictionary = () => {
     const statusDict = getDictionary("6");
     if (statusDict && statusDict.items.length > 0) {
@@ -593,6 +614,7 @@ const DriversPage = () => {
       console.log("Status dictionary not found or empty for ID: 6");
     }
   };
+
   const loadHireStatusDictionary = () => {
     const hireStatusDict = getDictionary("1455");
     if (hireStatusDict && hireStatusDict.items.length > 0) {
@@ -615,6 +637,7 @@ const DriversPage = () => {
       });
     }
   };
+
   const getRandomTransportIcon = () => {
     const transportTypes: TransportType[] = ['helper', 'car', 'suv', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
     const randomIndex = Math.floor(Math.random() * transportTypes.length);
@@ -623,6 +646,7 @@ const DriversPage = () => {
         <TransportIcon transportType={randomType} size={14} className="h-[14px] w-[14px]" />
       </div>;
   };
+
   const handleDragStart = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
     setDraggedColumn(columnId);
     e.dataTransfer.setData('text/plain', columnId);
@@ -630,12 +654,14 @@ const DriversPage = () => {
     dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     e.dataTransfer.setDragImage(dragImage, 0, 0);
   };
+
   const handleDragOver = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
     e.preventDefault();
     if (draggedColumn && draggedColumn !== columnId) {
       setDragOverColumn(columnId);
     }
   };
+
   const handleDrop = (e: React.DragEvent<HTMLTableCellElement>, targetColumnId: string) => {
     e.preventDefault();
     if (!draggedColumn || draggedColumn === targetColumnId) {
@@ -654,19 +680,24 @@ const DriversPage = () => {
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
+
   const handleDragEnd = () => {
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
+
   const getSortedVisibleColumns = () => {
     return visibleColumns.filter(column => columnOrder.includes(column)).sort((a, b) => columnOrder.indexOf(a) - columnOrder.indexOf(b));
   };
+
   const sortedColumns = getSortedVisibleColumns();
+
   const renderRating = (rating: number) => {
     return <div className="flex items-center">
         <span className="font-medium">{rating.toFixed(1)}</span>
       </div>;
   };
+
   const renderStripeStatus = (status: StripeStatus) => {
     let badgeVariant: "default" | "secondary" | "destructive" | "outline" | "success" | "warning" = "default";
     switch (status) {
@@ -684,6 +715,7 @@ const DriversPage = () => {
         {status}
       </Badge>;
   };
+
   const renderStatus = (statusId: string) => {
     const statusText = statusDictionary[statusId] || `Unknown (${statusId})`;
     const statusColorClass = statusColors[statusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
@@ -691,6 +723,7 @@ const DriversPage = () => {
         {statusText}
       </div>;
   };
+
   const renderHireStatus = (statusId: string, driverId: number) => {
     if (Object.keys(hireStatusDictionary).length === 0) {
       return <div className="text-sm text-muted-foreground">Loading...</div>;
@@ -708,10 +741,11 @@ const DriversPage = () => {
         </DropdownMenuContent>
       </DropdownMenu>;
   };
+
   return <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
-        <div className="flex-1 overflow-auto">
-          <div className="p-6 space-y-4">
+        <div className="px-6 py-6 flex-1 overflow-auto">
+          <div className="space-y-4">
             <h1 className="text-2xl font-bold">Drivers Management</h1>
             
             <div className="flex items-center justify-between">
@@ -730,84 +764,153 @@ const DriversPage = () => {
               </div>
             </div>
 
-            <ScrollArea orientation="both">
-              <TableContainer stickyHeader={false} height="h-[calc(100vh-220px)]">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      {sortedColumns.map(columnId => {
-                      const column = availableColumns.find(col => col.id === columnId);
-                      if (!column) return null;
-                      return <TableHead key={columnId} draggable={true} dragOver={dragOverColumn === columnId} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}>
+            <div className="border rounded-md">
+              <ScrollArea orientation="horizontal">
+                <TableContainer stickyHeader={false}>
+                  <Table>
+                    <TableHeader className="bg-muted/50">
+                      <TableRow>
+                        {sortedColumns.map((columnId) => {
+                          const column = availableColumns.find(col => col.id === columnId);
+                          if (!column) return null;
+                          return <TableHead key={columnId} draggable={true} dragOver={dragOverColumn === columnId} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}>
                             <div className="flex items-center gap-1 overflow-hidden">
                               <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
                               <span className="truncate">{column.label}</span>
                             </div>
                           </TableHead>;
-                    })}
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {currentItems.map(driver => <TableRow key={driver.id}>
-                        {sortedColumns.includes("id") && <TableCell className="font-sans">{driver.id}</TableCell>}
-                        {sortedColumns.includes("name")}
-                        {sortedColumns.includes("email") && <TableCell>{driver.email}</TableCell>}
-                        {sortedColumns.includes("phone") && <TableCell>{driver.phone}</TableCell>}
-                        {sortedColumns.includes("transport") && <TableCell>
-                            <div className="flex items-center gap-2">
-                              {driver.transports.map(transportId => <div key={transportId} className="flex items-center justify-center p-2 rounded-md bg-muted" title={transportTypes[transportId] || `Transport ID: ${transportId}`}>
-                                  <TransportIcon transportType={transportId as TransportType} size={14} className="h-[14px] w-[14px]" />
-                                </div>)}
-                            </div>
-                          </TableCell>}
-                        {sortedColumns.includes("rating") && <TableCell>
-                            {renderRating(driver.rating)}
-                          </TableCell>}
-                        {sortedColumns.includes("status") && <TableCell>
-                            {renderStatus(driver.status)}
-                          </TableCell>}
-                        {sortedColumns.includes("stripe") && <TableCell>
-                            {renderStripeStatus(driver.stripe)}
-                          </TableCell>}
-                        {sortedColumns.includes("hireStatus") && <TableCell>
-                            {renderHireStatus(driver.hireStatus, driver.id)}
-                          </TableCell>}
-                        {sortedColumns.includes("actions") && <TableCell>
-                            <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
-                              View
-                            </Button>
-                          </TableCell>}
-                      </TableRow>)}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </ScrollArea>
+                        })}
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {currentItems.map((driver) => (
+                        <TableRow key={driver.id}>
+                          {sortedColumns.includes("id") && <TableCell className="font-sans">{driver.id}</TableCell>}
+                          {sortedColumns.includes("name")}
+                          {sortedColumns.includes("email") && <TableCell>{driver.email}</TableCell>}
+                          {sortedColumns.includes("phone") && <TableCell>{driver.phone}</TableCell>}
+                          {sortedColumns.includes("transport") && <TableCell>
+                              <div className="flex items-center gap-2">
+                                {driver.transports.map(transportId => <div key={transportId} className="flex items-center justify-center p-2 rounded-md bg-muted" title={transportTypes[transportId] || `Transport ID: ${transportId}`}>
+                                    <TransportIcon transportType={transportId as TransportType} size={14} className="h-[14px] w-[14px]" />
+                                  </div>)}
+                              </div>
+                            </TableCell>}
+                          {sortedColumns.includes("rating") && <TableCell>
+                              {renderRating(driver.rating)}
+                            </TableCell>}
+                          {sortedColumns.includes("status") && <TableCell>
+                              {renderStatus(driver.status)}
+                            </TableCell>}
+                          {sortedColumns.includes("stripe") && <TableCell>
+                              {renderStripeStatus(driver.stripe)}
+                            </TableCell>}
+                          {sortedColumns.includes("hireStatus") && <TableCell>
+                              {renderHireStatus(driver.hireStatus, driver.id)}
+                            </TableCell>}
+                          {sortedColumns.includes("actions") && <TableCell>
+                              <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
+                                View
+                              </Button>
+                            </TableCell>}
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </ScrollArea>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t mt-auto w-full">
+          <div className="px-6 py-4 flex justify-between items-center">
+            <PaginationInfo 
+              total={totalItems} 
+              pageSize={pageSize} 
+              currentPage={currentPage} 
+            />
             
-            {totalPages > 0 && <div className="mt-4">
-                <Pagination className="px-6 py-4 flex justify-between items-center">
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious onClick={() => handlePageChange(currentPage - 1)} className={currentPage === 1 ? "pointer-events-none opacity-50" : ""} />
-                    </PaginationItem>
-                    
-                    {getPageNumbers().map((page, index) => <PaginationItem key={index}>
-                        {page === -1 || page === -2 ? <PaginationEllipsis /> : <PaginationLink isActive={page === currentPage} onClick={() => handlePageChange(page as number)}>
-                            {page}
-                          </PaginationLink>}
-                      </PaginationItem>)}
-                    
-                    <PaginationItem>
-                      <PaginationNext onClick={() => handlePageChange(currentPage + 1)} className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""} />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
+            <Pagination className="flex-1 flex justify-center">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(1);
+                    }}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === 1}
+                  >
+                    <span className="sr-only">First page</span>
+                    ⟪
+                  </PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationPrevious 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage - 1);
+                    }}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === 1}
+                  />
+                </PaginationItem>
                 
-                <div className="flex justify-between items-center mt-4">
-                  <PaginationInfo total={totalItems} pageSize={pageSize} currentPage={currentPage} />
-                  
-                  <PaginationSize sizes={pageSizeOptions} pageSize={pageSize} onChange={handlePageSizeChange} />
-                </div>
-              </div>}
+                {getPageNumbers().map((page, i) => (
+                  <PaginationItem key={i}>
+                    {page === -1 || page === -2 ? (
+                      <PaginationEllipsis />
+                    ) : (
+                      <PaginationLink 
+                        href="#" 
+                        isActive={page === currentPage}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handlePageChange(page);
+                        }}
+                      >
+                        {page}
+                      </PaginationLink>
+                    )}
+                  </PaginationItem>
+                ))}
+                
+                <PaginationItem>
+                  <PaginationNext 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage + 1);
+                    }}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === totalPages}
+                  />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(totalPages);
+                    }}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === totalPages}
+                  >
+                    <span className="sr-only">Last page</span>
+                    ⟫
+                  </PaginationLink>
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+            
+            <PaginationSize
+              sizes={pageSizeOptions}
+              pageSize={pageSize}
+              onChange={handlePageSizeChange}
+            />
           </div>
         </div>
       </div>
@@ -815,4 +918,5 @@ const DriversPage = () => {
       {chatOpen && selectedCourier && <CourierChat open={chatOpen} courierName={selectedCourier} onClose={handleChatClose} hasUnreadMessages={false} />}
     </Layout>;
 };
+
 export default DriversPage;
