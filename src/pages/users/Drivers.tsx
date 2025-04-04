@@ -911,8 +911,10 @@ const DriversPage = () => {
       
       {chatOpen && selectedCourier && (
         <CourierChat
+          open={chatOpen}
           courierName={selectedCourier}
           onClose={handleChatClose}
+          hasUnreadMessages={false}
         />
       )}
     </Layout>
