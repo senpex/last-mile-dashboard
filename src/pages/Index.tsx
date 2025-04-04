@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -753,3 +754,561 @@ const Index = () => {
       dropoffLocation: {
         name: "Mark Henderson",
         address: "543 NW Oak Ridge Ave, Bentonville, AR 72712, US"
+      },
+      customerName: "Mark Henderson",
+      price: "$599.95",
+      tip: "$40.00",
+      fees: "$25.99",
+      courier: "Christopher Davis",
+      organization: "Rooms To Go",
+      distance: "6.5 mi"
+    }
+  ];
+
+  // Define columnOptions for the table
+  const columnOptions: ColumnOption[] = [
+    { id: "packageId", label: "Package ID", default: true },
+    { id: "orderName", label: "Order Name", default: true },
+    { id: "status", label: "Status", default: true },
+    { id: "pickupTime", label: "Pickup Time", default: true },
+    { id: "pickupLocation", label: "Pickup Location", default: true },
+    { id: "dropoffTime", label: "Dropoff Time", default: true },
+    { id: "dropoffLocation", label: "Dropoff Location", default: true },
+    { id: "customerName", label: "Customer Name", default: true },
+    { id: "price", label: "Price", default: true },
+    { id: "tip", label: "Tip", default: false },
+    { id: "fees", label: "Fees", default: false },
+    { id: "courier", label: "Courier", default: true },
+    { id: "organization", label: "Organization", default: true },
+    { id: "distance", label: "Distance", default: false },
+  ];
+  const [visibleColumns, setVisibleColumns] = useState<string[]>(
+    columnOptions.filter(col => col.default).map(col => col.id)
+  );
+
+  // Define status variants for badges
+  const getStatusVariant = (status: string) => {
+    if (status.toLowerCase().includes("complete")) return "success";
+    if (status.toLowerCase().includes("transit")) return "default";
+    if (status.toLowerCase().includes("cancel")) return "destructive";
+    if (status.toLowerCase().includes("waiting") || 
+        status.toLowerCase().includes("scheduled") ||
+        status.toLowerCase().includes("draft")) return "warning";
+    return "outline";
+  };
+
+  // Get record counts for different status types
+  const getRecordCounts = () => {
+    const completed = deliveries.filter(d => 
+      d.status.toLowerCase().includes("complete")).length;
+    const cancelled = deliveries.filter(d => 
+      d.status.toLowerCase().includes("cancel")).length;
+    const inProgress = deliveries.length - completed - cancelled;
+    
+    return { completed, cancelled, inProgress, total: deliveries.length };
+  };
+
+  const counts = getRecordCounts();
+
+  // Load status dictionary
+  useEffect(() => {
+    const loadDictionary = async () => {
+      const dict = await getDictionary("delivery-statuses");
+      setStatusDictionary(dict);
+    };
+    loadDictionary();
+    
+    // Generate random users with new messages
+    const randomCustomers = [...new Set(
+      Array.from({length: 3}, () => Math.floor(Math.random() * deliveries.length))
+    )].map(index => deliveries[index]?.customerName).filter(Boolean);
+    
+    const randomCouriers = [...new Set(
+      Array.from({length: 2}, () => Math.floor(Math.random() * deliveries.length))
+    )].map(index => deliveries[index]?.courier).filter(Boolean);
+    
+    setUsersWithMessages({
+      customers: randomCustomers,
+      couriers: randomCouriers
+    });
+  }, []);
+
+  // Search deliveries
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    // Filter deliveries based on search term and active view
+    let filtered = deliveries;
+
+    if (debouncedSearchTerm) {
+      const searchLower = debouncedSearchTerm.toLowerCase();
+      filtered = deliveries.filter(d => 
+        d.packageId.toLowerCase().includes(searchLower) ||
+        d.orderName.toLowerCase().includes(searchLower) ||
+        d.courier.toLowerCase().includes(searchLower) ||
+        (d.customerName && d.customerName.toLowerCase().includes(searchLower)) ||
+        d.status.toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Filter by view type
+    if (activeView === "attention") {
+      filtered = filtered.filter(d => 
+        d.status.toLowerCase().includes("cancel") || 
+        d.status.toLowerCase().includes("not given") ||
+        d.status.toLowerCase().includes("forgot") ||
+        d.status.toLowerCase().includes("unavailable") ||
+        d.status.toLowerCase().includes("reported")
+      );
+      console.info(`Filtered to ${filtered.length} cancelled deliveries for Attention Required tab`);
+    } else if (activeView === "unassigned") {
+      filtered = filtered.filter(d => !d.courier);
+    }
+
+    setFilteredDeliveries(filtered);
+    console.info(`Initial deliveries loaded: ${filtered.length}`);
+  }, [debouncedSearchTerm, deliveries, activeView]);
+
+  // Column drag handlers
+  const handleDragStart = (columnId: string) => {
+    setDraggedColumn(columnId);
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
+    e.preventDefault();
+    if (draggedColumn && draggedColumn !== columnId) {
+      setDragOverColumn(columnId);
+    } else {
+      setDragOverColumn(null);
+    }
+  };
+
+  const handleDrop = (columnId: string) => {
+    if (draggedColumn && draggedColumn !== columnId) {
+      const newOrder = [...visibleColumns];
+      const draggedIndex = newOrder.indexOf(draggedColumn);
+      const dropIndex = newOrder.indexOf(columnId);
+      
+      newOrder.splice(draggedIndex, 1);
+      newOrder.splice(dropIndex, 0, draggedColumn);
+      
+      setVisibleColumns(newOrder);
+    }
+    
+    setDraggedColumn(null);
+    setDragOverColumn(null);
+  };
+
+  const handleDragEnd = () => {
+    setDragOverColumn(null);
+  };
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredDeliveries.length / pageSize);
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = Math.min(startIndex + pageSize, filteredDeliveries.length);
+  const currentDeliveries = filteredDeliveries.slice(startIndex, endIndex);
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+  
+  // Chat handlers
+  const handleOpenChat = (type: 'customer' | 'courier', name: string) => {
+    if (type === 'customer') {
+      setSelectedCustomer(name);
+      setSelectedCourier("");
+    } else {
+      setSelectedCourier(name);
+      setSelectedCustomer("");
+    }
+    setIsChatOpen(true);
+  };
+  
+  const hasNewMessage = (type: 'customer' | 'courier', name: string) => {
+    if (!name) return false;
+    
+    if (type === 'customer') {
+      return usersWithMessages.customers.includes(name);
+    } else {
+      return usersWithMessages.couriers.includes(name);
+    }
+  };
+
+  return (
+    <div className="flex h-screen bg-background">
+      <Sidebar 
+        collapsed={sidebarCollapsed} 
+        setCollapsed={setSidebarCollapsed}
+      />
+      <div className="flex flex-col flex-1 w-full">
+        <div className="container mx-auto py-6 max-w-full px-4 space-y-4">
+          <div className="flex flex-col space-y-2 xl:space-y-0 xl:flex-row xl:justify-between">
+            <div className="flex flex-col">
+              <h1 className="text-3xl font-bold tracking-tight">Deliveries</h1>
+              <p className="text-muted-foreground">
+                View and manage all delivery requests
+              </p>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="h-10 gap-1 lg:gap-2"
+                  >
+                    <Clock className="h-4 w-4" />
+                    <span className="hidden sm:inline">Date Range</span>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="end">
+                  <DateRangePicker
+                    date={dateRange}
+                    onChange={setDateRange}
+                  />
+                </PopoverContent>
+              </Popover>
+              
+              <TimezonePicker 
+                timezone={timezone} 
+                setTimezone={setTimezone} 
+              />
+              
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button 
+                    variant="outline"
+                    size="sm"
+                    className="h-10"
+                  >
+                    <Filter className="h-4 w-4" />
+                    <span className="hidden lg:inline ml-2">Filter</span>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="end" className="w-80">
+                  <div className="grid gap-4">
+                    <div className="space-y-2">
+                      <h4 className="font-medium leading-none">Filter Deliveries</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Narrow down deliveries by specific criteria
+                      </p>
+                    </div>
+                    <div className="grid gap-2">
+                      <div className="grid grid-cols-3 items-center gap-4">
+                        <label htmlFor="status">Status</label>
+                        <Select defaultValue="all">
+                          <SelectTrigger id="status" className="col-span-2 h-8">
+                            <SelectValue placeholder="Select" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">All Statuses</SelectItem>
+                            <SelectItem value="complete">Completed</SelectItem>
+                            <SelectItem value="in-transit">In Transit</SelectItem>
+                            <SelectItem value="canceled">Canceled</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="grid grid-cols-3 items-center gap-4">
+                        <label htmlFor="courier">Courier</label>
+                        <Select defaultValue="all">
+                          <SelectTrigger id="courier" className="col-span-2 h-8">
+                            <SelectValue placeholder="Select" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">All Couriers</SelectItem>
+                            <SelectItem value="assigned">Assigned Only</SelectItem>
+                            <SelectItem value="unassigned">Unassigned Only</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+          
+          <div className="flex flex-col space-y-4">
+            <div className="border rounded-lg shadow-sm bg-background">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between p-4 border-b">
+                <div className="flex flex-col space-y-1">
+                  <div className="flex items-center space-x-2">
+                    <Input
+                      placeholder="Search deliveries..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="h-8 w-[250px] sm:w-[300px] lg:w-[400px]"
+                    />
+                    <Search className="h-4 w-4 text-muted-foreground" />
+                  </div>
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <Tabs 
+                      defaultValue="main" 
+                      value={activeView} 
+                      onValueChange={setActiveView}
+                      className="w-full"
+                    >
+                      <TabsList className="ml-0 h-8">
+                        <TabsTrigger value="main" className="text-xs">
+                          All Deliveries
+                        </TabsTrigger>
+                        <TabsTrigger value="attention" className="text-xs">
+                          Attention Required ({counts.cancelled})
+                        </TabsTrigger>
+                        <TabsTrigger value="unassigned" className="text-xs">
+                          Unassigned
+                        </TabsTrigger>
+                      </TabsList>
+                    </Tabs>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center mt-4 md:mt-0">
+                  <div className="flex">
+                    <div className="pr-4 border-r">
+                      <p className="text-sm font-medium">Completed</p>
+                      <p className="text-2xl font-bold">{counts.completed}</p>
+                    </div>
+                    <div className="px-4 border-r">
+                      <p className="text-sm font-medium">In Progress</p>
+                      <p className="text-2xl font-bold">{counts.inProgress}</p>
+                    </div>
+                    <div className="pl-4">
+                      <p className="text-sm font-medium">Cancelled</p>
+                      <p className="text-2xl font-bold">{counts.cancelled}</p>
+                    </div>
+                  </div>
+                  <ColumnSelector
+                    columns={columnOptions}
+                    visibleColumns={visibleColumns}
+                    setVisibleColumns={setVisibleColumns}
+                    size="sm"
+                  />
+                </div>
+              </div>
+              
+              <div className="rounded-md border">
+                <ScrollArea orientation="both" className="h-[calc(100vh-320px)]">
+                  <div className="relative">
+                    <Table className="min-w-max">
+                      <TableHeader className="sticky top-0 z-10 bg-secondary">
+                        <TableRow>
+                          {visibleColumns.map((colId) => {
+                            const col = columnOptions.find(c => c.id === colId);
+                            return (
+                              <TableHead 
+                                key={colId}
+                                draggable
+                                dragOver={dragOverColumn === colId}
+                                onDragStart={() => handleDragStart(colId)}
+                                onDragOver={(e) => handleDragOver(e, colId)}
+                                onDrop={() => handleDrop(colId)}
+                                onDragEnd={handleDragEnd}
+                                className="whitespace-nowrap"
+                              >
+                                <div className="flex items-center gap-2">
+                                  <GripVertical className="h-4 w-4 text-muted-foreground" />
+                                  {col?.label || colId}
+                                </div>
+                              </TableHead>
+                            );
+                          })}
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {currentDeliveries.length > 0 ? (
+                          currentDeliveries.map((delivery) => (
+                            <TableRow key={delivery.id}>
+                              {visibleColumns.map((colId) => {
+                                if (colId === "status") {
+                                  return (
+                                    <TableCell key={`${delivery.id}-${colId}`}>
+                                      <Badge variant={getStatusVariant(delivery.status)}>
+                                        {delivery.status}
+                                      </Badge>
+                                    </TableCell>
+                                  );
+                                } else if (colId === "pickupLocation" || colId === "dropoffLocation") {
+                                  const location = delivery[colId as keyof typeof delivery] as any;
+                                  return (
+                                    <TableCell key={`${delivery.id}-${colId}`} className="max-w-[300px]">
+                                      <div className="flex flex-col">
+                                        <span className="font-medium">{location.name}</span>
+                                        <span className="text-muted-foreground text-xs">{location.address}</span>
+                                      </div>
+                                    </TableCell>
+                                  );
+                                } else if (colId === "customerName") {
+                                  return (
+                                    <TableCell key={`${delivery.id}-${colId}`}>
+                                      <div className="flex items-center gap-1">
+                                        {delivery[colId] ? (
+                                          <>
+                                            <span>{delivery[colId as keyof typeof delivery]}</span>
+                                            {hasNewMessage('customer', delivery[colId as string]) && (
+                                              <Button 
+                                                variant="ghost" 
+                                                size="icon" 
+                                                className="h-6 w-6 rounded-full"
+                                                onClick={() => handleOpenChat('customer', delivery[colId as string])}
+                                              >
+                                                <MessageCircle className="h-4 w-4 text-blue-500 fill-blue-100" />
+                                              </Button>
+                                            )}
+                                          </>
+                                        ) : (
+                                          <span className="text-muted-foreground">—</span>
+                                        )}
+                                      </div>
+                                    </TableCell>
+                                  );
+                                } else if (colId === "courier") {
+                                  return (
+                                    <TableCell key={`${delivery.id}-${colId}`}>
+                                      <div className="flex items-center gap-1">
+                                        {delivery[colId] ? (
+                                          <>
+                                            <span>{delivery[colId as keyof typeof delivery]}</span>
+                                            {hasNewMessage('courier', delivery[colId as string]) && (
+                                              <Button 
+                                                variant="ghost" 
+                                                size="icon" 
+                                                className="h-6 w-6 rounded-full"
+                                                onClick={() => handleOpenChat('courier', delivery[colId as string])}
+                                              >
+                                                <MessageCircle className="h-4 w-4 text-blue-500 fill-blue-100" />
+                                              </Button>
+                                            )}
+                                          </>
+                                        ) : (
+                                          <span className="text-muted-foreground">Unassigned</span>
+                                        )}
+                                      </div>
+                                    </TableCell>
+                                  );
+                                } else {
+                                  return (
+                                    <TableCell key={`${delivery.id}-${colId}`}>
+                                      {delivery[colId as keyof typeof delivery] || (
+                                        <span className="text-muted-foreground">—</span>
+                                      )}
+                                    </TableCell>
+                                  );
+                                }
+                              })}
+                            </TableRow>
+                          ))
+                        ) : (
+                          <TableRow>
+                            <TableCell colSpan={visibleColumns.length} className="h-24 text-center">
+                              No results found.
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </ScrollArea>
+                
+                <Pagination className="p-4 border-t">
+                  <div className="flex items-center justify-between w-full">
+                    <PaginationInfo 
+                      total={filteredDeliveries.length} 
+                      pageSize={pageSize}
+                      currentPage={currentPage}
+                    />
+                    
+                    <PaginationContent>
+                      <PaginationPrevious
+                        onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                      />
+                      
+                      {/* First page */}
+                      {currentPage > 2 && (
+                        <PaginationItem>
+                          <PaginationLink onClick={() => handlePageChange(1)}>1</PaginationLink>
+                        </PaginationItem>
+                      )}
+                      
+                      {/* Ellipsis */}
+                      {currentPage > 3 && <PaginationEllipsis />}
+                      
+                      {/* Page before current */}
+                      {currentPage > 1 && (
+                        <PaginationItem>
+                          <PaginationLink onClick={() => handlePageChange(currentPage - 1)}>
+                            {currentPage - 1}
+                          </PaginationLink>
+                        </PaginationItem>
+                      )}
+                      
+                      {/* Current page */}
+                      <PaginationItem>
+                        <PaginationLink isActive>{currentPage}</PaginationLink>
+                      </PaginationItem>
+                      
+                      {/* Page after current */}
+                      {currentPage < totalPages && (
+                        <PaginationItem>
+                          <PaginationLink onClick={() => handlePageChange(currentPage + 1)}>
+                            {currentPage + 1}
+                          </PaginationLink>
+                        </PaginationItem>
+                      )}
+                      
+                      {/* Ellipsis */}
+                      {currentPage < totalPages - 2 && <PaginationEllipsis />}
+                      
+                      {/* Last page */}
+                      {currentPage < totalPages - 1 && (
+                        <PaginationItem>
+                          <PaginationLink onClick={() => handlePageChange(totalPages)}>
+                            {totalPages}
+                          </PaginationLink>
+                        </PaginationItem>
+                      )}
+                      
+                      <PaginationNext
+                        onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                      />
+                    </PaginationContent>
+                    
+                    <PaginationSize 
+                      sizes={pageSizeOptions} 
+                      pageSize={pageSize} 
+                      onChange={handlePageSizeChange}
+                    />
+                  </div>
+                </Pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {isChatOpen && (
+        <CourierChat 
+          isOpen={isChatOpen}
+          setIsOpen={setIsChatOpen}
+          courier={selectedCourier}
+          customer={selectedCustomer}
+        />
+      )}
+    </div>
+  );
+};
+
+export default Index;
