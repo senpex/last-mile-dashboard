@@ -31,7 +31,7 @@ import {
   PaginationSize
 } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Columns, Filter, GripVertical, MessageCircle, Search } from "lucide-react";
+import { Clock, Columns, Filter, GripVertical, Search } from "lucide-react";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { DateRange } from "react-day-picker";
@@ -65,14 +65,7 @@ const Index = () => {
   const [activeView, setActiveView] = useState<string>("main");
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedCourier, setSelectedCourier] = useState("");
-  const [selectedCustomer, setSelectedCustomer] = useState("");
   const pageSizeOptions = [10, 20, 50, 100];
-  
-  // Add state to track users with new messages
-  const [usersWithMessages, setUsersWithMessages] = useState<{
-    customers: string[];
-    couriers: string[];
-  }>({ customers: [], couriers: [] });
 
   const deliveries = [
     // Original 5 records
@@ -755,150 +748,541 @@ const Index = () => {
         name: "Mark Henderson",
         address: "543 NW Oak Ridge Ave, Bentonville, AR 72712, US"
       },
-      customerName: "Mark Henderson",
-      price: "$599.95",
-      tip: "$40.00",
-      fees: "$25.99",
-      courier: "Christopher Davis",
+      price: "$899.99",
+      tip: "$50.00",
+      fees: "$49.99",
+      courier: "",
       organization: "Rooms To Go",
-      distance: "6.5 mi"
+      distance: "7.3 mi"
+    },
+    {
+      id: 32,
+      packageId: "QBD-45678912",
+      orderName: "Restaurant Order",
+      status: "Accepted Repeated Order",
+      pickupTime: "03/24/2025 06:30 PM",
+      pickupLocation: {
+        name: "Taziki's Mediterranean Cafe - Rogers",
+        address: "2203 S Promenade Blvd, Rogers, AR 72758, US"
+      },
+      dropoffTime: "03/24/2025 07:15 PM",
+      dropoffLocation: {
+        name: "Stephanie Harris",
+        address: "987 SW Paddington Ave, Bentonville, AR 72712, US"
+      },
+      price: "$52.95",
+      tip: "$10.00",
+      fees: "$3.99",
+      courier: "Christopher Allen",
+      organization: "Taziki's Mediterranean Cafe",
+      distance: "8.9 mi"
+    },
+    {
+      id: 33,
+      packageId: "GNC-36789215",
+      orderName: "Health Supplements",
+      status: "Started Working",
+      pickupTime: "03/24/2025 12:45 PM",
+      pickupLocation: {
+        name: "GNC - Rogers",
+        address: "2203 S Promenade Blvd, Rogers, AR 72758, US"
+      },
+      dropoffTime: "03/24/2025 02:15 PM",
+      dropoffLocation: {
+        name: "Brian Torres",
+        address: "834 SW Westpark Dr, Bentonville, AR 72712, US"
+      },
+      price: "$87.95",
+      tip: "$12.00",
+      fees: "$4.99",
+      courier: "Erica Jenkins",
+      organization: "GNC",
+      distance: "8.5 mi"
+    },
+    {
+      id: 34,
+      packageId: "VRZ-78945612",
+      orderName: "Mobile Phone",
+      status: "In Transit",
+      pickupTime: "03/24/2025 11:30 AM",
+      pickupLocation: {
+        name: "Verizon Wireless - Rogers",
+        address: "4408 W Walnut St, Rogers, AR 72756, US"
+      },
+      dropoffTime: "03/24/2025 01:00 PM",
+      dropoffLocation: {
+        name: "Michelle Parker",
+        address: "765 NW Applegate St, Bentonville, AR 72712, US"
+      },
+      price: "$1,099.99",
+      tip: "$50.00",
+      fees: "$9.99",
+      courier: "Jonathan Lewis",
+      organization: "Verizon Wireless",
+      distance: "6.8 mi"
+    },
+    {
+      id: 35,
+      packageId: "WLG-25896314",
+      orderName: "Eyewear Order",
+      status: "Arrived For Pickup",
+      pickupTime: "03/24/2025 09:15 AM",
+      pickupLocation: {
+        name: "Warby Parker - Rogers",
+        address: "2203 S Promenade Blvd, Rogers, AR 72758, US"
+      },
+      dropoffTime: "03/24/2025 10:45 AM",
+      dropoffLocation: {
+        name: "Charles Wilson",
+        address: "423 SW D St, Bentonville, AR 72712, US"
+      },
+      price: "$195.00",
+      tip: "$25.00",
+      fees: "$0.00",
+      courier: "Samantha Green",
+      organization: "Warby Parker",
+      distance: "9.2 mi"
+    },
+    {
+      id: 36,
+      packageId: "DLT-36987412",
+      orderName: "Meal Delivery",
+      status: "Forgotten",
+      pickupTime: "03/24/2025 07:00 PM",
+      pickupLocation: {
+        name: "The Preacher's Son - Bentonville",
+        address: "201 NW A St, Bentonville, AR 72712, US"
+      },
+      dropoffTime: "03/24/2025 07:30 PM",
+      dropoffLocation: {
+        name: "Laura Johnson",
+        address: "432 NW 10th St, Bentonville, AR 72712, US"
+      },
+      price: "$87.95",
+      tip: "$20.00",
+      fees: "$4.99",
+      courier: "Daniel Martin",
+      organization: "The Preacher's Son",
+      distance: "1.3 mi"
+    },
+    {
+      id: 37,
+      packageId: "CRK-98745631",
+      orderName: "Craft Supplies",
+      status: "Recipient Unavailable",
+      pickupTime: "03/24/2025 01:15 PM",
+      pickupLocation: {
+        name: "Hobby Lobby - Rogers",
+        address: "4409 W Walnut St, Rogers, AR 72756, US"
+      },
+      dropoffTime: "03/24/2025 02:45 PM",
+      dropoffLocation: {
+        name: "Melissa Roberts",
+        address: "876 SW Vista Ave, Bentonville, AR 72712, US"
+      },
+      price: "$65.95",
+      tip: "$10.00",
+      fees: "$3.99",
+      courier: "Patrick Turner",
+      organization: "Hobby Lobby",
+      distance: "7.1 mi"
+    },
+    {
+      id: 38,
+      packageId: "KFC-74125896",
+      orderName: "Fast Food Order",
+      status: "Waiting For Pay",
+      pickupTime: "03/24/2025 05:30 PM",
+      pickupLocation: {
+        name: "KFC - Bentonville",
+        address: "1702 S Walton Blvd, Bentonville, AR 72712, US"
+      },
+      dropoffTime: "03/24/2025 06:00 PM",
+      dropoffLocation: {
+        name: "Timothy Nelson",
+        address: "546 SW J St, Bentonville, AR 72712, US"
+      },
+      price: "$32.95",
+      tip: "",
+      fees: "$2.99",
+      courier: "",
+      organization: "KFC",
+      distance: "1.9 mi"
+    },
+    {
+      id: 39,
+      packageId: "XRX-65478932",
+      orderName: "Document Delivery",
+      status: "Dropoff Complete",
+      pickupTime: "03/24/2025 10:00 AM",
+      pickupLocation: {
+        name: "FedEx Office - Bentonville",
+        address: "1400 SE Walton Blvd, Bentonville, AR 72712, US"
+      },
+      dropoffTime: "03/24/2025 10:45 AM",
+      dropoffLocation: {
+        name: "Arvest Bank Headquarters",
+        address: "201 NE A St, Bentonville, AR 72712, US"
+      },
+      price: "$15.95",
+      tip: "$5.00",
+      fees: "$0.00",
+      courier: "Jessica Turner",
+      organization: "FedEx Office",
+      distance: "1.4 mi"
+    },
+    {
+      id: 40,
+      packageId: "FLS-32165498",
+      orderName: "Floral Arrangement",
+      status: "Reported Order",
+      pickupTime: "03/24/2025 11:45 AM",
+      pickupLocation: {
+        name: "Florist - Downtown Bentonville",
+        address: "106 SW A St, Bentonville, AR 72712, US"
+      },
+      dropoffTime: "03/24/2025 12:30 PM",
+      dropoffLocation: {
+        name: "The Momentary",
+        address: "507 SE E St, Bentonville, AR 72712, US"
+      },
+      price: "$79.99",
+      tip: "$15.00",
+      fees: "$4.99",
+      courier: "Shannon Miller",
+      organization: "Downtown Florist",
+      distance: "1.2 mi"
+    },
+    {
+      id: 41,
+      packageId: "JWR-15935782",
+      orderName: "Jewelry Purchase",
+      status: "Paid Order",
+      pickupTime: "03/24/2025 02:15 PM",
+      pickupLocation: {
+        name: "Kay Jewelers - Pinnacle Hills",
+        address: "2203 S Promenade Blvd, Rogers, AR 72758, US"
+      },
+      dropoffTime: "03/24/2025 03:45 PM",
+      dropoffLocation: {
+        name: "Alexander Campbell",
+        address: "654 NW Westpark Dr, Bentonville, AR 72712, US"
+      },
+      price: "$749.99",
+      tip: "$75.00",
+      fees: "$14.99",
+      courier: "Olivia Washington",
+      organization: "Kay Jewelers",
+      distance: "9.3 mi"
+    },
+    {
+      id: 42,
+      packageId: "MSC-75315982",
+      orderName: "Music Equipment",
+      status: "Draft Order",
+      pickupTime: "03/24/2025 03:30 PM",
+      pickupLocation: {
+        name: "Guitar Center - Rogers",
+        address: "3700 N Bloomington St, Rogers, AR 72756, US"
+      },
+      dropoffTime: "03/24/2025 05:00 PM",
+      dropoffLocation: {
+        name: "Jacob Murphy",
+        address: "987 SW Juniper Way, Bentonville, AR 72712, US"
+      },
+      price: "$329.95",
+      tip: "",
+      fees: "$9.99",
+      courier: "",
+      organization: "Guitar Center",
+      distance: "8.3 mi"
+    },
+    {
+      id: 43,
+      packageId: "CMS-96325841",
+      orderName: "Camera Accessories",
+      status: "Scheduled Order",
+      pickupTime: "03/25/2025 11:30 AM",
+      pickupLocation: {
+        name: "Best Buy - Rogers",
+        address: "4301 W Walnut St, Rogers, AR 72756, US"
+      },
+      dropoffTime: "03/25/2025 01:00 PM",
+      dropoffLocation: {
+        name: "Nathan Peterson",
+        address: "543 NW Briar Creek Cir, Bentonville, AR 72712, US"
+      },
+      price: "$245.99",
+      tip: "$25.00",
+      fees: "$8.99",
+      courier: "",
+      organization: "Best Buy",
+      distance: "6.9 mi"
+    },
+    {
+      id: 44,
+      packageId: "TYS-85274196",
+      orderName: "Toy Delivery",
+      status: "Courier Selected",
+      pickupTime: "03/24/2025 09:30 AM",
+      pickupLocation: {
+        name: "Toys R Us - Rogers",
+        address: "2203 S Promenade Blvd, Rogers, AR 72758, US"
+      },
+      dropoffTime: "03/24/2025 11:00 AM",
+      dropoffLocation: {
+        name: "Christina Edwards",
+        address: "789 SW 12th St, Bentonville, AR 72712, US"
+      },
+      price: "$129.99",
+      tip: "$15.00",
+      fees: "$5.99",
+      courier: "Jeremy Black",
+      organization: "Toys R Us",
+      distance: "8.7 mi"
+    },
+    {
+      id: 45,
+      packageId: "PLT-47856321",
+      orderName: "Garden Supplies",
+      status: "Arrived For Pickup",
+      pickupTime: "03/24/2025 10:15 AM",
+      pickupLocation: {
+        name: "Westwood Gardens - Bentonville",
+        address: "807 N Walton Blvd, Bentonville, AR 72712, US"
+      },
+      dropoffTime: "03/24/2025 11:45 AM",
+      dropoffLocation: {
+        name: "Angela Foster",
+        address: "234 SW Sycamore Dr, Bentonville, AR 72712, US"
+      },
+      price: "$87.95",
+      tip: "$12.00",
+      fees: "$7.99",
+      courier: "Carlos Ramirez",
+      organization: "Westwood Gardens",
+      distance: "3.4 mi"
     }
   ];
 
-  // Define columnOptions for the table
-  const columnOptions: ColumnOption[] = [
-    { id: "packageId", label: "Package ID", default: true },
-    { id: "orderName", label: "Order Name", default: true },
+  useEffect(() => {
+    const dictionary = getDictionary("19");
+    if (dictionary) {
+      setStatusDictionary(dictionary);
+      console.log("Loaded status dictionary:", dictionary);
+    } else {
+      console.warn("Dictionary with ID 19 not found");
+    }
+  }, []);
+
+  useEffect(() => {
+    // Apply initial filtering based on the active view
+    applyFilters(deliveries, debouncedSearchTerm, activeView);
+    console.log("Initial deliveries loaded:", deliveries.length);
+  }, [activeView]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchTerm.length >= 4 || searchTerm.length === 0) {
+        setDebouncedSearchTerm(searchTerm);
+        console.log("Search term debounced:", searchTerm);
+      }
+    }, 1500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchTerm]);
+
+  useEffect(() => {
+    // Apply filtering when search term changes
+    applyFilters(deliveries, debouncedSearchTerm, activeView);
+  }, [debouncedSearchTerm, activeView]);
+
+  // Function to apply both search and tab filters
+  const applyFilters = (items: any[], searchTerm: string, activeTab: string) => {
+    let results = [...items];
+    
+    // First filter by search term if present
+    if (searchTerm.length >= 4) {
+      console.log("Performing search for:", searchTerm);
+
+      results = results.filter(delivery => {
+        const searchableFields = [
+          delivery.packageId,
+          delivery.orderName,
+          delivery.status,
+          delivery.pickupTime,
+          delivery.pickupLocation.name,
+          delivery.pickupLocation.address,
+          delivery.dropoffTime,
+          delivery.dropoffLocation.name,
+          delivery.dropoffLocation.address,
+          delivery.price,
+          delivery.tip,
+          delivery.fees,
+          delivery.courier,
+          delivery.organization,
+          delivery.distance
+        ];
+
+        return searchableFields.some(field => 
+          field && field.toString().toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      });
+    }
+    
+    // Then filter by the active tab
+    if (activeTab === "attention") {
+      // Only show items with "Canceled By Customer" or "Cancelled By Admin" status for Attention Required tab
+      results = results.filter(delivery => 
+        delivery.status === "Canceled By Customer" || 
+        delivery.status === "Cancelled By Admin"
+      );
+      console.log(`Filtered to ${results.length} cancelled deliveries for Attention Required tab`);
+    }
+    
+    setFilteredDeliveries(results);
+    setCurrentPage(1); // Reset to first page when filters change
+  };
+
+  // Pagination calculations
+  const totalItems = filteredDeliveries.length;
+  const totalPages = Math.ceil(totalItems / pageSize);
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = Math.min(startIndex + pageSize, totalItems);
+  const currentItems = filteredDeliveries.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+  };
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(1); // Reset to first page when page size changes
+  };
+
+  // Handle tab change
+  const handleViewChange = (view: string) => {
+    setActiveView(view);
+    // The filtering will be applied by the useEffect that watches activeView
+  };
+
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+      
+      let start = Math.max(2, currentPage - 1);
+      let end = Math.min(totalPages - 1, currentPage + 1);
+      
+      if (currentPage <= 3) {
+        end = Math.min(4, totalPages - 1);
+      }
+      
+      if (currentPage >= totalPages - 2) {
+        start = Math.max(totalPages - 3, 2);
+      }
+      
+      if (start > 2) {
+        pages.push(-1); // Add ellipsis after first page
+      }
+      
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+      
+      if (end < totalPages - 1) {
+        pages.push(-2); // Add ellipsis before last page
+      }
+      
+      pages.push(totalPages);
+    }
+    
+    return pages;
+  };
+
+  const availableColumns: ColumnOption[] = [
     { id: "status", label: "Status", default: true },
+    { id: "packageId", label: "ID", default: true },
+    { id: "orderName", label: "Order name", default: true },
+    { id: "customerName", label: "Customer Name", default: true },
     { id: "pickupTime", label: "Pickup Time", default: true },
     { id: "pickupLocation", label: "Pickup Location", default: true },
     { id: "dropoffTime", label: "Dropoff Time", default: true },
     { id: "dropoffLocation", label: "Dropoff Location", default: true },
-    { id: "customerName", label: "Customer Name", default: true },
     { id: "price", label: "Price", default: true },
-    { id: "tip", label: "Tip", default: false },
+    { id: "tip", label: "Tip", default: true },
     { id: "fees", label: "Fees", default: false },
     { id: "courier", label: "Courier", default: true },
     { id: "organization", label: "Organization", default: true },
-    { id: "distance", label: "Distance", default: false },
+    { id: "distance", label: "Distance", default: true },
   ];
+  
   const [visibleColumns, setVisibleColumns] = useState<string[]>(
-    columnOptions.filter(col => col.default).map(col => col.id)
+    availableColumns.filter(col => col.default).map(col => col.id)
+  );
+  
+  const [columnOrder, setColumnOrder] = useState<string[]>(
+    availableColumns.filter(col => col.default).map(col => col.id)
   );
 
-  // Define status variants for badges
-  const getStatusVariant = (status: string) => {
-    if (status.toLowerCase().includes("complete")) return "success";
-    if (status.toLowerCase().includes("transit")) return "default";
-    if (status.toLowerCase().includes("cancel")) return "destructive";
-    if (status.toLowerCase().includes("waiting") || 
-        status.toLowerCase().includes("scheduled") ||
-        status.toLowerCase().includes("draft")) return "warning";
-    return "outline";
-  };
-
-  // Get record counts for different status types
-  const getRecordCounts = () => {
-    const completed = deliveries.filter(d => 
-      d.status.toLowerCase().includes("complete")).length;
-    const cancelled = deliveries.filter(d => 
-      d.status.toLowerCase().includes("cancel")).length;
-    const inProgress = deliveries.length - completed - cancelled;
-    
-    return { completed, cancelled, inProgress, total: deliveries.length };
-  };
-
-  const counts = getRecordCounts();
-
-  // Load status dictionary
   useEffect(() => {
-    const loadDictionary = async () => {
-      const dict = await getDictionary("delivery-statuses");
-      setStatusDictionary(dict);
-    };
-    loadDictionary();
-    
-    // Generate random users with new messages
-    const randomCustomers = [...new Set(
-      Array.from({length: 3}, () => Math.floor(Math.random() * deliveries.length))
-    )].map(index => deliveries[index]?.customerName).filter(Boolean);
-    
-    const randomCouriers = [...new Set(
-      Array.from({length: 2}, () => Math.floor(Math.random() * deliveries.length))
-    )].map(index => deliveries[index]?.courier).filter(Boolean);
-    
-    setUsersWithMessages({
-      customers: randomCustomers,
-      couriers: randomCouriers
+    setColumnOrder(prevOrder => {
+      const newOrder = [...prevOrder];
+      
+      visibleColumns.forEach(column => {
+        if (!newOrder.includes(column)) {
+          newOrder.push(column);
+        }
+      });
+      
+      return newOrder.filter(column => visibleColumns.includes(column));
     });
-  }, []);
+  }, [visibleColumns]);
 
-  // Search deliveries
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [searchTerm]);
-
-  useEffect(() => {
-    // Filter deliveries based on search term and active view
-    let filtered = deliveries;
-
-    if (debouncedSearchTerm) {
-      const searchLower = debouncedSearchTerm.toLowerCase();
-      filtered = deliveries.filter(d => 
-        d.packageId.toLowerCase().includes(searchLower) ||
-        d.orderName.toLowerCase().includes(searchLower) ||
-        d.courier.toLowerCase().includes(searchLower) ||
-        (d.customerName && d.customerName.toLowerCase().includes(searchLower)) ||
-        d.status.toLowerCase().includes(searchLower)
-      );
-    }
-
-    // Filter by view type
-    if (activeView === "attention") {
-      filtered = filtered.filter(d => 
-        d.status.toLowerCase().includes("cancel") || 
-        d.status.toLowerCase().includes("not given") ||
-        d.status.toLowerCase().includes("forgot") ||
-        d.status.toLowerCase().includes("unavailable") ||
-        d.status.toLowerCase().includes("reported")
-      );
-      console.info(`Filtered to ${filtered.length} cancelled deliveries for Attention Required tab`);
-    } else if (activeView === "unassigned") {
-      filtered = filtered.filter(d => !d.courier);
-    }
-
-    setFilteredDeliveries(filtered);
-    console.info(`Initial deliveries loaded: ${filtered.length}`);
-  }, [debouncedSearchTerm, deliveries, activeView]);
-
-  // Column drag handlers
-  const handleDragStart = (columnId: string) => {
+  const handleDragStart = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
     setDraggedColumn(columnId);
+    
+    e.dataTransfer.setData('text/plain', columnId);
+    
+    const dragImage = new Image();
+    dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+    e.dataTransfer.setDragImage(dragImage, 0, 0);
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
     e.preventDefault();
     if (draggedColumn && draggedColumn !== columnId) {
       setDragOverColumn(columnId);
-    } else {
-      setDragOverColumn(null);
     }
   };
 
-  const handleDrop = (columnId: string) => {
-    if (draggedColumn && draggedColumn !== columnId) {
-      const newOrder = [...visibleColumns];
-      const draggedIndex = newOrder.indexOf(draggedColumn);
-      const dropIndex = newOrder.indexOf(columnId);
+  const handleDrop = (e: React.DragEvent<HTMLTableCellElement>, targetColumnId: string) => {
+    e.preventDefault();
+    
+    if (!draggedColumn || draggedColumn === targetColumnId) {
+      setDraggedColumn(null);
+      setDragOverColumn(null);
+      return;
+    }
+    
+    const updatedOrder = [...columnOrder];
+    const draggedIndex = updatedOrder.indexOf(draggedColumn);
+    const targetIndex = updatedOrder.indexOf(targetColumnId);
+    
+    if (draggedIndex !== -1 && targetIndex !== -1) {
+      updatedOrder.splice(draggedIndex, 1);
+      updatedOrder.splice(targetIndex, 0, draggedColumn);
       
-      newOrder.splice(draggedIndex, 1);
-      newOrder.splice(dropIndex, 0, draggedColumn);
-      
-      setVisibleColumns(newOrder);
+      setColumnOrder(updatedOrder);
     }
     
     setDraggedColumn(null);
@@ -906,408 +1290,367 @@ const Index = () => {
   };
 
   const handleDragEnd = () => {
+    setDraggedColumn(null);
     setDragOverColumn(null);
   };
 
-  // Pagination logic
-  const totalPages = Math.ceil(filteredDeliveries.length / pageSize);
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = Math.min(startIndex + pageSize, filteredDeliveries.length);
-  const currentDeliveries = filteredDeliveries.slice(startIndex, endIndex);
-
-  const handlePageSizeChange = (size: number) => {
-    setPageSize(size);
-    setCurrentPage(1);
+  const getSortedVisibleColumns = () => {
+    return visibleColumns
+      .filter(column => columnOrder.includes(column))
+      .sort((a, b) => columnOrder.indexOf(a) - columnOrder.indexOf(b));
   };
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+  const sortedColumns = getSortedVisibleColumns();
+
+  const statusMapping: Record<string, string> = {
+    "Dropoff Complete": "completed",
+    "Canceled By Customer": "cancelled_order",
+    "In Transit": "in_transit",
+    "Picking Up": "started_working",
+    "Arrived For Pickup": "arrived_for_pickup"
   };
-  
-  // Chat handlers
-  const handleOpenChat = (type: 'customer' | 'courier', name: string) => {
-    if (type === 'customer') {
-      setSelectedCustomer(name);
-      setSelectedCourier("");
-    } else {
-      setSelectedCourier(name);
-      setSelectedCustomer("");
-    }
-    setIsChatOpen(true);
-  };
-  
-  const hasNewMessage = (type: 'customer' | 'courier', name: string) => {
-    if (!name) return false;
+
+  const getStatusDisplay = (statusValue: string): string => {
+    if (!statusDictionary) return statusValue;
     
-    if (type === 'customer') {
-      return usersWithMessages.customers.includes(name);
-    } else {
-      return usersWithMessages.couriers.includes(name);
+    const dictionaryId = statusMapping[statusValue];
+    if (!dictionaryId) return statusValue;
+    
+    const dictionaryItem = statusDictionary.items.find(item => 
+      item.id === dictionaryId
+    );
+    
+    return dictionaryItem ? dictionaryItem.value : statusValue;
+  };
+
+  const getStatusBadgeVariant = (status: string) => {
+    const dictionaryId = statusMapping[status];
+    
+    switch (dictionaryId) {
+      case "completed":
+        return "success";
+      case "cancelled_order":
+        return "destructive";
+      case "in_transit":
+        return "default";
+      case "started_working":
+      case "arrived_for_pickup":
+        return "warning";
+      default:
+        return "default";
     }
+  };
+
+  const handleCourierClick = (courierName: string) => {
+    if (!courierName) return; // Don't open chat for empty courier names
+    setSelectedCourier(courierName);
+    setIsChatOpen(true);
   };
 
   return (
-    <div className="flex h-screen bg-background">
-      <Sidebar 
-        collapsed={sidebarCollapsed} 
-        setCollapsed={setSidebarCollapsed}
-      />
-      <div className="flex flex-col flex-1 w-full">
-        <div className="container mx-auto py-6 max-w-full px-4 space-y-4">
-          <div className="flex flex-col space-y-2 xl:space-y-0 xl:flex-row xl:justify-between">
-            <div className="flex flex-col">
-              <h1 className="text-3xl font-bold tracking-tight">Deliveries</h1>
-              <p className="text-muted-foreground">
-                View and manage all delivery requests
-              </p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="h-10 gap-1 lg:gap-2"
-                  >
-                    <Clock className="h-4 w-4" />
-                    <span className="hidden sm:inline">Date Range</span>
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="end">
-                  <DateRangePicker
-                    date={dateRange}
-                    onChange={setDateRange}
+    <ThemeProvider>
+      <div className="bg-background flex h-screen overflow-hidden">
+        <Sidebar 
+          collapsed={sidebarCollapsed} 
+          setCollapsed={setSidebarCollapsed} 
+        />
+        
+        <main className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}>
+          {/* Fixed header with filters */}
+          <div className="px-4 py-6 flex-shrink-0 border-b">
+            <div className="flex flex-col space-y-4">
+              <div className="flex justify-between items-center">
+                <h1 className="text-2xl font-semibold">Deliveries</h1>
+                <span className="text-sm text-muted-foreground">
+                  All times are displayed using {timezone.replace('_', ' ')} timezone
+                </span>
+              </div>
+              
+              <div className="flex flex-wrap justify-between items-center gap-2">
+                <div className="flex items-center gap-2">
+                  <DateRangePicker 
+                    dateRange={dateRange}
+                    onDateRangeChange={setDateRange}
                   />
-                </PopoverContent>
-              </Popover>
-              
-              <TimezonePicker 
-                timezone={timezone} 
-                setTimezone={setTimezone} 
-              />
-              
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button 
-                    variant="outline"
-                    size="sm"
-                    className="h-10"
-                  >
+                  
+                  <Button variant="outline" className="flex items-center gap-2 text-sm h-9">
                     <Filter className="h-4 w-4" />
-                    <span className="hidden lg:inline ml-2">Filter</span>
+                    <span>Filters</span>
                   </Button>
-                </PopoverTrigger>
-                <PopoverContent align="end" className="w-80">
-                  <div className="grid gap-4">
-                    <div className="space-y-2">
-                      <h4 className="font-medium leading-none">Filter Deliveries</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Narrow down deliveries by specific criteria
-                      </p>
-                    </div>
-                    <div className="grid gap-2">
-                      <div className="grid grid-cols-3 items-center gap-4">
-                        <label htmlFor="status">Status</label>
-                        <Select defaultValue="all">
-                          <SelectTrigger id="status" className="col-span-2 h-8">
-                            <SelectValue placeholder="Select" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="all">All Statuses</SelectItem>
-                            <SelectItem value="complete">Completed</SelectItem>
-                            <SelectItem value="in-transit">In Transit</SelectItem>
-                            <SelectItem value="canceled">Canceled</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="grid grid-cols-3 items-center gap-4">
-                        <label htmlFor="courier">Courier</label>
-                        <Select defaultValue="all">
-                          <SelectTrigger id="courier" className="col-span-2 h-8">
-                            <SelectValue placeholder="Select" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="all">All Couriers</SelectItem>
-                            <SelectItem value="assigned">Assigned Only</SelectItem>
-                            <SelectItem value="unassigned">Unassigned Only</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
+                </div>
+                
+                <div className="flex items-center gap-2">
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="search"
+                      placeholder="Type to search"
+                      className="pl-8 h-9 w-[240px]"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
                   </div>
-                </PopoverContent>
-              </Popover>
+                  
+                  <TimezonePicker 
+                    selectedTimezone={timezone}
+                    onTimezoneChange={setTimezone}
+                  />
+                  
+                  <ColumnSelector 
+                    columns={availableColumns}
+                    visibleColumns={visibleColumns}
+                    setVisibleColumns={setVisibleColumns}
+                  />
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-sm font-semibold text-black mr-2">Views:</h2>
+                  <Tabs value={activeView} onValueChange={handleViewChange} className="w-auto">
+                    <TabsList className="inline-flex h-8 bg-muted space-x-1">
+                      <TabsTrigger 
+                        value="main" 
+                        className="px-3 text-xs rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                      >
+                        Main view
+                      </TabsTrigger>
+                      <TabsTrigger 
+                        value="attention" 
+                        className="px-3 text-xs rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                      >
+                        Attention Required
+                      </TabsTrigger>
+                    </TabsList>
+                  </Tabs>
+                </div>
+              </div>
             </div>
           </div>
           
-          <div className="flex flex-col space-y-4">
-            <div className="border rounded-lg shadow-sm bg-background">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between p-4 border-b">
-                <div className="flex flex-col space-y-1">
-                  <div className="flex items-center space-x-2">
-                    <Input
-                      placeholder="Search deliveries..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="h-8 w-[250px] sm:w-[300px] lg:w-[400px]"
-                    />
-                    <Search className="h-4 w-4 text-muted-foreground" />
-                  </div>
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <Tabs 
-                      defaultValue="main" 
-                      value={activeView} 
-                      onValueChange={setActiveView}
-                      className="w-full"
-                    >
-                      <TabsList className="ml-0 h-8">
-                        <TabsTrigger value="main" className="text-xs">
-                          All Deliveries
-                        </TabsTrigger>
-                        <TabsTrigger value="attention" className="text-xs">
-                          Attention Required ({counts.cancelled})
-                        </TabsTrigger>
-                        <TabsTrigger value="unassigned" className="text-xs">
-                          Unassigned
-                        </TabsTrigger>
-                      </TabsList>
-                    </Tabs>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center mt-4 md:mt-0">
-                  <div className="flex">
-                    <div className="pr-4 border-r">
-                      <p className="text-sm font-medium">Completed</p>
-                      <p className="text-2xl font-bold">{counts.completed}</p>
-                    </div>
-                    <div className="px-4 border-r">
-                      <p className="text-sm font-medium">In Progress</p>
-                      <p className="text-2xl font-bold">{counts.inProgress}</p>
-                    </div>
-                    <div className="pl-4">
-                      <p className="text-sm font-medium">Cancelled</p>
-                      <p className="text-2xl font-bold">{counts.cancelled}</p>
-                    </div>
-                  </div>
-                  <ColumnSelector
-                    columns={columnOptions}
-                    visibleColumns={visibleColumns}
-                    setVisibleColumns={setVisibleColumns}
-                    size="sm"
-                  />
-                </div>
-              </div>
-              
-              <div className="rounded-md border">
-                <ScrollArea orientation="both" className="h-[calc(100vh-320px)]">
-                  <div className="relative">
-                    <Table className="min-w-max">
-                      <TableHeader className="sticky top-0 z-10 bg-secondary">
-                        <TableRow>
-                          {visibleColumns.map((colId) => {
-                            const col = columnOptions.find(c => c.id === colId);
-                            return (
-                              <TableHead 
-                                key={colId}
-                                draggable
-                                dragOver={dragOverColumn === colId}
-                                onDragStart={() => handleDragStart(colId)}
-                                onDragOver={(e) => handleDragOver(e, colId)}
-                                onDrop={() => handleDrop(colId)}
-                                onDragEnd={handleDragEnd}
-                                className="whitespace-nowrap"
-                              >
-                                <div className="flex items-center gap-2">
-                                  <GripVertical className="h-4 w-4 text-muted-foreground" />
-                                  {col?.label || colId}
-                                </div>
-                              </TableHead>
-                            );
+          {/* Scrollable table area */}
+          <div className="flex-1 overflow-auto px-4">
+            <div className="border rounded-md overflow-hidden my-4">
+              <ScrollArea orientation="both">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      {sortedColumns.map(columnId => {
+                        const column = availableColumns.find(col => col.id === columnId);
+                        if (!column) return null;
+                        
+                        return (
+                          <TableHead 
+                            key={columnId}
+                            draggable={true}
+                            onDragStart={(e) => handleDragStart(e, columnId)}
+                            onDragOver={(e) => handleDragOver(e, columnId)}
+                            onDragEnd={handleDragEnd}
+                            onDrop={(e) => handleDrop(e, columnId)}
+                            className={`${columnId === "distance" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
+                          >
+                            <div className="flex items-center gap-1 overflow-hidden">
+                              <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
+                              <span className="truncate">{column.label}</span>
+                            </div>
+                          </TableHead>
+                        );
+                      })}
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {currentItems.length > 0 ? (
+                      currentItems.map((delivery) => (
+                        <TableRow key={delivery.id}>
+                          {sortedColumns.map(columnId => {
+                            switch (columnId) {
+                              case "status":
+                                return (
+                                  <TableCell key={columnId}>
+                                    <Badge 
+                                      variant={getStatusBadgeVariant(delivery.status) as any}
+                                      className={`${delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}`}
+                                    >
+                                      {getStatusDisplay(delivery.status)}
+                                    </Badge>
+                                  </TableCell>
+                                );
+                              case "packageId":
+                                return (
+                                  <TableCell key={columnId}>
+                                    <span className="font-sans text-sm">{delivery.packageId}</span>
+                                  </TableCell>
+                                );
+                              case "orderName":
+                                return <TableCell key={columnId}>{delivery.orderName}</TableCell>;
+                              case "customerName":
+                                return <TableCell key={columnId}>{delivery.customerName || "-"}</TableCell>;
+                              case "pickupTime":
+                                return <TableCell key={columnId}>{delivery.pickupTime}</TableCell>;
+                              case "pickupLocation":
+                                return (
+                                  <TableCell key={columnId}>
+                                    <div className="flex flex-col">
+                                      <span className="font-medium">{delivery.pickupLocation.name}</span>
+                                      <span className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</span>
+                                    </div>
+                                  </TableCell>
+                                );
+                              case "dropoffTime":
+                                return <TableCell key={columnId}>{delivery.dropoffTime}</TableCell>;
+                              case "dropoffLocation":
+                                return (
+                                  <TableCell key={columnId}>
+                                    <div className="flex flex-col">
+                                      <span className="font-medium">{delivery.dropoffLocation.name}</span>
+                                      <span className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</span>
+                                    </div>
+                                  </TableCell>
+                                );
+                              case "price":
+                                return <TableCell key={columnId}>{delivery.price}</TableCell>;
+                              case "tip":
+                                return <TableCell key={columnId}>{delivery.tip}</TableCell>;
+                              case "fees":
+                                return <TableCell key={columnId}>{delivery.fees}</TableCell>;
+                              case "courier":
+                                return (
+                                  <TableCell key={columnId}>
+                                    {delivery.courier ? (
+                                      <Button 
+                                        variant="link" 
+                                        className="p-0 h-auto font-normal text-primary" 
+                                        onClick={() => handleCourierClick(delivery.courier)}
+                                      >
+                                        {delivery.courier}
+                                      </Button>
+                                    ) : (
+                                      <span>-</span>
+                                    )}
+                                  </TableCell>
+                                );
+                              case "organization":
+                                return <TableCell key={columnId}>{delivery.organization}</TableCell>;
+                              case "distance":
+                                return <TableCell key={columnId} className="text-right">{delivery.distance}</TableCell>;
+                              default:
+                                return <TableCell key={columnId}></TableCell>;
+                            }
                           })}
                         </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {currentDeliveries.length > 0 ? (
-                          currentDeliveries.map((delivery) => (
-                            <TableRow key={delivery.id}>
-                              {visibleColumns.map((colId) => {
-                                if (colId === "status") {
-                                  return (
-                                    <TableCell key={`${delivery.id}-${colId}`}>
-                                      <Badge variant={getStatusVariant(delivery.status)}>
-                                        {delivery.status}
-                                      </Badge>
-                                    </TableCell>
-                                  );
-                                } else if (colId === "pickupLocation" || colId === "dropoffLocation") {
-                                  const location = delivery[colId as keyof typeof delivery] as any;
-                                  return (
-                                    <TableCell key={`${delivery.id}-${colId}`} className="max-w-[300px]">
-                                      <div className="flex flex-col">
-                                        <span className="font-medium">{location.name}</span>
-                                        <span className="text-muted-foreground text-xs">{location.address}</span>
-                                      </div>
-                                    </TableCell>
-                                  );
-                                } else if (colId === "customerName") {
-                                  return (
-                                    <TableCell key={`${delivery.id}-${colId}`}>
-                                      <div className="flex items-center gap-1">
-                                        {delivery[colId] ? (
-                                          <>
-                                            <span>{delivery[colId as keyof typeof delivery]}</span>
-                                            {hasNewMessage('customer', delivery[colId as string]) && (
-                                              <Button 
-                                                variant="ghost" 
-                                                size="icon" 
-                                                className="h-6 w-6 rounded-full"
-                                                onClick={() => handleOpenChat('customer', delivery[colId as string])}
-                                              >
-                                                <MessageCircle className="h-4 w-4 text-blue-500 fill-blue-100" />
-                                              </Button>
-                                            )}
-                                          </>
-                                        ) : (
-                                          <span className="text-muted-foreground">—</span>
-                                        )}
-                                      </div>
-                                    </TableCell>
-                                  );
-                                } else if (colId === "courier") {
-                                  return (
-                                    <TableCell key={`${delivery.id}-${colId}`}>
-                                      <div className="flex items-center gap-1">
-                                        {delivery[colId] ? (
-                                          <>
-                                            <span>{delivery[colId as keyof typeof delivery]}</span>
-                                            {hasNewMessage('courier', delivery[colId as string]) && (
-                                              <Button 
-                                                variant="ghost" 
-                                                size="icon" 
-                                                className="h-6 w-6 rounded-full"
-                                                onClick={() => handleOpenChat('courier', delivery[colId as string])}
-                                              >
-                                                <MessageCircle className="h-4 w-4 text-blue-500 fill-blue-100" />
-                                              </Button>
-                                            )}
-                                          </>
-                                        ) : (
-                                          <span className="text-muted-foreground">Unassigned</span>
-                                        )}
-                                      </div>
-                                    </TableCell>
-                                  );
-                                } else {
-                                  return (
-                                    <TableCell key={`${delivery.id}-${colId}`}>
-                                      {delivery[colId as keyof typeof delivery] || (
-                                        <span className="text-muted-foreground">—</span>
-                                      )}
-                                    </TableCell>
-                                  );
-                                }
-                              })}
-                            </TableRow>
-                          ))
-                        ) : (
-                          <TableRow>
-                            <TableCell colSpan={visibleColumns.length} className="h-24 text-center">
-                              No results found.
-                            </TableCell>
-                          </TableRow>
-                        )}
-                      </TableBody>
-                    </Table>
-                  </div>
-                </ScrollArea>
-                
-                <Pagination className="p-4 border-t">
-                  <div className="flex items-center justify-between w-full">
-                    <PaginationInfo 
-                      total={filteredDeliveries.length} 
-                      pageSize={pageSize}
-                      currentPage={currentPage}
-                    />
-                    
-                    <PaginationContent>
-                      <PaginationPrevious
-                        onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
-                      />
-                      
-                      {/* First page */}
-                      {currentPage > 2 && (
-                        <PaginationItem>
-                          <PaginationLink onClick={() => handlePageChange(1)}>1</PaginationLink>
-                        </PaginationItem>
-                      )}
-                      
-                      {/* Ellipsis */}
-                      {currentPage > 3 && <PaginationEllipsis />}
-                      
-                      {/* Page before current */}
-                      {currentPage > 1 && (
-                        <PaginationItem>
-                          <PaginationLink onClick={() => handlePageChange(currentPage - 1)}>
-                            {currentPage - 1}
-                          </PaginationLink>
-                        </PaginationItem>
-                      )}
-                      
-                      {/* Current page */}
-                      <PaginationItem>
-                        <PaginationLink isActive>{currentPage}</PaginationLink>
-                      </PaginationItem>
-                      
-                      {/* Page after current */}
-                      {currentPage < totalPages && (
-                        <PaginationItem>
-                          <PaginationLink onClick={() => handlePageChange(currentPage + 1)}>
-                            {currentPage + 1}
-                          </PaginationLink>
-                        </PaginationItem>
-                      )}
-                      
-                      {/* Ellipsis */}
-                      {currentPage < totalPages - 2 && <PaginationEllipsis />}
-                      
-                      {/* Last page */}
-                      {currentPage < totalPages - 1 && (
-                        <PaginationItem>
-                          <PaginationLink onClick={() => handlePageChange(totalPages)}>
-                            {totalPages}
-                          </PaginationLink>
-                        </PaginationItem>
-                      )}
-                      
-                      <PaginationNext
-                        onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                      />
-                    </PaginationContent>
-                    
-                    <PaginationSize 
-                      sizes={pageSizeOptions} 
-                      pageSize={pageSize} 
-                      onChange={handlePageSizeChange}
-                    />
-                  </div>
-                </Pagination>
-              </div>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={sortedColumns.length} className="h-24 text-center">
+                          No results found
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </ScrollArea>
             </div>
           </div>
-        </div>
+          
+          {/* Fixed footer with pagination */}
+          <div className="border-t bg-background px-4 py-3 flex justify-between items-center shadow-sm flex-shrink-0">
+            <PaginationInfo 
+              total={totalItems} 
+              pageSize={pageSize} 
+              currentPage={currentPage} 
+            />
+            
+            <Pagination className="flex-1 flex justify-center">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(1);
+                    }}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === 1}
+                  >
+                    <span className="sr-only">First page</span>
+                    ⟪
+                  </PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationPrevious
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage - 1);
+                    }}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === 1}
+                  />
+                </PaginationItem>
+                
+                {getPageNumbers().map((page, i) => (
+                  <PaginationItem key={i}>
+                    {page === -1 || page === -2 ? (
+                      <PaginationEllipsis />
+                    ) : (
+                      <PaginationLink 
+                        href="#" 
+                        isActive={page === currentPage}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handlePageChange(page);
+                        }}
+                      >
+                        {page}
+                      </PaginationLink>
+                    )}
+                  </PaginationItem>
+                ))}
+                
+                <PaginationItem>
+                  <PaginationNext
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage + 1);
+                    }}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === totalPages}
+                  />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(totalPages);
+                    }}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === totalPages}
+                  >
+                    <span className="sr-only">Last page</span>
+                    ⟫
+                  </PaginationLink>
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+            
+            <PaginationSize
+              sizes={pageSizeOptions}
+              pageSize={pageSize}
+              onChange={handlePageSizeChange}
+            />
+          </div>
+        </main>
       </div>
-      
-      {isChatOpen && (
-        <CourierChat 
-          isOpen={isChatOpen}
-          setIsOpen={setIsChatOpen}
-          courier={selectedCourier}
-          customer={selectedCustomer}
-        />
-      )}
-    </div>
+
+      {/* Courier Chat Component */}
+      <CourierChat 
+        open={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+        courierName={selectedCourier}
+      />
+    </ThemeProvider>
   );
 };
 
