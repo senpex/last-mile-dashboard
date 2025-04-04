@@ -40,6 +40,12 @@ const generateRandomRating = (): number => {
   return Number((Math.random() * 2 + 3).toFixed(1));
 };
 
+const generateRandomHireStatus = (): string => {
+  const hireStatuses = ['hired', 'left_vm', 'contact_again', 'not_interested', 'blacklist', 'out_of_service'];
+  const randomIndex = Math.floor(Math.random() * hireStatuses.length);
+  return hireStatuses[randomIndex];
+};
+
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{
     [key: string]: string;
@@ -48,6 +54,12 @@ const DriversPage = () => {
     [key: string]: string | undefined;
   }>({});
   const [statusDictionary, setStatusDictionary] = useState<{
+    [key: string]: string;
+  }>({});
+  const [hireStatusDictionary, setHireStatusDictionary] = useState<{
+    [key: string]: string;
+  }>({});
+  const [hireStatusColors, setHireStatusColors] = useState<{
     [key: string]: string;
   }>({});
   const [statusColors, setStatusColors] = useState<{
@@ -64,6 +76,7 @@ const DriversPage = () => {
     email: "john.doe@example.com",
     phone: "(123) 456-7890",
     status: "online",
+    hireStatus: "hired",
     transports: ["1", "3", "pickup_truck", "9ft_cargo_van"],
     rating: 4.8
   }, {
@@ -72,6 +85,7 @@ const DriversPage = () => {
     email: "jane.smith@example.com",
     phone: "(123) 456-7891",
     status: "offline",
+    hireStatus: "contact_again",
     transports: ["2"],
     rating: 3.5
   }, {
@@ -80,6 +94,7 @@ const DriversPage = () => {
     email: "mike.johnson@example.com",
     phone: "(123) 456-7892",
     status: "busy",
+    hireStatus: "blacklist",
     transports: ["4", "5"],
     rating: 5.0
   }, {
@@ -88,6 +103,7 @@ const DriversPage = () => {
     email: "alice.w@example.com",
     phone: getRandomPhone(),
     status: "online",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -96,6 +112,7 @@ const DriversPage = () => {
     email: "robert.m@example.com",
     phone: getRandomPhone(),
     status: "busy",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -104,6 +121,7 @@ const DriversPage = () => {
     email: "emily.d@example.com",
     phone: getRandomPhone(),
     status: "offline",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -112,6 +130,7 @@ const DriversPage = () => {
     email: "james.w@example.com",
     phone: getRandomPhone(),
     status: "online",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -120,6 +139,7 @@ const DriversPage = () => {
     email: "sarah.t@example.com",
     phone: getRandomPhone(),
     status: "busy",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -128,6 +148,7 @@ const DriversPage = () => {
     email: "daniel.a@example.com",
     phone: getRandomPhone(),
     status: "offline",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -136,6 +157,7 @@ const DriversPage = () => {
     email: "olivia.t@example.com",
     phone: getRandomPhone(),
     status: "online",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -144,6 +166,7 @@ const DriversPage = () => {
     email: "matthew.j@example.com",
     phone: getRandomPhone(),
     status: "busy",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -152,6 +175,7 @@ const DriversPage = () => {
     email: "sophia.w@example.com",
     phone: getRandomPhone(),
     status: "offline",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -160,6 +184,7 @@ const DriversPage = () => {
     email: "david.h@example.com",
     phone: getRandomPhone(),
     status: "online",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -168,6 +193,7 @@ const DriversPage = () => {
     email: "emma.m@example.com",
     phone: getRandomPhone(),
     status: "busy",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -176,6 +202,7 @@ const DriversPage = () => {
     email: "andrew.t@example.com",
     phone: getRandomPhone(),
     status: "offline",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -184,6 +211,7 @@ const DriversPage = () => {
     email: "isabella.g@example.com",
     phone: getRandomPhone(),
     status: "online",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -192,6 +220,7 @@ const DriversPage = () => {
     email: "joshua.m@example.com",
     phone: getRandomPhone(),
     status: "busy",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -200,6 +229,7 @@ const DriversPage = () => {
     email: "charlotte.r@example.com",
     phone: getRandomPhone(),
     status: "offline",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -208,6 +238,7 @@ const DriversPage = () => {
     email: "chris.c@example.com",
     phone: getRandomPhone(),
     status: "online",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -216,6 +247,7 @@ const DriversPage = () => {
     email: "amelia.r@example.com",
     phone: getRandomPhone(),
     status: "busy",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -224,6 +256,7 @@ const DriversPage = () => {
     email: "joseph.l@example.com",
     phone: getRandomPhone(),
     status: "offline",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -232,6 +265,7 @@ const DriversPage = () => {
     email: "mia.w@example.com",
     phone: getRandomPhone(),
     status: "online",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -240,6 +274,7 @@ const DriversPage = () => {
     email: "ethan.h@example.com",
     phone: getRandomPhone(),
     status: "busy",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -248,6 +283,7 @@ const DriversPage = () => {
     email: "harper.y@example.com",
     phone: getRandomPhone(),
     status: "offline",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -256,6 +292,7 @@ const DriversPage = () => {
     email: "alex.a@example.com",
     phone: getRandomPhone(),
     status: "online",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -264,6 +301,7 @@ const DriversPage = () => {
     email: "abigail.k@example.com",
     phone: getRandomPhone(),
     status: "busy",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -272,6 +310,7 @@ const DriversPage = () => {
     email: "ben.w@example.com",
     phone: getRandomPhone(),
     status: "offline",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -280,6 +319,7 @@ const DriversPage = () => {
     email: "sofia.s@example.com",
     phone: getRandomPhone(),
     status: "online",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -288,6 +328,7 @@ const DriversPage = () => {
     email: "william.g@example.com",
     phone: getRandomPhone(),
     status: "busy",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -296,6 +337,7 @@ const DriversPage = () => {
     email: "elizabeth.b@example.com",
     phone: getRandomPhone(),
     status: "offline",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -304,6 +346,7 @@ const DriversPage = () => {
     email: "michael.a@example.com",
     phone: getRandomPhone(),
     status: "online",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -312,6 +355,7 @@ const DriversPage = () => {
     email: "camila.n@example.com",
     phone: getRandomPhone(),
     status: "busy",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }, {
@@ -320,6 +364,7 @@ const DriversPage = () => {
     email: "jacob.h@example.com",
     phone: getRandomPhone(),
     status: "offline",
+    hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating()
   }]);
@@ -353,6 +398,10 @@ const DriversPage = () => {
     label: "Status",
     default: true
   }, {
+    id: "hireStatus",
+    label: "Hire Status",
+    default: true
+  }, {
     id: "actions",
     label: "Actions",
     default: true
@@ -376,6 +425,7 @@ const DriversPage = () => {
   useEffect(() => {
     loadTransportDictionary();
     loadStatusDictionary();
+    loadHireStatusDictionary();
   }, []);
 
   useEffect(() => {
@@ -513,6 +563,43 @@ const DriversPage = () => {
     }
   };
 
+  const loadHireStatusDictionary = () => {
+    const hireStatusDict = getDictionary("1455");
+    if (hireStatusDict && hireStatusDict.items.length > 0) {
+      console.log("Hire Status Dictionary Items:", hireStatusDict.items);
+      const statuses: {
+        [key: string]: string;
+      } = {};
+      const colors: {
+        [key: string]: string;
+      } = {};
+      
+      hireStatusDict.items.forEach(item => {
+        statuses[item.id] = item.value;
+        
+        if (item.id === 'hired') {
+          colors[item.id] = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+        } else if (item.id === 'blacklist') {
+          colors[item.id] = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+        } else if (item.id === 'left_vm' || item.id === 'contact_again') {
+          colors[item.id] = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+        } else if (item.id === 'out_of_service') {
+          colors[item.id] = 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
+        } else if (item.id === 'not_interested') {
+          colors[item.id] = 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
+        } else {
+          colors[item.id] = 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300';
+        }
+      });
+      
+      setHireStatusDictionary(statuses);
+      setHireStatusColors(colors);
+      console.log("Loaded hire status types:", statuses);
+    } else {
+      console.log("Hire status dictionary not found or empty for ID: 1455");
+    }
+  };
+
   const getRandomTransportIcon = () => {
     const transportTypes: TransportType[] = ['helper', 'car', 'suv', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
     const randomIndex = Math.floor(Math.random() * transportTypes.length);
@@ -581,6 +668,14 @@ const DriversPage = () => {
       </div>;
   };
 
+  const renderHireStatus = (hireStatusId: string) => {
+    const hireStatusText = hireStatusDictionary[hireStatusId] || `Unknown (${hireStatusId})`;
+    const hireStatusColorClass = hireStatusColors[hireStatusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
+    return <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${hireStatusColorClass}`}>
+        {hireStatusText}
+      </div>;
+  };
+
   return <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
         <div className="px-6 py-6 flex-1 overflow-auto">
@@ -640,6 +735,9 @@ const DriversPage = () => {
                             </TableCell>}
                           {sortedColumns.includes("status") && <TableCell>
                               {renderStatus(driver.status)}
+                            </TableCell>}
+                          {sortedColumns.includes("hireStatus") && <TableCell>
+                              {renderHireStatus(driver.hireStatus)}
                             </TableCell>}
                           {sortedColumns.includes("actions") && <TableCell>
                               <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
