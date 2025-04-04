@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import {
   Table,
@@ -153,7 +154,8 @@ const Drivers = () => {
                 <TableHead>Email</TableHead>
                 <TableHead>Phone</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Location</TableHead>
+                <TableHead className="w-[150px]">Location</TableHead>
+                <TableHead className="w-[180px] min-w-[180px]">Organization</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -179,6 +181,12 @@ const Drivers = () => {
                     </Badge>
                   </TableCell>
                   <TableCell>{driver.location}</TableCell>
+                  <TableCell className="w-[180px]">
+                    <div className="flex items-center space-x-1">
+                      <span className="truncate">Walmart Inc.</span>
+                      <MessageCircle size={16} className="flex-shrink-0 text-blue-500" />
+                    </div>
+                  </TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
