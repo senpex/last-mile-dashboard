@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { X, Send, Circle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 interface Message {
   id: string;
   content: string;
-  sender: "user" | "courier" | "customer";
+  sender: "user" | "courier";
   timestamp: Date;
 }
 
@@ -18,7 +17,6 @@ interface CourierChatProps {
   open: boolean;
   onClose: () => void;
   courierName: string;
-  customerName?: string;
   hasUnreadMessages?: boolean;
 }
 
@@ -26,7 +24,6 @@ const CourierChat: React.FC<CourierChatProps> = ({
   open, 
   onClose, 
   courierName, 
-  customerName,
   hasUnreadMessages = false 
 }) => {
   const [messageText, setMessageText] = useState("");
@@ -38,9 +35,6 @@ const CourierChat: React.FC<CourierChatProps> = ({
       timestamp: new Date(),
     },
   ]);
-
-  const chatName = customerName || courierName;
-  const senderType = customerName ? "customer" : "courier";
 
   const handleSendMessage = () => {
     if (!messageText.trim()) return;
@@ -56,13 +50,13 @@ const CourierChat: React.FC<CourierChatProps> = ({
     setMessageText("");
 
     setTimeout(() => {
-      const reply: Message = {
+      const courierReply: Message = {
         id: (Date.now() + 1).toString(),
         content: `I'll check on that right away and get back to you shortly.`,
-        sender: senderType,
+        sender: "courier",
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, reply]);
+      setMessages((prev) => [...prev, courierReply]);
     }, 1500);
   };
 
@@ -85,10 +79,10 @@ const CourierChat: React.FC<CourierChatProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Avatar>
-                <AvatarFallback>{getInitials(chatName)}</AvatarFallback>
+                <AvatarFallback>{getInitials(courierName)}</AvatarFallback>
               </Avatar>
               <DrawerTitle className="flex items-center gap-2">
-                {chatName}
+                {courierName}
                 {hasUnreadMessages && (
                   <Circle 
                     className="text-red-500 fill-red-500" 
