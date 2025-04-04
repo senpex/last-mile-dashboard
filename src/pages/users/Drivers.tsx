@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
@@ -15,15 +16,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis, PaginationInfo, PaginationSize } from "@/components/ui/pagination";
 import CourierChat from '@/components/chat/CourierChat';
 
-type StripeStatus = 'Unverified' | 'Pending' | 'Verified';
-type HireStatus = string;
-
-const getRandomStripeStatus = (): StripeStatus => {
-  const statuses: StripeStatus[] = ['Unverified', 'Pending', 'Verified'];
-  return statuses[Math.floor(Math.random() * statuses.length)];
-};
-
-const generateRandomPhone = (): string => {
+const getRandomPhone = (): string => {
   const areaCode = Math.floor(Math.random() * 900) + 100;
   const prefix = Math.floor(Math.random() * 900) + 100;
   const lineNumber = Math.floor(Math.random() * 9000) + 1000;
@@ -61,9 +54,6 @@ const DriversPage = () => {
   const [statusColors, setStatusColors] = useState<{
     [key: string]: string;
   }>({});
-  const [hireStatusDictionary, setHireStatusDictionary] = useState<{
-    [key: string]: string;
-  }>({});
   const [isLoading, setIsLoading] = useState(true);
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
@@ -76,9 +66,7 @@ const DriversPage = () => {
     phone: "(123) 456-7890",
     status: "online",
     transports: ["1", "3", "pickup_truck", "9ft_cargo_van"],
-    rating: 4.8,
-    stripe: getRandomStripeStatus(),
-    hireStatus: "active"
+    rating: 4.8
   }, {
     id: 6543,
     name: "Jane Smith",
@@ -86,9 +74,7 @@ const DriversPage = () => {
     phone: "(123) 456-7891",
     status: "offline",
     transports: ["2"],
-    rating: 3.5,
-    stripe: getRandomStripeStatus(),
-    hireStatus: "pending"
+    rating: 3.5
   }, {
     id: 7654,
     name: "Mike Johnson",
@@ -96,9 +82,7 @@ const DriversPage = () => {
     phone: "(123) 456-7892",
     status: "busy",
     transports: ["4", "5"],
-    rating: 5.0,
-    stripe: getRandomStripeStatus(),
-    hireStatus: "rejected"
+    rating: 5.0
   }, {
     id: 8001,
     name: "Alice Williams",
@@ -106,9 +90,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "active"
+    rating: generateRandomRating()
   }, {
     id: 8002,
     name: "Robert Miller",
@@ -116,9 +98,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "active"
+    rating: generateRandomRating()
   }, {
     id: 8003,
     name: "Emily Davis",
@@ -126,9 +106,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "pending"
+    rating: generateRandomRating()
   }, {
     id: 8004,
     name: "James Wilson",
@@ -136,9 +114,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "rejected"
+    rating: generateRandomRating()
   }, {
     id: 8005,
     name: "Sarah Taylor",
@@ -146,9 +122,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "active"
+    rating: generateRandomRating()
   }, {
     id: 8006,
     name: "Daniel Anderson",
@@ -156,9 +130,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "pending"
+    rating: generateRandomRating()
   }, {
     id: 8007,
     name: "Olivia Thomas",
@@ -166,9 +138,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "active"
+    rating: generateRandomRating()
   }, {
     id: 8008,
     name: "Matthew Jackson",
@@ -176,9 +146,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "rejected"
+    rating: generateRandomRating()
   }, {
     id: 8009,
     name: "Sophia White",
@@ -186,9 +154,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "active"
+    rating: generateRandomRating()
   }, {
     id: 8010,
     name: "David Harris",
@@ -196,9 +162,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "pending"
+    rating: generateRandomRating()
   }, {
     id: 8011,
     name: "Emma Martin",
@@ -206,9 +170,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "active"
+    rating: generateRandomRating()
   }, {
     id: 8012,
     name: "Andrew Thompson",
@@ -216,9 +178,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "rejected"
+    rating: generateRandomRating()
   }, {
     id: 8013,
     name: "Isabella Garcia",
@@ -226,9 +186,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "active"
+    rating: generateRandomRating()
   }, {
     id: 8014,
     name: "Joshua Martinez",
@@ -236,9 +194,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "pending"
+    rating: generateRandomRating()
   }, {
     id: 8015,
     name: "Charlotte Robinson",
@@ -246,9 +202,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "active"
+    rating: generateRandomRating()
   }, {
     id: 8016,
     name: "Christopher Clark",
@@ -256,9 +210,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "rejected"
+    rating: generateRandomRating()
   }, {
     id: 8017,
     name: "Amelia Rodriguez",
@@ -266,9 +218,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "active"
+    rating: generateRandomRating()
   }, {
     id: 8018,
     name: "Joseph Lewis",
@@ -276,9 +226,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "rejected"
+    rating: generateRandomRating()
   }, {
     id: 8019,
     name: "Mia Walker",
@@ -286,9 +234,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "active"
+    rating: generateRandomRating()
   }, {
     id: 8020,
     name: "Ethan Hall",
@@ -296,9 +242,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "rejected"
+    rating: generateRandomRating()
   }, {
     id: 8021,
     name: "Harper Young",
@@ -306,9 +250,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "active"
+    rating: generateRandomRating()
   }, {
     id: 8022,
     name: "Alexander Allen",
@@ -316,9 +258,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "pending"
+    rating: generateRandomRating()
   }, {
     id: 8023,
     name: "Abigail King",
@@ -326,9 +266,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "active"
+    rating: generateRandomRating()
   }, {
     id: 8024,
     name: "Benjamin Wright",
@@ -336,9 +274,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "rejected"
+    rating: generateRandomRating()
   }, {
     id: 8025,
     name: "Sofia Scott",
@@ -346,9 +282,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "active"
+    rating: generateRandomRating()
   }, {
     id: 8026,
     name: "William Green",
@@ -356,9 +290,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "pending"
+    rating: generateRandomRating()
   }, {
     id: 8027,
     name: "Elizabeth Baker",
@@ -366,9 +298,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "active"
+    rating: generateRandomRating()
   }, {
     id: 8028,
     name: "Michael Adams",
@@ -376,9 +306,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "online",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "rejected"
+    rating: generateRandomRating()
   }, {
     id: 8029,
     name: "Camila Nelson",
@@ -386,9 +314,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "busy",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "active"
+    rating: generateRandomRating()
   }, {
     id: 8030,
     name: "Jacob Hill",
@@ -396,9 +322,7 @@ const DriversPage = () => {
     phone: generateRandomPhone(),
     status: "offline",
     transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripe: getRandomStripeStatus(),
-    hireStatus: "pending"
+    rating: generateRandomRating()
   }]);
 
   const availableColumns: ColumnOption[] = [{
@@ -430,14 +354,6 @@ const DriversPage = () => {
     label: "Status",
     default: true
   }, {
-    id: "hireStatus",
-    label: "Hire status",
-    default: true
-  }, {
-    id: "stripe",
-    label: "Stripe",
-    default: true
-  }, {
     id: "actions",
     label: "Actions",
     default: true
@@ -461,7 +377,6 @@ const DriversPage = () => {
   useEffect(() => {
     loadTransportDictionary();
     loadStatusDictionary();
-    loadHireStatusDictionary();
   }, []);
 
   useEffect(() => {
@@ -535,21 +450,6 @@ const DriversPage = () => {
     return pages;
   };
 
-  const handleHireStatusChange = (driverId: number, newStatus: string) => {
-    setDrivers(prevDrivers => {
-      return prevDrivers.map(driver => {
-        if (driver.id === driverId) {
-          toast.success(`Driver ${driver.name}'s hire status updated to ${hireStatusDictionary[newStatus] || newStatus}`);
-          return {
-            ...driver,
-            hireStatus: newStatus
-          };
-        }
-        return driver;
-      });
-    });
-  };
-
   const handleCourierClick = (name: string) => {
     setSelectedCourier(name);
     setChatOpen(true);
@@ -614,31 +514,6 @@ const DriversPage = () => {
     }
   };
 
-  const loadHireStatusDictionary = () => {
-    const hireStatusDict = getDictionary("1455");
-    if (hireStatusDict && hireStatusDict.items.length > 0) {
-      console.log("Hire Status Dictionary Items:", hireStatusDict.items);
-      const statuses: {
-        [key: string]: string;
-      } = {};
-      hireStatusDict.items.forEach(item => {
-        statuses[item.id] = item.value;
-      });
-      setHireStatusDictionary(statuses);
-      console.log("Loaded hire status types:", statuses);
-    } else {
-      console.log("Hire status dictionary not found or empty for ID: 1455");
-      setHireStatusDictionary({
-        "hired": "Hired",
-        "left_vm": "Left VM",
-        "contact_again": "Contact Again",
-        "not_interested": "Not Interested",
-        "blacklist": "Blacklist",
-        "out_of_service": "Out of service"
-      });
-    }
-  };
-
   const getRandomTransportIcon = () => {
     const transportTypes: TransportType[] = ['helper', 'car', 'suv', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
     const randomIndex = Math.floor(Math.random() * transportTypes.length);
@@ -699,48 +574,12 @@ const DriversPage = () => {
       </div>;
   };
 
-  const renderStripeStatus = (status: StripeStatus) => {
-    let badgeVariant: "default" | "secondary" | "destructive" | "outline" | "success" | "warning" = "default";
-    switch (status) {
-      case "Verified":
-        badgeVariant = "success";
-        break;
-      case "Pending":
-        badgeVariant = "warning";
-        break;
-      case "Unverified":
-        badgeVariant = "outline";
-        break;
-    }
-    return <Badge variant={badgeVariant}>
-        {status}
-      </Badge>;
-  };
-
   const renderStatus = (statusId: string) => {
     const statusText = statusDictionary[statusId] || `Unknown (${statusId})`;
     const statusColorClass = statusColors[statusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
     return <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColorClass}`}>
         {statusText}
       </div>;
-  };
-
-  const renderHireStatus = (statusId: string, driverId: number) => {
-    if (Object.keys(hireStatusDictionary).length === 0) {
-      return <div className="text-sm text-muted-foreground">Loading...</div>;
-    }
-    return <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
-            {hireStatusDictionary[statusId] || statusId}
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" className="w-48">
-          {Object.entries(hireStatusDictionary).map(([key, value]) => <DropdownMenuItem key={key} onClick={() => handleHireStatusChange(driverId, key)} className={statusId === key ? "bg-muted" : ""}>
-              {value}
-            </DropdownMenuItem>)}
-        </DropdownMenuContent>
-      </DropdownMenu>;
   };
 
   return <Layout showFooter={false}>
@@ -802,12 +641,6 @@ const DriversPage = () => {
                             </TableCell>}
                           {sortedColumns.includes("status") && <TableCell>
                               {renderStatus(driver.status)}
-                            </TableCell>}
-                          {sortedColumns.includes("stripe") && <TableCell>
-                              {renderStripeStatus(driver.stripe)}
-                            </TableCell>}
-                          {sortedColumns.includes("hireStatus") && <TableCell>
-                              {renderHireStatus(driver.hireStatus, driver.id)}
                             </TableCell>}
                           {sortedColumns.includes("actions") && <TableCell>
                               <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
