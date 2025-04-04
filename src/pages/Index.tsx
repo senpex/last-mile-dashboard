@@ -44,6 +44,7 @@ import { getDictionary } from "@/lib/storage";
 import { Dictionary, DictionaryItem } from "@/types/dictionary";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import CourierChat from "@/components/chat/CourierChat";
 
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -61,6 +62,8 @@ const Index = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
   const [filteredDeliveries, setFilteredDeliveries] = useState<any[]>([]);
   const [activeView, setActiveView] = useState<string>("main");
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [selectedCourier, setSelectedCourier] = useState("");
   const pageSizeOptions = [10, 20, 50, 100];
 
   const deliveries = [
@@ -1333,6 +1336,12 @@ const Index = () => {
     }
   };
 
+  const handleCourierClick = (courierName: string) => {
+    if (!courierName) return; // Don't open chat for empty courier names
+    setSelectedCourier(courierName);
+    setIsChatOpen(true);
+  };
+
   return (
     <ThemeProvider>
       <div className="bg-background flex h-screen overflow-hidden">
@@ -1498,7 +1507,21 @@ const Index = () => {
                               case "fees":
                                 return <TableCell key={columnId}>{delivery.fees}</TableCell>;
                               case "courier":
-                                return <TableCell key={columnId}>{delivery.courier}</TableCell>;
+                                return (
+                                  <TableCell key={columnId}>
+                                    {delivery.courier ? (
+                                      <Button 
+                                        variant="link" 
+                                        className="p-0 h-auto font-normal text-primary" 
+                                        onClick={() => handleCourierClick(delivery.courier)}
+                                      >
+                                        {delivery.courier}
+                                      </Button>
+                                    ) : (
+                                      <span>-</span>
+                                    )}
+                                  </TableCell>
+                                );
                               case "organization":
                                 return <TableCell key={columnId}>{delivery.organization}</TableCell>;
                               case "distance":
@@ -1613,6 +1636,13 @@ const Index = () => {
           </div>
         </main>
       </div>
+
+      {/* Courier Chat Component */}
+      <CourierChat 
+        open={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+        courierName={selectedCourier}
+      />
     </ThemeProvider>
   );
 };
