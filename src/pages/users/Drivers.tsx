@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -7,6 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  TableContainer,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +25,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
+  PaginationEllipsis,
 } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -35,11 +37,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreVertical, Copy, Edit, Trash, Mail } from "lucide-react";
+import { MoreVertical, Copy, Edit, Trash, Mail, MessageCircle } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { Link } from "lucide-react";
-import { MessageCircle } from "lucide-react";
 import CourierChat from "@/components/chat/CourierChat";
 
 const Drivers = () => {
@@ -108,6 +109,14 @@ const Drivers = () => {
   const handleChatClose = () => {
     setChatOpen(false);
     setSelectedCourier(null);
+  };
+
+  const getPageNumbers = () => {
+    const numbers = [];
+    for (let i = 1; i <= pageCount; i++) {
+      numbers.push(i);
+    }
+    return numbers;
   };
 
   return (
@@ -218,11 +227,39 @@ const Drivers = () => {
             <SelectItem value="20">20</SelectItem>
           </SelectContent>
         </Select>
-        <Pagination
-          page={page}
-          pageCount={pageCount}
-          onPageChange={handlePageChange}
-        />
+        
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious 
+                onClick={() => handlePageChange(page - 1)}
+                className={page === 1 ? "pointer-events-none opacity-50" : ""}
+              />
+            </PaginationItem>
+            
+            {getPageNumbers().map((pageNum, i) => (
+              <PaginationItem key={i}>
+                {pageNum === -1 || pageNum === -2 ? (
+                  <PaginationEllipsis />
+                ) : (
+                  <PaginationLink
+                    isActive={pageNum === page}
+                    onClick={() => handlePageChange(pageNum)}
+                  >
+                    {pageNum}
+                  </PaginationLink>
+                )}
+              </PaginationItem>
+            ))}
+            
+            <PaginationItem>
+              <PaginationNext 
+                onClick={() => handlePageChange(page + 1)}
+                className={page === pageCount ? "pointer-events-none opacity-50" : ""}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
 
       {chatOpen && selectedCourier && (
