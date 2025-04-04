@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import {
   Table,
@@ -144,48 +145,52 @@ const Drivers = () => {
         </Select>
       </div>
 
-      <TableContainer className="rounded-md border">
-        <Table className="w-full table-fixed">
-          <TableHeader>
-            <TableRow>
-              <TableHead style={{ width: "200px" }}>Name</TableHead>
-              <TableHead style={{ width: "200px" }}>Email</TableHead>
-              <TableHead style={{ width: "150px" }}>Phone</TableHead>
-              <TableHead style={{ width: "100px" }}>Status</TableHead>
-              <TableHead style={{ width: "150px" }}>Location</TableHead>
-              <TableHead style={{ width: "180px" }}>Organization</TableHead>
-              <TableHead style={{ width: "100px" }} className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
+      <div className="rounded-md border overflow-hidden">
+        <table className="w-full">
+          <thead className="bg-muted/50">
+            <tr>
+              <th className="w-[200px] h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</th>
+              <th className="w-[200px] h-12 px-4 text-left align-middle font-medium text-muted-foreground">Email</th>
+              <th className="w-[150px] h-12 px-4 text-left align-middle font-medium text-muted-foreground">Phone</th>
+              <th className="w-[100px] h-12 px-4 text-left align-middle font-medium text-muted-foreground">Status</th>
+              <th className="w-[150px] h-12 px-4 text-left align-middle font-medium text-muted-foreground">Location</th>
+              <th className="w-[180px] h-12 px-4 text-left align-middle font-medium text-muted-foreground">Organization</th>
+              <th className="w-[100px] h-12 px-4 text-right align-middle font-medium text-muted-foreground">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y">
             {paginatedDrivers.map((driver) => (
-              <TableRow key={driver.id}>
-                <TableCell className="font-medium">
+              <tr key={driver.id} className="bg-card hover:bg-muted/50 transition-colors">
+                <td className="p-4 align-middle font-medium">
                   <div className="flex items-center">
-                    <Avatar className="mr-2 h-8 w-8 flex-shrink-0">
-                      <AvatarImage src={`https://i.pravatar.cc/150?img=${driver.id}`} />
-                      <AvatarFallback>{driver.name.slice(0, 2)}</AvatarFallback>
-                    </Avatar>
+                    <div className="h-8 w-8 mr-2 flex-shrink-0">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={`https://i.pravatar.cc/150?img=${driver.id}`} />
+                        <AvatarFallback>{driver.name.slice(0, 2)}</AvatarFallback>
+                      </Avatar>
+                    </div>
                     <span className="truncate">{driver.name}</span>
                   </div>
-                </TableCell>
-                <TableCell className="truncate">{driver.email}</TableCell>
-                <TableCell>{driver.phone}</TableCell>
-                <TableCell>
+                </td>
+                <td className="p-4 align-middle truncate">{driver.email}</td>
+                <td className="p-4 align-middle">{driver.phone}</td>
+                <td className="p-4 align-middle">
                   <Badge
                     variant={driver.status === "Active" ? "outline" : "secondary"}
                   >
                     {driver.status}
                   </Badge>
-                </TableCell>
-                <TableCell className="truncate">{driver.location}</TableCell>
-                <TableCell>
-                  <div className="flex items-center w-full">
+                </td>
+                <td className="p-4 align-middle truncate">{driver.location}</td>
+                <td className="p-4 align-middle">
+                  <div className="flex items-center space-x-1">
                     <span className="truncate max-w-[140px]">Walmart Inc.</span>
-                    <MessageCircle size={16} className="flex-shrink-0 text-blue-500 ml-1 min-w-[16px]" />
+                    <div className="flex-shrink-0 w-4 h-4">
+                      <MessageCircle size={16} className="text-blue-500" />
+                    </div>
                   </div>
-                </TableCell>
-                <TableCell className="text-right">
+                </td>
+                <td className="p-4 align-middle text-right">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" className="h-8 w-8 p-0">
@@ -214,12 +219,12 @@ const Drivers = () => {
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                </TableCell>
-              </TableRow>
+                </td>
+              </tr>
             ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+          </tbody>
+        </table>
+      </div>
 
       <div className="flex items-center justify-between mt-4">
         <Select value={String(itemsPerPage)} onValueChange={handleItemsPerPageChange}>
