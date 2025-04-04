@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis, PaginationInfo, PaginationSize } from "@/components/ui/pagination";
 import CourierChat from '@/components/chat/CourierChat';
+import { MessageCircle } from 'lucide-react';
 
 type StripeStatus = 'Unverified' | 'Pending' | 'Verified';
 type HireStatus = string;
@@ -794,10 +795,10 @@ const DriversPage = () => {
                             >
                               {driver.name}
                               {driversWithMessages.includes(driver.id) && (
-                                <Circle 
-                                  className="text-red-500 fill-red-500" 
-                                  size={8} 
-                                  strokeWidth={0}
+                                <MessageCircle 
+                                  className="text-primary" 
+                                  size={12} 
+                                  strokeWidth={2}
                                 />
                               )}
                             </button>
