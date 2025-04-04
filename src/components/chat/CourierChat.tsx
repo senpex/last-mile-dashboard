@@ -1,6 +1,5 @@
-
 import React, { useState } from "react";
-import { X, Send } from "lucide-react";
+import { X, Send, Circle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter } from "@/components/ui/drawer";
@@ -18,9 +17,15 @@ interface CourierChatProps {
   open: boolean;
   onClose: () => void;
   courierName: string;
+  hasUnreadMessages?: boolean;
 }
 
-const CourierChat: React.FC<CourierChatProps> = ({ open, onClose, courierName }) => {
+const CourierChat: React.FC<CourierChatProps> = ({ 
+  open, 
+  onClose, 
+  courierName, 
+  hasUnreadMessages = false 
+}) => {
   const [messageText, setMessageText] = useState("");
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -34,7 +39,6 @@ const CourierChat: React.FC<CourierChatProps> = ({ open, onClose, courierName })
   const handleSendMessage = () => {
     if (!messageText.trim()) return;
 
-    // Add user message
     const newMessage: Message = {
       id: Date.now().toString(),
       content: messageText,
@@ -45,7 +49,6 @@ const CourierChat: React.FC<CourierChatProps> = ({ open, onClose, courierName })
     setMessages((prev) => [...prev, newMessage]);
     setMessageText("");
 
-    // Simulate courier reply after a short delay
     setTimeout(() => {
       const courierReply: Message = {
         id: (Date.now() + 1).toString(),
@@ -78,7 +81,16 @@ const CourierChat: React.FC<CourierChatProps> = ({ open, onClose, courierName })
               <Avatar>
                 <AvatarFallback>{getInitials(courierName)}</AvatarFallback>
               </Avatar>
-              <DrawerTitle>{courierName}</DrawerTitle>
+              <DrawerTitle className="flex items-center gap-2">
+                {courierName}
+                {hasUnreadMessages && (
+                  <Circle 
+                    className="text-red-500 fill-red-500" 
+                    size={10} 
+                    strokeWidth={0}
+                  />
+                )}
+              </DrawerTitle>
             </div>
             <Button variant="ghost" size="icon" onClick={onClose}>
               <X className="h-4 w-4" />
