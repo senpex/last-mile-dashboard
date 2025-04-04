@@ -744,7 +744,7 @@ const DriversPage = () => {
   };
 
   return (
-    <Layout showFooter={false}>
+    <Layout>
       <div className="flex flex-col h-screen w-full">
         <div className="flex-1 overflow-auto">
           <div className="p-6 space-y-4">
