@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
 import { Button } from "@/components/ui/button";
-import { getDictionaries, getDictionary } from "@/lib/storage";
+import { getDictionaries, getDictionary, resetToDefaultDictionaries } from "@/lib/storage";
 import { Dictionary } from "@/types/dictionary";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
@@ -15,7 +15,7 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { ListFilter } from "lucide-react";
+import { ListFilter, RefreshCw } from "lucide-react";
 import DictionaryImport from "@/components/DictionaryImport";
 import {
   Table,
@@ -60,6 +60,15 @@ const Dictionaries = () => {
     });
   };
 
+  const handleReset = () => {
+    resetToDefaultDictionaries();
+    loadDictionaries();
+    toast({
+      title: "Dictionaries reset",
+      description: "All dictionaries have been reset to defaults"
+    });
+  };
+
   const getTransportIcon = (iconName?: string) => {
     if (iconName && iconName.trim() !== '') {
       try {
@@ -94,6 +103,15 @@ const Dictionaries = () => {
             <div className="flex justify-between items-center mb-4">
               <h1 className="text-2xl font-medium">Dictionaries</h1>
               <div className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleReset}
+                  className="flex items-center gap-1"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  Reset Defaults
+                </Button>
                 <DictionaryImport onImportComplete={handleImportComplete} />
                 <Button size="sm">
                   Create Dictionary
