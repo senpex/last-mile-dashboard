@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import {
   Table,
@@ -145,84 +144,82 @@ const Drivers = () => {
         </Select>
       </div>
 
-      <div className="rounded-md border">
-        <ScrollArea>
-          <Table className="table-fixed">
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[200px]">Name</TableHead>
-                <TableHead className="w-[200px]">Email</TableHead>
-                <TableHead className="w-[150px]">Phone</TableHead>
-                <TableHead className="w-[100px]">Status</TableHead>
-                <TableHead className="w-[150px]">Location</TableHead>
-                <TableHead className="w-[180px]">Organization</TableHead>
-                <TableHead className="w-[100px] text-right">Actions</TableHead>
+      <TableContainer className="rounded-md border">
+        <Table className="w-full table-fixed">
+          <TableHeader>
+            <TableRow>
+              <TableHead style={{ width: "200px" }}>Name</TableHead>
+              <TableHead style={{ width: "200px" }}>Email</TableHead>
+              <TableHead style={{ width: "150px" }}>Phone</TableHead>
+              <TableHead style={{ width: "100px" }}>Status</TableHead>
+              <TableHead style={{ width: "150px" }}>Location</TableHead>
+              <TableHead style={{ width: "180px" }}>Organization</TableHead>
+              <TableHead style={{ width: "100px" }} className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {paginatedDrivers.map((driver) => (
+              <TableRow key={driver.id}>
+                <TableCell className="font-medium">
+                  <div className="flex items-center">
+                    <Avatar className="mr-2 h-8 w-8 flex-shrink-0">
+                      <AvatarImage src={`https://i.pravatar.cc/150?img=${driver.id}`} />
+                      <AvatarFallback>{driver.name.slice(0, 2)}</AvatarFallback>
+                    </Avatar>
+                    <span className="truncate">{driver.name}</span>
+                  </div>
+                </TableCell>
+                <TableCell className="truncate">{driver.email}</TableCell>
+                <TableCell>{driver.phone}</TableCell>
+                <TableCell>
+                  <Badge
+                    variant={driver.status === "Active" ? "outline" : "secondary"}
+                  >
+                    {driver.status}
+                  </Badge>
+                </TableCell>
+                <TableCell className="truncate">{driver.location}</TableCell>
+                <TableCell>
+                  <div className="flex items-center w-full">
+                    <span className="truncate max-w-[140px]">Walmart Inc.</span>
+                    <MessageCircle size={16} className="flex-shrink-0 text-blue-500 ml-1 min-w-[16px]" />
+                  </div>
+                </TableCell>
+                <TableCell className="text-right">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="h-8 w-8 p-0">
+                        <span className="sr-only">Open menu</span>
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                      <DropdownMenuItem onClick={() => handleChatOpen(driver.name)}>
+                        <MessageCircle className="mr-2 h-4 w-4" />
+                        Message
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <Copy className="mr-2 h-4 w-4" />
+                        Copy info
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Edit className="mr-2 h-4 w-4" />
+                        Edit driver
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Trash className="mr-2 h-4 w-4" />
+                        Delete driver
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {paginatedDrivers.map((driver) => (
-                <TableRow key={driver.id}>
-                  <TableCell className="font-medium">
-                    <div className="flex items-center">
-                      <Avatar className="mr-2 h-8 w-8">
-                        <AvatarImage src={`https://i.pravatar.cc/150?img=${driver.id}`} />
-                        <AvatarFallback>{driver.name.slice(0, 2)}</AvatarFallback>
-                      </Avatar>
-                      <span className="truncate">{driver.name}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="truncate">{driver.email}</TableCell>
-                  <TableCell>{driver.phone}</TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={driver.status === "Active" ? "outline" : "secondary"}
-                    >
-                      {driver.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="truncate">{driver.location}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center space-x-1 w-full">
-                      <span className="truncate max-w-[140px]">Walmart Inc.</span>
-                      <MessageCircle size={16} className="flex-shrink-0 text-blue-500 ml-1" />
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <span className="sr-only">Open menu</span>
-                          <MoreVertical className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => handleChatOpen(driver.name)}>
-                          <MessageCircle className="mr-2 h-4 w-4" />
-                          Message
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                          <Copy className="mr-2 h-4 w-4" />
-                          Copy info
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Edit className="mr-2 h-4 w-4" />
-                          Edit driver
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Trash className="mr-2 h-4 w-4" />
-                          Delete driver
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </ScrollArea>
-      </div>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       <div className="flex items-center justify-between mt-4">
         <Select value={String(itemsPerPage)} onValueChange={handleItemsPerPageChange}>
