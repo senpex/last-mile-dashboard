@@ -107,41 +107,8 @@ const Index = () => {
     setActiveView(view);
   };
 
-  const getPageNumbers = (): number[] => {
-    if (!totalPages || totalPages <= 0) return [];
-    
-    const pages: number[] = [];
-    const maxPagesToShow = 5;
-    
-    if (totalPages <= maxPagesToShow) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      if (currentPage <= 3) {
-        for (let i = 1; i <= 4; i++) {
-          pages.push(i);
-        }
-        pages.push(-1);
-        pages.push(totalPages);
-      } else if (currentPage >= totalPages - 2) {
-        pages.push(1);
-        pages.push(-1);
-        for (let i = totalPages - 3; i <= totalPages; i++) {
-          pages.push(i);
-        }
-      } else {
-        pages.push(1);
-        pages.push(-1);
-        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-          pages.push(i);
-        }
-        pages.push(-2);
-        pages.push(totalPages);
-      }
-    }
-    
-    return pages;
+  const getPageNumbers = () => {
+    // ... keep existing getPageNumbers function
   };
 
   const availableColumns: ColumnOption[] = [
@@ -391,7 +358,7 @@ const Index = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {currentItems && currentItems.length > 0 ? (
+                    {currentItems.length > 0 ? (
                       currentItems.map((delivery) => (
                         <TableRow key={delivery.id}>
                           {sortedColumns.map(columnId => {
@@ -455,7 +422,7 @@ const Index = () => {
                                         >
                                           {delivery.courier}
                                         </Button>
-                                        {couriersWithMessages && couriersWithMessages.includes(delivery.courier) && (
+                                        {couriersWithMessages.includes(delivery.courier) && (
                                           <Circle 
                                             className="text-red-500 fill-red-500" 
                                             size={14} 
@@ -586,7 +553,7 @@ const Index = () => {
         open={isChatOpen}
         onClose={() => setIsChatOpen(false)}
         courierName={selectedCourier}
-        hasUnreadMessages={couriersWithMessages && couriersWithMessages.includes(selectedCourier)}
+        hasUnreadMessages={couriersWithMessages.includes(selectedCourier)}
       />
     </ThemeProvider>
   );
