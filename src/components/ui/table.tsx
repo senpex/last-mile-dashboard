@@ -94,13 +94,22 @@ TableHead.displayName = "TableHead"
 
 const TableCell = React.forwardRef<
   HTMLTableCellElement,
-  React.TdHTMLAttributes<HTMLTableCellElement>
->(({ className, ...props }, ref) => (
+  React.TdHTMLAttributes<HTMLTableCellElement> & {
+    withNotification?: boolean;
+  }
+>(({ className, withNotification, ...props }, ref) => (
   <td
     ref={ref}
     className={cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className)}
     {...props}
-  />
+  >
+    <div className="flex items-center gap-1">
+      {props.children}
+      {withNotification && (
+        <span className="block h-2 w-2 rounded-full bg-green-500 animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite]"></span>
+      )}
+    </div>
+  </td>
 ))
 TableCell.displayName = "TableCell"
 
