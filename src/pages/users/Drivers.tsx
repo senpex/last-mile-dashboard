@@ -466,6 +466,9 @@ const DriversPage = () => {
   const [selectedCourier, setSelectedCourier] = useState<string | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [driversWithMessages, setDriversWithMessages] = useState<number[]>([]);
+  const [customersWithMessages, setCustomersWithMessages] = useState<number[]>([]);
+  const [selectedPerson, setSelectedPerson] = useState<string | null>(null);
+  const [chatMode, setChatMode] = useState<'courier' | 'customer'>('courier');
 
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => 
@@ -510,9 +513,31 @@ const DriversPage = () => {
   }, [drivers]);
 
   useEffect(() => {
-    const randomDrivers = drivers.filter(() => Math.random() < 0.3).map(driver => driver.id);
-    setDriversWithMessages(randomDrivers);
+    // Randomly select 30% of drivers to have message icons
+    const randomDriverIds = drivers
+      .filter(d => d.name) // Only drivers with names
+      .filter(() => Math.random() < 0.3) // 30% chance
+      .map(d => d.id);
+    
+    // Randomly select 30% of customers to have message icons
+    const randomCustomerIds = drivers
+      .filter(() => Math.random() < 0.3) // 30% chance
+      .map(d => d.id);
+    
+    setDriversWithMessages(randomDriverIds);
+    setCustomersWithMessages(randomCustomerIds);
   }, [drivers]);
+
+  const handleChatOpen = (person: string, mode: 'courier' | 'customer') => {
+    setSelectedPerson(person);
+    setChatMode(mode);
+    setChatOpen(true);
+  };
+
+  const handleChatClose = () => {
+    setChatOpen(false);
+    setSelectedPerson(null);
+  };
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
@@ -558,11 +583,6 @@ const DriversPage = () => {
   const handleCourierClick = (name: string) => {
     setSelectedCourier(name);
     setChatOpen(true);
-  };
-
-  const handleChatClose = () => {
-    setChatOpen(false);
-    setSelectedCourier(null);
   };
 
   const loadTransportDictionary = () => {
@@ -825,7 +845,14 @@ const DriversPage = () => {
                       {currentItems.map((driver) => (
                         <TableRow key={driver.id}>
                           {sortedColumns.includes("id") && <TableCell className="font-sans">{driver.id}</TableCell>}
-                          {sortedColumns.includes("name") && <TableCell>{driver.name}</TableCell>}
+                          {sortedColumns.includes("name") && 
+                            <TableCell 
+                              hasMessage={customersWithMessages.includes(driver.id)}
+                              onMessageClick={() => handleChatOpen(driver.name, 'customer')}
+                            >
+                              {driver.name}
+                            </TableCell>
+                          }
                           {sortedColumns.includes("email") && <TableCell>{driver.email}</TableCell>}
                           {sortedColumns.includes("phone") && <TableCell>{driver.phone}</TableCell>}
                           {sortedColumns.includes("transport") && <TableCell>
@@ -954,7 +981,14 @@ const DriversPage = () => {
         </div>
       </div>
       
-      {chatOpen && selectedCourier && <CourierChat open={chatOpen} courierName={selectedCourier} onClose={handleChatClose} hasUnreadMessages={false} />}
+      {chatOpen && selectedPerson && (
+        <CourierChat 
+          open={chatOpen} 
+          courierName={selectedPerson} 
+          onClose={handleChatClose} 
+          hasUnreadMessages={true} 
+        />
+      )}
     </Layout>;
 };
 
