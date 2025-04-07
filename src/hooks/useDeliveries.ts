@@ -1,6 +1,12 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Dictionary } from "@/types/dictionary";
+
+import { useState, useEffect } from 'react';
+import type { Dictionary } from "@/types/dictionary";
 import { getDictionary } from "@/lib/storage";
+
+export interface DeliveryLocation {
+  name: string;
+  address: string;
+}
 
 export interface Delivery {
   id: number;
@@ -8,29 +14,20 @@ export interface Delivery {
   orderName: string;
   status: string;
   pickupTime: string;
-  pickupLocation: {
-    name: string;
-    address: string;
-  };
+  pickupLocation: DeliveryLocation;
   dropoffTime: string;
-  dropoffLocation: {
-    name: string;
-    address: string;
-  };
+  dropoffLocation: DeliveryLocation;
   price: string;
   tip: string;
   fees: string;
   courier: string;
   organization: string;
   distance: string;
+  customerName?: string; // Optional field that gets populated from dropoffLocation.name
 }
 
 export const useDeliveries = () => {
   const [filteredDeliveries, setFilteredDeliveries] = useState<Delivery[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
   const [statusDictionary, setStatusDictionary] = useState<Dictionary | null>(null);
 
   const deliveries: Delivery[] = [
@@ -740,17 +737,34 @@ export const useDeliveries = () => {
     }
   ];
 
+  // Load any status dictionary from storage if needed
+  useEffect(() => {
+    const loadStatusDictionary = async () => {
+      try {
+        const dictionary = await getDictionary("delivery-status");
+        setStatusDictionary(dictionary);
+      } catch (error) {
+        console.error("Error loading status dictionary:", error);
+      }
+    };
+    
+    loadStatusDictionary();
+  }, []);
+
+  // Add customer name field
+  useEffect(() => {
+    // Populate the deliveries with needed fields
+    const processedDeliveries = deliveries.map(delivery => ({
+      ...delivery,
+      customerName: delivery.dropoffLocation?.name || 'Unknown'
+    }));
+    
+    setFilteredDeliveries(processedDeliveries);
+  }, []);
+
   return {
     filteredDeliveries,
     setFilteredDeliveries,
-    currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
-    searchTerm,
-    setSearchTerm,
-    debouncedSearchTerm,
-    setDebouncedSearchTerm,
     statusDictionary
   };
 };
