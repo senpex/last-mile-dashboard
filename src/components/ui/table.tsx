@@ -76,16 +76,14 @@ const TableHead = React.forwardRef<
     onDrop?: React.DragEventHandler<HTMLTableCellElement>;
     onDragEnd?: React.DragEventHandler<HTMLTableCellElement>;
     dragOver?: boolean;
-    sortable?: boolean;
   }
->(({ className, dragOver, draggable, sortable, ...props }, ref) => (
+>(({ className, dragOver, draggable, ...props }, ref) => (
   <th
     ref={ref}
     className={cn(
       "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
       dragOver && "border-t-2 border-primary",
       draggable && "cursor-move",
-      sortable && "transition-colors hover:bg-muted/50",
       className
     )}
     draggable={draggable}
