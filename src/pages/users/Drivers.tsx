@@ -805,6 +805,178 @@ const DriversPage = () => {
   return (
     <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
+        <div className="p-6 space-y-6">
+          <div className="flex justify-between items-center">
+            <h1 className="text-2xl font-bold">Driver Management</h1>
+            <div className="flex space-x-2">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  placeholder="Search drivers..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 w-[250px] h-9"
+                />
+              </div>
+              <ColumnSelector
+                columns={availableColumns}
+                visibleColumns={visibleColumns}
+                setVisibleColumns={setVisibleColumns}
+              />
+              <Button className="px-3 h-9">
+                <Plus className="h-4 w-4 mr-2" />
+                Add Driver
+              </Button>
+            </div>
+          </div>
+
+          {isLoading ? (
+            <div className="flex justify-center items-center h-64">
+              <p className="text-lg">Loading drivers...</p>
+            </div>
+          ) : (
+            <TableContainer>
+              <Table>
+                <TableHeader className="sticky top-0 bg-background z-10">
+                  {sortedColumns.length > 0 && (
+                    <TableRow>
+                      {sortedColumns.map((columnId) => {
+                        const column = availableColumns.find(col => col.id === columnId);
+                        if (!column) return null;
+                        
+                        return (
+                          <TableHead 
+                            key={columnId}
+                            draggable={true}
+                            onDragStart={(e) => handleDragStart(e, columnId)}
+                            onDragOver={(e) => handleDragOver(e, columnId)}
+                            onDrop={(e) => handleDrop(e, columnId)}
+                            onDragEnd={handleDragEnd}
+                            dragOver={dragOverColumn === columnId}
+                            className={columnId === "id" ? "w-[80px]" : ""}
+                          >
+                            <div className="flex items-center gap-2">
+                              <GripVertical className="h-4 w-4 cursor-move opacity-50" />
+                              {column.label}
+                            </div>
+                          </TableHead>
+                        );
+                      })}
+                    </TableRow>
+                  )}
+                </TableHeader>
+                <TableBody>
+                  {currentItems.map((driver, idx) => (
+                    <TableRow key={driver.id}>
+                      {sortedColumns.includes("id") && (
+                        <TableCell>{driver.id}</TableCell>
+                      )}
+                      {sortedColumns.includes("name") && (
+                        <TableCell pulse={pulseCouriers.includes(idx)}>
+                          {driver.name}
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("email") && (
+                        <TableCell>{driver.email}</TableCell>
+                      )}
+                      {sortedColumns.includes("phone") && (
+                        <TableCell>{driver.phone}</TableCell>
+                      )}
+                      {sortedColumns.includes("transport") && (
+                        <TableCell>
+                          <div className="flex gap-1">
+                            {driver.transports.map((transportId, i) => (
+                              <div key={`${driver.id}-${transportId}-${i}`} className="tooltip-container" title={transportTypes[transportId] || transportId}>
+                                <TransportIcon 
+                                  transportType={transportId as TransportType} 
+                                  size={14}
+                                  className="h-[14px] w-[14px]" 
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </TableCell>
+                      )}
+                      {sortedColumns.includes("rating") && (
+                        <TableCell>{renderRating(driver.rating)}</TableCell>
+                      )}
+                      {sortedColumns.includes("status") && (
+                        <TableCell>{renderStatus(driver.status)}</TableCell>
+                      )}
+                      {sortedColumns.includes("hireStatus") && (
+                        <TableCell>{renderHireStatus(driver.hireStatus, driver.id)}</TableCell>
+                      )}
+                      {sortedColumns.includes("stripeStatus") && (
+                        <TableCell>{renderStripeStatus(driver.stripeStatus)}</TableCell>
+                      )}
+                      {sortedColumns.includes("actions") && (
+                        <TableCell>
+                          <div className="flex space-x-2">
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              className="h-8 w-8"
+                              onClick={() => handleCourierClick(driver.name)}
+                            >
+                              <MessageCircle className="h-4 w-4" />
+                              {driversWithMessages.includes(driver.id) && (
+                                <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full" />
+                              )}
+                            </Button>
+                          </div>
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+          
+          <Pagination>
+            <PaginationInfo 
+              totalItems={totalItems} 
+              pageSize={pageSize}
+              currentPage={currentPage}
+              startIndex={startIndex + 1}
+              endIndex={endIndex}
+            />
+            
+            <PaginationContent>
+              <PaginationPrevious 
+                onClick={() => handlePageChange(currentPage - 1)} 
+                disabled={currentPage === 1} 
+              />
+              
+              {getPageNumbers().map((pageNum, i) => (
+                pageNum === -1 || pageNum === -2 ? (
+                  <PaginationEllipsis key={`ellipsis-${i}`} />
+                ) : (
+                  <PaginationItem key={pageNum}>
+                    <PaginationLink
+                      isActive={pageNum === currentPage}
+                      onClick={() => handlePageChange(pageNum)}
+                    >
+                      {pageNum}
+                    </PaginationLink>
+                  </PaginationItem>
+                )
+              ))}
+              
+              <PaginationNext 
+                onClick={() => handlePageChange(currentPage + 1)} 
+                disabled={currentPage === totalPages || totalPages === 0} 
+              />
+            </PaginationContent>
+            
+            <PaginationSize 
+              options={pageSizeOptions}
+              value={pageSize.toString()}
+              onValueChange={(value) => handlePageSizeChange(Number(value))}
+            />
+          </Pagination>
+        </div>
+        
         {selectedCourier && chatOpen && (
           <CourierChat 
             open={chatOpen}
