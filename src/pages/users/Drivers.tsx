@@ -807,6 +807,7 @@ const DriversPage = () => {
       <div className="flex flex-col h-screen w-full">
         {selectedCourier && chatOpen && (
           <CourierChat 
+            open={chatOpen}
             courierName={selectedCourier} 
             onClose={handleChatClose} 
           />
