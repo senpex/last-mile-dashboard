@@ -466,6 +466,9 @@ const DriversPage = () => {
   const [selectedCourier, setSelectedCourier] = useState<string | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [driversWithMessages, setDriversWithMessages] = useState<number[]>([]);
+  const [customersWithMessages, setCustomersWithMessages] = useState<number[]>([]);
+  const [selectedPerson, setSelectedPerson] = useState<string | null>(null);
+  const [chatMode, setChatMode] = useState<'courier' | 'customer'>('courier');
 
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => 
@@ -482,27 +485,8 @@ const DriversPage = () => {
     loadTransportDictionary();
     loadStatusDictionary();
     loadHireStatusDictionary();
-
-    // Set 30% of drivers to have pulsing effect on their customer name cell
-    const driverCount = drivers.length;
-    const pulseCount = Math.floor(driverCount * 0.3);
-    
-    // Generate random indices for pulsing effect
-    const randomCustomerIndices = new Set<number>();
-    const randomCourierIndices = new Set<number>();
-    
-    while (randomCustomerIndices.size < pulseCount) {
-      randomCustomerIndices.add(Math.floor(Math.random() * driverCount));
-    }
-    
-    while (randomCourierIndices.size < pulseCount) {
-      randomCourierIndices.add(Math.floor(Math.random() * driverCount));
-    }
-    
-    setPulseCustomers(Array.from(randomCustomerIndices));
-    setPulseCouriers(Array.from(randomCourierIndices));
   }, []);
-  
+
   useEffect(() => {
     setColumnOrder(prevOrder => {
       const newOrder = [...prevOrder];
@@ -529,9 +513,31 @@ const DriversPage = () => {
   }, [drivers]);
 
   useEffect(() => {
-    const randomDrivers = drivers.filter(() => Math.random() < 0.3).map(driver => driver.id);
-    setDriversWithMessages(randomDrivers);
+    // Randomly select 30% of drivers to have message icons
+    const randomDriverIds = drivers
+      .filter(d => d.name) // Only drivers with names
+      .filter(() => Math.random() < 0.3) // 30% chance
+      .map(d => d.id);
+    
+    // Randomly select 30% of customers to have message icons
+    const randomCustomerIds = drivers
+      .filter(() => Math.random() < 0.3) // 30% chance
+      .map(d => d.id);
+    
+    setDriversWithMessages(randomDriverIds);
+    setCustomersWithMessages(randomCustomerIds);
   }, [drivers]);
+
+  const handleChatOpen = (person: string, mode: 'courier' | 'customer') => {
+    setSelectedPerson(person);
+    setChatMode(mode);
+    setChatOpen(true);
+  };
+
+  const handleChatClose = () => {
+    setChatOpen(false);
+    setSelectedPerson(null);
+  };
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
@@ -577,11 +583,6 @@ const DriversPage = () => {
   const handleCourierClick = (name: string) => {
     setSelectedCourier(name);
     setChatOpen(true);
-  };
-
-  const handleChatClose = () => {
-    setChatOpen(false);
-    setSelectedCourier(null);
   };
 
   const loadTransportDictionary = () => {
@@ -728,8 +729,6 @@ const DriversPage = () => {
   };
 
   const sortedColumns = getSortedVisibleColumns();
-  const [pulseCustomers, setPulseCustomers] = useState<number[]>([]);
-  const [pulseCouriers, setPulseCouriers] = useState<number[]>([]);
 
   const renderRating = (rating: number) => {
     return <div className="flex items-center">
@@ -802,191 +801,195 @@ const DriversPage = () => {
     );
   };
 
-  return (
-    <Layout showFooter={false}>
+  return <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
-        <div className="p-6 space-y-6">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold">Driver Management</h1>
-            <div className="flex space-x-2">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  placeholder="Search drivers..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 w-[250px] h-9"
-                />
+        <div className="px-6 py-6 flex-1 overflow-auto">
+          <div className="space-y-4">
+            <h1 className="text-2xl font-bold">Drivers Management</h1>
+            
+            <div className="flex items-center justify-between">
+              <div className="flex items-center h-9 gap-2">
+                <Button size="sm" className="flex items-center gap-1 text-xs px-2 py-1 h-9">
+                  <Plus className="w-3 h-3" />
+                  Add Driver
+                </Button>
               </div>
-              <ColumnSelector
-                columns={availableColumns}
-                visibleColumns={visibleColumns}
-                setVisibleColumns={setVisibleColumns}
-              />
-              <Button className="px-3 h-9">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Driver
-              </Button>
+              <div className="flex items-center h-9 gap-2">
+                <div className="relative h-9">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input type="search" placeholder="Search drivers..." className="w-[200px] pl-8 text-xs h-9" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+                </div>
+                <ColumnSelector columns={availableColumns} visibleColumns={visibleColumns} setVisibleColumns={setVisibleColumns} />
+              </div>
+            </div>
+
+            <div className="border rounded-md">
+              <ScrollArea orientation="horizontal">
+                <TableContainer stickyHeader={false}>
+                  <Table>
+                    <TableHeader className="bg-muted/50">
+                      <TableRow>
+                        {sortedColumns.map((columnId) => {
+                          const column = availableColumns.find(col => col.id === columnId);
+                          if (!column) return null;
+                          return <TableHead key={columnId} draggable={true} dragOver={dragOverColumn === columnId} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}>
+                            <div className="flex items-center gap-1 overflow-hidden">
+                              <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
+                              <span className="truncate">{column.label}</span>
+                            </div>
+                          </TableHead>;
+                        })}
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {currentItems.map((driver) => (
+                        <TableRow key={driver.id}>
+                          {sortedColumns.includes("id") && <TableCell className="font-sans">{driver.id}</TableCell>}
+                          {sortedColumns.includes("name") && 
+                            <TableCell 
+                              hasMessage={customersWithMessages.includes(driver.id)}
+                              onMessageClick={() => handleChatOpen(driver.name, 'customer')}
+                            >
+                              {driver.name}
+                            </TableCell>
+                          }
+                          {sortedColumns.includes("email") && <TableCell>{driver.email}</TableCell>}
+                          {sortedColumns.includes("phone") && <TableCell>{driver.phone}</TableCell>}
+                          {sortedColumns.includes("transport") && <TableCell>
+                              <div className="flex items-center gap-2">
+                                {driver.transports.map(transportId => <div key={transportId} className="flex items-center justify-center p-2 rounded-md bg-muted" title={transportTypes[transportId] || `Transport ID: ${transportId}`}>
+                                    <TransportIcon transportType={transportId as TransportType} size={14} className="h-[14px] w-[14px]" />
+                                  </div>)}
+                              </div>
+                            </TableCell>}
+                          {sortedColumns.includes("rating") && <TableCell>
+                              {renderRating(driver.rating)}
+                            </TableCell>}
+                          {sortedColumns.includes("status") && <TableCell>
+                              {renderStatus(driver.status)}
+                            </TableCell>}
+                          {sortedColumns.includes("hireStatus") && <TableCell>
+                              {renderHireStatus(driver.hireStatus, driver.id)}
+                            </TableCell>}
+                          {sortedColumns.includes("stripeStatus") && <TableCell>
+                              {renderStripeStatus(driver.stripeStatus)}
+                            </TableCell>}
+                          {sortedColumns.includes("actions") && <TableCell>
+                              <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
+                                View
+                              </Button>
+                            </TableCell>}
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </ScrollArea>
             </div>
           </div>
-
-          {isLoading ? (
-            <div className="flex justify-center items-center h-64">
-              <p className="text-lg">Loading drivers...</p>
-            </div>
-          ) : (
-            <TableContainer>
-              <Table>
-                <TableHeader className="sticky top-0 bg-background z-10">
-                  {sortedColumns.length > 0 && (
-                    <TableRow>
-                      {sortedColumns.map((columnId) => {
-                        const column = availableColumns.find(col => col.id === columnId);
-                        if (!column) return null;
-                        
-                        return (
-                          <TableHead 
-                            key={columnId}
-                            draggable={true}
-                            onDragStart={(e) => handleDragStart(e, columnId)}
-                            onDragOver={(e) => handleDragOver(e, columnId)}
-                            onDrop={(e) => handleDrop(e, columnId)}
-                            onDragEnd={handleDragEnd}
-                            dragOver={dragOverColumn === columnId}
-                            className={columnId === "id" ? "w-[80px]" : ""}
-                          >
-                            <div className="flex items-center gap-2">
-                              <GripVertical className="h-4 w-4 cursor-move opacity-50" />
-                              {column.label}
-                            </div>
-                          </TableHead>
-                        );
-                      })}
-                    </TableRow>
-                  )}
-                </TableHeader>
-                <TableBody>
-                  {currentItems.map((driver, idx) => (
-                    <TableRow key={driver.id}>
-                      {sortedColumns.includes("id") && (
-                        <TableCell>{driver.id}</TableCell>
-                      )}
-                      {sortedColumns.includes("name") && (
-                        <TableCell pulse={pulseCouriers.includes(idx)}>
-                          {driver.name}
-                        </TableCell>
-                      )}
-                      {sortedColumns.includes("email") && (
-                        <TableCell>{driver.email}</TableCell>
-                      )}
-                      {sortedColumns.includes("phone") && (
-                        <TableCell>{driver.phone}</TableCell>
-                      )}
-                      {sortedColumns.includes("transport") && (
-                        <TableCell>
-                          <div className="flex gap-1">
-                            {driver.transports.map((transportId, i) => (
-                              <div key={`${driver.id}-${transportId}-${i}`} className="tooltip-container" title={transportTypes[transportId] || transportId}>
-                                <TransportIcon 
-                                  transportType={transportId as TransportType} 
-                                  size={14}
-                                  className="h-[14px] w-[14px]" 
-                                />
-                              </div>
-                            ))}
-                          </div>
-                        </TableCell>
-                      )}
-                      {sortedColumns.includes("rating") && (
-                        <TableCell>{renderRating(driver.rating)}</TableCell>
-                      )}
-                      {sortedColumns.includes("status") && (
-                        <TableCell>{renderStatus(driver.status)}</TableCell>
-                      )}
-                      {sortedColumns.includes("hireStatus") && (
-                        <TableCell>{renderHireStatus(driver.hireStatus, driver.id)}</TableCell>
-                      )}
-                      {sortedColumns.includes("stripeStatus") && (
-                        <TableCell>{renderStripeStatus(driver.stripeStatus)}</TableCell>
-                      )}
-                      {sortedColumns.includes("actions") && (
-                        <TableCell>
-                          <div className="flex space-x-2">
-                            <Button 
-                              variant="ghost" 
-                              size="icon" 
-                              className="h-8 w-8"
-                              onClick={() => handleCourierClick(driver.name)}
-                            >
-                              <MessageCircle className="h-4 w-4" />
-                              {driversWithMessages.includes(driver.id) && (
-                                <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full" />
-                              )}
-                            </Button>
-                          </div>
-                        </TableCell>
-                      )}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          )}
-          
-          <Pagination>
-            <PaginationInfo 
-              totalItems={totalItems} 
-              pageSize={pageSize}
-              currentPage={currentPage}
-              startIndex={startIndex + 1}
-              endIndex={endIndex}
-            />
-            
-            <PaginationContent>
-              <PaginationPrevious 
-                onClick={() => handlePageChange(currentPage - 1)} 
-                disabled={currentPage === 1} 
-              />
-              
-              {getPageNumbers().map((pageNum, i) => (
-                pageNum === -1 || pageNum === -2 ? (
-                  <PaginationEllipsis key={`ellipsis-${i}`} />
-                ) : (
-                  <PaginationItem key={pageNum}>
-                    <PaginationLink
-                      isActive={pageNum === currentPage}
-                      onClick={() => handlePageChange(pageNum)}
-                    >
-                      {pageNum}
-                    </PaginationLink>
-                  </PaginationItem>
-                )
-              ))}
-              
-              <PaginationNext 
-                onClick={() => handlePageChange(currentPage + 1)} 
-                disabled={currentPage === totalPages || totalPages === 0} 
-              />
-            </PaginationContent>
-            
-            <PaginationSize 
-              options={pageSizeOptions}
-              value={pageSize.toString()}
-              onValueChange={(value) => handlePageSizeChange(Number(value))}
-            />
-          </Pagination>
         </div>
-        
-        {selectedCourier && chatOpen && (
-          <CourierChat 
-            open={chatOpen}
-            courierName={selectedCourier} 
-            onClose={handleChatClose} 
-          />
-        )}
+
+        <div className="border-t mt-auto w-full">
+          <div className="px-6 py-4 flex justify-between items-center">
+            <PaginationInfo 
+              total={totalItems} 
+              pageSize={pageSize} 
+              currentPage={currentPage} 
+            />
+            
+            <Pagination className="flex-1 flex justify-center">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(1);
+                    }}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === 1}
+                  >
+                    <span className="sr-only">First page</span>
+                    ⟪
+                  </PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationPrevious 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage - 1);
+                    }}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === 1}
+                  />
+                </PaginationItem>
+                
+                {getPageNumbers().map((page, i) => (
+                  <PaginationItem key={i}>
+                    {page === -1 || page === -2 ? (
+                      <PaginationEllipsis />
+                    ) : (
+                      <PaginationLink 
+                        href="#" 
+                        isActive={page === currentPage}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handlePageChange(page);
+                        }}
+                      >
+                        {page}
+                      </PaginationLink>
+                    )}
+                  </PaginationItem>
+                ))}
+                
+                <PaginationItem>
+                  <PaginationNext 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage + 1);
+                    }}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === totalPages}
+                  />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(totalPages);
+                    }}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === totalPages}
+                  >
+                    <span className="sr-only">Last page</span>
+                    ⟫
+                  </PaginationLink>
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+            
+            <PaginationSize
+              sizes={pageSizeOptions}
+              pageSize={pageSize}
+              onChange={handlePageSizeChange}
+            />
+          </div>
+        </div>
       </div>
-    </Layout>
-  );
+      
+      {chatOpen && selectedPerson && (
+        <CourierChat 
+          open={chatOpen} 
+          courierName={selectedPerson} 
+          onClose={handleChatClose} 
+          hasUnreadMessages={true} 
+        />
+      )}
+    </Layout>;
 };
 
 export default DriversPage;

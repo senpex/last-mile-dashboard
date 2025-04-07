@@ -17,11 +17,13 @@ const Layout = ({ children, showFooter = true }: LayoutProps) => {
         className="flex-1 flex flex-col overflow-hidden transition-all"
         style={{ 
           marginLeft: collapsed ? "70px" : "240px",
-          width: "calc(100vw - (var(--sidebar-width, 240px)))"
+          height: "100vh",
+          width: "calc(100vw - (var(--sidebar-width, 240px)))",
+          overflow: "auto"
         }}
       >
         <div 
-          className="zoom-content w-full h-full flex flex-col overflow-auto"
+          className="zoom-content w-full h-full flex flex-col"
           style={{
             transformOrigin: "top left",
             transform: `scale(var(--zoom-level, 1))`
