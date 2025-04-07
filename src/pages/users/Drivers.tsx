@@ -802,5 +802,18 @@ const DriversPage = () => {
     );
   };
 
-  return <Layout showFooter={false}>
+  return (
+    <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
+        {selectedCourier && chatOpen && (
+          <CourierChat 
+            courierName={selectedCourier} 
+            onClose={handleChatClose} 
+          />
+        )}
+      </div>
+    </Layout>
+  );
+};
+
+export default DriversPage;
