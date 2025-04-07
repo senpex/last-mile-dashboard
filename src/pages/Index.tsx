@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
 import { Button } from "@/components/ui/button";
@@ -79,18 +79,15 @@ const Index = () => {
   const [selectedCourier, setSelectedCourier] = useState("");
   const pageSizeOptions = [10, 20, 50, 100];
   
-  // Add sorting state
   const [sortField, setSortField] = useState<SortableField>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>(null);
 
-  // Generate a random set of deliveries that have new messages for demonstration purposes
   const [usersWithMessages, setUsersWithMessages] = useState<{
     couriers: string[];
     customers: string[];
   }>({ couriers: [], customers: [] });
 
   useEffect(() => {
-    // Randomly select 25% of couriers and customers to have message icons
     const couriersWithMessages = deliveries
       .filter(d => d.courier)
       .filter(() => Math.random() < 0.25)
@@ -108,7 +105,6 @@ const Index = () => {
   }, []);
 
   const deliveries = [
-    // Original 5 records
     {
       id: 1,
       packageId: "WMT-10042501",
@@ -219,7 +215,6 @@ const Index = () => {
       organization: "Curry Up Now",
       distance: "0.2 mi"
     },
-    // 40 new records with various statuses
     {
       id: 6,
       packageId: "TGT-80031245",
@@ -734,3 +729,382 @@ const Index = () => {
       pickupTime: "03/24/2025 10:30 AM",
       pickupLocation: {
         name: "Office Depot - Rogers",
+        address: "2000 W Walnut St, Rogers, AR 72756, US"
+      },
+      dropoffTime: "03/24/2025 12:00 PM",
+      dropoffLocation: {
+        name: "Harriet Coleman",
+        address: "543 NE Blake St, Bentonville, AR 72712, US"
+      },
+      price: "$67.95",
+      tip: "$8.00",
+      fees: "$3.99",
+      courier: "Brandon Wilson",
+      organization: "Office Depot",
+      distance: "6.5 mi"
+    }
+  ];
+
+  const handleSort = useCallback((field: SortableField) => {
+    if (sortField === field) {
+      if (sortDirection === 'asc') {
+        setSortDirection('desc');
+      } else if (sortDirection === 'desc') {
+        setSortDirection(null);
+        setSortField(null);
+      } else {
+        setSortDirection('asc');
+      }
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  }, [sortField, sortDirection]);
+
+  const getSortedDeliveries = useCallback(() => {
+    if (!sortField || !sortDirection) return deliveries;
+    
+    return [...deliveries].sort((a, b) => {
+      let valueA, valueB;
+
+      switch (sortField) {
+        default:
+          valueA = a[sortField];
+          valueB = b[sortField];
+          break;
+      }
+
+      if (typeof valueA === 'string' && typeof valueB === 'string') {
+        if (valueA.includes('$') && valueB.includes('$')) {
+          const numA = parseFloat(valueA.replace(/[$,]/g, '')) || 0;
+          const numB = parseFloat(valueB.replace(/[$,]/g, '')) || 0;
+          return sortDirection === 'asc' ? numA - numB : numB - numA;
+        }
+        
+        return sortDirection === 'asc' 
+          ? valueA.localeCompare(valueB) 
+          : valueB.localeCompare(valueA);
+      }
+
+      if (valueA < valueB) return sortDirection === 'asc' ? -1 : 1;
+      if (valueA > valueB) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }, [deliveries, sortField, sortDirection]);
+
+  const displayedDeliveries = useMemo(() => {
+    return getSortedDeliveries();
+  }, [getSortedDeliveries]);
+
+  const renderSortIcon = (field: SortableField) => {
+    if (sortField !== field) return null;
+    
+    return sortDirection === 'asc' 
+      ? <ArrowUp className="ml-1 h-4 w-4" /> 
+      : <ArrowDown className="ml-1 h-4 w-4" />;
+  };
+
+  return (
+    <div className="h-screen flex flex-col">
+      <div className="flex-grow flex">
+        <Sidebar collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} />
+        <main className="flex-1 p-6 overflow-auto">
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold tracking-tight">Deliveries</h1>
+            <p className="text-muted-foreground">View and manage all deliveries.</p>
+          </div>
+          
+          <div className="mb-6 flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row justify-between gap-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder="Search deliveries..."
+                  className="pl-8"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+
+              <div className="flex gap-2">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" size="icon">
+                      <Filter className="h-4 w-4" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80" align="end">
+                    <div className="space-y-4">
+                      <h4 className="font-medium leading-none">Filter Deliveries</h4>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Status</label>
+                        <Select>
+                          <SelectTrigger>
+                            <SelectValue placeholder="All Statuses" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">All Statuses</SelectItem>
+                            <SelectItem value="complete">Complete</SelectItem>
+                            <SelectItem value="transit">In Transit</SelectItem>
+                            <SelectItem value="canceled">Canceled</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className="flex items-center gap-2">
+                      <Clock className="h-4 w-4" />
+                      <span className="hidden sm:inline-block">Date Range</span>
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="end">
+                    <DateRangePicker
+                      date={dateRange}
+                      onDateChange={setDateRange}
+                    />
+                  </PopoverContent>
+                </Popover>
+
+                <TimezonePicker selectedTimezone={timezone} onTimezoneChange={setTimezone} />
+
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" size="icon">
+                      <Columns className="h-4 w-4" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80" align="end">
+                    <ColumnSelector />
+                  </PopoverContent>
+                </Popover>
+              </div>
+            </div>
+
+            <Tabs defaultValue="main" onValueChange={setActiveView}>
+              <TabsList>
+                <TabsTrigger value="main">All Deliveries</TabsTrigger>
+                <TabsTrigger value="active">Active</TabsTrigger>
+                <TabsTrigger value="complete">Complete</TabsTrigger>
+                <TabsTrigger value="canceled">Canceled</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+          
+          <TableContainer>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead 
+                    className="w-[140px]" 
+                    onClick={() => handleSort('packageId')}
+                    sortable
+                  >
+                    <div className="flex items-center">
+                      Package ID
+                      {renderSortIcon('packageId')}
+                    </div>
+                  </TableHead>
+                  <TableHead 
+                    className="min-w-[120px]" 
+                    onClick={() => handleSort('orderName')}
+                    sortable
+                  >
+                    <div className="flex items-center">
+                      Order Name
+                      {renderSortIcon('orderName')}
+                    </div>
+                  </TableHead>
+                  <TableHead 
+                    className="w-[140px]" 
+                    onClick={() => handleSort('status')}
+                    sortable
+                  >
+                    <div className="flex items-center">
+                      Status
+                      {renderSortIcon('status')}
+                    </div>
+                  </TableHead>
+                  <TableHead 
+                    className="w-[160px]" 
+                    onClick={() => handleSort('pickupTime')}
+                    sortable
+                  >
+                    <div className="flex items-center">
+                      Pickup Time
+                      {renderSortIcon('pickupTime')}
+                    </div>
+                  </TableHead>
+                  <TableHead>Pickup Location</TableHead>
+                  <TableHead 
+                    className="w-[160px]" 
+                    onClick={() => handleSort('dropoffTime')}
+                    sortable
+                  >
+                    <div className="flex items-center">
+                      Dropoff Time
+                      {renderSortIcon('dropoffTime')}
+                    </div>
+                  </TableHead>
+                  <TableHead>Dropoff Location</TableHead>
+                  <TableHead 
+                    className="w-[100px]" 
+                    onClick={() => handleSort('price')}
+                    sortable
+                  >
+                    <div className="flex items-center">
+                      Price
+                      {renderSortIcon('price')}
+                    </div>
+                  </TableHead>
+                  <TableHead 
+                    className="w-[100px]" 
+                    onClick={() => handleSort('tip')}
+                    sortable
+                  >
+                    <div className="flex items-center">
+                      Tip
+                      {renderSortIcon('tip')}
+                    </div>
+                  </TableHead>
+                  <TableHead 
+                    className="w-[100px]" 
+                    onClick={() => handleSort('fees')}
+                    sortable
+                  >
+                    <div className="flex items-center">
+                      Fees
+                      {renderSortIcon('fees')}
+                    </div>
+                  </TableHead>
+                  <TableHead 
+                    className="min-w-[120px]" 
+                    onClick={() => handleSort('courier')}
+                    sortable
+                  >
+                    <div className="flex items-center">
+                      Courier
+                      {renderSortIcon('courier')}
+                    </div>
+                  </TableHead>
+                  <TableHead 
+                    className="min-w-[160px]" 
+                    onClick={() => handleSort('organization')}
+                    sortable
+                  >
+                    <div className="flex items-center">
+                      Organization
+                      {renderSortIcon('organization')}
+                    </div>
+                  </TableHead>
+                  <TableHead 
+                    className="w-[100px]" 
+                    onClick={() => handleSort('distance')}
+                    sortable
+                  >
+                    <div className="flex items-center">
+                      Distance
+                      {renderSortIcon('distance')}
+                    </div>
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {displayedDeliveries.map((delivery) => (
+                  <TableRow key={delivery.id}>
+                    <TableCell className="font-medium">{delivery.packageId}</TableCell>
+                    <TableCell>{delivery.orderName}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center">
+                        <span className="bg-muted px-2 py-1 rounded text-xs">
+                          {delivery.status}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell>{delivery.pickupTime}</TableCell>
+                    <TableCell>
+                      <div className="flex flex-col">
+                        <span className="font-medium">{delivery.pickupLocation?.name}</span>
+                        <span className="text-xs text-muted-foreground">{delivery.pickupLocation?.address}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>{delivery.dropoffTime}</TableCell>
+                    <TableCell>
+                      <div className="flex flex-col">
+                        <span className="font-medium">{delivery.dropoffLocation?.name}</span>
+                        <span className="text-xs text-muted-foreground">{delivery.dropoffLocation?.address}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>{delivery.price}</TableCell>
+                    <TableCell>{delivery.tip}</TableCell>
+                    <TableCell>{delivery.fees}</TableCell>
+                    <TableCell>
+                      {delivery.courier ? (
+                        <div className="flex items-center">
+                          <span 
+                            className="cursor-pointer hover:underline"
+                            onClick={() => {
+                              setSelectedCourier(delivery.courier);
+                              setIsChatOpen(true);
+                            }}
+                          >
+                            {delivery.courier}
+                          </span>
+                          {usersWithMessages.couriers.includes(delivery.courier) && (
+                            <MessageCircle size={14} className="ml-1 text-red-500 fill-red-500" />
+                          )}
+                        </div>
+                      ) : ""}
+                    </TableCell>
+                    <TableCell>{delivery.organization}</TableCell>
+                    <TableCell>{delivery.distance}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+
+          <div className="mt-4">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious href="#" />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#" isActive>1</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#">2</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#">3</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationNext href="#" />
+                </PaginationItem>
+              </PaginationContent>
+              <PaginationSize sizes={pageSizeOptions} pageSize={pageSize} onChange={setPageSize} />
+              <PaginationInfo total={deliveries.length} pageSize={pageSize} currentPage={currentPage} />
+            </Pagination>
+          </div>
+        </main>
+      </div>
+
+      <CourierChat
+        open={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+        courierName={selectedCourier}
+        hasUnreadMessages={usersWithMessages.couriers.includes(selectedCourier)}
+      />
+    </div>
+  );
+};
+
+export default Index;
