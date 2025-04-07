@@ -203,17 +203,17 @@ const Index = () => {
 
   const handleStatusChange = (value: string) => {
     setPage(1);
-    setStatus(value || null);
+    setStatus(value === "all" ? null : value);
   };
 
   const handleCustomerChange = (value: string) => {
     setPage(1);
-    setCustomer(value || null);
+    setCustomer(value === "all" ? null : value);
   };
 
   const handleCourierChange = (value: string) => {
     setPage(1);
-    setCourier(value || null);
+    setCourier(value === "all" ? null : value);
   };
 
   const handleDateChange = (value: DateRange | undefined) => {
@@ -345,12 +345,12 @@ const Index = () => {
           
           <div className="mt-6 flex items-center justify-between">
             <div className="flex flex-wrap items-center gap-2">
-              <Select value={status || ""} onValueChange={handleStatusChange}>
+              <Select value={status || "all"} onValueChange={handleStatusChange}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All</SelectItem>
+                  <SelectItem value="all">All Statuses</SelectItem>
                   {statuses.map((status) => (
                     <SelectItem key={status} value={status}>
                       {status}
@@ -359,12 +359,12 @@ const Index = () => {
                 </SelectContent>
               </Select>
 
-              <Select value={customer || ""} onValueChange={handleCustomerChange}>
+              <Select value={customer || "all"} onValueChange={handleCustomerChange}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Filter by customer" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All</SelectItem>
+                  <SelectItem value="all">All Customers</SelectItem>
                   {customers.map((customer) => (
                     <SelectItem key={customer} value={customer}>
                       {customer}
@@ -373,12 +373,12 @@ const Index = () => {
                 </SelectContent>
               </Select>
 
-              <Select value={courier || ""} onValueChange={handleCourierChange}>
+              <Select value={courier || "all"} onValueChange={handleCourierChange}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Filter by courier" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All</SelectItem>
+                  <SelectItem value="all">All Couriers</SelectItem>
                   {couriers.map((courier) => (
                     <SelectItem key={courier} value={courier}>
                       {courier}
@@ -474,15 +474,25 @@ const Index = () => {
                         
                         if (column.id === "customerName") {
                           const customerName = delivery.dropoffLocation?.name;
-                          const hasMessage = customersWithMessages.includes(customerName);
+                          const hasMessage = customersWithMessages.includes(customerName || "");
                           
                           return (
                             <TableCell 
-                              key={column.id} 
-                              hasMessage={hasMessage}
-                              onMessageClick={() => handleChatOpen(customerName, 'customer')}
+                              key={column.id}
                             >
-                              {customerName}
+                              <div className="flex items-center">
+                                {customerName || "—"}
+                                {hasMessage && (
+                                  <Button 
+                                    variant="ghost" 
+                                    size="icon" 
+                                    onClick={() => handleChatOpen(customerName || "", 'customer')}
+                                    className="ml-2"
+                                  >
+                                    <MessageCircle className="h-4 w-4 text-blue-500" />
+                                  </Button>
+                                )}
+                              </div>
                             </TableCell>
                           );
                         }
@@ -494,10 +504,20 @@ const Index = () => {
                           return (
                             <TableCell 
                               key={column.id}
-                              hasMessage={hasMessage && !!courierName}
-                              onMessageClick={courierName ? () => handleChatOpen(courierName, 'courier') : undefined}
                             >
-                              {courierName || "—"}
+                              <div className="flex items-center">
+                                {courierName || "—"}
+                                {hasMessage && courierName && (
+                                  <Button 
+                                    variant="ghost" 
+                                    size="icon" 
+                                    onClick={() => handleChatOpen(courierName, 'courier')}
+                                    className="ml-2"
+                                  >
+                                    <MessageCircle className="h-4 w-4 text-blue-500" />
+                                  </Button>
+                                )}
+                              </div>
                             </TableCell>
                           );
                         }
@@ -529,7 +549,7 @@ const Index = () => {
                   onValueChange={(value) => handlePerPageChange(Number(value))}
                 >
                   <SelectTrigger className="h-8 w-[70px]">
-                    <SelectValue placeholder={per_page} />
+                    <SelectValue placeholder={per_page.toString()} />
                   </SelectTrigger>
                   <SelectContent>
                     {[5, 10, 20, 30, 40, 50].map((pageSize) => (
