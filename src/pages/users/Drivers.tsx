@@ -466,7 +466,6 @@ const DriversPage = () => {
   const [selectedCourier, setSelectedCourier] = useState<string | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [driversWithMessages, setDriversWithMessages] = useState<number[]>([]);
-  const [driversWithNotifications, setDriversWithNotifications] = useState<number[]>([]);
 
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => 
@@ -508,11 +507,11 @@ const DriversPage = () => {
 
   useEffect(() => {
     setFilteredDrivers(drivers);
-    
-    const randomDrivers = drivers
-      .filter(() => Math.random() < 0.3)
-      .map(driver => driver.id);
-    setDriversWithNotifications(randomDrivers);
+  }, [drivers]);
+
+  useEffect(() => {
+    const randomDrivers = drivers.filter(() => Math.random() < 0.3).map(driver => driver.id);
+    setDriversWithMessages(randomDrivers);
   }, [drivers]);
 
   const handlePageChange = (page: number) => {
@@ -826,11 +825,7 @@ const DriversPage = () => {
                       {currentItems.map((driver) => (
                         <TableRow key={driver.id}>
                           {sortedColumns.includes("id") && <TableCell className="font-sans">{driver.id}</TableCell>}
-                          {sortedColumns.includes("name") && 
-                            <TableCell withNotification={driversWithNotifications.includes(driver.id)}>
-                              {driver.name}
-                            </TableCell>
-                          }
+                          {sortedColumns.includes("name") && <TableCell>{driver.name}</TableCell>}
                           {sortedColumns.includes("email") && <TableCell>{driver.email}</TableCell>}
                           {sortedColumns.includes("phone") && <TableCell>{driver.phone}</TableCell>}
                           {sortedColumns.includes("transport") && <TableCell>
