@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -83,6 +84,7 @@ const Index = () => {
         name: "Saranya Natarajan",
         address: "1600 Emmerson St, Centerton, AR 72719, US"
       },
+      customerName: "Saranya Natarajan",
       price: "$33.00",
       tip: "$0.00",
       fees: "",
@@ -105,6 +107,7 @@ const Index = () => {
         name: "Roma Solis",
         address: "1051 Little Osage Ave, Bentonville, AR 72713, US"
       },
+      customerName: "Roma Solis",
       price: "$33.00",
       tip: "$0.00",
       fees: "",
@@ -127,6 +130,7 @@ const Index = () => {
         name: "Juan Galarraga",
         address: "3511 SW Awakening Ave, Bentonville, AR 72713, US"
       },
+      customerName: "Juan Galarraga",
       price: "$25.00",
       tip: "$0.00",
       fees: "",
@@ -149,6 +153,7 @@ const Index = () => {
         name: "Wendy Lancaster",
         address: "6305 SW Brush Blvd, Bentonville, AR 72713, US"
       },
+      customerName: "Wendy Lancaster",
       price: "$33.00",
       tip: "$0.00",
       fees: "",
@@ -171,6 +176,7 @@ const Index = () => {
         name: "Duane Morris LLP",
         address: "260 Homer Ave Ste 202, Palo Alto, CA 94301, USA"
       },
+      customerName: "Duane Morris LLP",
       price: "$0.00",
       tip: "$5.00",
       fees: "",
@@ -1061,6 +1067,13 @@ const Index = () => {
     }
   ];
 
+  // Update all remaining deliveries to include customerName
+  for (let i = 6; i <= 45; i++) {
+    if (deliveries[i-1] && deliveries[i-1].dropoffLocation && deliveries[i-1].dropoffLocation.name) {
+      deliveries[i-1].customerName = deliveries[i-1].dropoffLocation.name;
+    }
+  }
+
   useEffect(() => {
     const dictionary = getDictionary("19");
     if (dictionary) {
@@ -1114,6 +1127,7 @@ const Index = () => {
           delivery.dropoffTime,
           delivery.dropoffLocation.name,
           delivery.dropoffLocation.address,
+          delivery.customerName,
           delivery.price,
           delivery.tip,
           delivery.fees,
@@ -1209,6 +1223,7 @@ const Index = () => {
     { id: "status", label: "Status", default: true },
     { id: "packageId", label: "ID", default: true },
     { id: "orderName", label: "Order name", default: true },
+    { id: "customerName", label: "Customer Name", default: true }, // Add new customer name column
     { id: "pickupTime", label: "Pickup Time", default: true },
     { id: "pickupLocation", label: "Pickup Location", default: true },
     { id: "dropoffTime", label: "Dropoff Time", default: true },
@@ -1478,6 +1493,8 @@ const Index = () => {
                                 );
                               case "orderName":
                                 return <TableCell key={columnId}>{delivery.orderName}</TableCell>;
+                              case "customerName":
+                                return <TableCell key={columnId}>{delivery.customerName}</TableCell>;
                               case "pickupTime":
                                 return <TableCell key={columnId}>{delivery.pickupTime}</TableCell>;
                               case "pickupLocation":
