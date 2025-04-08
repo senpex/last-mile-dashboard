@@ -16,6 +16,7 @@ export interface Delivery {
   customerName: string;
   price: string;
   tip: string;
+  fees?: string;
   courier: string;
   organization: string;
   distance: string;
