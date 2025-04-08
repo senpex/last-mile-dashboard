@@ -73,9 +73,9 @@ export function DeliveryTable({
         />
         
         <div className={`flex-1 transition-all duration-300 ${isFilterSidebarOpen ? 'ml-2' : 'ml-0'}`}>
-          <div className="w-full min-w-[300px] overflow-x-auto mr-0 ml-auto"> {/* Removed border and padding classes */}
+          <div className="w-full min-w-[300px] overflow-x-auto mr-0 ml-auto">
             <ScrollArea orientation="horizontal">
-              <TableContainer stickyHeader={false}>
+              <TableContainer stickyHeader={false} className="p-[3px]">
                 <Table>
                   <TableHeaderComponent 
                     sortedColumns={sortedColumns}
