@@ -129,16 +129,16 @@ export function DeliveryFilters({
 
             <h2 className="text-sm font-semibold text-black mr-2">Views:</h2>
             <Tabs value={activeView} onValueChange={onActiveViewChange} className="w-auto">
-              <TabsList className="inline-flex h-8 bg-muted space-x-1">
+              <TabsList className="inline-flex h-6 bg-muted space-x-1">
                 <TabsTrigger 
                   value="main" 
-                  className="px-3 text-xs rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
                 >
                   Main view
                 </TabsTrigger>
                 <TabsTrigger 
                   value="attention" 
-                  className="px-3 text-xs rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
                 >
                   Attention Required
                 </TabsTrigger>
