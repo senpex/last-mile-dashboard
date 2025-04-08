@@ -51,7 +51,7 @@ export function DeliverySidebar({
       <div className="p-6">
         <h2 className="text-lg font-semibold mb-4">Filter Deliveries</h2>
         
-        <Accordion type="single" collapsible className="w-full" defaultValue="status">
+        <Accordion type="single" collapsible className="w-full" defaultValue="">
           <AccordionItem value="status" className="border-b">
             <AccordionTrigger className="py-4">Status</AccordionTrigger>
             <AccordionContent>
