@@ -17,7 +17,7 @@ const Layout = ({ children, showFooter = true }: LayoutProps) => {
         className="flex-1 flex flex-col overflow-hidden transition-all w-full"
         style={{ 
           marginLeft: collapsed ? "70px" : "240px",
-          width: collapsed ? "calc(100vw - 70px)" : "calc(100vw - 240px)",
+          width: collapsed ? "calc(100% - 70px)" : "calc(100% - 240px)",
           maxWidth: "100%",
           overflow: "auto"
         }}
