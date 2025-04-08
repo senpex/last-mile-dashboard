@@ -1,3 +1,4 @@
+
 import { Dictionary } from "@/types/dictionary";
 
 const DICTIONARIES_KEY = "dictionaries";
@@ -50,6 +51,30 @@ export const initializeDictionaries = (): void => {
           { id: "not_interested", value: "Not Interested", description: "Courier is not interested" },
           { id: "blacklist", value: "Blacklist", description: "Blacklisted courier" },
           { id: "out_of_service", value: "Out of service", description: "Currently out of service" }
+        ]
+      },
+      {
+        id: "1401",
+        dic_name: "Package - Pickup statuses",
+        items: [
+          { id: "dropoff_complete", value: "Dropoff Complete", description: "Delivery completed successfully" },
+          { id: "canceled_by_customer", value: "Canceled By Customer", description: "Order was canceled by customer" },
+          { id: "in_transit", value: "In Transit", description: "Package is in transit" },
+          { id: "picking_up", value: "Picking Up", description: "Courier is picking up the package" },
+          { id: "arrived_for_pickup", value: "Arrived For Pickup", description: "Courier arrived for pickup" },
+          { id: "recipient_unavailable", value: "Recipient Unavailable", description: "Recipient not available for delivery" },
+          { id: "draft_order", value: "Draft Order", description: "Order is in draft state" },
+          { id: "paid_order", value: "Paid Order", description: "Order has been paid" },
+          { id: "courier_selected", value: "Courier Selected", description: "A courier has been assigned" },
+          { id: "item_not_given", value: "Item Not Given", description: "Item was not provided for delivery" },
+          { id: "reported_order", value: "Reported Order", description: "Order has been reported" },
+          { id: "waiting_for_pay", value: "Waiting For Pay", description: "Waiting for payment" },
+          { id: "cancelled_by_admin", value: "Cancelled By Admin", description: "Order cancelled by administrator" },
+          { id: "scheduled_order", value: "Scheduled Order", description: "Order is scheduled for future delivery" },
+          { id: "repeated_order", value: "Repeated Order", description: "This is a recurring order" },
+          { id: "forgot", value: "Forgot", description: "Something was forgotten" },
+          { id: "started_working", value: "Started Working", description: "Courier started working on delivery" },
+          { id: "accepted_repeated_order", value: "Accepted Repeated Order", description: "Courier accepted recurring order" }
         ]
       }
     ];
