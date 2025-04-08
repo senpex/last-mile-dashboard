@@ -10,6 +10,7 @@ import { ColumnOption } from "@/components/table/ColumnSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DeliveryStatus } from "@/types/delivery";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { ChevronDown } from "lucide-react";
 
 interface DeliveryFiltersProps {
   searchTerm: string;
@@ -127,27 +128,29 @@ export function DeliveryFilters({
               </ToggleGroupItem>
             </ToggleGroup>
 
-            <h2 className="text-sm font-semibold text-black mr-2">Views:</h2>
-            <Tabs 
-              value={activeView} 
-              onValueChange={onActiveViewChange} 
-              className="w-auto"
-            >
-              <TabsList className="inline-flex h-6 bg-muted space-x-1 items-center justify-center">
-                <TabsTrigger 
-                  value="main" 
-                  className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                >
-                  Main view
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="attention" 
-                  className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                >
-                  Attention Required
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
+            <div className="flex items-center">
+              <h2 className="text-sm font-semibold text-black mr-2">Views:</h2>
+              <Tabs 
+                value={activeView} 
+                onValueChange={onActiveViewChange} 
+                className="w-auto"
+              >
+                <TabsList className="inline-flex h-6 bg-muted space-x-1 items-center justify-center">
+                  <TabsTrigger 
+                    value="main" 
+                    className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative"
+                  >
+                    Main view
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="attention" 
+                    className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative"
+                  >
+                    Attention Required
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
           </div>
         </div>
       </div>
