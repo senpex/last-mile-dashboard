@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import { ColumnOption } from "@/components/table/ColumnSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DeliveryStatus } from "@/types/delivery";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { User, Users } from "lucide-react";
 
 interface DeliveryFiltersProps {
   searchTerm: string;
@@ -101,30 +103,23 @@ export function DeliveryFilters({
         
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <h2 className="text-sm font-semibold text-black mr-2">Filters:</h2>
             <ToggleGroup 
               type="single" 
               value={showMyDeliveriesOnly ? "me" : "all"}
               onValueChange={(value) => {
-                if (value) { 
+                if (value) { // Check if value isn't empty (deselection)
                   onToggleMyDeliveries(value === "me");
                 }
               }}
-              className="inline-flex h-8 bg-muted space-x-1"
+              className="border rounded-md"
             >
-              <ToggleGroupItem 
-                value="me" 
-                aria-label="Show my deliveries" 
-                className="px-3 text-xs rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-              >
-                Me
+              <ToggleGroupItem value="me" aria-label="Show my deliveries" className="flex gap-1 text-xs data-[state=on]:bg-primary data-[state=on]:text-primary-foreground">
+                <User className="h-3.5 w-3.5" />
+                <span>Me</span>
               </ToggleGroupItem>
-              <ToggleGroupItem 
-                value="all" 
-                aria-label="Show all deliveries" 
-                className="px-3 text-xs rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-              >
-                All
+              <ToggleGroupItem value="all" aria-label="Show all deliveries" className="flex gap-1 text-xs data-[state=on]:bg-primary data-[state=on]:text-primary-foreground">
+                <Users className="h-3.5 w-3.5" />
+                <span>All</span>
               </ToggleGroupItem>
             </ToggleGroup>
 
