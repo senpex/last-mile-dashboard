@@ -1,9 +1,4 @@
 
-export interface Location {
-  name: string;
-  address: string;
-}
-
 export interface Delivery {
   id: number;
   packageId: string;
@@ -16,29 +11,8 @@ export interface Delivery {
   customerName: string;
   price: string;
   tip: string;
-  fees?: string; // Adding the fees property as optional
   courier: string;
   organization: string;
   distance: string;
   couriersEarnings?: string;
 }
-
-export type DeliveryStatus = 
-  | "Dropoff Complete"
-  | "Canceled By Customer" 
-  | "In Transit"
-  | "Arrived For Pickup"
-  | "Picking Up"
-  | "Recipient Unavailable"
-  | "Draft Order"
-  | "Paid Order"
-  | "Courier Selected"
-  | "Item Not Given"
-  | "Reported Order"
-  | "Waiting For Pay"
-  | "Cancelled By Admin"
-  | "Scheduled Order"
-  | "Repeated Order"
-  | "Forgot"
-  | "Started Working"
-  | "Accepted Repeated Order";
