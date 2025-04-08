@@ -19,7 +19,7 @@ const Index = () => {
   const [timezone, setTimezone] = useState<string>("America/New_York");
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedCourier, setSelectedCourier] = useState("");
-  const [showMyDeliveriesOnly, setShowMyDeliveriesOnly] = useState(false);
+  const [showMyDeliveriesOnly, setShowMyDeliveriesOnly] = useState(true);
 
   // Use our custom hook for table functionality
   const {

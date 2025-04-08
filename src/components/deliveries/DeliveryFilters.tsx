@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
@@ -43,7 +44,7 @@ export function DeliveryFilters({
   onActiveViewChange,
   onToggleFilterSidebar,
   isFilterSidebarOpen,
-  showMyDeliveriesOnly = false,
+  showMyDeliveriesOnly = true,
   onToggleMyDeliveries = () => {}
 }: DeliveryFiltersProps) {
   return (
