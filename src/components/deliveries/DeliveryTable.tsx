@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -75,10 +76,10 @@ export function DeliveryTable({
           <div className="flex flex-col h-full">
             <TableContainer 
               stickyHeader 
-              className="overflow-x-auto"
+              className="overflow-x-auto"  // Ensure horizontal scrolling
             >
-              <div className="min-w-[1400px]">
-                <Table>
+              <div className="min-w-[1400px] w-full">  {/* Ensure table is always at least 1400px wide */}
+                <Table className="w-full">
                   <TableHeader>
                     <TableRow>
                       {sortedColumns.map(columnId => {
