@@ -1,3 +1,4 @@
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
@@ -121,21 +122,26 @@ const TableContainer = React.forwardRef<
     height?: string;
     stickyHeader?: boolean;
   }
->(({ className, height = "h-[calc(100vh-230px)]", stickyHeader = true, ...props }, ref) => (
-  <div 
-    ref={ref}
-    className={cn(
-      "relative w-full border rounded-md overflow-auto",
-      height, 
-      className
-    )} 
-    style={{
-      scrollbarWidth: 'thin',
-      scrollbarColor: '#cbd5e1 transparent',
-    }}
-    {...props} 
-  />
-))
+>(({ className, height = "auto", stickyHeader = true, ...props }, ref) => {
+  // Use flexible height calculation to respond to the container
+  const heightClass = height === "auto" ? "h-full" : height;
+  
+  return (
+    <div 
+      ref={ref}
+      className={cn(
+        "relative w-full border rounded-md overflow-auto",
+        heightClass, 
+        className
+      )} 
+      style={{
+        scrollbarWidth: 'thin',
+        scrollbarColor: '#cbd5e1 transparent',
+      }}
+      {...props} 
+    />
+  );
+})
 TableContainer.displayName = "TableContainer"
 
 export {
