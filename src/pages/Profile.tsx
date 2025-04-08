@@ -1,5 +1,6 @@
+
 import { Layout } from "@/components/layout/Layout";
-import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil, Clock } from "lucide-react";
+import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -7,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { Separator } from "@/components/ui/separator";
 import React, { useState } from 'react';
 
 const Profile = () => {
@@ -35,15 +35,6 @@ const Profile = () => {
     { name: "Customer Notifications", description: "Send notification to customer if driver is delayed by more than 5 minutes" },
     { name: "Reschedule At Risk", description: "Attempt to reschedule if order is at risk of cancellation" }
   ]);
-  const [workingHours, setWorkingHours] = useState([
-    { day: "Monday", startTime: "09:00", endTime: "17:00", isActive: true },
-    { day: "Tuesday", startTime: "09:00", endTime: "17:00", isActive: true },
-    { day: "Wednesday", startTime: "09:00", endTime: "17:00", isActive: true },
-    { day: "Thursday", startTime: "09:00", endTime: "17:00", isActive: true },
-    { day: "Friday", startTime: "09:00", endTime: "17:00", isActive: true },
-    { day: "Saturday", startTime: "10:00", endTime: "15:00", isActive: false },
-    { day: "Sunday", startTime: "10:00", endTime: "15:00", isActive: false }
-  ]);
 
   const togglePasswordVisibility = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
     setter((prev) => !prev);
@@ -51,6 +42,7 @@ const Profile = () => {
 
   const handleAddRule = () => {
     if (isEditMode && editRuleIndex !== null) {
+      // Edit existing rule
       const updatedRules = [...attentionRules];
       updatedRules[editRuleIndex] = { 
         name: ruleName,
@@ -58,25 +50,29 @@ const Profile = () => {
       };
       setAttentionRules(updatedRules);
     } else {
+      // Add new rule
       setAttentionRules([...attentionRules, { 
         name: ruleName || `Rule ${attentionRules.length + 1}`,
         query: newRule 
       }]);
     }
     
+    // Reset and close dialog
     setNewRule('');
     setRuleName('');
     setIsEditMode(false);
     setEditRuleIndex(null);
     setIsAddRuleDialogOpen(false);
   };
-
+  
   const handleAddAutomation = () => {
+    // Add new automation
     setAutomations([...automations, { 
       name: automationName || `Automation ${automations.length + 1}`,
       description: newAutomation 
     }]);
     
+    // Reset and close dialog
     setNewAutomation('');
     setAutomationName('');
     setIsAddAutomationDialogOpen(false);
@@ -88,18 +84,6 @@ const Profile = () => {
     setIsEditMode(true);
     setEditRuleIndex(index);
     setIsAddRuleDialogOpen(true);
-  };
-
-  const handleWorkingHoursChange = (index: number, field: 'startTime' | 'endTime', value: string) => {
-    const updatedHours = [...workingHours];
-    updatedHours[index][field] = value;
-    setWorkingHours(updatedHours);
-  };
-
-  const toggleDayActive = (index: number) => {
-    const updatedHours = [...workingHours];
-    updatedHours[index].isActive = !updatedHours[index].isActive;
-    setWorkingHours(updatedHours);
   };
 
   return (
@@ -260,10 +244,6 @@ const Profile = () => {
                     <Bot className="w-4 h-4" />
                     Automations
                   </TabsTrigger>
-                  <TabsTrigger value="working-shift" className="flex items-center gap-2">
-                    <Clock className="w-4 h-4" />
-                    Working Shift
-                  </TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="attention-required">
@@ -332,66 +312,6 @@ const Profile = () => {
                     </CardContent>
                   </Card>
                 </TabsContent>
-
-                <TabsContent value="working-shift">
-                  <Card>
-                    <CardContent className="pt-6">
-                      <h3 className="text-lg font-medium mb-4">Working Hours</h3>
-                      <div className="space-y-4">
-                        <div className="grid grid-cols-12 gap-4 mb-2 font-medium text-sm text-muted-foreground">
-                          <div className="col-span-3">Day</div>
-                          <div className="col-span-3">Start Time</div>
-                          <div className="col-span-3">End Time</div>
-                          <div className="col-span-3">Active</div>
-                        </div>
-                        
-                        {workingHours.map((day, index) => (
-                          <div key={index}>
-                            {index > 0 && <Separator className="my-2" />}
-                            <div className="grid grid-cols-12 gap-4 items-center">
-                              <div className="col-span-3">
-                                <span className={day.isActive ? "font-medium" : "text-muted-foreground"}>
-                                  {day.day}
-                                </span>
-                              </div>
-                              <div className="col-span-3">
-                                <Input 
-                                  type="time" 
-                                  value={day.startTime} 
-                                  onChange={(e) => handleWorkingHoursChange(index, 'startTime', e.target.value)}
-                                  disabled={!day.isActive}
-                                  className={!day.isActive ? "opacity-50" : ""}
-                                />
-                              </div>
-                              <div className="col-span-3">
-                                <Input 
-                                  type="time" 
-                                  value={day.endTime} 
-                                  onChange={(e) => handleWorkingHoursChange(index, 'endTime', e.target.value)}
-                                  disabled={!day.isActive}
-                                  className={!day.isActive ? "opacity-50" : ""}
-                                />
-                              </div>
-                              <div className="col-span-3 flex items-center">
-                                <Checkbox 
-                                  id={`active-${index}`} 
-                                  checked={day.isActive}
-                                  onCheckedChange={() => toggleDayActive(index)}
-                                />
-                                <label 
-                                  htmlFor={`active-${index}`} 
-                                  className="ml-2 text-sm cursor-pointer"
-                                >
-                                  {day.isActive ? "Active" : "Inactive"}
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
               </Tabs>
               
               <div className="flex justify-end pt-6">
@@ -404,6 +324,7 @@ const Profile = () => {
         </Tabs>
       </div>
 
+      {/* Rule Dialog */}
       <Dialog open={isAddRuleDialogOpen} onOpenChange={setIsAddRuleDialogOpen}>
         <DialogContent>
           <DialogHeader>
@@ -450,6 +371,7 @@ const Profile = () => {
         </DialogContent>
       </Dialog>
 
+      {/* Automation Dialog */}
       <Dialog open={isAddAutomationDialogOpen} onOpenChange={setIsAddAutomationDialogOpen}>
         <DialogContent>
           <DialogHeader>
