@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
@@ -129,8 +128,12 @@ export function DeliveryFilters({
             </ToggleGroup>
 
             <h2 className="text-sm font-semibold text-black mr-2">Views:</h2>
-            <Tabs value={activeView} onValueChange={onActiveViewChange} className="w-auto">
-              <TabsList className="inline-flex h-6 bg-muted space-x-1">
+            <Tabs 
+              value={activeView} 
+              onValueChange={onActiveViewChange} 
+              className="w-auto"
+            >
+              <TabsList className="inline-flex h-6 bg-muted space-x-1 items-center justify-center">
                 <TabsTrigger 
                   value="main" 
                   className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
