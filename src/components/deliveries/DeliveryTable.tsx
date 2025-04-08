@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Table, TableContainer } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -7,6 +6,7 @@ import { ColumnOption } from "@/components/table/ColumnSelector";
 import { DeliverySidebar } from "@/components/deliveries/DeliverySidebar";
 import { TableHeaderComponent } from './TableHeader';
 import { TableBodyComponent } from './TableBody';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface DeliveryTableProps {
   items: Delivery[];
@@ -55,6 +55,8 @@ export function DeliveryTable({
   selectedCouriers,
   setSelectedCouriers
 }: DeliveryTableProps) {
+  const isMobile = useIsMobile();
+
   return (
     <div className="flex-1 overflow-hidden">
       <div className="flex h-full">
@@ -73,10 +75,10 @@ export function DeliveryTable({
         />
         
         <div className={`flex-1 transition-all duration-300 ${isFilterSidebarOpen ? 'ml-2' : 'ml-0'}`}>
-          <div className="border rounded-md p-[3px]"> {/* Added 3px padding */}
-            <ScrollArea orientation="horizontal">
-              <TableContainer stickyHeader={false}>
-                <Table>
+          <div className="border rounded-md p-[3px] h-full">
+            <ScrollArea orientation="horizontal" className="h-full">
+              <TableContainer className="h-full">
+                <Table className="w-full">
                   <TableHeaderComponent 
                     sortedColumns={sortedColumns}
                     availableColumns={availableColumns}
