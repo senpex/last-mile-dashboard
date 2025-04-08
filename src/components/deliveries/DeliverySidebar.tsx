@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -41,9 +42,19 @@ export function DeliverySidebar({
   const [statusItems, setStatusItems] = useState<DictionaryItem[]>([]);
   const [isAccordionOpen, setIsAccordionOpen] = useState<string>("");
   const [statusMapping, setStatusMapping] = useState<Record<string, string>>({});
-  const [statusCounts, setStatusCounts] = useState<Record<string, number>>({});
-  const [organizationCounts, setOrganizationCounts] = useState<Record<string, number>>({});
-  const [courierCounts, setCourierCounts] = useState<Record<string, number>>({});
+  
+  // Calculate counts from the provided props
+  const getStatusCount = (status: string): number => {
+    return deliveryStatuses.filter(s => s === status).length;
+  };
+  
+  const getOrganizationCount = (org: string): number => {
+    return organizations.filter(o => o === org).length;
+  };
+  
+  const getCourierCount = (courier: string): number => {
+    return couriers.filter(c => c === courier).length;
+  };
 
   useEffect(() => {
     const dictionary = getDictionary("19");
@@ -69,30 +80,6 @@ export function DeliverySidebar({
       console.warn("Dictionary with ID 19 not found");
     }
   }, []);
-
-  useEffect(() => {
-    const statusCount: Record<string, number> = {};
-    deliveryStatuses.forEach(status => {
-      statusCount[status] = (statusCount[status] || 0) + 1;
-    });
-    setStatusCounts(statusCount);
-    
-    const orgCount: Record<string, number> = {};
-    organizations.forEach(org => {
-      orgCount[org] = (orgCount[org] || 0) + 1;
-    });
-    setOrganizationCounts(orgCount);
-    
-    const courierCount: Record<string, number> = {};
-    couriers.forEach(courier => {
-      courierCount[courier] = (courierCount[courier] || 0) + 1;
-    });
-    setCourierCounts(courierCount);
-    
-    console.log("Status counts:", statusCount);
-    console.log("Organization counts:", orgCount);
-    console.log("Courier counts:", courierCount);
-  }, [deliveryStatuses, organizations, couriers]);
 
   const handleStatusChange = (statusValue: string, checked: boolean) => {
     const actualStatus = statusMapping[statusValue];
@@ -158,7 +145,8 @@ export function DeliverySidebar({
                     const actualStatus = statusMapping[item.value];
                     if (!actualStatus) return null;
                     
-                    const count = statusCounts[actualStatus] || 0;
+                    // Get real-time count for this status
+                    const count = getStatusCount(actualStatus);
                     
                     return (
                       <div key={item.id} className="flex items-center space-x-2">
@@ -188,7 +176,7 @@ export function DeliverySidebar({
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
-                  {organizations.map(org => (
+                  {organizations.filter((org, index, self) => self.indexOf(org) === index).map(org => (
                     <div key={org} className="flex items-center space-x-2">
                       <Checkbox 
                         id={`org-${org}`} 
@@ -200,7 +188,7 @@ export function DeliverySidebar({
                         className="flex flex-1 items-center justify-between"
                       >
                         <span>{org}</span>
-                        <Badge variant="outline" className="ml-auto">{organizationCounts[org] || 0}</Badge>
+                        <Badge variant="outline" className="ml-auto">{getOrganizationCount(org)}</Badge>
                       </Label>
                     </div>
                   ))}
@@ -214,7 +202,7 @@ export function DeliverySidebar({
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
-                  {couriers.map(courier => (
+                  {couriers.filter((courier, index, self) => self.indexOf(courier) === index).map(courier => (
                     <div key={courier} className="flex items-center space-x-2">
                       <Checkbox 
                         id={`courier-${courier}`} 
@@ -226,7 +214,7 @@ export function DeliverySidebar({
                         className="flex flex-1 items-center justify-between"
                       >
                         <span>{courier}</span>
-                        <Badge variant="outline" className="ml-auto">{courierCounts[courier] || 0}</Badge>
+                        <Badge variant="outline" className="ml-auto">{getCourierCount(courier)}</Badge>
                       </Label>
                     </div>
                   ))}
