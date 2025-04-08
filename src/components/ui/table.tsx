@@ -116,7 +116,7 @@ const TableCaption = React.forwardRef<
 ))
 TableCaption.displayName = "TableCaption"
 
-// Updated TableContainer component with horizontal scrolling support
+// TableContainer component with proper horizontal scrolling
 const TableContainer = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
@@ -127,7 +127,7 @@ const TableContainer = React.forwardRef<
   <div 
     ref={ref}
     className={cn(
-      "relative w-full border rounded-md overflow-auto", // Changed from overflow-x-auto to overflow-auto for both horizontal and vertical scrolling
+      "relative w-full border rounded-md overflow-x-auto", // Changed to overflow-x-auto for explicit horizontal scrolling
       height, 
       className
     )} 
