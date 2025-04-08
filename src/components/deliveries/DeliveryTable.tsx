@@ -73,8 +73,8 @@ export function DeliveryTable({
         />
         
         <div className={`flex-1 transition-all duration-300 ${isFilterSidebarOpen ? 'ml-2' : 'ml-0'}`}>
-          <div className="w-full min-w-[300px] overflow-x-auto mr-0 ml-auto">
-            <ScrollArea orientation="horizontal">
+          <div className="w-full max-w-full min-w-[300px] overflow-x-auto mr-0 ml-auto">
+            <ScrollArea orientation="horizontal" className="max-w-[calc(100vw-80px)]">
               <TableContainer stickyHeader={false} className="p-[3px]">
                 <Table>
                   <TableHeaderComponent 
