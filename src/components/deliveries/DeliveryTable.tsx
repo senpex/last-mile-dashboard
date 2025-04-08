@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -46,7 +45,7 @@ export function DeliveryTable({
   setSelectedStatuses
 }: DeliveryTableProps) {
   return (
-    <div className="w-full overflow-hidden px-px">
+    <div className="flex-1 overflow-hidden px-px">
       <div className="flex h-full">
         <DeliverySidebar 
           open={isFilterSidebarOpen} 
@@ -57,9 +56,9 @@ export function DeliveryTable({
         />
         
         <div className={`flex-1 transition-all duration-300 my-4 ${isFilterSidebarOpen ? 'ml-3' : ''}`}>
-          <div className="w-full overflow-hidden">
+          <div className="flex flex-col h-full">
             <TableContainer stickyHeader>
-              <div className="min-w-[1400px]">
+              <div style={{ minWidth: "1400px" }}>
                 <Table>
                   <TableHeader>
                     <TableRow>
