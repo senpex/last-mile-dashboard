@@ -22,7 +22,7 @@ export function TableHeaderComponent({
   handleDrop
 }: TableHeaderProps) {
   return (
-    <TableHeader>
+    <TableHeader className="bg-muted/50">
       <TableRow>
         {sortedColumns.map(columnId => {
           const column = availableColumns.find(col => col.id === columnId);

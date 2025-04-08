@@ -23,14 +23,7 @@ export function TableBodyComponent({
     return (
       <UiTableBody>
         <TableRow>
-          <DeliveryTableCell
-            columnId="empty"
-            delivery={{} as Delivery}
-            getStatusDisplay={getStatusDisplay}
-            getStatusBadgeVariant={getStatusBadgeVariant}
-            onCourierClick={onCourierClick}
-          />
-          <td colSpan={sortedColumns.length - 1} className="h-24 text-center">
+          <td colSpan={sortedColumns.length} className="h-24 text-center">
             No results found
           </td>
         </TableRow>

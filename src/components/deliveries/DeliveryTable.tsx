@@ -73,33 +73,28 @@ export function DeliveryTable({
         />
         
         <div className={`flex-1 transition-all duration-300 my-4 ${isFilterSidebarOpen ? 'ml-3' : 'ml-2'}`}>
-          <div className="flex flex-col h-full">
-            <TableContainer 
-              stickyHeader 
-              className="overflow-hidden h-[calc(100vh-230px)]"
-            >
-              <ScrollArea orientation="both" className="h-full">
-                <div className="min-w-[1400px] w-full">
-                  <Table className="w-full">
-                    <TableHeaderComponent 
-                      sortedColumns={sortedColumns}
-                      availableColumns={availableColumns}
-                      handleDragStart={handleDragStart}
-                      handleDragOver={handleDragOver}
-                      handleDragEnd={handleDragEnd}
-                      handleDrop={handleDrop}
-                    />
-                    <TableBodyComponent 
-                      items={items}
-                      sortedColumns={sortedColumns}
-                      getStatusDisplay={getStatusDisplay}
-                      getStatusBadgeVariant={getStatusBadgeVariant}
-                      onCourierClick={onCourierClick}
-                    />
-                  </Table>
-                </div>
-              </ScrollArea>
-            </TableContainer>
+          <div className="border rounded-md">
+            <ScrollArea orientation="horizontal">
+              <TableContainer stickyHeader={false}>
+                <Table>
+                  <TableHeaderComponent 
+                    sortedColumns={sortedColumns}
+                    availableColumns={availableColumns}
+                    handleDragStart={handleDragStart}
+                    handleDragOver={handleDragOver}
+                    handleDragEnd={handleDragEnd}
+                    handleDrop={handleDrop}
+                  />
+                  <TableBodyComponent 
+                    items={items}
+                    sortedColumns={sortedColumns}
+                    getStatusDisplay={getStatusDisplay}
+                    getStatusBadgeVariant={getStatusBadgeVariant}
+                    onCourierClick={onCourierClick}
+                  />
+                </Table>
+              </TableContainer>
+            </ScrollArea>
           </div>
         </div>
       </div>
