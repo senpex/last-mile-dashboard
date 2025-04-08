@@ -106,44 +106,42 @@ const Index = () => {
               onToggleMyDeliveries={handleToggleMyDeliveries}
             />
             
-            <div className="flex-1 flex flex-col overflow-hidden">
-              {/* Table Section */}
-              <DeliveryTable 
-                items={currentItems}
-                sortedColumns={sortedColumns}
-                availableColumns={availableColumns}
-                getStatusDisplay={getStatusDisplay}
-                getStatusBadgeVariant={getStatusBadgeVariant}
-                onCourierClick={handleCourierClick}
-                handleDragStart={handleDragStart}
-                handleDragOver={handleDragOver}
-                handleDragEnd={handleDragEnd}
-                handleDrop={handleDrop}
-                isFilterSidebarOpen={isFilterSidebarOpen}
-                toggleFilterSidebar={toggleFilterSidebar}
-                allDeliveryStatuses={allDeliveryStatuses}
-                selectedStatuses={selectedStatuses}
-                setSelectedStatuses={setSelectedStatuses}
-                allOrganizations={allOrganizations}
-                selectedOrganizations={selectedOrganizations}
-                setSelectedOrganizations={setSelectedOrganizations}
-                allCouriers={allCouriers}
-                selectedCouriers={selectedCouriers}
-                setSelectedCouriers={setSelectedCouriers}
-              />
-              
-              {/* Pagination Section */}
-              <DeliveryPagination 
-                currentPage={currentPage}
-                totalPages={totalPages}
-                totalItems={totalItems}
-                pageSize={pageSize}
-                pageNumbers={getPageNumbers()}
-                pageSizeOptions={pageSizeOptions}
-                onPageChange={handlePageChange}
-                onPageSizeChange={handlePageSizeChange}
-              />
-            </div>
+            {/* Table Section */}
+            <DeliveryTable 
+              items={currentItems}
+              sortedColumns={sortedColumns}
+              availableColumns={availableColumns}
+              getStatusDisplay={getStatusDisplay}
+              getStatusBadgeVariant={getStatusBadgeVariant}
+              onCourierClick={handleCourierClick}
+              handleDragStart={handleDragStart}
+              handleDragOver={handleDragOver}
+              handleDragEnd={handleDragEnd}
+              handleDrop={handleDrop}
+              isFilterSidebarOpen={isFilterSidebarOpen}
+              toggleFilterSidebar={toggleFilterSidebar}
+              allDeliveryStatuses={allDeliveryStatuses}
+              selectedStatuses={selectedStatuses}
+              setSelectedStatuses={setSelectedStatuses}
+              allOrganizations={allOrganizations}
+              selectedOrganizations={selectedOrganizations}
+              setSelectedOrganizations={setSelectedOrganizations}
+              allCouriers={allCouriers}
+              selectedCouriers={selectedCouriers}
+              setSelectedCouriers={setSelectedCouriers}
+            />
+            
+            {/* Pagination Section */}
+            <DeliveryPagination 
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              pageSize={pageSize}
+              pageNumbers={getPageNumbers()}
+              pageSizeOptions={pageSizeOptions}
+              onPageChange={handlePageChange}
+              onPageSizeChange={handlePageSizeChange}
+            />
           </main>
         </div>
       </div>

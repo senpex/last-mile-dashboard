@@ -14,11 +14,11 @@ const Layout = ({ children, showFooter = true }: LayoutProps) => {
     <div className="flex h-screen overflow-hidden bg-background">
       <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
       <main 
-        className="flex-1 flex flex-col overflow-hidden transition-all w-full"
+        className="flex-1 flex flex-col overflow-hidden transition-all"
         style={{ 
           marginLeft: collapsed ? "70px" : "240px",
-          width: collapsed ? "calc(100% - 70px)" : "calc(100% - 240px)",
-          maxWidth: "100%",
+          height: "100vh",
+          width: "calc(100vw - (var(--sidebar-width, 240px)))",
           overflow: "auto"
         }}
       >
