@@ -127,7 +127,7 @@ const TableContainer = React.forwardRef<
   <div 
     ref={ref}
     className={cn(
-      "relative w-full border rounded-md overflow-x-auto", // Added overflow-x-auto 
+      "relative w-full border rounded-md overflow-auto", // Changed from overflow-x-auto to overflow-auto for both horizontal and vertical scrolling
       height, 
       className
     )} 
