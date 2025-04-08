@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Table, TableContainer } from "@/components/ui/table";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 import { DeliverySidebar } from "@/components/deliveries/DeliverySidebar";
@@ -75,27 +76,29 @@ export function DeliveryTable({
           <div className="flex flex-col h-full">
             <TableContainer 
               stickyHeader 
-              className="overflow-hidden"
+              className="overflow-hidden h-[calc(100vh-230px)]"
             >
-              <div className="min-w-[1400px] w-full">
-                <Table className="w-full">
-                  <TableHeaderComponent 
-                    sortedColumns={sortedColumns}
-                    availableColumns={availableColumns}
-                    handleDragStart={handleDragStart}
-                    handleDragOver={handleDragOver}
-                    handleDragEnd={handleDragEnd}
-                    handleDrop={handleDrop}
-                  />
-                  <TableBodyComponent 
-                    items={items}
-                    sortedColumns={sortedColumns}
-                    getStatusDisplay={getStatusDisplay}
-                    getStatusBadgeVariant={getStatusBadgeVariant}
-                    onCourierClick={onCourierClick}
-                  />
-                </Table>
-              </div>
+              <ScrollArea orientation="both" className="h-full">
+                <div className="min-w-[1400px] w-full">
+                  <Table className="w-full">
+                    <TableHeaderComponent 
+                      sortedColumns={sortedColumns}
+                      availableColumns={availableColumns}
+                      handleDragStart={handleDragStart}
+                      handleDragOver={handleDragOver}
+                      handleDragEnd={handleDragEnd}
+                      handleDrop={handleDrop}
+                    />
+                    <TableBodyComponent 
+                      items={items}
+                      sortedColumns={sortedColumns}
+                      getStatusDisplay={getStatusDisplay}
+                      getStatusBadgeVariant={getStatusBadgeVariant}
+                      onCourierClick={onCourierClick}
+                    />
+                  </Table>
+                </div>
+              </ScrollArea>
             </TableContainer>
           </div>
         </div>
