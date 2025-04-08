@@ -57,7 +57,19 @@ export function DeliveryFilters({
           </span>
         </div>
         
-        <div className="flex flex-wrap justify-between items-center gap-2">
+        <div className="flex flex-wrap justify-between items-center gap-2 
+          bg-muted/20 
+          p-3 
+          rounded-lg 
+          border 
+          border-border/50 
+          shadow-sm 
+          hover:bg-muted/30 
+          transition-all 
+          duration-300 
+          ease-in-out 
+          backdrop-blur-sm"
+        >
           <div className="flex items-center gap-2">
             <DateRangePicker 
               dateRange={dateRange}
