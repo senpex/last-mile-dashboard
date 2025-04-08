@@ -726,23 +726,3 @@ const Index = () => {
         name: "Community Center - Bentonville",
         address: "1101 SW Citizens Cir, Bentonville, AR 72712, US"
       },
-      price: "$115.95",
-      tip: "$20.00",
-      fees: "$7.99",
-      courier: "",
-      organization: "Party City",
-      distance: "6.7 mi"
-    }
-  ];
-
-  return (
-    <ThemeProvider>
-      <Sidebar collapsed={sidebarCollapsed} onCollapse={setSidebarCollapsed} />
-      <div className="flex flex-col h-screen">
-        {/* Rest of component code */}
-      </div>
-    </ThemeProvider>
-  );
-};
-
-export default Index;
