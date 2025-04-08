@@ -59,7 +59,7 @@ export function DeliverySidebar({
         >
           <AccordionItem value="status" className="border-b">
             <AccordionTrigger className="py-4 w-full text-left justify-between pr-4">
-              <span className="mr-[50px]">Status</span>
+              <span className="mr-[100px]">Status</span>
             </AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-col space-y-3 py-2">
