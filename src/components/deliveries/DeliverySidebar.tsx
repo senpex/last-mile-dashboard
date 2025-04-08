@@ -45,6 +45,8 @@ export function DeliverySidebar({
   
   // Calculate counts from the provided props
   const getStatusCount = (status: string): number => {
+    // Log to debug what we're searching for and what's available
+    console.log(`Counting status: "${status}" in:`, deliveryStatuses);
     return deliveryStatuses.filter(s => s === status).length;
   };
   
@@ -76,10 +78,11 @@ export function DeliverySidebar({
       setStatusMapping(mapping);
       console.log("Loaded status dictionary:", dictionary);
       console.log("Status mapping:", mapping);
+      console.log("Available delivery statuses:", deliveryStatuses);
     } else {
       console.warn("Dictionary with ID 19 not found");
     }
-  }, []);
+  }, [deliveryStatuses]);
 
   const handleStatusChange = (statusValue: string, checked: boolean) => {
     const actualStatus = statusMapping[statusValue];
