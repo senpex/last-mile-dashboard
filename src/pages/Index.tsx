@@ -67,7 +67,6 @@ const Index = () => {
   const pageSizeOptions = [10, 20, 50, 100];
 
   const deliveries = [
-    // Original 5 records
     {
       id: 1,
       packageId: "WMT-10042501",
@@ -183,7 +182,6 @@ const Index = () => {
       organization: "Curry Up Now",
       distance: "0.2 mi"
     },
-    // 40 new records with various statuses
     {
       id: 6,
       packageId: "TGT-80031245",
@@ -726,4 +724,25 @@ const Index = () => {
       dropoffTime: "03/25/2025 11:30 AM",
       dropoffLocation: {
         name: "Community Center - Bentonville",
-        address: "1101 SW Citizens
+        address: "1101 SW Citizens Cir, Bentonville, AR 72712, US"
+      },
+      price: "$115.95",
+      tip: "$20.00",
+      fees: "$7.99",
+      courier: "",
+      organization: "Party City",
+      distance: "6.7 mi"
+    }
+  ];
+
+  return (
+    <ThemeProvider>
+      <Sidebar collapsed={sidebarCollapsed} onCollapse={setSidebarCollapsed} />
+      <div className="flex flex-col h-screen">
+        {/* Rest of component code */}
+      </div>
+    </ThemeProvider>
+  );
+};
+
+export default Index;
