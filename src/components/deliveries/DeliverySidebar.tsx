@@ -47,7 +47,11 @@ export function DeliverySidebar({
   const getStatusCount = (status: string): number => {
     // Log to debug what we're searching for and what's available
     console.log(`Counting status: "${status}" in:`, deliveryStatuses);
-    return deliveryStatuses.filter(s => s === status).length;
+    
+    // Make the comparison case-insensitive
+    return deliveryStatuses.filter(s => 
+      s.toLowerCase() === status.toLowerCase()
+    ).length;
   };
   
   const getOrganizationCount = (org: string): number => {
