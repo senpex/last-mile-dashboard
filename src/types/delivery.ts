@@ -1,4 +1,18 @@
 
+export interface Location {
+  name: string;
+  address: string;
+}
+
+export type DeliveryStatus = 
+  | "Dropoff Complete" 
+  | "Canceled By Customer" 
+  | "Cancelled By Admin" 
+  | "In Transit" 
+  | "Picking Up" 
+  | "Arrived For Pickup"
+  | "Scheduled Order";
+
 export interface Delivery {
   id: number;
   packageId: string;
