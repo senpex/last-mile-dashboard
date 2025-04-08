@@ -1,8 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { ChevronDown } from "lucide-react";
 import { DeliveryStatus } from "@/types/delivery";
 import { Dictionary, DictionaryItem } from "@/types/dictionary";
 import { getDictionary } from "@/lib/storage";
@@ -40,23 +40,20 @@ export function DeliverySidebar({
   const [statusMapping, setStatusMapping] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    // Load the same status dictionary (ID 19) used in the Deliveries table
     const dictionary = getDictionary("19");
     if (dictionary) {
       setStatusDictionary(dictionary);
       setStatusItems(dictionary.items);
       
-      // Create a mapping from dictionary ID to delivery status value
       const mapping: Record<string, string> = {};
       dictionary.items.forEach(item => {
-        // Map the dictionary item value to actual delivery status values expected in data
         if (item.id === "completed") mapping[item.value] = "Dropoff Complete";
         else if (item.id === "cancelled_order") mapping[item.value] = "Canceled By Customer";
         else if (item.id === "cancelled_by_admin") mapping[item.value] = "Cancelled By Admin";
         else if (item.id === "in_transit") mapping[item.value] = "In Transit";
         else if (item.id === "started_working") mapping[item.value] = "Picking Up";
         else if (item.id === "arrived_for_pickup") mapping[item.value] = "Arrived For Pickup";
-        else mapping[item.value] = item.value; // Default mapping
+        else mapping[item.value] = item.value;
       });
       
       setStatusMapping(mapping);
@@ -68,7 +65,6 @@ export function DeliverySidebar({
   }, []);
 
   const handleStatusChange = (statusValue: string, checked: boolean) => {
-    // Map the dictionary status to actual delivery status
     const actualStatus = statusMapping[statusValue];
     
     if (checked) {
@@ -111,11 +107,11 @@ export function DeliverySidebar({
             <AccordionItem value="status" className="border-b">
               <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-[15.6rem]">
                 <span className="flex-grow">Status</span>
+                <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
                   {statusItems.map(item => {
-                    // Only show items that have a mapping to actual delivery statuses
                     const actualStatus = statusMapping[item.value];
                     if (!actualStatus) return null;
                     
@@ -143,6 +139,7 @@ export function DeliverySidebar({
             <AccordionItem value="organization" className="border-b">
               <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-[15.6rem]">
                 <span className="flex-grow">Organization</span>
+                <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
@@ -168,6 +165,7 @@ export function DeliverySidebar({
             <AccordionItem value="courier" className="border-b">
               <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-[15.6rem]">
                 <span className="flex-grow">Courier</span>
+                <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
