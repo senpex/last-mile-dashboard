@@ -37,9 +37,11 @@ const datePresets = [
 interface DateRangePickerProps {
   dateRange: DateRange | undefined;
   onDateRangeChange: (range: DateRange | undefined) => void;
+  align?: string;
+  className?: string;
 }
 
-export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePickerProps) {
+export function DateRangePicker({ dateRange, onDateRangeChange, align = "center", className }: DateRangePickerProps) {
   const [isCalendarOpen, setIsCalendarOpen] = React.useState(false);
   const [startTime, setStartTime] = React.useState("12:00 AM");
   const [endTime, setEndTime] = React.useState("11:59 PM");
@@ -92,12 +94,12 @@ export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePicke
   return (
     <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="flex items-center gap-2 text-sm h-9">
+        <Button variant="outline" className={cn("flex items-center gap-2 text-sm h-9", className)}>
           <CalendarIcon className="h-4 w-4" />
           <span>{formatDisplayText()}</span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start" alignOffset={0} sideOffset={5}>
+      <PopoverContent className="w-auto p-0" align={align as any} alignOffset={0} sideOffset={5}>
         <div className="flex flex-col max-h-[500px] max-w-[500px]">
           {/* Presets and calendar layout */}
           <div className="flex">
@@ -189,7 +191,7 @@ export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePicke
                   onSelect={onDateRangeChange}
                   numberOfMonths={1}
                   showOutsideDays={false}
-                  className="rounded-md"
+                  className="rounded-md pointer-events-auto"
                 />
               </div>
             </div>

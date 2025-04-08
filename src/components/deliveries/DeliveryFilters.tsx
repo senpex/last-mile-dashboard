@@ -34,14 +34,14 @@ const DeliveryFilters: React.FC<DeliveryFiltersProps> = ({
     <div className="flex items-center justify-between mb-4">
       <div className="flex items-center gap-2">
         <DateRangePicker
-          date={dateRange}
-          onChange={setDateRange}
+          dateRange={dateRange}
+          onDateRangeChange={setDateRange}
           align="start"
           className="w-[260px]"
         />
         <TimezonePicker 
-          value={timezone} 
-          onChange={setTimezone}
+          selectedTimezone={timezone} 
+          onTimezoneChange={setTimezone}
           className="w-[200px]" 
         />
       </div>
