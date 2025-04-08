@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Delivery } from "@/types/delivery";
 import { Dictionary } from "@/types/dictionary";
 import { getDictionary } from "@/lib/storage";
+import { ColumnOption } from "@/components/table/ColumnSelector"; // Added import for ColumnOption
 
 export interface UseDeliveriesTableProps {
   deliveries: Delivery[];

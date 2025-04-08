@@ -139,6 +139,7 @@ export const deliveriesData: Delivery[] = [
       name: "Melissa Parker",
       address: "211 SE Kenwood St, Bentonville, AR 72712, US"
     },
+    customerName: "Melissa Parker", // Added missing customerName
     price: "$42.50",
     tip: "$7.00",
     fees: "$3.99",
@@ -162,6 +163,7 @@ export const deliveriesData: Delivery[] = [
       name: "Community Center - Bentonville",
       address: "1101 SW Citizens Cir, Bentonville, AR 72712, US"
     },
+    customerName: "Bentonville Community Center", // Added missing customerName
     price: "$115.95",
     tip: "$20.00",
     fees: "$7.99",
