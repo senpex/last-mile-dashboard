@@ -57,6 +57,7 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
   const statusMapping: Record<string, string> = {
     "Dropoff Complete": "completed",
     "Canceled By Customer": "cancelled_order",
+    "Cancelled By Admin": "cancelled_by_admin",
     "In Transit": "in_transit",
     "Picking Up": "started_working",
     "Arrived For Pickup": "arrived_for_pickup"
@@ -164,6 +165,7 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     }
     
     if (statusFilters.length > 0) {
+      console.log("Filtering by statuses:", statusFilters);
       results = results.filter(delivery => 
         statusFilters.includes(delivery.status as DeliveryStatus)
       );
@@ -304,6 +306,8 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
         return "success";
       case "cancelled_order":
         return "destructive";
+      case "cancelled_by_admin":
+        return "warning";
       case "in_transit":
         return "default";
       case "started_working":

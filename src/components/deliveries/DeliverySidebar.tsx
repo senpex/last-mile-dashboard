@@ -33,24 +33,36 @@ export function DeliverySidebar({
       setStatusDictionary(dictionary);
       setStatusItems(dictionary.items);
       
-      // Create a mapping from dictionary value to delivery status
+      // Create a mapping from dictionary ID to delivery status value
+      // The problem was likely here - we were using item.value for both key and value
       const mapping: Record<string, string> = {};
       dictionary.items.forEach(item => {
-        mapping[item.value] = item.value;
+        // Map the dictionary item value to actual delivery status values expected in data
+        if (item.id === "completed") mapping[item.value] = "Dropoff Complete";
+        else if (item.id === "cancelled_order") mapping[item.value] = "Canceled By Customer";
+        else if (item.id === "cancelled_by_admin") mapping[item.value] = "Cancelled By Admin";
+        else if (item.id === "in_transit") mapping[item.value] = "In Transit";
+        else if (item.id === "started_working") mapping[item.value] = "Picking Up";
+        else if (item.id === "arrived_for_pickup") mapping[item.value] = "Arrived For Pickup";
+        else mapping[item.value] = item.value; // Default mapping
       });
       
       setStatusMapping(mapping);
       console.log("Loaded status dictionary:", dictionary);
+      console.log("Status mapping:", mapping);
     } else {
       console.warn("Dictionary with ID 19 not found");
     }
   }, []);
 
   const handleStatusChange = (statusValue: string, checked: boolean) => {
+    // Map the dictionary status to actual delivery status
+    const actualStatus = statusMapping[statusValue];
+    
     if (checked) {
-      onStatusChange([...selectedStatuses, statusValue as DeliveryStatus]);
+      onStatusChange([...selectedStatuses, actualStatus as DeliveryStatus]);
     } else {
-      onStatusChange(selectedStatuses.filter(s => s !== statusValue));
+      onStatusChange(selectedStatuses.filter(s => s !== actualStatus));
     }
   };
 
@@ -72,12 +84,28 @@ export function DeliverySidebar({
             </AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-col space-y-3 py-2">
-                {statusItems.map(item => <div key={item.id} className="flex items-center space-x-2">
-                    <Checkbox id={`status-${item.id}`} checked={selectedStatuses.includes(item.value as DeliveryStatus)} onCheckedChange={checked => handleStatusChange(item.value, checked === true)} />
-                    <Label htmlFor={`status-${item.id}`} className="flex flex-1 items-center justify-between" title={item.description || ''}>
-                      <span>{item.value}</span>
-                    </Label>
-                  </div>)}
+                {statusItems.map(item => {
+                  // Only show items that have a mapping to actual delivery statuses
+                  const actualStatus = statusMapping[item.value];
+                  if (!actualStatus) return null;
+                  
+                  return (
+                    <div key={item.id} className="flex items-center space-x-2">
+                      <Checkbox 
+                        id={`status-${item.id}`} 
+                        checked={selectedStatuses.includes(actualStatus as DeliveryStatus)} 
+                        onCheckedChange={checked => handleStatusChange(item.value, checked === true)} 
+                      />
+                      <Label 
+                        htmlFor={`status-${item.id}`} 
+                        className="flex flex-1 items-center justify-between" 
+                        title={item.description || ''}
+                      >
+                        <span>{item.value}</span>
+                      </Label>
+                    </div>
+                  );
+                })}
               </div>
             </AccordionContent>
           </AccordionItem>
