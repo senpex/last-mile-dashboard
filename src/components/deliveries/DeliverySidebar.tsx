@@ -128,6 +128,43 @@ export function DeliverySidebar({
     onCourierChange([]);
   };
 
+  // Sort items by count in descending order
+  const getSortedStatusItems = () => {
+    if (!statusItems.length) return [];
+    
+    return [...statusItems].sort((a, b) => {
+      const statusA = statusMapping[a.value];
+      const statusB = statusMapping[b.value];
+      
+      if (!statusA || !statusB) return 0;
+      
+      const countA = getStatusCount(statusA);
+      const countB = getStatusCount(statusB);
+      
+      return countB - countA;
+    });
+  };
+
+  const getSortedOrganizations = () => {
+    return [...new Set(organizations)]
+      .filter(Boolean)
+      .sort((a, b) => {
+        const countA = getOrganizationCount(a);
+        const countB = getOrganizationCount(b);
+        return countB - countA;
+      });
+  };
+
+  const getSortedCouriers = () => {
+    return [...new Set(couriers)]
+      .filter(Boolean)
+      .sort((a, b) => {
+        const countA = getCourierCount(a);
+        const countB = getCourierCount(b);
+        return countB - countA;
+      });
+  };
+
   return (
     <div className={`h-full bg-background border-r shadow-lg transition-all duration-300 ${open ? 'w-[275px] max-w-[80vw]' : 'w-0 overflow-hidden'}`}>
       <div className="p-6 w-full h-full flex flex-col">
@@ -148,12 +185,15 @@ export function DeliverySidebar({
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
-                  {statusItems.map(item => {
+                  {getSortedStatusItems().map(item => {
                     const actualStatus = statusMapping[item.value];
                     if (!actualStatus) return null;
                     
                     // Get real-time count for this status
                     const count = getStatusCount(actualStatus);
+                    
+                    // Skip items with zero count
+                    if (count === 0) return null;
                     
                     return (
                       <div key={item.id} className="flex items-center space-x-2">
@@ -183,7 +223,7 @@ export function DeliverySidebar({
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
-                  {organizations.filter((org, index, self) => self.indexOf(org) === index).map(org => (
+                  {getSortedOrganizations().map(org => (
                     <div key={org} className="flex items-center space-x-2">
                       <Checkbox 
                         id={`org-${org}`} 
@@ -209,7 +249,7 @@ export function DeliverySidebar({
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
-                  {couriers.filter((courier, index, self) => self.indexOf(courier) === index).map(courier => (
+                  {getSortedCouriers().map(courier => (
                     <div key={courier} className="flex items-center space-x-2">
                       <Checkbox 
                         id={`courier-${courier}`} 
