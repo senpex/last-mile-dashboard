@@ -157,8 +157,6 @@ export function DeliveryTable({
                                 return <TableCell key={columnId}>{delivery.price}</TableCell>;
                               case "tip":
                                 return <TableCell key={columnId}>{delivery.tip}</TableCell>;
-                              case "fees":
-                                return <TableCell key={columnId}>{delivery.fees}</TableCell>;
                               case "courier":
                                 return (
                                   <TableCell key={columnId}>
