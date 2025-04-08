@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,6 @@ import { ColumnOption } from "@/components/table/ColumnSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DeliveryStatus } from "@/types/delivery";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { User, Users } from "lucide-react";
 
 interface DeliveryFiltersProps {
   searchTerm: string;
@@ -107,19 +105,25 @@ export function DeliveryFilters({
               type="single" 
               value={showMyDeliveriesOnly ? "me" : "all"}
               onValueChange={(value) => {
-                if (value) { // Check if value isn't empty (deselection)
+                if (value) { 
                   onToggleMyDeliveries(value === "me");
                 }
               }}
               className="border rounded-md"
             >
-              <ToggleGroupItem value="me" aria-label="Show my deliveries" className="flex gap-1 text-xs data-[state=on]:bg-primary data-[state=on]:text-primary-foreground">
-                <User className="h-3.5 w-3.5" />
-                <span>Me</span>
+              <ToggleGroupItem 
+                value="me" 
+                aria-label="Show my deliveries" 
+                className="px-3 text-xs rounded-md data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+              >
+                Me
               </ToggleGroupItem>
-              <ToggleGroupItem value="all" aria-label="Show all deliveries" className="flex gap-1 text-xs data-[state=on]:bg-primary data-[state=on]:text-primary-foreground">
-                <Users className="h-3.5 w-3.5" />
-                <span>All</span>
+              <ToggleGroupItem 
+                value="all" 
+                aria-label="Show all deliveries" 
+                className="px-3 text-xs rounded-md data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+              >
+                All
               </ToggleGroupItem>
             </ToggleGroup>
 
