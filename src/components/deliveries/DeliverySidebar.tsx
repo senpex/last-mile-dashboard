@@ -109,8 +109,9 @@ export function DeliverySidebar({
             onValueChange={setIsAccordionOpen}
           >
             <AccordionItem value="status" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-12">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1">
                 <span className="flex-grow">Status</span>
+                <span className="w-5"></span> {/* This creates additional 20% spacing */}
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
@@ -141,8 +142,9 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="organization" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-12">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1">
                 <span className="flex-grow">Organization</span>
+                <span className="w-5"></span> {/* This creates additional 20% spacing */}
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
@@ -166,8 +168,9 @@ export function DeliverySidebar({
             </AccordionItem>
 
             <AccordionItem value="courier" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-12">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1">
                 <span className="flex-grow">Courier</span>
+                <span className="w-5"></span> {/* This creates additional 20% spacing */}
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
