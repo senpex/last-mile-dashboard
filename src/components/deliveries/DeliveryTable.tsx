@@ -64,7 +64,7 @@ export function DeliveryTable({
           onStatusChange={setSelectedStatuses}
         />
         
-        <div className={`flex-1 transition-all duration-300 my-4 ml-3 border-l border-border`}>
+        <div className={`flex-1 transition-all duration-300 my-4 ${isFilterSidebarOpen ? 'ml-3' : ''}`}>
           <TableContainer className="overflow-auto">
             <div className="overflow-x-auto">
               <Table>
