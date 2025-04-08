@@ -55,7 +55,7 @@ export function DeliveryTable({
   setSelectedCouriers
 }: DeliveryTableProps) {
   return (
-    <div className="flex-1 overflow-hidden px-px">
+    <div className="flex-1 h-full overflow-hidden px-px">
       <div className="flex h-full">
         <DeliverySidebar 
           open={isFilterSidebarOpen} 
@@ -71,13 +71,13 @@ export function DeliveryTable({
           onCourierChange={setSelectedCouriers}
         />
         
-        <div className={`flex-1 transition-all duration-300 my-4 ${isFilterSidebarOpen ? 'ml-3' : 'ml-2'}`}>
-          <div className="flex flex-col h-full">
+        <div className={`flex-1 transition-all duration-300 ${isFilterSidebarOpen ? 'ml-3' : 'ml-2'}`}>
+          <div className="flex flex-col h-[calc(100vh-180px)]"> {/* Viewport height calculation */}
             <TableContainer 
               stickyHeader 
-              className="overflow-x-auto" // Restored horizontal scroll
+              className="overflow-x-auto w-full h-full"
             >
-              <div className="min-w-[1400px] w-full overflow-x-auto"> {/* Restored overflow-x-auto */}
+              <div className="min-w-[1400px] w-full overflow-x-auto">
                 <Table className="w-full">
                   <TableHeaderComponent 
                     sortedColumns={sortedColumns}
