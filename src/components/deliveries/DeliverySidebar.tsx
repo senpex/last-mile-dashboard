@@ -46,7 +46,7 @@ export function DeliverySidebar({
 
   return (
     <div 
-      className={`h-full bg-background border-r shadow-lg transition-all duration-300 ${open ? 'w-[325px] max-w-[60vw]' : 'w-0 overflow-hidden'}`}
+      className={`h-full bg-background border-r shadow-lg transition-all duration-300 ${open ? 'w-[325px] max-w-[80vw]' : 'w-0 overflow-hidden'}`}
     >
       <div className="p-6 w-full">
         <h2 className="text-lg font-semibold mb-4">Filters</h2>
