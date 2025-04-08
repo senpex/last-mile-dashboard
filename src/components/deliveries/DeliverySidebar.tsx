@@ -1,11 +1,12 @@
+
 import React, { useEffect, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { DeliveryStatus } from "@/types/delivery";
 import { Dictionary, DictionaryItem } from "@/types/dictionary";
 import { getDictionary } from "@/lib/storage";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface DeliverySidebarProps {
   open: boolean;
@@ -39,20 +40,23 @@ export function DeliverySidebar({
   const [statusMapping, setStatusMapping] = useState<Record<string, string>>({});
 
   useEffect(() => {
+    // Load the same status dictionary (ID 19) used in the Deliveries table
     const dictionary = getDictionary("19");
     if (dictionary) {
       setStatusDictionary(dictionary);
       setStatusItems(dictionary.items);
       
+      // Create a mapping from dictionary ID to delivery status value
       const mapping: Record<string, string> = {};
       dictionary.items.forEach(item => {
+        // Map the dictionary item value to actual delivery status values expected in data
         if (item.id === "completed") mapping[item.value] = "Dropoff Complete";
         else if (item.id === "cancelled_order") mapping[item.value] = "Canceled By Customer";
         else if (item.id === "cancelled_by_admin") mapping[item.value] = "Cancelled By Admin";
         else if (item.id === "in_transit") mapping[item.value] = "In Transit";
         else if (item.id === "started_working") mapping[item.value] = "Picking Up";
         else if (item.id === "arrived_for_pickup") mapping[item.value] = "Arrived For Pickup";
-        else mapping[item.value] = item.value;
+        else mapping[item.value] = item.value; // Default mapping
       });
       
       setStatusMapping(mapping);
@@ -64,6 +68,7 @@ export function DeliverySidebar({
   }, []);
 
   const handleStatusChange = (statusValue: string, checked: boolean) => {
+    // Map the dictionary status to actual delivery status
     const actualStatus = statusMapping[statusValue];
     
     if (checked) {
@@ -91,10 +96,10 @@ export function DeliverySidebar({
 
   return (
     <div className={`h-full bg-background border-r shadow-lg transition-all duration-300 ${open ? 'w-[250px] max-w-[80vw]' : 'w-0 overflow-hidden'}`}>
-      <div className="p-6 w-full h-full">
+      <div className="p-6 w-full h-full flex flex-col">
         <h2 className="text-lg font-semibold mb-4">Filters</h2>
         
-        <ScrollArea className="h-[calc(100vh-120px)]">
+        <ScrollArea className="flex-1 -mr-4 pr-4">
           <Accordion 
             type="single" 
             collapsible 
@@ -104,12 +109,13 @@ export function DeliverySidebar({
             onValueChange={setIsAccordionOpen}
           >
             <AccordionItem value="status" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left justify-between pr-4">
-                <span className="mr-[100px]">Status</span>
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1">
+                <span className="flex-grow">Status</span>
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
                   {statusItems.map(item => {
+                    // Only show items that have a mapping to actual delivery statuses
                     const actualStatus = statusMapping[item.value];
                     if (!actualStatus) return null;
                     
@@ -135,8 +141,8 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="organization" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left justify-between pr-4">
-                <span className="mr-[100px]">Organization</span>
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1">
+                <span className="flex-grow">Organization</span>
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
@@ -160,8 +166,8 @@ export function DeliverySidebar({
             </AccordionItem>
 
             <AccordionItem value="courier" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left justify-between pr-4">
-                <span className="mr-[100px]">Courier</span>
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1">
+                <span className="flex-grow">Courier</span>
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
