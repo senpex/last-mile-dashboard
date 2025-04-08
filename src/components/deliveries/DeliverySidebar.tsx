@@ -24,6 +24,7 @@ export function DeliverySidebar({
   const [statusDictionary, setStatusDictionary] = useState<Dictionary | null>(null);
   const [statusItems, setStatusItems] = useState<DictionaryItem[]>([]);
   const [isAccordionOpen, setIsAccordionOpen] = useState<string>("");
+  const [statusMapping, setStatusMapping] = useState<Record<string, string>>({});
 
   useEffect(() => {
     // Load the same status dictionary (ID 19) used in the Deliveries table
@@ -31,6 +32,14 @@ export function DeliverySidebar({
     if (dictionary) {
       setStatusDictionary(dictionary);
       setStatusItems(dictionary.items);
+      
+      // Create a mapping from dictionary value to delivery status
+      const mapping: Record<string, string> = {};
+      dictionary.items.forEach(item => {
+        mapping[item.value] = item.value;
+      });
+      
+      setStatusMapping(mapping);
       console.log("Loaded status dictionary:", dictionary);
     } else {
       console.warn("Dictionary with ID 19 not found");
