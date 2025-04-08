@@ -73,12 +73,12 @@ export function DeliveryTable({
         />
         
         <div className={`flex-1 transition-all duration-300 my-4 ${isFilterSidebarOpen ? 'ml-3' : 'ml-2'}`}>
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col h-full w-full">
             <TableContainer 
               stickyHeader 
-              className="overflow-x-auto"  // Ensure horizontal scrolling
+              className="w-full overflow-x-auto"
             >
-              <div className="min-w-[1400px] w-full">  {/* Ensure table is always at least 1400px wide */}
+              <div className="w-full overflow-hidden">
                 <Table className="w-full">
                   <TableHeader>
                     <TableRow>

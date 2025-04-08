@@ -132,6 +132,7 @@ const TableContainer = React.forwardRef<
     style={{
       scrollbarWidth: 'thin',
       scrollbarColor: '#cbd5e1 transparent',
+      maxWidth: '100%'
     }}
     {...props} 
   />
