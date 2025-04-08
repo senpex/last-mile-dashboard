@@ -1,4 +1,3 @@
-
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
@@ -116,7 +115,6 @@ const TableCaption = React.forwardRef<
 ))
 TableCaption.displayName = "TableCaption"
 
-// TableContainer component with proper horizontal scrolling
 const TableContainer = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
@@ -127,10 +125,14 @@ const TableContainer = React.forwardRef<
   <div 
     ref={ref}
     className={cn(
-      "relative w-full border rounded-md overflow-x-scroll scrollbar-thin", // Changed to overflow-x-scroll and added scrollbar-thin for visible scrollbar
+      "relative w-full border rounded-md overflow-auto",
       height, 
       className
     )} 
+    style={{
+      scrollbarWidth: 'thin',
+      scrollbarColor: '#cbd5e1 transparent',
+    }}
     {...props} 
   />
 ))
