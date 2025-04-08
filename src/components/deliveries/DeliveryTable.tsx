@@ -14,22 +14,18 @@ interface DeliveryTableProps {
   getStatusDisplay: (status: string) => string;
   getStatusBadgeVariant: (status: string) => string;
   onCourierClick: (courierName: string) => void;
-  // Drag and drop handlers
   handleDragStart: (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => void;
   handleDragOver: (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => void;
   handleDragEnd: () => void;
   handleDrop: (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => void;
-  // Filter sidebar props
   isFilterSidebarOpen: boolean;
   toggleFilterSidebar: () => void;
   allDeliveryStatuses: DeliveryStatus[];
   selectedStatuses: DeliveryStatus[];
   setSelectedStatuses: (statuses: DeliveryStatus[]) => void;
-  // Organization filter props
   allOrganizations: string[];
   selectedOrganizations: string[];
   setSelectedOrganizations: (organizations: string[]) => void;
-  // Courier filter props
   allCouriers: string[];
   selectedCouriers: string[];
   setSelectedCouriers: (couriers: string[]) => void;
@@ -75,7 +71,7 @@ export function DeliveryTable({
           onCourierChange={setSelectedCouriers}
         />
         
-        <div className={`flex-1 transition-all duration-300 my-4 ${isFilterSidebarOpen ? 'ml-3' : ''}`}>
+        <div className={`flex-1 transition-all duration-300 my-4 ${isFilterSidebarOpen ? 'ml-3' : 'ml-2'}`}>
           <div className="flex flex-col h-full">
             <TableContainer stickyHeader>
               <div style={{ minWidth: "1400px" }}>
