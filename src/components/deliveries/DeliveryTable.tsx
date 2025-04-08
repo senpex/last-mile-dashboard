@@ -74,7 +74,7 @@ export function DeliveryTable({
         
         <div className={`flex-1 transition-all duration-300 ${isFilterSidebarOpen ? 'ml-2' : 'ml-0'}`}>
           <div className="w-full h-full min-w-[300px] mr-0 ml-auto">
-            <div className="h-full w-full border rounded-md overflow-hidden p-[5px]"> {/* Added 5px padding */}
+            <div className="h-full w-full border rounded-md overflow-hidden">
               <ScrollArea orientation="both" className="h-full">
                 <TableContainer stickyHeader={false} height="auto" className="h-full border-0">
                   <Table className="h-full">
