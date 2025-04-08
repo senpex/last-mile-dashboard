@@ -16,6 +16,7 @@ export interface Delivery {
   customerName: string;
   price: string;
   tip: string;
+  fees?: string; // Adding the fees property as optional
   courier: string;
   organization: string;
   distance: string;
