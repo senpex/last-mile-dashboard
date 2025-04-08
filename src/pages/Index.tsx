@@ -7,7 +7,6 @@ import CourierChat from "@/components/chat/CourierChat";
 import { DeliveryFilters } from "@/components/deliveries/DeliveryFilters";
 import { DeliveryTable } from "@/components/deliveries/DeliveryTable";
 import { DeliveryPagination } from "@/components/deliveries/DeliveryPagination";
-import { DeliverySidebar } from "@/components/deliveries/DeliverySidebar";
 import { useDeliveriesTable } from "@/hooks/useDeliveriesTable";
 import { deliveriesData } from "@/data/deliveriesData";
 
@@ -72,17 +71,8 @@ const Index = () => {
           {/* Main Navigation Sidebar */}
           <div className={`transition-all duration-300 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}></div>
           
-          {/* Filter Sidebar */}
-          <DeliverySidebar 
-            open={isFilterSidebarOpen}
-            onClose={toggleFilterSidebar}
-            deliveryStatuses={allDeliveryStatuses}
-            selectedStatuses={selectedStatuses}
-            onStatusChange={setSelectedStatuses}
-          />
-          
-          {/* Main Content Area - Will shift right when filter sidebar is open */}
-          <main className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${isFilterSidebarOpen ? 'ml-72' : ''}`}>
+          {/* Main Content Area */}
+          <main className="flex-1 flex flex-col overflow-hidden transition-all duration-300">
             {/* Filters Section */}
             <DeliveryFilters 
               searchTerm={searchTerm}
@@ -112,6 +102,11 @@ const Index = () => {
               handleDragOver={handleDragOver}
               handleDragEnd={handleDragEnd}
               handleDrop={handleDrop}
+              isFilterSidebarOpen={isFilterSidebarOpen}
+              toggleFilterSidebar={toggleFilterSidebar}
+              allDeliveryStatuses={allDeliveryStatuses}
+              selectedStatuses={selectedStatuses}
+              setSelectedStatuses={setSelectedStatuses}
             />
             
             {/* Pagination Section */}

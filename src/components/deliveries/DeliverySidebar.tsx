@@ -1,10 +1,9 @@
 
 import React, { useEffect, useState } from 'react';
-import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { Delivery, DeliveryStatus } from "@/types/delivery";
+import { DeliveryStatus } from "@/types/delivery";
 import { Dictionary, DictionaryItem } from "@/types/dictionary";
 import { getDictionary } from "@/lib/storage";
 
@@ -47,40 +46,38 @@ export function DeliverySidebar({
 
   return (
     <div 
-      className={`absolute left-[240px] h-full z-10 transition-transform duration-300 ${open ? 'translate-x-0' : '-translate-x-full'}`}
+      className={`h-full bg-background border-r shadow-lg transition-all duration-300 ${open ? 'w-72' : 'w-0 overflow-hidden'}`}
     >
-      <div className="h-full w-72 bg-background border-r shadow-lg">
-        <div className="p-6">
-          <h2 className="text-lg font-semibold mb-4">Filter Deliveries</h2>
-          
-          <Accordion type="single" collapsible className="w-full" defaultValue="status">
-            <AccordionItem value="status" className="border-b">
-              <AccordionTrigger className="py-4">Status</AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col space-y-3 py-2">
-                  {statusItems.map((item) => (
-                    <div key={item.id} className="flex items-center space-x-2">
-                      <Checkbox 
-                        id={`status-${item.id}`} 
-                        checked={selectedStatuses.includes(item.value as DeliveryStatus)}
-                        onCheckedChange={(checked) => 
-                          handleStatusChange(item.value, checked === true)
-                        }
-                      />
-                      <Label 
-                        htmlFor={`status-${item.id}`}
-                        className="flex flex-1 items-center justify-between"
-                        title={item.description || ''}
-                      >
-                        <span>{item.value}</span>
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
+      <div className="p-6">
+        <h2 className="text-lg font-semibold mb-4">Filter Deliveries</h2>
+        
+        <Accordion type="single" collapsible className="w-full" defaultValue="status">
+          <AccordionItem value="status" className="border-b">
+            <AccordionTrigger className="py-4">Status</AccordionTrigger>
+            <AccordionContent>
+              <div className="flex flex-col space-y-3 py-2">
+                {statusItems.map((item) => (
+                  <div key={item.id} className="flex items-center space-x-2">
+                    <Checkbox 
+                      id={`status-${item.id}`} 
+                      checked={selectedStatuses.includes(item.value as DeliveryStatus)}
+                      onCheckedChange={(checked) => 
+                        handleStatusChange(item.value, checked === true)
+                      }
+                    />
+                    <Label 
+                      htmlFor={`status-${item.id}`}
+                      className="flex flex-1 items-center justify-between"
+                      title={item.description || ''}
+                    >
+                      <span>{item.value}</span>
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
     </div>
   );
