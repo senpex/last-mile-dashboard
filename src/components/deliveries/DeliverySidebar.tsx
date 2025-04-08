@@ -13,13 +13,19 @@ interface DeliverySidebarProps {
   deliveryStatuses: DeliveryStatus[];
   selectedStatuses: DeliveryStatus[];
   onStatusChange: (statuses: DeliveryStatus[]) => void;
+  organizations: string[];
+  selectedOrganizations: string[];
+  onOrganizationChange: (organizations: string[]) => void;
 }
 
 export function DeliverySidebar({
   open,
   onClose,
   selectedStatuses,
-  onStatusChange
+  onStatusChange,
+  organizations,
+  selectedOrganizations,
+  onOrganizationChange
 }: DeliverySidebarProps) {
   const [statusDictionary, setStatusDictionary] = useState<Dictionary | null>(null);
   const [statusItems, setStatusItems] = useState<DictionaryItem[]>([]);
@@ -34,7 +40,6 @@ export function DeliverySidebar({
       setStatusItems(dictionary.items);
       
       // Create a mapping from dictionary ID to delivery status value
-      // The problem was likely here - we were using item.value for both key and value
       const mapping: Record<string, string> = {};
       dictionary.items.forEach(item => {
         // Map the dictionary item value to actual delivery status values expected in data
@@ -63,6 +68,14 @@ export function DeliverySidebar({
       onStatusChange([...selectedStatuses, actualStatus as DeliveryStatus]);
     } else {
       onStatusChange(selectedStatuses.filter(s => s !== actualStatus));
+    }
+  };
+
+  const handleOrganizationChange = (org: string, checked: boolean) => {
+    if (checked) {
+      onOrganizationChange([...selectedOrganizations, org]);
+    } else {
+      onOrganizationChange(selectedOrganizations.filter(o => o !== org));
     }
   };
 
@@ -106,6 +119,31 @@ export function DeliverySidebar({
                     </div>
                   );
                 })}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+          
+          <AccordionItem value="organization" className="border-b">
+            <AccordionTrigger className="py-4 w-full text-left justify-between pr-4">
+              <span className="mr-[100px]">Organization</span>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="flex flex-col space-y-3 py-2">
+                {organizations.map(org => (
+                  <div key={org} className="flex items-center space-x-2">
+                    <Checkbox 
+                      id={`org-${org}`} 
+                      checked={selectedOrganizations.includes(org)} 
+                      onCheckedChange={checked => handleOrganizationChange(org, checked === true)} 
+                    />
+                    <Label 
+                      htmlFor={`org-${org}`} 
+                      className="flex flex-1 items-center justify-between"
+                    >
+                      <span>{org}</span>
+                    </Label>
+                  </div>
+                ))}
               </div>
             </AccordionContent>
           </AccordionItem>

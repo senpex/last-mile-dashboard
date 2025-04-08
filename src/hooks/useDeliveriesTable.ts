@@ -21,12 +21,17 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
   const [activeView, setActiveView] = useState<string>("main");
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
   const [selectedStatuses, setSelectedStatuses] = useState<DeliveryStatus[]>([]);
+  const [selectedOrganizations, setSelectedOrganizations] = useState<string[]>([]);
 
   const currentUserName = "John Smith";
 
   const allDeliveryStatuses: DeliveryStatus[] = Array.from(
     new Set(deliveries.map(delivery => delivery.status as DeliveryStatus))
   );
+
+  const allOrganizations: string[] = Array.from(
+    new Set(deliveries.map(delivery => delivery.organization))
+  ).filter(Boolean) as string[];
 
   const availableColumns: ColumnOption[] = [
     { id: "status", label: "Status", default: true },
@@ -101,20 +106,29 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
   }, [searchTerm]);
 
   useEffect(() => {
-    applyFilters(deliveries, debouncedSearchTerm, activeView, selectedStatuses, showMyDeliveriesOnly);
+    applyFilters(
+      deliveries, 
+      debouncedSearchTerm, 
+      activeView, 
+      selectedStatuses, 
+      selectedOrganizations, 
+      showMyDeliveriesOnly
+    );
     console.log("Filters applied:", {
       searchTerm: debouncedSearchTerm,
       activeView,
       selectedStatuses,
+      selectedOrganizations,
       showMyDeliveriesOnly
     });
-  }, [debouncedSearchTerm, activeView, deliveries, selectedStatuses, showMyDeliveriesOnly]);
+  }, [debouncedSearchTerm, activeView, deliveries, selectedStatuses, selectedOrganizations, showMyDeliveriesOnly]);
 
   const applyFilters = useCallback((
     items: Delivery[], 
     searchTerm: string, 
     activeTab: string,
     statusFilters: DeliveryStatus[],
+    organizationFilters: string[],
     showMyDeliveriesOnly: boolean
   ) => {
     let results = [...items];
@@ -170,6 +184,14 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
         statusFilters.includes(delivery.status as DeliveryStatus)
       );
       console.log(`Filtered to ${results.length} deliveries with selected statuses:`, statusFilters);
+    }
+    
+    if (organizationFilters.length > 0) {
+      console.log("Filtering by organizations:", organizationFilters);
+      results = results.filter(delivery => 
+        delivery.organization && organizationFilters.includes(delivery.organization)
+      );
+      console.log(`Filtered to ${results.length} deliveries with selected organizations:`, organizationFilters);
     }
     
     setFilteredDeliveries(results);
@@ -346,6 +368,9 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     allDeliveryStatuses,
     selectedStatuses,
     setSelectedStatuses,
+    allOrganizations,
+    selectedOrganizations,
+    setSelectedOrganizations,
     
     availableColumns,
     visibleColumns,

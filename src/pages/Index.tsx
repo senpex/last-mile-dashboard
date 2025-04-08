@@ -51,7 +51,10 @@ const Index = () => {
     toggleFilterSidebar,
     allDeliveryStatuses,
     selectedStatuses,
-    setSelectedStatuses
+    setSelectedStatuses,
+    allOrganizations,
+    selectedOrganizations,
+    setSelectedOrganizations
   } = useDeliveriesTable({ 
     deliveries: deliveriesData,
     showMyDeliveriesOnly 
@@ -117,6 +120,9 @@ const Index = () => {
               allDeliveryStatuses={allDeliveryStatuses}
               selectedStatuses={selectedStatuses}
               setSelectedStatuses={setSelectedStatuses}
+              allOrganizations={allOrganizations}
+              selectedOrganizations={selectedOrganizations}
+              setSelectedOrganizations={setSelectedOrganizations}
             />
             
             {/* Pagination Section */}
