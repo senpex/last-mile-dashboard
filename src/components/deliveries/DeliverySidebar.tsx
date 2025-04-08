@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { DeliveryStatus } from "@/types/delivery";
 import { Dictionary, DictionaryItem } from "@/types/dictionary";
 import { getDictionary } from "@/lib/storage";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 interface DeliverySidebarProps {
   open: boolean;
@@ -59,7 +58,9 @@ export function DeliverySidebar({
           onValueChange={setIsAccordionOpen}
         >
           <AccordionItem value="status" className="border-b">
-            <AccordionTrigger className="py-4 w-full text-left">Status</AccordionTrigger>
+            <AccordionTrigger className="py-4 w-full text-left justify-between pr-4">
+              <span className="mr-[50px]">Status</span>
+            </AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-col space-y-3 py-2">
                 {statusItems.map(item => <div key={item.id} className="flex items-center space-x-2">
