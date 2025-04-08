@@ -126,14 +126,15 @@ const TableContainer = React.forwardRef<
   <div 
     ref={ref}
     className={cn(
-      "relative w-full border rounded-md overflow-auto mx-auto max-w-full",
+      "relative w-full border rounded-md overflow-auto mx-auto",
       height, 
       className
     )} 
     style={{
       scrollbarWidth: 'thin',
       scrollbarColor: '#cbd5e1 transparent',
-      maxWidth: '100%'
+      maxWidth: '100%',
+      overflowX: 'auto'
     }}
     {...props} 
   />
