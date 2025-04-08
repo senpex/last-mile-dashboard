@@ -109,7 +109,7 @@ export function DeliverySidebar({
             onValueChange={setIsAccordionOpen}
           >
             <AccordionItem value="status" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-12">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24">
                 <span className="flex-grow">Status</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -141,7 +141,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="organization" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-12">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24">
                 <span className="flex-grow">Organization</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -166,7 +166,7 @@ export function DeliverySidebar({
             </AccordionItem>
 
             <AccordionItem value="courier" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-12">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24">
                 <span className="flex-grow">Courier</span>
               </AccordionTrigger>
               <AccordionContent>
