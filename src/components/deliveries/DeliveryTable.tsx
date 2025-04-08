@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -30,6 +29,10 @@ interface DeliveryTableProps {
   allOrganizations: string[];
   selectedOrganizations: string[];
   setSelectedOrganizations: (organizations: string[]) => void;
+  // Courier filter props
+  allCouriers: string[];
+  selectedCouriers: string[];
+  setSelectedCouriers: (couriers: string[]) => void;
 }
 
 export function DeliveryTable({
@@ -50,7 +53,10 @@ export function DeliveryTable({
   setSelectedStatuses,
   allOrganizations,
   selectedOrganizations,
-  setSelectedOrganizations
+  setSelectedOrganizations,
+  allCouriers,
+  selectedCouriers,
+  setSelectedCouriers
 }: DeliveryTableProps) {
   return (
     <div className="flex-1 overflow-hidden px-px">
@@ -64,6 +70,9 @@ export function DeliveryTable({
           organizations={allOrganizations}
           selectedOrganizations={selectedOrganizations}
           onOrganizationChange={setSelectedOrganizations}
+          couriers={allCouriers}
+          selectedCouriers={selectedCouriers}
+          onCourierChange={setSelectedCouriers}
         />
         
         <div className={`flex-1 transition-all duration-300 my-4 ${isFilterSidebarOpen ? 'ml-3' : ''}`}>

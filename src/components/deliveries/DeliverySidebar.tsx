@@ -16,6 +16,9 @@ interface DeliverySidebarProps {
   organizations: string[];
   selectedOrganizations: string[];
   onOrganizationChange: (organizations: string[]) => void;
+  couriers: string[];
+  selectedCouriers: string[];
+  onCourierChange: (couriers: string[]) => void;
 }
 
 export function DeliverySidebar({
@@ -25,7 +28,10 @@ export function DeliverySidebar({
   onStatusChange,
   organizations,
   selectedOrganizations,
-  onOrganizationChange
+  onOrganizationChange,
+  couriers,
+  selectedCouriers,
+  onCourierChange
 }: DeliverySidebarProps) {
   const [statusDictionary, setStatusDictionary] = useState<Dictionary | null>(null);
   const [statusItems, setStatusItems] = useState<DictionaryItem[]>([]);
@@ -79,7 +85,16 @@ export function DeliverySidebar({
     }
   };
 
-  return <div className={`h-full bg-background border-r shadow-lg transition-all duration-300 ${open ? 'w-[250px] max-w-[80vw]' : 'w-0 overflow-hidden'}`}>
+  const handleCourierChange = (courier: string, checked: boolean) => {
+    if (checked) {
+      onCourierChange([...selectedCouriers, courier]);
+    } else {
+      onCourierChange(selectedCouriers.filter(c => c !== courier));
+    }
+  };
+
+  return (
+    <div className={`h-full bg-background border-r shadow-lg transition-all duration-300 ${open ? 'w-[250px] max-w-[80vw]' : 'w-0 overflow-hidden'}`}>
       <div className="p-6 w-full">
         <h2 className="text-lg font-semibold mb-4">Filters</h2>
         
@@ -147,7 +162,33 @@ export function DeliverySidebar({
               </div>
             </AccordionContent>
           </AccordionItem>
+
+          <AccordionItem value="courier" className="border-b">
+            <AccordionTrigger className="py-4 w-full text-left justify-between pr-4">
+              <span className="mr-[100px]">Courier</span>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="flex flex-col space-y-3 py-2">
+                {couriers.map(courier => (
+                  <div key={courier} className="flex items-center space-x-2">
+                    <Checkbox 
+                      id={`courier-${courier}`} 
+                      checked={selectedCouriers.includes(courier)} 
+                      onCheckedChange={checked => handleCourierChange(courier, checked === true)} 
+                    />
+                    <Label 
+                      htmlFor={`courier-${courier}`} 
+                      className="flex flex-1 items-center justify-between"
+                    >
+                      <span>{courier}</span>
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
         </Accordion>
       </div>
-    </div>;
+    </div>
+  );
 }

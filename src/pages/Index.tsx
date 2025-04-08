@@ -54,7 +54,10 @@ const Index = () => {
     setSelectedStatuses,
     allOrganizations,
     selectedOrganizations,
-    setSelectedOrganizations
+    setSelectedOrganizations,
+    allCouriers,
+    selectedCouriers,
+    setSelectedCouriers
   } = useDeliveriesTable({ 
     deliveries: deliveriesData,
     showMyDeliveriesOnly 
@@ -123,6 +126,9 @@ const Index = () => {
               allOrganizations={allOrganizations}
               selectedOrganizations={selectedOrganizations}
               setSelectedOrganizations={setSelectedOrganizations}
+              allCouriers={allCouriers}
+              selectedCouriers={selectedCouriers}
+              setSelectedCouriers={setSelectedCouriers}
             />
             
             {/* Pagination Section */}

@@ -22,6 +22,7 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
   const [selectedStatuses, setSelectedStatuses] = useState<DeliveryStatus[]>([]);
   const [selectedOrganizations, setSelectedOrganizations] = useState<string[]>([]);
+  const [selectedCouriers, setSelectedCouriers] = useState<string[]>([]);
 
   const currentUserName = "John Smith";
 
@@ -31,6 +32,10 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
 
   const allOrganizations: string[] = Array.from(
     new Set(deliveries.map(delivery => delivery.organization))
+  ).filter(Boolean) as string[];
+
+  const allCouriers: string[] = Array.from(
+    new Set(deliveries.map(delivery => delivery.courier))
   ).filter(Boolean) as string[];
 
   const availableColumns: ColumnOption[] = [
@@ -111,7 +116,8 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
       debouncedSearchTerm, 
       activeView, 
       selectedStatuses, 
-      selectedOrganizations, 
+      selectedOrganizations,
+      selectedCouriers,
       showMyDeliveriesOnly
     );
     console.log("Filters applied:", {
@@ -119,9 +125,18 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
       activeView,
       selectedStatuses,
       selectedOrganizations,
+      selectedCouriers,
       showMyDeliveriesOnly
     });
-  }, [debouncedSearchTerm, activeView, deliveries, selectedStatuses, selectedOrganizations, showMyDeliveriesOnly]);
+  }, [
+    debouncedSearchTerm, 
+    activeView, 
+    deliveries, 
+    selectedStatuses, 
+    selectedOrganizations,
+    selectedCouriers,
+    showMyDeliveriesOnly
+  ]);
 
   const applyFilters = useCallback((
     items: Delivery[], 
@@ -129,6 +144,7 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     activeTab: string,
     statusFilters: DeliveryStatus[],
     organizationFilters: string[],
+    courierFilters: string[],
     showMyDeliveriesOnly: boolean
   ) => {
     let results = [...items];
@@ -192,6 +208,14 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
         delivery.organization && organizationFilters.includes(delivery.organization)
       );
       console.log(`Filtered to ${results.length} deliveries with selected organizations:`, organizationFilters);
+    }
+    
+    if (courierFilters.length > 0) {
+      console.log("Filtering by couriers:", courierFilters);
+      results = results.filter(delivery => 
+        delivery.courier && courierFilters.includes(delivery.courier)
+      );
+      console.log(`Filtered to ${results.length} deliveries with selected couriers:`, courierFilters);
     }
     
     setFilteredDeliveries(results);
@@ -365,12 +389,18 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     applyFilters,
     isFilterSidebarOpen,
     toggleFilterSidebar,
+    
     allDeliveryStatuses,
     selectedStatuses,
     setSelectedStatuses,
+    
     allOrganizations,
     selectedOrganizations,
     setSelectedOrganizations,
+    
+    allCouriers,
+    selectedCouriers,
+    setSelectedCouriers,
     
     availableColumns,
     visibleColumns,
