@@ -68,15 +68,6 @@ const Index = () => {
           setCollapsed={setSidebarCollapsed} 
         />
         
-        {/* Filter Sidebar */}
-        <DeliverySidebar 
-          open={isFilterSidebarOpen}
-          onClose={toggleFilterSidebar}
-          deliveryStatuses={allDeliveryStatuses}
-          selectedStatuses={selectedStatuses}
-          onStatusChange={setSelectedStatuses}
-        />
-        
         <main className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}>
           {/* Filters Section */}
           <DeliveryFilters 
@@ -95,7 +86,7 @@ const Index = () => {
             isFilterSidebarOpen={isFilterSidebarOpen}
           />
           
-          {/* Table Section */}
+          {/* Table Section with Integrated Filter Sidebar */}
           <DeliveryTable 
             items={currentItems}
             sortedColumns={sortedColumns}
@@ -107,6 +98,16 @@ const Index = () => {
             handleDragOver={handleDragOver}
             handleDragEnd={handleDragEnd}
             handleDrop={handleDrop}
+            isFilterSidebarOpen={isFilterSidebarOpen}
+            filterSidebar={
+              <DeliverySidebar 
+                open={isFilterSidebarOpen}
+                onClose={toggleFilterSidebar}
+                deliveryStatuses={allDeliveryStatuses}
+                selectedStatuses={selectedStatuses}
+                onStatusChange={setSelectedStatuses}
+              />
+            }
           />
           
           {/* Pagination Section */}
