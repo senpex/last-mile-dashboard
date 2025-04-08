@@ -75,9 +75,9 @@ export function DeliveryTable({
           <div className="flex flex-col h-full">
             <TableContainer 
               stickyHeader 
-              className="overflow-hidden"
+              className="overflow-x-auto" // Restored horizontal scroll
             >
-              <div className="min-w-[1400px] w-full">
+              <div className="min-w-[1400px] w-full overflow-x-auto"> {/* Restored overflow-x-auto */}
                 <Table className="w-full">
                   <TableHeaderComponent 
                     sortedColumns={sortedColumns}
