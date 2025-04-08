@@ -10,6 +10,8 @@ import ColumnSelector from "@/components/table/ColumnSelector";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DeliveryStatus } from "@/types/delivery";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { User, Users } from "lucide-react";
 
 interface DeliveryFiltersProps {
   searchTerm: string;
@@ -25,6 +27,8 @@ interface DeliveryFiltersProps {
   onActiveViewChange: (view: string) => void;
   onToggleFilterSidebar: () => void;
   isFilterSidebarOpen: boolean;
+  showMyDeliveriesOnly?: boolean;
+  onToggleMyDeliveries?: (showMyDeliveriesOnly: boolean) => void;
 }
 
 export function DeliveryFilters({
@@ -40,7 +44,9 @@ export function DeliveryFilters({
   activeView,
   onActiveViewChange,
   onToggleFilterSidebar,
-  isFilterSidebarOpen
+  isFilterSidebarOpen,
+  showMyDeliveriesOnly = false,
+  onToggleMyDeliveries = () => {}
 }: DeliveryFiltersProps) {
   return (
     <div className="px-4 py-6 flex-shrink-0 border-b">
@@ -96,7 +102,27 @@ export function DeliveryFilters({
         </div>
         
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
+            <ToggleGroup 
+              type="single" 
+              value={showMyDeliveriesOnly ? "me" : "all"}
+              onValueChange={(value) => {
+                if (value) { // Check if value isn't empty (deselection)
+                  onToggleMyDeliveries(value === "me");
+                }
+              }}
+              className="border rounded-md"
+            >
+              <ToggleGroupItem value="me" aria-label="Show my deliveries" className="flex gap-1 text-xs data-[state=on]:bg-primary data-[state=on]:text-primary-foreground">
+                <User className="h-3.5 w-3.5" />
+                <span>Me</span>
+              </ToggleGroupItem>
+              <ToggleGroupItem value="all" aria-label="Show all deliveries" className="flex gap-1 text-xs data-[state=on]:bg-primary data-[state=on]:text-primary-foreground">
+                <Users className="h-3.5 w-3.5" />
+                <span>All</span>
+              </ToggleGroupItem>
+            </ToggleGroup>
+
             <h2 className="text-sm font-semibold text-black mr-2">Views:</h2>
             <Tabs value={activeView} onValueChange={onActiveViewChange} className="w-auto">
               <TabsList className="inline-flex h-8 bg-muted space-x-1">

@@ -6,9 +6,10 @@ import { ColumnOption } from "@/components/table/ColumnSelector";
 
 export interface UseDeliveriesTableProps {
   deliveries: Delivery[];
+  showMyDeliveriesOnly?: boolean;
 }
 
-export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
+export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }: UseDeliveriesTableProps) {
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [statusDictionary, setStatusDictionary] = useState<Dictionary | null>(null);
@@ -20,6 +21,8 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
   const [activeView, setActiveView] = useState<string>("main");
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
   const [selectedStatuses, setSelectedStatuses] = useState<DeliveryStatus[]>([]);
+
+  const currentUserName = "John Smith";
 
   const allDeliveryStatuses: DeliveryStatus[] = Array.from(
     new Set(deliveries.map(delivery => delivery.status as DeliveryStatus))
@@ -97,21 +100,30 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
   }, [searchTerm]);
 
   useEffect(() => {
-    applyFilters(deliveries, debouncedSearchTerm, activeView, selectedStatuses);
+    applyFilters(deliveries, debouncedSearchTerm, activeView, selectedStatuses, showMyDeliveriesOnly);
     console.log("Filters applied:", {
       searchTerm: debouncedSearchTerm,
       activeView,
-      selectedStatuses
+      selectedStatuses,
+      showMyDeliveriesOnly
     });
-  }, [debouncedSearchTerm, activeView, deliveries, selectedStatuses]);
+  }, [debouncedSearchTerm, activeView, deliveries, selectedStatuses, showMyDeliveriesOnly]);
 
   const applyFilters = useCallback((
     items: Delivery[], 
     searchTerm: string, 
     activeTab: string,
-    statusFilters: DeliveryStatus[]
+    statusFilters: DeliveryStatus[],
+    showMyDeliveriesOnly: boolean
   ) => {
     let results = [...items];
+    
+    if (showMyDeliveriesOnly) {
+      results = results.filter(delivery => 
+        delivery.courier === currentUserName
+      );
+      console.log(`Filtered to ${results.length} deliveries for current user: ${currentUserName}`);
+    }
     
     if (searchTerm.length >= 4) {
       console.log("Performing search for:", searchTerm);
@@ -160,7 +172,7 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
     
     setFilteredDeliveries(results);
     setCurrentPage(1);
-  }, []);
+  }, [currentUserName]);
 
   const totalItems = filteredDeliveries.length;
   const totalPages = Math.ceil(totalItems / pageSize);
@@ -334,7 +346,6 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
     availableColumns,
     visibleColumns,
     setVisibleColumns,
-    columnOrder,
     sortedColumns,
     draggedColumn,
     dragOverColumn,

@@ -19,6 +19,7 @@ const Index = () => {
   const [timezone, setTimezone] = useState<string>("America/New_York");
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedCourier, setSelectedCourier] = useState("");
+  const [showMyDeliveriesOnly, setShowMyDeliveriesOnly] = useState(false);
 
   // Use our custom hook for table functionality
   const {
@@ -51,12 +52,19 @@ const Index = () => {
     allDeliveryStatuses,
     selectedStatuses,
     setSelectedStatuses
-  } = useDeliveriesTable({ deliveries: deliveriesData });
+  } = useDeliveriesTable({ 
+    deliveries: deliveriesData,
+    showMyDeliveriesOnly 
+  });
 
   const handleCourierClick = (courierName: string) => {
     if (!courierName) return; // Don't open chat for empty courier names
     setSelectedCourier(courierName);
     setIsChatOpen(true);
+  };
+
+  const handleToggleMyDeliveries = (showMine: boolean) => {
+    setShowMyDeliveriesOnly(showMine);
   };
 
   return (
@@ -88,6 +96,8 @@ const Index = () => {
               onActiveViewChange={setActiveView}
               onToggleFilterSidebar={toggleFilterSidebar}
               isFilterSidebarOpen={isFilterSidebarOpen}
+              showMyDeliveriesOnly={showMyDeliveriesOnly}
+              onToggleMyDeliveries={handleToggleMyDeliveries}
             />
             
             {/* Table Section */}
