@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { DeliveryStatus } from "@/types/delivery";
 import { Dictionary, DictionaryItem } from "@/types/dictionary";
 import { getDictionary } from "@/lib/storage";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface DeliverySidebarProps {
   open: boolean;
@@ -96,101 +95,99 @@ export function DeliverySidebar({
 
   return (
     <div className={`h-full bg-background border-r shadow-lg transition-all duration-300 ${open ? 'w-[250px] max-w-[80vw]' : 'w-0 overflow-hidden'}`}>
-      <div className="p-6 w-full h-full flex flex-col">
+      <div className="p-6 w-full">
         <h2 className="text-lg font-semibold mb-4">Filters</h2>
         
-        <ScrollArea className="flex-1 -mr-4 pr-4">
-          <Accordion 
-            type="single" 
-            collapsible 
-            className="w-full" 
-            defaultValue=""
-            value={isAccordionOpen}
-            onValueChange={setIsAccordionOpen}
-          >
-            <AccordionItem value="status" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1">
-                <span className="flex-grow">Status</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col space-y-3 py-2">
-                  {statusItems.map(item => {
-                    // Only show items that have a mapping to actual delivery statuses
-                    const actualStatus = statusMapping[item.value];
-                    if (!actualStatus) return null;
-                    
-                    return (
-                      <div key={item.id} className="flex items-center space-x-2">
-                        <Checkbox 
-                          id={`status-${item.id}`} 
-                          checked={selectedStatuses.includes(actualStatus as DeliveryStatus)} 
-                          onCheckedChange={checked => handleStatusChange(item.value, checked === true)} 
-                        />
-                        <Label 
-                          htmlFor={`status-${item.id}`} 
-                          className="flex flex-1 items-center justify-between" 
-                          title={item.description || ''}
-                        >
-                          <span>{item.value}</span>
-                        </Label>
-                      </div>
-                    );
-                  })}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            
-            <AccordionItem value="organization" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1">
-                <span className="flex-grow">Organization</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col space-y-3 py-2">
-                  {organizations.map(org => (
-                    <div key={org} className="flex items-center space-x-2">
+        <Accordion 
+          type="single" 
+          collapsible 
+          className="w-full" 
+          defaultValue=""
+          value={isAccordionOpen}
+          onValueChange={setIsAccordionOpen}
+        >
+          <AccordionItem value="status" className="border-b">
+            <AccordionTrigger className="py-4 w-full text-left justify-between pr-4">
+              <span className="mr-[100px]">Status</span>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="flex flex-col space-y-3 py-2">
+                {statusItems.map(item => {
+                  // Only show items that have a mapping to actual delivery statuses
+                  const actualStatus = statusMapping[item.value];
+                  if (!actualStatus) return null;
+                  
+                  return (
+                    <div key={item.id} className="flex items-center space-x-2">
                       <Checkbox 
-                        id={`org-${org}`} 
-                        checked={selectedOrganizations.includes(org)} 
-                        onCheckedChange={checked => handleOrganizationChange(org, checked === true)} 
+                        id={`status-${item.id}`} 
+                        checked={selectedStatuses.includes(actualStatus as DeliveryStatus)} 
+                        onCheckedChange={checked => handleStatusChange(item.value, checked === true)} 
                       />
                       <Label 
-                        htmlFor={`org-${org}`} 
-                        className="flex flex-1 items-center justify-between"
+                        htmlFor={`status-${item.id}`} 
+                        className="flex flex-1 items-center justify-between" 
+                        title={item.description || ''}
                       >
-                        <span>{org}</span>
+                        <span>{item.value}</span>
                       </Label>
                     </div>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
+                  );
+                })}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+          
+          <AccordionItem value="organization" className="border-b">
+            <AccordionTrigger className="py-4 w-full text-left justify-between pr-4">
+              <span className="mr-[100px]">Organization</span>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="flex flex-col space-y-3 py-2">
+                {organizations.map(org => (
+                  <div key={org} className="flex items-center space-x-2">
+                    <Checkbox 
+                      id={`org-${org}`} 
+                      checked={selectedOrganizations.includes(org)} 
+                      onCheckedChange={checked => handleOrganizationChange(org, checked === true)} 
+                    />
+                    <Label 
+                      htmlFor={`org-${org}`} 
+                      className="flex flex-1 items-center justify-between"
+                    >
+                      <span>{org}</span>
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
 
-            <AccordionItem value="courier" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1">
-                <span className="flex-grow">Courier</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col space-y-3 py-2">
-                  {couriers.map(courier => (
-                    <div key={courier} className="flex items-center space-x-2">
-                      <Checkbox 
-                        id={`courier-${courier}`} 
-                        checked={selectedCouriers.includes(courier)} 
-                        onCheckedChange={checked => handleCourierChange(courier, checked === true)} 
-                      />
-                      <Label 
-                        htmlFor={`courier-${courier}`} 
-                        className="flex flex-1 items-center justify-between"
-                      >
-                        <span>{courier}</span>
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </ScrollArea>
+          <AccordionItem value="courier" className="border-b">
+            <AccordionTrigger className="py-4 w-full text-left justify-between pr-4">
+              <span className="mr-[100px]">Courier</span>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="flex flex-col space-y-3 py-2">
+                {couriers.map(courier => (
+                  <div key={courier} className="flex items-center space-x-2">
+                    <Checkbox 
+                      id={`courier-${courier}`} 
+                      checked={selectedCouriers.includes(courier)} 
+                      onCheckedChange={checked => handleCourierChange(courier, checked === true)} 
+                    />
+                    <Label 
+                      htmlFor={`courier-${courier}`} 
+                      className="flex flex-1 items-center justify-between"
+                    >
+                      <span>{courier}</span>
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
     </div>
   );
