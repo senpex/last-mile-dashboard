@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -74,12 +73,12 @@ export function DeliveryTable({
         
         <div className={`flex-1 transition-all duration-300 my-4 ${isFilterSidebarOpen ? 'ml-3' : 'ml-2'}`}>
           <div className="flex flex-col h-full w-full">
-            <TableContainer 
-              stickyHeader 
-              className="w-full overflow-x-auto"
-            >
-              <div className="w-full overflow-hidden">
-                <Table className="w-full">
+            <div className="w-full overflow-x-auto">
+              <TableContainer 
+                stickyHeader 
+                className="min-w-full"
+              >
+                <Table className="w-full table-auto">
                   <TableHeader>
                     <TableRow>
                       {sortedColumns.map(columnId => {
@@ -194,8 +193,8 @@ export function DeliveryTable({
                     )}
                   </TableBody>
                 </Table>
-              </div>
-            </TableContainer>
+              </TableContainer>
+            </div>
           </div>
         </div>
       </div>
