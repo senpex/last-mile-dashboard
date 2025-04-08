@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -105,7 +106,7 @@ export function DeliverySidebar({
             onValueChange={setIsAccordionOpen}
           >
             <AccordionItem value="status" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-[15.6rem]">
+              <AccordionTrigger className="py-4 w-full text-left flex items-center justify-between pr-1">
                 <span className="flex-grow">Status</span>
                 <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
               </AccordionTrigger>
@@ -137,7 +138,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="organization" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-[15.6rem]">
+              <AccordionTrigger className="py-4 w-full text-left flex items-center justify-between pr-1">
                 <span className="flex-grow">Organization</span>
                 <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
               </AccordionTrigger>
@@ -163,7 +164,7 @@ export function DeliverySidebar({
             </AccordionItem>
 
             <AccordionItem value="courier" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-[15.6rem]">
+              <AccordionTrigger className="py-4 w-full text-left flex items-center justify-between pr-1">
                 <span className="flex-grow">Courier</span>
                 <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
               </AccordionTrigger>
