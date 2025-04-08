@@ -77,7 +77,7 @@ export function DeliveryTable({
               stickyHeader 
               className="overflow-x-auto"
             >
-              <div className="min-w-[1400px] w-full">
+              <div className="min-w-[1400px] w-full overflow-x-auto">
                 <Table className="w-full">
                   <TableHeaderComponent 
                     sortedColumns={sortedColumns}
