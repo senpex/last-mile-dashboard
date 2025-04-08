@@ -73,7 +73,7 @@ export function DeliveryTable({
         />
         
         <div className={`flex-1 transition-all duration-300 ${isFilterSidebarOpen ? 'ml-2' : 'ml-0'}`}>
-          <div className="border rounded-md p-4 w-full min-w-[300px] overflow-x-auto"> {/* Updated responsive classes */}
+          <div className="border rounded-md p-4 w-full min-w-[300px] overflow-x-auto mr-0 ml-auto"> {/* Added mr-0 ml-auto to align right */}
             <ScrollArea orientation="horizontal">
               <TableContainer stickyHeader={false}>
                 <Table>
