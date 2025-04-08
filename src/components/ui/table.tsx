@@ -1,4 +1,3 @@
-
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
@@ -122,11 +121,12 @@ const TableContainer = React.forwardRef<
     height?: string;
     stickyHeader?: boolean;
   }
->(({ className, height, stickyHeader = true, ...props }, ref) => (
+>(({ className, height = "h-[calc(100vh-230px)]", stickyHeader = true, ...props }, ref) => (
   <div 
     ref={ref}
     className={cn(
-      "relative w-full border rounded-md overflow-auto h-full",
+      "relative w-full border rounded-md overflow-auto",
+      height, 
       className
     )} 
     style={{
