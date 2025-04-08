@@ -26,14 +26,14 @@ export function DeliverySidebar({
   const [isAccordionOpen, setIsAccordionOpen] = useState<string>("");
 
   useEffect(() => {
-    // Load the Package - Pickup statuses dictionary
-    const dictionary = getDictionary("1401");
+    // Load the same status dictionary (ID 19) used in the Deliveries table
+    const dictionary = getDictionary("19");
     if (dictionary) {
       setStatusDictionary(dictionary);
       setStatusItems(dictionary.items);
-      console.log("Loaded Package - Pickup statuses dictionary:", dictionary);
+      console.log("Loaded status dictionary:", dictionary);
     } else {
-      console.warn("Dictionary with ID 1401 not found");
+      console.warn("Dictionary with ID 19 not found");
     }
   }, []);
 
