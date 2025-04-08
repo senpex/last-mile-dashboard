@@ -116,7 +116,7 @@ const TableCaption = React.forwardRef<
 ))
 TableCaption.displayName = "TableCaption"
 
-// Create a wrapper component for tables that provides the scrollable container
+// Updated TableContainer component with better vertical scrolling support
 const TableContainer = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
@@ -127,7 +127,7 @@ const TableContainer = React.forwardRef<
   <div 
     ref={ref}
     className={cn(
-      "relative w-full overflow-auto border rounded-md", 
+      "relative w-full border rounded-md", 
       height, 
       className
     )} 
