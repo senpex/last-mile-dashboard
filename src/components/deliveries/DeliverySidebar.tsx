@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -8,6 +7,8 @@ import { Dictionary, DictionaryItem } from "@/types/dictionary";
 import { getDictionary } from "@/lib/storage";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Save, RotateCcw } from "lucide-react";
 
 interface DeliverySidebarProps {
   open: boolean;
@@ -45,23 +46,20 @@ export function DeliverySidebar({
   const [courierCounts, setCourierCounts] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    // Load the same status dictionary (ID 19) used in the Deliveries table
     const dictionary = getDictionary("19");
     if (dictionary) {
       setStatusDictionary(dictionary);
       setStatusItems(dictionary.items);
       
-      // Create a mapping from dictionary ID to delivery status value
       const mapping: Record<string, string> = {};
       dictionary.items.forEach(item => {
-        // Map the dictionary item value to actual delivery status values expected in data
         if (item.id === "completed") mapping[item.value] = "Dropoff Complete";
         else if (item.id === "cancelled_order") mapping[item.value] = "Canceled By Customer";
         else if (item.id === "cancelled_by_admin") mapping[item.value] = "Cancelled By Admin";
         else if (item.id === "in_transit") mapping[item.value] = "In Transit";
         else if (item.id === "started_working") mapping[item.value] = "Picking Up";
         else if (item.id === "arrived_for_pickup") mapping[item.value] = "Arrived For Pickup";
-        else mapping[item.value] = item.value; // Default mapping
+        else mapping[item.value] = item.value;
       });
       
       setStatusMapping(mapping);
@@ -72,23 +70,19 @@ export function DeliverySidebar({
     }
   }, []);
 
-  // Calculate counts for each status
   useEffect(() => {
-    // Count statuses
     const statusCount: Record<string, number> = {};
     deliveryStatuses.forEach(status => {
       statusCount[status] = (statusCount[status] || 0) + 1;
     });
     setStatusCounts(statusCount);
     
-    // Count organizations
     const orgCount: Record<string, number> = {};
     organizations.forEach(org => {
       orgCount[org] = (orgCount[org] || 0) + 1;
     });
     setOrganizationCounts(orgCount);
     
-    // Count couriers
     const courierCount: Record<string, number> = {};
     couriers.forEach(courier => {
       courierCount[courier] = (courierCount[courier] || 0) + 1;
@@ -101,7 +95,6 @@ export function DeliverySidebar({
   }, [deliveryStatuses, organizations, couriers]);
 
   const handleStatusChange = (statusValue: string, checked: boolean) => {
-    // Map the dictionary status to actual delivery status
     const actualStatus = statusMapping[statusValue];
     
     if (checked) {
@@ -127,6 +120,20 @@ export function DeliverySidebar({
     }
   };
 
+  const handleSaveFilters = () => {
+    console.log("Saving filters:", {
+      statuses: selectedStatuses,
+      organizations: selectedOrganizations,
+      couriers: selectedCouriers
+    });
+  };
+
+  const handleResetFilters = () => {
+    onStatusChange([]);
+    onOrganizationChange([]);
+    onCourierChange([]);
+  };
+
   return (
     <div className={`h-full bg-background border-r shadow-lg transition-all duration-300 ${open ? 'w-[275px] max-w-[80vw]' : 'w-0 overflow-hidden'}`}>
       <div className="p-6 w-full h-full flex flex-col">
@@ -148,11 +155,9 @@ export function DeliverySidebar({
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
                   {statusItems.map(item => {
-                    // Only show items that have a mapping to actual delivery statuses
                     const actualStatus = statusMapping[item.value];
                     if (!actualStatus) return null;
                     
-                    // Get the count for this status
                     const count = statusCounts[actualStatus] || 0;
                     
                     return (
@@ -230,6 +235,24 @@ export function DeliverySidebar({
             </AccordionItem>
           </Accordion>
         </ScrollArea>
+
+        <div className="mt-4 pt-4 border-t flex gap-2">
+          <Button 
+            variant="outline" 
+            className="flex-1 gap-1" 
+            onClick={handleResetFilters}
+          >
+            <RotateCcw className="h-4 w-4" />
+            Reset
+          </Button>
+          <Button 
+            className="flex-1 gap-1" 
+            onClick={handleSaveFilters}
+          >
+            <Save className="h-4 w-4" />
+            Save
+          </Button>
+        </div>
       </div>
     </div>
   );
