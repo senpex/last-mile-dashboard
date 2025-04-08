@@ -56,7 +56,7 @@ export function DeliveryTable({
   setSelectedCouriers
 }: DeliveryTableProps) {
   return (
-    <div className="flex-1 overflow-hidden">
+    <div className="flex-1 overflow-hidden px-6">
       <div className="flex h-full">
         <DeliverySidebar 
           open={isFilterSidebarOpen} 
