@@ -46,10 +46,8 @@ export function DeliverySidebar({
   };
 
   return (
-    <div 
-      className={`absolute left-[240px] h-full z-10 transition-transform duration-300 ${open ? 'translate-x-0' : '-translate-x-full'}`}
-    >
-      <div className="h-full w-72 bg-background border-r shadow-lg">
+    <Sheet open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
+      <SheetContent side="left" className="w-80 border-r p-0">
         <div className="p-6">
           <h2 className="text-lg font-semibold mb-4">Filter Deliveries</h2>
           
@@ -81,7 +79,7 @@ export function DeliverySidebar({
             </AccordionItem>
           </Accordion>
         </div>
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 }
