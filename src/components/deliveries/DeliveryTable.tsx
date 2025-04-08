@@ -73,7 +73,7 @@ export function DeliveryTable({
         />
         
         <div className={`flex-1 transition-all duration-300 ${isFilterSidebarOpen ? 'ml-2' : 'ml-0'}`}>
-          <div className="border rounded-md p-[5px] max-w-[calc(100%-8rem)]"> {/* Reduced width by 100% more */}
+          <div className="border rounded-md p-[5px] max-w-[calc(100%-8rem)] border-b-3 border-border"> {/* Added 3px bottom border */}
             <ScrollArea orientation="horizontal">
               <TableContainer stickyHeader={false}>
                 <Table>
