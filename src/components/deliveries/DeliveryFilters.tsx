@@ -61,11 +61,12 @@ export function DeliveryFilters({
             
             <Button 
               variant={isFilterSidebarOpen ? "default" : "outline"} 
-              className="flex items-center gap-2 text-sm h-9"
+              className={`flex items-center gap-2 text-sm h-9 ${isFilterSidebarOpen ? 'bg-primary text-primary-foreground' : ''}`}
               onClick={onToggleFilterSidebar}
+              aria-expanded={isFilterSidebarOpen}
             >
               <Filter className="h-4 w-4" />
-              <span>Filters</span>
+              <span>{isFilterSidebarOpen ? 'Hide Filters' : 'Show Filters'}</span>
             </Button>
           </div>
           
