@@ -109,19 +109,19 @@ export function DeliveryFilters({
                   onToggleMyDeliveries(value === "me");
                 }
               }}
-              className="border rounded-md"
+              className="border rounded-md h-6"
             >
               <ToggleGroupItem 
                 value="me" 
                 aria-label="Show my deliveries" 
-                className="px-3 text-xs rounded-md data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                className="px-3 text-xs rounded-md h-6 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
               >
                 Me
               </ToggleGroupItem>
               <ToggleGroupItem 
                 value="all" 
                 aria-label="Show all deliveries" 
-                className="px-3 text-xs rounded-md data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                className="px-3 text-xs rounded-md h-6 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
               >
                 All
               </ToggleGroupItem>
