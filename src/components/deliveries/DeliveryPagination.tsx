@@ -34,7 +34,7 @@ export function DeliveryPagination({
   onPageSizeChange
 }: DeliveryPaginationProps) {
   return (
-    <div className="border-t bg-background px-4 py-3 flex justify-between items-center shadow-sm flex-shrink-0">
+    <div className="border-t bg-background py-2 px-2 flex justify-between items-center shadow-sm flex-shrink-0">
       <PaginationInfo 
         total={totalItems} 
         pageSize={pageSize} 
