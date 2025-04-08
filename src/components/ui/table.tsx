@@ -1,3 +1,4 @@
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
@@ -126,7 +127,7 @@ const TableContainer = React.forwardRef<
     ref={ref}
     className={cn(
       "relative w-full border rounded-md overflow-auto",
-      height, 
+      height === "auto" ? "h-full" : height, 
       className
     )} 
     style={{
