@@ -7,6 +7,7 @@ import CourierChat from "@/components/chat/CourierChat";
 import { DeliveryFilters } from "@/components/deliveries/DeliveryFilters";
 import { DeliveryTable } from "@/components/deliveries/DeliveryTable";
 import { DeliveryPagination } from "@/components/deliveries/DeliveryPagination";
+import { DeliverySidebar } from "@/components/deliveries/DeliverySidebar";
 import { useDeliveriesTable } from "@/hooks/useDeliveriesTable";
 import { deliveriesData } from "@/data/deliveriesData";
 
@@ -45,7 +46,12 @@ const Index = () => {
     handleDragEnd,
     handleDrop,
     getStatusDisplay,
-    getStatusBadgeVariant
+    getStatusBadgeVariant,
+    isFilterSidebarOpen,
+    toggleFilterSidebar,
+    allDeliveryStatuses,
+    selectedStatuses,
+    setSelectedStatuses
   } = useDeliveriesTable({ deliveries: deliveriesData });
 
   const handleCourierClick = (courierName: string) => {
@@ -62,6 +68,15 @@ const Index = () => {
           setCollapsed={setSidebarCollapsed} 
         />
         
+        {/* Filter Sidebar */}
+        <DeliverySidebar 
+          open={isFilterSidebarOpen}
+          onClose={toggleFilterSidebar}
+          deliveryStatuses={allDeliveryStatuses}
+          selectedStatuses={selectedStatuses}
+          onStatusChange={setSelectedStatuses}
+        />
+        
         <main className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}>
           {/* Filters Section */}
           <DeliveryFilters 
@@ -76,6 +91,8 @@ const Index = () => {
             onVisibleColumnsChange={setVisibleColumns}
             activeView={activeView}
             onActiveViewChange={setActiveView}
+            onToggleFilterSidebar={toggleFilterSidebar}
+            isFilterSidebarOpen={isFilterSidebarOpen}
           />
           
           {/* Table Section */}

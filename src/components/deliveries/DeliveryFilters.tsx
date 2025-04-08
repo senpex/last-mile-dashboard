@@ -9,6 +9,7 @@ import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DeliveryStatus } from "@/types/delivery";
 
 interface DeliveryFiltersProps {
   searchTerm: string;
@@ -22,6 +23,8 @@ interface DeliveryFiltersProps {
   onVisibleColumnsChange: (columns: string[]) => void;
   activeView: string;
   onActiveViewChange: (view: string) => void;
+  onToggleFilterSidebar: () => void;
+  isFilterSidebarOpen: boolean;
 }
 
 export function DeliveryFilters({
@@ -35,7 +38,9 @@ export function DeliveryFilters({
   visibleColumns,
   onVisibleColumnsChange,
   activeView,
-  onActiveViewChange
+  onActiveViewChange,
+  onToggleFilterSidebar,
+  isFilterSidebarOpen
 }: DeliveryFiltersProps) {
   return (
     <div className="px-4 py-6 flex-shrink-0 border-b">
@@ -54,7 +59,11 @@ export function DeliveryFilters({
               onDateRangeChange={onDateRangeChange}
             />
             
-            <Button variant="outline" className="flex items-center gap-2 text-sm h-9">
+            <Button 
+              variant={isFilterSidebarOpen ? "default" : "outline"} 
+              className="flex items-center gap-2 text-sm h-9"
+              onClick={onToggleFilterSidebar}
+            >
               <Filter className="h-4 w-4" />
               <span>Filters</span>
             </Button>

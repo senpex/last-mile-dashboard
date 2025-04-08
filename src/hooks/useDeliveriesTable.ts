@@ -1,9 +1,8 @@
-
 import { useState, useEffect, useCallback } from "react";
-import { Delivery } from "@/types/delivery";
+import { Delivery, DeliveryStatus } from "@/types/delivery";
 import { Dictionary } from "@/types/dictionary";
 import { getDictionary } from "@/lib/storage";
-import { ColumnOption } from "@/components/table/ColumnSelector"; // Added import for ColumnOption
+import { ColumnOption } from "@/components/table/ColumnSelector";
 
 export interface UseDeliveriesTableProps {
   deliveries: Delivery[];
@@ -19,8 +18,13 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
   const [filteredDeliveries, setFilteredDeliveries] = useState<Delivery[]>([]);
   const [activeView, setActiveView] = useState<string>("main");
+  const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
+  const [selectedStatuses, setSelectedStatuses] = useState<DeliveryStatus[]>([]);
 
-  // Column management
+  const allDeliveryStatuses: DeliveryStatus[] = Array.from(
+    new Set(deliveries.map(delivery => delivery.status as DeliveryStatus))
+  );
+
   const availableColumns: ColumnOption[] = [
     { id: "status", label: "Status", default: true },
     { id: "packageId", label: "ID", default: true },
@@ -38,7 +42,7 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
     { id: "distance", label: "Distance", default: true },
     { id: "couriersEarnings", label: "Couriers Earnings", default: true },
   ];
-  
+
   const [visibleColumns, setVisibleColumns] = useState<string[]>(
     availableColumns.filter(col => col.default).map(col => col.id)
   );
@@ -47,7 +51,6 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
     availableColumns.filter(col => col.default).map(col => col.id)
   );
 
-  // Status mapping for display and styles
   const statusMapping: Record<string, string> = {
     "Dropoff Complete": "completed",
     "Canceled By Customer": "cancelled_order",
@@ -56,7 +59,6 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
     "Arrived For Pickup": "arrived_for_pickup"
   };
 
-  // Load dictionary data
   useEffect(() => {
     const dictionary = getDictionary("19");
     if (dictionary) {
@@ -67,7 +69,6 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
     }
   }, []);
 
-  // Handle column visibility changes
   useEffect(() => {
     setColumnOrder(prevOrder => {
       const newOrder = [...prevOrder];
@@ -82,7 +83,6 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
     });
   }, [visibleColumns]);
 
-  // Handle search term debouncing
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchTerm.length >= 4 || searchTerm.length === 0) {
@@ -96,18 +96,23 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
     };
   }, [searchTerm]);
 
-  // Apply filters when search term or active view changes
   useEffect(() => {
-    // Apply initial filtering based on the active view
-    applyFilters(deliveries, debouncedSearchTerm, activeView);
-    console.log("Initial deliveries loaded:", deliveries.length);
-  }, [debouncedSearchTerm, activeView, deliveries]);
+    applyFilters(deliveries, debouncedSearchTerm, activeView, selectedStatuses);
+    console.log("Filters applied:", {
+      searchTerm: debouncedSearchTerm,
+      activeView,
+      selectedStatuses
+    });
+  }, [debouncedSearchTerm, activeView, deliveries, selectedStatuses]);
 
-  // Function to apply both search and tab filters
-  const applyFilters = useCallback((items: Delivery[], searchTerm: string, activeTab: string) => {
+  const applyFilters = useCallback((
+    items: Delivery[], 
+    searchTerm: string, 
+    activeTab: string,
+    statusFilters: DeliveryStatus[]
+  ) => {
     let results = [...items];
     
-    // First filter by search term if present
     if (searchTerm.length >= 4) {
       console.log("Performing search for:", searchTerm);
 
@@ -138,9 +143,7 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
       });
     }
     
-    // Then filter by the active tab
     if (activeTab === "attention") {
-      // Only show items with "Canceled By Customer" or "Cancelled By Admin" status for Attention Required tab
       results = results.filter(delivery => 
         delivery.status === "Canceled By Customer" || 
         delivery.status === "Cancelled By Admin"
@@ -148,18 +151,23 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
       console.log(`Filtered to ${results.length} cancelled deliveries for Attention Required tab`);
     }
     
+    if (statusFilters.length > 0) {
+      results = results.filter(delivery => 
+        statusFilters.includes(delivery.status as DeliveryStatus)
+      );
+      console.log(`Filtered to ${results.length} deliveries with selected statuses:`, statusFilters);
+    }
+    
     setFilteredDeliveries(results);
-    setCurrentPage(1); // Reset to first page when filters change
+    setCurrentPage(1);
   }, []);
 
-  // Pagination calculations
   const totalItems = filteredDeliveries.length;
   const totalPages = Math.ceil(totalItems / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = Math.min(startIndex + pageSize, totalItems);
   const currentItems = filteredDeliveries.slice(startIndex, endIndex);
 
-  // Pagination handlers
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
@@ -167,10 +175,9 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
 
   const handlePageSizeChange = (size: number) => {
     setPageSize(size);
-    setCurrentPage(1); // Reset to first page when page size changes
+    setCurrentPage(1);
   };
 
-  // Get page numbers for pagination
   const getPageNumbers = useCallback(() => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -194,7 +201,7 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
       }
       
       if (start > 2) {
-        pages.push(-1); // Add ellipsis after first page
+        pages.push(-1);
       }
       
       for (let i = start; i <= end; i++) {
@@ -202,7 +209,7 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
       }
       
       if (end < totalPages - 1) {
-        pages.push(-2); // Add ellipsis before last page
+        pages.push(-2);
       }
       
       pages.push(totalPages);
@@ -211,7 +218,6 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
     return pages;
   }, [currentPage, totalPages]);
 
-  // Column drag and drop handlers
   const handleDragStart = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
     setDraggedColumn(columnId);
     e.dataTransfer.setData('text/plain', columnId);
@@ -257,7 +263,6 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
     setDragOverColumn(null);
   };
 
-  // Get sorted columns
   const getSortedVisibleColumns = useCallback(() => {
     return visibleColumns
       .filter(column => columnOrder.includes(column))
@@ -266,7 +271,6 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
 
   const sortedColumns = getSortedVisibleColumns();
 
-  // Status display helpers
   const getStatusDisplay = useCallback((statusValue: string): string => {
     if (!statusDictionary) return statusValue;
     
@@ -298,8 +302,11 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
     }
   }, [statusMapping]);
 
+  const toggleFilterSidebar = () => {
+    setIsFilterSidebarOpen(prev => !prev);
+  };
+
   return {
-    // Pagination
     pageSize,
     setPageSize,
     currentPage,
@@ -313,14 +320,17 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
     handlePageSizeChange,
     getPageNumbers,
     
-    // Search & Filtering
     searchTerm,
     setSearchTerm,
     activeView,
     setActiveView,
     applyFilters,
+    isFilterSidebarOpen,
+    toggleFilterSidebar,
+    allDeliveryStatuses,
+    selectedStatuses,
+    setSelectedStatuses,
     
-    // Column Management
     availableColumns,
     visibleColumns,
     setVisibleColumns,
@@ -333,7 +343,6 @@ export function useDeliveriesTable({ deliveries }: UseDeliveriesTableProps) {
     handleDrop,
     handleDragEnd,
     
-    // Status Display
     getStatusDisplay,
     getStatusBadgeVariant
   };
