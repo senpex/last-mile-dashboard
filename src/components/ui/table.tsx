@@ -106,7 +106,7 @@ const TableCell = React.forwardRef<
     <div className="flex items-center gap-1">
       {props.children}
       {withNotification && (
-        <span className="block h-2 w-2 rounded-full bg-red-500 animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite]"></span>
+        <span className="block h-2 w-2 rounded-full bg-green-500 animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite]"></span>
       )}
     </div>
   </td>
