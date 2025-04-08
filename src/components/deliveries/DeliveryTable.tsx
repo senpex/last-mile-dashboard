@@ -73,7 +73,7 @@ export function DeliveryTable({
         />
         
         <div className={`flex-1 transition-all duration-300 ${isFilterSidebarOpen ? 'ml-2' : 'ml-0'}`}>
-          <div className="border rounded-md p-[5px] max-w-[calc(100%-2rem)]"> {/* Added max-width to match the timezone text */}
+          <div className="border rounded-md p-[5px] max-w-[calc(100%-4rem)]"> {/* Reduced width by an additional 20% */}
             <ScrollArea orientation="horizontal">
               <TableContainer stickyHeader={false}>
                 <Table>
