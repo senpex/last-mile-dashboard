@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -125,12 +126,12 @@ const TableContainer = React.forwardRef<
     ref={ref}
     className={cn(
       "relative w-full border rounded-md overflow-auto",
+      "mx-auto", // Center the table
+      "max-w-[1000px]", // Set maximum width to 1000px
       height, 
       className
     )} 
     style={{
-      width: '100%',  // Ensure full width of parent
-      maxWidth: '100%', // Prevent overflow
       scrollbarWidth: 'thin',
       scrollbarColor: '#cbd5e1 transparent',
     }}
