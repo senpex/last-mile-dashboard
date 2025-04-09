@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -55,7 +56,7 @@ export function DeliveryTable({
   setSelectedCouriers
 }: DeliveryTableProps) {
   return (
-    <div className="flex-1 overflow-hidden px-3">
+    <div className="flex-1 overflow-hidden px-px">
       <div className="flex h-full">
         <DeliverySidebar 
           open={isFilterSidebarOpen} 
