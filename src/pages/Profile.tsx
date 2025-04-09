@@ -1,3 +1,4 @@
+
 import { Layout } from "@/components/layout/Layout";
 import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil, Calendar, Clock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -8,6 +9,17 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import React, { useState } from 'react';
+
+// Define interfaces for the rules and automations
+interface AttentionRule {
+  name: string;
+  query: string;
+}
+
+interface Automation {
+  name: string;
+  description: string;
+}
 
 const Profile = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
@@ -21,6 +33,19 @@ const Profile = () => {
   const [automationName, setAutomationName] = useState('');
   const [isEditMode, setIsEditMode] = useState(false);
   const [editRuleIndex, setEditRuleIndex] = useState<number | null>(null);
+  
+  // Adding the missing state variables
+  const [attentionRules, setAttentionRules] = useState<AttentionRule[]>([
+    { name: "Late Orders", query: "SELECT * FROM orders WHERE delivery_time < NOW() - INTERVAL '30 minutes'" },
+    { name: "Incomplete Orders", query: "SELECT * FROM orders WHERE status = 'incomplete'" },
+    { name: "High Value Orders", query: "SELECT * FROM orders WHERE total_value > 1000" }
+  ]);
+
+  const [automations, setAutomations] = useState<Automation[]>([
+    { name: "Auto Assign", description: "Automatically assign orders to available couriers" },
+    { name: "Send Reminder", description: "Send reminder notification when order is 15 minutes late" }
+  ]);
+
   const [workingShifts, setWorkingShifts] = useState([
     { day: "Monday", startTime: "09:00 AM", endTime: "05:00 PM", active: true },
     { day: "Tuesday", startTime: "09:00 AM", endTime: "05:00 PM", active: true },
