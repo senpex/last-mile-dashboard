@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil, Calendar, Clock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -34,7 +33,7 @@ const Profile = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editRuleIndex, setEditRuleIndex] = useState<number | null>(null);
   
-  // Adding the missing state variables
+  // Keeping the state variables to avoid reference errors
   const [attentionRules, setAttentionRules] = useState<AttentionRule[]>([
     { name: "Late Orders", query: "SELECT * FROM orders WHERE delivery_time < NOW() - INTERVAL '30 minutes'" },
     { name: "Incomplete Orders", query: "SELECT * FROM orders WHERE status = 'incomplete'" },
@@ -284,6 +283,14 @@ const Profile = () => {
                                 {rule.name}: {rule.query}
                               </label>
                             </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleEditRule(index)}
+                              className="ml-2"
+                            >
+                              <Pencil className="w-4 h-4" />
+                            </Button>
                           </div>
                         ))}
                         <div className="mt-4">
