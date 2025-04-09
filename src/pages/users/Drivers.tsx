@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Plus, Search, MessageCircle } from "lucide-react";
+import { GripVertical, Plus, Search, MessageCircle, ChevronDown, Check, X, Clock } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
-import { TransportType } from "@/components/icons/TransportIcon";
+import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis, PaginationInfo, PaginationSize } from "@/components/ui/pagination";
 import CourierChat from '@/components/chat/CourierChat';
-import DriversTable from '@/components/table/DriversTable';
 
 type StripeStatus = 'verified' | 'unverified' | 'pending';
 
@@ -448,12 +452,8 @@ const DriversPage = () => {
     default: true
   }];
 
-  const [visibleColumns, setVisibleColumns] = useState<string[]>(
-    availableColumns.filter(col => col.default).map(col => col.id)
-  );
-  const [columnOrder, setColumnOrder] = useState<string[]>(
-    availableColumns.filter(col => col.default).map(col => col.id)
-  );
+  const [visibleColumns, setVisibleColumns] = useState<string[]>(availableColumns.filter(col => col.default).map(col => col.id));
+  const [columnOrder, setColumnOrder] = useState<string[]>(availableColumns.filter(col => col.default).map(col => col.id));
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const pageSizeOptions = [5, 10, 20, 30, 50];
@@ -781,8 +781,7 @@ const DriversPage = () => {
     );
   };
 
-  return (
-    <Layout showFooter={false}>
+  return <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
         <div className="px-0 py-6 flex-1 overflow-auto">
           <div className="space-y-4 w-full">
@@ -798,46 +797,68 @@ const DriversPage = () => {
               <div className="flex items-center h-9 gap-2">
                 <div className="relative h-9">
                   <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input 
-                    type="search" 
-                    placeholder="Search drivers..." 
-                    className="w-[200px] pl-8 text-xs h-9" 
-                    value={searchTerm} 
-                    onChange={e => setSearchTerm(e.target.value)} 
-                  />
+                  <Input type="search" placeholder="Search drivers..." className="w-[200px] pl-8 text-xs h-9" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
                 </div>
-                <ColumnSelector 
-                  columns={availableColumns} 
-                  visibleColumns={visibleColumns} 
-                  setVisibleColumns={setVisibleColumns} 
-                />
+                <ColumnSelector columns={availableColumns} visibleColumns={visibleColumns} setVisibleColumns={setVisibleColumns} />
               </div>
             </div>
 
-            <DriversTable
-              drivers={drivers}
-              filteredDrivers={filteredDrivers}
-              currentItems={currentItems}
-              transportTypes={transportTypes}
-              transportIcons={transportIcons}
-              statusDictionary={statusDictionary}
-              hireStatusDictionary={hireStatusDictionary}
-              hireStatusColors={hireStatusColors}
-              statusColors={statusColors}
-              availableColumns={availableColumns}
-              visibleColumns={visibleColumns}
-              columnOrder={columnOrder}
-              draggedColumn={draggedColumn}
-              dragOverColumn={dragOverColumn}
-              driversWithMessages={driversWithMessages}
-              setDraggedColumn={setDraggedColumn}
-              setDragOverColumn={setDragOverColumn}
-              updateDriverHireStatus={updateDriverHireStatus}
-              handleDragStart={handleDragStart}
-              handleDragOver={handleDragOver}
-              handleDrop={handleDrop}
-              handleDragEnd={handleDragEnd}
-            />
+            <div className="border rounded-md mx-6">
+              <ScrollArea orientation="horizontal">
+                <TableContainer stickyHeader={false}>
+                  <Table>
+                    <TableHeader className="bg-muted/50">
+                      <TableRow>
+                        {sortedColumns.map((columnId) => {
+                          const column = availableColumns.find(col => col.id === columnId);
+                          if (!column) return null;
+                          return <TableHead key={columnId} draggable={true} dragOver={dragOverColumn === columnId} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}>
+                            <div className="flex items-center gap-1 overflow-hidden">
+                              <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
+                              <span className="truncate">{column.label}</span>
+                            </div>
+                          </TableHead>;
+                        })}
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {currentItems.map((driver) => (
+                        <TableRow key={driver.id}>
+                          {sortedColumns.includes("id") && <TableCell className="font-sans">{driver.id}</TableCell>}
+                          {sortedColumns.includes("name") && <TableCell>{driver.name}</TableCell>}
+                          {sortedColumns.includes("email") && <TableCell>{driver.email}</TableCell>}
+                          {sortedColumns.includes("phone") && <TableCell>{driver.phone}</TableCell>}
+                          {sortedColumns.includes("transport") && <TableCell>
+                              <div className="flex items-center gap-2">
+                                {driver.transports.map(transportId => <div key={transportId} className="flex items-center justify-center p-2 rounded-md bg-muted" title={transportTypes[transportId] || `Transport ID: ${transportId}`}>
+                                    <TransportIcon transportType={transportId as TransportType} size={14} className="h-[14px] w-[14px]" />
+                                  </div>)}
+                              </div>
+                            </TableCell>}
+                          {sortedColumns.includes("rating") && <TableCell>
+                              {renderRating(driver.rating)}
+                            </TableCell>}
+                          {sortedColumns.includes("status") && <TableCell>
+                              {renderStatus(driver.status)}
+                            </TableCell>}
+                          {sortedColumns.includes("hireStatus") && <TableCell>
+                              {renderHireStatus(driver.hireStatus, driver.id)}
+                            </TableCell>}
+                          {sortedColumns.includes("stripeStatus") && <TableCell>
+                              {renderStripeStatus(driver.stripeStatus)}
+                            </TableCell>}
+                          {sortedColumns.includes("actions") && <TableCell>
+                              <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
+                                View
+                              </Button>
+                            </TableCell>}
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </ScrollArea>
+            </div>
           </div>
         </div>
 
@@ -933,16 +954,8 @@ const DriversPage = () => {
         </div>
       </div>
       
-      {chatOpen && selectedCourier && (
-        <CourierChat 
-          open={chatOpen} 
-          courierName={selectedCourier} 
-          onClose={handleChatClose} 
-          hasUnreadMessages={false} 
-        />
-      )}
-    </Layout>
-  );
+      {chatOpen && selectedCourier && <CourierChat open={chatOpen} courierName={selectedCourier} onClose={handleChatClose} hasUnreadMessages={false} />}
+    </Layout>;
 };
 
 export default DriversPage;
