@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -73,10 +74,10 @@ export function DeliveryTable({
         
         <div className={`flex-1 transition-all duration-300 my-4 ${isFilterSidebarOpen ? 'ml-3' : 'ml-2'}`}>
           <div className="flex flex-col h-full w-full">
-            <div className="w-full overflow-hidden">
+            <div className="w-full">
               <TableContainer 
                 stickyHeader 
-                className="min-w-full"
+                className="w-full"
               >
                 <Table className="w-full table-auto">
                   <TableHeader>

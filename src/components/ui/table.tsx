@@ -126,7 +126,7 @@ const TableContainer = React.forwardRef<
   <div 
     ref={ref}
     className={cn(
-      "relative w-full border rounded-md overflow-auto pr-[50px]",
+      "relative w-full border rounded-md overflow-auto",
       height, 
       className
     )} 
