@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableCon
 import { Delivery, DeliveryStatus } from "@/types/delivery";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 import { DeliverySidebar } from "@/components/deliveries/DeliverySidebar";
+import { MessageCircle } from "lucide-react";
 
 interface DeliveryTableProps {
   items: Delivery[];
@@ -32,7 +32,6 @@ interface DeliveryTableProps {
   setSelectedCouriers: (couriers: string[]) => void;
 }
 
-// Helper function to determine column width based on column ID
 const getColumnWidth = (columnId: string): string => {
   switch(columnId) {
     case "status": return "w-[120px] min-w-[120px]";
@@ -53,10 +52,7 @@ const getColumnWidth = (columnId: string): string => {
   }
 };
 
-// Helper function to determine if a customer needs attention (30% of customers will get this indicator)
 const doesCustomerNeedAttention = (customerId: string | number): boolean => {
-  // Convert id to a number and check if it's less than 30% of the max possible value
-  // This ensures a consistent 30% of records will have the indicator
   let idAsNumber: number;
   
   if (typeof customerId === 'string') {
@@ -65,7 +61,7 @@ const doesCustomerNeedAttention = (customerId: string | number): boolean => {
     idAsNumber = customerId;
   }
   
-  return idAsNumber % 10 < 3; // 30% probability (0, 1, 2 out of 0-9)
+  return idAsNumber % 10 < 3;
 };
 
 export function DeliveryTable({
@@ -172,7 +168,10 @@ export function DeliveryTable({
                                     <div className="flex items-center gap-1.5">
                                       {delivery.customerName}
                                       {doesCustomerNeedAttention(delivery.id) && (
-                                        <span className="h-2 w-2 bg-red-500 rounded-full animate-pulse" />
+                                        <MessageCircle 
+                                          size={16} 
+                                          className="text-blue-500 shrink-0" 
+                                        />
                                       )}
                                     </div>
                                   </TableCell>
