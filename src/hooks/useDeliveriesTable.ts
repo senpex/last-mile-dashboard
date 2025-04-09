@@ -1,3 +1,4 @@
+
 import { useState, useCallback } from 'react';
 import { Delivery, DeliveryStatus } from "@/types/delivery";
 
@@ -65,7 +66,11 @@ export const useDeliveriesTable = ({
     setIsFilterSidebarOpen(!isFilterSidebarOpen);
   };
 
-  const allDeliveryStatuses: DeliveryStatus[] = Array.from(new Set(deliveries.map(delivery => delivery.status)));
+  // Ensure we're using the correct type for delivery statuses
+  const allDeliveryStatuses: DeliveryStatus[] = Array.from(new Set(
+    deliveries.map(delivery => delivery.status as DeliveryStatus)
+  ));
+  
   const allOrganizations: string[] = Array.from(new Set(deliveries.map(delivery => delivery.organization)));
   const allCouriers: string[] = Array.from(new Set(deliveries.map(delivery => delivery.courier || "").filter(Boolean)));
 
@@ -123,7 +128,9 @@ export const useDeliveriesTable = ({
   };
 
   const filteredDeliveries = deliveries.filter(delivery => {
-    const searchTermLower = searchTerm.toLowerCase();
+    // Make sure searchTerm is a string before calling toLowerCase()
+    const searchTermLower = typeof searchTerm === 'string' ? searchTerm.toLowerCase() : '';
+    
     const matchesSearchTerm =
       delivery.packageId.toLowerCase().includes(searchTermLower) ||
       delivery.orderName.toLowerCase().includes(searchTermLower) ||
@@ -136,7 +143,7 @@ export const useDeliveriesTable = ({
       delivery.organization.toLowerCase().includes(searchTermLower) ||
       delivery.status.toLowerCase().includes(searchTermLower);
 
-    const matchesStatus = selectedStatuses.length === 0 || selectedStatuses.includes(delivery.status);
+    const matchesStatus = selectedStatuses.length === 0 || selectedStatuses.includes(delivery.status as DeliveryStatus);
     const matchesOrganization = selectedOrganizations.length === 0 || selectedOrganizations.includes(delivery.organization);
     const matchesCourier = selectedCouriers.length === 0 || (delivery.courier && selectedCouriers.includes(delivery.courier));
 
@@ -185,20 +192,20 @@ export const useDeliveriesTable = ({
     activeView,
     setActiveView,
     availableColumns: [
-      { id: "status", label: "Status" },
-      { id: "packageId", label: "Package ID" },
-      { id: "orderName", label: "Order Name" },
-      { id: "customerName", label: "Customer Name" },
-      { id: "pickupTime", label: "Pickup Time" },
-      { id: "pickupLocation", label: "Pickup Location" },
-      { id: "dropoffTime", label: "Dropoff Time" },
-      { id: "dropoffLocation", label: "Dropoff Location" },
-      { id: "price", label: "Price" },
-      { id: "tip", label: "Tip" },
-      { id: "courier", label: "Courier" },
-      { id: "organization", label: "Organization" },
-      { id: "distance", label: "Distance" },
-      { id: "couriersEarnings", label: "Courier's Earnings" }
+      { id: "status", label: "Status", default: true },
+      { id: "packageId", label: "Package ID", default: true },
+      { id: "orderName", label: "Order Name", default: true },
+      { id: "customerName", label: "Customer Name", default: true },
+      { id: "pickupTime", label: "Pickup Time", default: true },
+      { id: "pickupLocation", label: "Pickup Location", default: true },
+      { id: "dropoffTime", label: "Dropoff Time", default: true },
+      { id: "dropoffLocation", label: "Dropoff Location", default: true },
+      { id: "price", label: "Price", default: true },
+      { id: "tip", label: "Tip", default: true },
+      { id: "courier", label: "Courier", default: true },
+      { id: "organization", label: "Organization", default: true },
+      { id: "distance", label: "Distance", default: true },
+      { id: "couriersEarnings", label: "Courier's Earnings", default: true }
     ],
     visibleColumns,
     setVisibleColumns,
