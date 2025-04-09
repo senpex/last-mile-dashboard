@@ -56,15 +56,9 @@ const UsersScrollArea = React.forwardRef<
     className={cn("relative overflow-hidden", className)}
     {...props}
   >
-    {/* Outer container with isolate to create a stacking context */}
-    <div className="isolate relative w-full h-full">
-      {/* Inner container with absolute positioning to separate from main container */}
-      <div className="absolute inset-0">
-        <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
-          {children}
-        </ScrollAreaPrimitive.Viewport>
-      </div>
-    </div>
+    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
+      {children}
+    </ScrollAreaPrimitive.Viewport>
     
     {(orientation === "vertical" || orientation === "both") && (
       <UsersScrollBar orientation="vertical" />

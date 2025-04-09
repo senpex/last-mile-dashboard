@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -105,12 +104,13 @@ const DeliveryTable = ({
           onCourierChange={setSelectedCouriers}
         />
         
-        <div className={`flex-1 transition-all duration-300 my-4 ml-2 ${isFilterSidebarOpen ? 'w-full' : ''}`}>
+        <div className="flex-1 transition-all duration-300 my-4 ml-2">
           <div className="flex flex-col h-full w-full">
             <div className="w-full flex-grow flex-shrink-0">
               <TableContainer 
                 stickyHeader 
-                className={`w-full ${isFilterSidebarOpen ? 'max-w-full' : ''}`}
+                className="w-full"
+                filterSidebarOpen={isFilterSidebarOpen}
               >
                 <Table>
                   <TableHeader>
