@@ -1,9 +1,10 @@
+
 import { Delivery } from "@/types/delivery";
 
 export const deliveriesData: Delivery[] = [
   {
     id: 1,
-    packageId: "WMT-10042501",
+    packageId: "WMT-100425",
     orderName: "Grocery Delivery",
     status: "Dropoff Complete",
     pickupTime: "03/24/2025 12:49 PM",
@@ -26,7 +27,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 2,
-    packageId: "WMT-10042502",
+    packageId: "WMT-100426",
     orderName: "Weekly Essentials",
     status: "Dropoff Complete",
     pickupTime: "03/24/2025 11:34 AM",
@@ -49,7 +50,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 3,
-    packageId: "WMT-10042503",
+    packageId: "WMT-100427",
     orderName: "Pantry Restock",
     status: "Dropoff Complete",
     pickupTime: "03/24/2025 11:34 AM",
@@ -72,7 +73,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 4,
-    packageId: "WMT-10042504",
+    packageId: "WMT-100428",
     orderName: "Home Essentials",
     status: "Dropoff Complete",
     pickupTime: "03/24/2025 11:34 AM",
@@ -95,7 +96,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 5,
-    packageId: "CUN-21980357",
+    packageId: "CUN-219803",
     orderName: "Lunch Order",
     status: "Canceled By Customer",
     pickupTime: "03/24/2025 11:20 AM",
@@ -118,7 +119,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 6,
-    packageId: "TGT-80031245",
+    packageId: "TGT-800312",
     orderName: "Household Items",
     status: "In Transit",
     pickupTime: "03/24/2025 10:15 AM",
@@ -141,7 +142,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 30,
-    packageId: "PSY-52978143",
+    packageId: "PSY-529781",
     orderName: "Party Supplies",
     status: "Scheduled Order",
     pickupTime: "03/25/2025 10:00 AM",
@@ -164,7 +165,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 8,
-    packageId: "WMT-10042510",
+    packageId: "WMT-100429",
     orderName: "Weekly Grocery",
     status: "Dropoff Complete",
     pickupTime: "03/24/2025 09:15 AM",
@@ -187,7 +188,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 9,
-    packageId: "WMT-10042511",
+    packageId: "WMT-100430",
     orderName: "Electronics Delivery",
     status: "In Transit",
     pickupTime: "03/24/2025 10:00 AM",
@@ -210,7 +211,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 10,
-    packageId: "WMT-10042512",
+    packageId: "WMT-100431",
     orderName: "Office Supplies",
     status: "Dropoff Complete",
     pickupTime: "03/24/2025 11:20 AM",
@@ -233,7 +234,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 11,
-    packageId: "WMT-10042513",
+    packageId: "WMT-100432",
     orderName: "Hardware Delivery",
     status: "Dropoff Complete",
     pickupTime: "03/24/2025 12:15 PM",
@@ -256,7 +257,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 12,
-    packageId: "WMT-10042514",
+    packageId: "WMT-100433",
     orderName: "Pharmaceutical Delivery",
     status: "Dropoff Complete",
     pickupTime: "03/24/2025 01:45 PM",
@@ -279,7 +280,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 13,
-    packageId: "WMT-10042515",
+    packageId: "WMT-100434",
     orderName: "Book Delivery",
     status: "In Transit",
     pickupTime: "03/24/2025 03:00 PM",
@@ -302,7 +303,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 14,
-    packageId: "WMT-10042516",
+    packageId: "WMT-100435",
     orderName: "Pet Supplies",
     status: "Picking Up",
     pickupTime: "03/24/2025 04:30 PM",
@@ -325,7 +326,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 15,
-    packageId: "WMT-10042517",
+    packageId: "WMT-100436",
     orderName: "Clothing Delivery",
     status: "Arrived For Pickup",
     pickupTime: "03/25/2025 09:00 AM",
@@ -348,7 +349,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 16,
-    packageId: "WMT-10042518",
+    packageId: "WMT-100437",
     orderName: "Electronics Order",
     status: "Scheduled Order",
     pickupTime: "03/25/2025 11:00 AM",
@@ -371,7 +372,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 17,
-    packageId: "WMT-10042519",
+    packageId: "WMT-100438",
     orderName: "Lunch Delivery",
     status: "Canceled By Customer",
     pickupTime: "03/25/2025 12:00 PM",
@@ -394,7 +395,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 18,
-    packageId: "WMT-10042520",
+    packageId: "WMT-100439",
     orderName: "Furniture Delivery",
     status: "Scheduled Order",
     pickupTime: "03/26/2025 09:30 AM",
@@ -417,7 +418,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 19,
-    packageId: "WMT-10042521",
+    packageId: "WMT-100440",
     orderName: "Garden Supplies",
     status: "Scheduled Order",
     pickupTime: "03/26/2025 11:00 AM",
@@ -440,7 +441,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 20,
-    packageId: "WMT-10042522",
+    packageId: "WMT-100441",
     orderName: "Grocery Delivery",
     status: "Scheduled Order",
     pickupTime: "03/26/2025 01:00 PM",
@@ -463,7 +464,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 21,
-    packageId: "WMT-10042523",
+    packageId: "WMT-100442",
     orderName: "Electronics Delivery",
     status: "Scheduled Order",
     pickupTime: "03/26/2025 03:30 PM",
@@ -486,7 +487,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 22,
-    packageId: "WMT-10042524",
+    packageId: "WMT-100443",
     orderName: "Floral Delivery",
     status: "Dropoff Complete",
     pickupTime: "03/24/2025 02:00 PM",
@@ -509,7 +510,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 23,
-    packageId: "WMT-10042525",
+    packageId: "WMT-100444",
     orderName: "Auto Parts",
     status: "Dropoff Complete",
     pickupTime: "03/24/2025 03:45 PM",
@@ -532,7 +533,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 24,
-    packageId: "WMT-10042526",
+    packageId: "WMT-100445",
     orderName: "Office Delivery",
     status: "Canceled By Customer",
     pickupTime: "03/25/2025 09:30 AM",
@@ -555,7 +556,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 25,
-    packageId: "WMT-10042527",
+    packageId: "WMT-100446",
     orderName: "Food Delivery",
     status: "Dropoff Complete",
     pickupTime: "03/25/2025 12:30 PM",
@@ -578,7 +579,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 26,
-    packageId: "WMT-10042528",
+    packageId: "WMT-100447",
     orderName: "Wine Delivery",
     status: "In Transit",
     pickupTime: "03/25/2025 02:00 PM",
@@ -601,7 +602,7 @@ export const deliveriesData: Delivery[] = [
   },
   {
     id: 27,
-    packageId: "WMT-10042529",
+    packageId: "WMT-100448",
     orderName: "Grocery Delivery",
     status: "Arrived For Pickup",
     pickupTime: "03/25/2025 04:15 PM",
@@ -623,3 +624,4 @@ export const deliveriesData: Delivery[] = [
     couriersEarnings: "$32.00"
   }
 ];
+
