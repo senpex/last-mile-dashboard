@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -125,7 +124,7 @@ const TableContainer = React.forwardRef<
   }
 >(({ 
   className, 
-  height = "h-[calc(100vh-230px)]", 
+  height = "h-[calc(100vh-280px)]", // Reduced height to pull the table up
   stickyHeader = true,
   filterSidebarOpen = false,
   ...props 
