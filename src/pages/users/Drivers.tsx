@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -52,7 +53,16 @@ const generateRandomStripeStatus = (): StripeStatus => {
 };
 
 const DriversPage = () => {
-  // ... keep existing code (all type definitions, functions, and component implementation)
+  // Make sure to include the return statement here
+  return (
+    <Layout>
+      {/* Include your component content here */}
+      <div className="p-6">
+        <h1 className="text-2xl font-bold mb-4">Drivers Page</h1>
+        {/* Add your drivers page content */}
+      </div>
+    </Layout>
+  );
 };
 
 export default DriversPage;
