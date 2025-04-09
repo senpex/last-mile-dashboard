@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { GripVertical, Plus, Search, MessageCircle, ChevronDown, Check, X, Clock } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { UsersTableContainer } from "@/components/ui/users-table-container";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis, PaginationInfo, PaginationSize } from "@/components/ui/pagination";
 import CourierChat from '@/components/chat/CourierChat';
 
@@ -804,60 +804,58 @@ const DriversPage = () => {
             </div>
 
             <div className="border rounded-md mx-6">
-              <ScrollArea orientation="horizontal">
-                <TableContainer stickyHeader={false}>
-                  <Table>
-                    <TableHeader className="bg-muted/50">
-                      <TableRow>
-                        {sortedColumns.map((columnId) => {
-                          const column = availableColumns.find(col => col.id === columnId);
-                          if (!column) return null;
-                          return <TableHead key={columnId} draggable={true} dragOver={dragOverColumn === columnId} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}>
+              <UsersTableContainer stickyHeader={false}>
+                <Table>
+                  <TableHeader className="bg-muted/50">
+                    <TableRow>
+                      {sortedColumns.map((columnId) => {
+                        const column = availableColumns.find(col => col.id === columnId);
+                        if (!column) return null;
+                        return <TableHead key={columnId} draggable={true} dragOver={dragOverColumn === columnId} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}>
                             <div className="flex items-center gap-1 overflow-hidden">
                               <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
                               <span className="truncate">{column.label}</span>
                             </div>
                           </TableHead>;
-                        })}
+                      })}
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {currentItems.map((driver) => (
+                      <TableRow key={driver.id}>
+                        {sortedColumns.includes("id") && <TableCell className="font-sans">{driver.id}</TableCell>}
+                        {sortedColumns.includes("name") && <TableCell>{driver.name}</TableCell>}
+                        {sortedColumns.includes("email") && <TableCell>{driver.email}</TableCell>}
+                        {sortedColumns.includes("phone") && <TableCell>{driver.phone}</TableCell>}
+                        {sortedColumns.includes("transport") && <TableCell>
+                            <div className="flex items-center gap-2">
+                              {driver.transports.map(transportId => <div key={transportId} className="flex items-center justify-center p-2 rounded-md bg-muted" title={transportTypes[transportId] || `Transport ID: ${transportId}`}>
+                                  <TransportIcon transportType={transportId as TransportType} size={14} className="h-[14px] w-[14px]" />
+                                </div>)}
+                            </div>
+                          </TableCell>}
+                        {sortedColumns.includes("rating") && <TableCell>
+                            {renderRating(driver.rating)}
+                          </TableCell>}
+                        {sortedColumns.includes("status") && <TableCell>
+                            {renderStatus(driver.status)}
+                          </TableCell>}
+                        {sortedColumns.includes("hireStatus") && <TableCell>
+                            {renderHireStatus(driver.hireStatus, driver.id)}
+                          </TableCell>}
+                        {sortedColumns.includes("stripeStatus") && <TableCell>
+                            {renderStripeStatus(driver.stripeStatus)}
+                          </TableCell>}
+                        {sortedColumns.includes("actions") && <TableCell>
+                            <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
+                              View
+                            </Button>
+                          </TableCell>}
                       </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {currentItems.map((driver) => (
-                        <TableRow key={driver.id}>
-                          {sortedColumns.includes("id") && <TableCell className="font-sans">{driver.id}</TableCell>}
-                          {sortedColumns.includes("name") && <TableCell>{driver.name}</TableCell>}
-                          {sortedColumns.includes("email") && <TableCell>{driver.email}</TableCell>}
-                          {sortedColumns.includes("phone") && <TableCell>{driver.phone}</TableCell>}
-                          {sortedColumns.includes("transport") && <TableCell>
-                              <div className="flex items-center gap-2">
-                                {driver.transports.map(transportId => <div key={transportId} className="flex items-center justify-center p-2 rounded-md bg-muted" title={transportTypes[transportId] || `Transport ID: ${transportId}`}>
-                                    <TransportIcon transportType={transportId as TransportType} size={14} className="h-[14px] w-[14px]" />
-                                  </div>)}
-                              </div>
-                            </TableCell>}
-                          {sortedColumns.includes("rating") && <TableCell>
-                              {renderRating(driver.rating)}
-                            </TableCell>}
-                          {sortedColumns.includes("status") && <TableCell>
-                              {renderStatus(driver.status)}
-                            </TableCell>}
-                          {sortedColumns.includes("hireStatus") && <TableCell>
-                              {renderHireStatus(driver.hireStatus, driver.id)}
-                            </TableCell>}
-                          {sortedColumns.includes("stripeStatus") && <TableCell>
-                              {renderStripeStatus(driver.stripeStatus)}
-                            </TableCell>}
-                          {sortedColumns.includes("actions") && <TableCell>
-                              <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
-                                View
-                              </Button>
-                            </TableCell>}
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </ScrollArea>
+                    ))}
+                  </TableBody>
+                </Table>
+              </UsersTableContainer>
             </div>
           </div>
         </div>
