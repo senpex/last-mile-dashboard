@@ -56,7 +56,7 @@ export function DeliveryTable({
   setSelectedCouriers
 }: DeliveryTableProps) {
   return (
-    <div className="flex-1 overflow-hidden px-px">
+    <div className="flex-1 overflow-hidden px-4 pr-3">
       <div className="flex h-full">
         <DeliverySidebar 
           open={isFilterSidebarOpen} 
@@ -74,7 +74,7 @@ export function DeliveryTable({
         
         <div className={`flex-1 transition-all duration-300 my-4 ${isFilterSidebarOpen ? 'ml-3' : 'ml-2'}`}>
           <div className="flex flex-col h-full w-full">
-            <div className="w-full">
+            <div className="w-full flex flex-wrap justify-between items-center gap-2 pr-3">
               <TableContainer 
                 stickyHeader 
                 className="w-full"
@@ -202,3 +202,4 @@ export function DeliveryTable({
     </div>
   );
 }
+
