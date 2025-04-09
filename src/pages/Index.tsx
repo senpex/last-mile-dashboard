@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
 import { DateRange } from "react-day-picker";
@@ -63,6 +63,11 @@ const Index = () => {
     showMyDeliveriesOnly 
   });
 
+  // Calculate if there are any attention required orders
+  const hasAttentionRequiredOrders = deliveriesData.some(
+    delivery => delivery.status === "Canceled By Customer" || delivery.status === "Cancelled By Admin"
+  );
+
   const handleCourierClick = (courierName: string) => {
     if (!courierName) return; // Don't open chat for empty courier names
     setSelectedCourier(courierName);
@@ -104,6 +109,7 @@ const Index = () => {
               isFilterSidebarOpen={isFilterSidebarOpen}
               showMyDeliveriesOnly={showMyDeliveriesOnly}
               onToggleMyDeliveries={handleToggleMyDeliveries}
+              hasAttentionRequiredOrders={hasAttentionRequiredOrders}
             />
             
             {/* Table Section */}
