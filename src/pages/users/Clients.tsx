@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus, Search, Calendar, FileText, Clock } from "lucide-react";
+import { GripVertical, Plus, Search } from "lucide-react";
 import { UsersTableContainer } from "@/components/ui/users-table-container";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 import { Input } from "@/components/ui/input";
@@ -384,9 +383,6 @@ const ClientsPage = () => {
                           >
                             <div className="flex items-center gap-1 overflow-hidden">
                               <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
-                              {columnId === "signupDate" && <Calendar className="h-4 w-4 text-muted-foreground shrink-0" />}
-                              {columnId === "orderCount" && <FileText className="h-4 w-4 text-muted-foreground shrink-0" />}
-                              {columnId === "lastOrderDate" && <Clock className="h-4 w-4 text-muted-foreground shrink-0" />}
                               <span className="truncate">{column.label}</span>
                             </div>
                           </TableHead>
