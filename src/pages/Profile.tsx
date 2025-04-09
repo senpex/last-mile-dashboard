@@ -35,9 +35,9 @@ const Profile = () => {
   
   // Keeping the state variables to avoid reference errors
   const [attentionRules, setAttentionRules] = useState<AttentionRule[]>([
-    { name: "Late Orders", query: "SELECT * FROM orders WHERE delivery_time < NOW() - INTERVAL '30 minutes'" },
-    { name: "Incomplete Orders", query: "SELECT * FROM orders WHERE status = 'incomplete'" },
-    { name: "High Value Orders", query: "SELECT * FROM orders WHERE total_value > 1000" }
+    { name: "Late Orders", query: "Driver is going late for more than 15 minutes" },
+    { name: "Incomplete Orders", query: "Show last minute cancelled orders by driver" },
+    { name: "High Value Orders", query: "value of the order is more than $10000" }
   ]);
 
   const [automations, setAutomations] = useState<Automation[]>([
