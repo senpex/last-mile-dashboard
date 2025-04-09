@@ -1,6 +1,6 @@
 
 import { Layout } from "@/components/layout/Layout";
-import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil } from "lucide-react";
+import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil, Clock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -8,7 +8,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import React, { useState } from 'react';
+
+const DAYS_OF_WEEK = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday"
+];
+
+const DEFAULT_SHIFTS = DAYS_OF_WEEK.map(day => ({
+  day,
+  active: day !== "Saturday" && day !== "Sunday",
+  startTime: "09:00",
+  endTime: "17:00"
+}));
 
 const Profile = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
@@ -16,12 +34,15 @@ const Profile = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isAddRuleDialogOpen, setIsAddRuleDialogOpen] = useState(false);
   const [isAddAutomationDialogOpen, setIsAddAutomationDialogOpen] = useState(false);
+  const [isAddShiftDialogOpen, setIsAddShiftDialogOpen] = useState(false);
   const [newRule, setNewRule] = useState('');
   const [ruleName, setRuleName] = useState('');
   const [newAutomation, setNewAutomation] = useState('');
   const [automationName, setAutomationName] = useState('');
   const [isEditMode, setIsEditMode] = useState(false);
   const [editRuleIndex, setEditRuleIndex] = useState<number | null>(null);
+  const [selectedShift, setSelectedShift] = useState<any>(null);
+  const [shifts, setShifts] = useState(DEFAULT_SHIFTS);
   const [attentionRules, setAttentionRules] = useState([
     { name: "Late Order Alert", query: "Flag orders 15 minutes before the pickup with no driver" },
     { name: "Driver Delay", query: "Driver is running late for more than 15 minutes" },
@@ -84,6 +105,33 @@ const Profile = () => {
     setIsEditMode(true);
     setEditRuleIndex(index);
     setIsAddRuleDialogOpen(true);
+  };
+
+  const handleShiftChange = (index: number, field: string, value: any) => {
+    const updatedShifts = [...shifts];
+    updatedShifts[index] = {
+      ...updatedShifts[index],
+      [field]: value
+    };
+    setShifts(updatedShifts);
+  };
+
+  const handleEditShift = (shift: any) => {
+    setSelectedShift(shift);
+    setIsAddShiftDialogOpen(true);
+  };
+
+  const handleSaveShift = () => {
+    if (selectedShift) {
+      const index = shifts.findIndex(s => s.day === selectedShift.day);
+      if (index !== -1) {
+        const updatedShifts = [...shifts];
+        updatedShifts[index] = selectedShift;
+        setShifts(updatedShifts);
+      }
+    }
+    setSelectedShift(null);
+    setIsAddShiftDialogOpen(false);
   };
 
   return (
@@ -244,6 +292,10 @@ const Profile = () => {
                     <Bot className="w-4 h-4" />
                     Automations
                   </TabsTrigger>
+                  <TabsTrigger value="working-shifts" className="flex items-center gap-2">
+                    <Clock className="w-4 h-4" />
+                    Working Shifts
+                  </TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="attention-required">
@@ -309,6 +361,66 @@ const Profile = () => {
                           </Button>
                         </div>
                       </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                
+                <TabsContent value="working-shifts">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-medium mb-4">Working Shifts</h3>
+                      <ScrollArea className="max-h-[400px] pr-4">
+                        <div className="space-y-4">
+                          {shifts.map((shift, index) => (
+                            <div key={index} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 border rounded-md bg-background">
+                              <div className="flex items-center gap-3 mb-2 sm:mb-0">
+                                <Checkbox 
+                                  id={`shift-${index}`} 
+                                  checked={shift.active}
+                                  onCheckedChange={(checked) => handleShiftChange(index, 'active', checked)}
+                                />
+                                <label htmlFor={`shift-${index}`} className="font-medium">
+                                  {shift.day}
+                                </label>
+                              </div>
+                              <div className="flex flex-wrap gap-3 w-full sm:w-auto">
+                                <div>
+                                  <label htmlFor={`start-${index}`} className="text-xs text-muted-foreground">
+                                    Start Time
+                                  </label>
+                                  <Input
+                                    id={`start-${index}`}
+                                    type="time"
+                                    value={shift.startTime}
+                                    onChange={(e) => handleShiftChange(index, 'startTime', e.target.value)}
+                                    className="w-24"
+                                  />
+                                </div>
+                                <div>
+                                  <label htmlFor={`end-${index}`} className="text-xs text-muted-foreground">
+                                    End Time
+                                  </label>
+                                  <Input
+                                    id={`end-${index}`}
+                                    type="time"
+                                    value={shift.endTime}
+                                    onChange={(e) => handleShiftChange(index, 'endTime', e.target.value)}
+                                    className="w-24"
+                                  />
+                                </div>
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm"
+                                  onClick={() => handleEditShift(shift)}
+                                  className="mt-auto"
+                                >
+                                  <Pencil className="w-3.5 h-3.5" />
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </ScrollArea>
                     </CardContent>
                   </Card>
                 </TabsContent>
@@ -411,6 +523,64 @@ const Profile = () => {
               Cancel
             </Button>
             <Button onClick={handleAddAutomation}>
+              Save
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Shift Dialog */}
+      <Dialog open={isAddShiftDialogOpen} onOpenChange={setIsAddShiftDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Shift</DialogTitle>
+          </DialogHeader>
+          {selectedShift && (
+            <div className="space-y-4 py-4">
+              <div className="flex items-center gap-2">
+                <Checkbox 
+                  id="shift-active" 
+                  checked={selectedShift.active}
+                  onCheckedChange={(checked) => setSelectedShift({...selectedShift, active: checked})}
+                />
+                <label htmlFor="shift-active" className="font-medium">
+                  {selectedShift.day} - Active
+                </label>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="shift-start" className="text-sm font-medium block mb-2">
+                    Start Time
+                  </label>
+                  <Input
+                    id="shift-start"
+                    type="time"
+                    value={selectedShift.startTime}
+                    onChange={(e) => setSelectedShift({...selectedShift, startTime: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="shift-end" className="text-sm font-medium block mb-2">
+                    End Time
+                  </label>
+                  <Input
+                    id="shift-end"
+                    type="time"
+                    value={selectedShift.endTime}
+                    onChange={(e) => setSelectedShift({...selectedShift, endTime: e.target.value})}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => {
+              setIsAddShiftDialogOpen(false);
+              setSelectedShift(null);
+            }}>
+              Cancel
+            </Button>
+            <Button onClick={handleSaveShift}>
               Save
             </Button>
           </DialogFooter>
