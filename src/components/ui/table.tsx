@@ -1,13 +1,13 @@
 
 import * as React from "react"
+
 import { cn } from "@/lib/utils"
-import { ScrollArea } from "@/components/ui/scroll-area"
 
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto">
+  <div className="w-full">
     <table
       ref={ref}
       className={cn("w-full caption-bottom text-sm", className)}
@@ -116,40 +116,23 @@ const TableCaption = React.forwardRef<
 ))
 TableCaption.displayName = "TableCaption"
 
+// Create a wrapper component for tables that provides the scrollable container
 const TableContainer = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
     height?: string;
     stickyHeader?: boolean;
-    filterSidebarOpen?: boolean;
   }
->(({ 
-  className, 
-  height = "h-[calc(100vh-230px)]", 
-  stickyHeader = true,
-  filterSidebarOpen = false,
-  ...props 
-}, ref) => (
+>(({ className, height = "h-[calc(100vh-230px)]", stickyHeader = true, ...props }, ref) => (
   <div 
     ref={ref}
     className={cn(
-      "relative border rounded-md overflow-hidden flex-shrink-0",
-      "transition-all duration-300 shadow-sm", 
-      filterSidebarOpen ? "max-w-[calc(100%-275px)]" : "w-full",
+      "relative w-full overflow-auto border rounded-md", 
       height, 
-      "mr-[5px]", // Add 5px margin on the right side
       className
     )} 
-    style={{
-      scrollbarWidth: 'thin',
-      scrollbarColor: '#cbd5e1 transparent',
-    }}
     {...props} 
-  >
-    <ScrollArea orientation="both" className="h-full w-full">
-      {props.children}
-    </ScrollArea>
-  </div>
+  />
 ))
 TableContainer.displayName = "TableContainer"
 

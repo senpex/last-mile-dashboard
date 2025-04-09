@@ -783,11 +783,11 @@ const DriversPage = () => {
 
   return <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
-        <div className="px-0 py-6 flex-1 overflow-auto">
-          <div className="space-y-4 w-full">
-            <h1 className="text-2xl font-bold px-6">Drivers Management</h1>
+        <div className="px-6 py-6 flex-1 overflow-auto">
+          <div className="space-y-4">
+            <h1 className="text-2xl font-bold">Drivers Management</h1>
             
-            <div className="flex items-center justify-between px-6">
+            <div className="flex items-center justify-between">
               <div className="flex items-center h-9 gap-2">
                 <Button size="sm" className="flex items-center gap-1 text-xs px-2 py-1 h-9">
                   <Plus className="w-3 h-3" />
@@ -803,7 +803,7 @@ const DriversPage = () => {
               </div>
             </div>
 
-            <div className="border rounded-md mx-6">
+            <div className="border rounded-md">
               <ScrollArea orientation="horizontal">
                 <TableContainer stickyHeader={false}>
                   <Table>

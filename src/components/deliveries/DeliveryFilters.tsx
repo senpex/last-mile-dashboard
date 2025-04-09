@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
@@ -8,9 +9,6 @@ import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DeliveryStatus } from "@/types/delivery";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { ChevronDown } from "lucide-react";
 
 interface DeliveryFiltersProps {
   searchTerm: string;
@@ -24,10 +22,6 @@ interface DeliveryFiltersProps {
   onVisibleColumnsChange: (columns: string[]) => void;
   activeView: string;
   onActiveViewChange: (view: string) => void;
-  onToggleFilterSidebar: () => void;
-  isFilterSidebarOpen: boolean;
-  showMyDeliveriesOnly?: boolean;
-  onToggleMyDeliveries?: (showMyDeliveriesOnly: boolean) => void;
 }
 
 export function DeliveryFilters({
@@ -41,14 +35,10 @@ export function DeliveryFilters({
   visibleColumns,
   onVisibleColumnsChange,
   activeView,
-  onActiveViewChange,
-  onToggleFilterSidebar,
-  isFilterSidebarOpen,
-  showMyDeliveriesOnly = true,
-  onToggleMyDeliveries = () => {}
+  onActiveViewChange
 }: DeliveryFiltersProps) {
   return (
-    <div className="px-4 py-6 flex-shrink-0 border-b w-[200%] max-w-full">
+    <div className="px-4 py-6 flex-shrink-0 border-b">
       <div className="flex flex-col space-y-4">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold">Deliveries</h1>
@@ -64,14 +54,9 @@ export function DeliveryFilters({
               onDateRangeChange={onDateRangeChange}
             />
             
-            <Button 
-              variant={isFilterSidebarOpen ? "default" : "outline"} 
-              className={`flex items-center gap-2 text-sm h-9 ${isFilterSidebarOpen ? 'bg-primary text-primary-foreground' : ''}`}
-              onClick={onToggleFilterSidebar}
-              aria-expanded={isFilterSidebarOpen}
-            >
+            <Button variant="outline" className="flex items-center gap-2 text-sm h-9">
               <Filter className="h-4 w-4" />
-              <span>{isFilterSidebarOpen ? 'Hide Filters' : 'Show Filters'}</span>
+              <span>Filters</span>
             </Button>
           </div>
           
@@ -101,56 +86,24 @@ export function DeliveryFilters({
         </div>
         
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <ToggleGroup 
-              type="single" 
-              value={showMyDeliveriesOnly ? "me" : "all"}
-              onValueChange={(value) => {
-                if (value) { 
-                  onToggleMyDeliveries(value === "me");
-                }
-              }}
-              className="border rounded-md h-6"
-            >
-              <ToggleGroupItem 
-                value="me" 
-                aria-label="Show my deliveries" 
-                className="px-3 text-xs rounded-md h-6 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
-              >
-                Me
-              </ToggleGroupItem>
-              <ToggleGroupItem 
-                value="all" 
-                aria-label="Show all deliveries" 
-                className="px-3 text-xs rounded-md h-6 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
-              >
-                All
-              </ToggleGroupItem>
-            </ToggleGroup>
-
-            <div className="flex items-center">
-              <h2 className="text-sm font-semibold text-black mr-2">Views:</h2>
-              <Tabs 
-                value={activeView} 
-                onValueChange={onActiveViewChange} 
-                className="w-auto"
-              >
-                <TabsList className="inline-flex h-6 bg-muted space-x-1 items-center justify-center">
-                  <TabsTrigger 
-                    value="main" 
-                    className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative"
-                  >
-                    Main view
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="attention" 
-                    className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative"
-                  >
-                    Attention Required
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </div>
+          <div className="flex items-center gap-2">
+            <h2 className="text-sm font-semibold text-black mr-2">Views:</h2>
+            <Tabs value={activeView} onValueChange={onActiveViewChange} className="w-auto">
+              <TabsList className="inline-flex h-8 bg-muted space-x-1">
+                <TabsTrigger 
+                  value="main" 
+                  className="px-3 text-xs rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                >
+                  Main view
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="attention" 
+                  className="px-3 text-xs rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                >
+                  Attention Required
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
           </div>
         </div>
       </div>

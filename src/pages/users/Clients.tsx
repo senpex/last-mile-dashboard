@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
@@ -30,7 +31,7 @@ const ClientsPage = () => {
 
   const availableColumns: ColumnOption[] = [
     { id: "id", label: "ID", default: true },
-    { id: "organization", label: "Organization", default: true }, // Changed from "Name" to "Organization"
+    { id: "name", label: "Name", default: true },
     { id: "contact", label: "Contact Person", default: true },
     { id: "email", label: "Email", default: true },
     { id: "phone", label: "Phone", default: true },
@@ -273,8 +274,8 @@ const ClientsPage = () => {
                           {sortedColumns.includes("id") && (
                             <TableCell className="font-sans">{client.id}</TableCell>
                           )}
-                          {sortedColumns.includes("organization") && ( // Changed from "name" to "organization"
-                            <TableCell>{client.name}</TableCell> 
+                          {sortedColumns.includes("name") && (
+                            <TableCell>{client.name}</TableCell>
                           )}
                           {sortedColumns.includes("contact") && (
                             <TableCell>{client.contact}</TableCell>

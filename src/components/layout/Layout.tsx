@@ -18,7 +18,7 @@ const Layout = ({ children, showFooter = true }: LayoutProps) => {
         style={{ 
           marginLeft: collapsed ? "70px" : "240px",
           height: "100vh",
-          width: collapsed ? "calc(100vw - 70px)" : "calc(100vw - 240px)",
+          width: "calc(100vw - (var(--sidebar-width, 240px)))",
           overflow: "auto"
         }}
       >
