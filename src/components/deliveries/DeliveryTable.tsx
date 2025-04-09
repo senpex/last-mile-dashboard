@@ -64,6 +64,10 @@ const doesCustomerNeedAttention = (customerId: string | number): boolean => {
   return idAsNumber % 10 < 3;
 };
 
+const doesCourierNeedAttention = (deliveryId: number): boolean => {
+  return deliveryId % 10 < 3;
+};
+
 const DeliveryTable = ({
   items,
   sortedColumns,
@@ -210,13 +214,22 @@ const DeliveryTable = ({
                                 return (
                                   <TableCell key={columnId} className={getColumnWidth(columnId)}>
                                     {delivery.courier ? (
-                                      <Button 
-                                        variant="link" 
-                                        className="p-0 h-auto font-normal text-primary" 
-                                        onClick={() => onCourierClick(delivery.courier)}
-                                      >
-                                        {delivery.courier}
-                                      </Button>
+                                      <div className="flex items-center gap-1.5">
+                                        <Button 
+                                          variant="link" 
+                                          className="p-0 h-auto font-normal text-primary" 
+                                          onClick={() => onCourierClick(delivery.courier)}
+                                        >
+                                          {delivery.courier}
+                                        </Button>
+                                        {doesCourierNeedAttention(delivery.id) && (
+                                          <MessageCircle 
+                                            size={16} 
+                                            className="text-blue-500 shrink-0 cursor-pointer" 
+                                            onClick={() => onCourierClick(`Courier: ${delivery.courier}`)}
+                                          />
+                                        )}
+                                      </div>
                                     ) : (
                                       <span>-</span>
                                     )}
