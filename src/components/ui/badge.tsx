@@ -20,7 +20,7 @@ const badgeVariants = cva(
           "border-transparent bg-green-100 text-green-800 hover:bg-green-200",
         warning:
           "border-transparent bg-yellow-100 text-yellow-800 hover:bg-yellow-200",
-        sky: // New sky blue variant
+        sky: 
           "border-transparent bg-sky-100 text-sky-800 hover:bg-sky-200",
       },
     },
