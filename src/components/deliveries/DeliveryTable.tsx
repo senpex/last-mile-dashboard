@@ -72,12 +72,13 @@ export function DeliveryTable({
           onCourierChange={setSelectedCouriers}
         />
         
-        <div className={`flex-1 transition-all duration-300 my-4 ${isFilterSidebarOpen ? 'ml-3' : 'ml-2'}`}>
+        <div className="flex-1 transition-all duration-300 my-4 ml-2">
           <div className="flex flex-col h-full w-full">
             <div className="w-full">
               <TableContainer 
                 stickyHeader 
                 className="w-full"
+                filterSidebarOpen={isFilterSidebarOpen}
               >
                 <Table className="w-full table-auto">
                   <TableHeader>

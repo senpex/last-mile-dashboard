@@ -120,20 +120,28 @@ const TableContainer = React.forwardRef<
   React.HTMLAttributes<HTMLDivElement> & {
     height?: string;
     stickyHeader?: boolean;
+    filterSidebarOpen?: boolean;
   }
->(({ className, height = "h-[calc(100vh-230px)]", stickyHeader = true, ...props }, ref) => (
+>(({ 
+  className, 
+  height = "h-[calc(100vh-230px)]", 
+  stickyHeader = true,
+  filterSidebarOpen = false,
+  ...props 
+}, ref) => (
   <div 
     ref={ref}
     className={cn(
-      "relative w-full border rounded-md overflow-auto",
-      "mx-auto", // Center the table
-      "max-w-[1000px]", // Set maximum width to 1000px
+      "relative border rounded-md overflow-auto",
+      "mx-auto transition-all duration-300", 
+      filterSidebarOpen ? "max-w-[calc(100%-275px)]" : "max-w-[1000px]",
       height, 
       className
     )} 
     style={{
       scrollbarWidth: 'thin',
       scrollbarColor: '#cbd5e1 transparent',
+      width: '100%',
     }}
     {...props} 
   />
