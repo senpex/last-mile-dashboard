@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import Layout from "@/components/layout/Layout";
+import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { GripVertical, Plus, Search, MessageCircle, ChevronDown, Check, X, Clock } from "lucide-react";
