@@ -125,9 +125,9 @@ const TableContainer = React.forwardRef<
   <div 
     ref={ref}
     className={cn(
-      "relative border rounded-md overflow-auto",
-      "flex flex-wrap justify-between items-center gap-2", // Added the same width management as the selected div
-      "max-w-[1000px] mx-auto", // Keep the max width and center alignment
+      "relative w-full border rounded-md overflow-auto",
+      "mx-auto", // Center the table
+      "max-w-[1000px]", // Set maximum width to 1000px
       height, 
       className
     )} 
