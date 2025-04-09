@@ -24,6 +24,10 @@ const getRandomPhone = (): string => {
   return `(${areaCode}) ${prefix}-${lineNumber}`;
 };
 
+const getRandomZipcode = (): string => {
+  return String(Math.floor(Math.random() * 90000) + 10000);
+};
+
 const generateRandomTransports = (): string[] => {
   const transportIds = ['1', '2', '3', '4', '5', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
   const count = Math.floor(Math.random() * 3) + 1;
@@ -87,7 +91,8 @@ const DriversPage = () => {
     hireStatus: "hired",
     transports: ["1", "3", "pickup_truck", "9ft_cargo_van"],
     rating: 4.8,
-    stripeStatus: 'verified' as StripeStatus
+    stripeStatus: 'verified' as StripeStatus,
+    zipcode: "94105"
   }, {
     id: 6543,
     name: "Jane Smith",
@@ -97,7 +102,8 @@ const DriversPage = () => {
     hireStatus: "contact_again",
     transports: ["2"],
     rating: 3.5,
-    stripeStatus: 'unverified' as StripeStatus
+    stripeStatus: 'unverified' as StripeStatus,
+    zipcode: "90210"
   }, {
     id: 7654,
     name: "Mike Johnson",
@@ -107,7 +113,8 @@ const DriversPage = () => {
     hireStatus: "blacklist",
     transports: ["4", "5"],
     rating: 5.0,
-    stripeStatus: 'pending' as StripeStatus
+    stripeStatus: 'pending' as StripeStatus,
+    zipcode: "10001"
   }, {
     id: 8001,
     name: "Alice Williams",
@@ -117,7 +124,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8002,
     name: "Robert Miller",
@@ -127,7 +135,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8003,
     name: "Emily Davis",
@@ -137,7 +146,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8004,
     name: "James Wilson",
@@ -147,7 +157,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8005,
     name: "Sarah Taylor",
@@ -157,7 +168,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8006,
     name: "Daniel Anderson",
@@ -167,7 +179,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8007,
     name: "Olivia Thomas",
@@ -177,7 +190,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8008,
     name: "Matthew Jackson",
@@ -187,7 +201,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8009,
     name: "Sophia White",
@@ -197,7 +212,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8010,
     name: "David Harris",
@@ -207,7 +223,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8011,
     name: "Emma Martin",
@@ -217,7 +234,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8012,
     name: "Andrew Thompson",
@@ -227,7 +245,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8013,
     name: "Isabella Garcia",
@@ -237,7 +256,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8014,
     name: "Joshua Martinez",
@@ -247,7 +267,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8015,
     name: "Charlotte Robinson",
@@ -257,7 +278,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8016,
     name: "Christopher Clark",
@@ -267,7 +289,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8017,
     name: "Amelia Rodriguez",
@@ -277,7 +300,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8018,
     name: "Joseph Lewis",
@@ -287,7 +311,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8019,
     name: "Mia Walker",
@@ -297,7 +322,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8020,
     name: "Ethan Hall",
@@ -307,7 +333,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8021,
     name: "Harper Young",
@@ -317,7 +344,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8022,
     name: "Alexander Allen",
@@ -327,7 +355,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8023,
     name: "Abigail King",
@@ -337,7 +366,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8024,
     name: "Benjamin Wright",
@@ -347,7 +377,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8025,
     name: "Sofia Scott",
@@ -357,7 +388,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8026,
     name: "William Green",
@@ -367,7 +399,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8027,
     name: "Elizabeth Baker",
@@ -377,7 +410,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8028,
     name: "Michael Adams",
@@ -387,7 +421,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8029,
     name: "Camila Nelson",
@@ -397,7 +432,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }, {
     id: 8030,
     name: "Jacob Hill",
@@ -407,7 +443,8 @@ const DriversPage = () => {
     hireStatus: generateRandomHireStatus(),
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus()
+    stripeStatus: generateRandomStripeStatus(),
+    zipcode: getRandomZipcode()
   }]);
 
   const availableColumns: ColumnOption[] = [{
@@ -425,6 +462,10 @@ const DriversPage = () => {
   }, {
     id: "phone",
     label: "Phone",
+    default: true
+  }, {
+    id: "zipcode",
+    label: "Zipcode",
     default: true
   }, {
     id: "transport",
@@ -827,6 +868,7 @@ const DriversPage = () => {
                         {sortedColumns.includes("name") && <TableCell>{driver.name}</TableCell>}
                         {sortedColumns.includes("email") && <TableCell>{driver.email}</TableCell>}
                         {sortedColumns.includes("phone") && <TableCell>{driver.phone}</TableCell>}
+                        {sortedColumns.includes("zipcode") && <TableCell>{driver.zipcode}</TableCell>}
                         {sortedColumns.includes("transport") && <TableCell>
                             <div className="flex items-center gap-2">
                               {driver.transports.map(transportId => <div key={transportId} className="flex items-center justify-center p-2 rounded-md bg-muted" title={transportTypes[transportId] || `Transport ID: ${transportId}`}>
