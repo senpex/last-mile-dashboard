@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
 import { DateRange } from "react-day-picker";
 import CourierChat from "@/components/chat/CourierChat";
 import { DeliveryFilters } from "@/components/deliveries/DeliveryFilters";
-import { DeliveryTable } from "@/components/deliveries/DeliveryTable";
+import DeliveryTable from "@/components/deliveries/DeliveryTable";
 import { DeliveryPagination } from "@/components/deliveries/DeliveryPagination";
 import { useDeliveriesTable } from "@/hooks/useDeliveriesTable";
 import { deliveriesData } from "@/data/deliveriesData";
@@ -21,7 +20,6 @@ const Index = () => {
   const [selectedCourier, setSelectedCourier] = useState("");
   const [showMyDeliveriesOnly, setShowMyDeliveriesOnly] = useState(true);
 
-  // Use our custom hook for table functionality
   const {
     pageSize,
     setPageSize,
@@ -63,13 +61,12 @@ const Index = () => {
     showMyDeliveriesOnly 
   });
 
-  // Calculate if there are any attention required orders
   const hasAttentionRequiredOrders = deliveriesData.some(
     delivery => delivery.status === "Canceled By Customer" || delivery.status === "Cancelled By Admin"
   );
 
   const handleCourierClick = (courierName: string) => {
-    if (!courierName) return; // Don't open chat for empty courier names
+    if (!courierName) return;
     setSelectedCourier(courierName);
     setIsChatOpen(true);
   };
@@ -87,12 +84,9 @@ const Index = () => {
         />
         
         <div className="flex-1 flex overflow-hidden transition-all duration-300 relative">
-          {/* Main Navigation Sidebar */}
           <div className={`transition-all duration-300 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}></div>
           
-          {/* Main Content Area */}
           <main className="flex-1 flex flex-col overflow-hidden transition-all duration-300">
-            {/* Filters Section */}
             <DeliveryFilters 
               searchTerm={searchTerm}
               onSearchChange={setSearchTerm}
@@ -112,7 +106,6 @@ const Index = () => {
               hasAttentionRequiredOrders={hasAttentionRequiredOrders}
             />
             
-            {/* Table Section */}
             <DeliveryTable 
               items={currentItems}
               sortedColumns={sortedColumns}
@@ -137,7 +130,6 @@ const Index = () => {
               setSelectedCouriers={setSelectedCouriers}
             />
             
-            {/* Pagination Section */}
             <DeliveryPagination 
               currentPage={currentPage}
               totalPages={totalPages}
@@ -152,7 +144,6 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Courier Chat Component */}
       <CourierChat 
         open={isChatOpen}
         onClose={() => setIsChatOpen(false)}
