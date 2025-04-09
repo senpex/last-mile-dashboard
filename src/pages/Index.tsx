@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -21,7 +20,6 @@ const Index = () => {
   const [selectedCourier, setSelectedCourier] = useState("");
   const [showMyDeliveriesOnly, setShowMyDeliveriesOnly] = useState(true);
 
-  // Use our custom hook for table functionality
   const {
     pageSize,
     setPageSize,
@@ -81,13 +79,9 @@ const Index = () => {
           setCollapsed={setSidebarCollapsed} 
         />
         
-        <div className="flex-1 flex overflow-hidden transition-all duration-300 relative">
-          {/* Main Navigation Sidebar */}
-          <div className={`transition-all duration-300 ${sidebarCollapsed ? 'ml-[70px]' : 'ml-[240px]'}`}></div>
-          
-          {/* Main Content Area */}
-          <main className="flex-1 flex flex-col overflow-hidden transition-all duration-300">
-            {/* Filters Section */}
+        <div className={`flex-1 flex overflow-hidden transition-all duration-300 relative 
+          ${sidebarCollapsed ? 'ml-[73px]' : 'ml-[243px]'}`}>
+          <main className="flex-1 flex flex-col overflow-hidden transition-all duration-300 pl-3">
             <DeliveryFilters 
               searchTerm={searchTerm}
               onSearchChange={setSearchTerm}
@@ -106,7 +100,6 @@ const Index = () => {
               onToggleMyDeliveries={handleToggleMyDeliveries}
             />
             
-            {/* Table Section */}
             <DeliveryTable 
               items={currentItems}
               sortedColumns={sortedColumns}
@@ -131,7 +124,6 @@ const Index = () => {
               setSelectedCouriers={setSelectedCouriers}
             />
             
-            {/* Pagination Section */}
             <DeliveryPagination 
               currentPage={currentPage}
               totalPages={totalPages}
@@ -146,7 +138,6 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Courier Chat Component */}
       <CourierChat 
         open={isChatOpen}
         onClose={() => setIsChatOpen(false)}
