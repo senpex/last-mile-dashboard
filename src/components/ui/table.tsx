@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -132,7 +133,7 @@ const TableContainer = React.forwardRef<
     ref={ref}
     className={cn(
       "relative border rounded-md overflow-auto flex-shrink-0",
-      "transition-all duration-300 shadow-sm", 
+      "transition-all duration-300 shadow-sm pr-[5px]", 
       filterSidebarOpen ? "max-w-[calc(100%-275px)]" : "w-full",
       height, 
       className
