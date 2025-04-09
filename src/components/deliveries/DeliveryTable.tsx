@@ -2,12 +2,11 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { GripVertical } from "lucide-react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 import { DeliverySidebar } from "@/components/deliveries/DeliverySidebar";
 import { MessageCircle } from "lucide-react";
-import { UsersTableContainer } from "@/components/users/UsersTableContainer";
 
 interface DeliveryTableProps {
   items: Delivery[];
@@ -105,10 +104,10 @@ const DeliveryTable = ({
           onCourierChange={setSelectedCouriers}
         />
         
-        <div className={`flex-1 transition-all duration-300 my-4 ml-2 ${isFilterSidebarOpen ? 'w-full' : ''}`}>
+        <div className="flex-1 transition-all duration-300 my-4 ml-2">
           <div className="flex flex-col h-full w-full">
             <div className="w-full flex-grow flex-shrink-0">
-              <UsersTableContainer 
+              <TableContainer 
                 stickyHeader 
                 className="w-full"
                 filterSidebarOpen={isFilterSidebarOpen}
@@ -244,7 +243,7 @@ const DeliveryTable = ({
                     )}
                   </TableBody>
                 </Table>
-              </UsersTableContainer>
+              </TableContainer>
             </div>
           </div>
         </div>

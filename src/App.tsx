@@ -14,36 +14,32 @@ import DriversPage from "./pages/users/Drivers";
 import ClientsPage from "./pages/users/Clients";
 import CommunicationTower from "./pages/CommunicationTower";
 import NotFound from "./pages/NotFound";
-import { useState } from "react";
 
-const App = () => {
-  // Create a new QueryClient instance inside the component
-  const [queryClient] = useState(() => new QueryClient());
+const queryClient = new QueryClient();
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/" element={<Index />} />
-              <Route path="/agent-ai" element={<AgentAI />} />
-              <Route path="/dictionaries" element={<Dictionaries />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/users/drivers" element={<DriversPage />} />
-              <Route path="/users/clients" element={<ClientsPage />} />
-              <Route path="/communication-tower" element={<CommunicationTower />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
-  );
-};
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <ThemeProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/" element={<Index />} />
+            <Route path="/agent-ai" element={<AgentAI />} />
+            <Route path="/dictionaries" element={<Dictionaries />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/users/drivers" element={<DriversPage />} />
+            <Route path="/users/clients" element={<ClientsPage />} />
+            <Route path="/communication-tower" element={<CommunicationTower />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </ThemeProvider>
+  </QueryClientProvider>
+);
 
 export default App;

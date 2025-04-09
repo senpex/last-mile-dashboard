@@ -14,14 +14,10 @@ const ScrollArea = React.forwardRef<React.ElementRef<typeof ScrollAreaPrimitive.
   ...props
 }, ref) => (
   <ScrollAreaPrimitive.Root ref={ref} className={cn("relative overflow-hidden", className)} {...props}>
-    {/* Outer container with isolate to create a stacking context */}
     <div className="isolate relative w-full h-full">
-      {/* Inner container with absolute positioning to separate from main container */}
-      <div className="absolute inset-0">
-        <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit] mx-0">
-          {children}
-        </ScrollAreaPrimitive.Viewport>
-      </div>
+      <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit] mx-0">
+        {children}
+      </ScrollAreaPrimitive.Viewport>
     </div>
     {(orientation === "vertical" || orientation === "both") && <ScrollBar orientation="vertical" />}
     {(orientation === "horizontal" || orientation === "both") && <ScrollBar orientation="horizontal" />}
