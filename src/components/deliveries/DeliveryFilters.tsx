@@ -28,6 +28,7 @@ interface DeliveryFiltersProps {
   isFilterSidebarOpen: boolean;
   showMyDeliveriesOnly?: boolean;
   onToggleMyDeliveries?: (showMyDeliveriesOnly: boolean) => void;
+  hasAttentionRequiredOrders?: boolean;
 }
 
 export function DeliveryFilters({
@@ -45,7 +46,8 @@ export function DeliveryFilters({
   onToggleFilterSidebar,
   isFilterSidebarOpen,
   showMyDeliveriesOnly = true,
-  onToggleMyDeliveries = () => {}
+  onToggleMyDeliveries = () => {},
+  hasAttentionRequiredOrders = false
 }: DeliveryFiltersProps) {
   return (
     <div className="px-4 py-6 flex-shrink-0 border-b w-[200%] max-w-full">
@@ -147,6 +149,9 @@ export function DeliveryFilters({
                     className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative"
                   >
                     Attention Required
+                    {hasAttentionRequiredOrders && (
+                      <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full animate-pulse" />
+                    )}
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
