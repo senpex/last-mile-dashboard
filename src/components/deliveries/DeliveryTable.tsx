@@ -80,7 +80,7 @@ export function DeliveryTable({
                 className="w-full"
                 filterSidebarOpen={isFilterSidebarOpen}
               >
-                <Table className="w-full table-auto">
+                <Table className="w-full table-fixed">
                   <TableHeader>
                     <TableRow>
                       {sortedColumns.map(columnId => {
