@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -65,7 +64,7 @@ const doesCustomerNeedAttention = (customerId: string | number): boolean => {
   return idAsNumber % 10 < 3;
 };
 
-export function DeliveryTable({
+const DeliveryTable = ({
   items,
   sortedColumns,
   availableColumns,
@@ -87,7 +86,7 @@ export function DeliveryTable({
   allCouriers,
   selectedCouriers,
   setSelectedCouriers
-}: DeliveryTableProps) {
+}: DeliveryTableProps) => {
   return (
     <div className="flex-1 overflow-hidden px-px">
       <div className="flex h-full">
@@ -146,10 +145,13 @@ export function DeliveryTable({
                             switch (columnId) {
                               case "status":
                                 return (
-                                  <TableCell key={columnId} className={getColumnWidth(columnId)}>
+                                  <TableCell key={columnId} className={`${getColumnWidth(columnId)} min-w-[120px] w-[120px]`}>
                                     <Badge 
                                       variant={getStatusBadgeVariant(delivery.status) as any}
-                                      className={`${delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}`}
+                                      className={`
+                                        ${delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}
+                                        w-full text-center justify-center truncate overflow-hidden whitespace-nowrap
+                                      `}
                                     >
                                       {getStatusDisplay(delivery.status)}
                                     </Badge>
@@ -248,4 +250,6 @@ export function DeliveryTable({
       </div>
     </div>
   );
-}
+};
+
+export default DeliveryTable;
