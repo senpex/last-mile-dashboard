@@ -1,6 +1,6 @@
 
 import { Layout } from "@/components/layout/Layout";
-import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil } from "lucide-react";
+import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil, Clock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -16,10 +16,13 @@ const Profile = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isAddRuleDialogOpen, setIsAddRuleDialogOpen] = useState(false);
   const [isAddAutomationDialogOpen, setIsAddAutomationDialogOpen] = useState(false);
+  const [isAddShiftDialogOpen, setIsAddShiftDialogOpen] = useState(false);
   const [newRule, setNewRule] = useState('');
   const [ruleName, setRuleName] = useState('');
   const [newAutomation, setNewAutomation] = useState('');
   const [automationName, setAutomationName] = useState('');
+  const [newShift, setNewShift] = useState('');
+  const [shiftName, setShiftName] = useState('');
   const [isEditMode, setIsEditMode] = useState(false);
   const [editRuleIndex, setEditRuleIndex] = useState<number | null>(null);
   const [attentionRules, setAttentionRules] = useState([
@@ -34,6 +37,12 @@ const Profile = () => {
     { name: "Auto Assign", description: "Automatically assign nearest driver when order is created" },
     { name: "Customer Notifications", description: "Send notification to customer if driver is delayed by more than 5 minutes" },
     { name: "Reschedule At Risk", description: "Attempt to reschedule if order is at risk of cancellation" }
+  ]);
+  const [shifts, setShifts] = useState([
+    { name: "Morning Shift", description: "6:00 AM - 2:00 PM" },
+    { name: "Afternoon Shift", description: "2:00 PM - 10:00 PM" },
+    { name: "Night Shift", description: "10:00 PM - 6:00 AM" },
+    { name: "Weekend Coverage", description: "8:00 AM - 8:00 PM (Saturday & Sunday)" }
   ]);
 
   const togglePasswordVisibility = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
@@ -78,6 +87,19 @@ const Profile = () => {
     setIsAddAutomationDialogOpen(false);
   };
 
+  const handleAddShift = () => {
+    // Add new shift
+    setShifts([...shifts, { 
+      name: shiftName || `Shift ${shifts.length + 1}`,
+      description: newShift 
+    }]);
+    
+    // Reset and close dialog
+    setNewShift('');
+    setShiftName('');
+    setIsAddShiftDialogOpen(false);
+  };
+
   const handleEditRule = (index: number) => {
     setNewRule(attentionRules[index].query);
     setRuleName(attentionRules[index].name);
@@ -103,6 +125,7 @@ const Profile = () => {
             </TabsTrigger>
           </TabsList>
           
+          {/* User Profile Tab Content */}
           <TabsContent value="user-profile">
             <div className="bg-card rounded-lg shadow p-6">
               <div className="flex flex-col md:flex-row gap-8 items-start">
@@ -244,6 +267,10 @@ const Profile = () => {
                     <Bot className="w-4 h-4" />
                     Automations
                   </TabsTrigger>
+                  <TabsTrigger value="working-shifts" className="flex items-center gap-2">
+                    <Clock className="w-4 h-4" />
+                    Working Shifts
+                  </TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="attention-required">
@@ -306,6 +333,39 @@ const Profile = () => {
                           >
                             <Plus className="w-4 h-4" />
                             Add Automation
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                {/* New Working Shifts Tab Content */}
+                <TabsContent value="working-shifts">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-medium mb-4">Working Hours Schedule</h3>
+                      <div className="space-y-4">
+                        {shifts.map((shift, index) => (
+                          <div key={index} className="flex items-center space-x-2">
+                            <Checkbox id={`shift-${index}`} />
+                            <label htmlFor={`shift-${index}`} className="text-sm font-medium">
+                              {shift.name}: {shift.description}
+                            </label>
+                          </div>
+                        ))}
+                        <div className="mt-4">
+                          <Button 
+                            variant="outline" 
+                            className="flex items-center gap-2"
+                            onClick={() => {
+                              setNewShift('');
+                              setShiftName('');
+                              setIsAddShiftDialogOpen(true);
+                            }}
+                          >
+                            <Plus className="w-4 h-4" />
+                            Add Shift
                           </Button>
                         </div>
                       </div>
@@ -411,6 +471,52 @@ const Profile = () => {
               Cancel
             </Button>
             <Button onClick={handleAddAutomation}>
+              Save
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Working Shifts Dialog */}
+      <Dialog open={isAddShiftDialogOpen} onOpenChange={setIsAddShiftDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>New Working Shift</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div>
+              <label htmlFor="shift-name" className="text-sm font-medium block mb-2">
+                Shift Name
+              </label>
+              <Input
+                id="shift-name"
+                placeholder="Enter shift name..."
+                value={shiftName}
+                onChange={(e) => setShiftName(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="new-shift" className="text-sm font-medium block mb-2">
+                Schedule Details
+              </label>
+              <Textarea 
+                id="new-shift" 
+                placeholder="Enter shift hours and details..." 
+                value={newShift}
+                onChange={(e) => setNewShift(e.target.value)}
+                className="w-full"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => {
+              setIsAddShiftDialogOpen(false);
+              setNewShift('');
+              setShiftName('');
+            }}>
+              Cancel
+            </Button>
+            <Button onClick={handleAddShift}>
               Save
             </Button>
           </DialogFooter>
