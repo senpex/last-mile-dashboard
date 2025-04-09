@@ -73,7 +73,7 @@ export function DeliveryTable({
         
         <div className={`flex-1 transition-all duration-300 my-4 ${isFilterSidebarOpen ? 'ml-3' : 'ml-2'}`}>
           <div className="flex flex-col h-full w-full">
-            <div className="w-full overflow-x-auto">
+            <div className="w-full overflow-hidden">
               <TableContainer 
                 stickyHeader 
                 className="min-w-full"
