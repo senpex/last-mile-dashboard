@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -170,7 +171,8 @@ export function DeliveryTable({
                                       {doesCustomerNeedAttention(delivery.id) && (
                                         <MessageCircle 
                                           size={16} 
-                                          className="text-blue-500 shrink-0" 
+                                          className="text-blue-500 shrink-0 cursor-pointer" 
+                                          onClick={() => onCourierClick(`Customer: ${delivery.customerName}`)}
                                         />
                                       )}
                                     </div>
