@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -124,7 +125,9 @@ const TableContainer = React.forwardRef<
   <div 
     ref={ref}
     className={cn(
-      "relative border rounded-md overflow-auto w-full",
+      "relative border rounded-md overflow-auto",
+      "flex flex-wrap justify-between items-center gap-2", // Added the same width management as the selected div
+      "max-w-[1000px] mx-auto", // Keep the max width and center alignment
       height, 
       className
     )} 
