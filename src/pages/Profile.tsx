@@ -1,6 +1,5 @@
-
 import { Layout } from "@/components/layout/Layout";
-import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil } from "lucide-react";
+import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil, Calendar, Clock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -22,18 +21,14 @@ const Profile = () => {
   const [automationName, setAutomationName] = useState('');
   const [isEditMode, setIsEditMode] = useState(false);
   const [editRuleIndex, setEditRuleIndex] = useState<number | null>(null);
-  const [attentionRules, setAttentionRules] = useState([
-    { name: "Late Order Alert", query: "Flag orders 15 minutes before the pickup with no driver" },
-    { name: "Driver Delay", query: "Driver is running late for more than 15 minutes" },
-    { name: "No Driver", query: "No drivers found for the order" },
-    { name: "Cancelled Orders", query: "Orders cancelled by drivers" }
-  ]);
-  const [automations, setAutomations] = useState([
-    { name: "Auto Close Order", description: "Close order automatically after delivery is confirmed" },
-    { name: "Commission Boost", description: "Increase driver commission by 10% if driver arrives 10 minutes before pickup" },
-    { name: "Auto Assign", description: "Automatically assign nearest driver when order is created" },
-    { name: "Customer Notifications", description: "Send notification to customer if driver is delayed by more than 5 minutes" },
-    { name: "Reschedule At Risk", description: "Attempt to reschedule if order is at risk of cancellation" }
+  const [workingShifts, setWorkingShifts] = useState([
+    { day: "Monday", startTime: "09:00 AM", endTime: "05:00 PM", active: true },
+    { day: "Tuesday", startTime: "09:00 AM", endTime: "05:00 PM", active: true },
+    { day: "Wednesday", startTime: "09:00 AM", endTime: "05:00 PM", active: true },
+    { day: "Thursday", startTime: "09:00 AM", endTime: "05:00 PM", active: true },
+    { day: "Friday", startTime: "09:00 AM", endTime: "05:00 PM", active: true },
+    { day: "Saturday", startTime: "10:00 AM", endTime: "03:00 PM", active: false },
+    { day: "Sunday", startTime: "10:00 AM", endTime: "03:00 PM", active: false }
   ]);
 
   const togglePasswordVisibility = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
@@ -42,7 +37,6 @@ const Profile = () => {
 
   const handleAddRule = () => {
     if (isEditMode && editRuleIndex !== null) {
-      // Edit existing rule
       const updatedRules = [...attentionRules];
       updatedRules[editRuleIndex] = { 
         name: ruleName,
@@ -50,29 +44,25 @@ const Profile = () => {
       };
       setAttentionRules(updatedRules);
     } else {
-      // Add new rule
       setAttentionRules([...attentionRules, { 
         name: ruleName || `Rule ${attentionRules.length + 1}`,
         query: newRule 
       }]);
     }
     
-    // Reset and close dialog
     setNewRule('');
     setRuleName('');
     setIsEditMode(false);
     setEditRuleIndex(null);
     setIsAddRuleDialogOpen(false);
   };
-  
+
   const handleAddAutomation = () => {
-    // Add new automation
     setAutomations([...automations, { 
       name: automationName || `Automation ${automations.length + 1}`,
       description: newAutomation 
     }]);
     
-    // Reset and close dialog
     setNewAutomation('');
     setAutomationName('');
     setIsAddAutomationDialogOpen(false);
@@ -84,6 +74,12 @@ const Profile = () => {
     setIsEditMode(true);
     setEditRuleIndex(index);
     setIsAddRuleDialogOpen(true);
+  };
+
+  const updateWorkingShift = (index: number, field: 'startTime' | 'endTime' | 'active', value: string | boolean) => {
+    const updatedShifts = [...workingShifts];
+    updatedShifts[index] = { ...updatedShifts[index], [field]: value };
+    setWorkingShifts(updatedShifts);
   };
 
   return (
@@ -244,6 +240,10 @@ const Profile = () => {
                     <Bot className="w-4 h-4" />
                     Automations
                   </TabsTrigger>
+                  <TabsTrigger value="working-shifts" className="flex items-center gap-2">
+                    <Clock className="w-4 h-4" />
+                    Working Shifts
+                  </TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="attention-required">
@@ -312,19 +312,71 @@ const Profile = () => {
                     </CardContent>
                   </Card>
                 </TabsContent>
+
+                <TabsContent value="working-shifts">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-medium mb-4">Working Hours</h3>
+                      <div className="space-y-6">
+                        <div className="grid grid-cols-4 gap-4 mb-2 font-medium text-sm text-muted-foreground">
+                          <div>Day</div>
+                          <div>Start Time</div>
+                          <div>End Time</div>
+                          <div>Active</div>
+                        </div>
+                        
+                        {workingShifts.map((shift, index) => (
+                          <div key={index} className="grid grid-cols-4 gap-4 items-center">
+                            <div className="font-medium">{shift.day}</div>
+                            <div className="relative">
+                              <Input
+                                value={shift.startTime}
+                                onChange={(e) => updateWorkingShift(index, 'startTime', e.target.value)}
+                                className="pr-8"
+                              />
+                              <Clock className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            </div>
+                            <div className="relative">
+                              <Input
+                                value={shift.endTime}
+                                onChange={(e) => updateWorkingShift(index, 'endTime', e.target.value)}
+                                className="pr-8"
+                              />
+                              <Clock className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            </div>
+                            <div>
+                              <Checkbox 
+                                checked={shift.active} 
+                                onCheckedChange={(checked) => 
+                                  updateWorkingShift(index, 'active', checked === true)
+                                }
+                                id={`shift-${index}`}
+                              />
+                              <label 
+                                htmlFor={`shift-${index}`} 
+                                className="ml-2 text-sm font-medium"
+                              >
+                                {shift.active ? 'Active' : 'Inactive'}
+                              </label>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
               </Tabs>
               
               <div className="flex justify-end pt-6">
-                <button className="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md">
+                <Button>
                   Save
-                </button>
+                </Button>
               </div>
             </div>
           </TabsContent>
         </Tabs>
       </div>
 
-      {/* Rule Dialog */}
       <Dialog open={isAddRuleDialogOpen} onOpenChange={setIsAddRuleDialogOpen}>
         <DialogContent>
           <DialogHeader>
@@ -371,7 +423,6 @@ const Profile = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Automation Dialog */}
       <Dialog open={isAddAutomationDialogOpen} onOpenChange={setIsAddAutomationDialogOpen}>
         <DialogContent>
           <DialogHeader>
