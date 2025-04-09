@@ -135,7 +135,7 @@ const TableContainer = React.forwardRef<
     className={cn(
       "relative border rounded-md overflow-hidden flex-shrink-0",
       "transition-all duration-300 shadow-sm", 
-      filterSidebarOpen ? "max-w-[calc(100%-275px)]" : "w-full",
+      filterSidebarOpen ? "w-full" : "w-full", // Always use full width regardless of sidebar state
       height, 
       "mr-[5px]", // Add 5px margin on the right side
       className
