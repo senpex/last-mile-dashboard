@@ -16,9 +16,17 @@ import ClientsPage from "./pages/users/Clients";
 import CommunicationTower from "./pages/CommunicationTower";
 import NotFound from "./pages/NotFound";
 
-const App = () => {
-  const [queryClient] = useState(() => new QueryClient());
+// Create a client outside the component to avoid re-initialization on re-renders
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      retry: 1,
+    },
+  },
+});
 
+const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
