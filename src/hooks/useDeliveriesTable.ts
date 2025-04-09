@@ -353,12 +353,12 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
       case "cancelled_by_admin":
         return "warning";
       case "in_transit":
-        return "default";
+        return "secondary";
       case "started_working":
       case "arrived_for_pickup":
         return "warning";
       default:
-        return "default";
+        return "secondary";
     }
   }, [statusMapping]);
 
