@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus, Search } from "lucide-react";
+import { GripVertical, Plus, Search, Calendar, FileText, Clock } from "lucide-react";
 import { UsersTableContainer } from "@/components/ui/users-table-container";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 import { Input } from "@/components/ui/input";
@@ -17,6 +18,7 @@ import {
   PaginationInfo,
   PaginationSize
 } from "@/components/ui/pagination";
+import { format } from "date-fns";
 
 const ClientsPage = () => {
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
@@ -35,6 +37,9 @@ const ClientsPage = () => {
     { id: "email", label: "Email", default: true },
     { id: "phone", label: "Phone", default: true },
     { id: "type", label: "Type", default: true },
+    { id: "signupDate", label: "Signup Date", default: true },
+    { id: "orderCount", label: "Number of Orders", default: true },
+    { id: "lastOrderDate", label: "Last Order Date", default: true },
     { id: "actions", label: "Actions", default: true },
   ];
   
@@ -47,18 +52,138 @@ const ClientsPage = () => {
   );
 
   const clients = [
-    { id: 1234, name: "Acme Corp", contact: "Alex Johnson", email: "alex@acmecorp.com", phone: "(123) 456-7890", type: "Business" },
-    { id: 23456, name: "TechStart", contact: "Sarah Lee", email: "sarah@techstart.com", phone: "(123) 456-7891", type: "Business" },
-    { id: 34567, name: "Robert Brown", contact: "Robert Brown", email: "robert.brown@example.com", phone: "(123) 456-7892", type: "Individual" },
-    { id: 45678, name: "Global Industries", contact: "Michael Chen", email: "m.chen@globalind.com", phone: "(123) 456-7893", type: "Business" },
-    { id: 56789, name: "Next Level Tech", contact: "Emily Wong", email: "emily@nextleveltech.com", phone: "(123) 456-7894", type: "Business" },
-    { id: 67890, name: "David Smith", contact: "David Smith", email: "david.smith@example.com", phone: "(123) 456-7895", type: "Individual" },
-    { id: 78901, name: "Modern Solutions", contact: "Jessica Taylor", email: "j.taylor@modernsol.com", phone: "(123) 456-7896", type: "Business" },
-    { id: 89012, name: "Jennifer Adams", contact: "Jennifer Adams", email: "jennifer.adams@example.com", phone: "(123) 456-7897", type: "Individual" },
-    { id: 90123, name: "Peak Performance", contact: "Daniel Wilson", email: "daniel@peakperf.com", phone: "(123) 456-7898", type: "Business" },
-    { id: 10234, name: "Smart Systems", contact: "Rachel Green", email: "rachel@smartsystems.com", phone: "(123) 456-7899", type: "Business" },
-    { id: 11234, name: "Future Tech", contact: "Steve Rogers", email: "steve@futuretech.com", phone: "(123) 456-7810", type: "Business" },
-    { id: 12345, name: "Lisa Johnson", contact: "Lisa Johnson", email: "lisa.johnson@example.com", phone: "(123) 456-7811", type: "Individual" },
+    { 
+      id: 1234, 
+      name: "Acme Corp", 
+      contact: "Alex Johnson", 
+      email: "alex@acmecorp.com", 
+      phone: "(123) 456-7890", 
+      type: "Business",
+      signupDate: new Date(2022, 2, 15),
+      orderCount: 42,
+      lastOrderDate: new Date(2024, 3, 2)
+    },
+    { 
+      id: 23456, 
+      name: "TechStart", 
+      contact: "Sarah Lee", 
+      email: "sarah@techstart.com", 
+      phone: "(123) 456-7891", 
+      type: "Business",
+      signupDate: new Date(2023, 5, 8),
+      orderCount: 17,
+      lastOrderDate: new Date(2024, 2, 28)
+    },
+    { 
+      id: 34567, 
+      name: "Robert Brown", 
+      contact: "Robert Brown", 
+      email: "robert.brown@example.com", 
+      phone: "(123) 456-7892", 
+      type: "Individual",
+      signupDate: new Date(2021, 11, 3),
+      orderCount: 5,
+      lastOrderDate: new Date(2023, 9, 12)
+    },
+    { 
+      id: 45678, 
+      name: "Global Industries", 
+      contact: "Michael Chen", 
+      email: "m.chen@globalind.com", 
+      phone: "(123) 456-7893", 
+      type: "Business",
+      signupDate: new Date(2020, 7, 22),
+      orderCount: 96,
+      lastOrderDate: new Date(2024, 3, 5)
+    },
+    { 
+      id: 56789, 
+      name: "Next Level Tech", 
+      contact: "Emily Wong", 
+      email: "emily@nextleveltech.com", 
+      phone: "(123) 456-7894", 
+      type: "Business",
+      signupDate: new Date(2022, 4, 17),
+      orderCount: 23,
+      lastOrderDate: new Date(2024, 1, 15)
+    },
+    { 
+      id: 67890, 
+      name: "David Smith", 
+      contact: "David Smith", 
+      email: "david.smith@example.com", 
+      phone: "(123) 456-7895", 
+      type: "Individual",
+      signupDate: new Date(2023, 1, 28),
+      orderCount: 8,
+      lastOrderDate: new Date(2024, 2, 20)
+    },
+    { 
+      id: 78901, 
+      name: "Modern Solutions", 
+      contact: "Jessica Taylor", 
+      email: "j.taylor@modernsol.com", 
+      phone: "(123) 456-7896", 
+      type: "Business",
+      signupDate: new Date(2021, 6, 10),
+      orderCount: 51,
+      lastOrderDate: new Date(2024, 3, 7)
+    },
+    { 
+      id: 89012, 
+      name: "Jennifer Adams", 
+      contact: "Jennifer Adams", 
+      email: "jennifer.adams@example.com", 
+      phone: "(123) 456-7897", 
+      type: "Individual",
+      signupDate: new Date(2022, 9, 5),
+      orderCount: 3,
+      lastOrderDate: new Date(2023, 8, 18)
+    },
+    { 
+      id: 90123, 
+      name: "Peak Performance", 
+      contact: "Daniel Wilson", 
+      email: "daniel@peakperf.com", 
+      phone: "(123) 456-7898", 
+      type: "Business",
+      signupDate: new Date(2023, 3, 12),
+      orderCount: 27,
+      lastOrderDate: new Date(2024, 2, 25)
+    },
+    { 
+      id: 10234, 
+      name: "Smart Systems", 
+      contact: "Rachel Green", 
+      email: "rachel@smartsystems.com", 
+      phone: "(123) 456-7899", 
+      type: "Business",
+      signupDate: new Date(2021, 2, 15),
+      orderCount: 35,
+      lastOrderDate: new Date(2024, 1, 30)
+    },
+    { 
+      id: 11234, 
+      name: "Future Tech", 
+      contact: "Steve Rogers", 
+      email: "steve@futuretech.com", 
+      phone: "(123) 456-7810", 
+      type: "Business",
+      signupDate: new Date(2022, 8, 20),
+      orderCount: 19,
+      lastOrderDate: new Date(2024, 3, 1)
+    },
+    { 
+      id: 12345, 
+      name: "Lisa Johnson", 
+      contact: "Lisa Johnson", 
+      email: "lisa.johnson@example.com", 
+      phone: "(123) 456-7811", 
+      type: "Individual",
+      signupDate: new Date(2023, 10, 7),
+      orderCount: 2,
+      lastOrderDate: new Date(2024, 2, 10)
+    },
   ];
 
   const totalItems = filteredClients.length;
@@ -259,6 +384,9 @@ const ClientsPage = () => {
                           >
                             <div className="flex items-center gap-1 overflow-hidden">
                               <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
+                              {columnId === "signupDate" && <Calendar className="h-4 w-4 text-muted-foreground shrink-0" />}
+                              {columnId === "orderCount" && <FileText className="h-4 w-4 text-muted-foreground shrink-0" />}
+                              {columnId === "lastOrderDate" && <Clock className="h-4 w-4 text-muted-foreground shrink-0" />}
                               <span className="truncate">{column.label}</span>
                             </div>
                           </TableHead>
@@ -290,6 +418,27 @@ const ClientsPage = () => {
                               client.type === "Business" ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300" : "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300"
                             }`}>
                               {client.type}
+                            </div>
+                          </TableCell>
+                        )}
+                        {sortedColumns.includes("signupDate") && (
+                          <TableCell>
+                            <div className="flex items-center">
+                              <span>{format(client.signupDate, 'MMM d, yyyy')}</span>
+                            </div>
+                          </TableCell>
+                        )}
+                        {sortedColumns.includes("orderCount") && (
+                          <TableCell>
+                            <div className="flex items-center">
+                              <span>{client.orderCount}</span>
+                            </div>
+                          </TableCell>
+                        )}
+                        {sortedColumns.includes("lastOrderDate") && (
+                          <TableCell>
+                            <div className="flex items-center">
+                              <span>{format(client.lastOrderDate, 'MMM d, yyyy')}</span>
                             </div>
                           </TableCell>
                         )}
