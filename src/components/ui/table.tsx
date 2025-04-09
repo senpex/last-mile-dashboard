@@ -1,5 +1,7 @@
+
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 const Table = React.forwardRef<
   HTMLTableElement,
@@ -131,7 +133,7 @@ const TableContainer = React.forwardRef<
   <div 
     ref={ref}
     className={cn(
-      "relative border rounded-md overflow-auto flex-shrink-0",
+      "relative border rounded-md overflow-hidden flex-shrink-0",
       "transition-all duration-300 shadow-sm", 
       filterSidebarOpen ? "max-w-[calc(100%-275px)]" : "w-full",
       height, 
@@ -141,10 +143,13 @@ const TableContainer = React.forwardRef<
     style={{
       scrollbarWidth: 'thin',
       scrollbarColor: '#cbd5e1 transparent',
-      width: '100%',
     }}
     {...props} 
-  />
+  >
+    <ScrollArea orientation="both" className="h-full w-full">
+      {props.children}
+    </ScrollArea>
+  </div>
 ))
 TableContainer.displayName = "TableContainer"
 

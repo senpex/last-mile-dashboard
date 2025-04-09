@@ -32,6 +32,27 @@ interface DeliveryTableProps {
   setSelectedCouriers: (couriers: string[]) => void;
 }
 
+// Helper function to determine column width based on column ID
+const getColumnWidth = (columnId: string): string => {
+  switch(columnId) {
+    case "status": return "w-[120px] min-w-[120px]";
+    case "packageId": return "w-[100px] min-w-[100px]";
+    case "orderName": return "w-[150px] min-w-[150px]";
+    case "customerName": return "w-[150px] min-w-[150px]";
+    case "pickupTime": return "w-[120px] min-w-[120px]";
+    case "pickupLocation": return "w-[200px] min-w-[200px]";
+    case "dropoffTime": return "w-[120px] min-w-[120px]";
+    case "dropoffLocation": return "w-[200px] min-w-[200px]";
+    case "price": return "w-[80px] min-w-[80px]";
+    case "tip": return "w-[80px] min-w-[80px]";
+    case "courier": return "w-[130px] min-w-[130px]";
+    case "organization": return "w-[150px] min-w-[150px]";
+    case "distance": return "w-[100px] min-w-[100px]";
+    case "couriersEarnings": return "w-[130px] min-w-[130px]";
+    default: return "w-[120px] min-w-[120px]";
+  }
+};
+
 export function DeliveryTable({
   items,
   sortedColumns,
@@ -80,7 +101,7 @@ export function DeliveryTable({
                 className="w-full"
                 filterSidebarOpen={isFilterSidebarOpen}
               >
-                <Table className="w-full table-fixed">
+                <Table>
                   <TableHeader>
                     <TableRow>
                       {sortedColumns.map(columnId => {
@@ -94,9 +115,9 @@ export function DeliveryTable({
                             onDragOver={e => handleDragOver(e, columnId)} 
                             onDragEnd={handleDragEnd} 
                             onDrop={e => handleDrop(e, columnId)} 
-                            className={`${columnId === "distance" || columnId === "couriersEarnings" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
+                            className={`${getColumnWidth(columnId)} ${columnId === "distance" || columnId === "couriersEarnings" ? "text-right" : ""} whitespace-nowrap`}
                           >
-                            <div className="flex items-center gap-1 overflow-hidden">
+                            <div className="flex items-center gap-1">
                               <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
                               <span className="truncate">{column.label}</span>
                             </div>
@@ -113,7 +134,7 @@ export function DeliveryTable({
                             switch (columnId) {
                               case "status":
                                 return (
-                                  <TableCell key={columnId}>
+                                  <TableCell key={columnId} className={getColumnWidth(columnId)}>
                                     <Badge 
                                       variant={getStatusBadgeVariant(delivery.status) as any}
                                       className={`${delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}`}
@@ -124,43 +145,43 @@ export function DeliveryTable({
                                 );
                               case "packageId":
                                 return (
-                                  <TableCell key={columnId}>
+                                  <TableCell key={columnId} className={getColumnWidth(columnId)}>
                                     <span className="font-sans text-sm">{delivery.packageId}</span>
                                   </TableCell>
                                 );
                               case "orderName":
-                                return <TableCell key={columnId}>{delivery.orderName}</TableCell>;
+                                return <TableCell key={columnId} className={getColumnWidth(columnId)}>{delivery.orderName}</TableCell>;
                               case "customerName":
-                                return <TableCell key={columnId}>{delivery.customerName}</TableCell>;
+                                return <TableCell key={columnId} className={getColumnWidth(columnId)}>{delivery.customerName}</TableCell>;
                               case "pickupTime":
-                                return <TableCell key={columnId}>{delivery.pickupTime}</TableCell>;
+                                return <TableCell key={columnId} className={getColumnWidth(columnId)}>{delivery.pickupTime}</TableCell>;
                               case "pickupLocation":
                                 return (
-                                  <TableCell key={columnId}>
+                                  <TableCell key={columnId} className={getColumnWidth(columnId)}>
                                     <div className="flex flex-col">
                                       <span className="font-medium">{delivery.pickupLocation.name}</span>
-                                      <span className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</span>
+                                      <span className="text-xs text-muted-foreground truncate">{delivery.pickupLocation.address}</span>
                                     </div>
                                   </TableCell>
                                 );
                               case "dropoffTime":
-                                return <TableCell key={columnId}>{delivery.dropoffTime}</TableCell>;
+                                return <TableCell key={columnId} className={getColumnWidth(columnId)}>{delivery.dropoffTime}</TableCell>;
                               case "dropoffLocation":
                                 return (
-                                  <TableCell key={columnId}>
+                                  <TableCell key={columnId} className={getColumnWidth(columnId)}>
                                     <div className="flex flex-col">
                                       <span className="font-medium">{delivery.dropoffLocation.name}</span>
-                                      <span className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</span>
+                                      <span className="text-xs text-muted-foreground truncate">{delivery.dropoffLocation.address}</span>
                                     </div>
                                   </TableCell>
                                 );
                               case "price":
-                                return <TableCell key={columnId}>{delivery.price}</TableCell>;
+                                return <TableCell key={columnId} className={getColumnWidth(columnId)}>{delivery.price}</TableCell>;
                               case "tip":
-                                return <TableCell key={columnId}>{delivery.tip}</TableCell>;
+                                return <TableCell key={columnId} className={getColumnWidth(columnId)}>{delivery.tip}</TableCell>;
                               case "courier":
                                 return (
-                                  <TableCell key={columnId}>
+                                  <TableCell key={columnId} className={getColumnWidth(columnId)}>
                                     {delivery.courier ? (
                                       <Button 
                                         variant="link" 
@@ -175,13 +196,13 @@ export function DeliveryTable({
                                   </TableCell>
                                 );
                               case "organization":
-                                return <TableCell key={columnId}>{delivery.organization}</TableCell>;
+                                return <TableCell key={columnId} className={getColumnWidth(columnId)}>{delivery.organization}</TableCell>;
                               case "distance":
-                                return <TableCell key={columnId} className="text-right">{delivery.distance}</TableCell>;
+                                return <TableCell key={columnId} className={`${getColumnWidth(columnId)} text-right`}>{delivery.distance}</TableCell>;
                               case "couriersEarnings":
-                                return <TableCell key={columnId} className="text-right">{delivery.couriersEarnings || "-"}</TableCell>;
+                                return <TableCell key={columnId} className={`${getColumnWidth(columnId)} text-right`}>{delivery.couriersEarnings || "-"}</TableCell>;
                               default:
-                                return <TableCell key={columnId}></TableCell>;
+                                return <TableCell key={columnId} className={getColumnWidth(columnId)}></TableCell>;
                             }
                           })}
                         </TableRow>
