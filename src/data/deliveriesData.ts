@@ -1,6 +1,8 @@
 import { Delivery } from "@/types/delivery";
+import { additionalDeliveriesData } from "./additionalDeliveriesData";
 
-export const deliveriesData: Delivery[] = [
+// Original deliveries data
+const originalDeliveriesData: Delivery[] = [
   {
     id: 1,
     packageId: "100425",
@@ -622,4 +624,10 @@ export const deliveriesData: Delivery[] = [
     distance: "4.8 mi",
     couriersEarnings: "$32.00"
   }
+];
+
+// Combine original and additional data
+export const deliveriesData: Delivery[] = [
+  ...originalDeliveriesData,
+  ...additionalDeliveriesData
 ];
