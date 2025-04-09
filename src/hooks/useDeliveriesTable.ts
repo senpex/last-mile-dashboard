@@ -353,7 +353,7 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
       case "cancelled_by_admin":
         return "warning";
       case "in_transit":
-        return "secondary";
+        return "primary";
       case "started_working":
       case "arrived_for_pickup":
         return "warning";
