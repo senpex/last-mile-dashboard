@@ -146,11 +146,11 @@ export function DeliveryFilters({
                   </TabsTrigger>
                   <TabsTrigger 
                     value="attention" 
-                    className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative"
+                    className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative flex items-center"
                   >
                     Attention Required
                     {hasAttentionRequiredOrders && (
-                      <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full animate-pulse" />
+                      <span className="ml-1.5 h-2 w-2 bg-red-500 rounded-full animate-pulse" />
                     )}
                   </TabsTrigger>
                 </TabsList>
