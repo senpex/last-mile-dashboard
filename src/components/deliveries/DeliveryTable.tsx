@@ -54,10 +54,17 @@ const getColumnWidth = (columnId: string): string => {
 };
 
 // Helper function to determine if a customer needs attention (30% of customers will get this indicator)
-const doesCustomerNeedAttention = (customerId: string): boolean => {
+const doesCustomerNeedAttention = (customerId: string | number): boolean => {
   // Convert id to a number and check if it's less than 30% of the max possible value
   // This ensures a consistent 30% of records will have the indicator
-  const idAsNumber = parseInt(customerId.replace(/\D/g, '') || '0', 10);
+  let idAsNumber: number;
+  
+  if (typeof customerId === 'string') {
+    idAsNumber = parseInt(customerId.replace(/\D/g, '') || '0', 10);
+  } else {
+    idAsNumber = customerId;
+  }
+  
   return idAsNumber % 10 < 3; // 30% probability (0, 1, 2 out of 0-9)
 };
 
