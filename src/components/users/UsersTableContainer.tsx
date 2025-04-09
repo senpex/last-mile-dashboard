@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 interface UsersTableContainerProps extends React.HTMLAttributes<HTMLDivElement> {
   height?: string;
   stickyHeader?: boolean;
+  filterSidebarOpen?: boolean;
 }
 
 const UsersTableContainer = React.forwardRef<
@@ -15,6 +16,7 @@ const UsersTableContainer = React.forwardRef<
   className, 
   height = "h-[calc(100vh-230px)]", 
   stickyHeader = true,
+  filterSidebarOpen = false,
   ...props 
 }, ref) => (
   <div 
@@ -23,6 +25,7 @@ const UsersTableContainer = React.forwardRef<
       "relative border rounded-md overflow-hidden",
       "transition-all duration-300 shadow-sm", 
       "w-full",
+      filterSidebarOpen ? "max-w-full" : "max-w-full",
       height,
       className
     )}
