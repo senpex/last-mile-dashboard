@@ -133,7 +133,7 @@ const TableContainer = React.forwardRef<
     ref={ref}
     className={cn(
       "relative border rounded-md overflow-auto",
-      "mx-auto transition-all duration-300", 
+      "transition-all duration-300", 
       filterSidebarOpen ? "max-w-[calc(100%-275px)]" : "max-w-[1000px]",
       height, 
       className
