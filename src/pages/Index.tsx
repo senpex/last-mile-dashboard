@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -58,7 +59,26 @@ const Index = () => {
     setSelectedCouriers,
     allZipcodes,
     selectedZipcodes,
-    setSelectedZipcodes
+    setSelectedZipcodes,
+    // New filter states
+    allCities,
+    selectedCities,
+    setSelectedCities,
+    allStates,
+    selectedStates,
+    setSelectedStates,
+    allPickupAddresses,
+    selectedPickupAddresses,
+    setSelectedPickupAddresses,
+    allDropoffAddresses,
+    selectedDropoffAddresses,
+    setSelectedDropoffAddresses,
+    allSenderNames,
+    selectedSenderNames,
+    setSelectedSenderNames,
+    allRecipientNames,
+    selectedRecipientNames,
+    setSelectedRecipientNames
   } = useDeliveriesTable({ 
     deliveries: deliveriesData,
     showMyDeliveriesOnly 
@@ -134,6 +154,25 @@ const Index = () => {
               allZipcodes={allZipcodes}
               selectedZipcodes={selectedZipcodes}
               setSelectedZipcodes={setSelectedZipcodes}
+              // New filter props
+              allCities={allCities}
+              selectedCities={selectedCities}
+              setSelectedCities={setSelectedCities}
+              allStates={allStates}
+              selectedStates={selectedStates}
+              setSelectedStates={setSelectedStates}
+              allPickupAddresses={allPickupAddresses}
+              selectedPickupAddresses={selectedPickupAddresses}
+              setSelectedPickupAddresses={setSelectedPickupAddresses}
+              allDropoffAddresses={allDropoffAddresses}
+              selectedDropoffAddresses={selectedDropoffAddresses}
+              setSelectedDropoffAddresses={setSelectedDropoffAddresses}
+              allSenderNames={allSenderNames}
+              selectedSenderNames={selectedSenderNames}
+              setSelectedSenderNames={setSelectedSenderNames}
+              allRecipientNames={allRecipientNames}
+              selectedRecipientNames={selectedRecipientNames}
+              setSelectedRecipientNames={setSelectedRecipientNames}
             />
             
             <DeliveryPagination 

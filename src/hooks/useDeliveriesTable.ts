@@ -24,6 +24,13 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
   const [selectedOrganizations, setSelectedOrganizations] = useState<string[]>([]);
   const [selectedCouriers, setSelectedCouriers] = useState<string[]>([]);
   const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
+  
+  const [selectedCities, setSelectedCities] = useState<string[]>([]);
+  const [selectedStates, setSelectedStates] = useState<string[]>([]);
+  const [selectedPickupAddresses, setSelectedPickupAddresses] = useState<string[]>([]);
+  const [selectedDropoffAddresses, setSelectedDropoffAddresses] = useState<string[]>([]);
+  const [selectedSenderNames, setSelectedSenderNames] = useState<string[]>([]);
+  const [selectedRecipientNames, setSelectedRecipientNames] = useState<string[]>([]);
 
   const currentUserName = "John Smith";
 
@@ -39,7 +46,6 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     new Set(deliveries.map(delivery => delivery.courier))
   ).filter(Boolean) as string[];
   
-  // Extract all zipcodes from pickup and dropoff locations
   const allZipcodes: string[] = Array.from(
     new Set([
       ...deliveries.map(delivery => {
@@ -51,6 +57,56 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
         return dropoffZip || "";
       })
     ])
+  ).filter(Boolean) as string[];
+
+  const allCities: string[] = Array.from(
+    new Set([
+      ...deliveries.map(delivery => {
+        const pickupCity = delivery.pickupLocation?.address?.match(/([^,]+),\s*[A-Z]{2}/)?.[1]?.trim();
+        return pickupCity || "";
+      }),
+      ...deliveries.map(delivery => {
+        const dropoffCity = delivery.dropoffLocation?.address?.match(/([^,]+),\s*[A-Z]{2}/)?.[1]?.trim();
+        return dropoffCity || "";
+      })
+    ])
+  ).filter(Boolean) as string[];
+  
+  const allStates: string[] = Array.from(
+    new Set([
+      ...deliveries.map(delivery => {
+        const pickupState = delivery.pickupLocation?.address?.match(/,\s*([A-Z]{2})/)?.[1];
+        return pickupState || "";
+      }),
+      ...deliveries.map(delivery => {
+        const dropoffState = delivery.dropoffLocation?.address?.match(/,\s*([A-Z]{2})/)?.[1];
+        return dropoffState || "";
+      })
+    ])
+  ).filter(Boolean) as string[];
+  
+  const allPickupAddresses: string[] = Array.from(
+    new Set(
+      deliveries.map(delivery => delivery.pickupLocation?.address || "")
+    )
+  ).filter(Boolean) as string[];
+  
+  const allDropoffAddresses: string[] = Array.from(
+    new Set(
+      deliveries.map(delivery => delivery.dropoffLocation?.address || "")
+    )
+  ).filter(Boolean) as string[];
+  
+  const allSenderNames: string[] = Array.from(
+    new Set(
+      deliveries.map(delivery => delivery.pickupLocation?.name || "")
+    )
+  ).filter(Boolean) as string[];
+  
+  const allRecipientNames: string[] = Array.from(
+    new Set(
+      deliveries.map(delivery => delivery.dropoffLocation?.name || "")
+    )
   ).filter(Boolean) as string[];
 
   const availableColumns: ColumnOption[] = [
@@ -133,6 +189,12 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
       selectedOrganizations,
       selectedCouriers,
       selectedZipcodes,
+      selectedCities,
+      selectedStates,
+      selectedPickupAddresses,
+      selectedDropoffAddresses,
+      selectedSenderNames,
+      selectedRecipientNames,
       showMyDeliveriesOnly
     );
     console.log("Filters applied:", {
@@ -142,6 +204,12 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
       selectedOrganizations,
       selectedCouriers,
       selectedZipcodes,
+      selectedCities,
+      selectedStates,
+      selectedPickupAddresses,
+      selectedDropoffAddresses,
+      selectedSenderNames,
+      selectedRecipientNames,
       showMyDeliveriesOnly
     });
   }, [
@@ -152,6 +220,12 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     selectedOrganizations,
     selectedCouriers,
     selectedZipcodes,
+    selectedCities,
+    selectedStates,
+    selectedPickupAddresses,
+    selectedDropoffAddresses,
+    selectedSenderNames,
+    selectedRecipientNames,
     showMyDeliveriesOnly
   ]);
 
@@ -163,6 +237,12 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     organizationFilters: string[],
     courierFilters: string[],
     zipcodeFilters: string[],
+    cityFilters: string[],
+    stateFilters: string[],
+    pickupAddressFilters: string[],
+    dropoffAddressFilters: string[],
+    senderNameFilters: string[],
+    recipientNameFilters: string[],
     showMyDeliveriesOnly: boolean
   ) => {
     let results = [...items];
@@ -246,6 +326,64 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
         );
       });
       console.log(`Filtered to ${results.length} deliveries with selected zipcodes:`, zipcodeFilters);
+    }
+    
+    if (cityFilters.length > 0) {
+      console.log("Filtering by cities:", cityFilters);
+      results = results.filter(delivery => {
+        const pickupCity = delivery.pickupLocation?.address?.match(/([^,]+),\s*[A-Z]{2}/)?.[1]?.trim() || "";
+        const dropoffCity = delivery.dropoffLocation?.address?.match(/([^,]+),\s*[A-Z]{2}/)?.[1]?.trim() || "";
+        
+        return cityFilters.some(city => 
+          pickupCity === city || dropoffCity === city
+        );
+      });
+      console.log(`Filtered to ${results.length} deliveries with selected cities:`, cityFilters);
+    }
+    
+    if (stateFilters.length > 0) {
+      console.log("Filtering by states:", stateFilters);
+      results = results.filter(delivery => {
+        const pickupState = delivery.pickupLocation?.address?.match(/,\s*([A-Z]{2})/)?.[1] || "";
+        const dropoffState = delivery.dropoffLocation?.address?.match(/,\s*([A-Z]{2})/)?.[1] || "";
+        
+        return stateFilters.some(state => 
+          pickupState === state || dropoffState === state
+        );
+      });
+      console.log(`Filtered to ${results.length} deliveries with selected states:`, stateFilters);
+    }
+    
+    if (pickupAddressFilters.length > 0) {
+      console.log("Filtering by pickup addresses:", pickupAddressFilters);
+      results = results.filter(delivery => 
+        delivery.pickupLocation?.address && pickupAddressFilters.includes(delivery.pickupLocation.address)
+      );
+      console.log(`Filtered to ${results.length} deliveries with selected pickup addresses:`, pickupAddressFilters);
+    }
+    
+    if (dropoffAddressFilters.length > 0) {
+      console.log("Filtering by dropoff addresses:", dropoffAddressFilters);
+      results = results.filter(delivery => 
+        delivery.dropoffLocation?.address && dropoffAddressFilters.includes(delivery.dropoffLocation.address)
+      );
+      console.log(`Filtered to ${results.length} deliveries with selected dropoff addresses:`, dropoffAddressFilters);
+    }
+    
+    if (senderNameFilters.length > 0) {
+      console.log("Filtering by sender names:", senderNameFilters);
+      results = results.filter(delivery => 
+        delivery.pickupLocation?.name && senderNameFilters.includes(delivery.pickupLocation.name)
+      );
+      console.log(`Filtered to ${results.length} deliveries with selected sender names:`, senderNameFilters);
+    }
+    
+    if (recipientNameFilters.length > 0) {
+      console.log("Filtering by recipient names:", recipientNameFilters);
+      results = results.filter(delivery => 
+        delivery.dropoffLocation?.name && recipientNameFilters.includes(delivery.dropoffLocation.name)
+      );
+      console.log(`Filtered to ${results.length} deliveries with selected recipient names:`, recipientNameFilters);
     }
     
     setFilteredDeliveries(results);
@@ -448,6 +586,30 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     handleDragEnd,
     
     getStatusDisplay,
-    getStatusBadgeVariant
+    getStatusBadgeVariant,
+    
+    allCities,
+    selectedCities,
+    setSelectedCities,
+    
+    allStates,
+    selectedStates,
+    setSelectedStates,
+    
+    allPickupAddresses,
+    selectedPickupAddresses,
+    setSelectedPickupAddresses,
+    
+    allDropoffAddresses,
+    selectedDropoffAddresses,
+    setSelectedDropoffAddresses,
+    
+    allSenderNames,
+    selectedSenderNames,
+    setSelectedSenderNames,
+    
+    allRecipientNames,
+    selectedRecipientNames,
+    setSelectedRecipientNames,
   };
 }

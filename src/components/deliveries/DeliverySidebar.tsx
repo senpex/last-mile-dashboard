@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -9,7 +8,7 @@ import { getDictionary } from "@/lib/storage";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Save, RotateCcw } from "lucide-react";
+import { Save, RotateCcw, MapPin, Building, ArrowUpFromLine, ArrowDownToLine, User } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 interface DeliverySidebarProps {
@@ -27,6 +26,26 @@ interface DeliverySidebarProps {
   zipcodes: string[];
   selectedZipcodes: string[];
   onZipcodeChange: (zipcodes: string[]) => void;
+  
+  // New filter props
+  cities: string[];
+  selectedCities: string[];
+  onCityChange: (cities: string[]) => void;
+  states: string[];
+  selectedStates: string[];
+  onStateChange: (states: string[]) => void;
+  pickupAddresses: string[];
+  selectedPickupAddresses: string[];
+  onPickupAddressChange: (addresses: string[]) => void;
+  dropoffAddresses: string[];
+  selectedDropoffAddresses: string[];
+  onDropoffAddressChange: (addresses: string[]) => void;
+  senderNames: string[];
+  selectedSenderNames: string[];
+  onSenderNameChange: (names: string[]) => void;
+  recipientNames: string[];
+  selectedRecipientNames: string[];
+  onRecipientNameChange: (names: string[]) => void;
 }
 
 export function DeliverySidebar({
@@ -43,16 +62,42 @@ export function DeliverySidebar({
   onCourierChange,
   zipcodes,
   selectedZipcodes,
-  onZipcodeChange
+  onZipcodeChange,
+  cities,
+  selectedCities,
+  onCityChange,
+  states,
+  selectedStates,
+  onStateChange,
+  pickupAddresses,
+  selectedPickupAddresses,
+  onPickupAddressChange,
+  dropoffAddresses,
+  selectedDropoffAddresses,
+  onDropoffAddressChange,
+  senderNames,
+  selectedSenderNames,
+  onSenderNameChange,
+  recipientNames,
+  selectedRecipientNames,
+  onRecipientNameChange
 }: DeliverySidebarProps) {
   const [statusDictionary, setStatusDictionary] = useState<Dictionary | null>(null);
   const [statusItems, setStatusItems] = useState<DictionaryItem[]>([]);
   const [isAccordionOpen, setIsAccordionOpen] = useState<string>("");
   const [statusMapping, setStatusMapping] = useState<Record<string, string>>({});
+  
+  // Search term states
   const [zipcodeSearchTerm, setZipcodeSearchTerm] = useState("");
   const [statusSearchTerm, setStatusSearchTerm] = useState("");
   const [organizationSearchTerm, setOrganizationSearchTerm] = useState("");
   const [courierSearchTerm, setCourierSearchTerm] = useState("");
+  const [citySearchTerm, setCitySearchTerm] = useState("");
+  const [stateSearchTerm, setStateSearchTerm] = useState("");
+  const [pickupAddressSearchTerm, setPickupAddressSearchTerm] = useState("");
+  const [dropoffAddressSearchTerm, setDropoffAddressSearchTerm] = useState("");
+  const [senderNameSearchTerm, setSenderNameSearchTerm] = useState("");
+  const [recipientNameSearchTerm, setRecipientNameSearchTerm] = useState("");
   
   const getStatusCount = (status: string): number => {
     console.log(`Counting status: "${status}" in:`, deliveryStatuses);
@@ -71,6 +116,31 @@ export function DeliverySidebar({
   
   const getZipcodeCount = (zipcode: string): number => {
     return zipcodes.filter(z => z === zipcode).length;
+  };
+
+  // New count functions
+  const getCityCount = (city: string): number => {
+    return cities.filter(c => c === city).length;
+  };
+  
+  const getStateCount = (state: string): number => {
+    return states.filter(s => s === state).length;
+  };
+  
+  const getPickupAddressCount = (address: string): number => {
+    return pickupAddresses.filter(a => a === address).length;
+  };
+  
+  const getDropoffAddressCount = (address: string): number => {
+    return dropoffAddresses.filter(a => a === address).length;
+  };
+  
+  const getSenderNameCount = (name: string): number => {
+    return senderNames.filter(n => n === name).length;
+  };
+  
+  const getRecipientNameCount = (name: string): number => {
+    return recipientNames.filter(n => n === name).length;
   };
 
   useEffect(() => {
@@ -133,12 +203,67 @@ export function DeliverySidebar({
     }
   };
 
+  // New filter handlers
+  const handleCityChange = (city: string, checked: boolean) => {
+    if (checked) {
+      onCityChange([...selectedCities, city]);
+    } else {
+      onCityChange(selectedCities.filter(c => c !== city));
+    }
+  };
+
+  const handleStateChange = (state: string, checked: boolean) => {
+    if (checked) {
+      onStateChange([...selectedStates, state]);
+    } else {
+      onStateChange(selectedStates.filter(s => s !== state));
+    }
+  };
+
+  const handlePickupAddressChange = (address: string, checked: boolean) => {
+    if (checked) {
+      onPickupAddressChange([...selectedPickupAddresses, address]);
+    } else {
+      onPickupAddressChange(selectedPickupAddresses.filter(a => a !== address));
+    }
+  };
+
+  const handleDropoffAddressChange = (address: string, checked: boolean) => {
+    if (checked) {
+      onDropoffAddressChange([...selectedDropoffAddresses, address]);
+    } else {
+      onDropoffAddressChange(selectedDropoffAddresses.filter(a => a !== address));
+    }
+  };
+
+  const handleSenderNameChange = (name: string, checked: boolean) => {
+    if (checked) {
+      onSenderNameChange([...selectedSenderNames, name]);
+    } else {
+      onSenderNameChange(selectedSenderNames.filter(n => n !== name));
+    }
+  };
+
+  const handleRecipientNameChange = (name: string, checked: boolean) => {
+    if (checked) {
+      onRecipientNameChange([...selectedRecipientNames, name]);
+    } else {
+      onRecipientNameChange(selectedRecipientNames.filter(n => n !== name));
+    }
+  };
+
   const handleSaveFilters = () => {
     console.log("Saving filters:", {
       statuses: selectedStatuses,
       organizations: selectedOrganizations,
       couriers: selectedCouriers,
-      zipcodes: selectedZipcodes
+      zipcodes: selectedZipcodes,
+      cities: selectedCities,
+      states: selectedStates,
+      pickupAddresses: selectedPickupAddresses,
+      dropoffAddresses: selectedDropoffAddresses,
+      senderNames: selectedSenderNames,
+      recipientNames: selectedRecipientNames
     });
   };
 
@@ -147,6 +272,12 @@ export function DeliverySidebar({
     onOrganizationChange([]);
     onCourierChange([]);
     onZipcodeChange([]);
+    onCityChange([]);
+    onStateChange([]);
+    onPickupAddressChange([]);
+    onDropoffAddressChange([]);
+    onSenderNameChange([]);
+    onRecipientNameChange([]);
   };
 
   const getFilteredStatusItems = () => {
@@ -218,6 +349,97 @@ export function DeliverySidebar({
       .sort((a, b) => {
         const countA = getZipcodeCount(a);
         const countB = getZipcodeCount(b);
+        return countB - countA;
+      });
+  };
+
+  // New filter functions
+  const getFilteredCities = () => {
+    return [...new Set(cities)]
+      .filter(Boolean)
+      .filter(city => 
+        citySearchTerm ? 
+          city.toLowerCase().includes(citySearchTerm.toLowerCase()) : 
+          true
+      )
+      .sort((a, b) => {
+        const countA = getCityCount(a);
+        const countB = getCityCount(b);
+        return countB - countA;
+      });
+  };
+  
+  const getFilteredStates = () => {
+    return [...new Set(states)]
+      .filter(Boolean)
+      .filter(state => 
+        stateSearchTerm ? 
+          state.toLowerCase().includes(stateSearchTerm.toLowerCase()) : 
+          true
+      )
+      .sort((a, b) => {
+        const countA = getStateCount(a);
+        const countB = getStateCount(b);
+        return countB - countA;
+      });
+  };
+  
+  const getFilteredPickupAddresses = () => {
+    return [...new Set(pickupAddresses)]
+      .filter(Boolean)
+      .filter(address => 
+        pickupAddressSearchTerm ? 
+          address.toLowerCase().includes(pickupAddressSearchTerm.toLowerCase()) : 
+          true
+      )
+      .sort((a, b) => {
+        const countA = getPickupAddressCount(a);
+        const countB = getPickupAddressCount(b);
+        return countB - countA;
+      });
+  };
+  
+  const getFilteredDropoffAddresses = () => {
+    return [...new Set(dropoffAddresses)]
+      .filter(Boolean)
+      .filter(address => 
+        dropoffAddressSearchTerm ? 
+          address.toLowerCase().includes(dropoffAddressSearchTerm.toLowerCase()) : 
+          true
+      )
+      .sort((a, b) => {
+        const countA = getDropoffAddressCount(a);
+        const countB = getDropoffAddressCount(b);
+        return countB - countA;
+      });
+  };
+  
+  const getFilteredSenderNames = () => {
+    return [...new Set(senderNames)]
+      .filter(Boolean)
+      .filter(name => 
+        senderNameSearchTerm ? 
+          name.toLowerCase().includes(senderNameSearchTerm.toLowerCase()) : 
+          true
+      )
+      .sort((a, b) => {
+        const countA = getSenderNameCount(a);
+        const countB = getSenderNameCount(b);
+        return countB - countA;
+      });
+  };
+  
+  const getFilteredRecipientNames = () => {
+    return [...new Set(recipientNames)]
+      .filter(Boolean)
+      .filter(name => 
+        recipientNameSearchTerm ? 
+          name.toLowerCase().includes(recipientNameSearchTerm.toLowerCase()) : 
+          true
+      )
+      .sort((a, b) => {
+        const countA = getRecipientNameCount(a);
+        const countB = getRecipientNameCount(b);
         return countB - countA;
       });
   };
@@ -311,6 +533,222 @@ export function DeliverySidebar({
                   ))}
                   {getFilteredZipcodes().length === 0 && (
                     <div className="text-sm text-muted-foreground">No zipcodes match your search</div>
+                  )}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+            
+            {/* New City filter */}
+            <AccordionItem value="city" className="border-b">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24">
+                <span className="flex-grow">City</span>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-col space-y-3 py-2">
+                  <Input
+                    placeholder="Search cities..."
+                    value={citySearchTerm}
+                    onChange={(e) => setCitySearchTerm(e.target.value)}
+                    className="mb-2"
+                  />
+                  {getFilteredCities().map(city => (
+                    <div key={city} className="flex items-center space-x-2">
+                      <Checkbox 
+                        id={`city-${city}`} 
+                        checked={selectedCities.includes(city)} 
+                        onCheckedChange={checked => handleCityChange(city, checked === true)} 
+                      />
+                      <Label 
+                        htmlFor={`city-${city}`} 
+                        className="flex flex-1 items-center justify-between"
+                      >
+                        <span>{city}</span>
+                        <Badge variant="outline" className="ml-auto">{getCityCount(city)}</Badge>
+                      </Label>
+                    </div>
+                  ))}
+                  {getFilteredCities().length === 0 && (
+                    <div className="text-sm text-muted-foreground">No cities match your search</div>
+                  )}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+            
+            {/* New State filter */}
+            <AccordionItem value="state" className="border-b">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24">
+                <span className="flex-grow">State</span>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-col space-y-3 py-2">
+                  <Input
+                    placeholder="Search states..."
+                    value={stateSearchTerm}
+                    onChange={(e) => setStateSearchTerm(e.target.value)}
+                    className="mb-2"
+                  />
+                  {getFilteredStates().map(state => (
+                    <div key={state} className="flex items-center space-x-2">
+                      <Checkbox 
+                        id={`state-${state}`} 
+                        checked={selectedStates.includes(state)} 
+                        onCheckedChange={checked => handleStateChange(state, checked === true)} 
+                      />
+                      <Label 
+                        htmlFor={`state-${state}`} 
+                        className="flex flex-1 items-center justify-between"
+                      >
+                        <span>{state}</span>
+                        <Badge variant="outline" className="ml-auto">{getStateCount(state)}</Badge>
+                      </Label>
+                    </div>
+                  ))}
+                  {getFilteredStates().length === 0 && (
+                    <div className="text-sm text-muted-foreground">No states match your search</div>
+                  )}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+            
+            {/* New Pickup Address filter */}
+            <AccordionItem value="pickupAddress" className="border-b">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24">
+                <span className="flex-grow">Pickup Address</span>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-col space-y-3 py-2">
+                  <Input
+                    placeholder="Search pickup addresses..."
+                    value={pickupAddressSearchTerm}
+                    onChange={(e) => setPickupAddressSearchTerm(e.target.value)}
+                    className="mb-2"
+                  />
+                  {getFilteredPickupAddresses().map(address => (
+                    <div key={address} className="flex items-center space-x-2">
+                      <Checkbox 
+                        id={`pickup-${address}`} 
+                        checked={selectedPickupAddresses.includes(address)} 
+                        onCheckedChange={checked => handlePickupAddressChange(address, checked === true)} 
+                      />
+                      <Label 
+                        htmlFor={`pickup-${address}`} 
+                        className="flex flex-1 items-center justify-between"
+                      >
+                        <span className="truncate pr-2">{address}</span>
+                        <Badge variant="outline" className="ml-auto shrink-0">{getPickupAddressCount(address)}</Badge>
+                      </Label>
+                    </div>
+                  ))}
+                  {getFilteredPickupAddresses().length === 0 && (
+                    <div className="text-sm text-muted-foreground">No pickup addresses match your search</div>
+                  )}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+            
+            {/* New Dropoff Address filter */}
+            <AccordionItem value="dropoffAddress" className="border-b">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24">
+                <span className="flex-grow">Dropoff Address</span>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-col space-y-3 py-2">
+                  <Input
+                    placeholder="Search dropoff addresses..."
+                    value={dropoffAddressSearchTerm}
+                    onChange={(e) => setDropoffAddressSearchTerm(e.target.value)}
+                    className="mb-2"
+                  />
+                  {getFilteredDropoffAddresses().map(address => (
+                    <div key={address} className="flex items-center space-x-2">
+                      <Checkbox 
+                        id={`dropoff-${address}`} 
+                        checked={selectedDropoffAddresses.includes(address)} 
+                        onCheckedChange={checked => handleDropoffAddressChange(address, checked === true)} 
+                      />
+                      <Label 
+                        htmlFor={`dropoff-${address}`} 
+                        className="flex flex-1 items-center justify-between"
+                      >
+                        <span className="truncate pr-2">{address}</span>
+                        <Badge variant="outline" className="ml-auto shrink-0">{getDropoffAddressCount(address)}</Badge>
+                      </Label>
+                    </div>
+                  ))}
+                  {getFilteredDropoffAddresses().length === 0 && (
+                    <div className="text-sm text-muted-foreground">No dropoff addresses match your search</div>
+                  )}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+            
+            {/* New Sender Name filter */}
+            <AccordionItem value="senderName" className="border-b">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24">
+                <span className="flex-grow">Sender Name</span>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-col space-y-3 py-2">
+                  <Input
+                    placeholder="Search sender names..."
+                    value={senderNameSearchTerm}
+                    onChange={(e) => setSenderNameSearchTerm(e.target.value)}
+                    className="mb-2"
+                  />
+                  {getFilteredSenderNames().map(name => (
+                    <div key={name} className="flex items-center space-x-2">
+                      <Checkbox 
+                        id={`sender-${name}`} 
+                        checked={selectedSenderNames.includes(name)} 
+                        onCheckedChange={checked => handleSenderNameChange(name, checked === true)} 
+                      />
+                      <Label 
+                        htmlFor={`sender-${name}`} 
+                        className="flex flex-1 items-center justify-between"
+                      >
+                        <span>{name}</span>
+                        <Badge variant="outline" className="ml-auto">{getSenderNameCount(name)}</Badge>
+                      </Label>
+                    </div>
+                  ))}
+                  {getFilteredSenderNames().length === 0 && (
+                    <div className="text-sm text-muted-foreground">No sender names match your search</div>
+                  )}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+            
+            {/* New Recipient Name filter */}
+            <AccordionItem value="recipientName" className="border-b">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24">
+                <span className="flex-grow">Recipient Name</span>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-col space-y-3 py-2">
+                  <Input
+                    placeholder="Search recipient names..."
+                    value={recipientNameSearchTerm}
+                    onChange={(e) => setRecipientNameSearchTerm(e.target.value)}
+                    className="mb-2"
+                  />
+                  {getFilteredRecipientNames().map(name => (
+                    <div key={name} className="flex items-center space-x-2">
+                      <Checkbox 
+                        id={`recipient-${name}`} 
+                        checked={selectedRecipientNames.includes(name)} 
+                        onCheckedChange={checked => handleRecipientNameChange(name, checked === true)} 
+                      />
+                      <Label 
+                        htmlFor={`recipient-${name}`} 
+                        className="flex flex-1 items-center justify-between"
+                      >
+                        <span>{name}</span>
+                        <Badge variant="outline" className="ml-auto">{getRecipientNameCount(name)}</Badge>
+                      </Label>
+                    </div>
+                  ))}
+                  {getFilteredRecipientNames().length === 0 && (
+                    <div className="text-sm text-muted-foreground">No recipient names match your search</div>
                   )}
                 </div>
               </AccordionContent>
