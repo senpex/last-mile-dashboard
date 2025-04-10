@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -56,9 +55,7 @@ const Index = () => {
     setSelectedOrganizations,
     allCouriers,
     selectedCouriers,
-    setSelectedCouriers,
-    zipcode,
-    setZipcode
+    setSelectedCouriers
   } = useDeliveriesTable({ 
     deliveries: deliveriesData,
     showMyDeliveriesOnly 
@@ -107,8 +104,6 @@ const Index = () => {
               showMyDeliveriesOnly={showMyDeliveriesOnly}
               onToggleMyDeliveries={handleToggleMyDeliveries}
               hasAttentionRequiredOrders={hasAttentionRequiredOrders}
-              zipcode={zipcode}
-              onZipcodeChange={setZipcode}
             />
             
             <DeliveryTable 
