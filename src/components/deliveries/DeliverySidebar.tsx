@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -51,12 +50,8 @@ export function DeliverySidebar({
   const [statusMapping, setStatusMapping] = useState<Record<string, string>>({});
   const [zipcodeSearchTerm, setZipcodeSearchTerm] = useState("");
   
-  // Calculate counts from the provided props
   const getStatusCount = (status: string): number => {
-    // Log to debug what we're searching for and what's available
     console.log(`Counting status: "${status}" in:`, deliveryStatuses);
-    
-    // Make the comparison case-insensitive
     return deliveryStatuses.filter(s => 
       s.toLowerCase() === status.toLowerCase()
     ).length;
@@ -150,7 +145,6 @@ export function DeliverySidebar({
     onZipcodeChange([]);
   };
 
-  // Sort items by count in descending order
   const getSortedStatusItems = () => {
     if (!statusItems.length) return [];
     
@@ -224,10 +218,8 @@ export function DeliverySidebar({
                     const actualStatus = statusMapping[item.value];
                     if (!actualStatus) return null;
                     
-                    // Get real-time count for this status
                     const count = getStatusCount(actualStatus);
                     
-                    // Skip items with zero count
                     if (count === 0) return null;
                     
                     return (
@@ -254,10 +246,7 @@ export function DeliverySidebar({
             
             <AccordionItem value="zipcode" className="border-b">
               <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24">
-                <span className="flex-grow flex items-center gap-2">
-                  <MapPin className="h-4 w-4" />
-                  <span>Zipcode</span>
-                </span>
+                <span className="flex-grow">Zipcode</span>
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
