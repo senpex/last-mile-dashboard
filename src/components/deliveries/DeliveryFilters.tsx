@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Filter, Search } from "lucide-react";
+import { Filter, Search, MapPin } from "lucide-react";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
@@ -10,7 +11,7 @@ import { ColumnOption } from "@/components/table/ColumnSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DeliveryStatus } from "@/types/delivery";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { ChevronDown } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface DeliveryFiltersProps {
   searchTerm: string;
@@ -29,6 +30,8 @@ interface DeliveryFiltersProps {
   showMyDeliveriesOnly?: boolean;
   onToggleMyDeliveries?: (showMyDeliveriesOnly: boolean) => void;
   hasAttentionRequiredOrders?: boolean;
+  zipcode?: string;
+  onZipcodeChange?: (value: string) => void;
 }
 
 export function DeliveryFilters({
@@ -47,7 +50,9 @@ export function DeliveryFilters({
   isFilterSidebarOpen,
   showMyDeliveriesOnly = true,
   onToggleMyDeliveries = () => {},
-  hasAttentionRequiredOrders = false
+  hasAttentionRequiredOrders = false,
+  zipcode = "",
+  onZipcodeChange = () => {}
 }: DeliveryFiltersProps) {
   return (
     <div className="px-4 py-6 flex-shrink-0 border-b w-[200%] max-w-full">
@@ -66,6 +71,31 @@ export function DeliveryFilters({
               onDateRangeChange={onDateRangeChange}
             />
             
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="flex items-center gap-2 text-sm h-9">
+                  <MapPin className="h-4 w-4" />
+                  <span>Zipcode</span>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-64 p-3" align="start" sideOffset={5}>
+                <div className="space-y-3">
+                  <h4 className="text-sm font-medium">Filter by Zipcode</h4>
+                  <Input 
+                    placeholder="Enter zipcode..."
+                    value={zipcode}
+                    onChange={(e) => onZipcodeChange(e.target.value)}
+                    className="h-9"
+                  />
+                  {zipcode && (
+                    <p className="text-xs text-muted-foreground">
+                      Showing results for zipcode: {zipcode}
+                    </p>
+                  )}
+                </div>
+              </PopoverContent>
+            </Popover>
+
             <Button 
               variant={isFilterSidebarOpen ? "default" : "outline"} 
               className={`flex items-center gap-2 text-sm h-9 ${isFilterSidebarOpen ? 'bg-primary text-primary-foreground' : ''}`}

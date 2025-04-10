@@ -23,6 +23,7 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
   const [selectedStatuses, setSelectedStatuses] = useState<DeliveryStatus[]>([]);
   const [selectedOrganizations, setSelectedOrganizations] = useState<string[]>([]);
   const [selectedCouriers, setSelectedCouriers] = useState<string[]>([]);
+  const [zipcode, setZipcode] = useState<string>("");
 
   const currentUserName = "John Smith";
 
@@ -117,7 +118,8 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
       selectedStatuses, 
       selectedOrganizations,
       selectedCouriers,
-      showMyDeliveriesOnly
+      showMyDeliveriesOnly,
+      zipcode
     );
     console.log("Filters applied:", {
       searchTerm: debouncedSearchTerm,
@@ -125,7 +127,8 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
       selectedStatuses,
       selectedOrganizations,
       selectedCouriers,
-      showMyDeliveriesOnly
+      showMyDeliveriesOnly,
+      zipcode
     });
   }, [
     debouncedSearchTerm, 
@@ -134,7 +137,8 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     selectedStatuses, 
     selectedOrganizations,
     selectedCouriers,
-    showMyDeliveriesOnly
+    showMyDeliveriesOnly,
+    zipcode
   ]);
 
   const applyFilters = useCallback((
@@ -144,7 +148,8 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     statusFilters: DeliveryStatus[],
     organizationFilters: string[],
     courierFilters: string[],
-    showMyDeliveriesOnly: boolean
+    showMyDeliveriesOnly: boolean,
+    zipcode: string
   ) => {
     let results = [...items];
     
@@ -214,6 +219,17 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
         delivery.courier && courierFilters.includes(delivery.courier)
       );
       console.log(`Filtered to ${results.length} deliveries with selected couriers:`, courierFilters);
+    }
+    
+    if (zipcode) {
+      console.log("Filtering by zipcode:", zipcode);
+      results = results.filter(delivery => {
+        const pickupAddress = delivery.pickupLocation.address || '';
+        const dropoffAddress = delivery.dropoffLocation.address || '';
+        
+        return pickupAddress.includes(zipcode) || dropoffAddress.includes(zipcode);
+      });
+      console.log(`Filtered to ${results.length} deliveries with zipcode containing:`, zipcode);
     }
     
     setFilteredDeliveries(results);
@@ -412,6 +428,8 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     handleDragEnd,
     
     getStatusDisplay,
-    getStatusBadgeVariant
+    getStatusBadgeVariant,
+    zipcode,
+    setZipcode
   };
 }
