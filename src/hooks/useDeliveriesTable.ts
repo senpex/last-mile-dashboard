@@ -9,15 +9,6 @@ export interface UseDeliveriesTableProps {
   showMyDeliveriesOnly?: boolean;
 }
 
-export interface LocationFilters {
-  zipcode: string;
-  city: string;
-  state: string;
-  senderName: string;
-  pickupAddress: string;
-  dropoffAddress: string;
-}
-
 export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }: UseDeliveriesTableProps) {
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,15 +23,6 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
   const [selectedStatuses, setSelectedStatuses] = useState<DeliveryStatus[]>([]);
   const [selectedOrganizations, setSelectedOrganizations] = useState<string[]>([]);
   const [selectedCouriers, setSelectedCouriers] = useState<string[]>([]);
-  
-  const [locationFilters, setLocationFilters] = useState<LocationFilters>({
-    zipcode: "",
-    city: "",
-    state: "",
-    senderName: "",
-    pickupAddress: "",
-    dropoffAddress: ""
-  });
 
   const currentUserName = "John Smith";
 
@@ -135,8 +117,7 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
       selectedStatuses, 
       selectedOrganizations,
       selectedCouriers,
-      showMyDeliveriesOnly,
-      locationFilters
+      showMyDeliveriesOnly
     );
     console.log("Filters applied:", {
       searchTerm: debouncedSearchTerm,
@@ -144,8 +125,7 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
       selectedStatuses,
       selectedOrganizations,
       selectedCouriers,
-      showMyDeliveriesOnly,
-      locationFilters
+      showMyDeliveriesOnly
     });
   }, [
     debouncedSearchTerm, 
@@ -154,8 +134,7 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     selectedStatuses, 
     selectedOrganizations,
     selectedCouriers,
-    showMyDeliveriesOnly,
-    locationFilters
+    showMyDeliveriesOnly
   ]);
 
   const applyFilters = useCallback((
@@ -165,8 +144,7 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     statusFilters: DeliveryStatus[],
     organizationFilters: string[],
     courierFilters: string[],
-    showMyDeliveriesOnly: boolean,
-    locationFilters: LocationFilters
+    showMyDeliveriesOnly: boolean
   ) => {
     let results = [...items];
     
@@ -206,53 +184,6 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
       });
     }
     
-    if (locationFilters.zipcode) {
-      const zipcodeRegex = new RegExp(locationFilters.zipcode, "i");
-      results = results.filter(delivery => 
-        zipcodeRegex.test(delivery.pickupLocation.address) || 
-        zipcodeRegex.test(delivery.dropoffLocation.address)
-      );
-    }
-    
-    if (locationFilters.city) {
-      const cityRegex = new RegExp(locationFilters.city, "i");
-      results = results.filter(delivery => 
-        cityRegex.test(delivery.pickupLocation.address) || 
-        cityRegex.test(delivery.dropoffLocation.address)
-      );
-    }
-    
-    if (locationFilters.state) {
-      const stateRegex = new RegExp(locationFilters.state, "i");
-      results = results.filter(delivery => 
-        stateRegex.test(delivery.pickupLocation.address) || 
-        stateRegex.test(delivery.dropoffLocation.address)
-      );
-    }
-    
-    if (locationFilters.senderName) {
-      const senderRegex = new RegExp(locationFilters.senderName, "i");
-      results = results.filter(delivery => 
-        senderRegex.test(delivery.customerName)
-      );
-    }
-    
-    if (locationFilters.pickupAddress) {
-      const pickupRegex = new RegExp(locationFilters.pickupAddress, "i");
-      results = results.filter(delivery => 
-        pickupRegex.test(delivery.pickupLocation.name) || 
-        pickupRegex.test(delivery.pickupLocation.address)
-      );
-    }
-    
-    if (locationFilters.dropoffAddress) {
-      const dropoffRegex = new RegExp(locationFilters.dropoffAddress, "i");
-      results = results.filter(delivery => 
-        dropoffRegex.test(delivery.dropoffLocation.name) || 
-        dropoffRegex.test(delivery.dropoffLocation.address)
-      );
-    }
-    
     if (activeTab === "attention") {
       results = results.filter(delivery => 
         delivery.status === "Canceled By Customer" || 
@@ -288,13 +219,6 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     setFilteredDeliveries(results);
     setCurrentPage(1);
   }, [currentUserName]);
-
-  const updateLocationFilter = (field: keyof LocationFilters, value: string) => {
-    setLocationFilters(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
 
   const totalItems = filteredDeliveries.length;
   const totalPages = Math.ceil(totalItems / pageSize);
@@ -488,9 +412,6 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     handleDragEnd,
     
     getStatusDisplay,
-    getStatusBadgeVariant,
-    
-    locationFilters,
-    updateLocationFilter
+    getStatusBadgeVariant
   };
 }
