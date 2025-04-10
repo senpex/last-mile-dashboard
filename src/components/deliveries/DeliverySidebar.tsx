@@ -27,7 +27,6 @@ interface DeliverySidebarProps {
   selectedZipcodes: string[];
   onZipcodeChange: (zipcodes: string[]) => void;
   
-  // New filter props
   cities: string[];
   selectedCities: string[];
   onCityChange: (cities: string[]) => void;
@@ -87,7 +86,6 @@ export function DeliverySidebar({
   const [isAccordionOpen, setIsAccordionOpen] = useState<string>("");
   const [statusMapping, setStatusMapping] = useState<Record<string, string>>({});
   
-  // Search term states
   const [zipcodeSearchTerm, setZipcodeSearchTerm] = useState("");
   const [statusSearchTerm, setStatusSearchTerm] = useState("");
   const [organizationSearchTerm, setOrganizationSearchTerm] = useState("");
@@ -98,7 +96,7 @@ export function DeliverySidebar({
   const [dropoffAddressSearchTerm, setDropoffAddressSearchTerm] = useState("");
   const [senderNameSearchTerm, setSenderNameSearchTerm] = useState("");
   const [recipientNameSearchTerm, setRecipientNameSearchTerm] = useState("");
-  
+
   const getStatusCount = (status: string): number => {
     console.log(`Counting status: "${status}" in:`, deliveryStatuses);
     return deliveryStatuses.filter(s => 
@@ -118,7 +116,6 @@ export function DeliverySidebar({
     return zipcodes.filter(z => z === zipcode).length;
   };
 
-  // New count functions
   const getCityCount = (city: string): number => {
     return cities.filter(c => c === city).length;
   };
@@ -203,7 +200,6 @@ export function DeliverySidebar({
     }
   };
 
-  // New filter handlers
   const handleCityChange = (city: string, checked: boolean) => {
     if (checked) {
       onCityChange([...selectedCities, city]);
@@ -290,7 +286,6 @@ export function DeliverySidebar({
         const count = getStatusCount(actualStatus);
         if (count === 0) return false;
         
-        // Apply search filter
         if (statusSearchTerm) {
           return item.value.toLowerCase().includes(statusSearchTerm.toLowerCase());
         }
@@ -353,7 +348,6 @@ export function DeliverySidebar({
       });
   };
 
-  // New filter functions
   const getFilteredCities = () => {
     return [...new Set(cities)]
       .filter(Boolean)
@@ -458,9 +452,8 @@ export function DeliverySidebar({
             value={isAccordionOpen}
             onValueChange={setIsAccordionOpen}
           >
-            {/* Update AccordionTrigger to have smaller text */}
             <AccordionItem value="status" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.9em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.7em]">
                 <span className="flex-grow">Status</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -505,7 +498,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="zipcode" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.9em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.7em]">
                 <span className="flex-grow">Zipcode</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -540,7 +533,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="city" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.9em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.7em]">
                 <span className="flex-grow">City</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -575,7 +568,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="state" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.9em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.7em]">
                 <span className="flex-grow">State</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -610,7 +603,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="pickupAddress" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.9em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.7em]">
                 <span className="flex-grow">Pickup Address</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -645,7 +638,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="dropoffAddress" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.9em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.7em]">
                 <span className="flex-grow">Dropoff Address</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -680,7 +673,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="senderName" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.9em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.7em]">
                 <span className="flex-grow">Sender Name</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -715,7 +708,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="recipientName" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.9em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.7em]">
                 <span className="flex-grow">Recipient Name</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -750,7 +743,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="organization" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.9em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.7em]">
                 <span className="flex-grow">Organization</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -785,7 +778,7 @@ export function DeliverySidebar({
             </AccordionItem>
 
             <AccordionItem value="courier" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.9em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.7em]">
                 <span className="flex-grow">Courier</span>
               </AccordionTrigger>
               <AccordionContent>
