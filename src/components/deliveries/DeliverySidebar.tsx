@@ -9,7 +9,8 @@ import { getDictionary } from "@/lib/storage";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Save, RotateCcw } from "lucide-react";
+import { Save, RotateCcw, MapPin } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 interface DeliverySidebarProps {
   open: boolean;
@@ -23,6 +24,9 @@ interface DeliverySidebarProps {
   couriers: string[];
   selectedCouriers: string[];
   onCourierChange: (couriers: string[]) => void;
+  zipcodes: string[];
+  selectedZipcodes: string[];
+  onZipcodeChange: (zipcodes: string[]) => void;
 }
 
 export function DeliverySidebar({
@@ -36,12 +40,16 @@ export function DeliverySidebar({
   onOrganizationChange,
   couriers,
   selectedCouriers,
-  onCourierChange
+  onCourierChange,
+  zipcodes,
+  selectedZipcodes,
+  onZipcodeChange
 }: DeliverySidebarProps) {
   const [statusDictionary, setStatusDictionary] = useState<Dictionary | null>(null);
   const [statusItems, setStatusItems] = useState<DictionaryItem[]>([]);
   const [isAccordionOpen, setIsAccordionOpen] = useState<string>("");
   const [statusMapping, setStatusMapping] = useState<Record<string, string>>({});
+  const [zipcodeSearchTerm, setZipcodeSearchTerm] = useState("");
   
   // Calculate counts from the provided props
   const getStatusCount = (status: string): number => {
@@ -60,6 +68,10 @@ export function DeliverySidebar({
   
   const getCourierCount = (courier: string): number => {
     return couriers.filter(c => c === courier).length;
+  };
+  
+  const getZipcodeCount = (zipcode: string): number => {
+    return zipcodes.filter(z => z === zipcode).length;
   };
 
   useEffect(() => {
@@ -113,12 +125,21 @@ export function DeliverySidebar({
       onCourierChange(selectedCouriers.filter(c => c !== courier));
     }
   };
+  
+  const handleZipcodeChange = (zipcode: string, checked: boolean) => {
+    if (checked) {
+      onZipcodeChange([...selectedZipcodes, zipcode]);
+    } else {
+      onZipcodeChange(selectedZipcodes.filter(z => z !== zipcode));
+    }
+  };
 
   const handleSaveFilters = () => {
     console.log("Saving filters:", {
       statuses: selectedStatuses,
       organizations: selectedOrganizations,
-      couriers: selectedCouriers
+      couriers: selectedCouriers,
+      zipcodes: selectedZipcodes
     });
   };
 
@@ -126,6 +147,7 @@ export function DeliverySidebar({
     onStatusChange([]);
     onOrganizationChange([]);
     onCourierChange([]);
+    onZipcodeChange([]);
   };
 
   // Sort items by count in descending order
@@ -161,6 +183,19 @@ export function DeliverySidebar({
       .sort((a, b) => {
         const countA = getCourierCount(a);
         const countB = getCourierCount(b);
+        return countB - countA;
+      });
+  };
+  
+  const getFilteredZipcodes = () => {
+    return [...new Set(zipcodes)]
+      .filter(Boolean)
+      .filter(zipcode => 
+        zipcodeSearchTerm ? zipcode.includes(zipcodeSearchTerm) : true
+      )
+      .sort((a, b) => {
+        const countA = getZipcodeCount(a);
+        const countB = getZipcodeCount(b);
         return countB - countA;
       });
   };
@@ -213,6 +248,44 @@ export function DeliverySidebar({
                       </div>
                     );
                   })}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+            
+            <AccordionItem value="zipcode" className="border-b">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24">
+                <span className="flex-grow flex items-center gap-2">
+                  <MapPin className="h-4 w-4" />
+                  <span>Zipcode</span>
+                </span>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-col space-y-3 py-2">
+                  <Input
+                    placeholder="Search zipcodes..."
+                    value={zipcodeSearchTerm}
+                    onChange={(e) => setZipcodeSearchTerm(e.target.value)}
+                    className="mb-2"
+                  />
+                  {getFilteredZipcodes().map(zipcode => (
+                    <div key={zipcode} className="flex items-center space-x-2">
+                      <Checkbox 
+                        id={`zipcode-${zipcode}`} 
+                        checked={selectedZipcodes.includes(zipcode)} 
+                        onCheckedChange={checked => handleZipcodeChange(zipcode, checked === true)} 
+                      />
+                      <Label 
+                        htmlFor={`zipcode-${zipcode}`} 
+                        className="flex flex-1 items-center justify-between"
+                      >
+                        <span>{zipcode}</span>
+                        <Badge variant="outline" className="ml-auto">{getZipcodeCount(zipcode)}</Badge>
+                      </Label>
+                    </div>
+                  ))}
+                  {getFilteredZipcodes().length === 0 && (
+                    <div className="text-sm text-muted-foreground">No zipcodes match your search</div>
+                  )}
                 </div>
               </AccordionContent>
             </AccordionItem>

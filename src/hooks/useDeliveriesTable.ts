@@ -23,6 +23,7 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
   const [selectedStatuses, setSelectedStatuses] = useState<DeliveryStatus[]>([]);
   const [selectedOrganizations, setSelectedOrganizations] = useState<string[]>([]);
   const [selectedCouriers, setSelectedCouriers] = useState<string[]>([]);
+  const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
 
   const currentUserName = "John Smith";
 
@@ -36,6 +37,20 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
 
   const allCouriers: string[] = Array.from(
     new Set(deliveries.map(delivery => delivery.courier))
+  ).filter(Boolean) as string[];
+  
+  // Extract all zipcodes from pickup and dropoff locations
+  const allZipcodes: string[] = Array.from(
+    new Set([
+      ...deliveries.map(delivery => {
+        const pickupZip = delivery.pickupLocation?.address?.match(/\b\d{5}(?:-\d{4})?\b/)?.[0];
+        return pickupZip || "";
+      }),
+      ...deliveries.map(delivery => {
+        const dropoffZip = delivery.dropoffLocation?.address?.match(/\b\d{5}(?:-\d{4})?\b/)?.[0];
+        return dropoffZip || "";
+      })
+    ])
   ).filter(Boolean) as string[];
 
   const availableColumns: ColumnOption[] = [
@@ -117,6 +132,7 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
       selectedStatuses, 
       selectedOrganizations,
       selectedCouriers,
+      selectedZipcodes,
       showMyDeliveriesOnly
     );
     console.log("Filters applied:", {
@@ -125,6 +141,7 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
       selectedStatuses,
       selectedOrganizations,
       selectedCouriers,
+      selectedZipcodes,
       showMyDeliveriesOnly
     });
   }, [
@@ -134,6 +151,7 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     selectedStatuses, 
     selectedOrganizations,
     selectedCouriers,
+    selectedZipcodes,
     showMyDeliveriesOnly
   ]);
 
@@ -144,6 +162,7 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     statusFilters: DeliveryStatus[],
     organizationFilters: string[],
     courierFilters: string[],
+    zipcodeFilters: string[],
     showMyDeliveriesOnly: boolean
   ) => {
     let results = [...items];
@@ -214,6 +233,19 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
         delivery.courier && courierFilters.includes(delivery.courier)
       );
       console.log(`Filtered to ${results.length} deliveries with selected couriers:`, courierFilters);
+    }
+    
+    if (zipcodeFilters.length > 0) {
+      console.log("Filtering by zipcodes:", zipcodeFilters);
+      results = results.filter(delivery => {
+        const pickupZip = delivery.pickupLocation?.address?.match(/\b\d{5}(?:-\d{4})?\b/)?.[0] || "";
+        const dropoffZip = delivery.dropoffLocation?.address?.match(/\b\d{5}(?:-\d{4})?\b/)?.[0] || "";
+        
+        return zipcodeFilters.some(zip => 
+          pickupZip === zip || dropoffZip === zip
+        );
+      });
+      console.log(`Filtered to ${results.length} deliveries with selected zipcodes:`, zipcodeFilters);
     }
     
     setFilteredDeliveries(results);
@@ -367,6 +399,10 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
   };
 
   return {
+    allZipcodes,
+    selectedZipcodes,
+    setSelectedZipcodes,
+    
     pageSize,
     setPageSize,
     currentPage,

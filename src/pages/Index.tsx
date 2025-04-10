@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -55,7 +56,10 @@ const Index = () => {
     setSelectedOrganizations,
     allCouriers,
     selectedCouriers,
-    setSelectedCouriers
+    setSelectedCouriers,
+    allZipcodes,
+    selectedZipcodes,
+    setSelectedZipcodes
   } = useDeliveriesTable({ 
     deliveries: deliveriesData,
     showMyDeliveriesOnly 
@@ -128,6 +132,9 @@ const Index = () => {
               allCouriers={allCouriers}
               selectedCouriers={selectedCouriers}
               setSelectedCouriers={setSelectedCouriers}
+              allZipcodes={allZipcodes}
+              selectedZipcodes={selectedZipcodes}
+              setSelectedZipcodes={setSelectedZipcodes}
             />
             
             <DeliveryPagination 
