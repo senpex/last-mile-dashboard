@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -30,6 +31,9 @@ interface DeliveryTableProps {
   allCouriers: string[];
   selectedCouriers: string[];
   setSelectedCouriers: (couriers: string[]) => void;
+  allZipcodes: string[];
+  selectedZipcodes: string[];
+  setSelectedZipcodes: (zipcodes: string[]) => void;
 }
 
 const getColumnWidth = (columnId: string): string => {
@@ -89,7 +93,10 @@ const DeliveryTable = ({
   setSelectedOrganizations,
   allCouriers,
   selectedCouriers,
-  setSelectedCouriers
+  setSelectedCouriers,
+  allZipcodes,
+  selectedZipcodes,
+  setSelectedZipcodes
 }: DeliveryTableProps) => {
   return (
     <div className="flex-1 overflow-hidden px-px">
@@ -106,6 +113,9 @@ const DeliveryTable = ({
           couriers={allCouriers}
           selectedCouriers={selectedCouriers}
           onCourierChange={setSelectedCouriers}
+          zipcodes={allZipcodes}
+          selectedZipcodes={selectedZipcodes}
+          onZipcodeChange={setSelectedZipcodes}
         />
         
         <div className="flex-1 transition-all duration-300 my-4 ml-2">

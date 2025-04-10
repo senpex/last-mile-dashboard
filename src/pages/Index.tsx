@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
