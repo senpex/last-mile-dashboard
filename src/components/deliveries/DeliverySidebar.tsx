@@ -453,7 +453,7 @@ export function DeliverySidebar({
             onValueChange={setIsAccordionOpen}
           >
             <AccordionItem value="status" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.77em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.89em]">
                 <span className="flex-grow">Status</span>
               </AccordionTrigger>
               <AccordionContent>
