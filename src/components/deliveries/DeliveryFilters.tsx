@@ -1,8 +1,9 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Filter, Search } from "lucide-react";
+import { Filter, Search, ChevronDown, ChevronUp } from "lucide-react";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
@@ -10,7 +11,9 @@ import { ColumnOption } from "@/components/table/ColumnSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DeliveryStatus } from "@/types/delivery";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { ChevronDown } from "lucide-react";
+import { LocationFilters } from "@/hooks/useDeliveriesTable";
+import { DeliveryLocationFilters } from './DeliveryLocationFilters';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 interface DeliveryFiltersProps {
   searchTerm: string;
@@ -29,6 +32,8 @@ interface DeliveryFiltersProps {
   showMyDeliveriesOnly?: boolean;
   onToggleMyDeliveries?: (showMyDeliveriesOnly: boolean) => void;
   hasAttentionRequiredOrders?: boolean;
+  locationFilters: LocationFilters;
+  onLocationFilterChange: (field: keyof LocationFilters, value: string) => void;
 }
 
 export function DeliveryFilters({
@@ -47,8 +52,12 @@ export function DeliveryFilters({
   isFilterSidebarOpen,
   showMyDeliveriesOnly = true,
   onToggleMyDeliveries = () => {},
-  hasAttentionRequiredOrders = false
+  hasAttentionRequiredOrders = false,
+  locationFilters,
+  onLocationFilterChange
 }: DeliveryFiltersProps) {
+  const [isLocationFiltersOpen, setIsLocationFiltersOpen] = useState(false);
+
   return (
     <div className="px-4 py-6 flex-shrink-0 border-b w-[200%] max-w-full">
       <div className="flex flex-col space-y-4">
@@ -157,6 +166,36 @@ export function DeliveryFilters({
               </Tabs>
             </div>
           </div>
+          <Collapsible
+            open={isLocationFiltersOpen}
+            onOpenChange={setIsLocationFiltersOpen}
+            className="w-full max-w-lg"
+          >
+            <div className="flex justify-end">
+              <CollapsibleTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="flex items-center text-xs px-3 h-7 gap-1"
+                >
+                  Location Filters
+                  {isLocationFiltersOpen ? (
+                    <ChevronUp className="h-3.5 w-3.5" />
+                  ) : (
+                    <ChevronDown className="h-3.5 w-3.5" />
+                  )}
+                </Button>
+              </CollapsibleTrigger>
+            </div>
+            <CollapsibleContent className="mt-2">
+              <div className="border rounded-md shadow-sm bg-background">
+                <DeliveryLocationFilters 
+                  locationFilters={locationFilters}
+                  onFilterChange={onLocationFilterChange}
+                />
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
         </div>
       </div>
     </div>
