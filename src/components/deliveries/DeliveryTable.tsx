@@ -34,6 +34,25 @@ interface DeliveryTableProps {
   allZipcodes: string[];
   selectedZipcodes: string[];
   setSelectedZipcodes: (zipcodes: string[]) => void;
+  // New filter props
+  allCities: string[];
+  selectedCities: string[];
+  setSelectedCities: (cities: string[]) => void;
+  allStates: string[];
+  selectedStates: string[];
+  setSelectedStates: (states: string[]) => void;
+  allPickupAddresses: string[];
+  selectedPickupAddresses: string[];
+  setSelectedPickupAddresses: (addresses: string[]) => void;
+  allDropoffAddresses: string[];
+  selectedDropoffAddresses: string[];
+  setSelectedDropoffAddresses: (addresses: string[]) => void;
+  allSenderNames: string[];
+  selectedSenderNames: string[];
+  setSelectedSenderNames: (names: string[]) => void;
+  allRecipientNames: string[];
+  selectedRecipientNames: string[];
+  setSelectedRecipientNames: (names: string[]) => void;
 }
 
 const getColumnWidth = (columnId: string): string => {
@@ -96,7 +115,26 @@ const DeliveryTable = ({
   setSelectedCouriers,
   allZipcodes,
   selectedZipcodes,
-  setSelectedZipcodes
+  setSelectedZipcodes,
+  // New filter props
+  allCities,
+  selectedCities,
+  setSelectedCities,
+  allStates,
+  selectedStates,
+  setSelectedStates,
+  allPickupAddresses,
+  selectedPickupAddresses,
+  setSelectedPickupAddresses,
+  allDropoffAddresses,
+  selectedDropoffAddresses,
+  setSelectedDropoffAddresses,
+  allSenderNames,
+  selectedSenderNames,
+  setSelectedSenderNames,
+  allRecipientNames,
+  selectedRecipientNames,
+  setSelectedRecipientNames
 }: DeliveryTableProps) => {
   return (
     <div className="flex-1 overflow-hidden px-px">
@@ -106,7 +144,7 @@ const DeliveryTable = ({
           onClose={toggleFilterSidebar} 
           deliveryStatuses={allDeliveryStatuses} 
           selectedStatuses={selectedStatuses} 
-          onStatusChange={setSelectedStatuses} 
+          onStatusChange={setSelectedStatuses}
           organizations={allOrganizations}
           selectedOrganizations={selectedOrganizations}
           onOrganizationChange={setSelectedOrganizations}
@@ -116,6 +154,25 @@ const DeliveryTable = ({
           zipcodes={allZipcodes}
           selectedZipcodes={selectedZipcodes}
           onZipcodeChange={setSelectedZipcodes}
+          // New filter props
+          cities={allCities}
+          selectedCities={selectedCities}
+          onCityChange={setSelectedCities}
+          states={allStates}
+          selectedStates={selectedStates}
+          onStateChange={setSelectedStates}
+          pickupAddresses={allPickupAddresses}
+          selectedPickupAddresses={selectedPickupAddresses}
+          onPickupAddressChange={setSelectedPickupAddresses}
+          dropoffAddresses={allDropoffAddresses}
+          selectedDropoffAddresses={selectedDropoffAddresses}
+          onDropoffAddressChange={setSelectedDropoffAddresses}
+          senderNames={allSenderNames}
+          selectedSenderNames={selectedSenderNames}
+          onSenderNameChange={setSelectedSenderNames}
+          recipientNames={allRecipientNames}
+          selectedRecipientNames={selectedRecipientNames}
+          onRecipientNameChange={setSelectedRecipientNames}
         />
         
         <div className="flex-1 transition-all duration-300 my-4 ml-2">
