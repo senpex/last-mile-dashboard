@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -8,7 +9,7 @@ import { getDictionary } from "@/lib/storage";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Save, RotateCcw, MapPin } from "lucide-react";
+import { Save, RotateCcw } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 interface DeliverySidebarProps {
@@ -49,6 +50,9 @@ export function DeliverySidebar({
   const [isAccordionOpen, setIsAccordionOpen] = useState<string>("");
   const [statusMapping, setStatusMapping] = useState<Record<string, string>>({});
   const [zipcodeSearchTerm, setZipcodeSearchTerm] = useState("");
+  const [statusSearchTerm, setStatusSearchTerm] = useState("");
+  const [organizationSearchTerm, setOrganizationSearchTerm] = useState("");
+  const [courierSearchTerm, setCourierSearchTerm] = useState("");
   
   const getStatusCount = (status: string): number => {
     console.log(`Counting status: "${status}" in:`, deliveryStatuses);
@@ -145,25 +149,44 @@ export function DeliverySidebar({
     onZipcodeChange([]);
   };
 
-  const getSortedStatusItems = () => {
+  const getFilteredStatusItems = () => {
     if (!statusItems.length) return [];
     
-    return [...statusItems].sort((a, b) => {
-      const statusA = statusMapping[a.value];
-      const statusB = statusMapping[b.value];
-      
-      if (!statusA || !statusB) return 0;
-      
-      const countA = getStatusCount(statusA);
-      const countB = getStatusCount(statusB);
-      
-      return countB - countA;
-    });
+    return [...statusItems]
+      .filter(item => {
+        const actualStatus = statusMapping[item.value];
+        if (!actualStatus) return false;
+        const count = getStatusCount(actualStatus);
+        if (count === 0) return false;
+        
+        // Apply search filter
+        if (statusSearchTerm) {
+          return item.value.toLowerCase().includes(statusSearchTerm.toLowerCase());
+        }
+        
+        return true;
+      })
+      .sort((a, b) => {
+        const statusA = statusMapping[a.value];
+        const statusB = statusMapping[b.value];
+        
+        if (!statusA || !statusB) return 0;
+        
+        const countA = getStatusCount(statusA);
+        const countB = getStatusCount(statusB);
+        
+        return countB - countA;
+      });
   };
 
-  const getSortedOrganizations = () => {
+  const getFilteredOrganizations = () => {
     return [...new Set(organizations)]
       .filter(Boolean)
+      .filter(org => 
+        organizationSearchTerm ? 
+          org.toLowerCase().includes(organizationSearchTerm.toLowerCase()) : 
+          true
+      )
       .sort((a, b) => {
         const countA = getOrganizationCount(a);
         const countB = getOrganizationCount(b);
@@ -171,9 +194,14 @@ export function DeliverySidebar({
       });
   };
 
-  const getSortedCouriers = () => {
+  const getFilteredCouriers = () => {
     return [...new Set(couriers)]
       .filter(Boolean)
+      .filter(courier => 
+        courierSearchTerm ? 
+          courier.toLowerCase().includes(courierSearchTerm.toLowerCase()) : 
+          true
+      )
       .sort((a, b) => {
         const countA = getCourierCount(a);
         const countB = getCourierCount(b);
@@ -214,7 +242,13 @@ export function DeliverySidebar({
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
-                  {getSortedStatusItems().map(item => {
+                  <Input
+                    placeholder="Search statuses..."
+                    value={statusSearchTerm}
+                    onChange={(e) => setStatusSearchTerm(e.target.value)}
+                    className="mb-2"
+                  />
+                  {getFilteredStatusItems().map(item => {
                     const actualStatus = statusMapping[item.value];
                     if (!actualStatus) return null;
                     
@@ -240,6 +274,9 @@ export function DeliverySidebar({
                       </div>
                     );
                   })}
+                  {getFilteredStatusItems().length === 0 && (
+                    <div className="text-sm text-muted-foreground">No statuses match your search</div>
+                  )}
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -285,7 +322,13 @@ export function DeliverySidebar({
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
-                  {getSortedOrganizations().map(org => (
+                  <Input
+                    placeholder="Search organizations..."
+                    value={organizationSearchTerm}
+                    onChange={(e) => setOrganizationSearchTerm(e.target.value)}
+                    className="mb-2"
+                  />
+                  {getFilteredOrganizations().map(org => (
                     <div key={org} className="flex items-center space-x-2">
                       <Checkbox 
                         id={`org-${org}`} 
@@ -301,6 +344,9 @@ export function DeliverySidebar({
                       </Label>
                     </div>
                   ))}
+                  {getFilteredOrganizations().length === 0 && (
+                    <div className="text-sm text-muted-foreground">No organizations match your search</div>
+                  )}
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -311,7 +357,13 @@ export function DeliverySidebar({
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
-                  {getSortedCouriers().map(courier => (
+                  <Input
+                    placeholder="Search couriers..."
+                    value={courierSearchTerm}
+                    onChange={(e) => setCourierSearchTerm(e.target.value)}
+                    className="mb-2"
+                  />
+                  {getFilteredCouriers().map(courier => (
                     <div key={courier} className="flex items-center space-x-2">
                       <Checkbox 
                         id={`courier-${courier}`} 
@@ -327,6 +379,9 @@ export function DeliverySidebar({
                       </Label>
                     </div>
                   ))}
+                  {getFilteredCouriers().length === 0 && (
+                    <div className="text-sm text-muted-foreground">No couriers match your search</div>
+                  )}
                 </div>
               </AccordionContent>
             </AccordionItem>
