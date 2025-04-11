@@ -15,6 +15,7 @@ import { UsersTableContainer } from "@/components/ui/users-table-container";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis, PaginationInfo, PaginationSize } from "@/components/ui/pagination";
 import CourierChat from '@/components/chat/CourierChat';
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 
 type StripeStatus = 'verified' | 'unverified' | 'pending';
 
@@ -945,12 +946,14 @@ const DriversPage = () => {
           return (
             <div 
               className="relative cursor-pointer group flex items-start gap-1" 
-              onClick={() => setEditingNotes(driver.id)}
             >
               <FileText size={14} className="text-muted-foreground shrink-0 mt-0.5" />
               <div>
                 {driver.notes ? (
-                  <p className="text-sm line-clamp-2 mr-5 group-hover:text-primary transition-colors">
+                  <p className={cn(
+                    "text-sm max-w-[200px] truncate overflow-hidden whitespace-nowrap",
+                    "group-hover:text-primary transition-colors"
+                  )}>
                     {driver.notes}
                   </p>
                 ) : (
@@ -958,18 +961,6 @@ const DriversPage = () => {
                     Click to add notes
                   </p>
                 )}
-                <Button 
-                  size="sm" 
-                  variant="ghost" 
-                  className="absolute right-0 top-0 h-5 w-5 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setEditingNotes(driver.id);
-                  }}
-                >
-                  <span className="sr-only">Edit notes</span>
-                  <FileText size={12} />
-                </Button>
               </div>
             </div>
           );

@@ -20,6 +20,7 @@ import {
   PaginationSize
 } from "@/components/ui/pagination";
 import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 const ClientsPage = () => {
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
@@ -416,7 +417,10 @@ const ClientsPage = () => {
               <FileText size={14} className="text-muted-foreground shrink-0 mt-0.5" />
               <div>
                 {client.notes ? (
-                  <p className="text-sm line-clamp-2 mr-5 group-hover:text-primary transition-colors">
+                  <p className={cn(
+                    "text-sm max-w-[200px] truncate overflow-hidden whitespace-nowrap",
+                    "group-hover:text-primary transition-colors"
+                  )}>
                     {client.notes}
                   </p>
                 ) : (
@@ -424,18 +428,6 @@ const ClientsPage = () => {
                     Click to add notes
                   </p>
                 )}
-                <Button 
-                  size="sm" 
-                  variant="ghost" 
-                  className="absolute right-0 top-0 h-5 w-5 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setEditingNotes(client.id);
-                  }}
-                >
-                  <span className="sr-only">Edit notes</span>
-                  <FileText size={12} />
-                </Button>
               </div>
             </div>
           );
