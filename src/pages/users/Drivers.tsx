@@ -829,5 +829,4 @@ const DriversPage = () => {
   const sortedColumns = getSortedVisibleColumns();
 
   const renderRating = (rating: number) => {
-    return (
-      <div className="flex items-center
+    return <div className="flex items-center">
