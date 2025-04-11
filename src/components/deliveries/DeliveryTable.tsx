@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -149,8 +148,8 @@ const DeliveryTable = ({
     }
     
     return sortConfig.direction === 'ascending' 
-      ? <ArrowUp className="h-4 w-4 ml-1 text-primary" /> 
-      : <ArrowDown className="h-4 w-4 ml-1 text-primary" />;
+      ? <ArrowUp className="h-4 w-4 ml-1 text-destructive" /> 
+      : <ArrowDown className="h-4 w-4 ml-1 text-destructive" />;
   };
 
   return (
