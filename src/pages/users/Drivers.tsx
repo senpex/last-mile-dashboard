@@ -551,6 +551,79 @@ const DriversPage = () => {
   }, [searchTerm, drivers]);
 
   useEffect(() => {
+    if (!sortConfig.key || !sortConfig.direction) {
+      setFilteredDrivers(prev => [...prev]);
+      return;
+    }
+
+    setFilteredDrivers(prev => {
+      const sortableItems = [...prev];
+
+      return sortableItems.sort((a, b) => {
+        let aValue: any;
+        let bValue: any;
+        
+        switch (sortConfig.key) {
+          case "id":
+            aValue = a.id;
+            bValue = b.id;
+            break;
+          case "name":
+            aValue = a.name;
+            bValue = b.name;
+            break;
+          case "email":
+            aValue = a.email;
+            bValue = b.email;
+            break;
+          case "phone":
+            aValue = a.phone;
+            bValue = b.phone;
+            break;
+          case "zipcode":
+            aValue = a.zipcode;
+            bValue = b.zipcode;
+            break;
+          case "rating":
+            aValue = a.rating;
+            bValue = b.rating;
+            break;
+          case "status":
+            aValue = a.status;
+            bValue = b.status;
+            break;
+          case "hireStatus":
+            aValue = a.hireStatus;
+            bValue = b.hireStatus;
+            break;
+          case "stripeStatus":
+            aValue = a.stripeStatus;
+            bValue = b.stripeStatus;
+            break;
+          default:
+            aValue = a[sortConfig.key as keyof typeof a];
+            bValue = b[sortConfig.key as keyof typeof b];
+        }
+        
+        if (aValue === null || aValue === undefined || aValue === '') {
+          return sortConfig.direction === 'ascending' ? -1 : 1;
+        }
+        if (bValue === null || bValue === undefined || bValue === '') {
+          return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        
+        if (aValue < bValue) {
+          return sortConfig.direction === 'ascending' ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+      });
+    });
+  }, [sortConfig]);
+
+  useEffect(() => {
     setFilteredDrivers(drivers);
   }, [drivers]);
 
@@ -587,13 +660,13 @@ const DriversPage = () => {
         start = Math.max(totalPages - 3, 2);
       }
       if (start > 2) {
-        pages.push(-1); // First ellipsis
+        pages.push(-1);
       }
       for (let i = start; i <= end; i++) {
         pages.push(i);
       }
       if (end < totalPages - 1) {
-        pages.push(-2); // Second ellipsis
+        pages.push(-2);
       }
       pages.push(totalPages);
     }
@@ -757,291 +830,3 @@ const DriversPage = () => {
 
   const renderRating = (rating: number) => {
     return <div className="flex items-center">
-        <span className="font-medium">{rating.toFixed(1)}</span>
-      </div>;
-  };
-
-  const renderStatus = (statusId: string) => {
-    const statusText = statusDictionary[statusId] || `Unknown (${statusId})`;
-    const statusColorClass = statusColors[statusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
-    return <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColorClass}`}>
-        {statusText}
-      </div>;
-  };
-
-  const renderHireStatus = (hireStatusId: string, driverId: number) => {
-    const hireStatusText = hireStatusDictionary[hireStatusId] || `Unknown (${hireStatusId})`;
-    
-    return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm" className="h-8 w-auto">
-            {hireStatusText}
-            <ChevronDown className="ml-1 h-4 w-4 opacity-70" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" className="w-[160px]">
-          {Object.entries(hireStatusDictionary).map(([key, value]) => (
-            <DropdownMenuItem 
-              key={key}
-              onClick={() => updateDriverHireStatus(driverId, key)}
-              className={hireStatusId === key ? "bg-muted" : ""}
-            >
-              {value}
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
-    );
-  };
-
-  const renderStripeStatus = (status: StripeStatus) => {
-    let bgColor = '';
-    let icon = null;
-    let text = '';
-
-    switch (status) {
-      case 'verified':
-        bgColor = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-        icon = <Check className="h-3.5 w-3.5 mr-1" />;
-        text = 'Verified';
-        break;
-      case 'unverified':
-        bgColor = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
-        icon = <X className="h-3.5 w-3.5 mr-1" />;
-        text = 'Unverified';
-        break;
-      case 'pending':
-        bgColor = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
-        icon = <Clock className="h-3.5 w-3.5 mr-1" />;
-        text = 'Pending';
-        break;
-    }
-
-    return (
-      <div className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${bgColor}`}>
-        {icon}
-        {text}
-      </div>
-    );
-  };
-
-  const requestSort = (key: string) => {
-    let direction: 'ascending' | 'descending' | null = 'ascending';
-    
-    if (sortConfig.key === key) {
-      if (sortConfig.direction === 'ascending') {
-        direction = 'descending';
-      } else if (sortConfig.direction === 'descending') {
-        direction = null;
-      }
-    }
-    
-    setSortConfig({ key, direction });
-  };
-
-  const getSortIcon = (columnId: string) => {
-    if (sortConfig.key !== columnId || sortConfig.direction === null) {
-      return null;
-    }
-    
-    return sortConfig.direction === 'ascending' 
-      ? <ArrowUp className="h-4 w-4 ml-1 text-destructive" /> 
-      : <ArrowDown className="h-4 w-4 ml-1 text-destructive" />;
-  };
-
-  return <Layout showFooter={false}>
-      <div className="flex flex-col h-screen w-full">
-        <div className="px-0 py-6 flex-1 overflow-auto">
-          <div className="space-y-4 w-full">
-            <h1 className="text-2xl font-bold px-6">Drivers Management</h1>
-            
-            <div className="flex items-center justify-between px-6">
-              <div className="flex items-center h-9 gap-2">
-                <Button size="sm" className="flex items-center gap-1 text-xs px-2 py-1 h-9">
-                  <Plus className="w-3 h-3" />
-                  Add Driver
-                </Button>
-              </div>
-              <div className="flex items-center h-9 gap-2">
-                <div className="relative h-9">
-                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input type="search" placeholder="Search drivers..." className="w-[200px] pl-8 text-xs h-9" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
-                </div>
-                <ColumnSelector columns={availableColumns} visibleColumns={visibleColumns} setVisibleColumns={setVisibleColumns} />
-              </div>
-            </div>
-
-            <div className="border rounded-md mx-6">
-              <UsersTableContainer stickyHeader={false}>
-                <Table>
-                  <TableHeader className="bg-muted/50">
-                    <TableRow>
-                      {sortedColumns.map((columnId) => {
-                        const column = availableColumns.find(col => col.id === columnId);
-                        if (!column) return null;
-                        return <TableHead 
-                          key={columnId} 
-                          dragOver={dragOverColumn === columnId}
-                          className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px] cursor-pointer`}
-                          onClick={() => requestSort(columnId)}
-                        >
-                          <div className="flex items-center gap-1 overflow-hidden">
-                            <div 
-                              draggable={true} 
-                              onDragStart={e => handleDragStart(e, columnId)} 
-                              onDragOver={e => handleDragOver(e, columnId)} 
-                              onDragEnd={handleDragEnd} 
-                              onDrop={e => handleDrop(e, columnId)} 
-                              className="cursor-grab"
-                              onClick={e => e.stopPropagation()}
-                            >
-                              <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
-                            </div>
-                            <div className="flex items-center">
-                              <span className="truncate">{column.label}</span>
-                              {getSortIcon(columnId)}
-                            </div>
-                          </div>
-                        </TableHead>;
-                      })}
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {currentItems.map((driver) => (
-                      <TableRow key={driver.id}>
-                        {sortedColumns.includes("id") && <TableCell className="font-sans">{driver.id}</TableCell>}
-                        {sortedColumns.includes("name") && <TableCell>{driver.name}</TableCell>}
-                        {sortedColumns.includes("email") && <TableCell>{driver.email}</TableCell>}
-                        {sortedColumns.includes("phone") && <TableCell>{driver.phone}</TableCell>}
-                        {sortedColumns.includes("zipcode") && <TableCell>{driver.zipcode}</TableCell>}
-                        {sortedColumns.includes("transport") && <TableCell>
-                            <div className="flex items-center gap-2">
-                              {driver.transports.map(transportId => <div key={transportId} className="flex items-center justify-center p-2 rounded-md bg-muted" title={transportTypes[transportId] || `Transport ID: ${transportId}`}>
-                                  <TransportIcon transportType={transportId as TransportType} size={14} className="h-[14px] w-[14px]" />
-                                </div>)}
-                            </div>
-                          </TableCell>}
-                        {sortedColumns.includes("rating") && <TableCell>
-                            {renderRating(driver.rating)}
-                          </TableCell>}
-                        {sortedColumns.includes("status") && <TableCell>
-                            {renderStatus(driver.status)}
-                          </TableCell>}
-                        {sortedColumns.includes("hireStatus") && <TableCell>
-                            {renderHireStatus(driver.hireStatus, driver.id)}
-                          </TableCell>}
-                        {sortedColumns.includes("stripeStatus") && <TableCell>
-                            {renderStripeStatus(driver.stripeStatus)}
-                          </TableCell>}
-                        {sortedColumns.includes("actions") && <TableCell>
-                            <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
-                              View
-                            </Button>
-                          </TableCell>}
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </UsersTableContainer>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t mt-auto w-full">
-          <div className="px-6 py-4 flex justify-between items-center">
-            <PaginationInfo 
-              total={totalItems} 
-              pageSize={pageSize} 
-              currentPage={currentPage} 
-            />
-            
-            <Pagination className="flex-1 flex justify-center">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationLink
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlePageChange(1);
-                    }}
-                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-                    aria-disabled={currentPage === 1}
-                  >
-                    <span className="sr-only">First page</span>
-                    ⟪
-                  </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationPrevious 
-                    href="#" 
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlePageChange(currentPage - 1);
-                    }}
-                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-                    aria-disabled={currentPage === 1}
-                  />
-                </PaginationItem>
-                
-                {getPageNumbers().map((page, i) => (
-                  <PaginationItem key={i}>
-                    {page === -1 || page === -2 ? (
-                      <PaginationEllipsis />
-                    ) : (
-                      <PaginationLink 
-                        href="#" 
-                        isActive={page === currentPage}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handlePageChange(page);
-                        }}
-                      >
-                        {page}
-                      </PaginationLink>
-                    )}
-                  </PaginationItem>
-                ))}
-                
-                <PaginationItem>
-                  <PaginationNext 
-                    href="#" 
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlePageChange(currentPage + 1);
-                    }}
-                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-                    aria-disabled={currentPage === totalPages}
-                  />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlePageChange(totalPages);
-                    }}
-                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-                    aria-disabled={currentPage === totalPages}
-                  >
-                    <span className="sr-only">Last page</span>
-                    ⟫
-                  </PaginationLink>
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-            
-            <PaginationSize
-              sizes={pageSizeOptions}
-              pageSize={pageSize}
-              onChange={handlePageSizeChange}
-            />
-          </div>
-        </div>
-      </div>
-      
-      {chatOpen && selectedCourier && <CourierChat open={chatOpen} courierName={selectedCourier} onClose={handleChatClose} hasUnreadMessages={false} />}
-    </Layout>;
-};
-
-export default DriversPage;
