@@ -2,6 +2,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { ArrowUpDown } from "lucide-react"
 
 const Table = React.forwardRef<
   HTMLTableElement,
@@ -67,21 +68,41 @@ const TableRow = React.forwardRef<
 ))
 TableRow.displayName = "TableRow"
 
+interface TableHeadProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
+  dragOver?: boolean;
+  sortable?: boolean;
+  sortDirection?: 'ascending' | 'descending' | null;
+}
+
 const TableHead = React.forwardRef<
   HTMLTableCellElement,
-  React.ThHTMLAttributes<HTMLTableCellElement> & { 
-    dragOver?: boolean;
-  }
->(({ className, dragOver, ...props }, ref) => (
+  TableHeadProps
+>(({ className, dragOver, sortable, sortDirection, children, ...props }, ref) => (
   <th
     ref={ref}
     className={cn(
       "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
       dragOver && "border-t-2 border-primary",
+      sortable && "cursor-pointer hover:bg-muted/70",
       className
     )}
     {...props}
-  />
+  >
+    {sortable ? (
+      <div className="flex items-center gap-1">
+        <span>{children}</span>
+        <ArrowUpDown 
+          className={cn(
+            "ml-1 h-4 w-4 opacity-50",
+            sortDirection === "ascending" && "opacity-100 rotate-180",
+            sortDirection === "descending" && "opacity-100"
+          )}
+        />
+      </div>
+    ) : (
+      children
+    )}
+  </th>
 ))
 TableHead.displayName = "TableHead"
 
