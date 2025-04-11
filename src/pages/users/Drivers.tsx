@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus, Search, MessageCircle, ChevronDown, Check, X, Clock } from "lucide-react";
+import { GripVertical, Plus, Search, MessageCircle, ChevronDown, Check, X, Clock, ArrowUp, ArrowDown } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
@@ -507,6 +507,10 @@ const DriversPage = () => {
   const [selectedCourier, setSelectedCourier] = useState<string | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [driversWithMessages, setDriversWithMessages] = useState<number[]>([]);
+  const [sortConfig, setSortConfig] = useState<{ key: string | null; direction: 'ascending' | 'descending' | null }>({
+    key: null,
+    direction: null
+  });
 
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => 
@@ -822,6 +826,30 @@ const DriversPage = () => {
     );
   };
 
+  const requestSort = (key: string) => {
+    let direction: 'ascending' | 'descending' | null = 'ascending';
+    
+    if (sortConfig.key === key) {
+      if (sortConfig.direction === 'ascending') {
+        direction = 'descending';
+      } else if (sortConfig.direction === 'descending') {
+        direction = null;
+      }
+    }
+    
+    setSortConfig({ key, direction });
+  };
+
+  const getSortIcon = (columnId: string) => {
+    if (sortConfig.key !== columnId || sortConfig.direction === null) {
+      return null;
+    }
+    
+    return sortConfig.direction === 'ascending' 
+      ? <ArrowUp className="h-4 w-4 ml-1 text-destructive" /> 
+      : <ArrowDown className="h-4 w-4 ml-1 text-destructive" />;
+  };
+
   return <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
         <div className="px-0 py-6 flex-1 overflow-auto">
@@ -855,7 +883,8 @@ const DriversPage = () => {
                         return <TableHead 
                           key={columnId} 
                           dragOver={dragOverColumn === columnId}
-                          className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
+                          className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px] cursor-pointer`}
+                          onClick={() => requestSort(columnId)}
                         >
                           <div className="flex items-center gap-1 overflow-hidden">
                             <div 
@@ -865,10 +894,14 @@ const DriversPage = () => {
                               onDragEnd={handleDragEnd} 
                               onDrop={e => handleDrop(e, columnId)} 
                               className="cursor-grab"
+                              onClick={e => e.stopPropagation()}
                             >
                               <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
                             </div>
-                            <span className="truncate">{column.label}</span>
+                            <div className="flex items-center">
+                              <span className="truncate">{column.label}</span>
+                              {getSortIcon(columnId)}
+                            </div>
                           </div>
                         </TableHead>;
                       })}
