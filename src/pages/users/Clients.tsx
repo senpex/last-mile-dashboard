@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -448,10 +449,9 @@ const ClientsPage = () => {
       <div className="flex flex-col h-full w-full">
         <div className="px-6 py-6 flex-1 overflow-auto">
           <div className="space-y-4">
-            <h1 className="text-2xl font-bold">Clients Management</h1>
-            
             <div className="flex items-center justify-between">
-              <div className="flex items-center h-9 gap-2">
+              <div className="flex items-center gap-4">
+                <h1 className="text-2xl font-bold">Clients Management</h1>
                 <Button size="sm" className="flex items-center gap-1 text-xs px-2 py-1 h-9">
                   <Plus className="w-3 h-3" />
                   Add Client
