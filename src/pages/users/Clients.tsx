@@ -1,12 +1,13 @@
-
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus, Search } from "lucide-react";
+import { GripVertical, Plus, Search, Pencil } from "lucide-react";
 import { UsersTableContainer } from "@/components/ui/users-table-container";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 import { 
   Pagination, 
   PaginationContent, 
@@ -25,6 +26,7 @@ const ClientsPage = () => {
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filteredClients, setFilteredClients] = useState<any[]>([]);
+  const [editingNotes, setEditingNotes] = useState<number | null>(null);
   
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -40,6 +42,7 @@ const ClientsPage = () => {
     { id: "signupDate", label: "Signup Date", default: true },
     { id: "orderCount", label: "Number of Orders", default: true },
     { id: "lastOrderDate", label: "Last Order Date", default: true },
+    { id: "notes", label: "Notes", default: true },
     { id: "actions", label: "Actions", default: true },
   ];
   
@@ -61,7 +64,8 @@ const ClientsPage = () => {
       type: "Business",
       signupDate: new Date(2022, 2, 15),
       orderCount: 42,
-      lastOrderDate: new Date(2024, 3, 2)
+      lastOrderDate: new Date(2024, 3, 2),
+      notes: "Large corporate account, monthly orders."
     },
     { 
       id: 23456, 
@@ -72,7 +76,8 @@ const ClientsPage = () => {
       type: "Business",
       signupDate: new Date(2023, 5, 8),
       orderCount: 17,
-      lastOrderDate: new Date(2024, 2, 28)
+      lastOrderDate: new Date(2024, 2, 28),
+      notes: "New startup, growing quickly."
     },
     { 
       id: 34567, 
@@ -184,7 +189,25 @@ const ClientsPage = () => {
       orderCount: 2,
       lastOrderDate: new Date(2024, 2, 10)
     },
-  ];
+  ].map(client => ({
+    ...client,
+    notes: client.notes || ""
+  }));
+
+  const handleNotesChange = (clientId: number, notes: string) => {
+    const updatedClients = clients.map(client => 
+      client.id === clientId ? { ...client, notes } : client
+    );
+    const updatedFilteredClients = filteredClients.map(client =>
+      client.id === clientId ? { ...client, notes } : client
+    );
+    setFilteredClients(updatedFilteredClients);
+  };
+
+  const saveNotes = (clientId: number) => {
+    setEditingNotes(null);
+    toast.success("Client notes updated successfully");
+  };
 
   const totalItems = filteredClients.length;
   const totalPages = Math.ceil(totalItems / pageSize);
@@ -285,7 +308,6 @@ const ClientsPage = () => {
     e.dataTransfer.setDragImage(dragImage, 0, 0);
   };
 
-  // Update the type here to accept HTMLDivElement
   const handleDragOver = (e: React.DragEvent<HTMLElement>, columnId: string) => {
     e.preventDefault();
     if (draggedColumn && draggedColumn !== columnId) {
@@ -442,6 +464,56 @@ const ClientsPage = () => {
                             <div className="flex items-center">
                               <span>{format(client.lastOrderDate, 'MMM d, yyyy')}</span>
                             </div>
+                          </TableCell>
+                        )}
+                        {sortedColumns.includes("notes") && (
+                          <TableCell>
+                            {editingNotes === client.id ? (
+                              <div className="flex flex-col space-y-2">
+                                <Textarea 
+                                  value={client.notes} 
+                                  onChange={(e) => handleNotesChange(client.id, e.target.value)}
+                                  className="min-h-[80px] text-sm"
+                                  placeholder="Add notes about this client..."
+                                />
+                                <div className="flex space-x-2">
+                                  <Button 
+                                    size="sm" 
+                                    onClick={() => saveNotes(client.id)}
+                                  >
+                                    Save
+                                  </Button>
+                                  <Button 
+                                    size="sm" 
+                                    variant="outline" 
+                                    onClick={() => setEditingNotes(null)}
+                                  >
+                                    Cancel
+                                  </Button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div 
+                                className="flex justify-between items-start group cursor-text"
+                                onClick={() => setEditingNotes(client.id)}
+                              >
+                                <div className="text-sm">
+                                  {client.notes ? (
+                                    client.notes
+                                  ) : (
+                                    <span className="text-muted-foreground italic">No notes</span>
+                                  )}
+                                </div>
+                                <Button 
+                                  variant="ghost" 
+                                  size="icon" 
+                                  className="opacity-0 group-hover:opacity-100 h-6 w-6"
+                                >
+                                  <Pencil className="h-3 w-3" />
+                                  <span className="sr-only">Edit notes</span>
+                                </Button>
+                              </div>
+                            )}
                           </TableCell>
                         )}
                         {sortedColumns.includes("actions") && (

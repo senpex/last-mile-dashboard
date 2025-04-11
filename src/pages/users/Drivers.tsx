@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus, Search, MessageCircle, ChevronDown, Check, X, Clock } from "lucide-react";
+import { GripVertical, Plus, Search, MessageCircle, ChevronDown, Check, X, Clock, Pencil } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { UsersTableContainer } from "@/components/ui/users-table-container";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis, PaginationInfo, PaginationSize } from "@/components/ui/pagination";
 import CourierChat from '@/components/chat/CourierChat';
+import { Textarea } from "@/components/ui/textarea";
 
 type StripeStatus = 'verified' | 'unverified' | 'pending';
 
@@ -92,7 +93,8 @@ const DriversPage = () => {
     transports: ["1", "3", "pickup_truck", "9ft_cargo_van"],
     rating: 4.8,
     stripeStatus: 'verified' as StripeStatus,
-    zipcode: "94105"
+    zipcode: "94105",
+    notes: "Excellent driver, always on time."
   }, {
     id: 6543,
     name: "Jane Smith",
@@ -103,7 +105,8 @@ const DriversPage = () => {
     transports: ["2"],
     rating: 3.5,
     stripeStatus: 'unverified' as StripeStatus,
-    zipcode: "90210"
+    zipcode: "90210",
+    notes: "Prefers weekend shifts."
   }, {
     id: 7654,
     name: "Mike Johnson",
@@ -114,7 +117,8 @@ const DriversPage = () => {
     transports: ["4", "5"],
     rating: 5.0,
     stripeStatus: 'pending' as StripeStatus,
-    zipcode: "10001"
+    zipcode: "10001",
+    notes: "Not available on Mondays."
   }, {
     id: 8001,
     name: "Alice Williams",
@@ -125,7 +129,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8002,
     name: "Robert Miller",
@@ -136,7 +141,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8003,
     name: "Emily Davis",
@@ -147,7 +153,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8004,
     name: "James Wilson",
@@ -158,7 +165,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8005,
     name: "Sarah Taylor",
@@ -169,7 +177,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8006,
     name: "Daniel Anderson",
@@ -180,7 +189,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8007,
     name: "Olivia Thomas",
@@ -191,7 +201,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8008,
     name: "Matthew Jackson",
@@ -202,7 +213,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8009,
     name: "Sophia White",
@@ -213,7 +225,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8010,
     name: "David Harris",
@@ -224,7 +237,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8011,
     name: "Emma Martin",
@@ -235,7 +249,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8012,
     name: "Andrew Thompson",
@@ -246,7 +261,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8013,
     name: "Isabella Garcia",
@@ -257,7 +273,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8014,
     name: "Joshua Martinez",
@@ -268,7 +285,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8015,
     name: "Charlotte Robinson",
@@ -279,7 +297,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8016,
     name: "Christopher Clark",
@@ -290,7 +309,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8017,
     name: "Amelia Rodriguez",
@@ -301,7 +321,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8018,
     name: "Joseph Lewis",
@@ -312,7 +333,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8019,
     name: "Mia Walker",
@@ -323,7 +345,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8020,
     name: "Ethan Hall",
@@ -334,7 +357,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8021,
     name: "Harper Young",
@@ -345,7 +369,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8022,
     name: "Alexander Allen",
@@ -356,7 +381,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8023,
     name: "Abigail King",
@@ -367,7 +393,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8024,
     name: "Benjamin Wright",
@@ -378,7 +405,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8025,
     name: "Sofia Scott",
@@ -389,7 +417,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8026,
     name: "William Green",
@@ -400,7 +429,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8027,
     name: "Elizabeth Baker",
@@ -411,7 +441,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8028,
     name: "Michael Adams",
@@ -422,7 +453,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8029,
     name: "Camila Nelson",
@@ -433,7 +465,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }, {
     id: 8030,
     name: "Jacob Hill",
@@ -444,7 +477,8 @@ const DriversPage = () => {
     transports: generateRandomTransports(),
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode()
+    zipcode: getRandomZipcode(),
+    notes: ""
   }]);
 
   const availableColumns: ColumnOption[] = [{
@@ -488,6 +522,10 @@ const DriversPage = () => {
     label: "Stripe Status",
     default: true
   }, {
+    id: "notes",
+    label: "Notes",
+    default: true
+  }, {
     id: "actions",
     label: "Actions",
     default: true
@@ -507,6 +545,7 @@ const DriversPage = () => {
   const [selectedCourier, setSelectedCourier] = useState<string | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [driversWithMessages, setDriversWithMessages] = useState<number[]>([]);
+  const [editingNotes, setEditingNotes] = useState<number | null>(null);
 
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => 
@@ -604,6 +643,19 @@ const DriversPage = () => {
   const handleChatClose = () => {
     setChatOpen(false);
     setSelectedCourier(null);
+  };
+
+  const handleNotesChange = (driverId: number, notes: string) => {
+    setDrivers(prevDrivers => 
+      prevDrivers.map(driver => 
+        driver.id === driverId ? { ...driver, notes } : driver
+      )
+    );
+  };
+
+  const saveNotes = (driverId: number) => {
+    setEditingNotes(null);
+    toast.success("Driver notes updated successfully");
   };
 
   const loadTransportDictionary = () => {
@@ -901,6 +953,56 @@ const DriversPage = () => {
                         {sortedColumns.includes("stripeStatus") && <TableCell>
                             {renderStripeStatus(driver.stripeStatus)}
                           </TableCell>}
+                        {sortedColumns.includes("notes") && (
+                          <TableCell>
+                            {editingNotes === driver.id ? (
+                              <div className="flex flex-col space-y-2">
+                                <Textarea 
+                                  value={driver.notes} 
+                                  onChange={(e) => handleNotesChange(driver.id, e.target.value)}
+                                  className="min-h-[80px] text-sm"
+                                  placeholder="Add notes about this driver..."
+                                />
+                                <div className="flex space-x-2">
+                                  <Button 
+                                    size="sm" 
+                                    onClick={() => saveNotes(driver.id)}
+                                  >
+                                    Save
+                                  </Button>
+                                  <Button 
+                                    size="sm" 
+                                    variant="outline" 
+                                    onClick={() => setEditingNotes(null)}
+                                  >
+                                    Cancel
+                                  </Button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div 
+                                className="flex justify-between items-start group cursor-text"
+                                onClick={() => setEditingNotes(driver.id)}
+                              >
+                                <div className="text-sm">
+                                  {driver.notes ? (
+                                    driver.notes
+                                  ) : (
+                                    <span className="text-muted-foreground italic">No notes</span>
+                                  )}
+                                </div>
+                                <Button 
+                                  variant="ghost" 
+                                  size="icon" 
+                                  className="opacity-0 group-hover:opacity-100 h-6 w-6"
+                                >
+                                  <Pencil className="h-3 w-3" />
+                                  <span className="sr-only">Edit notes</span>
+                                </Button>
+                              </div>
+                            )}
+                          </TableCell>
+                        )}
                         {sortedColumns.includes("actions") && <TableCell>
                             <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
                               View
