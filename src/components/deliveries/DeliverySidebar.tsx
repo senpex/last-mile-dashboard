@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Input } from "@/components/ui/input";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -9,7 +10,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Save, RotateCcw, MapPin, Building, ArrowUpFromLine, ArrowDownToLine, User } from "lucide-react";
-import { Input } from "@/components/ui/input";
 
 interface DeliverySidebarProps {
   open: boolean;
@@ -448,26 +448,16 @@ export function DeliverySidebar({
         <h2 className="text-lg font-semibold mb-4">Filters</h2>
         
         <ScrollArea className="flex-1 -mr-4 pr-4">
-          <Accordion 
-            type="single" 
-            collapsible 
-            className="w-full" 
-            defaultValue=""
-            value={isAccordionOpen}
-            onValueChange={setIsAccordionOpen}
-          >
+          <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="status" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">Status</span>
-              </AccordionTrigger>
               <AccordionContent>
+                <Input
+                  placeholder="Search statuses..."
+                  value={statusSearchTerm}
+                  onChange={(e) => setStatusSearchTerm(e.target.value)}
+                  className="mb-2 w-[90%] h-[8.5px]"
+                />
                 <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search statuses..."
-                    value={statusSearchTerm}
-                    onChange={(e) => setStatusSearchTerm(e.target.value)}
-                    className="mb-2"
-                  />
                   {getFilteredStatusItems().map(item => {
                     const actualStatus = statusMapping[item.value];
                     if (!actualStatus) return null;
@@ -502,17 +492,14 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="zipcode" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">Zipcode</span>
-              </AccordionTrigger>
               <AccordionContent>
+                <Input
+                  placeholder="Search zipcodes..."
+                  value={zipcodeSearchTerm}
+                  onChange={(e) => setZipcodeSearchTerm(e.target.value)}
+                  className="mb-2 w-[90%] h-[8.5px]"
+                />
                 <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search zipcodes..."
-                    value={zipcodeSearchTerm}
-                    onChange={(e) => setZipcodeSearchTerm(e.target.value)}
-                    className="mb-2"
-                  />
                   {getFilteredZipcodes().map(zipcode => (
                     <div key={zipcode} className="flex items-center space-x-2">
                       <Checkbox 
@@ -537,17 +524,14 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="city" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">City</span>
-              </AccordionTrigger>
               <AccordionContent>
+                <Input
+                  placeholder="Search cities..."
+                  value={citySearchTerm}
+                  onChange={(e) => setCitySearchTerm(e.target.value)}
+                  className="mb-2 w-[90%] h-[8.5px]"
+                />
                 <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search cities..."
-                    value={citySearchTerm}
-                    onChange={(e) => setCitySearchTerm(e.target.value)}
-                    className="mb-2"
-                  />
                   {getFilteredCities().map(city => (
                     <div key={city} className="flex items-center space-x-2">
                       <Checkbox 
@@ -572,17 +556,14 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="state" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">State</span>
-              </AccordionTrigger>
               <AccordionContent>
+                <Input
+                  placeholder="Search states..."
+                  value={stateSearchTerm}
+                  onChange={(e) => setStateSearchTerm(e.target.value)}
+                  className="mb-2 w-[90%] h-[8.5px]"
+                />
                 <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search states..."
-                    value={stateSearchTerm}
-                    onChange={(e) => setStateSearchTerm(e.target.value)}
-                    className="mb-2"
-                  />
                   {getFilteredStates().map(state => (
                     <div key={state} className="flex items-center space-x-2">
                       <Checkbox 
@@ -607,17 +588,14 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="pickupAddress" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">Pickup Address</span>
-              </AccordionTrigger>
               <AccordionContent>
+                <Input
+                  placeholder="Search pickup addresses..."
+                  value={pickupAddressSearchTerm}
+                  onChange={(e) => setPickupAddressSearchTerm(e.target.value)}
+                  className="mb-2 w-[90%] h-[8.5px]"
+                />
                 <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search pickup addresses..."
-                    value={pickupAddressSearchTerm}
-                    onChange={(e) => setPickupAddressSearchTerm(e.target.value)}
-                    className="mb-2"
-                  />
                   {getFilteredPickupAddresses().map(address => (
                     <div key={address} className="flex items-center space-x-2">
                       <Checkbox 
@@ -643,17 +621,14 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="dropoffAddress" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">Dropoff Address</span>
-              </AccordionTrigger>
               <AccordionContent>
+                <Input
+                  placeholder="Search dropoff addresses..."
+                  value={dropoffAddressSearchTerm}
+                  onChange={(e) => setDropoffAddressSearchTerm(e.target.value)}
+                  className="mb-2 w-[90%] h-[8.5px]"
+                />
                 <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search dropoff addresses..."
-                    value={dropoffAddressSearchTerm}
-                    onChange={(e) => setDropoffAddressSearchTerm(e.target.value)}
-                    className="mb-2"
-                  />
                   {getFilteredDropoffAddresses().map(address => (
                     <div key={address} className="flex items-center space-x-2">
                       <Checkbox 
@@ -679,17 +654,14 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="senderName" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">Sender Name</span>
-              </AccordionTrigger>
               <AccordionContent>
+                <Input
+                  placeholder="Search sender names..."
+                  value={senderNameSearchTerm}
+                  onChange={(e) => setSenderNameSearchTerm(e.target.value)}
+                  className="mb-2 w-[90%] h-[8.5px]"
+                />
                 <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search sender names..."
-                    value={senderNameSearchTerm}
-                    onChange={(e) => setSenderNameSearchTerm(e.target.value)}
-                    className="mb-2 w-[90%]"
-                  />
                   {getFilteredSenderNames().map(name => (
                     <div key={name} className="flex items-center space-x-2">
                       <Checkbox 
@@ -714,17 +686,14 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="recipientName" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">Recipient Name</span>
-              </AccordionTrigger>
               <AccordionContent>
+                <Input
+                  placeholder="Search recipient names..."
+                  value={recipientNameSearchTerm}
+                  onChange={(e) => setRecipientNameSearchTerm(e.target.value)}
+                  className="mb-2 w-[90%] h-[8.5px]"
+                />
                 <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search recipient names..."
-                    value={recipientNameSearchTerm}
-                    onChange={(e) => setRecipientNameSearchTerm(e.target.value)}
-                    className="mb-2 w-[90%]"
-                  />
                   {getFilteredRecipientNames().map(name => (
                     <div key={name} className="flex items-center space-x-2">
                       <Checkbox 
@@ -749,17 +718,14 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="organization" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">Organization</span>
-              </AccordionTrigger>
               <AccordionContent>
+                <Input
+                  placeholder="Search organizations..."
+                  value={organizationSearchTerm}
+                  onChange={(e) => setOrganizationSearchTerm(e.target.value)}
+                  className="mb-2 w-[90%] h-[8.5px]"
+                />
                 <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search organizations..."
-                    value={organizationSearchTerm}
-                    onChange={(e) => setOrganizationSearchTerm(e.target.value)}
-                    className="mb-2"
-                  />
                   {getFilteredOrganizations().map(org => (
                     <div key={org} className="flex items-center space-x-2">
                       <Checkbox 
@@ -784,17 +750,14 @@ export function DeliverySidebar({
             </AccordionItem>
 
             <AccordionItem value="courier" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">Courier</span>
-              </AccordionTrigger>
               <AccordionContent>
+                <Input
+                  placeholder="Search couriers..."
+                  value={courierSearchTerm}
+                  onChange={(e) => setCourierSearchTerm(e.target.value)}
+                  className="mb-2 w-[90%] h-[8.5px]"
+                />
                 <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search couriers..."
-                    value={courierSearchTerm}
-                    onChange={(e) => setCourierSearchTerm(e.target.value)}
-                    className="mb-2"
-                  />
                   {getFilteredCouriers().map(courier => (
                     <div key={courier} className="flex items-center space-x-2">
                       <Checkbox 
