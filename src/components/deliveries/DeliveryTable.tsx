@@ -16,10 +16,10 @@ interface DeliveryTableProps {
   getStatusDisplay: (status: string) => string;
   getStatusBadgeVariant: (status: string) => string;
   onCourierClick: (courierName: string) => void;
-  handleDragStart: (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => void;
-  handleDragOver: (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => void;
+  handleDragStart: (e: React.DragEvent<HTMLDivElement>, columnId: string) => void;
+  handleDragOver: (e: React.DragEvent<HTMLDivElement>, columnId: string) => void;
   handleDragEnd: () => void;
-  handleDrop: (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => void;
+  handleDrop: (e: React.DragEvent<HTMLDivElement>, columnId: string) => void;
   isFilterSidebarOpen: boolean;
   toggleFilterSidebar: () => void;
   allDeliveryStatuses: DeliveryStatus[];

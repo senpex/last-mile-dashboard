@@ -706,7 +706,7 @@ const DriversPage = () => {
       </div>;
   };
 
-  const handleDragStart = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     setDraggedColumn(columnId);
     e.dataTransfer.setData('text/plain', columnId);
     const dragImage = new Image();
@@ -714,14 +714,14 @@ const DriversPage = () => {
     e.dataTransfer.setDragImage(dragImage, 0, 0);
   };
 
-  const handleDragOver = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     e.preventDefault();
     if (draggedColumn && draggedColumn !== columnId) {
       setDragOverColumn(columnId);
     }
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLTableCellElement>, targetColumnId: string) => {
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
     e.preventDefault();
     if (!draggedColumn || draggedColumn === targetColumnId) {
       setDraggedColumn(null);
@@ -852,12 +852,25 @@ const DriversPage = () => {
                       {sortedColumns.map((columnId) => {
                         const column = availableColumns.find(col => col.id === columnId);
                         if (!column) return null;
-                        return <TableHead key={columnId} draggable={true} dragOver={dragOverColumn === columnId} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}>
-                            <div className="flex items-center gap-1 overflow-hidden">
-                              <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
-                              <span className="truncate">{column.label}</span>
+                        return <TableHead 
+                          key={columnId} 
+                          dragOver={dragOverColumn === columnId}
+                          className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
+                        >
+                          <div className="flex items-center gap-1 overflow-hidden">
+                            <div 
+                              draggable={true} 
+                              onDragStart={e => handleDragStart(e, columnId)} 
+                              onDragOver={e => handleDragOver(e, columnId)} 
+                              onDragEnd={handleDragEnd} 
+                              onDrop={e => handleDrop(e, columnId)} 
+                              className="cursor-grab"
+                            >
+                              <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
                             </div>
-                          </TableHead>;
+                            <span className="truncate">{column.label}</span>
+                          </div>
+                        </TableHead>;
                       })}
                     </TableRow>
                   </TableHeader>

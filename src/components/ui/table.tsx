@@ -70,14 +70,9 @@ TableRow.displayName = "TableRow"
 const TableHead = React.forwardRef<
   HTMLTableCellElement,
   React.ThHTMLAttributes<HTMLTableCellElement> & { 
-    draggable?: boolean;
-    onDragStart?: React.DragEventHandler<HTMLTableCellElement>;
-    onDragOver?: React.DragEventHandler<HTMLTableCellElement>;
-    onDrop?: React.DragEventHandler<HTMLTableCellElement>;
-    onDragEnd?: React.DragEventHandler<HTMLTableCellElement>;
     dragOver?: boolean;
   }
->(({ className, dragOver, draggable, ...props }, ref) => (
+>(({ className, dragOver, ...props }, ref) => (
   <th
     ref={ref}
     className={cn(
