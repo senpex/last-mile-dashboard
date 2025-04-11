@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -828,4 +829,316 @@ const DriversPage = () => {
   };
 
   const renderHireStatus = (hireStatusId: string, driverId: number) => {
-    const hireStatusText = hireStatusDictionary[
+    const hireStatusText = hireStatusDictionary[hireStatusId] || `Unknown (${hireStatusId})`;
+    const hireStatusColorClass = hireStatusColors[hireStatusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
+    
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 p-0">
+            <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${hireStatusColorClass}`}>
+              {hireStatusText}
+            </div>
+            <ChevronDown className="h-4 w-4 ml-1" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          {Object.keys(hireStatusDictionary).map((statusId) => (
+            <DropdownMenuItem 
+              key={statusId}
+              onClick={() => updateDriverHireStatus(driverId, statusId)}
+              className="cursor-pointer"
+            >
+              {hireStatusDictionary[statusId]}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  };
+
+  const sortDrivers = useCallback((items: any[]) => {
+    const sortableItems = [...items];
+    
+    if (!sortConfig.key || !sortConfig.direction) {
+      return sortableItems;
+    }
+    
+    return sortableItems.sort((a, b) => {
+      let aValue: any = a[sortConfig.key as keyof typeof a];
+      let bValue: any = b[sortConfig.key as keyof typeof b];
+      
+      // Special handling for certain fields
+      if (sortConfig.key === "rating") {
+        aValue = parseFloat(aValue.toString());
+        bValue = parseFloat(bValue.toString());
+      }
+      
+      if (aValue === null || aValue === undefined || aValue === '') {
+        return sortConfig.direction === 'ascending' ? -1 : 1;
+      }
+      if (bValue === null || bValue === undefined || bValue === '') {
+        return sortConfig.direction === 'ascending' ? 1 : -1;
+      }
+      
+      if (aValue < bValue) {
+        return sortConfig.direction === 'ascending' ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortConfig.direction === 'ascending' ? 1 : -1;
+      }
+      return 0;
+    });
+  }, [sortConfig]);
+  
+  useEffect(() => {
+    setFilteredDrivers(prevDrivers => sortDrivers(prevDrivers));
+  }, [sortConfig, sortDrivers]);
+  
+  const requestSort = (key: string) => {
+    let direction: 'ascending' | 'descending' | null = 'ascending';
+    
+    if (sortConfig.key === key) {
+      if (sortConfig.direction === 'ascending') {
+        direction = 'descending';
+      } else if (sortConfig.direction === 'descending') {
+        direction = null;
+      }
+    }
+    
+    setSortConfig({ key, direction });
+  };
+
+  const renderCellContent = (columnId: string, driver: any) => {
+    switch (columnId) {
+      case "id":
+        return driver.id;
+      case "name":
+        return driver.name;
+      case "email":
+        return <div className="truncate max-w-[200px]">{driver.email}</div>;
+      case "phone":
+        return <div className="truncate max-w-[150px]">{driver.phone}</div>;
+      case "zipcode":
+        return driver.zipcode;
+      case "transport":
+        return (
+          <div className="flex items-center gap-1 flex-wrap">
+            {driver.transports.map((transportId: string, idx: number) => (
+              <div key={`${driver.id}-${transportId}-${idx}`} className="flex items-center justify-center p-1">
+                <TransportIcon transportType={transportId as TransportType} size={14} className="h-[14px] w-[14px]" />
+              </div>
+            ))}
+          </div>
+        );
+      case "rating":
+        return renderRating(driver.rating);
+      case "status":
+        return renderStatus(driver.status);
+      case "hireStatus":
+        return renderHireStatus(driver.hireStatus, driver.id);
+      case "stripeStatus":
+        return (
+          <Badge variant={
+            driver.stripeStatus === 'verified' ? 'success' :
+            driver.stripeStatus === 'pending' ? 'warning' : 'outline'
+          }>
+            {driver.stripeStatus}
+          </Badge>
+        );
+      case "notes":
+        if (editingNotes === driver.id) {
+          return (
+            <div className="flex flex-col gap-2">
+              <Textarea 
+                value={driver.notes} 
+                onChange={(e) => handleNotesChange(driver.id, e.target.value)}
+                className="h-20 min-h-20"
+              />
+              <div className="flex justify-end gap-2">
+                <Button size="sm" variant="ghost" onClick={() => setEditingNotes(null)}>
+                  <X className="h-4 w-4 mr-1" /> Cancel
+                </Button>
+                <Button size="sm" variant="default" onClick={() => saveNotes(driver.id)}>
+                  <Check className="h-4 w-4 mr-1" /> Save
+                </Button>
+              </div>
+            </div>
+          );
+        } else {
+          return (
+            <div className="flex items-center justify-between">
+              <div className="truncate max-w-[150px]">
+                {driver.notes || "No notes"}
+              </div>
+              <Button variant="ghost" size="icon" onClick={() => handleNotesClick(driver.id)}>
+                <Pencil className="h-4 w-4" />
+              </Button>
+            </div>
+          );
+        }
+      case "actions":
+        return (
+          <div className="flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => handleCourierClick(driver.name)}
+            >
+              <div className="relative">
+                <MessageCircle className="h-4 w-4" />
+                {driversWithMessages.includes(driver.id) && (
+                  <div className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full" />
+                )}
+              </div>
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+            >
+              <FileText className="h-4 w-4" />
+            </Button>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <Layout>
+      <div className="flex flex-col w-full h-full p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold">Drivers</h1>
+          <div className="flex items-center gap-3">
+            <div className="relative w-64">
+              <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search drivers..."
+                className="pl-8"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <ColumnSelector
+              columns={availableColumns}
+              visibleColumns={visibleColumns}
+              setVisibleColumns={setVisibleColumns}
+            />
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Driver
+            </Button>
+          </div>
+        </div>
+        
+        <UsersTableContainer>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                {sortedColumns.map((columnId) => {
+                  const column = availableColumns.find(col => col.id === columnId);
+                  return (
+                    <TableHead
+                      key={columnId}
+                      className="whitespace-nowrap"
+                      dragOver={dragOverColumn === columnId}
+                      sortable={['id', 'name', 'email', 'phone', 'zipcode', 'rating', 'status'].includes(columnId)}
+                      sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
+                      onClick={() => {
+                        if (['id', 'name', 'email', 'phone', 'zipcode', 'rating', 'status'].includes(columnId)) {
+                          requestSort(columnId);
+                        }
+                      }}
+                    >
+                      <div
+                        className="flex items-center"
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, columnId)}
+                        onDragOver={(e) => handleDragOver(e, columnId)}
+                        onDrop={(e) => handleDrop(e, columnId)}
+                        onDragEnd={handleDragEnd}
+                      >
+                        <GripVertical className="h-4 w-4 mr-1 text-muted-foreground cursor-grab" />
+                        {column?.label || columnId}
+                      </div>
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {isLoading ? (
+                <TableRow>
+                  <TableCell colSpan={sortedColumns.length} className="h-24 text-center">
+                    Loading...
+                  </TableCell>
+                </TableRow>
+              ) : currentItems.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={sortedColumns.length} className="h-24 text-center">
+                    No drivers found.
+                  </TableCell>
+                </TableRow>
+              ) : (
+                currentItems.map((driver) => (
+                  <TableRow key={driver.id}>
+                    {sortedColumns.map((columnId) => (
+                      <TableCell key={`${driver.id}-${columnId}`}>
+                        {renderCellContent(columnId, driver)}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </UsersTableContainer>
+        
+        <div className="mt-4">
+          <Pagination>
+            <PaginationInfo total={totalItems} />
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious onClick={() => handlePageChange(currentPage - 1)} />
+              </PaginationItem>
+              {getPageNumbers().map((pageNumber, index) => (
+                <PaginationItem key={`page-${pageNumber}-${index}`}>
+                  {pageNumber === -1 || pageNumber === -2 ? (
+                    <PaginationEllipsis />
+                  ) : (
+                    <PaginationLink
+                      isActive={pageNumber === currentPage}
+                      onClick={() => handlePageChange(pageNumber)}
+                    >
+                      {pageNumber}
+                    </PaginationLink>
+                  )}
+                </PaginationItem>
+              ))}
+              <PaginationItem>
+                <PaginationNext onClick={() => handlePageChange(currentPage + 1)} />
+              </PaginationItem>
+            </PaginationContent>
+            <PaginationSize
+              sizes={pageSizeOptions}
+              pageSize={pageSize}
+              onChange={handlePageSizeChange}
+            />
+          </Pagination>
+        </div>
+      </div>
+      
+      {chatOpen && selectedCourier && (
+        <CourierChat
+          courierName={selectedCourier}
+          onClose={handleChatClose}
+        />
+      )}
+    </Layout>
+  );
+};
+
+export default DriversPage;
