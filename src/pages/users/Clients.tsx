@@ -352,6 +352,105 @@ const ClientsPage = () => {
 
   const sortedColumns = getSortedVisibleColumns();
 
+  const renderCellContent = (client: any, columnId: string) => {
+    switch (columnId) {
+      case "id":
+        return client.id;
+      case "organization":
+        return client.name;
+      case "contact":
+        return client.contact;
+      case "email":
+        return client.email;
+      case "phone":
+        return client.phone;
+      case "type":
+        return (
+          <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+            client.type === "Business" ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300" : "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300"
+          }`}>
+            {client.type}
+          </div>
+        );
+      case "signupDate":
+        return <span>{format(client.signupDate, 'MMM d, yyyy')}</span>;
+      case "orderCount":
+        return <span>{client.orderCount}</span>;
+      case "lastOrderDate":
+        return <span>{format(client.lastOrderDate, 'MMM d, yyyy')}</span>;
+      case "notes":
+        if (editingNotes === client.id) {
+          return (
+            <div className="flex flex-col gap-2">
+              <Textarea 
+                placeholder="Add notes about this client..." 
+                className="min-h-[80px] text-sm"
+                value={client.notes || ''}
+                onChange={(e) => handleNotesChange(client.id, e.target.value)}
+              />
+              <div className="flex justify-end gap-2">
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="h-7 px-2 text-xs" 
+                  onClick={() => setEditingNotes(null)}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  size="sm" 
+                  className="h-7 px-2 text-xs" 
+                  onClick={() => saveNotes(client.id)}
+                >
+                  Save
+                </Button>
+              </div>
+            </div>
+          );
+        } else {
+          return (
+            <div 
+              className="relative cursor-pointer group flex items-start gap-1" 
+              onClick={() => setEditingNotes(client.id)}
+            >
+              <FileText size={14} className="text-muted-foreground shrink-0 mt-0.5" />
+              <div>
+                {client.notes ? (
+                  <p className="text-sm line-clamp-2 mr-5 group-hover:text-primary transition-colors">
+                    {client.notes}
+                  </p>
+                ) : (
+                  <p className="text-muted-foreground italic text-xs group-hover:text-primary transition-colors">
+                    Click to add notes
+                  </p>
+                )}
+                <Button 
+                  size="sm" 
+                  variant="ghost" 
+                  className="absolute right-0 top-0 h-5 w-5 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setEditingNotes(client.id);
+                  }}
+                >
+                  <span className="sr-only">Edit notes</span>
+                  <FileText size={12} />
+                </Button>
+              </div>
+            </div>
+          );
+        }
+      case "actions":
+        return (
+          <Button variant="ghost" size="sm">
+            Edit
+          </Button>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <Layout>
       <div className="flex flex-col h-full w-full">
@@ -421,119 +520,11 @@ const ClientsPage = () => {
                   <TableBody>
                     {currentItems.map((client) => (
                       <TableRow key={client.id}>
-                        {sortedColumns.includes("id") && (
-                          <TableCell className="font-sans">{client.id}</TableCell>
-                        )}
-                        {sortedColumns.includes("organization") && (
-                          <TableCell>{client.name}</TableCell>
-                        )}
-                        {sortedColumns.includes("contact") && (
-                          <TableCell>{client.contact}</TableCell>
-                        )}
-                        {sortedColumns.includes("email") && (
-                          <TableCell>{client.email}</TableCell>
-                        )}
-                        {sortedColumns.includes("phone") && (
-                          <TableCell>{client.phone}</TableCell>
-                        )}
-                        {sortedColumns.includes("type") && (
-                          <TableCell>
-                            <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                              client.type === "Business" ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300" : "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300"
-                            }`}>
-                              {client.type}
-                            </div>
+                        {sortedColumns.map((columnId) => (
+                          <TableCell key={columnId} className={columnId === "id" ? "font-sans" : ""}>
+                            {renderCellContent(client, columnId)}
                           </TableCell>
-                        )}
-                        {sortedColumns.includes("signupDate") && (
-                          <TableCell>
-                            <div className="flex items-center">
-                              <span>{format(client.signupDate, 'MMM d, yyyy')}</span>
-                            </div>
-                          </TableCell>
-                        )}
-                        {sortedColumns.includes("orderCount") && (
-                          <TableCell>
-                            <div className="flex items-center">
-                              <span>{client.orderCount}</span>
-                            </div>
-                          </TableCell>
-                        )}
-                        {sortedColumns.includes("lastOrderDate") && (
-                          <TableCell>
-                            <div className="flex items-center">
-                              <span>{format(client.lastOrderDate, 'MMM d, yyyy')}</span>
-                            </div>
-                          </TableCell>
-                        )}
-                        {sortedColumns.includes("notes") && (
-                          <TableCell>
-                            {editingNotes === client.id ? (
-                              <div className="flex flex-col gap-2">
-                                <Textarea 
-                                  placeholder="Add notes about this client..." 
-                                  className="min-h-[80px] text-sm"
-                                  value={client.notes || ''}
-                                  onChange={(e) => handleNotesChange(client.id, e.target.value)}
-                                />
-                                <div className="flex justify-end gap-2">
-                                  <Button 
-                                    size="sm" 
-                                    variant="outline" 
-                                    className="h-7 px-2 text-xs" 
-                                    onClick={() => setEditingNotes(null)}
-                                  >
-                                    Cancel
-                                  </Button>
-                                  <Button 
-                                    size="sm" 
-                                    className="h-7 px-2 text-xs" 
-                                    onClick={() => saveNotes(client.id)}
-                                  >
-                                    Save
-                                  </Button>
-                                </div>
-                              </div>
-                            ) : (
-                              <div 
-                                className="relative cursor-pointer group flex items-start gap-1" 
-                                onClick={() => setEditingNotes(client.id)}
-                              >
-                                <FileText size={14} className="text-muted-foreground shrink-0 mt-0.5" />
-                                <div>
-                                  {client.notes ? (
-                                    <p className="text-sm line-clamp-2 mr-5 group-hover:text-primary transition-colors">
-                                      {client.notes}
-                                    </p>
-                                  ) : (
-                                    <p className="text-muted-foreground italic text-xs group-hover:text-primary transition-colors">
-                                      Click to add notes
-                                    </p>
-                                  )}
-                                  <Button 
-                                    size="sm" 
-                                    variant="ghost" 
-                                    className="absolute right-0 top-0 h-5 w-5 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setEditingNotes(client.id);
-                                    }}
-                                  >
-                                    <span className="sr-only">Edit notes</span>
-                                    <FileText size={12} />
-                                  </Button>
-                                </div>
-                              </div>
-                            )}
-                          </TableCell>
-                        )}
-                        {sortedColumns.includes("actions") && (
-                          <TableCell className="text-right">
-                            <Button variant="ghost" size="sm">
-                              Edit
-                            </Button>
-                          </TableCell>
-                        )}
+                        ))}
                       </TableRow>
                     ))}
                   </TableBody>

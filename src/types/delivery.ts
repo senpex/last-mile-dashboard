@@ -11,7 +11,10 @@ export type DeliveryStatus =
   | "In Transit" 
   | "Picking Up" 
   | "Arrived For Pickup"
-  | "Scheduled Order";
+  | "Scheduled Order"
+  | "Online"
+  | "Offline"
+  | "Busy";
 
 export interface Delivery {
   id: number;
