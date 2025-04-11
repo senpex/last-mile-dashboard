@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -365,7 +364,11 @@ const ClientsPage = () => {
       case "email":
         return client.email;
       case "phone":
-        return client.phone;
+        return (
+          <span className="block truncate max-w-[150px]">
+            {client.phone}
+          </span>
+        );
       case "type":
         return (
           <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
