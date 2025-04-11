@@ -140,7 +140,7 @@ export function DeliverySidebar({
     return recipientNames.filter(n => n === name).length;
   };
 
-  const truncateAddress = (address: string, limit: number = 15): string => {
+  const truncateAddress = (address: string, limit: number = 18): string => {
     return address.length > limit ? `${address.substring(0, limit)}...` : address;
   };
 
