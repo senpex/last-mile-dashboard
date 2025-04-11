@@ -874,6 +874,117 @@ const DriversPage = () => {
     );
   };
 
+  const renderCellContent = (driver: any, columnId: string) => {
+    switch (columnId) {
+      case "id":
+        return driver.id;
+      case "name":
+        return driver.name;
+      case "email":
+        return driver.email;
+      case "phone":
+        return driver.phone;
+      case "zipcode":
+        return driver.zipcode;
+      case "transport":
+        return (
+          <div className="flex items-center gap-2">
+            {driver.transports.map((transportId: string) => (
+              <div 
+                key={transportId} 
+                className="flex items-center justify-center p-2 rounded-md bg-muted" 
+                title={transportTypes[transportId] || `Transport ID: ${transportId}`}
+              >
+                <TransportIcon 
+                  transportType={transportId as TransportType} 
+                  size={14} 
+                  className="h-[14px] w-[14px]" 
+                />
+              </div>
+            ))}
+          </div>
+        );
+      case "rating":
+        return renderRating(driver.rating);
+      case "status":
+        return renderStatus(driver.status);
+      case "hireStatus":
+        return renderHireStatus(driver.hireStatus, driver.id);
+      case "stripeStatus":
+        return renderStripeStatus(driver.stripeStatus);
+      case "notes":
+        if (editingNotes === driver.id) {
+          return (
+            <div className="flex flex-col gap-2">
+              <Textarea 
+                placeholder="Add notes about this driver..." 
+                className="min-h-[80px] text-sm"
+                value={driver.notes || ''}
+                onChange={(e) => handleNotesChange(driver.id, e.target.value)}
+              />
+              <div className="flex justify-end gap-2">
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="h-7 px-2 text-xs" 
+                  onClick={() => setEditingNotes(null)}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  size="sm" 
+                  className="h-7 px-2 text-xs" 
+                  onClick={() => saveNotes(driver.id)}
+                >
+                  Save
+                </Button>
+              </div>
+            </div>
+          );
+        } else {
+          return (
+            <div 
+              className="relative cursor-pointer group flex items-start gap-1" 
+              onClick={() => setEditingNotes(driver.id)}
+            >
+              <FileText size={14} className="text-muted-foreground shrink-0 mt-0.5" />
+              <div>
+                {driver.notes ? (
+                  <p className="text-sm line-clamp-2 mr-5 group-hover:text-primary transition-colors">
+                    {driver.notes}
+                  </p>
+                ) : (
+                  <p className="text-muted-foreground italic text-xs group-hover:text-primary transition-colors">
+                    Click to add notes
+                  </p>
+                )}
+                <Button 
+                  size="sm" 
+                  variant="ghost" 
+                  className="absolute right-0 top-0 h-5 w-5 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setEditingNotes(driver.id);
+                  }}
+                >
+                  <span className="sr-only">Edit notes</span>
+                  <FileText size={12} />
+                </Button>
+              </div>
+            </div>
+          );
+        }
+      case "actions":
+        return (
+          <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
+            View
+          </Button>
+        );
+      default:
+        return null;
+    }
+  };
+
   return <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
         <div className="px-0 py-6 flex-1 overflow-auto">
@@ -929,96 +1040,14 @@ const DriversPage = () => {
                   <TableBody>
                     {currentItems.map((driver) => (
                       <TableRow key={driver.id}>
-                        {sortedColumns.includes("id") && <TableCell className="font-sans">{driver.id}</TableCell>}
-                        {sortedColumns.includes("name") && <TableCell>{driver.name}</TableCell>}
-                        {sortedColumns.includes("email") && <TableCell>{driver.email}</TableCell>}
-                        {sortedColumns.includes("phone") && <TableCell>{driver.phone}</TableCell>}
-                        {sortedColumns.includes("zipcode") && <TableCell>{driver.zipcode}</TableCell>}
-                        {sortedColumns.includes("transport") && <TableCell>
-                            <div className="flex items-center gap-2">
-                              {driver.transports.map(transportId => <div key={transportId} className="flex items-center justify-center p-2 rounded-md bg-muted" title={transportTypes[transportId] || `Transport ID: ${transportId}`}>
-                                  <TransportIcon transportType={transportId as TransportType} size={14} className="h-[14px] w-[14px]" />
-                                </div>)}
-                            </div>
-                          </TableCell>}
-                        {sortedColumns.includes("rating") && <TableCell>
-                            {renderRating(driver.rating)}
-                          </TableCell>}
-                        {sortedColumns.includes("status") && <TableCell>
-                            {renderStatus(driver.status)}
-                          </TableCell>}
-                        {sortedColumns.includes("hireStatus") && <TableCell>
-                            {renderHireStatus(driver.hireStatus, driver.id)}
-                          </TableCell>}
-                        {sortedColumns.includes("stripeStatus") && <TableCell>
-                            {renderStripeStatus(driver.stripeStatus)}
-                          </TableCell>}
-                        {sortedColumns.includes("notes") && (
-                          <TableCell key="notes" className="text-left">
-                            {editingNotes === driver.id ? (
-                              <div className="flex flex-col gap-2">
-                                <Textarea 
-                                  placeholder="Add notes about this driver..." 
-                                  className="min-h-[80px] text-sm"
-                                  value={driver.notes || ''}
-                                  onChange={(e) => handleNotesChange(driver.id, e.target.value)}
-                                />
-                                <div className="flex justify-end gap-2">
-                                  <Button 
-                                    size="sm" 
-                                    variant="outline" 
-                                    className="h-7 px-2 text-xs" 
-                                    onClick={() => setEditingNotes(null)}
-                                  >
-                                    Cancel
-                                  </Button>
-                                  <Button 
-                                    size="sm" 
-                                    className="h-7 px-2 text-xs" 
-                                    onClick={() => saveNotes(driver.id)}
-                                  >
-                                    Save
-                                  </Button>
-                                </div>
-                              </div>
-                            ) : (
-                              <div 
-                                className="relative cursor-pointer group flex items-start gap-1" 
-                                onClick={() => setEditingNotes(driver.id)}
-                              >
-                                <FileText size={14} className="text-muted-foreground shrink-0 mt-0.5" />
-                                <div>
-                                  {driver.notes ? (
-                                    <p className="text-sm line-clamp-2 mr-5 group-hover:text-primary transition-colors">
-                                      {driver.notes}
-                                    </p>
-                                  ) : (
-                                    <p className="text-muted-foreground italic text-xs group-hover:text-primary transition-colors">
-                                      Click to add notes
-                                    </p>
-                                  )}
-                                  <Button 
-                                    size="sm" 
-                                    variant="ghost" 
-                                    className="absolute right-0 top-0 h-5 w-5 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setEditingNotes(driver.id);
-                                    }}
-                                  >
-                                    <span className="sr-only">Edit notes</span>
-                                    <FileText size={12} />
-                                  </Button>
-                                </div>
-                              </div>
-                            )}
+                        {sortedColumns.map((columnId) => (
+                          <TableCell 
+                            key={`${driver.id}-${columnId}`} 
+                            className={columnId === "id" ? "font-sans" : ""}
+                          >
+                            {renderCellContent(driver, columnId)}
                           </TableCell>
-                        )}
-                        {sortedColumns.includes("actions") && <TableCell>
-                            <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
-                              View
-                            </Button>
-                          </TableCell>}
+                        ))}
                       </TableRow>
                     ))}
                   </TableBody>
