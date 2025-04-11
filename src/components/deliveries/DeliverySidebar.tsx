@@ -140,6 +140,10 @@ export function DeliverySidebar({
     return recipientNames.filter(n => n === name).length;
   };
 
+  const truncateAddress = (address: string, limit: number = 15): string => {
+    return address.length > limit ? `${address.substring(0, limit)}...` : address;
+  };
+
   useEffect(() => {
     const dictionary = getDictionary("19");
     if (dictionary) {
@@ -624,8 +628,9 @@ export function DeliverySidebar({
                       <Label 
                         htmlFor={`pickup-${address}`} 
                         className="flex flex-1 items-center justify-between"
+                        title={address}
                       >
-                        <span className="truncate pr-2">{address}</span>
+                        <span className="truncate pr-2">{truncateAddress(address)}</span>
                         <Badge variant="outline" className="ml-auto shrink-0">{getPickupAddressCount(address)}</Badge>
                       </Label>
                     </div>
@@ -659,8 +664,9 @@ export function DeliverySidebar({
                       <Label 
                         htmlFor={`dropoff-${address}`} 
                         className="flex flex-1 items-center justify-between"
+                        title={address}
                       >
-                        <span className="truncate pr-2">{address}</span>
+                        <span className="truncate pr-2">{truncateAddress(address)}</span>
                         <Badge variant="outline" className="ml-auto shrink-0">{getDropoffAddressCount(address)}</Badge>
                       </Label>
                     </div>
