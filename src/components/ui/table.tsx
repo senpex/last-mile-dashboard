@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -82,10 +83,8 @@ const TableHead = React.forwardRef<
     className={cn(
       "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
       dragOver && "border-t-2 border-primary",
-      draggable && "cursor-move",
       className
     )}
-    draggable={draggable}
     {...props}
   />
 ))

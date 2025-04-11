@@ -192,15 +192,19 @@ const DeliveryTable = ({
                         return (
                           <TableHead 
                             key={columnId} 
-                            draggable={true} 
-                            onDragStart={e => handleDragStart(e, columnId)} 
-                            onDragOver={e => handleDragOver(e, columnId)} 
-                            onDragEnd={handleDragEnd} 
-                            onDrop={e => handleDrop(e, columnId)} 
                             className={`${getColumnWidth(columnId)} text-left whitespace-nowrap`}
                           >
                             <div className="flex items-center gap-1">
-                              <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
+                              <div 
+                                draggable={true} 
+                                onDragStart={e => handleDragStart(e, columnId)} 
+                                onDragOver={e => handleDragOver(e, columnId)} 
+                                onDragEnd={handleDragEnd} 
+                                onDrop={e => handleDrop(e, columnId)} 
+                                className="cursor-grab"
+                              >
+                                <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
+                              </div>
                               <span className="truncate">{column.label}</span>
                             </div>
                           </TableHead>

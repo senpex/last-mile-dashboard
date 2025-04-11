@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -274,7 +275,7 @@ const ClientsPage = () => {
     }
   }, [searchTerm]);
 
-  const handleDragStart = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
+  const handleDragStart = (e: React.DragEvent<HTMLElement>, columnId: string) => {
     setDraggedColumn(columnId);
     
     e.dataTransfer.setData('text/plain', columnId);
@@ -373,16 +374,20 @@ const ClientsPage = () => {
                         return (
                           <TableHead 
                             key={columnId}
-                            draggable={true}
                             dragOver={dragOverColumn === columnId}
-                            onDragStart={(e) => handleDragStart(e, columnId)}
-                            onDragOver={(e) => handleDragOver(e, columnId)}
-                            onDragEnd={handleDragEnd}
-                            onDrop={(e) => handleDrop(e, columnId)}
                             className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
                           >
                             <div className="flex items-center gap-1 overflow-hidden">
-                              <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab shrink-0" />
+                              <div 
+                                draggable={true}
+                                onDragStart={(e) => handleDragStart(e, columnId)}
+                                onDragOver={(e) => handleDragOver(e, columnId)}
+                                onDragEnd={handleDragEnd}
+                                onDrop={(e) => handleDrop(e, columnId)}
+                                className="cursor-grab"
+                              >
+                                <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
+                              </div>
                               <span className="truncate">{column.label}</span>
                             </div>
                           </TableHead>
