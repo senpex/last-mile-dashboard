@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -714,14 +715,16 @@ const DriversPage = () => {
     e.dataTransfer.setDragImage(dragImage, 0, 0);
   };
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
+  // Update the type here to accept HTMLElement instead of HTMLDivElement
+  const handleDragOver = (e: React.DragEvent<HTMLElement>, columnId: string) => {
     e.preventDefault();
     if (draggedColumn && draggedColumn !== columnId) {
       setDragOverColumn(columnId);
     }
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
+  // Update the type here to accept HTMLElement instead of HTMLDivElement
+  const handleDrop = (e: React.DragEvent<HTMLElement>, targetColumnId: string) => {
     e.preventDefault();
     if (!draggedColumn || draggedColumn === targetColumnId) {
       setDraggedColumn(null);
