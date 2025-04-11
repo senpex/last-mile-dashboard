@@ -688,7 +688,7 @@ export function DeliverySidebar({
                     placeholder="Search sender names..."
                     value={senderNameSearchTerm}
                     onChange={(e) => setSenderNameSearchTerm(e.target.value)}
-                    className="mb-2"
+                    className="mb-2 w-[90%]"
                   />
                   {getFilteredSenderNames().map(name => (
                     <div key={name} className="flex items-center space-x-2">
@@ -723,7 +723,7 @@ export function DeliverySidebar({
                     placeholder="Search recipient names..."
                     value={recipientNameSearchTerm}
                     onChange={(e) => setRecipientNameSearchTerm(e.target.value)}
-                    className="mb-2"
+                    className="mb-2 w-[90%]"
                   />
                   {getFilteredRecipientNames().map(name => (
                     <div key={name} className="flex items-center space-x-2">
