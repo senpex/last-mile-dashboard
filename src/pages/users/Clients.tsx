@@ -521,7 +521,10 @@ const ClientsPage = () => {
                     {currentItems.map((client) => (
                       <TableRow key={client.id}>
                         {sortedColumns.map((columnId) => (
-                          <TableCell key={columnId} className={columnId === "id" ? "font-sans" : ""}>
+                          <TableCell 
+                            key={`${client.id}-${columnId}`} 
+                            className={columnId === "id" ? "font-sans" : ""}
+                          >
                             {renderCellContent(client, columnId)}
                           </TableCell>
                         ))}
