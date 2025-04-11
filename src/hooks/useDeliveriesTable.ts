@@ -129,6 +129,7 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     { id: "organization", label: "Organization", default: true },
     { id: "distance", label: "Distance", default: true },
     { id: "couriersEarnings", label: "Couriers Earnings", default: true },
+    { id: "notes", label: "Notes", default: true },
   ];
 
   const [visibleColumns, setVisibleColumns] = useState<string[]>(
@@ -279,7 +280,8 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
           delivery.courier,
           delivery.organization,
           delivery.distance,
-          delivery.couriersEarnings
+          delivery.couriersEarnings,
+          delivery.notes
         ];
 
         return searchableFields.some(field => 

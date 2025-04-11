@@ -29,4 +29,5 @@ export interface Delivery {
   organization: string;
   distance: string;
   couriersEarnings?: string;
+  notes?: string;
 }

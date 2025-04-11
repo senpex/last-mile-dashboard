@@ -1,12 +1,14 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { GripVertical, ArrowUp, ArrowDown } from "lucide-react";
+import { GripVertical, ArrowUp, ArrowDown, MessageCircle, FileText } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 import { DeliverySidebar } from "@/components/deliveries/DeliverySidebar";
-import { MessageCircle } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 interface DeliveryTableProps {
   items: Delivery[];
@@ -73,6 +75,7 @@ const getColumnWidth = (columnId: string): string => {
     case "organization": return "w-[150px] min-w-[150px]";
     case "distance": return "w-[100px] min-w-[100px]";
     case "couriersEarnings": return "w-[130px] min-w-[130px]";
+    case "notes": return "w-[200px] min-w-[150px]";
     default: return "w-[120px] min-w-[120px]";
   }
 };
@@ -141,6 +144,18 @@ const DeliveryTable = ({
   sortConfig = { key: null, direction: null },
   requestSort = () => {}
 }: DeliveryTableProps) => {
+  // State to track editing state and notes text
+  const [editingNotes, setEditingNotes] = useState<number | null>(null);
+  const [notesText, setNotesText] = useState<{[key: number]: string}>({});
+
+  // Helper function to update notes for a delivery
+  const updateDeliveryNotes = (deliveryId: number, notes: string) => {
+    // In a real app, you would save this to your backend
+    console.log(`Updating notes for delivery ${deliveryId}:`, notes);
+    setNotesText(prev => ({...prev, [deliveryId]: notes}));
+    setEditingNotes(null);
+  };
+
   // Helper to render sort icons based on current sort state
   const renderSortIcon = (columnId: string) => {
     if (sortConfig.key !== columnId) {
@@ -335,6 +350,68 @@ const DeliveryTable = ({
                                 return <TableCell key={columnId} className={`${getColumnWidth(columnId)} text-left`}>{delivery.distance}</TableCell>;
                               case "couriersEarnings":
                                 return <TableCell key={columnId} className={`${getColumnWidth(columnId)} text-left`}>{delivery.couriersEarnings || "-"}</TableCell>;
+                              case "notes":
+                                return (
+                                  <TableCell key={columnId} className={`${getColumnWidth(columnId)} text-left`}>
+                                    {editingNotes === delivery.id ? (
+                                      <div className="flex flex-col gap-2">
+                                        <Textarea 
+                                          placeholder="Add notes about this delivery..." 
+                                          className="min-h-[80px] text-sm"
+                                          value={notesText[delivery.id] || delivery.notes || ''}
+                                          onChange={(e) => setNotesText({...notesText, [delivery.id]: e.target.value})}
+                                        />
+                                        <div className="flex justify-end gap-2">
+                                          <Button 
+                                            size="sm" 
+                                            variant="outline" 
+                                            className="h-7 px-2 text-xs" 
+                                            onClick={() => setEditingNotes(null)}
+                                          >
+                                            Cancel
+                                          </Button>
+                                          <Button 
+                                            size="sm" 
+                                            className="h-7 px-2 text-xs" 
+                                            onClick={() => updateDeliveryNotes(delivery.id, notesText[delivery.id] || '')}
+                                          >
+                                            Save
+                                          </Button>
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <div 
+                                        className="relative cursor-pointer group flex items-start gap-1" 
+                                        onClick={() => setEditingNotes(delivery.id)}
+                                      >
+                                        <FileText size={14} className="text-muted-foreground shrink-0 mt-0.5" />
+                                        <div>
+                                          {delivery.notes || notesText[delivery.id] ? (
+                                            <p className="text-sm line-clamp-2 mr-5 group-hover:text-primary transition-colors">
+                                              {notesText[delivery.id] || delivery.notes}
+                                            </p>
+                                          ) : (
+                                            <p className="text-muted-foreground italic text-xs group-hover:text-primary transition-colors">
+                                              Click to add notes
+                                            </p>
+                                          )}
+                                          <Button 
+                                            size="sm" 
+                                            variant="ghost" 
+                                            className="absolute right-0 top-0 h-5 w-5 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              setEditingNotes(delivery.id);
+                                            }}
+                                          >
+                                            <span className="sr-only">Edit notes</span>
+                                            <FileText size={12} />
+                                          </Button>
+                                        </div>
+                                      </div>
+                                    )}
+                                  </TableCell>
+                                );
                               default:
                                 return <TableCell key={columnId} className={`${getColumnWidth(columnId)} text-left`}></TableCell>;
                             }
