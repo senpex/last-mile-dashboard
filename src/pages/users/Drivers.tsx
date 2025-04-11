@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -889,7 +888,11 @@ const DriversPage = () => {
       case "email":
         return driver.email;
       case "phone":
-        return driver.phone;
+        return (
+          <div className="max-w-[150px] truncate" title={driver.phone}>
+            {driver.phone}
+          </div>
+        );
       case "zipcode":
         return driver.zipcode;
       case "transport":
