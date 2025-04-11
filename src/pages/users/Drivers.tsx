@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -548,11 +547,6 @@ const DriversPage = () => {
   const [chatOpen, setChatOpen] = useState(false);
   const [driversWithMessages, setDriversWithMessages] = useState<number[]>([]);
   const [editingNotes, setEditingNotes] = useState<number | null>(null);
-  
-  const [sortConfig, setSortConfig] = useState<{ key: string | null; direction: 'ascending' | 'descending' | null }>({
-    key: null,
-    direction: null
-  });
 
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => 
@@ -830,26 +824,23 @@ const DriversPage = () => {
 
   const renderHireStatus = (hireStatusId: string, driverId: number) => {
     const hireStatusText = hireStatusDictionary[hireStatusId] || `Unknown (${hireStatusId})`;
-    const hireStatusColorClass = hireStatusColors[hireStatusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
     
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 p-0">
-            <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${hireStatusColorClass}`}>
-              {hireStatusText}
-            </div>
-            <ChevronDown className="h-4 w-4 ml-1" />
+          <Button variant="outline" size="sm" className="h-8 w-auto">
+            {hireStatusText}
+            <ChevronDown className="ml-1 h-4 w-4 opacity-70" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {Object.keys(hireStatusDictionary).map((statusId) => (
+        <DropdownMenuContent align="start" className="w-[160px]">
+          {Object.entries(hireStatusDictionary).map(([key, value]) => (
             <DropdownMenuItem 
-              key={statusId}
-              onClick={() => updateDriverHireStatus(driverId, statusId)}
-              className="cursor-pointer"
+              key={key}
+              onClick={() => updateDriverHireStatus(driverId, key)}
+              className={hireStatusId === key ? "bg-muted" : ""}
             >
-              {hireStatusDictionary[statusId]}
+              {value}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
@@ -857,76 +848,67 @@ const DriversPage = () => {
     );
   };
 
-  const sortDrivers = useCallback((items: any[]) => {
-    const sortableItems = [...items];
-    
-    if (!sortConfig.key || !sortConfig.direction) {
-      return sortableItems;
+  const renderStripeStatus = (status: StripeStatus) => {
+    let bgColor = '';
+    let icon = null;
+    let text = '';
+
+    switch (status) {
+      case 'verified':
+        bgColor = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+        icon = <Check className="h-3.5 w-3.5 mr-1" />;
+        text = 'Verified';
+        break;
+      case 'unverified':
+        bgColor = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+        icon = <X className="h-3.5 w-3.5 mr-1" />;
+        text = 'Unverified';
+        break;
+      case 'pending':
+        bgColor = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+        icon = <Clock className="h-3.5 w-3.5 mr-1" />;
+        text = 'Pending';
+        break;
     }
-    
-    return sortableItems.sort((a, b) => {
-      let aValue: any = a[sortConfig.key as keyof typeof a];
-      let bValue: any = b[sortConfig.key as keyof typeof b];
-      
-      // Special handling for certain fields
-      if (sortConfig.key === "rating") {
-        aValue = parseFloat(aValue.toString());
-        bValue = parseFloat(bValue.toString());
-      }
-      
-      if (aValue === null || aValue === undefined || aValue === '') {
-        return sortConfig.direction === 'ascending' ? -1 : 1;
-      }
-      if (bValue === null || bValue === undefined || bValue === '') {
-        return sortConfig.direction === 'ascending' ? 1 : -1;
-      }
-      
-      if (aValue < bValue) {
-        return sortConfig.direction === 'ascending' ? -1 : 1;
-      }
-      if (aValue > bValue) {
-        return sortConfig.direction === 'ascending' ? 1 : -1;
-      }
-      return 0;
-    });
-  }, [sortConfig]);
-  
-  useEffect(() => {
-    setFilteredDrivers(prevDrivers => sortDrivers(prevDrivers));
-  }, [sortConfig, sortDrivers]);
-  
-  const requestSort = (key: string) => {
-    let direction: 'ascending' | 'descending' | null = 'ascending';
-    
-    if (sortConfig.key === key) {
-      if (sortConfig.direction === 'ascending') {
-        direction = 'descending';
-      } else if (sortConfig.direction === 'descending') {
-        direction = null;
-      }
-    }
-    
-    setSortConfig({ key, direction });
+
+    return (
+      <div className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${bgColor}`}>
+        {icon}
+        {text}
+      </div>
+    );
   };
 
-  const renderCellContent = (columnId: string, driver: any) => {
+  const renderCellContent = (driver: any, columnId: string) => {
     switch (columnId) {
       case "id":
         return driver.id;
       case "name":
         return driver.name;
       case "email":
-        return <div className="truncate max-w-[200px]">{driver.email}</div>;
+        return driver.email;
       case "phone":
-        return <div className="truncate max-w-[150px]">{driver.phone}</div>;
+        return (
+          <div className="max-w-[150px] truncate" title={driver.phone}>
+            {driver.phone}
+          </div>
+        );
       case "zipcode":
         return driver.zipcode;
       case "transport":
         return (
-          <div className="flex items-center gap-1 flex-wrap">
-            {driver.transports.map((transportId: string, idx: number) => (
-              <div key={`${driver.id}-${transportId}-${idx}`} className="flex items-center justify-center p-1">
-                <TransportIcon transportType={transportId as TransportType} size={14} className="h-[14px] w-[14px]" />
+          <div className="flex items-center gap-2">
+            {driver.transports.map((transportId: string) => (
+              <div 
+                key={transportId} 
+                className="flex items-center justify-center p-2 rounded-md bg-muted" 
+                title={transportTypes[transportId] || `Transport ID: ${transportId}`}
+              >
+                <TransportIcon 
+                  transportType={transportId as TransportType} 
+                  size={14} 
+                  className="h-[14px] w-[14px]" 
+                />
               </div>
             ))}
           </div>
@@ -938,207 +920,239 @@ const DriversPage = () => {
       case "hireStatus":
         return renderHireStatus(driver.hireStatus, driver.id);
       case "stripeStatus":
-        return (
-          <Badge variant={
-            driver.stripeStatus === 'verified' ? 'success' :
-            driver.stripeStatus === 'pending' ? 'warning' : 'outline'
-          }>
-            {driver.stripeStatus}
-          </Badge>
-        );
+        return renderStripeStatus(driver.stripeStatus);
       case "notes":
         if (editingNotes === driver.id) {
           return (
             <div className="flex flex-col gap-2">
               <Textarea 
-                value={driver.notes} 
+                placeholder="Add notes about this driver..." 
+                className="min-h-[80px] text-sm"
+                value={driver.notes || ''}
                 onChange={(e) => handleNotesChange(driver.id, e.target.value)}
-                className="h-20 min-h-20"
               />
               <div className="flex justify-end gap-2">
-                <Button size="sm" variant="ghost" onClick={() => setEditingNotes(null)}>
-                  <X className="h-4 w-4 mr-1" /> Cancel
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="h-7 px-2 text-xs" 
+                  onClick={() => setEditingNotes(null)}
+                >
+                  Cancel
                 </Button>
-                <Button size="sm" variant="default" onClick={() => saveNotes(driver.id)}>
-                  <Check className="h-4 w-4 mr-1" /> Save
+                <Button 
+                  size="sm" 
+                  className="h-7 px-2 text-xs" 
+                  onClick={() => saveNotes(driver.id)}
+                >
+                  Save
                 </Button>
               </div>
             </div>
           );
         } else {
           return (
-            <div className="flex items-center justify-between">
-              <div className="truncate max-w-[150px]">
-                {driver.notes || "No notes"}
+            <div 
+              className="relative cursor-pointer group flex items-start gap-1" 
+              onClick={() => handleNotesClick(driver.id)}
+            >
+              <FileText size={14} className="text-muted-foreground shrink-0 mt-0.5" />
+              <div>
+                {driver.notes ? (
+                  <p className={cn(
+                    "text-sm max-w-[200px] truncate overflow-hidden whitespace-nowrap",
+                    "group-hover:text-primary transition-colors"
+                  )}>
+                    {driver.notes}
+                  </p>
+                ) : (
+                  <p className="text-muted-foreground italic text-xs group-hover:text-primary transition-colors">
+                    Click to add notes
+                  </p>
+                )}
               </div>
-              <Button variant="ghost" size="icon" onClick={() => handleNotesClick(driver.id)}>
-                <Pencil className="h-4 w-4" />
-              </Button>
             </div>
           );
         }
       case "actions":
         return (
-          <div className="flex items-center gap-1">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => handleCourierClick(driver.name)}
-            >
-              <div className="relative">
-                <MessageCircle className="h-4 w-4" />
-                {driversWithMessages.includes(driver.id) && (
-                  <div className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full" />
-                )}
-              </div>
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-            >
-              <FileText className="h-4 w-4" />
-            </Button>
-          </div>
+          <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
+            View
+          </Button>
         );
       default:
         return null;
     }
   };
 
-  return (
-    <Layout>
-      <div className="flex flex-col w-full h-full p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">Drivers</h1>
-          <div className="flex items-center gap-3">
-            <div className="relative w-64">
-              <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search drivers..."
-                className="pl-8"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+  return <Layout showFooter={false}>
+      <div className="flex flex-col h-screen w-full">
+        <div className="px-0 py-6 flex-1 overflow-auto">
+          <div className="space-y-4 w-full">
+            <div className="flex items-center justify-between px-6">
+              <div className="flex items-center gap-4">
+                <h1 className="text-2xl font-bold">Drivers Management</h1>
+                <Button size="sm" className="flex items-center gap-1 text-xs px-2 py-1 h-9">
+                  <Plus className="w-3 h-3" />
+                  Add Driver
+                </Button>
+              </div>
             </div>
-            <ColumnSelector
-              columns={availableColumns}
-              visibleColumns={visibleColumns}
-              setVisibleColumns={setVisibleColumns}
-            />
-            <Button>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Driver
-            </Button>
+            
+            <div className="flex items-center justify-end px-6">
+              <div className="flex items-center h-9 gap-2">
+                <div className="relative h-9">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input type="search" placeholder="Search drivers..." className="w-[200px] pl-8 text-xs h-9" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+                </div>
+                <ColumnSelector columns={availableColumns} visibleColumns={visibleColumns} setVisibleColumns={setVisibleColumns} />
+              </div>
+            </div>
+
+            <div className="border rounded-md mx-6">
+              <UsersTableContainer stickyHeader={false}>
+                <Table>
+                  <TableHeader className="bg-muted/50">
+                    <TableRow>
+                      {sortedColumns.map((columnId) => {
+                        const column = availableColumns.find(col => col.id === columnId);
+                        if (!column) return null;
+                        return <TableHead 
+                          key={columnId} 
+                          dragOver={dragOverColumn === columnId}
+                          className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
+                        >
+                          <div className="flex items-center gap-1 overflow-hidden">
+                            <div 
+                              draggable={true} 
+                              onDragStart={e => handleDragStart(e, columnId)} 
+                              onDragOver={e => handleDragOver(e, columnId)} 
+                              onDragEnd={handleDragEnd} 
+                              onDrop={e => handleDrop(e, columnId)} 
+                              className="cursor-grab"
+                            >
+                              <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
+                            </div>
+                            <span className="truncate">{column.label}</span>
+                          </div>
+                        </TableHead>;
+                      })}
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {currentItems.map((driver) => (
+                      <TableRow key={driver.id}>
+                        {sortedColumns.map((columnId) => (
+                          <TableCell 
+                            key={`${driver.id}-${columnId}`} 
+                            className={columnId === "id" ? "font-sans" : ""}
+                          >
+                            {renderCellContent(driver, columnId)}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </UsersTableContainer>
+            </div>
           </div>
         </div>
-        
-        <UsersTableContainer>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                {sortedColumns.map((columnId) => {
-                  const column = availableColumns.find(col => col.id === columnId);
-                  return (
-                    <TableHead
-                      key={columnId}
-                      className="whitespace-nowrap"
-                      dragOver={dragOverColumn === columnId}
-                      sortable={['id', 'name', 'email', 'phone', 'zipcode', 'rating', 'status'].includes(columnId)}
-                      sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
-                      onClick={() => {
-                        if (['id', 'name', 'email', 'phone', 'zipcode', 'rating', 'status'].includes(columnId)) {
-                          requestSort(columnId);
-                        }
-                      }}
-                    >
-                      <div
-                        className="flex items-center"
-                        draggable
-                        onDragStart={(e) => handleDragStart(e, columnId)}
-                        onDragOver={(e) => handleDragOver(e, columnId)}
-                        onDrop={(e) => handleDrop(e, columnId)}
-                        onDragEnd={handleDragEnd}
-                      >
-                        <GripVertical className="h-4 w-4 mr-1 text-muted-foreground cursor-grab" />
-                        {column?.label || columnId}
-                      </div>
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {isLoading ? (
-                <TableRow>
-                  <TableCell colSpan={sortedColumns.length} className="h-24 text-center">
-                    Loading...
-                  </TableCell>
-                </TableRow>
-              ) : currentItems.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={sortedColumns.length} className="h-24 text-center">
-                    No drivers found.
-                  </TableCell>
-                </TableRow>
-              ) : (
-                currentItems.map((driver) => (
-                  <TableRow key={driver.id}>
-                    {sortedColumns.map((columnId) => (
-                      <TableCell key={`${driver.id}-${columnId}`}>
-                        {renderCellContent(columnId, driver)}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </UsersTableContainer>
-        
-        <div className="mt-4">
-          <Pagination>
-            <PaginationInfo total={totalItems} />
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious onClick={() => handlePageChange(currentPage - 1)} />
-              </PaginationItem>
-              {getPageNumbers().map((pageNumber, index) => (
-                <PaginationItem key={`page-${pageNumber}-${index}`}>
-                  {pageNumber === -1 || pageNumber === -2 ? (
-                    <PaginationEllipsis />
-                  ) : (
-                    <PaginationLink
-                      isActive={pageNumber === currentPage}
-                      onClick={() => handlePageChange(pageNumber)}
-                    >
-                      {pageNumber}
-                    </PaginationLink>
-                  )}
+
+        <div className="border-t mt-auto w-full">
+          <div className="px-6 py-4 flex justify-between items-center">
+            <PaginationInfo 
+              total={totalItems} 
+              pageSize={pageSize} 
+              currentPage={currentPage} 
+            />
+            
+            <Pagination className="flex-1 flex justify-center">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(1);
+                    }}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === 1}
+                  >
+                    <span className="sr-only">First page</span>
+                    ⟪
+                  </PaginationLink>
                 </PaginationItem>
-              ))}
-              <PaginationItem>
-                <PaginationNext onClick={() => handlePageChange(currentPage + 1)} />
-              </PaginationItem>
-            </PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage - 1);
+                    }}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === 1}
+                  />
+                </PaginationItem>
+                
+                {getPageNumbers().map((page, i) => (
+                  <PaginationItem key={i}>
+                    {page === -1 || page === -2 ? (
+                      <PaginationEllipsis />
+                    ) : (
+                      <PaginationLink 
+                        href="#" 
+                        isActive={page === currentPage}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handlePageChange(page);
+                        }}
+                      >
+                        {page}
+                      </PaginationLink>
+                    )}
+                  </PaginationItem>
+                ))}
+                
+                <PaginationItem>
+                  <PaginationNext 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage + 1);
+                    }}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === totalPages}
+                  />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(totalPages);
+                    }}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                    aria-disabled={currentPage === totalPages}
+                  >
+                    <span className="sr-only">Last page</span>
+                    ⟫
+                  </PaginationLink>
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+            
             <PaginationSize
               sizes={pageSizeOptions}
               pageSize={pageSize}
               onChange={handlePageSizeChange}
             />
-          </Pagination>
+          </div>
         </div>
       </div>
       
-      {chatOpen && selectedCourier && (
-        <CourierChat
-          courierName={selectedCourier}
-          onClose={handleChatClose}
-        />
-      )}
-    </Layout>
-  );
+      {chatOpen && selectedCourier && <CourierChat open={chatOpen} courierName={selectedCourier} onClose={handleChatClose} hasUnreadMessages={false} />}
+    </Layout>;
 };
 
 export default DriversPage;
