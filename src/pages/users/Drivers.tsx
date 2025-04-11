@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus, Search, MessageCircle, ChevronDown, Check, X, Clock, Pencil } from "lucide-react";
+import { GripVertical, Plus, Search, MessageCircle, ChevronDown, Check, X, Clock, Pencil, FileText } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
@@ -954,51 +954,62 @@ const DriversPage = () => {
                             {renderStripeStatus(driver.stripeStatus)}
                           </TableCell>}
                         {sortedColumns.includes("notes") && (
-                          <TableCell>
+                          <TableCell key="notes" className="text-left">
                             {editingNotes === driver.id ? (
-                              <div className="flex flex-col space-y-2">
+                              <div className="flex flex-col gap-2">
                                 <Textarea 
-                                  value={driver.notes} 
-                                  onChange={(e) => handleNotesChange(driver.id, e.target.value)}
+                                  placeholder="Add notes about this driver..." 
                                   className="min-h-[80px] text-sm"
-                                  placeholder="Add notes about this driver..."
+                                  value={driver.notes || ''}
+                                  onChange={(e) => handleNotesChange(driver.id, e.target.value)}
                                 />
-                                <div className="flex space-x-2">
-                                  <Button 
-                                    size="sm" 
-                                    onClick={() => saveNotes(driver.id)}
-                                  >
-                                    Save
-                                  </Button>
+                                <div className="flex justify-end gap-2">
                                   <Button 
                                     size="sm" 
                                     variant="outline" 
+                                    className="h-7 px-2 text-xs" 
                                     onClick={() => setEditingNotes(null)}
                                   >
                                     Cancel
+                                  </Button>
+                                  <Button 
+                                    size="sm" 
+                                    className="h-7 px-2 text-xs" 
+                                    onClick={() => saveNotes(driver.id)}
+                                  >
+                                    Save
                                   </Button>
                                 </div>
                               </div>
                             ) : (
                               <div 
-                                className="flex justify-between items-start group cursor-text"
+                                className="relative cursor-pointer group flex items-start gap-1" 
                                 onClick={() => setEditingNotes(driver.id)}
                               >
-                                <div className="text-sm">
+                                <FileText size={14} className="text-muted-foreground shrink-0 mt-0.5" />
+                                <div>
                                   {driver.notes ? (
-                                    driver.notes
+                                    <p className="text-sm line-clamp-2 mr-5 group-hover:text-primary transition-colors">
+                                      {driver.notes}
+                                    </p>
                                   ) : (
-                                    <span className="text-muted-foreground italic">No notes</span>
+                                    <p className="text-muted-foreground italic text-xs group-hover:text-primary transition-colors">
+                                      Click to add notes
+                                    </p>
                                   )}
+                                  <Button 
+                                    size="sm" 
+                                    variant="ghost" 
+                                    className="absolute right-0 top-0 h-5 w-5 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setEditingNotes(driver.id);
+                                    }}
+                                  >
+                                    <span className="sr-only">Edit notes</span>
+                                    <FileText size={12} />
+                                  </Button>
                                 </div>
-                                <Button 
-                                  variant="ghost" 
-                                  size="icon" 
-                                  className="opacity-0 group-hover:opacity-100 h-6 w-6"
-                                >
-                                  <Pencil className="h-3 w-3" />
-                                  <span className="sr-only">Edit notes</span>
-                                </Button>
                               </div>
                             )}
                           </TableCell>
