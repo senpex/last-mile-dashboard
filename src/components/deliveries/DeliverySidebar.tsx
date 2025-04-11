@@ -453,7 +453,7 @@ export function DeliverySidebar({
             onValueChange={setIsAccordionOpen}
           >
             <AccordionItem value="status" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.98em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.88em]">
                 <span className="flex-grow">Status</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -498,7 +498,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="zipcode" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.98em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.88em]">
                 <span className="flex-grow">Zipcode</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -533,7 +533,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="city" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.98em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.88em]">
                 <span className="flex-grow">City</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -568,7 +568,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="state" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.98em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.88em]">
                 <span className="flex-grow">State</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -603,7 +603,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="pickupAddress" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.98em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.88em]">
                 <span className="flex-grow">Pickup Address</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -638,7 +638,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="dropoffAddress" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.98em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.88em]">
                 <span className="flex-grow">Dropoff Address</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -673,7 +673,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="senderName" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.98em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.88em]">
                 <span className="flex-grow">Sender Name</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -708,7 +708,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="recipientName" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.98em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.88em]">
                 <span className="flex-grow">Recipient Name</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -743,7 +743,7 @@ export function DeliverySidebar({
             </AccordionItem>
             
             <AccordionItem value="organization" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.98em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.88em]">
                 <span className="flex-grow">Organization</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -778,7 +778,7 @@ export function DeliverySidebar({
             </AccordionItem>
 
             <AccordionItem value="courier" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.98em]">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 space-x-24 text-[0.88em]">
                 <span className="flex-grow">Courier</span>
               </AccordionTrigger>
               <AccordionContent>
