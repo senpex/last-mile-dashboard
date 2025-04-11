@@ -25,6 +25,11 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
   const [selectedCouriers, setSelectedCouriers] = useState<string[]>([]);
   const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
   
+  const [sortConfig, setSortConfig] = useState<{ key: string | null; direction: 'ascending' | 'descending' | null }>({
+    key: null,
+    direction: null
+  });
+  
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
   const [selectedPickupAddresses, setSelectedPickupAddresses] = useState<string[]>([]);
@@ -390,6 +395,114 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     setCurrentPage(1);
   }, [currentUserName]);
 
+  const sortDeliveries = useCallback((items: Delivery[]) => {
+    const sortableItems = [...items];
+    
+    if (!sortConfig.key || !sortConfig.direction) {
+      return sortableItems;
+    }
+    
+    return sortableItems.sort((a, b) => {
+      let aValue: any;
+      let bValue: any;
+      
+      switch (sortConfig.key) {
+        case "status":
+          aValue = a.status;
+          bValue = b.status;
+          break;
+        case "packageId":
+          aValue = a.packageId;
+          bValue = b.packageId;
+          break;
+        case "orderName":
+          aValue = a.orderName;
+          bValue = b.orderName;
+          break;
+        case "customerName":
+          aValue = a.customerName;
+          bValue = b.customerName;
+          break;
+        case "pickupTime":
+          aValue = a.pickupTime;
+          bValue = b.pickupTime;
+          break;
+        case "dropoffTime":
+          aValue = a.dropoffTime;
+          bValue = b.dropoffTime;
+          break;
+        case "pickupLocation":
+          aValue = a.pickupLocation.name;
+          bValue = b.pickupLocation.name;
+          break;
+        case "dropoffLocation":
+          aValue = a.dropoffLocation.name;
+          bValue = b.dropoffLocation.name;
+          break;
+        case "price":
+          aValue = parseFloat(a.price.replace(/[^0-9.-]+/g, ''));
+          bValue = parseFloat(b.price.replace(/[^0-9.-]+/g, ''));
+          break;
+        case "tip":
+          aValue = parseFloat(a.tip.replace(/[^0-9.-]+/g, ''));
+          bValue = parseFloat(b.tip.replace(/[^0-9.-]+/g, ''));
+          break;
+        case "courier":
+          aValue = a.courier;
+          bValue = b.courier;
+          break;
+        case "organization":
+          aValue = a.organization;
+          bValue = b.organization;
+          break;
+        case "distance":
+          aValue = parseFloat(a.distance);
+          bValue = parseFloat(b.distance);
+          break;
+        case "couriersEarnings":
+          aValue = a.couriersEarnings ? parseFloat(a.couriersEarnings.replace(/[^0-9.-]+/g, '')) : 0;
+          bValue = b.couriersEarnings ? parseFloat(b.couriersEarnings.replace(/[^0-9.-]+/g, '')) : 0;
+          break;
+        default:
+          aValue = a[sortConfig.key as keyof Delivery];
+          bValue = b[sortConfig.key as keyof Delivery];
+      }
+      
+      if (aValue === null || aValue === undefined || aValue === '') {
+        return sortConfig.direction === 'ascending' ? -1 : 1;
+      }
+      if (bValue === null || bValue === undefined || bValue === '') {
+        return sortConfig.direction === 'ascending' ? 1 : -1;
+      }
+      
+      if (aValue < bValue) {
+        return sortConfig.direction === 'ascending' ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortConfig.direction === 'ascending' ? 1 : -1;
+      }
+      return 0;
+    });
+  }, [sortConfig]);
+
+  const requestSort = (key: string) => {
+    let direction: 'ascending' | 'descending' | null = 'ascending';
+    
+    if (sortConfig.key === key) {
+      if (sortConfig.direction === 'ascending') {
+        direction = 'descending';
+      } else if (sortConfig.direction === 'descending') {
+        direction = null;
+      }
+    }
+    
+    setSortConfig({ key, direction });
+  };
+
+  useEffect(() => {
+    setFilteredDeliveries(prevDeliveries => sortDeliveries(prevDeliveries));
+  }, [sortConfig, sortDeliveries]);
+
   const totalItems = filteredDeliveries.length;
   const totalPages = Math.ceil(totalItems / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
@@ -611,5 +724,8 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
     allRecipientNames,
     selectedRecipientNames,
     setSelectedRecipientNames,
+    
+    sortConfig,
+    requestSort
   };
 }

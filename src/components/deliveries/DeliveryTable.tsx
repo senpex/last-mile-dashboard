@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { GripVertical } from "lucide-react";
+import { GripVertical, ArrowUp, ArrowDown } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
 import { ColumnOption } from "@/components/table/ColumnSelector";
@@ -53,6 +53,9 @@ interface DeliveryTableProps {
   allRecipientNames: string[];
   selectedRecipientNames: string[];
   setSelectedRecipientNames: (names: string[]) => void;
+  // Add sorting props
+  sortConfig?: { key: string | null; direction: 'ascending' | 'descending' | null };
+  requestSort?: (key: string) => void;
 }
 
 const getColumnWidth = (columnId: string): string => {
@@ -134,8 +137,22 @@ const DeliveryTable = ({
   setSelectedSenderNames,
   allRecipientNames,
   selectedRecipientNames,
-  setSelectedRecipientNames
+  setSelectedRecipientNames,
+  // Add sorting props with default values
+  sortConfig = { key: null, direction: null },
+  requestSort = () => {}
 }: DeliveryTableProps) => {
+  // Helper to render sort icons based on current sort state
+  const renderSortIcon = (columnId: string) => {
+    if (sortConfig.key !== columnId) {
+      return null;
+    }
+    
+    return sortConfig.direction === 'ascending' 
+      ? <ArrowUp className="h-4 w-4 ml-1 text-primary" /> 
+      : <ArrowDown className="h-4 w-4 ml-1 text-primary" />;
+  };
+
   return (
     <div className="flex-1 overflow-hidden px-px">
       <div className="flex h-full">
@@ -193,6 +210,7 @@ const DeliveryTable = ({
                           <TableHead 
                             key={columnId} 
                             className={`${getColumnWidth(columnId)} text-left whitespace-nowrap`}
+                            onClick={() => requestSort(columnId)}
                           >
                             <div className="flex items-center gap-1">
                               <div 
@@ -205,7 +223,13 @@ const DeliveryTable = ({
                               >
                                 <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
                               </div>
-                              <span className="truncate">{column.label}</span>
+                              <button 
+                                className="flex items-center cursor-pointer hover:text-primary transition-colors"
+                                type="button"
+                              >
+                                <span className="truncate">{column.label}</span>
+                                {renderSortIcon(columnId)}
+                              </button>
                             </div>
                           </TableHead>
                         );

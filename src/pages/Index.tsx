@@ -78,7 +78,10 @@ const Index = () => {
     setSelectedSenderNames,
     allRecipientNames,
     selectedRecipientNames,
-    setSelectedRecipientNames
+    setSelectedRecipientNames,
+    // Add sorting props
+    sortConfig,
+    requestSort
   } = useDeliveriesTable({ 
     deliveries: deliveriesData,
     showMyDeliveriesOnly 
@@ -173,6 +176,9 @@ const Index = () => {
               allRecipientNames={allRecipientNames}
               selectedRecipientNames={selectedRecipientNames}
               setSelectedRecipientNames={setSelectedRecipientNames}
+              // Add sorting props
+              sortConfig={sortConfig}
+              requestSort={requestSort}
             />
             
             <DeliveryPagination 
