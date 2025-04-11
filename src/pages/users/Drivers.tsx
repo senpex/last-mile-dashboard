@@ -646,6 +646,10 @@ const DriversPage = () => {
     setSelectedCourier(null);
   };
 
+  const handleNotesClick = (driverId: number) => {
+    setEditingNotes(driverId);
+  };
+
   const handleNotesChange = (driverId: number, notes: string) => {
     setDrivers(prevDrivers => 
       prevDrivers.map(driver => 
@@ -946,6 +950,7 @@ const DriversPage = () => {
           return (
             <div 
               className="relative cursor-pointer group flex items-start gap-1" 
+              onClick={() => handleNotesClick(driver.id)}
             >
               <FileText size={14} className="text-muted-foreground shrink-0 mt-0.5" />
               <div>
