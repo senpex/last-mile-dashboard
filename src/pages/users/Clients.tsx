@@ -285,14 +285,15 @@ const ClientsPage = () => {
     e.dataTransfer.setDragImage(dragImage, 0, 0);
   };
 
-  const handleDragOver = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
+  // Update the type here to accept HTMLDivElement
+  const handleDragOver = (e: React.DragEvent<HTMLElement>, columnId: string) => {
     e.preventDefault();
     if (draggedColumn && draggedColumn !== columnId) {
       setDragOverColumn(columnId);
     }
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLTableCellElement>, targetColumnId: string) => {
+  const handleDrop = (e: React.DragEvent<HTMLElement>, targetColumnId: string) => {
     e.preventDefault();
     
     if (!draggedColumn || draggedColumn === targetColumnId) {
