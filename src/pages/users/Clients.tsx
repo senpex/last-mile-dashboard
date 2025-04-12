@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -54,6 +54,11 @@ const ClientsPage = () => {
   const [columnOrder, setColumnOrder] = useState<string[]>(
     availableColumns.filter(col => col.default).map(col => col.id)
   );
+
+  const [sortConfig, setSortConfig] = useState<{ key: string | null; direction: 'ascending' | 'descending' | null }>({
+    key: null,
+    direction: null
+  });
 
   const clients = [
     { 
@@ -266,6 +271,47 @@ const ClientsPage = () => {
     return pages;
   };
 
+  const requestSort = (key: string) => {
+    let direction: 'ascending' | 'descending' | null = 'ascending';
+    
+    if (sortConfig.key === key) {
+      if (sortConfig.direction === 'ascending') {
+        direction = 'descending';
+      } else if (sortConfig.direction === 'descending') {
+        direction = null;
+      }
+    }
+    
+    setSortConfig({ key, direction });
+  };
+
+  const sortClients = useCallback((items: any[]) => {
+    if (!sortConfig.key || sortConfig.direction === null) return [...items];
+    
+    return [...items].sort((a, b) => {
+      const key = sortConfig.key as string;
+      if (a[key] === undefined || b[key] === undefined) return 0;
+      
+      if (key === 'signupDate' || key === 'lastOrderDate') {
+        const dateA = new Date(a[key]).getTime();
+        const dateB = new Date(b[key]).getTime();
+        return sortConfig.direction === 'ascending' ? dateA - dateB : dateB - dateA;
+      } else if (key === 'orderCount' || key === 'id') {
+        return sortConfig.direction === 'ascending' ? a[key] - b[key] : b[key] - a[key];
+      } else {
+        const valueA = String(a[key]).toLowerCase();
+        const valueB = String(b[key]).toLowerCase();
+        if (valueA < valueB) {
+          return sortConfig.direction === 'ascending' ? -1 : 1;
+        }
+        if (valueA > valueB) {
+          return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+      }
+    });
+  }, [sortConfig]);
+
   useEffect(() => {
     setColumnOrder(prevOrder => {
       const newOrder = [...prevOrder];
@@ -293,11 +339,11 @@ const ClientsPage = () => {
         client.phone.includes(searchTerm) ||
         client.id.toString().includes(searchTerm)
       );
-      setFilteredClients(filtered);
+      setFilteredClients(sortClients(filtered));
     } else {
-      setFilteredClients(clients);
+      setFilteredClients(sortClients(clients));
     }
-  }, [searchTerm]);
+  }, [searchTerm, clients, sortClients]);
 
   const handleDragStart = (e: React.DragEvent<HTMLElement>, columnId: string) => {
     setDraggedColumn(columnId);
@@ -491,11 +537,17 @@ const ClientsPage = () => {
                         const column = availableColumns.find(col => col.id === columnId);
                         if (!column) return null;
                         
+                        const isSortable = ['id', 'organization', 'contact', 'email', 'phone', 'type', 
+                          'signupDate', 'orderCount', 'lastOrderDate'].includes(columnId);
+                        
                         return (
                           <TableHead 
                             key={columnId}
                             dragOver={dragOverColumn === columnId}
                             className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
+                            sortable={isSortable}
+                            sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
+                            onClick={() => isSortable && requestSort(columnId)}
                           >
                             <div className="flex items-center gap-1 overflow-hidden">
                               <div 

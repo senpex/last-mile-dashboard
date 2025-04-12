@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Sidebar from "@/components/layout/Sidebar";
@@ -60,7 +59,6 @@ const Index = () => {
     allZipcodes,
     selectedZipcodes,
     setSelectedZipcodes,
-    // New filter states
     allCities,
     selectedCities,
     setSelectedCities,
@@ -79,7 +77,6 @@ const Index = () => {
     allRecipientNames,
     selectedRecipientNames,
     setSelectedRecipientNames,
-    // Add sorting props
     sortConfig,
     requestSort
   } = useDeliveriesTable({ 
@@ -157,7 +154,6 @@ const Index = () => {
               allZipcodes={allZipcodes}
               selectedZipcodes={selectedZipcodes}
               setSelectedZipcodes={setSelectedZipcodes}
-              // New filter props
               allCities={allCities}
               selectedCities={selectedCities}
               setSelectedCities={setSelectedCities}
@@ -176,7 +172,6 @@ const Index = () => {
               allRecipientNames={allRecipientNames}
               selectedRecipientNames={selectedRecipientNames}
               setSelectedRecipientNames={setSelectedRecipientNames}
-              // Add sorting props
               sortConfig={sortConfig}
               requestSort={requestSort}
             />
