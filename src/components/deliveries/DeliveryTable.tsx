@@ -155,8 +155,8 @@ const DeliveryTable = ({
     }
     
     return sortConfig.direction === 'ascending' 
-      ? <ArrowUp className="h-4 w-4 ml-1 text-destructive" /> 
-      : <ArrowDown className="h-4 w-4 ml-1 text-destructive" />;
+      ? <ChevronUp className="h-4 w-4 ml-1 text-destructive" /> 
+      : <ChevronDown className="h-4 w-4 ml-1 text-destructive" />;
   };
 
   const renderCellContent = (delivery: Delivery, columnId: string) => {
