@@ -1077,7 +1077,7 @@ const DriversPage = () => {
             <div className="flex items-center justify-between px-6">
               <div className="flex items-center gap-4">
                 <h1 className="text-2xl font-bold">Drivers Management</h1>
-                <Button size="sm" className="flex items-center gap-1 text-xs px-2 py-1 h-9">
+                <Button size="sm" className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 h-7">
                   <Plus className="w-3 h-3" />
                   Add Driver
                 </Button>
