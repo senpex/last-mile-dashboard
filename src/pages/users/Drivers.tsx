@@ -547,6 +547,10 @@ const DriversPage = () => {
   const [chatOpen, setChatOpen] = useState(false);
   const [driversWithMessages, setDriversWithMessages] = useState<number[]>([]);
   const [editingNotes, setEditingNotes] = useState<number | null>(null);
+  const [sortConfig, setSortConfig] = useState<{ key: string | null; direction: 'ascending' | 'descending' | null }>({
+    key: null,
+    direction: null
+  });
 
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => 
@@ -985,6 +989,82 @@ const DriversPage = () => {
     }
   };
 
+  const requestSort = (key: string) => {
+    let direction: 'ascending' | 'descending' | null = 'ascending';
+    
+    if (sortConfig.key === key) {
+      if (sortConfig.direction === 'ascending') {
+        direction = 'descending';
+      } else if (sortConfig.direction === 'descending') {
+        direction = null;
+      }
+    }
+    
+    setSortConfig({ key, direction });
+  };
+
+  useEffect(() => {
+    if (sortConfig.key && sortConfig.direction) {
+      const sortedDrivers = [...filteredDrivers].sort((a, b) => {
+        if (sortConfig.key === null) return 0;
+        
+        let aValue: any;
+        let bValue: any;
+        
+        switch (sortConfig.key) {
+          case "id":
+            aValue = a.id;
+            bValue = b.id;
+            break;
+          case "name":
+            aValue = a.name;
+            bValue = b.name;
+            break;
+          case "email":
+            aValue = a.email;
+            bValue = b.email;
+            break;
+          case "phone":
+            aValue = a.phone;
+            bValue = b.phone;
+            break;
+          case "zipcode":
+            aValue = a.zipcode;
+            bValue = b.zipcode;
+            break;
+          case "rating":
+            aValue = a.rating;
+            bValue = b.rating;
+            break;
+          case "status":
+            aValue = a.status;
+            bValue = b.status;
+            break;
+          case "hireStatus":
+            aValue = a.hireStatus;
+            bValue = b.hireStatus;
+            break;
+          default:
+            aValue = a[sortConfig.key as keyof typeof a];
+            bValue = b[sortConfig.key as keyof typeof b];
+        }
+        
+        if (aValue === null || aValue === undefined) return sortConfig.direction === 'ascending' ? -1 : 1;
+        if (bValue === null || bValue === undefined) return sortConfig.direction === 'ascending' ? 1 : -1;
+        
+        if (aValue < bValue) {
+          return sortConfig.direction === 'ascending' ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+      });
+      
+      setFilteredDrivers(sortedDrivers);
+    }
+  }, [sortConfig]);
+
   return <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
         <div className="px-0 py-6 flex-1 overflow-auto">
@@ -1021,6 +1101,9 @@ const DriversPage = () => {
                           key={columnId} 
                           dragOver={dragOverColumn === columnId}
                           className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
+                          sortable={columnId !== "actions" && columnId !== "transport" && columnId !== "notes"}
+                          sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
+                          onSort={() => requestSort(columnId)}
                         >
                           <div className="flex items-center gap-1 overflow-hidden">
                             <div 
