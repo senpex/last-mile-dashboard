@@ -92,8 +92,8 @@ const TableHead = React.forwardRef<
       {children}
       {sortable && sortDirection && (
         <span className="ml-1">
-          {sortDirection === 'ascending' && <ChevronUp className="h-4 w-4 text-primary" />}
-          {sortDirection === 'descending' && <ChevronDown className="h-4 w-4 text-primary" />}
+          {sortDirection === 'ascending' && <ChevronUp className="h-4 w-4 text-[#ea384c]" />}
+          {sortDirection === 'descending' && <ChevronDown className="h-4 w-4 text-[#ea384c]" />}
         </span>
       )}
     </div>
