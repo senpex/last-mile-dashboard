@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { GripVertical, ArrowUp, ArrowDown, MessageCircle, FileText } from "lucide-react";
+import { GripVertical, ArrowUp, ArrowDown, MessageCircle, FileText, ChevronUp, ChevronDown } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
 import { ColumnOption } from "@/components/table/ColumnSelector";
