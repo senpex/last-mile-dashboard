@@ -16,6 +16,7 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import CourierChat from '@/components/chat/CourierChat';
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { DeliveryFilters } from '@/components/deliveries/DeliveryFilters';
 
 type StripeStatus = 'verified' | 'unverified' | 'pending';
 
@@ -552,6 +553,9 @@ const DriversPage = () => {
     direction: null
   });
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
+  const [dateRange, setDateRange] = useState<any>(undefined);
+  const [timezone, setTimezone] = useState<string>("America/New_York");
+  const [activeView, setActiveView] = useState("main");
 
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => 
@@ -1105,54 +1109,125 @@ const DriversPage = () => {
             </div>
 
             <div className="border rounded-md mx-6">
-              <UsersTableContainer stickyHeader={false}>
-                <Table>
-                  <TableHeader className="bg-muted/50">
-                    <TableRow>
-                      {sortedColumns.map((columnId) => {
-                        const column = availableColumns.find(col => col.id === columnId);
-                        if (!column) return null;
-                        return <TableHead 
-                          key={columnId} 
-                          dragOver={dragOverColumn === columnId}
-                          className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
-                          sortable={columnId !== "actions" && columnId !== "transport" && columnId !== "notes"}
-                          sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
-                          onSort={() => requestSort(columnId)}
-                        >
-                          <div className="flex items-center gap-1 overflow-hidden">
-                            <div 
-                              draggable={true} 
-                              onDragStart={e => handleDragStart(e, columnId)} 
-                              onDragOver={e => handleDragOver(e, columnId)} 
-                              onDragEnd={handleDragEnd} 
-                              onDrop={e => handleDrop(e, columnId)} 
-                              className="cursor-grab"
-                            >
-                              <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
-                            </div>
-                            <span className="truncate">{column.label}</span>
+              <div className="flex h-full">
+                {isFilterSidebarOpen && (
+                  <div className="min-w-[240px] max-w-[240px] border-r bg-background">
+                    <div className="p-4">
+                      <h3 className="font-medium mb-3">Filter Drivers</h3>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="text-sm font-medium mb-2">Status</h4>
+                          <div className="space-y-2">
+                            {['online', 'offline', 'busy'].map(status => (
+                              <div key={status} className="flex items-center">
+                                <input 
+                                  type="checkbox" 
+                                  id={`status-${status}`} 
+                                  className="h-4 w-4 rounded border-gray-300 mr-2"
+                                />
+                                <label htmlFor={`status-${status}`} className="text-sm">
+                                  {statusDictionary[status] || status}
+                                </label>
+                              </div>
+                            ))}
                           </div>
-                        </TableHead>;
-                      })}
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {currentItems.map((driver) => (
-                      <TableRow key={driver.id}>
-                        {sortedColumns.map((columnId) => (
-                          <TableCell 
-                            key={`${driver.id}-${columnId}`} 
-                            className={columnId === "id" ? "font-sans" : ""}
+                        </div>
+                        
+                        <div>
+                          <h4 className="text-sm font-medium mb-2">Hire Status</h4>
+                          <div className="space-y-2">
+                            {Object.keys(hireStatusDictionary).map(status => (
+                              <div key={status} className="flex items-center">
+                                <input 
+                                  type="checkbox" 
+                                  id={`hire-status-${status}`} 
+                                  className="h-4 w-4 rounded border-gray-300 mr-2"
+                                />
+                                <label htmlFor={`hire-status-${status}`} className="text-sm">
+                                  {hireStatusDictionary[status]}
+                                </label>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <h4 className="text-sm font-medium mb-2">Transport Type</h4>
+                          <div className="space-y-2">
+                            {Object.entries(transportTypes).map(([id, name]) => (
+                              <div key={id} className="flex items-center">
+                                <input 
+                                  type="checkbox" 
+                                  id={`transport-${id}`} 
+                                  className="h-4 w-4 rounded border-gray-300 mr-2"
+                                />
+                                <label htmlFor={`transport-${id}`} className="text-sm flex items-center gap-1.5">
+                                  <TransportIcon 
+                                    transportType={id as TransportType} 
+                                    size={12} 
+                                    className="h-[12px] w-[12px]" 
+                                  />
+                                  {name}
+                                </label>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                <UsersTableContainer stickyHeader={false} className={isFilterSidebarOpen ? 'flex-1' : 'w-full'}>
+                  <Table>
+                    <TableHeader className="bg-muted/50">
+                      <TableRow>
+                        {sortedColumns.map((columnId) => {
+                          const column = availableColumns.find(col => col.id === columnId);
+                          if (!column) return null;
+                          return <TableHead 
+                            key={columnId} 
+                            dragOver={dragOverColumn === columnId}
+                            className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
+                            sortable={columnId !== "actions" && columnId !== "transport" && columnId !== "notes"}
+                            sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
+                            onSort={() => requestSort(columnId)}
                           >
-                            {renderCellContent(driver, columnId)}
-                          </TableCell>
-                        ))}
+                            <div className="flex items-center gap-1 overflow-hidden">
+                              <div 
+                                draggable={true} 
+                                onDragStart={e => handleDragStart(e, columnId)} 
+                                onDragOver={e => handleDragOver(e, columnId)} 
+                                onDragEnd={handleDragEnd} 
+                                onDrop={e => handleDrop(e, columnId)} 
+                                className="cursor-grab"
+                              >
+                                <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
+                              </div>
+                              <span className="truncate">{column.label}</span>
+                            </div>
+                          </TableHead>;
+                        })}
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </UsersTableContainer>
+                    </TableHeader>
+                    <TableBody>
+                      {currentItems.map((driver) => (
+                        <TableRow key={driver.id}>
+                          {sortedColumns.map((columnId) => (
+                            <TableCell 
+                              key={`${driver.id}-${columnId}`} 
+                              className={columnId === "id" ? "font-sans" : ""}
+                            >
+                              {renderCellContent(driver, columnId)}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </UsersTableContainer>
+              </div>
             </div>
           </div>
         </div>
