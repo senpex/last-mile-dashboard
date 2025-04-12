@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus, Search, MessageCircle, ChevronDown, Check, X, Clock, Pencil, FileText } from "lucide-react";
+import { GripVertical, Plus, Search, MessageCircle, ChevronDown, Check, X, Clock, Pencil, FileText, Filter } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
@@ -551,6 +551,7 @@ const DriversPage = () => {
     key: null,
     direction: null
   });
+  const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
 
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => 
@@ -665,6 +666,10 @@ const DriversPage = () => {
   const saveNotes = (driverId: number) => {
     setEditingNotes(null);
     toast.success("Driver notes updated successfully");
+  };
+
+  const handleToggleFilterSidebar = () => {
+    setIsFilterSidebarOpen(prev => !prev);
   };
 
   const loadTransportDictionary = () => {
@@ -1079,7 +1084,17 @@ const DriversPage = () => {
               </div>
             </div>
             
-            <div className="flex items-center justify-end px-6">
+            <div className="flex items-center justify-between px-6">
+              <Button 
+                variant={isFilterSidebarOpen ? "default" : "outline"} 
+                className={`flex items-center gap-2 text-sm h-9 ${isFilterSidebarOpen ? 'bg-primary text-primary-foreground' : ''}`}
+                onClick={handleToggleFilterSidebar}
+                aria-expanded={isFilterSidebarOpen}
+              >
+                <Filter className="h-4 w-4" />
+                <span>{isFilterSidebarOpen ? 'Hide Filters' : 'Show Filters'}</span>
+              </Button>
+              
               <div className="flex items-center h-9 gap-2">
                 <div className="relative h-9">
                   <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />

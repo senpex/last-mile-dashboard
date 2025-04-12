@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus, Search, Pencil, FileText } from "lucide-react";
+import { GripVertical, Plus, Search, Pencil, FileText, Filter } from "lucide-react";
 import { UsersTableContainer } from "@/components/ui/users-table-container";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
 import { Input } from "@/components/ui/input";
@@ -32,6 +32,8 @@ const ClientsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const pageSizeOptions = [5, 10, 20, 30, 50];
+
+  const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
 
   const availableColumns: ColumnOption[] = [
     { id: "id", label: "ID", default: true },
@@ -493,6 +495,10 @@ const ClientsPage = () => {
     }
   };
 
+  const handleToggleFilterSidebar = () => {
+    setIsFilterSidebarOpen(prev => !prev);
+  };
+
   return (
     <Layout>
       <div className="flex flex-col h-full w-full">
@@ -508,7 +514,17 @@ const ClientsPage = () => {
               </div>
             </div>
             
-            <div className="flex items-center justify-end">
+            <div className="flex items-center justify-between">
+              <Button 
+                variant={isFilterSidebarOpen ? "default" : "outline"} 
+                className={`flex items-center gap-2 text-sm h-9 ${isFilterSidebarOpen ? 'bg-primary text-primary-foreground' : ''}`}
+                onClick={handleToggleFilterSidebar}
+                aria-expanded={isFilterSidebarOpen}
+              >
+                <Filter className="h-4 w-4" />
+                <span>{isFilterSidebarOpen ? 'Hide Filters' : 'Show Filters'}</span>
+              </Button>
+              
               <div className="flex items-center h-9 gap-2">
                 <div className="relative h-9">
                   <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
