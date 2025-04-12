@@ -74,9 +74,8 @@ const TableHead = React.forwardRef<
     dragOver?: boolean;
     sortable?: boolean;
     sortDirection?: 'ascending' | 'descending' | null;
-    onSort?: () => void;
   }
->(({ className, dragOver, sortable, sortDirection, onSort, children, ...props }, ref) => (
+>(({ className, dragOver, sortable, sortDirection, children, ...props }, ref) => (
   <th
     ref={ref}
     className={cn(
@@ -85,7 +84,6 @@ const TableHead = React.forwardRef<
       sortable && "cursor-pointer select-none",
       className
     )}
-    onClick={sortable ? onSort : undefined}
     {...props}
   >
     <div className="flex items-center gap-1">

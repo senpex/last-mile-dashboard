@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -547,10 +547,6 @@ const DriversPage = () => {
   const [chatOpen, setChatOpen] = useState(false);
   const [driversWithMessages, setDriversWithMessages] = useState<number[]>([]);
   const [editingNotes, setEditingNotes] = useState<number | null>(null);
-  const [sortConfig, setSortConfig] = useState<{ key: string | null; direction: 'ascending' | 'descending' | null }>({
-    key: null,
-    direction: null
-  });
 
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => 
@@ -806,156 +802,11 @@ const DriversPage = () => {
     setDragOverColumn(null);
   };
 
-  const sortDrivers = useCallback((driversToSort: any[]) => {
-    if (!sortConfig.key) return driversToSort;
-    
-    return [...driversToSort].sort((a, b) => {
-      if (sortConfig.key === 'transport') {
-        return sortConfig.direction === 'ascending' 
-          ? a.transports.length - b.transports.length
-          : b.transports.length - a.transports.length;
-      }
-      
-      if (a[sortConfig.key] === undefined || b[sortConfig.key] === undefined) return 0;
-      
-      if (typeof a[sortConfig.key] === 'string') {
-        return sortConfig.direction === 'ascending' 
-          ? a[sortConfig.key].localeCompare(b[sortConfig.key])
-          : b[sortConfig.key].localeCompare(a[sortConfig.key]);
-      }
-      
-      return sortConfig.direction === 'ascending' 
-        ? a[sortConfig.key] - b[sortConfig.key]
-        : b[sortConfig.key] - a[sortConfig.key];
-    });
-  }, [sortConfig]);
-
-  const requestSort = (key: string) => {
-    setSortConfig(current => {
-      if (current.key === key) {
-        if (current.direction === 'ascending') {
-          return { key, direction: 'descending' };
-        } else if (current.direction === 'descending') {
-          return { key: null, direction: null };
-        }
-      }
-      return { key, direction: 'ascending' };
-    });
+  const getSortedVisibleColumns = () => {
+    return visibleColumns.filter(column => columnOrder.includes(column)).sort((a, b) => columnOrder.indexOf(a) - columnOrder.indexOf(b));
   };
 
-  useEffect(() => {
-    if (sortConfig.key) {
-      setFilteredDrivers(sortDrivers(filteredDrivers));
-    }
-  }, [sortConfig, sortDrivers]);
-
-  const handleNotesClick = (driverId: number) => {
-    setEditingNotes(driverId);
-  };
-
-  const handleNotesChange = (driverId: number, notes: string) => {
-    setDrivers(prevDrivers => 
-      prevDrivers.map(driver => 
-        driver.id === driverId ? { ...driver, notes } : driver
-      )
-    );
-  };
-
-  const saveNotes = (driverId: number) => {
-    setEditingNotes(null);
-    toast.success("Driver notes updated successfully");
-  };
-
-  const loadTransportDictionary = () => {
-    const transportDict = getDictionary("2");
-    if (transportDict && transportDict.items.length > 0) {
-      console.log("Transport Dictionary Items:", transportDict.items);
-      const types: {
-        [key: string]: string;
-      } = {};
-      const icons: {
-        [key: string]: string | undefined;
-      } = {};
-      transportDict.items.forEach(item => {
-        types[item.id] = item.value;
-        icons[item.id] = item.icon;
-      });
-      setTransportTypes(types);
-      setTransportIcons(icons);
-      console.log("Loaded transport types:", types);
-      console.log("Loaded transport icons:", icons);
-    } else {
-      console.log("Transport dictionary not found or empty for ID: 2");
-    }
-    setIsLoading(false);
-  };
-
-  const loadStatusDictionary = () => {
-    const statusDict = getDictionary("6");
-    if (statusDict && statusDict.items.length > 0) {
-      console.log("Status Dictionary Items:", statusDict.items);
-      const statuses: {
-        [key: string]: string;
-      } = {};
-      const colors: {
-        [key: string]: string;
-      } = {};
-      statusDict.items.forEach(item => {
-        statuses[item.id] = item.value;
-        if (item.value.toLowerCase().includes('online')) {
-          colors[item.id] = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-        } else if (item.value.toLowerCase().includes('busy')) {
-          colors[item.id] = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
-        } else if (item.value.toLowerCase().includes('offline')) {
-          colors[item.id] = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
-        } else {
-          colors[item.id] = 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
-        }
-      });
-      setStatusDictionary(statuses);
-      setStatusColors(colors);
-      console.log("Loaded status types:", statuses);
-    } else {
-      console.log("Status dictionary not found or empty for ID: 6");
-    }
-  };
-
-  const loadHireStatusDictionary = () => {
-    const hireStatusDict = getDictionary("1455");
-    if (hireStatusDict && hireStatusDict.items.length > 0) {
-      console.log("Hire Status Dictionary Items:", hireStatusDict.items);
-      const statuses: {
-        [key: string]: string;
-      } = {};
-      const colors: {
-        [key: string]: string;
-      } = {};
-      
-      hireStatusDict.items.forEach(item => {
-        statuses[item.id] = item.value;
-        
-        if (item.id === 'hired') {
-          colors[item.id] = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-        } else if (item.id === 'blacklist') {
-          colors[item.id] = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
-        } else if (item.id === 'left_vm' || item.id === 'contact_again') {
-          colors[item.id] = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
-        } else if (item.id === 'out_of_service') {
-          colors[item.id] = 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
-        } else if (item.id === 'not_interested') {
-          colors[item.id] = 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
-        } else {
-          colors[item.id] = 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300';
-        }
-      });
-      
-      setHireStatusDictionary(statuses);
-      setHireStatusColors(colors);
-      console.log("Loaded hire status types:", statuses);
-    } else {
-      console.log("Hire status dictionary not found or empty for ID: 1455");
-    }
-  };
+  const sortedColumns = getSortedVisibleColumns();
 
   const renderRating = (rating: number) => {
     return <div className="flex items-center">
@@ -1166,16 +1017,10 @@ const DriversPage = () => {
                       {sortedColumns.map((columnId) => {
                         const column = availableColumns.find(col => col.id === columnId);
                         if (!column) return null;
-                        
-                        const isSortable = ['id', 'name', 'email', 'phone', 'zipcode', 'rating'].includes(columnId);
-                        
                         return <TableHead 
                           key={columnId} 
                           dragOver={dragOverColumn === columnId}
                           className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
-                          sortable={isSortable}
-                          sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
-                          onSort={isSortable ? () => requestSort(columnId) : undefined}
                         >
                           <div className="flex items-center gap-1 overflow-hidden">
                             <div 
@@ -1306,7 +1151,7 @@ const DriversPage = () => {
         </div>
       </div>
       
-      {chatOpen && selectedCourier && <CourierChat open={chatOpen} courierName={selectedCourier} onClose={handleChatClose} />}
+      {chatOpen && selectedCourier && <CourierChat open={chatOpen} courierName={selectedCourier} onClose={handleChatClose} hasUnreadMessages={false} />}
     </Layout>;
 };
 
