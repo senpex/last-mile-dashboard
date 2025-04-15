@@ -50,7 +50,7 @@ export function DeliveryPagination({
                 e.preventDefault();
                 onPageChange(1);
               }}
-              disabled={currentPage === 1}
+              className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
               aria-disabled={currentPage === 1}
             >
               <span className="sr-only">First page</span>
@@ -64,7 +64,7 @@ export function DeliveryPagination({
                 e.preventDefault();
                 onPageChange(currentPage - 1);
               }}
-              disabled={currentPage === 1}
+              className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
               aria-disabled={currentPage === 1}
             />
           </PaginationItem>
@@ -95,7 +95,7 @@ export function DeliveryPagination({
                 e.preventDefault();
                 onPageChange(currentPage + 1);
               }}
-              disabled={currentPage === totalPages}
+              className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
               aria-disabled={currentPage === totalPages}
             />
           </PaginationItem>
@@ -106,7 +106,7 @@ export function DeliveryPagination({
                 e.preventDefault();
                 onPageChange(totalPages);
               }}
-              disabled={currentPage === totalPages}
+              className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
               aria-disabled={currentPage === totalPages}
             >
               <span className="sr-only">Last page</span>

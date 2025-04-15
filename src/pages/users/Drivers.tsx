@@ -17,20 +17,16 @@ import CourierChat from '@/components/chat/CourierChat';
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { DeliveryFilters } from '@/components/deliveries/DeliveryFilters';
-
 type StripeStatus = 'verified' | 'unverified' | 'pending';
-
 const getRandomPhone = (): string => {
   const areaCode = Math.floor(Math.random() * 900) + 100;
   const prefix = Math.floor(Math.random() * 900) + 100;
   const lineNumber = Math.floor(Math.random() * 9000) + 1000;
   return `(${areaCode}) ${prefix}-${lineNumber}`;
 };
-
 const getRandomZipcode = (): string => {
   return String(Math.floor(Math.random() * 90000) + 10000);
 };
-
 const generateRandomTransports = (): string[] => {
   const transportIds = ['1', '2', '3', '4', '5', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
   const count = Math.floor(Math.random() * 3) + 1;
@@ -44,23 +40,19 @@ const generateRandomTransports = (): string[] => {
   }
   return result;
 };
-
 const generateRandomRating = (): number => {
   return Number((Math.random() * 2 + 3).toFixed(1));
 };
-
 const generateRandomHireStatus = (): string => {
   const hireStatuses = ['hired', 'left_vm', 'contact_again', 'not_interested', 'blacklist', 'out_of_service'];
   const randomIndex = Math.floor(Math.random() * hireStatuses.length);
   return hireStatuses[randomIndex];
 };
-
 const generateRandomStripeStatus = (): StripeStatus => {
   const statuses: StripeStatus[] = ['verified', 'unverified', 'pending'];
   const randomIndex = Math.floor(Math.random() * 3);
   return statuses[randomIndex];
 };
-
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{
     [key: string]: string;
@@ -482,7 +474,6 @@ const DriversPage = () => {
     zipcode: getRandomZipcode(),
     notes: ""
   }]);
-  
   const availableColumns: ColumnOption[] = [{
     id: "id",
     label: "ID",
@@ -532,7 +523,6 @@ const DriversPage = () => {
     label: "Actions",
     default: true
   }];
-  
   const [visibleColumns, setVisibleColumns] = useState<string[]>(availableColumns.filter(col => col.default).map(col => col.id));
   const [columnOrder, setColumnOrder] = useState<string[]>(availableColumns.filter(col => col.default).map(col => col.id));
   const [currentPage, setCurrentPage] = useState(1);
@@ -559,7 +549,6 @@ const DriversPage = () => {
   const [dateRange, setDateRange] = useState<any>(undefined);
   const [timezone, setTimezone] = useState<string>("America/New_York");
   const [activeView, setActiveView] = useState("main");
-
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => prevDrivers.map(driver => driver.id === driverId ? {
       ...driver,
@@ -568,13 +557,11 @@ const DriversPage = () => {
     const statusLabel = hireStatusDictionary[newStatus] || newStatus;
     toast.success(`Driver status updated to ${statusLabel}`);
   };
-
   useEffect(() => {
     loadTransportDictionary();
     loadStatusDictionary();
     loadHireStatusDictionary();
   }, []);
-
   useEffect(() => {
     setColumnOrder(prevOrder => {
       const newOrder = [...prevOrder];
@@ -586,7 +573,6 @@ const DriversPage = () => {
       return newOrder.filter(column => visibleColumns.includes(column));
     });
   }, [visibleColumns]);
-
   useEffect(() => {
     if (searchTerm.length >= 3) {
       const filtered = drivers.filter(driver => driver.name.toLowerCase().includes(searchTerm.toLowerCase()) || driver.email.toLowerCase().includes(searchTerm.toLowerCase()) || driver.phone.includes(searchTerm) || driver.id.toString().includes(searchTerm));
@@ -595,26 +581,21 @@ const DriversPage = () => {
       setFilteredDrivers(drivers);
     }
   }, [searchTerm, drivers]);
-
   useEffect(() => {
     setFilteredDrivers(drivers);
   }, [drivers]);
-
   useEffect(() => {
     const randomDrivers = drivers.filter(() => Math.random() < 0.3).map(driver => driver.id);
     setDriversWithMessages(randomDrivers);
   }, [drivers]);
-
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
   };
-
   const handlePageSizeChange = (size: number) => {
     setPageSize(size);
     setCurrentPage(1);
   };
-
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -645,37 +626,30 @@ const DriversPage = () => {
     }
     return pages;
   };
-
   const handleCourierClick = (name: string) => {
     setSelectedCourier(name);
     setChatOpen(true);
   };
-
   const handleChatClose = () => {
     setChatOpen(false);
     setSelectedCourier(null);
   };
-
   const handleNotesClick = (driverId: number) => {
     setEditingNotes(driverId);
   };
-
   const handleNotesChange = (driverId: number, notes: string) => {
     setDrivers(prevDrivers => prevDrivers.map(driver => driver.id === driverId ? {
       ...driver,
       notes
     } : driver));
   };
-
   const saveNotes = (driverId: number) => {
     setEditingNotes(null);
     toast.success("Driver notes updated successfully");
   };
-
   const handleToggleFilterSidebar = () => {
     setIsFilterSidebarOpen(prev => !prev);
   };
-
   const loadTransportDictionary = () => {
     const transportDict = getDictionary("2");
     if (transportDict && transportDict.items.length > 0) {
@@ -699,7 +673,6 @@ const DriversPage = () => {
     }
     setIsLoading(false);
   };
-
   const loadStatusDictionary = () => {
     const statusDict = getDictionary("6");
     if (statusDict && statusDict.items.length > 0) {
@@ -729,7 +702,6 @@ const DriversPage = () => {
       console.log("Status dictionary not found or empty for ID: 6");
     }
   };
-
   const loadHireStatusDictionary = () => {
     const hireStatusDict = getDictionary("1455");
     if (hireStatusDict && hireStatusDict.items.length > 0) {
@@ -763,7 +735,6 @@ const DriversPage = () => {
       console.log("Hire status dictionary not found or empty for ID: 1455");
     }
   };
-
   const getRandomTransportIcon = () => {
     const transportTypes: TransportType[] = ['helper', 'car', 'suv', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
     const randomIndex = Math.floor(Math.random() * transportTypes.length);
@@ -772,7 +743,6 @@ const DriversPage = () => {
         <TransportIcon transportType={randomType} size={14} className="h-[14px] w-[14px]" />
       </div>;
   };
-
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     setDraggedColumn(columnId);
     e.dataTransfer.setData('text/plain', columnId);
@@ -780,14 +750,12 @@ const DriversPage = () => {
     dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     e.dataTransfer.setDragImage(dragImage, 0, 0);
   };
-
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     e.preventDefault();
     if (draggedColumn && draggedColumn !== columnId) {
       setDragOverColumn(columnId);
     }
   };
-
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
     e.preventDefault();
     if (!draggedColumn || draggedColumn === targetColumnId) {
@@ -806,349 +774,362 @@ const DriversPage = () => {
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
-
   const handleDragEnd = () => {
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
-
   const getSortedVisibleColumns = () => {
     return visibleColumns.filter(column => columnOrder.includes(column)).sort((a, b) => columnOrder.indexOf(a) - columnOrder.indexOf(b));
   };
-
   const sortedColumns = getSortedVisibleColumns();
-
   const renderRating = (rating: number) => {
     return <div className="flex items-center">
         <span className="font-medium">{rating.toFixed(1)}</span>
       </div>;
   };
-
   const renderStatus = (statusId: string) => {
     const statusText = statusDictionary[statusId] || `Unknown (${statusId})`;
-    const statusColorClass = statusColors[statusId] || 'bg-gray-100 text-gray-800';
-    
-    return <Badge className={statusColorClass}>
-      {statusText}
-    </Badge>;
+    const statusColorClass = statusColors[statusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
+    return <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColorClass}`}>
+        {statusText}
+      </div>;
   };
-
+  const renderHireStatus = (hireStatusId: string, driverId: number) => {
+    const hireStatusText = hireStatusDictionary[hireStatusId] || `Unknown (${hireStatusId})`;
+    return <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="sm" className="h-8 w-auto">
+            {hireStatusText}
+            <ChevronDown className="ml-1 h-4 w-4 opacity-70" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="w-[160px]">
+          {Object.entries(hireStatusDictionary).map(([key, value]) => <DropdownMenuItem key={key} onClick={() => updateDriverHireStatus(driverId, key)} className={hireStatusId === key ? "bg-muted" : ""}>
+              {value}
+            </DropdownMenuItem>)}
+        </DropdownMenuContent>
+      </DropdownMenu>;
+  };
   const renderStripeStatus = (status: StripeStatus) => {
-    switch(status) {
+    let bgColor = '';
+    let icon = null;
+    let text = '';
+    switch (status) {
       case 'verified':
-        return <Badge variant="success">Verified</Badge>;
+        bgColor = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+        icon = <Check className="h-3.5 w-3.5 mr-1" />;
+        text = 'Verified';
+        break;
       case 'unverified':
-        return <Badge variant="warning">Unverified</Badge>;
+        bgColor = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+        icon = <X className="h-3.5 w-3.5 mr-1" />;
+        text = 'Unverified';
+        break;
       case 'pending':
-        return <Badge className="bg-blue-100 text-blue-800">Pending</Badge>;
+        bgColor = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+        icon = <Clock className="h-3.5 w-3.5 mr-1" />;
+        text = 'Pending';
+        break;
+    }
+    return <div className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${bgColor}`}>
+        {icon}
+        {text}
+      </div>;
+  };
+  const renderCellContent = (driver: any, columnId: string) => {
+    switch (columnId) {
+      case "id":
+        return driver.id;
+      case "name":
+        return driver.name;
+      case "email":
+        return driver.email;
+      case "phone":
+        return <div className="max-w-[150px] truncate" title={driver.phone}>
+            {driver.phone}
+          </div>;
+      case "zipcode":
+        return driver.zipcode;
+      case "transport":
+        return <div className="flex items-center gap-2">
+            {driver.transports.map((transportId: string) => <div key={transportId} className="flex items-center justify-center p-2 rounded-md bg-muted" title={transportTypes[transportId] || `Transport ID: ${transportId}`}>
+                <TransportIcon transportType={transportId as TransportType} size={14} className="h-[14px] w-[14px]" />
+              </div>)}
+          </div>;
+      case "rating":
+        return renderRating(driver.rating);
+      case "status":
+        return renderStatus(driver.status);
+      case "hireStatus":
+        return renderHireStatus(driver.hireStatus, driver.id);
+      case "stripeStatus":
+        return renderStripeStatus(driver.stripeStatus);
+      case "notes":
+        if (editingNotes === driver.id) {
+          return <div className="flex flex-col gap-2">
+              <Textarea placeholder="Add notes about this driver..." className="min-h-[80px] text-sm" value={driver.notes || ''} onChange={e => handleNotesChange(driver.id, e.target.value)} />
+              <div className="flex justify-end gap-2">
+                <Button size="sm" variant="outline" className="h-7 px-2 text-xs" onClick={() => setEditingNotes(null)}>
+                  Cancel
+                </Button>
+                <Button size="sm" className="h-7 px-2 text-xs" onClick={() => saveNotes(driver.id)}>
+                  Save
+                </Button>
+              </div>
+            </div>;
+        } else {
+          return <div className="relative cursor-pointer group flex items-start gap-1" onClick={() => handleNotesClick(driver.id)}>
+              <FileText size={14} className="text-muted-foreground shrink-0 mt-0.5" />
+              <div>
+                {driver.notes ? <p className={cn("text-sm max-w-[200px] truncate overflow-hidden whitespace-nowrap", "group-hover:text-primary transition-colors")}>
+                    {driver.notes}
+                  </p> : <p className="text-muted-foreground italic text-xs group-hover:text-primary transition-colors">
+                    Click to add notes
+                  </p>}
+              </div>
+            </div>;
+        }
+      case "actions":
+        return <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
+            View
+          </Button>;
       default:
-        return <Badge>{status}</Badge>;
+        return null;
     }
   };
-
-  return (
-    <Layout>
-      <div className="p-6 -ml-5">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Drivers</h1>
-          <div className="flex items-center gap-3">
-            <Button onClick={handleToggleFilterSidebar} variant="outline" size="sm">
-              <Filter className="h-4 w-4 mr-1" />
-              Filters
-            </Button>
-            <Button>
-              <Plus className="h-4 w-4 mr-1" />
-              Add Driver
-            </Button>
-          </div>
-        </div>
-        
-        <div className="mb-6 flex items-center justify-between">
-          <div className="relative w-full max-w-sm">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search drivers..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-8"
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <ColumnSelector
-              columns={availableColumns}
-              visibleColumns={visibleColumns}
-              setVisibleColumns={setVisibleColumns}
-            />
-          </div>
-        </div>
-        
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          <>
-            <UsersTableContainer height="h-[calc(100vh-260px)]">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    {sortedColumns.map((columnId) => {
-                      const column = availableColumns.find((col) => col.id === columnId);
-                      if (!column) return null;
-                      
-                      return (
-                        <TableHead
-                          key={columnId}
-                          className="whitespace-nowrap"
-                          dragOver={dragOverColumn === columnId}
-                          onDragStart={(e) => handleDragStart(e, columnId)}
-                          onDragOver={(e) => handleDragOver(e, columnId)}
-                          onDrop={(e) => handleDrop(e, columnId)}
-                          onDragEnd={handleDragEnd}
-                          draggable
-                        >
-                          <div className="flex items-center">
-                            <GripVertical className="h-4 w-4 mr-1 text-muted-foreground" />
-                            {column.label}
-                          </div>
-                        </TableHead>
-                      );
-                    })}
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {currentItems.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={visibleColumns.length} className="text-center py-6">
-                        No drivers found
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    currentItems.map((driver) => (
-                      <TableRow key={driver.id}>
-                        {sortedColumns.includes('id') && (
-                          <TableCell className="font-medium">{driver.id}</TableCell>
-                        )}
-                        {sortedColumns.includes('name') && (
-                          <TableCell>{driver.name}</TableCell>
-                        )}
-                        {sortedColumns.includes('email') && (
-                          <TableCell>{driver.email}</TableCell>
-                        )}
-                        {sortedColumns.includes('phone') && (
-                          <TableCell>{driver.phone}</TableCell>
-                        )}
-                        {sortedColumns.includes('zipcode') && (
-                          <TableCell>{driver.zipcode}</TableCell>
-                        )}
-                        {sortedColumns.includes('transport') && (
-                          <TableCell>
-                            <div className="flex gap-1">
-                              {driver.transports.map((transportId) => (
-                                <div key={transportId} title={transportTypes[transportId] || transportId} className="relative group">
-                                  <TransportIcon 
-                                    transportType={transportId as TransportType} 
-                                    size={16} 
-                                    className="h-[16px] w-[16px]" 
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          </TableCell>
-                        )}
-                        {sortedColumns.includes('rating') && (
-                          <TableCell>{renderRating(driver.rating)}</TableCell>
-                        )}
-                        {sortedColumns.includes('status') && (
-                          <TableCell>{renderStatus(driver.status)}</TableCell>
-                        )}
-                        {sortedColumns.includes('hireStatus') && (
-                          <TableCell>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="outline" size="sm">
-                                  <Badge className={hireStatusColors[driver.hireStatus] || 'bg-gray-100 text-gray-800'}>
-                                    {hireStatusDictionary[driver.hireStatus] || driver.hireStatus}
-                                  </Badge>
-                                  <ChevronDown className="h-4 w-4 ml-1" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={() => updateDriverHireStatus(driver.id, 'hired')}>
-                                  <Check className="h-4 w-4 mr-1 text-green-600" />
-                                  <span>Hired</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => updateDriverHireStatus(driver.id, 'left_vm')}>
-                                  <Clock className="h-4 w-4 mr-1 text-yellow-600" />
-                                  <span>Left VM</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => updateDriverHireStatus(driver.id, 'contact_again')}>
-                                  <Clock className="h-4 w-4 mr-1 text-yellow-600" />
-                                  <span>Contact Again</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => updateDriverHireStatus(driver.id, 'not_interested')}>
-                                  <X className="h-4 w-4 mr-1 text-blue-600" />
-                                  <span>Not Interested</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => updateDriverHireStatus(driver.id, 'blacklist')}>
-                                  <X className="h-4 w-4 mr-1 text-red-600" />
-                                  <span>Blacklist</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => updateDriverHireStatus(driver.id, 'out_of_service')}>
-                                  <Clock className="h-4 w-4 mr-1 text-gray-600" />
-                                  <span>Out of Service</span>
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </TableCell>
-                        )}
-                        {sortedColumns.includes('stripeStatus') && (
-                          <TableCell>{renderStripeStatus(driver.stripeStatus)}</TableCell>
-                        )}
-                        {sortedColumns.includes('notes') && (
-                          <TableCell>
-                            {editingNotes === driver.id ? (
-                              <div className="flex flex-col gap-2">
-                                <Textarea 
-                                  value={driver.notes} 
-                                  onChange={(e) => handleNotesChange(driver.id, e.target.value)} 
-                                  className="min-h-[100px] text-sm"
-                                />
-                                <div className="flex justify-end gap-2">
-                                  <Button 
-                                    variant="outline" 
-                                    size="sm" 
-                                    onClick={() => setEditingNotes(null)}
-                                  >
-                                    Cancel
-                                  </Button>
-                                  <Button 
-                                    size="sm" 
-                                    onClick={() => saveNotes(driver.id)}
-                                  >
-                                    Save
-                                  </Button>
-                                </div>
-                              </div>
-                            ) : (
-                              <div 
-                                className={cn(
-                                  "relative group cursor-pointer",
-                                  driver.notes ? "text-foreground" : "text-muted-foreground italic"
-                                )}
-                                onClick={() => handleNotesClick(driver.id)}
-                              >
-                                <div className="flex items-center">
-                                  <FileText className="h-4 w-4 mr-1" />
-                                  <span className="truncate max-w-[150px]">
-                                    {driver.notes || "Add notes..."}
-                                  </span>
-                                </div>
-                                <div className="absolute opacity-0 group-hover:opacity-100 top-0 right-0">
-                                  <Pencil className="h-3 w-3" />
-                                </div>
-                              </div>
-                            )}
-                          </TableCell>
-                        )}
-                        {sortedColumns.includes('actions') && (
-                          <TableCell>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleCourierClick(driver.name)}
-                              className="relative"
-                            >
-                              <MessageCircle className="h-4 w-4" />
-                              {driversWithMessages.includes(driver.id) && (
-                                <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
-                              )}
-                            </Button>
-                          </TableCell>
-                        )}
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-            </UsersTableContainer>
-
-            <div className="mt-4 flex items-center justify-between">
-              <div className="text-sm text-muted-foreground">
-                Showing {startIndex + 1}-{endIndex} of {totalItems} drivers
+  const requestSort = (key: string) => {
+    let direction: 'ascending' | 'descending' | null = 'ascending';
+    if (sortConfig.key === key) {
+      if (sortConfig.direction === 'ascending') {
+        direction = 'descending';
+      } else if (sortConfig.direction === 'descending') {
+        direction = null;
+      }
+    }
+    setSortConfig({
+      key,
+      direction
+    });
+  };
+  useEffect(() => {
+    if (sortConfig.key && sortConfig.direction) {
+      const sortedDrivers = [...filteredDrivers].sort((a, b) => {
+        if (sortConfig.key === null) return 0;
+        let aValue: any;
+        let bValue: any;
+        switch (sortConfig.key) {
+          case "id":
+            aValue = a.id;
+            bValue = b.id;
+            break;
+          case "name":
+            aValue = a.name;
+            bValue = b.name;
+            break;
+          case "email":
+            aValue = a.email;
+            bValue = b.email;
+            break;
+          case "phone":
+            aValue = a.phone;
+            bValue = b.phone;
+            break;
+          case "zipcode":
+            aValue = a.zipcode;
+            bValue = b.zipcode;
+            break;
+          case "rating":
+            aValue = a.rating;
+            bValue = b.rating;
+            break;
+          case "status":
+            aValue = a.status;
+            bValue = b.status;
+            break;
+          case "hireStatus":
+            aValue = a.hireStatus;
+            bValue = b.hireStatus;
+            break;
+          default:
+            aValue = a[sortConfig.key as keyof typeof a];
+            bValue = b[sortConfig.key as keyof typeof b];
+        }
+        if (aValue === null || aValue === undefined) return sortConfig.direction === 'ascending' ? -1 : 1;
+        if (bValue === null || bValue === undefined) return sortConfig.direction === 'ascending' ? 1 : -1;
+        if (aValue < bValue) {
+          return sortConfig.direction === 'ascending' ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+      });
+      setFilteredDrivers(sortedDrivers);
+    }
+  }, [sortConfig]);
+  return <Layout showFooter={false}>
+      <div className="flex flex-col h-screen w-full">
+        <div className="px-0 py-6 flex-1 overflow-auto">
+          <div className="space-y-4 w-full">
+            <div className="flex items-center justify-between px-6">
+              <div className="flex items-center gap-4">
+                <h1 className="text-2xl font-bold">Drivers Management</h1>
+                <Button size="sm" className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 h-7">
+                  <Plus className="w-3 h-3" />
+                  Add Driver
+                </Button>
               </div>
-              
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationLink
-                      href="#"
-                      onClick={() => handlePageChange(currentPage - 1)}
-                      disabled={currentPage === 1}
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                      <span className="sr-only">Previous page</span>
-                    </PaginationLink>
-                  </PaginationItem>
-                  
-                  {getPageNumbers().map((pageNumber, index) => {
-                    if (pageNumber === -1) {
-                      return (
-                        <PaginationItem key={`ellipsis-start-${index}`}>
-                          <PaginationEllipsis />
-                        </PaginationItem>
-                      );
-                    }
-                    if (pageNumber === -2) {
-                      return (
-                        <PaginationItem key={`ellipsis-end-${index}`}>
-                          <PaginationEllipsis />
-                        </PaginationItem>
-                      );
-                    }
-                    return (
-                      <PaginationItem key={pageNumber}>
-                        <PaginationLink
-                          isActive={pageNumber === currentPage}
-                          href="#"
-                          onClick={() => handlePageChange(pageNumber)}
-                        >
-                          {pageNumber}
-                        </PaginationLink>
-                      </PaginationItem>
-                    );
-                  })}
-                  
-                  <PaginationItem>
-                    <PaginationLink
-                      href="#"
-                      onClick={() => handlePageChange(currentPage + 1)}
-                      disabled={currentPage === totalPages}
-                    >
-                      <ChevronRight className="h-4 w-4" />
-                      <span className="sr-only">Next page</span>
-                    </PaginationLink>
-                  </PaginationItem>
-                  
-                  <PaginationSize
-                    sizes={pageSizeOptions}
-                    pageSize={pageSize}
-                    onChange={handlePageSizeChange}
-                  />
-                </PaginationContent>
-              </Pagination>
             </div>
-          </>
-        )}
+            
+            <div className="flex items-center justify-between px-6">
+              <Button variant={isFilterSidebarOpen ? "default" : "outline"} className={`flex items-center gap-2 text-sm h-9 ${isFilterSidebarOpen ? 'bg-primary text-primary-foreground' : ''}`} onClick={handleToggleFilterSidebar} aria-expanded={isFilterSidebarOpen}>
+                <Filter className="h-4 w-4" />
+                <span>{isFilterSidebarOpen ? 'Hide Filters' : 'Show Filters'}</span>
+              </Button>
+              
+              <div className="flex items-center h-9 gap-2">
+                <div className="relative h-9">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input type="search" placeholder="Search drivers..." className="w-[200px] pl-8 text-xs h-9" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+                </div>
+                <ColumnSelector columns={availableColumns} visibleColumns={visibleColumns} setVisibleColumns={setVisibleColumns} />
+              </div>
+            </div>
+
+            <div className="border rounded-md mx-6">
+              <div className="flex h-full py-4">
+                {isFilterSidebarOpen && <div className="min-w-[240px] max-w-[240px] border-r bg-background mr-5">
+                    <div className="p-4">
+                      <h3 className="font-medium mb-3">Filter Drivers</h3>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="text-sm font-medium mb-2">Status</h4>
+                          <div className="space-y-2">
+                            {['online', 'offline', 'busy'].map(status => <div key={status} className="flex items-center">
+                                <input type="checkbox" id={`status-${status}`} className="h-4 w-4 rounded border-gray-300 mr-2" />
+                                <label htmlFor={`status-${status}`} className="text-sm">
+                                  {statusDictionary[status] || status}
+                                </label>
+                              </div>)}
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <h4 className="text-sm font-medium mb-2">Hire Status</h4>
+                          <div className="space-y-2">
+                            {Object.keys(hireStatusDictionary).map(status => <div key={status} className="flex items-center">
+                                <input type="checkbox" id={`hire-status-${status}`} className="h-4 w-4 rounded border-gray-300 mr-2" />
+                                <label htmlFor={`hire-status-${status}`} className="text-sm">
+                                  {hireStatusDictionary[status]}
+                                </label>
+                              </div>)}
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <h4 className="text-sm font-medium mb-2">Transport Type</h4>
+                          <div className="space-y-2">
+                            {Object.entries(transportTypes).map(([id, name]) => <div key={id} className="flex items-center">
+                                <input type="checkbox" id={`transport-${id}`} className="h-4 w-4 rounded border-gray-300 mr-2" />
+                                <label htmlFor={`transport-${id}`} className="text-sm flex items-center gap-1.5">
+                                  <TransportIcon transportType={id as TransportType} size={12} className="h-[12px] w-[12px]" />
+                                  {name}
+                                </label>
+                              </div>)}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>}
+                
+                <UsersTableContainer stickyHeader={false} className={isFilterSidebarOpen ? 'flex-1' : 'w-full'}>
+                  <Table>
+                    <TableHeader className="bg-muted/50">
+                      <TableRow>
+                        {sortedColumns.map(columnId => {
+                        const column = availableColumns.find(col => col.id === columnId);
+                        if (!column) return null;
+                        return <TableHead key={columnId} dragOver={dragOverColumn === columnId} className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`} sortable={columnId !== "actions" && columnId !== "transport" && columnId !== "notes"} sortDirection={sortConfig.key === columnId ? sortConfig.direction : null} onSort={() => requestSort(columnId)}>
+                            <div className="flex items-center gap-1 overflow-hidden">
+                              <div draggable={true} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className="cursor-grab">
+                                <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
+                              </div>
+                              <span className="truncate">{column.label}</span>
+                            </div>
+                          </TableHead>;
+                      })}
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {currentItems.map(driver => <TableRow key={driver.id}>
+                          {sortedColumns.map(columnId => <TableCell key={`${driver.id}-${columnId}`} className={columnId === "id" ? "font-sans" : ""}>
+                              {renderCellContent(driver, columnId)}
+                            </TableCell>)}
+                        </TableRow>)}
+                    </TableBody>
+                  </Table>
+                </UsersTableContainer>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t mt-auto w-full">
+          <div className="px-6 py-4 flex justify-between items-center">
+            <PaginationInfo total={totalItems} pageSize={pageSize} currentPage={currentPage} />
+            
+            <Pagination className="flex-1 flex justify-center">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationLink href="#" onClick={e => {
+                  e.preventDefault();
+                  handlePageChange(1);
+                }} className={currentPage === 1 ? "pointer-events-none opacity-50" : ""} aria-disabled={currentPage === 1}>
+                    <span className="sr-only">First page</span>
+                    ⟪
+                  </PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationPrevious href="#" onClick={e => {
+                  e.preventDefault();
+                  handlePageChange(currentPage - 1);
+                }} className={currentPage === 1 ? "pointer-events-none opacity-50" : ""} aria-disabled={currentPage === 1} />
+                </PaginationItem>
+                
+                {getPageNumbers().map((page, i) => <PaginationItem key={i}>
+                    {page === -1 || page === -2 ? <PaginationEllipsis /> : <PaginationLink href="#" isActive={page === currentPage} onClick={e => {
+                  e.preventDefault();
+                  handlePageChange(page);
+                }}>
+                        {page}
+                      </PaginationLink>}
+                  </PaginationItem>)}
+                
+                <PaginationItem>
+                  <PaginationNext href="#" onClick={e => {
+                  e.preventDefault();
+                  handlePageChange(currentPage + 1);
+                }} className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""} aria-disabled={currentPage === totalPages} />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#" onClick={e => {
+                  e.preventDefault();
+                  handlePageChange(totalPages);
+                }} className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""} aria-disabled={currentPage === totalPages}>
+                    <span className="sr-only">Last page</span>
+                    ⟫
+                  </PaginationLink>
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+            
+            <PaginationSize sizes={pageSizeOptions} pageSize={pageSize} onChange={handlePageSizeChange} />
+          </div>
+        </div>
       </div>
       
-      {chatOpen && selectedCourier && (
-        <CourierChat
-          courierName={selectedCourier}
-          onClose={handleChatClose}
-          open={chatOpen}
-        />
-      )}
-    </Layout>
-  );
+      {chatOpen && selectedCourier && <CourierChat open={chatOpen} courierName={selectedCourier} onClose={handleChatClose} hasUnreadMessages={false} />}
+    </Layout>;
 };
-
 export default DriversPage;
