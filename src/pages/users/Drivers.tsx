@@ -1105,41 +1105,70 @@ const DriversPage = () => {
             <Pagination className="flex-1 flex justify-center">
               <PaginationContent>
                 <PaginationItem>
-                  <PaginationLink href="#" onClick={e => {
-                  e.preventDefault();
-                  handlePageChange(1);
-                }} className={currentPage === 1 ? "pointer-events-none opacity-50" : ""} aria-disabled={currentPage === 1}>
+                  <PaginationLink
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(1);
+                    }}
+                    disabled={currentPage === 1}
+                    aria-disabled={currentPage === 1}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                  >
                     <span className="sr-only">First page</span>
                     ⟪
                   </PaginationLink>
                 </PaginationItem>
                 <PaginationItem>
-                  <PaginationPrevious href="#" onClick={e => {
-                  e.preventDefault();
-                  handlePageChange(currentPage - 1);
-                }} className={currentPage === 1 ? "pointer-events-none opacity-50" : ""} aria-disabled={currentPage === 1} />
+                  <PaginationPrevious
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage - 1);
+                    }}
+                    disabled={currentPage === 1}
+                    aria-disabled={currentPage === 1}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                  />
                 </PaginationItem>
                 
-                {getPageNumbers().map((page, i) => <PaginationItem key={i}>
-                    {page === -1 || page === -2 ? <PaginationEllipsis /> : <PaginationLink href="#" isActive={page === currentPage} onClick={e => {
-                  e.preventDefault();
-                  handlePageChange(page);
-                }}>
+                {getPageNumbers().map((page, i) => (
+                  <PaginationItem key={i}>
+                    {page === -1 || page === -2 ? (
+                      <PaginationEllipsis />
+                    ) : (
+                      <PaginationLink 
+                        isActive={page === currentPage}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handlePageChange(page);
+                        }}
+                      >
                         {page}
-                      </PaginationLink>}
-                  </PaginationItem>)}
+                      </PaginationLink>
+                    )}
+                  </PaginationItem>
+                ))}
                 
                 <PaginationItem>
-                  <PaginationNext href="#" onClick={e => {
-                  e.preventDefault();
-                  handlePageChange(currentPage + 1);
-                }} className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""} aria-disabled={currentPage === totalPages} />
+                  <PaginationNext
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage + 1);
+                    }}
+                    disabled={currentPage === totalPages}
+                    aria-disabled={currentPage === totalPages}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                  />
                 </PaginationItem>
                 <PaginationItem>
-                  <PaginationLink href="#" onClick={e => {
-                  e.preventDefault();
-                  handlePageChange(totalPages);
-                }} className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""} aria-disabled={currentPage === totalPages}>
+                  <PaginationLink
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(totalPages);
+                    }}
+                    disabled={currentPage === totalPages}
+                    aria-disabled={currentPage === totalPages}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                  >
                     <span className="sr-only">Last page</span>
                     ⟫
                   </PaginationLink>
@@ -1147,7 +1176,11 @@ const DriversPage = () => {
               </PaginationContent>
             </Pagination>
             
-            <PaginationSize sizes={pageSizeOptions} pageSize={pageSize} onChange={handlePageSizeChange} />
+            <PaginationSize
+              sizes={pageSizeOptions}
+              pageSize={pageSize}
+              onChange={handlePageSizeChange}
+            />
           </div>
         </div>
       </div>

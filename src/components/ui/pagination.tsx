@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
@@ -54,34 +55,37 @@ const PaginationItem = React.forwardRef<
 ))
 PaginationItem.displayName = "PaginationItem"
 
-export function PaginationLink({
-  className,
-  isActive,
-  size = "icon",
-  ...props
-}: React.ComponentProps<typeof Button> & {
-  isActive?: boolean
-}) {
+type PaginationLinkProps = {
+  isActive?: boolean;
+} & React.ComponentProps<typeof Button>
+
+const PaginationLink = React.forwardRef<
+  HTMLButtonElement, 
+  PaginationLinkProps
+>(({ className, isActive, size = "icon", ...props }, ref) => {
   return (
     <Button
-      {...props}
+      ref={ref}
       variant={isActive ? "outline" : "ghost"}
       size={size}
       className={cn(
         "gap-1 rounded-none first:rounded-l-md last:rounded-r-md",
         className
       )}
+      {...props}
     />
   )
-}
+})
 PaginationLink.displayName = "PaginationLink"
 
 const PaginationNext = React.forwardRef<
-  HTMLAnchorElement,
-  React.HTMLAttributes<HTMLAnchorElement>
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement>
 >(({ className, ...props }, ref) => (
-  <a
+  <Button
     ref={ref}
+    variant="outline"
+    size="icon"
     className={cn(
       "inline-flex items-center justify-center rounded-md border border-border bg-background p-1 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none",
       className
@@ -92,11 +96,13 @@ const PaginationNext = React.forwardRef<
 PaginationNext.displayName = "PaginationNext"
 
 const PaginationPrevious = React.forwardRef<
-  HTMLAnchorElement,
-  React.HTMLAttributes<HTMLAnchorElement>
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement>
 >(({ className, ...props }, ref) => (
-  <a
+  <Button
     ref={ref}
+    variant="outline"
+    size="icon"
     className={cn(
       "inline-flex items-center justify-center rounded-md border border-border bg-background p-1 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none",
       className
