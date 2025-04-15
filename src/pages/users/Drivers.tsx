@@ -281,7 +281,11 @@ const DriversPage = () => {
         return (
           <div className="flex gap-1">
             {driver.transport.map((t: string) => (
-              <TransportIcon key={t} type={t as TransportType} className="h-4 w-4" tooltip={transportTypes[t]} />
+              <TransportIcon 
+                key={t} 
+                transportType={t as TransportType} 
+                className="h-4 w-4" 
+              />
             ))}
           </div>
         );

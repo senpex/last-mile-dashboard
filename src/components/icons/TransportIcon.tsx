@@ -23,12 +23,15 @@ export type TransportType =
   | 'refrigerated_van';
 
 interface TransportIconProps extends Omit<LucideProps, 'ref'> {
-  transportType: TransportType;
+  transportType?: TransportType;
   className?: string;
+  // Make type optional
+  type?: TransportType; // Add for backward compatibility
 }
 
 const TransportIcon: React.FC<TransportIconProps> = ({ 
   transportType, 
+  type, // Support both transportType and type props
   className = "", 
   size = 24,
   ...props 
@@ -37,7 +40,10 @@ const TransportIcon: React.FC<TransportIconProps> = ({
   const iconSize = typeof size === 'string' ? parseInt(size, 10) : size;
   const iconClasses = `${className}`;
   
-  switch (transportType.toLowerCase() as TransportType) {
+  // Use transportType or type, with a fallback to prevent the toLowerCase error
+  const iconType = (transportType || type || 'car').toLowerCase() as TransportType;
+  
+  switch (iconType) {
     case 'helper':
       return <User className={`text-violet-600 ${iconClasses}`} size={iconSize} {...props} />;
     case 'car':
