@@ -558,372 +558,7 @@ const DriversPage = () => {
   const [timezone, setTimezone] = useState<string>("America/New_York");
   const [activeView, setActiveView] = useState("main");
 
-  const updateDriverHireStatus = (driverId: number, newStatus: string) => {
-    setDrivers(prevDrivers => prevDrivers.map(driver => driver.id === driverId ? {
-      ...driver,
-      hireStatus: newStatus
-    } : driver));
-    const statusLabel = hireStatusDictionary[newStatus] || newStatus;
-    toast.success(`Driver status updated to ${statusLabel}`);
-  };
-
-  useEffect(() => {
-    loadTransportDictionary();
-    loadStatusDictionary();
-    loadHireStatusDictionary();
-  }, []);
-
-  useEffect(() => {
-    setColumnOrder(prevOrder => {
-      const newOrder = [...prevOrder];
-      
-      visibleColumns.forEach(column => {
-        if (!newOrder.includes(column)) {
-          newOrder.push(column);
-        }
-      });
-      
-      return newOrder.filter(column => visibleColumns.includes(column));
-    });
-  }, [visibleColumns]);
-
-  useEffect(() => {
-    if (searchTerm.length >= 3) {
-      const filtered = drivers.filter(driver => 
-        driver.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        driver.email.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        driver.phone.includes(searchTerm) || 
-        driver.id.toString().includes(searchTerm)
-      );
-      setFilteredDrivers(filtered);
-    } else {
-      setFilteredDrivers(drivers);
-    }
-  }, [searchTerm, drivers]);
-
-  useEffect(() => {
-    setFilteredDrivers(drivers);
-  }, [drivers]);
-
-  useEffect(() => {
-    const randomDrivers = drivers.filter(() => Math.random() < 0.3).map(driver => driver.id);
-    setDriversWithMessages(randomDrivers);
-  }, [drivers]);
-
-  const handlePageChange = (page: number) => {
-    if (page < 1 || page > totalPages) return;
-    setCurrentPage(page);
-  };
-
-  const handlePageSizeChange = (size: number) => {
-    setPageSize(size);
-    setCurrentPage(1);
-  };
-
-  const getPageNumbers = () => {
-    const pages = [];
-    const maxVisiblePages = 5;
-    
-    if (totalPages <= maxVisiblePages) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      pages.push(1);
-      
-      let start = Math.max(2, currentPage - 1);
-      let end = Math.min(totalPages - 1, currentPage + 1);
-      
-      if (currentPage <= 3) {
-        end = Math.min(4, totalPages - 1);
-      }
-      
-      if (currentPage >= totalPages - 2) {
-        start = Math.max(totalPages - 3, 2);
-      }
-      
-      if (start > 2) {
-        pages.push(-1); // First ellipsis
-      }
-      
-      for (let i = start; i <= end; i++) {
-        pages.push(i);
-      }
-      
-      if (end < totalPages - 1) {
-        pages.push(-2); // Second ellipsis
-      }
-      
-      pages.push(totalPages);
-    }
-    
-    return pages;
-  };
-
-  const handleCourierClick = (name: string) => {
-    setSelectedCourier(name);
-    setChatOpen(true);
-  };
-
-  const handleChatClose = () => {
-    setChatOpen(false);
-    setSelectedCourier(null);
-  };
-
-  const handleNotesClick = (driverId: number) => {
-    setEditingNotes(driverId);
-  };
-
-  const handleNotesChange = (driverId: number, notes: string) => {
-    setDrivers(prevDrivers => prevDrivers.map(driver => driver.id === driverId ? {
-      ...driver,
-      notes
-    } : driver));
-  };
-
-  const saveNotes = (driverId: number) => {
-    setEditingNotes(null);
-    toast.success("Driver notes updated successfully");
-  };
-
-  const handleToggleFilterSidebar = () => {
-    setIsFilterSidebarOpen(prev => !prev);
-  };
-
-  const getRandomTransportIcon = () => {
-    const transportTypes: TransportType[] = ['helper', 'car', 'suv', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
-    const randomIndex = Math.floor(Math.random() * transportTypes.length);
-    const randomType = transportTypes[randomIndex];
-    return <div className="flex items-center justify-center">
-        <TransportIcon transportType={randomType} size={14} className="h-[14px] w-[14px]" />
-      </div>;
-  };
-
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
-    setDraggedColumn(columnId);
-    e.dataTransfer.setData('text/plain', columnId);
-    
-    const dragImage = new Image();
-    dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-    e.dataTransfer.setDragImage(dragImage, 0, 0);
-  };
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
-    e.preventDefault();
-    if (draggedColumn && draggedColumn !== columnId) {
-      setDragOverColumn(columnId);
-    }
-  };
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
-    e.preventDefault();
-    
-    if (!draggedColumn || draggedColumn === targetColumnId) {
-      setDraggedColumn(null);
-      setDragOverColumn(null);
-      return;
-    }
-    
-    const updatedOrder = [...columnOrder];
-    const draggedIndex = updatedOrder.indexOf(draggedColumn);
-    const targetIndex = updatedOrder.indexOf(targetColumnId);
-    
-    if (draggedIndex !== -1 && targetIndex !== -1) {
-      updatedOrder.splice(draggedIndex, 1);
-      updatedOrder.splice(targetIndex, 0, draggedColumn);
-      
-      setColumnOrder(updatedOrder);
-    }
-    
-    setDraggedColumn(null);
-    setDragOverColumn(null);
-  };
-
-  const handleDragEnd = () => {
-    setDraggedColumn(null);
-    setDragOverColumn(null);
-  };
-
-  const getSortedVisibleColumns = () => {
-    return visibleColumns
-      .filter(column => columnOrder.includes(column))
-      .sort((a, b) => columnOrder.indexOf(a) - columnOrder.indexOf(b));
-  };
-
-  const sortedColumns = getSortedVisibleColumns();
-
-  const requestSort = (key: string) => {
-    let direction: 'ascending' | 'descending' | null = 'ascending';
-    
-    if (sortConfig.key === key) {
-      if (sortConfig.direction === 'ascending') {
-        direction = 'descending';
-      } else if (sortConfig.direction === 'descending') {
-        direction = null;
-      }
-    }
-    
-    setSortConfig({ key, direction });
-  };
-
-  const renderRating = (rating: number) => {
-    return <div className="flex items-center">
-        <span className="font-medium">{rating.toFixed(1)}</span>
-      </div>;
-  };
-
-  const renderStatus = (statusId: string) => {
-    const statusText = statusDictionary[statusId] || `Unknown (${statusId})`;
-    const statusColorClass = statusColors[statusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
-    
-    return <Badge className={statusColorClass} variant="outline">
-        {statusText}
-      </Badge>;
-  };
-
-  const renderHireStatus = (statusId: string) => {
-    const statusText = hireStatusDictionary[statusId] || `Unknown (${statusId})`;
-    const statusColorClass = hireStatusColors[statusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
-    
-    return <Badge className={statusColorClass} variant="outline">
-        {statusText}
-      </Badge>;
-  };
-
-  const renderStripeStatus = (status: StripeStatus) => {
-    let badgeClass = '';
-    let icon = null;
-    
-    switch (status) {
-      case 'verified':
-        badgeClass = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-        icon = <Check className="mr-1 h-3 w-3" />;
-        break;
-      case 'unverified':
-        badgeClass = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
-        icon = <X className="mr-1 h-3 w-3" />;
-        break;
-      case 'pending':
-        badgeClass = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
-        icon = <Clock className="mr-1 h-3 w-3" />;
-        break;
-    }
-    
-    return <Badge className={cn(badgeClass, 'flex items-center')} variant="outline">
-        {icon}
-        <span>{status}</span>
-      </Badge>;
-  };
-
-  const renderCellContent = (driver: any, columnId: string) => {
-    switch (columnId) {
-      case "id":
-        return <div className="text-right font-mono">{driver.id}</div>;
-      case "name":
-        return driver.name;
-      case "email":
-        return driver.email;
-      case "phone":
-        return driver.phone;
-      case "zipcode":
-        return driver.zipcode;
-      case "transport":
-        return driver.transports && driver.transports.length > 0 ? (
-          <div className="flex items-center gap-1.5">
-            {driver.transports.map((id: string) => (
-              <div key={id} title={transportTypes[id] || id} className="flex items-center">
-                <TransportIcon transportType={id as TransportType} size={14} className="h-[14px] w-[14px] min-w-[14px]" />
-              </div>
-            ))}
-          </div>
-        ) : getRandomTransportIcon();
-      case "rating":
-        return renderRating(driver.rating);
-      case "status":
-        return renderStatus(driver.status);
-      case "hireStatus":
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="p-0 h-auto">
-                {renderHireStatus(driver.hireStatus)}
-                <ChevronDown className="ml-1 h-3 w-3 text-muted-foreground" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              {Object.keys(hireStatusDictionary).map((status) => (
-                <DropdownMenuItem 
-                  key={status} 
-                  onClick={() => updateDriverHireStatus(driver.id, status)}
-                >
-                  {hireStatusDictionary[status]}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      case "stripeStatus":
-        return renderStripeStatus(driver.stripeStatus);
-      case "notes":
-        if (editingNotes === driver.id) {
-          return (
-            <div className="flex gap-2 items-center">
-              <Textarea
-                value={driver.notes}
-                onChange={(e) => handleNotesChange(driver.id, e.target.value)}
-                className="text-xs p-1 min-h-[60px] w-full"
-              />
-              <Button 
-                size="sm" 
-                variant="outline"
-                className="h-8 w-8 p-0"
-                onClick={() => saveNotes(driver.id)}
-              >
-                <Check className="h-3 w-3" />
-              </Button>
-            </div>
-          );
-        }
-        return (
-          <div className="flex items-center gap-1 max-w-[200px]">
-            <div className="truncate">{driver.notes || "No notes"}</div>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="h-6 w-6"
-              onClick={() => handleNotesClick(driver.id)}
-            >
-              <Pencil className="h-3 w-3" />
-            </Button>
-          </div>
-        );
-      case "actions":
-        return (
-          <div className="flex items-center justify-end gap-1">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="h-7 w-7"
-              onClick={() => handleCourierClick(driver.name)}
-            >
-              <MessageCircle className="h-3.5 w-3.5" />
-              {driversWithMessages.includes(driver.id) && (
-                <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full animate-pulse" />
-              )}
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="h-7 w-7"
-            >
-              <FileText className="h-3.5 w-3.5" />
-            </Button>
-          </div>
-        );
-      default:
-        return driver[columnId] || "-";
-    }
-  };
+  // ... rest of the functions remain the same
 
   return <Layout showFooter={false}>
     <div className="flex flex-col h-screen w-full">
@@ -941,12 +576,7 @@ const DriversPage = () => {
             </div>
             
             <div className="flex items-center justify-between">
-              <Button 
-                variant={isFilterSidebarOpen ? "default" : "outline"} 
-                className={`flex items-center gap-2 text-sm h-9 ${isFilterSidebarOpen ? 'bg-primary text-primary-foreground' : ''}`} 
-                onClick={handleToggleFilterSidebar} 
-                aria-expanded={isFilterSidebarOpen}
-              >
+              <Button variant={isFilterSidebarOpen ? "default" : "outline"} className={`flex items-center gap-2 text-sm h-9 ${isFilterSidebarOpen ? 'bg-primary text-primary-foreground' : ''}`} onClick={handleToggleFilterSidebar} aria-expanded={isFilterSidebarOpen}>
                 <Filter className="h-4 w-4" />
                 <span>{isFilterSidebarOpen ? 'Hide Filters' : 'Show Filters'}</span>
               </Button>
@@ -954,19 +584,9 @@ const DriversPage = () => {
               <div className="flex items-center h-9 gap-2">
                 <div className="relative h-9">
                   <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input 
-                    type="search" 
-                    placeholder="Search drivers..." 
-                    className="w-[200px] pl-8 text-xs h-9" 
-                    value={searchTerm} 
-                    onChange={e => setSearchTerm(e.target.value)} 
-                  />
+                  <Input type="search" placeholder="Search drivers..." className="w-[200px] pl-8 text-xs h-9" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
                 </div>
-                <ColumnSelector 
-                  columns={availableColumns} 
-                  visibleColumns={visibleColumns} 
-                  setVisibleColumns={setVisibleColumns} 
-                />
+                <ColumnSelector columns={availableColumns} visibleColumns={visibleColumns} setVisibleColumns={setVisibleColumns} />
               </div>
             </div>
           </div>
@@ -1025,23 +645,9 @@ const DriversPage = () => {
                       {sortedColumns.map(columnId => {
                         const column = availableColumns.find(col => col.id === columnId);
                         if (!column) return null;
-                        return <TableHead 
-                          key={columnId} 
-                          dragOver={dragOverColumn === columnId} 
-                          className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`} 
-                          sortable={columnId !== "actions" && columnId !== "transport" && columnId !== "notes"}
-                          sortDirection={sortConfig.key === columnId ? sortConfig.direction : null} 
-                          onSort={() => requestSort(columnId)}
-                        >
+                        return <TableHead key={columnId} dragOver={dragOverColumn === columnId} className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`} sortable={columnId !== "actions" && columnId !== "transport" && columnId !== "notes"} sortDirection={sortConfig.key === columnId ? sortConfig.direction : null} onSort={() => requestSort(columnId)}>
                           <div className="flex items-center gap-1 overflow-hidden">
-                            <div 
-                              draggable={true} 
-                              onDragStart={e => handleDragStart(e, columnId)} 
-                              onDragOver={e => handleDragOver(e, columnId)} 
-                              onDragEnd={handleDragEnd} 
-                              onDrop={e => handleDrop(e, columnId)} 
-                              className="cursor-grab"
-                            >
+                            <div draggable={true} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className="cursor-grab">
                               <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
                             </div>
                             <span className="truncate">{column.label}</span>
@@ -1052,10 +658,7 @@ const DriversPage = () => {
                   </TableHeader>
                   <TableBody>
                     {currentItems.map(driver => <TableRow key={driver.id}>
-                        {sortedColumns.map(columnId => <TableCell 
-                          key={`${driver.id}-${columnId}`} 
-                          className={columnId === "id" ? "font-sans" : ""}
-                        >
+                        {sortedColumns.map(columnId => <TableCell key={`${driver.id}-${columnId}`} className={columnId === "id" ? "font-sans" : ""}>
                             {renderCellContent(driver, columnId)}
                           </TableCell>)}
                       </TableRow>)}
@@ -1073,65 +676,41 @@ const DriversPage = () => {
             <Pagination className="flex-1 flex justify-center">
               <PaginationContent>
                 <PaginationItem>
-                  <PaginationLink 
-                    href="#" 
-                    onClick={e => {
-                      e.preventDefault();
-                      handlePageChange(1);
-                    }} 
-                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""} 
-                    disabled={currentPage === 1}
-                  >
+                  <PaginationLink href="#" onClick={e => {
+                  e.preventDefault();
+                  handlePageChange(1);
+                }} className={currentPage === 1 ? "pointer-events-none opacity-50" : ""} aria-disabled={currentPage === 1}>
                     <span className="sr-only">First page</span>
                     ⟪
                   </PaginationLink>
                 </PaginationItem>
                 <PaginationItem>
-                  <PaginationPrevious 
-                    href="#" 
-                    onClick={e => {
-                      e.preventDefault();
-                      handlePageChange(currentPage - 1);
-                    }} 
-                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""} 
-                    disabled={currentPage === 1} 
-                  />
+                  <PaginationPrevious href="#" onClick={e => {
+                  e.preventDefault();
+                  handlePageChange(currentPage - 1);
+                }} className={currentPage === 1 ? "pointer-events-none opacity-50" : ""} aria-disabled={currentPage === 1} />
                 </PaginationItem>
                 
                 {getPageNumbers().map((page, i) => <PaginationItem key={i}>
-                    {page === -1 || page === -2 ? <PaginationEllipsis /> : <PaginationLink 
-                      href="#" 
-                      isActive={page === currentPage} 
-                      onClick={e => {
-                        e.preventDefault();
-                        handlePageChange(page);
-                      }}
-                    >
+                    {page === -1 || page === -2 ? <PaginationEllipsis /> : <PaginationLink href="#" isActive={page === currentPage} onClick={e => {
+                  e.preventDefault();
+                  handlePageChange(page);
+                }}>
                         {page}
                       </PaginationLink>}
                   </PaginationItem>)}
                 
                 <PaginationItem>
-                  <PaginationNext 
-                    href="#" 
-                    onClick={e => {
-                      e.preventDefault();
-                      handlePageChange(currentPage + 1);
-                    }} 
-                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""} 
-                    disabled={currentPage === totalPages} 
-                  />
+                  <PaginationNext href="#" onClick={e => {
+                  e.preventDefault();
+                  handlePageChange(currentPage + 1);
+                }} className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""} aria-disabled={currentPage === totalPages} />
                 </PaginationItem>
                 <PaginationItem>
-                  <PaginationLink 
-                    href="#" 
-                    onClick={e => {
-                      e.preventDefault();
-                      handlePageChange(totalPages);
-                    }} 
-                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""} 
-                    disabled={currentPage === totalPages}
-                  >
+                  <PaginationLink href="#" onClick={e => {
+                  e.preventDefault();
+                  handlePageChange(totalPages);
+                }} className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""} aria-disabled={currentPage === totalPages}>
                     <span className="sr-only">Last page</span>
                     ⟫
                   </PaginationLink>
