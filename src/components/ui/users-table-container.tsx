@@ -21,7 +21,7 @@ const UsersTableContainer = React.forwardRef<
       "relative border rounded-md overflow-hidden flex-shrink-0 w-full",
       "transition-all duration-300 shadow-sm", 
       height, 
-      "px-[5px]",  // Added 5px padding on all sides
+      "pl-[5px]",  // Changed from px-[5px] to pl-[5px] for left-side padding
       className
     )} 
     style={{
@@ -39,3 +39,4 @@ const UsersTableContainer = React.forwardRef<
 UsersTableContainer.displayName = "UsersTableContainer"
 
 export { UsersTableContainer }
+
