@@ -12,11 +12,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import { UsersTableContainer } from "@/components/ui/users-table-container";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis, PaginationInfo, PaginationSize } from "@/components/ui/pagination";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis } from "@/components/ui/pagination";
 import CourierChat from '@/components/chat/CourierChat';
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { DeliveryFilters } from '@/components/deliveries/DeliveryFilters';
+import { DateRange } from "react-day-picker";
 
 type StripeStatus = 'verified' | 'unverified' | 'pending';
 
@@ -554,7 +555,7 @@ const DriversPage = () => {
     direction: null
   });
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
-  const [dateRange, setDateRange] = useState<any>(undefined);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
   const [timezone, setTimezone] = useState<string>("America/New_York");
   const [activeView, setActiveView] = useState("main");
 
@@ -577,12 +578,19 @@ const DriversPage = () => {
             </div>
             <div className="p-4">
               <DeliveryFilters 
+                searchTerm=""
+                onSearchChange={() => {}}
                 dateRange={dateRange}
-                setDateRange={setDateRange}
+                onDateRangeChange={setDateRange}
                 timezone={timezone}
-                setTimezone={setTimezone}
+                onTimezoneChange={setTimezone}
+                availableColumns={[]}
+                visibleColumns={[]}
+                onVisibleColumnsChange={() => {}}
                 activeView={activeView}
-                setActiveView={setActiveView}
+                onActiveViewChange={setActiveView}
+                onToggleFilterSidebar={() => setIsFilterSidebarOpen(!isFilterSidebarOpen)}
+                isFilterSidebarOpen={isFilterSidebarOpen}
               />
             </div>
           </div>
@@ -622,7 +630,7 @@ const DriversPage = () => {
               </div>
               
               <ColumnSelector
-                availableColumns={availableColumns}
+                columns={availableColumns}
                 visibleColumns={visibleColumns}
                 setVisibleColumns={setVisibleColumns}
               />
@@ -713,9 +721,8 @@ const DriversPage = () => {
                                 {driver.transports.map(transportId => (
                                   <TransportIcon
                                     key={transportId}
-                                    type={transportId as TransportType}
+                                    transportType={transportId as TransportType}
                                     className="h-6 w-6"
-                                    tooltip={transportTypes[transportId] || transportId}
                                   />
                                 ))}
                               </div>
@@ -881,29 +888,42 @@ const DriversPage = () => {
           
           <div className="mt-4">
             <Pagination className="flex justify-between">
-              <PaginationInfo
-                currentPage={currentPage}
-                pageSize={pageSize}
-                totalItems={totalItems}
-                startIndex={startIndex}
-                endIndex={endIndex}
-              />
+              <div className="text-sm text-muted-foreground mx-[22px]">
+                Total: <span className="bg-muted px-2 py-1 rounded">{totalItems}</span>
+              </div>
               
               <div className="flex items-center gap-6">
-                <PaginationSize
-                  value={String(pageSize)}
-                  onValueChange={(value) => {
-                    setPageSize(Number(value));
-                    setCurrentPage(1);
-                  }}
-                  options={pageSizeOptions}
-                />
+                <div className="flex items-center gap-2 mx-[22px]">
+                  <span className="text-sm text-muted-foreground">Items per page</span>
+                  <Select 
+                    value={String(pageSize)} 
+                    onValueChange={(value) => {
+                      setPageSize(Number(value));
+                      setCurrentPage(1);
+                    }}
+                  >
+                    <SelectTrigger className="h-8 w-16">
+                      <SelectValue placeholder={String(pageSize)} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {pageSizeOptions.map(size => (
+                        <SelectItem key={size} value={String(size)}>
+                          {size}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
                 
                 <PaginationContent>
-                  <PaginationPrevious
-                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                    disabled={currentPage === 1}
-                  />
+                  <PaginationItem>
+                    <PaginationLink
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      className={cn(currentPage === 1 && "pointer-events-none opacity-50")}
+                    >
+                      <span>Previous</span>
+                    </PaginationLink>
+                  </PaginationItem>
                   
                   {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                     let pageNum;
@@ -932,10 +952,14 @@ const DriversPage = () => {
                     );
                   })}
                   
-                  <PaginationNext
-                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                  />
+                  <PaginationItem>
+                    <PaginationLink
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      className={cn(currentPage === totalPages && "pointer-events-none opacity-50")}
+                    >
+                      <span>Next</span>
+                    </PaginationLink>
+                  </PaginationItem>
                 </PaginationContent>
               </div>
             </Pagination>
@@ -946,8 +970,9 @@ const DriversPage = () => {
       {chatOpen && selectedCourier && (
         <CourierChat
           courierName={selectedCourier}
-          isOpen={chatOpen}
-          setIsOpen={setChatOpen}
+          open={chatOpen}
+          onClose={() => setChatOpen(false)}
+          hasUnreadMessages={driversWithMessages.includes(5432)}
         />
       )}
     </Layout>

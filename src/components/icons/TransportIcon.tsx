@@ -12,6 +12,11 @@ import {
 } from 'lucide-react';
 
 export type TransportType = 
+  | '1'
+  | '2'
+  | '3'
+  | '4'
+  | '5'
   | 'helper'
   | 'car'
   | 'suv'
@@ -20,7 +25,8 @@ export type TransportType =
   | '10ft_box_truck'
   | '15ft_box_truck'
   | '17ft_box_truck'
-  | 'refrigerated_van';
+  | 'refrigerated_van'
+  | string; // Add string to allow for dynamic transport types
 
 interface TransportIconProps extends Omit<LucideProps, 'ref'> {
   transportType: TransportType;
@@ -38,14 +44,19 @@ const TransportIcon: React.FC<TransportIconProps> = ({
   const iconClasses = `${className}`;
   
   switch (transportType.toLowerCase() as TransportType) {
+    case '1':
     case 'helper':
       return <User className={`text-violet-600 ${iconClasses}`} size={iconSize} {...props} />;
+    case '2':
     case 'car':
       return <CarIcon className={`text-blue-600 ${iconClasses}`} size={iconSize} {...props} />;
+    case '3':
     case 'suv':
       return <CarIcon className={`text-teal-600 ${iconClasses}`} size={iconSize} {...props} />;
+    case '4':
     case 'pickup_truck':
       return <Truck className={`text-orange-600 ${iconClasses}`} size={iconSize} {...props} />;
+    case '5':
     case '9ft_cargo_van':
       return <Truck className={`text-blue-700 ${iconClasses}`} size={iconSize} {...props} />;
     case '10ft_box_truck':
