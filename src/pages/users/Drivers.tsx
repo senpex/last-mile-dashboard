@@ -1079,10 +1079,14 @@ const DriversPage = () => {
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>
-                    <PaginationPrevious
+                    <PaginationLink
+                      href="#"
                       onClick={() => handlePageChange(currentPage - 1)}
                       disabled={currentPage === 1}
-                    />
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                      <span className="sr-only">Previous page</span>
+                    </PaginationLink>
                   </PaginationItem>
                   
                   {getPageNumbers().map((pageNumber, index) => {
@@ -1104,6 +1108,7 @@ const DriversPage = () => {
                       <PaginationItem key={pageNumber}>
                         <PaginationLink
                           isActive={pageNumber === currentPage}
+                          href="#"
                           onClick={() => handlePageChange(pageNumber)}
                         >
                           {pageNumber}
@@ -1113,29 +1118,21 @@ const DriversPage = () => {
                   })}
                   
                   <PaginationItem>
-                    <PaginationNext
+                    <PaginationLink
+                      href="#"
                       onClick={() => handlePageChange(currentPage + 1)}
                       disabled={currentPage === totalPages}
-                    />
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                      <span className="sr-only">Next page</span>
+                    </PaginationLink>
                   </PaginationItem>
                   
-                  <PaginationSize className="ml-2">
-                    <Select
-                      value={pageSize.toString()}
-                      onValueChange={(value) => handlePageSizeChange(Number(value))}
-                    >
-                      <SelectTrigger className="h-8 w-[70px]">
-                        <SelectValue placeholder={pageSize.toString()} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {pageSizeOptions.map((size) => (
-                          <SelectItem key={size} value={size.toString()}>
-                            {size}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </PaginationSize>
+                  <PaginationSize
+                    sizes={pageSizeOptions}
+                    pageSize={pageSize}
+                    onChange={handlePageSizeChange}
+                  />
                 </PaginationContent>
               </Pagination>
             </div>
@@ -1147,6 +1144,7 @@ const DriversPage = () => {
         <CourierChat
           courierName={selectedCourier}
           onClose={handleChatClose}
+          open={chatOpen}
         />
       )}
     </Layout>
