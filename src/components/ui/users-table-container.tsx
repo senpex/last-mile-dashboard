@@ -18,7 +18,7 @@ const UsersTableContainer = React.forwardRef<
   <div 
     ref={ref}
     className={cn(
-      "relative border rounded-md overflow-hidden flex-shrink-0 w-full",
+      "relative border rounded-md overflow-hidden flex-shrink-0 w-full pl-[5px]",
       "transition-all duration-300 shadow-sm", 
       height, 
       className
@@ -35,6 +35,6 @@ const UsersTableContainer = React.forwardRef<
   </div>
 ))
 
-UsersTableContainer.displayName = "UsersTableContainer"
+UsersTableContainer.displayName = "UsersTableContainer";
 
-export { UsersTableContainer }
+export { UsersTableContainer };
