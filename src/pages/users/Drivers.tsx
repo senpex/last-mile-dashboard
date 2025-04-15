@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -62,7 +63,310 @@ const generateRandomStripeStatus = (): StripeStatus => {
 };
 
 const DriversPage = () => {
-  // ... rest of the code remains unchanged until line 1000
+  const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [drivers, setDrivers] = useState<Array<any>>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [selectedCourier, setSelectedCourier] = useState("");
+  const [sortConfig, setSortConfig] = useState<{ key: string | null; direction: 'ascending' | 'descending' | null }>({
+    key: null,
+    direction: null
+  });
+  const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
+  const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
+
+  // Define the available columns for the table
+  const availableColumns: ColumnOption[] = [
+    { id: "id", label: "#", default: true },
+    { id: "name", label: "Name", default: true },
+    { id: "phone", label: "Phone", default: true },
+    { id: "zipcode", label: "Zipcode", default: true },
+    { id: "transport", label: "Transport", default: true },
+    { id: "status", label: "Status", default: true },
+    { id: "hireStatus", label: "Hire Status", default: true },
+    { id: "rating", label: "Rating", default: true },
+    { id: "stripeStatus", label: "Stripe", default: true },
+    { id: "notes", label: "Notes", default: false },
+    { id: "actions", label: "Actions", default: true }
+  ];
+
+  // Set initial visible columns
+  const [visibleColumns, setVisibleColumns] = useState<string[]>(
+    availableColumns.filter(col => col.default).map(col => col.id)
+  );
+
+  // Initial column order based on visible columns
+  const [columnOrder, setColumnOrder] = useState<string[]>(
+    availableColumns.filter(col => visibleColumns.includes(col.id)).map(col => col.id)
+  );
+
+  // Status dictionary for labels
+  const statusDictionary: Record<string, string> = {
+    'online': 'Online',
+    'offline': 'Offline',
+    'busy': 'Busy'
+  };
+
+  // Hire status dictionary for labels
+  const hireStatusDictionary: Record<string, string> = {
+    'hired': 'Hired',
+    'left_vm': 'Left VM',
+    'contact_again': 'Contact Again',
+    'not_interested': 'Not Interested',
+    'blacklist': 'Blacklist',
+    'out_of_service': 'Out of Service'
+  };
+
+  // Transport types dictionary
+  const transportTypes: Record<string, string> = {
+    '1': 'Bicycle',
+    '2': 'Scooter',
+    '3': 'Motorcycle',
+    '4': 'Car',
+    '5': 'SUV',
+    'pickup_truck': 'Pickup Truck',
+    '9ft_cargo_van': '9ft Cargo Van',
+    '10ft_box_truck': '10ft Box Truck',
+    '15ft_box_truck': '15ft Box Truck',
+    '17ft_box_truck': '17ft Box Truck',
+    'refrigerated_van': 'Refrigerated Van'
+  };
+
+  const pageSizeOptions = [10, 25, 50, 100];
+
+  useEffect(() => {
+    // Generate sample driver data
+    const sampleDrivers = Array.from({ length: 100 }, (_, i) => ({
+      id: i + 1,
+      name: `Driver ${i + 1}`,
+      phone: getRandomPhone(),
+      zipcode: getRandomZipcode(),
+      transport: generateRandomTransports(),
+      status: ['online', 'offline', 'busy'][Math.floor(Math.random() * 3)],
+      hireStatus: generateRandomHireStatus(),
+      rating: generateRandomRating(),
+      stripeStatus: generateRandomStripeStatus(),
+      notes: Math.random() > 0.7 ? 'Some notes about this driver...' : ''
+    }));
+    
+    setDrivers(sampleDrivers);
+    setTotalItems(sampleDrivers.length);
+    setTotalPages(Math.ceil(sampleDrivers.length / pageSize));
+  }, [pageSize]);
+
+  // Compute the current visible items based on pagination
+  const currentItems = React.useMemo(() => {
+    let filteredItems = [...drivers];
+    
+    if (searchTerm) {
+      filteredItems = filteredItems.filter(driver => 
+        driver.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        driver.phone.includes(searchTerm) ||
+        driver.zipcode.includes(searchTerm)
+      );
+    }
+    
+    // Apply sorting if set
+    if (sortConfig.key && sortConfig.direction) {
+      filteredItems.sort((a, b) => {
+        if (a[sortConfig.key!] < b[sortConfig.key!]) {
+          return sortConfig.direction === 'ascending' ? -1 : 1;
+        }
+        if (a[sortConfig.key!] > b[sortConfig.key!]) {
+          return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, filteredItems.length);
+    
+    return filteredItems.slice(startIndex, endIndex);
+  }, [drivers, currentPage, pageSize, searchTerm, sortConfig]);
+
+  // Get the sorted columns based on order
+  const sortedColumns = React.useMemo(() => {
+    return columnOrder.filter(colId => visibleColumns.includes(colId));
+  }, [visibleColumns, columnOrder]);
+
+  // Handle page changes
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  // Handle page size changes
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(1);
+  };
+
+  // Toggle the filter sidebar
+  const handleToggleFilterSidebar = () => {
+    setIsFilterSidebarOpen(prev => !prev);
+  };
+
+  // Handle chat with courier
+  const handleChatOpen = (courierName: string) => {
+    setSelectedCourier(courierName);
+    setChatOpen(true);
+  };
+
+  const handleChatClose = () => {
+    setChatOpen(false);
+  };
+
+  // Sort functionality
+  const requestSort = (key: string) => {
+    let direction: 'ascending' | 'descending' | null = 'ascending';
+    if (sortConfig.key === key) {
+      if (sortConfig.direction === 'ascending') {
+        direction = 'descending';
+      } else if (sortConfig.direction === 'descending') {
+        direction = null;
+      }
+    }
+    setSortConfig({ key, direction });
+  };
+
+  // Column drag and drop functionality
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
+    setDraggedColumn(columnId);
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
+    e.preventDefault();
+    setDragOverColumn(columnId);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedColumn(null);
+    setDragOverColumn(null);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
+    e.preventDefault();
+    
+    if (draggedColumn && draggedColumn !== targetColumnId) {
+      const newOrder = [...columnOrder];
+      const draggedIndex = newOrder.indexOf(draggedColumn);
+      const targetIndex = newOrder.indexOf(targetColumnId);
+      
+      newOrder.splice(draggedIndex, 1);
+      newOrder.splice(targetIndex, 0, draggedColumn);
+      
+      setColumnOrder(newOrder);
+    }
+    
+    setDraggedColumn(null);
+    setDragOverColumn(null);
+  };
+
+  // Cell content rendering based on column
+  const renderCellContent = (driver: any, columnId: string) => {
+    switch (columnId) {
+      case 'id':
+        return <span className="font-mono text-xs text-right">#{driver.id}</span>;
+      case 'name':
+        return driver.name;
+      case 'phone':
+        return driver.phone;
+      case 'zipcode':
+        return driver.zipcode;
+      case 'transport':
+        return (
+          <div className="flex gap-1">
+            {driver.transport.map((t: string) => (
+              <TransportIcon key={t} type={t as TransportType} className="h-4 w-4" tooltip={transportTypes[t]} />
+            ))}
+          </div>
+        );
+      case 'status':
+        return (
+          <Badge variant={driver.status === 'online' ? 'success' : driver.status === 'busy' ? 'warning' : 'outline'}>
+            {statusDictionary[driver.status]}
+          </Badge>
+        );
+      case 'hireStatus':
+        return (
+          <Badge variant={driver.hireStatus === 'hired' ? 'success' : driver.hireStatus === 'blacklist' ? 'destructive' : 'outline'}>
+            {hireStatusDictionary[driver.hireStatus]}
+          </Badge>
+        );
+      case 'rating':
+        return (
+          <div className="flex items-center">
+            <span>{driver.rating}</span>
+            <span className="ml-1 text-yellow-400">★</span>
+          </div>
+        );
+      case 'stripeStatus':
+        return (
+          <Badge variant={driver.stripeStatus === 'verified' ? 'success' : driver.stripeStatus === 'pending' ? 'warning' : 'destructive'}>
+            {driver.stripeStatus}
+          </Badge>
+        );
+      case 'notes':
+        return driver.notes ? (
+          <div className="max-w-[200px] truncate">{driver.notes}</div>
+        ) : (
+          <span className="text-gray-400">No notes</span>
+        );
+      case 'actions':
+        return (
+          <div className="flex gap-1">
+            <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => handleChatOpen(driver.name)}>
+              <MessageCircle className="h-4 w-4" />
+            </Button>
+            <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+              <Pencil className="h-4 w-4" />
+            </Button>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  // Calculate pagination page numbers
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxPagesToShow = 5;
+    
+    if (totalPages <= maxPagesToShow) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) {
+          pages.push(i);
+        }
+        pages.push(-1); // Represents ellipsis
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push(-2); // Represents ellipsis
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        pages.push(1);
+        pages.push(-2); // Represents ellipsis
+        pages.push(currentPage - 1);
+        pages.push(currentPage);
+        pages.push(currentPage + 1);
+        pages.push(-1); // Represents ellipsis
+        pages.push(totalPages);
+      }
+    }
+    
+    return pages;
+  };
 
   return <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
