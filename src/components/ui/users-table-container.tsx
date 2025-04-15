@@ -21,6 +21,7 @@ const UsersTableContainer = React.forwardRef<
       "relative border rounded-md overflow-hidden flex-shrink-0 w-full",
       "transition-all duration-300 shadow-sm", 
       height, 
+      "px-[5px]",  // Added 5px padding on all sides
       className
     )} 
     style={{
