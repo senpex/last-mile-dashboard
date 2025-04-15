@@ -558,7 +558,400 @@ const DriversPage = () => {
   const [timezone, setTimezone] = useState<string>("America/New_York");
   const [activeView, setActiveView] = useState("main");
 
-  // ... rest of code remains unchanged
+  return (
+    <Layout>
+      <div className="flex h-full">
+        {isFilterSidebarOpen && (
+          <div className="border-r flex-shrink-0" style={{ width: "300px" }}>
+            <div className="p-4 border-b">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-medium">Filter Drivers</h2>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsFilterSidebarOpen(false)}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+            <div className="p-4">
+              <DeliveryFilters 
+                dateRange={dateRange}
+                setDateRange={setDateRange}
+                timezone={timezone}
+                setTimezone={setTimezone}
+                activeView={activeView}
+                setActiveView={setActiveView}
+              />
+            </div>
+          </div>
+        )}
+        
+        <div className="flex-1 flex flex-col p-6">
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold">Drivers</h1>
+              <Badge variant="outline" className="ml-2">
+                {filteredDrivers.length}
+              </Badge>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              {!isFilterSidebarOpen && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsFilterSidebarOpen(true)}
+                >
+                  <Filter className="h-4 w-4 mr-2" />
+                  Filter
+                </Button>
+              )}
+              
+              <div className="flex items-center border rounded-md">
+                <Input
+                  placeholder="Search drivers..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="border-0"
+                />
+                <Button variant="ghost" className="border-l h-full">
+                  <Search className="h-4 w-4" />
+                </Button>
+              </div>
+              
+              <ColumnSelector
+                availableColumns={availableColumns}
+                visibleColumns={visibleColumns}
+                setVisibleColumns={setVisibleColumns}
+              />
+              
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Add Driver
+              </Button>
+            </div>
+          </div>
+          
+          <UsersTableContainer>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  {columnOrder
+                    .filter(colId => visibleColumns.includes(colId))
+                    .map(colId => {
+                      const column = availableColumns.find(col => col.id === colId);
+                      return (
+                        <TableHead
+                          key={colId}
+                          className="cursor-pointer"
+                          onClick={() => {
+                            if (colId === 'actions') return;
+                            
+                            setSortConfig(prevConfig => ({
+                              key: colId,
+                              direction:
+                                prevConfig.key === colId && prevConfig.direction === 'ascending'
+                                  ? 'descending'
+                                  : 'ascending'
+                            }));
+                          }}
+                          draggable
+                          onDragStart={() => setDraggedColumn(colId)}
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            setDragOverColumn(colId);
+                          }}
+                          onDrop={(e) => {
+                            e.preventDefault();
+                            if (draggedColumn && dragOverColumn) {
+                              const newOrder = [...columnOrder];
+                              const draggedIdx = newOrder.indexOf(draggedColumn);
+                              const dropIdx = newOrder.indexOf(dragOverColumn);
+                              
+                              newOrder.splice(draggedIdx, 1);
+                              newOrder.splice(dropIdx, 0, draggedColumn);
+                              
+                              setColumnOrder(newOrder);
+                              setDraggedColumn(null);
+                              setDragOverColumn(null);
+                            }
+                          }}
+                        >
+                          <div className="flex items-center gap-2">
+                            <GripVertical className="h-4 w-4 text-muted-foreground drag-handle" />
+                            {column?.label || colId}
+                            {sortConfig.key === colId && (
+                              <ChevronDown
+                                className={`h-4 w-4 transition-transform ${
+                                  sortConfig.direction === 'descending' ? 'rotate-180' : ''
+                                }`}
+                              />
+                            )}
+                          </div>
+                        </TableHead>
+                      );
+                    })}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {currentItems.map(driver => (
+                  <TableRow key={driver.id}>
+                    {columnOrder
+                      .filter(colId => visibleColumns.includes(colId))
+                      .map(colId => {
+                        return (
+                          <TableCell key={`${driver.id}-${colId}`}>
+                            {colId === 'id' && driver.id}
+                            {colId === 'name' && driver.name}
+                            {colId === 'email' && driver.email}
+                            {colId === 'phone' && driver.phone}
+                            {colId === 'zipcode' && driver.zipcode}
+                            {colId === 'transport' && (
+                              <div className="flex flex-wrap gap-1">
+                                {driver.transports.map(transportId => (
+                                  <TransportIcon
+                                    key={transportId}
+                                    type={transportId as TransportType}
+                                    className="h-6 w-6"
+                                    tooltip={transportTypes[transportId] || transportId}
+                                  />
+                                ))}
+                              </div>
+                            )}
+                            {colId === 'rating' && (
+                              <div className="flex items-center">
+                                {driver.rating}
+                              </div>
+                            )}
+                            {colId === 'status' && (
+                              <Badge
+                                variant={
+                                  driver.status === 'online'
+                                    ? 'success'
+                                    : driver.status === 'busy'
+                                      ? 'warning'
+                                      : 'secondary'
+                                }
+                                className={cn(
+                                  'text-xs',
+                                  driver.status === 'online' && 'bg-green-500',
+                                  driver.status === 'busy' && 'bg-yellow-500',
+                                  driver.status === 'offline' && 'bg-gray-500'
+                                )}
+                              >
+                                {statusDictionary[driver.status] || driver.status}
+                              </Badge>
+                            )}
+                            {colId === 'hireStatus' && (
+                              <Badge
+                                variant="outline"
+                                className={cn(
+                                  'border-2',
+                                  driver.hireStatus === 'hired' && 'border-green-500 text-green-600',
+                                  driver.hireStatus === 'left_vm' && 'border-blue-500 text-blue-600',
+                                  driver.hireStatus === 'contact_again' && 'border-yellow-500 text-yellow-600',
+                                  driver.hireStatus === 'not_interested' && 'border-orange-500 text-orange-600',
+                                  driver.hireStatus === 'blacklist' && 'border-red-500 text-red-600',
+                                  driver.hireStatus === 'out_of_service' && 'border-gray-500 text-gray-600'
+                                )}
+                              >
+                                {hireStatusDictionary[driver.hireStatus] || driver.hireStatus}
+                              </Badge>
+                            )}
+                            {colId === 'stripeStatus' && (
+                              <Badge
+                                variant={
+                                  driver.stripeStatus === 'verified'
+                                    ? 'outline'
+                                    : driver.stripeStatus === 'pending'
+                                      ? 'secondary'
+                                      : 'destructive'
+                                }
+                                className={cn(
+                                  'flex items-center gap-1',
+                                  driver.stripeStatus === 'verified' && 'border-green-500 text-green-600',
+                                  driver.stripeStatus === 'pending' && 'border-yellow-500 text-yellow-600',
+                                  driver.stripeStatus === 'unverified' && 'bg-red-100 border-red-500 text-red-600'
+                                )}
+                              >
+                                {driver.stripeStatus === 'verified' ? (
+                                  <Check className="h-3 w-3" />
+                                ) : driver.stripeStatus === 'pending' ? (
+                                  <Clock className="h-3 w-3" />
+                                ) : (
+                                  <X className="h-3 w-3" />
+                                )}
+                                {driver.stripeStatus}
+                              </Badge>
+                            )}
+                            {colId === 'notes' && (
+                              <div className="max-w-xs">
+                                {editingNotes === driver.id ? (
+                                  <div className="flex items-start gap-2">
+                                    <Textarea
+                                      value={driver.notes}
+                                      onChange={(e) => {
+                                        const updatedDrivers = drivers.map(d =>
+                                          d.id === driver.id ? { ...d, notes: e.target.value } : d
+                                        );
+                                        setDrivers(updatedDrivers);
+                                        setFilteredDrivers(
+                                          updatedDrivers.filter(driver =>
+                                            Object.values(driver).some(value =>
+                                              String(value)
+                                                .toLowerCase()
+                                                .includes(searchTerm.toLowerCase())
+                                            )
+                                          )
+                                        );
+                                      }}
+                                      className="min-h-[80px] text-sm"
+                                    />
+                                    <div className="flex flex-col gap-2">
+                                      <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        onClick={() => setEditingNotes(null)}
+                                      >
+                                        <Check className="h-4 w-4" />
+                                      </Button>
+                                      <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        onClick={() => setEditingNotes(null)}
+                                      >
+                                        <X className="h-4 w-4" />
+                                      </Button>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-start gap-2">
+                                    <div className="flex-1 truncate">
+                                      {driver.notes || (
+                                        <span className="text-gray-400 italic">No notes</span>
+                                      )}
+                                    </div>
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      onClick={() => setEditingNotes(driver.id)}
+                                    >
+                                      <Pencil className="h-4 w-4" />
+                                    </Button>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                            {colId === 'actions' && (
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => {
+                                    setSelectedCourier(driver.name);
+                                    setChatOpen(true);
+                                  }}
+                                >
+                                  <MessageCircle className="h-4 w-4" />
+                                </Button>
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button size="sm" variant="ghost">
+                                      <FileText className="h-4 w-4" />
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent>
+                                    <DropdownMenuItem>View Profile</DropdownMenuItem>
+                                    <DropdownMenuItem>Edit Details</DropdownMenuItem>
+                                    <DropdownMenuItem>View Deliveries</DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </div>
+                            )}
+                          </TableCell>
+                        );
+                      })}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </UsersTableContainer>
+          
+          <div className="mt-4">
+            <Pagination className="flex justify-between">
+              <PaginationInfo
+                currentPage={currentPage}
+                pageSize={pageSize}
+                totalItems={totalItems}
+                startIndex={startIndex}
+                endIndex={endIndex}
+              />
+              
+              <div className="flex items-center gap-6">
+                <PaginationSize
+                  value={String(pageSize)}
+                  onValueChange={(value) => {
+                    setPageSize(Number(value));
+                    setCurrentPage(1);
+                  }}
+                  options={pageSizeOptions}
+                />
+                
+                <PaginationContent>
+                  <PaginationPrevious
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                  />
+                  
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                    let pageNum;
+                    
+                    if (totalPages <= 5) {
+                      pageNum = i + 1;
+                    } else {
+                      if (currentPage <= 3) {
+                        pageNum = i + 1;
+                      } else if (currentPage >= totalPages - 2) {
+                        pageNum = totalPages - 4 + i;
+                      } else {
+                        pageNum = currentPage + i - 2;
+                      }
+                    }
+                    
+                    return (
+                      <PaginationItem key={pageNum}>
+                        <PaginationLink
+                          isActive={pageNum === currentPage}
+                          onClick={() => setCurrentPage(pageNum)}
+                        >
+                          {pageNum}
+                        </PaginationLink>
+                      </PaginationItem>
+                    );
+                  })}
+                  
+                  <PaginationNext
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                  />
+                </PaginationContent>
+              </div>
+            </Pagination>
+          </div>
+        </div>
+      </div>
+      
+      {chatOpen && selectedCourier && (
+        <CourierChat
+          courierName={selectedCourier}
+          isOpen={chatOpen}
+          setIsOpen={setChatOpen}
+        />
+      )}
+    </Layout>
+  );
 };
 
 export default DriversPage;
