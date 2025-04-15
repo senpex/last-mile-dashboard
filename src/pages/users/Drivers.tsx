@@ -997,8 +997,8 @@ const DriversPage = () => {
             </div>
 
             <div className="border rounded-md mx-6">
-              <div className="flex h-full py-4 mx-0">
-                {isFilterSidebarOpen && <div className="min-w-[240px] max-w-[240px] border-r bg-background mr-5 mx-[19px]">
+              <div className="flex h-full py-4">
+                {isFilterSidebarOpen && <div className="min-w-[240px] max-w-[240px] border-r bg-background mr-5">
                     <div className="p-4">
                       <h3 className="font-medium mb-3">Filter Drivers</h3>
                       
