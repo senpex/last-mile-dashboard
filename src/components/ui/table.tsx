@@ -2,6 +2,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { ChevronUp, ChevronDown } from "lucide-react"
 
 const Table = React.forwardRef<
   HTMLTableElement,
@@ -81,12 +82,20 @@ const TableHead = React.forwardRef<
     className={cn(
       "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
       dragOver && "border-t-2 border-primary",
+      sortable && "cursor-pointer select-none",
       className
     )}
+    onClick={sortable ? onSort : undefined}
     {...props}
   >
     <div className="flex items-center gap-1">
       {children}
+      {sortable && sortDirection === 'ascending' && (
+        <ChevronUp className="h-4 w-4 text-red-500" />
+      )}
+      {sortable && sortDirection === 'descending' && (
+        <ChevronDown className="h-4 w-4 text-red-500" />
+      )}
     </div>
   </th>
 ))

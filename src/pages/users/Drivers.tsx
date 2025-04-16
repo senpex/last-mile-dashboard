@@ -474,7 +474,53 @@ const DriversPage = () => {
   const sortedColumns = getSortedVisibleColumns();
 
   const requestSort = (key: string) => {
-    console.log("Sorting disabled");
+    let direction: 'ascending' | 'descending' | null = 'ascending';
+    
+    if (sortConfig.key === key) {
+      if (sortConfig.direction === 'ascending') {
+        direction = 'descending';
+      } else if (sortConfig.direction === 'descending') {
+        direction = null;
+      }
+    }
+    
+    setSortConfig({ key, direction });
+    
+    if (direction) {
+      const sortedDrivers = [...filteredDrivers].sort((a, b) => {
+        if (a[key] === undefined || b[key] === undefined) return 0;
+        
+        if (key === 'rating') {
+          return direction === 'ascending' 
+            ? a[key] - b[key]
+            : b[key] - a[key];
+        }
+        
+        if (typeof a[key] === 'string' && typeof b[key] === 'string') {
+          return direction === 'ascending'
+            ? a[key].localeCompare(b[key])
+            : b[key].localeCompare(a[key]);
+        }
+        
+        if (a[key] < b[key]) return direction === 'ascending' ? -1 : 1;
+        if (a[key] > b[key]) return direction === 'ascending' ? 1 : -1;
+        return 0;
+      });
+      
+      setFilteredDrivers(sortedDrivers);
+    } else {
+      if (searchTerm.length >= 3) {
+        const filtered = drivers.filter(driver => 
+          driver.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+          driver.email.toLowerCase().includes(searchTerm.toLowerCase()) || 
+          driver.phone.includes(searchTerm) || 
+          driver.id.toString().includes(searchTerm)
+        );
+        setFilteredDrivers(filtered);
+      } else {
+        setFilteredDrivers(drivers);
+      }
+    }
   };
 
   const renderRating = (rating: number) => {

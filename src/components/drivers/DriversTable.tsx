@@ -140,6 +140,13 @@ export const DriversTable = ({
     }
   };
 
+  // Determine if a column is sortable
+  const isSortable = (columnId: string) => {
+    // Define which columns should be sortable
+    const sortableColumns = ["id", "name", "email", "phone", "zipcode", "rating"];
+    return sortableColumns.includes(columnId);
+  };
+
   return (
     <UsersTableContainer stickyHeader={false} className={cn("w-full mt-1.25", className)}>
       <Table>
@@ -149,11 +156,16 @@ export const DriversTable = ({
               const column = availableColumns.find(col => col.id === columnId);
               if (!column) return null;
               
+              const sortable = isSortable(columnId);
+              
               return (
                 <TableHead 
                   key={columnId} 
                   dragOver={dragOverColumn === columnId} 
                   className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
+                  sortable={sortable}
+                  sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
+                  onSort={() => sortable && requestSort(columnId)}
                 >
                   <div className="flex items-center gap-1 overflow-hidden">
                     <div 
