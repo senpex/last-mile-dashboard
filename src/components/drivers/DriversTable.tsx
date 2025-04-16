@@ -187,7 +187,9 @@ export const DriversTable = ({
                     {sortable && isActive && (
                       direction === 'ascending' 
                         ? <ChevronUp className="h-4 w-4 text-[#ea384c]" />
-                        : <ChevronDown className="h-4 w-4 text-[#ea384c]" />
+                        : direction === 'descending'
+                        ? <ChevronDown className="h-4 w-4 text-[#ea384c]" />
+                        : null
                     )}
                   </div>
                 </TableHead>
