@@ -102,12 +102,7 @@ export function DriversFilters({
                 className="w-auto"
               >
                 <TabsList className="inline-flex h-6 bg-muted space-x-1 items-center justify-center">
-                  <TabsTrigger 
-                    value="main" 
-                    className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative"
-                  >
-                    Main view
-                  </TabsTrigger>
+                  {/* No tab trigger elements */}
                 </TabsList>
               </Tabs>
             </div>
