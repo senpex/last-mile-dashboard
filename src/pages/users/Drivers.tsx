@@ -20,7 +20,7 @@ type StripeStatus = 'verified' | 'unverified' | 'pending';
 // Define all driver statuses
 const allDriverStatuses: DeliveryStatus[] = [
   "Online",
-  "Busy",
+  "Busy", 
   "Offline",
   "Not Approved"
 ];
@@ -831,4 +831,158 @@ const DriversPage = () => {
   const renderStatus = (statusId: string) => {
     const statusText = statusDictionary[statusId] || `Unknown (${statusId})`;
     const statusColorClass = statusColors[statusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
-    return <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font
+    return <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColorClass}`}>
+      {statusText}
+    </div>;
+  };
+
+  const renderHireStatus = (hireStatusId: string, driverId: number) => {
+    const hireStatusText = hireStatusDictionary[hireStatusId] || `Unknown (${hireStatusId})`;
+    const hireStatusColorClass = hireStatusColors[hireStatusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className={`px-2 h-7 font-normal justify-start text-left ${hireStatusColorClass}`}>
+            {hireStatusText}
+            <ChevronDown className="ml-2 h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="w-[180px]">
+          <DropdownMenuItem className="flex items-center" onClick={() => updateDriverHireStatus(driverId, 'hired')}>
+            <Check className="mr-2 h-4 w-4" />
+            <span>Hired</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem className="flex items-center" onClick={() => updateDriverHireStatus(driverId, 'left_vm')}>
+            <Clock className="mr-2 h-4 w-4" />
+            <span>Left VM</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem className="flex items-center" onClick={() => updateDriverHireStatus(driverId, 'contact_again')}>
+            <Clock className="mr-2 h-4 w-4" />
+            <span>Contact Again</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem className="flex items-center" onClick={() => updateDriverHireStatus(driverId, 'not_interested')}>
+            <X className="mr-2 h-4 w-4" />
+            <span>Not Interested</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem className="flex items-center" onClick={() => updateDriverHireStatus(driverId, 'blacklist')}>
+            <X className="mr-2 h-4 w-4" />
+            <span>Blacklist</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem className="flex items-center" onClick={() => updateDriverHireStatus(driverId, 'out_of_service')}>
+            <X className="mr-2 h-4 w-4" />
+            <span>Out of Service</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  };
+
+  const renderStripeStatus = (status: 'verified' | 'unverified' | 'pending') => {
+    let statusColor = '';
+    let statusText = '';
+    switch (status) {
+      case 'verified':
+        statusColor = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+        statusText = 'Verified';
+        break;
+      case 'unverified':
+        statusColor = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+        statusText = 'Unverified';
+        break;
+      case 'pending':
+        statusColor = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+        statusText = 'Pending';
+        break;
+      default:
+        statusColor = 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
+        statusText = 'Unknown';
+    }
+    return <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColor}`}>
+      {statusText}
+    </div>;
+  };
+
+  return (
+    <Layout>
+      <main className="w-full h-full flex flex-col bg-background">
+        {chatOpen && selectedCourier && (
+          <CourierChat 
+            courierName={selectedCourier}
+            onClose={handleChatClose}
+            open={chatOpen}
+          />
+        )}
+        
+        <div className="flex flex-col flex-1 h-full overflow-hidden">
+          <DriversFilters 
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            dateRange={dateRange}
+            onDateRangeChange={setDateRange}
+            timezone={timezone}
+            onTimezoneChange={setTimezone}
+            availableColumns={availableColumns}
+            visibleColumns={visibleColumns}
+            onVisibleColumnsChange={setVisibleColumns}
+            activeView={activeView}
+            onActiveViewChange={setActiveView}
+            onToggleFilterSidebar={handleToggleFilterSidebar}
+            isFilterSidebarOpen={isFilterSidebarOpen}
+          />
+          
+          <div className="flex flex-1 overflow-hidden">
+            <DriversSidebar
+              open={isFilterSidebarOpen}
+              onClose={() => setIsFilterSidebarOpen(false)}
+              selectedStatuses={selectedStatuses}
+              setSelectedStatuses={setSelectedStatuses}
+              allDeliveryStatuses={allDriverStatuses}
+            />
+            
+            <div className="flex-1 overflow-hidden flex flex-col">
+              <div className="flex-1 overflow-auto px-4">
+                <DriversTable
+                  currentItems={currentItems}
+                  sortedColumns={sortedColumns}
+                  availableColumns={availableColumns}
+                  transportTypes={transportTypes}
+                  statusDictionary={statusDictionary}
+                  statusColors={statusColors}
+                  editingNotes={editingNotes}
+                  draggedColumn={draggedColumn}
+                  dragOverColumn={dragOverColumn}
+                  onDragStart={handleDragStart}
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                  onDragEnd={handleDragEnd}
+                  renderRating={renderRating}
+                  renderStatus={renderStatus}
+                  renderHireStatus={renderHireStatus}
+                  renderStripeStatus={renderStripeStatus}
+                  handleNotesClick={handleNotesClick}
+                  handleNotesChange={handleNotesChange}
+                  saveNotes={saveNotes}
+                />
+              </div>
+              
+              <div className="p-4 border-t">
+                <DriversPagination 
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  pageSize={pageSize}
+                  pageSizeOptions={pageSizeOptions}
+                  totalItems={totalItems}
+                  onPageChange={handlePageChange}
+                  onPageSizeChange={handlePageSizeChange}
+                  getPageNumbers={getPageNumbers}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </Layout>
+  );
+};
+
+export default DriversPage;
