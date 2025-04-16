@@ -896,7 +896,7 @@ const DriversPage = () => {
               top: 0,
               bottom: 0,
               left: 0,
-              height: '100%',
+              height: 'calc(100% + 20px)',
               marginTop: 0
             }} className="absolute left-0 h-full bg-background border-r transition-all duration-300 ease-in-out z-10 px-0">
               
