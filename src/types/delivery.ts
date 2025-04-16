@@ -1,20 +1,13 @@
-
 export interface Location {
   name: string;
   address: string;
 }
 
 export type DeliveryStatus = 
-  | "Dropoff Complete" 
-  | "Canceled By Customer" 
-  | "Cancelled By Admin" 
-  | "In Transit" 
-  | "Picking Up" 
-  | "Arrived For Pickup"
-  | "Scheduled Order"
   | "Online"
+  | "Busy"
   | "Offline"
-  | "Busy";
+  | "Not Approved";
 
 export interface Delivery {
   id: number;
