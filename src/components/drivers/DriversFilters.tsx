@@ -94,16 +94,13 @@ export function DriversFilters({
         
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="flex items-center">
-              <h2 className="text-sm font-semibold text-black mr-2">Views:</h2>
-              <Tabs 
-                value={activeView} 
-                onValueChange={onActiveViewChange} 
-                className="w-auto"
-              >
+            <Tabs 
+              value={activeView} 
+              onValueChange={onActiveViewChange} 
+              className="w-auto"
+            >
                 
               </Tabs>
-            </div>
           </div>
         </div>
       </div>
