@@ -14,6 +14,9 @@ interface DriversSidebarProps {
   selectedStatuses: DeliveryStatus[];
   setSelectedStatuses: (statuses: DeliveryStatus[]) => void;
   allDeliveryStatuses: DeliveryStatus[];
+  allZipcodes: string[];
+  selectedZipcodes: string[];
+  setSelectedZipcodes: (zipcodes: string[]) => void;
 }
 
 export function DriversSidebar({
@@ -21,12 +24,13 @@ export function DriversSidebar({
   onClose,
   selectedStatuses,
   setSelectedStatuses,
-  allDeliveryStatuses
+  allDeliveryStatuses,
+  allZipcodes,
+  selectedZipcodes,
+  setSelectedZipcodes
 }: DriversSidebarProps) {
   const [selectedTransports, setSelectedTransports] = useState<string[]>([]);
-  const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
   const [transportTypes, setTransportTypes] = useState<{ id: string; value: string; icon?: string }[]>([]);
-  const [zipcodes, setZipcodes] = useState<string[]>([]);
 
   useEffect(() => {
     const transportDict = getDictionary("2");
@@ -145,7 +149,7 @@ export function DriversSidebar({
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-2 pt-1">
-                    {zipcodes.map((zipcode) => (
+                    {allZipcodes.map((zipcode) => (
                       <div key={zipcode} className="flex items-center space-x-2">
                         <Checkbox
                           id={`zipcode-${zipcode}`}
