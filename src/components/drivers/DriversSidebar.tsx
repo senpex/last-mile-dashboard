@@ -1,8 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Save, RotateCcw } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { DeliveryStatus } from "@/types/delivery";
 import { getDictionary } from "@/lib/storage";
@@ -31,6 +33,9 @@ export function DriversSidebar({
 }: DriversSidebarProps) {
   const [selectedTransports, setSelectedTransports] = useState<string[]>([]);
   const [transportTypes, setTransportTypes] = useState<{ id: string; value: string; icon?: string }[]>([]);
+  const [statusSearchTerm, setStatusSearchTerm] = useState("");
+  const [transportSearchTerm, setTransportSearchTerm] = useState("");
+  const [zipcodeSearchTerm, setZipcodeSearchTerm] = useState("");
 
   useEffect(() => {
     const transportDict = getDictionary("2");
@@ -75,7 +80,16 @@ export function DriversSidebar({
 
   const filteredDeliveryStatuses = allDeliveryStatuses.filter(status => 
     !["Picking Up", "In Transit", "Arrived For Pickup", "Dropoff Complete", 
-      "Scheduled Order", "Canceled By Customer", "Cancelled By Admin"].includes(status)
+      "Scheduled Order", "Canceled By Customer", "Cancelled By Admin"].includes(status) &&
+    status.toLowerCase().includes(statusSearchTerm.toLowerCase())
+  );
+
+  const filteredTransportTypes = transportTypes.filter(transport =>
+    transport.value.toLowerCase().includes(transportSearchTerm.toLowerCase())
+  );
+
+  const filteredZipcodes = allZipcodes.filter(zipcode =>
+    zipcode.toLowerCase().includes(zipcodeSearchTerm.toLowerCase())
   );
 
   return (
@@ -92,6 +106,12 @@ export function DriversSidebar({
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-2 pt-1">
+                    <Input
+                      placeholder="Search status..."
+                      value={statusSearchTerm}
+                      onChange={(e) => setStatusSearchTerm(e.target.value)}
+                      className="mb-2"
+                    />
                     {filteredDeliveryStatuses.map((status) => (
                       <div key={status} className="flex items-center space-x-2">
                         <Checkbox
@@ -107,6 +127,9 @@ export function DriversSidebar({
                         </label>
                       </div>
                     ))}
+                    {filteredDeliveryStatuses.length === 0 && (
+                      <p className="text-sm text-muted-foreground">No matching statuses found</p>
+                    )}
                   </div>
                 </AccordionContent>
               </AccordionItem>
@@ -117,7 +140,13 @@ export function DriversSidebar({
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-2 pt-1">
-                    {transportTypes.map((transport) => (
+                    <Input
+                      placeholder="Search transport type..."
+                      value={transportSearchTerm}
+                      onChange={(e) => setTransportSearchTerm(e.target.value)}
+                      className="mb-2"
+                    />
+                    {filteredTransportTypes.map((transport) => (
                       <div key={transport.id} className="flex items-center space-x-2">
                         <Checkbox
                           id={`transport-${transport.id}`}
@@ -139,6 +168,9 @@ export function DriversSidebar({
                         </label>
                       </div>
                     ))}
+                    {filteredTransportTypes.length === 0 && (
+                      <p className="text-sm text-muted-foreground">No matching transport types found</p>
+                    )}
                   </div>
                 </AccordionContent>
               </AccordionItem>
@@ -149,7 +181,13 @@ export function DriversSidebar({
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-2 pt-1">
-                    {allZipcodes.map((zipcode) => (
+                    <Input
+                      placeholder="Search zipcode..."
+                      value={zipcodeSearchTerm}
+                      onChange={(e) => setZipcodeSearchTerm(e.target.value)}
+                      className="mb-2"
+                    />
+                    {filteredZipcodes.map((zipcode) => (
                       <div key={zipcode} className="flex items-center space-x-2">
                         <Checkbox
                           id={`zipcode-${zipcode}`}
@@ -164,15 +202,13 @@ export function DriversSidebar({
                         </label>
                       </div>
                     ))}
+                    {filteredZipcodes.length === 0 && (
+                      <p className="text-sm text-muted-foreground">No matching zipcodes found</p>
+                    )}
                   </div>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-
-            <div>
-              <p className="text-sm font-medium mb-2">Rating Filters</p>
-              {/* Rating filter content will be added here */}
-            </div>
           </div>
         </ScrollArea>
 
