@@ -878,7 +878,7 @@ const DriversPage = () => {
 
   return (
     <Layout showFooter={false}>
-      <div className="flex flex-col h-screen w-full">
+      <div className="flex flex-col h-screen">
         <DriversFilters 
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
@@ -895,8 +895,8 @@ const DriversPage = () => {
           isFilterSidebarOpen={isFilterSidebarOpen}
         />
 
-        <div className="px-0 py-6 flex-1 overflow-auto">
-          <div className="space-y-4 w-full relative">
+        <div className="flex-1 overflow-hidden">
+          <div className="space-y-4 w-full relative h-full">
             {/* Filters panel */}
             <div 
               className="absolute top-0 left-0 h-full bg-background border-r transition-all duration-300 ease-in-out z-10"
@@ -928,7 +928,7 @@ const DriversPage = () => {
 
             {/* Table container with margin transition */}
             <div 
-              className="transition-all duration-300 ease-in-out"
+              className="h-full transition-all duration-300 ease-in-out"
               style={{
                 marginLeft: isFilterSidebarOpen ? "300px" : "0",
               }}
