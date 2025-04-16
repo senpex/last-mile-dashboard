@@ -71,6 +71,19 @@ const generateRandomStripeStatus = (): StripeStatus => {
   return statuses[randomIndex];
 };
 
+const generateRandomProfileTypes = (): string[] => {
+  const types = ['Driver', 'Mover', 'Helper'];
+  const numTypes = Math.floor(Math.random() * 3) + 1;
+  const selectedTypes = [];
+  const shuffled = [...types].sort(() => 0.5 - Math.random());
+  
+  for (let i = 0; i < numTypes; i++) {
+    selectedTypes.push(shuffled[i]);
+  }
+  
+  return selectedTypes;
+};
+
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{
     [key: string]: string;
@@ -106,7 +119,8 @@ const DriversPage = () => {
     rating: 4.8,
     stripeStatus: 'verified' as StripeStatus,
     zipcode: "94105",
-    notes: "Excellent driver, always on time."
+    notes: "Excellent driver, always on time.",
+    profileTypes: ["Driver", "Mover"]
   }, {
     id: 6543,
     name: "Jane Smith",
@@ -118,7 +132,8 @@ const DriversPage = () => {
     rating: 3.5,
     stripeStatus: 'unverified' as StripeStatus,
     zipcode: "90210",
-    notes: "Prefers weekend shifts."
+    notes: "Prefers weekend shifts.",
+    profileTypes: ["Helper"]
   }, {
     id: 7654,
     name: "Mike Johnson",
@@ -492,55 +507,21 @@ const DriversPage = () => {
     zipcode: getRandomZipcode(),
     notes: ""
   }]);
-  const availableColumns: ColumnOption[] = [{
-    id: "id",
-    label: "ID",
-    default: true
-  }, {
-    id: "name",
-    label: "Name",
-    default: true
-  }, {
-    id: "email",
-    label: "Email",
-    default: true
-  }, {
-    id: "phone",
-    label: "Phone",
-    default: true
-  }, {
-    id: "zipcode",
-    label: "Zipcode",
-    default: true
-  }, {
-    id: "transport",
-    label: "Transport",
-    default: true
-  }, {
-    id: "rating",
-    label: "Rating",
-    default: true
-  }, {
-    id: "status",
-    label: "Status",
-    default: true
-  }, {
-    id: "hireStatus",
-    label: "Hire Status",
-    default: true
-  }, {
-    id: "stripeStatus",
-    label: "Stripe Status",
-    default: true
-  }, {
-    id: "notes",
-    label: "Notes",
-    default: true
-  }, {
-    id: "actions",
-    label: "Actions",
-    default: true
-  }];
+  const availableColumns: ColumnOption[] = [
+    { id: "id", label: "ID", default: true },
+    { id: "name", label: "Name", default: true },
+    { id: "email", label: "Email", default: true },
+    { id: "phone", label: "Phone", default: true },
+    { id: "zipcode", label: "Zipcode", default: true },
+    { id: "transport", label: "Transport", default: true },
+    { id: "rating", label: "Rating", default: true },
+    { id: "status", label: "Status", default: true },
+    { id: "profileType", label: "Profile Type", default: true },
+    { id: "hireStatus", label: "Hire Status", default: true },
+    { id: "stripeStatus", label: "Stripe Status", default: true },
+    { id: "notes", label: "Notes", default: true },
+    { id: "actions", label: "Actions", default: true }
+  ];
   const [visibleColumns, setVisibleColumns] = useState<string[]>(availableColumns.filter(col => col.default).map(col => col.id));
   const [columnOrder, setColumnOrder] = useState<string[]>(availableColumns.filter(col => col.default).map(col => col.id));
   const [currentPage, setCurrentPage] = useState(1);
@@ -614,6 +595,13 @@ const DriversPage = () => {
     const randomDrivers = drivers.filter(() => Math.random() < 0.3).map(driver => driver.id);
     setDriversWithMessages(randomDrivers);
   }, [drivers]);
+
+  useEffect(() => {
+    setDrivers(prevDrivers => prevDrivers.map(driver => ({
+      ...driver,
+      profileTypes: driver.profileTypes || generateRandomProfileTypes()
+    })));
+  }, []);
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
