@@ -84,6 +84,16 @@ const generateRandomProfileTypes = (): string[] => {
   return selectedTypes;
 };
 
+const getRandomAddress = (): string => {
+  const streetNumbers = [123, 456, 789, 1010, 555, 777, 888, 999, 321, 654];
+  const streetNames = ["Main St", "Oak Ave", "Pine Rd", "Maple Dr", "Cedar Ln", "Elm Blvd", "Park Ave", "River Rd", "Lake Dr", "Forest Way"];
+  const cities = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"];
+  const states = ["NY", "CA", "IL", "TX", "AZ", "PA", "TX", "CA", "TX", "CA"];
+  
+  const randomIndex = Math.floor(Math.random() * 10);
+  return `${streetNumbers[randomIndex]} ${streetNames[randomIndex]}, ${cities[randomIndex]}, ${states[randomIndex]}`;
+};
+
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{
     [key: string]: string;
@@ -119,6 +129,7 @@ const DriversPage = () => {
     rating: 4.8,
     stripeStatus: 'verified' as StripeStatus,
     zipcode: "94105",
+    address: "123 Main St, San Francisco, CA",
     notes: "Excellent driver, always on time.",
     profileTypes: ["Driver", "Mover"]
   }, {
@@ -132,6 +143,7 @@ const DriversPage = () => {
     rating: 3.5,
     stripeStatus: 'unverified' as StripeStatus,
     zipcode: "90210",
+    address: "456 Oak Ave, Beverly Hills, CA",
     notes: "Prefers weekend shifts.",
     profileTypes: ["Helper"]
   }, {
@@ -145,374 +157,16 @@ const DriversPage = () => {
     rating: 5.0,
     stripeStatus: 'pending' as StripeStatus,
     zipcode: "10001",
+    address: "789 Pine Rd, New York, NY",
     notes: "Not available on Mondays."
-  }, {
-    id: 8001,
-    name: "Alice Williams",
-    email: "alice.w@example.com",
-    phone: getRandomPhone(),
-    status: "online",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8002,
-    name: "Robert Miller",
-    email: "robert.m@example.com",
-    phone: getRandomPhone(),
-    status: "busy",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8003,
-    name: "Emily Davis",
-    email: "emily.d@example.com",
-    phone: getRandomPhone(),
-    status: "offline",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8004,
-    name: "James Wilson",
-    email: "james.w@example.com",
-    phone: getRandomPhone(),
-    status: "online",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8005,
-    name: "Sarah Taylor",
-    email: "sarah.t@example.com",
-    phone: getRandomPhone(),
-    status: "busy",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8006,
-    name: "Daniel Anderson",
-    email: "daniel.a@example.com",
-    phone: getRandomPhone(),
-    status: "offline",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8007,
-    name: "Olivia Thomas",
-    email: "olivia.t@example.com",
-    phone: getRandomPhone(),
-    status: "online",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8008,
-    name: "Matthew Jackson",
-    email: "matthew.j@example.com",
-    phone: getRandomPhone(),
-    status: "busy",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8009,
-    name: "Sophia White",
-    email: "sophia.w@example.com",
-    phone: getRandomPhone(),
-    status: "offline",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8010,
-    name: "David Harris",
-    email: "david.h@example.com",
-    phone: getRandomPhone(),
-    status: "online",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8011,
-    name: "Emma Martin",
-    email: "emma.m@example.com",
-    phone: getRandomPhone(),
-    status: "busy",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8012,
-    name: "Andrew Thompson",
-    email: "andrew.t@example.com",
-    phone: getRandomPhone(),
-    status: "offline",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8013,
-    name: "Isabella Garcia",
-    email: "isabella.g@example.com",
-    phone: getRandomPhone(),
-    status: "online",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8014,
-    name: "Joshua Martinez",
-    email: "joshua.m@example.com",
-    phone: getRandomPhone(),
-    status: "busy",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8015,
-    name: "Charlotte Robinson",
-    email: "charlotte.r@example.com",
-    phone: getRandomPhone(),
-    status: "offline",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8016,
-    name: "Christopher Clark",
-    email: "chris.c@example.com",
-    phone: getRandomPhone(),
-    status: "online",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8017,
-    name: "Amelia Rodriguez",
-    email: "amelia.r@example.com",
-    phone: getRandomPhone(),
-    status: "busy",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8018,
-    name: "Joseph Lewis",
-    email: "joseph.l@example.com",
-    phone: getRandomPhone(),
-    status: "offline",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8019,
-    name: "Mia Walker",
-    email: "mia.w@example.com",
-    phone: getRandomPhone(),
-    status: "online",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8020,
-    name: "Ethan Hall",
-    email: "ethan.h@example.com",
-    phone: getRandomPhone(),
-    status: "busy",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8021,
-    name: "Harper Young",
-    email: "harper.y@example.com",
-    phone: getRandomPhone(),
-    status: "offline",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8022,
-    name: "Alexander Allen",
-    email: "alex.a@example.com",
-    phone: getRandomPhone(),
-    status: "online",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8023,
-    name: "Abigail King",
-    email: "abigail.k@example.com",
-    phone: getRandomPhone(),
-    status: "busy",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8024,
-    name: "Benjamin Wright",
-    email: "ben.w@example.com",
-    phone: getRandomPhone(),
-    status: "offline",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8025,
-    name: "Sofia Scott",
-    email: "sofia.s@example.com",
-    phone: getRandomPhone(),
-    status: "online",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8026,
-    name: "William Green",
-    email: "william.g@example.com",
-    phone: getRandomPhone(),
-    status: "busy",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8027,
-    name: "Elizabeth Baker",
-    email: "elizabeth.b@example.com",
-    phone: getRandomPhone(),
-    status: "offline",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8028,
-    name: "Michael Adams",
-    email: "michael.a@example.com",
-    phone: getRandomPhone(),
-    status: "online",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8029,
-    name: "Camila Nelson",
-    email: "camila.n@example.com",
-    phone: getRandomPhone(),
-    status: "busy",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
-  }, {
-    id: 8030,
-    name: "Jacob Hill",
-    email: "jacob.h@example.com",
-    phone: getRandomPhone(),
-    status: "offline",
-    hireStatus: generateRandomHireStatus(),
-    transports: generateRandomTransports(),
-    rating: generateRandomRating(),
-    stripeStatus: generateRandomStripeStatus(),
-    zipcode: getRandomZipcode(),
-    notes: ""
   }]);
   const availableColumns: ColumnOption[] = [
     { id: "id", label: "ID", default: true },
     { id: "name", label: "Name", default: true },
     { id: "email", label: "Email", default: true },
     { id: "phone", label: "Phone", default: true },
-    { id: "zipcode", label: "Zipcode", default: true },
+    { id: "zipcode", label: "Zipcode", default: false },
+    { id: "address", label: "Address", default: true },
     { id: "transport", label: "Transport", default: true },
     { id: "rating", label: "Rating", default: true },
     { id: "status", label: "Status", default: true },
@@ -601,7 +255,8 @@ const DriversPage = () => {
   useEffect(() => {
     setDrivers(prevDrivers => prevDrivers.map(driver => ({
       ...driver,
-      profileTypes: driver.profileTypes || generateRandomProfileTypes()
+      profileTypes: driver.profileTypes || generateRandomProfileTypes(),
+      address: driver.address || getRandomAddress()
     })));
   }, []);
 

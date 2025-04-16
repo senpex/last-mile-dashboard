@@ -71,6 +71,10 @@ export const DriversTable = ({
           </div>;
       case "zipcode":
         return driver.zipcode;
+      case "address":
+        return <div className="max-w-[200px] truncate" title={driver.address}>
+            {driver.address || "No address provided"}
+          </div>;
       case "transport":
         return <div className="flex items-center gap-2">
             {driver.transports.map((transportId: string) => <div key={transportId} className="flex items-center justify-center p-2 rounded-md bg-muted" title={transportTypes[transportId] || `Transport ID: ${transportId}`}>
