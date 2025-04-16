@@ -466,7 +466,7 @@ export function DeliverySidebar({
                     placeholder="Search statuses..."
                     value={statusSearchTerm}
                     onChange={(e) => setStatusSearchTerm(e.target.value)}
-                    className="mb-2"
+                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
                   />
                   {getFilteredStatusItems().map(item => {
                     const actualStatus = statusMapping[item.value];
@@ -511,7 +511,7 @@ export function DeliverySidebar({
                     placeholder="Search zipcodes..."
                     value={zipcodeSearchTerm}
                     onChange={(e) => setZipcodeSearchTerm(e.target.value)}
-                    className="mb-2"
+                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
                   />
                   {getFilteredZipcodes().map(zipcode => (
                     <div key={zipcode} className="flex items-center space-x-2">
@@ -546,7 +546,7 @@ export function DeliverySidebar({
                     placeholder="Search cities..."
                     value={citySearchTerm}
                     onChange={(e) => setCitySearchTerm(e.target.value)}
-                    className="mb-2"
+                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
                   />
                   {getFilteredCities().map(city => (
                     <div key={city} className="flex items-center space-x-2">
@@ -581,7 +581,7 @@ export function DeliverySidebar({
                     placeholder="Search states..."
                     value={stateSearchTerm}
                     onChange={(e) => setStateSearchTerm(e.target.value)}
-                    className="mb-2"
+                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
                   />
                   {getFilteredStates().map(state => (
                     <div key={state} className="flex items-center space-x-2">
@@ -616,7 +616,7 @@ export function DeliverySidebar({
                     placeholder="Search pickup addresses..."
                     value={pickupAddressSearchTerm}
                     onChange={(e) => setPickupAddressSearchTerm(e.target.value)}
-                    className="mb-2"
+                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
                   />
                   {getFilteredPickupAddresses().map(address => (
                     <div key={address} className="flex items-center space-x-2">
@@ -652,7 +652,7 @@ export function DeliverySidebar({
                     placeholder="Search dropoff addresses..."
                     value={dropoffAddressSearchTerm}
                     onChange={(e) => setDropoffAddressSearchTerm(e.target.value)}
-                    className="mb-2"
+                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
                   />
                   {getFilteredDropoffAddresses().map(address => (
                     <div key={address} className="flex items-center space-x-2">
@@ -688,7 +688,7 @@ export function DeliverySidebar({
                     placeholder="Search sender names..."
                     value={senderNameSearchTerm}
                     onChange={(e) => setSenderNameSearchTerm(e.target.value)}
-                    className="mb-2 w-[90%]"
+                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input w-[90%]"
                   />
                   {getFilteredSenderNames().map(name => (
                     <div key={name} className="flex items-center space-x-2">
@@ -723,7 +723,7 @@ export function DeliverySidebar({
                     placeholder="Search recipient names..."
                     value={recipientNameSearchTerm}
                     onChange={(e) => setRecipientNameSearchTerm(e.target.value)}
-                    className="mb-2 w-[90%]"
+                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input w-[90%]"
                   />
                   {getFilteredRecipientNames().map(name => (
                     <div key={name} className="flex items-center space-x-2">
@@ -758,7 +758,7 @@ export function DeliverySidebar({
                     placeholder="Search organizations..."
                     value={organizationSearchTerm}
                     onChange={(e) => setOrganizationSearchTerm(e.target.value)}
-                    className="mb-2"
+                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
                   />
                   {getFilteredOrganizations().map(org => (
                     <div key={org} className="flex items-center space-x-2">
@@ -793,7 +793,7 @@ export function DeliverySidebar({
                     placeholder="Search couriers..."
                     value={courierSearchTerm}
                     onChange={(e) => setCourierSearchTerm(e.target.value)}
-                    className="mb-2"
+                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
                   />
                   {getFilteredCouriers().map(courier => (
                     <div key={courier} className="flex items-center space-x-2">
