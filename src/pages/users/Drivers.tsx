@@ -16,7 +16,8 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import CourierChat from '@/components/chat/CourierChat';
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import DriversFilters from "@/components/DriversFilters";
+import { DriversFilters } from "@/components/drivers/DriversFilters";
+import { DateRange } from "react-day-picker";
 
 type StripeStatus = 'verified' | 'unverified' | 'pending';
 
@@ -555,6 +556,8 @@ const DriversPage = () => {
   });
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
   const [activeView, setActiveView] = useState("main");
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
+  const [timezone, setTimezone] = useState<string>("America/New_York");
 
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => prevDrivers.map(driver => driver.id === driverId ? {
