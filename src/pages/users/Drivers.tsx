@@ -13,6 +13,7 @@ import { ColumnOption } from "@/components/table/ColumnSelector";
 import { getDictionary } from "@/lib/storage";
 import CourierChat from '@/components/chat/CourierChat';
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
+import { DeliveryStatus } from "@/types/delivery";
 
 type StripeStatus = 'verified' | 'unverified' | 'pending';
 
@@ -553,6 +554,7 @@ const DriversPage = () => {
   const [activeView, setActiveView] = useState("main");
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
   const [timezone, setTimezone] = useState<string>("America/New_York");
+  const [selectedStatuses, setSelectedStatuses] = useState<DeliveryStatus[]>([]);
 
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => prevDrivers.map(driver => driver.id === driverId ? {
@@ -893,6 +895,9 @@ const DriversPage = () => {
           <DriversSidebar 
             open={isFilterSidebarOpen}
             onClose={() => setIsFilterSidebarOpen(false)}
+            selectedStatuses={selectedStatuses}
+            setSelectedStatuses={setSelectedStatuses}
+            allDeliveryStatuses={allDriverStatuses}
           />
 
           <div className={`flex-1 transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-2"}`}>
