@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@ import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 interface DriversFiltersProps {
   searchTerm: string;
@@ -23,6 +25,9 @@ interface DriversFiltersProps {
   onActiveViewChange: (view: string) => void;
   onToggleFilterSidebar: () => void;
   isFilterSidebarOpen: boolean;
+  showMyDriversOnly?: boolean;
+  onToggleMyDrivers?: (showMyDriversOnly: boolean) => void;
+  hasAttentionRequired?: boolean;
 }
 
 export function DriversFilters({
@@ -39,6 +44,9 @@ export function DriversFilters({
   onActiveViewChange,
   onToggleFilterSidebar,
   isFilterSidebarOpen,
+  showMyDriversOnly = true,
+  onToggleMyDrivers = () => {},
+  hasAttentionRequired = false
 }: DriversFiltersProps) {
   return (
     <div className="px-4 py-6 flex-shrink-0 border-b space-y-1">
@@ -97,13 +105,58 @@ export function DriversFilters({
         
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Tabs 
-              value={activeView} 
-              onValueChange={onActiveViewChange} 
-              className="w-auto"
+            <ToggleGroup 
+              type="single" 
+              value={showMyDriversOnly ? "me" : "all"}
+              onValueChange={(value) => {
+                if (value) { 
+                  onToggleMyDrivers(value === "me");
+                }
+              }}
+              className="border rounded-md h-6"
             >
-                
-            </Tabs>
+              <ToggleGroupItem 
+                value="me" 
+                aria-label="Show my drivers" 
+                className="px-3 text-xs rounded-md h-6 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+              >
+                Me
+              </ToggleGroupItem>
+              <ToggleGroupItem 
+                value="all" 
+                aria-label="Show all drivers" 
+                className="px-3 text-xs rounded-md h-6 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+              >
+                All
+              </ToggleGroupItem>
+            </ToggleGroup>
+
+            <div className="flex items-center">
+              <h2 className="text-sm font-semibold text-black mr-2">Views:</h2>
+              <Tabs 
+                value={activeView} 
+                onValueChange={onActiveViewChange} 
+                className="w-auto"
+              >
+                <TabsList className="inline-flex h-6 bg-muted space-x-1 items-center justify-center">
+                  <TabsTrigger 
+                    value="main" 
+                    className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  >
+                    Main view
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="attention" 
+                    className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative flex items-center"
+                  >
+                    Attention Required
+                    {hasAttentionRequired && (
+                      <span className="ml-1.5 h-2 w-2 bg-red-500 rounded-full animate-pulse" />
+                    )}
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
           </div>
         </div>
       </div>
