@@ -1001,7 +1001,6 @@ const DriversPage = () => {
                   <Plus className="w-3 h-3" />
                   Add Driver
                 </Button>
-
                 <Button 
                   variant={isFilterSidebarOpen ? "default" : "outline"} 
                   className={`flex items-center gap-2 text-sm h-9 ${isFilterSidebarOpen ? 'bg-primary text-primary-foreground' : ''}`} 
@@ -1012,7 +1011,6 @@ const DriversPage = () => {
                   <span>{isFilterSidebarOpen ? 'Hide Filters' : 'Show Filters'}</span>
                 </Button>
               </div>
-
               <div className="flex items-center h-9 gap-2">
                 <div className="relative h-9">
                   <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
