@@ -43,7 +43,7 @@ export function DriversFilters({
 }: DriversFiltersProps) {
   return (
     <div className="px-4 py-6 flex-shrink-0 border-b">
-      <div className="flex flex-col space-y-4">  {/* Restored space-y-4 */}
+      <div className="flex flex-col space-y-2">  {/* Reduced from space-y-4 to space-y-2 */}
         <div className="flex justify-start">
           <h1 className="text-2xl font-semibold text-foreground">Drivers Management</h1>
         </div>
