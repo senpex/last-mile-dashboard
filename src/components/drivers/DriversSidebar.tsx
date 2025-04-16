@@ -172,10 +172,7 @@ export function DriversSidebar({
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="profile" className="border-b">
               <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex items-center gap-2">
-                  <User className="h-4 w-4" />
-                  Driver Profile
-                </span>
+                Driver Profile
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
