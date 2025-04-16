@@ -841,7 +841,7 @@ const DriversPage = () => {
             <div style={{
             width: "300px",
             transform: isFilterSidebarOpen ? 'translateX(0)' : 'translateX(-100%)'
-          }} className="absolute top-0 left-0 h-full bg-background border-r transition-all duration-300 ease-in-out z-10 px-[83px]">
+          }} className="absolute top-0 left-0 h-full bg-background border-r transition-all duration-300 ease-in-out z-10 px-[85px]">
               <div className="p-6 space-y-6">
                 <div>
                   <h3 className="text-lg font-semibold mb-4">Filters</h3>
