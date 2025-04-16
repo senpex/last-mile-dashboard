@@ -2,7 +2,7 @@ import React from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Filter, Search } from "lucide-react";
+import { Filter, Search, CirclePlus } from "lucide-react";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
@@ -99,6 +99,17 @@ export function DriversFilters({
         
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
+            <div className="flex items-center">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="h-8 flex items-center gap-2 text-sm"
+              >
+                <CirclePlus className="h-4 w-4" />
+                Create Node
+              </Button>
+            </div>
+
             <div className="flex items-center">
               <h2 className="text-sm font-semibold text-black mr-2">Views:</h2>
               <Tabs 
