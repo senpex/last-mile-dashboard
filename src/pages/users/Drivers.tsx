@@ -909,6 +909,7 @@ const DriversPage = () => {
           <CourierChat 
             courierName={selectedCourier}
             onClose={handleChatClose}
+            open={chatOpen}
           />
         )}
         
@@ -970,8 +971,6 @@ const DriversPage = () => {
                   totalPages={totalPages}
                   pageSize={pageSize}
                   pageSizeOptions={pageSizeOptions}
-                  startIndex={startIndex}
-                  endIndex={endIndex}
                   totalItems={totalItems}
                   onPageChange={handlePageChange}
                   onPageSizeChange={handlePageSizeChange}
