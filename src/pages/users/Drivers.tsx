@@ -16,6 +16,7 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import CourierChat from '@/components/chat/CourierChat';
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import DriversFilters from "@/components/DriversFilters";
 
 type StripeStatus = 'verified' | 'unverified' | 'pending';
 
@@ -1008,6 +1009,22 @@ const DriversPage = () => {
   return (
     <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
+        <DriversFilters 
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          dateRange={dateRange}
+          onDateRangeChange={setDateRange}
+          timezone={timezone}
+          onTimezoneChange={setTimezone}
+          availableColumns={availableColumns}
+          visibleColumns={visibleColumns}
+          onVisibleColumnsChange={setVisibleColumns}
+          activeView={activeView}
+          onActiveViewChange={setActiveView}
+          onToggleFilterSidebar={handleToggleFilterSidebar}
+          isFilterSidebarOpen={isFilterSidebarOpen}
+        />
+
         <div className="px-0 py-6 flex-1 overflow-auto">
           <div className="space-y-4 w-full">
             <div className="flex items-center justify-between px-6">
@@ -1125,7 +1142,12 @@ const DriversPage = () => {
       </div>
       
       {chatOpen && selectedCourier && (
-        <CourierChat open={chatOpen} courierName={selectedCourier} onClose={handleChatClose} hasUnreadMessages={false} />
+        <CourierChat 
+          open={chatOpen} 
+          courierName={selectedCourier} 
+          onClose={handleChatClose} 
+          hasUnreadMessages={false} 
+        />
       )}
     </Layout>
   );
