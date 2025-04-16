@@ -71,6 +71,22 @@ const generateRandomStripeStatus = (): StripeStatus => {
   return statuses[randomIndex];
 };
 
+const generateRandomProfiles = (): string[] => {
+  const profiles = ['Driver', 'Helper', 'Mover'];
+  const numProfiles = Math.floor(Math.random() * 3) + 1; // Random number between 1 and 3
+  const selectedProfiles: string[] = [];
+  
+  while (selectedProfiles.length < numProfiles) {
+    const randomIndex = Math.floor(Math.random() * profiles.length);
+    const profile = profiles[randomIndex];
+    if (!selectedProfiles.includes(profile)) {
+      selectedProfiles.push(profile);
+    }
+  }
+  
+  return selectedProfiles;
+};
+
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{
     [key: string]: string;
@@ -106,7 +122,8 @@ const DriversPage = () => {
     rating: 4.8,
     stripeStatus: 'verified' as StripeStatus,
     zipcode: "94105",
-    notes: "Excellent driver, always on time."
+    notes: "Excellent driver, always on time.",
+    profiles: ["Driver", "Mover"]
   }, {
     id: 6543,
     name: "Jane Smith",
@@ -118,7 +135,8 @@ const DriversPage = () => {
     rating: 3.5,
     stripeStatus: 'unverified' as StripeStatus,
     zipcode: "90210",
-    notes: "Prefers weekend shifts."
+    notes: "Prefers weekend shifts.",
+    profiles: ["Helper", "Driver"]
   }, {
     id: 7654,
     name: "Mike Johnson",
@@ -130,7 +148,8 @@ const DriversPage = () => {
     rating: 5.0,
     stripeStatus: 'pending' as StripeStatus,
     zipcode: "10001",
-    notes: "Not available on Mondays."
+    notes: "Not available on Mondays.",
+    profiles: ["Mover"]
   }, {
     id: 8001,
     name: "Alice Williams",
@@ -142,7 +161,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8002,
     name: "Robert Miller",
@@ -154,7 +174,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8003,
     name: "Emily Davis",
@@ -166,7 +187,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8004,
     name: "James Wilson",
@@ -178,7 +200,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8005,
     name: "Sarah Taylor",
@@ -190,7 +213,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8006,
     name: "Daniel Anderson",
@@ -202,7 +226,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8007,
     name: "Olivia Thomas",
@@ -214,7 +239,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8008,
     name: "Matthew Jackson",
@@ -226,7 +252,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8009,
     name: "Sophia White",
@@ -238,7 +265,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8010,
     name: "David Harris",
@@ -250,7 +278,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8011,
     name: "Emma Martin",
@@ -262,7 +291,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8012,
     name: "Andrew Thompson",
@@ -274,7 +304,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8013,
     name: "Isabella Garcia",
@@ -286,7 +317,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8014,
     name: "Joshua Martinez",
@@ -298,7 +330,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8015,
     name: "Charlotte Robinson",
@@ -310,7 +343,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8016,
     name: "Christopher Clark",
@@ -322,7 +356,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8017,
     name: "Amelia Rodriguez",
@@ -334,7 +369,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8018,
     name: "Joseph Lewis",
@@ -346,7 +382,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8019,
     name: "Mia Walker",
@@ -358,7 +395,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8020,
     name: "Ethan Hall",
@@ -370,7 +408,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8021,
     name: "Harper Young",
@@ -382,7 +421,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8022,
     name: "Alexander Allen",
@@ -394,7 +434,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8023,
     name: "Abigail King",
@@ -406,7 +447,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8024,
     name: "Benjamin Wright",
@@ -418,7 +460,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8025,
     name: "Sofia Scott",
@@ -430,7 +473,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8026,
     name: "William Green",
@@ -442,7 +486,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8027,
     name: "Elizabeth Baker",
@@ -454,7 +499,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8028,
     name: "Michael Adams",
@@ -466,7 +512,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8029,
     name: "Camila Nelson",
@@ -478,7 +525,8 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
+    notes: "",
+    profiles: generateRandomProfiles()
   }, {
     id: 8030,
     name: "Jacob Hill",
@@ -490,8 +538,25 @@ const DriversPage = () => {
     rating: generateRandomRating(),
     stripeStatus: generateRandomStripeStatus(),
     zipcode: getRandomZipcode(),
-    notes: ""
-  }]);
+    notes: "",
+    profiles: generateRandomProfiles()
+  }].concat(
+    // Generate additional drivers with random profiles
+    Array.from({ length: 28 }, (_, i) => ({
+      id: 8001 + i,
+      name: `Driver ${8001 + i}`,
+      email: `driver${8001 + i}@example.com`,
+      phone: getRandomPhone(),
+      status: "online",
+      hireStatus: generateRandomHireStatus(),
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripeStatus: generateRandomStripeStatus(),
+      zipcode: getRandomZipcode(),
+      notes: "",
+      profiles: generateRandomProfiles()
+    }))
+  ));
   const availableColumns: ColumnOption[] = [{
     id: "id",
     label: "ID",
@@ -535,6 +600,10 @@ const DriversPage = () => {
   }, {
     id: "notes",
     label: "Notes",
+    default: true
+  }, {
+    id: "profiles",
+    label: "Profiles",
     default: true
   }, {
     id: "actions",
@@ -779,202 +848,4 @@ const DriversPage = () => {
     const randomIndex = Math.floor(Math.random() * transportTypes.length);
     const randomType = transportTypes[randomIndex];
     return <div className="flex items-center justify-center">
-        <TransportIcon transportType={randomType} size={14} className="h-[14px] w-[14px]" />
-      </div>;
-  };
-
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
-    setDraggedColumn(columnId);
-    e.dataTransfer.setData('text/plain', columnId);
-    const dragImage = new Image();
-    dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-    e.dataTransfer.setDragImage(dragImage, 0, 0);
-  };
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
-    e.preventDefault();
-    if (draggedColumn && draggedColumn !== columnId) {
-      setDragOverColumn(columnId);
-    }
-  };
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
-    e.preventDefault();
-    if (!draggedColumn || draggedColumn === targetColumnId) {
-      setDraggedColumn(null);
-      setDragOverColumn(null);
-      return;
-    }
-    const updatedOrder = [...columnOrder];
-    const draggedIndex = updatedOrder.indexOf(draggedColumn);
-    const targetIndex = updatedOrder.indexOf(targetColumnId);
-    if (draggedIndex !== -1 && targetIndex !== -1) {
-      updatedOrder.splice(draggedIndex, 1);
-      updatedOrder.splice(targetIndex, 0, draggedColumn);
-      setColumnOrder(updatedOrder);
-    }
-    setDraggedColumn(null);
-    setDragOverColumn(null);
-  };
-
-  const handleDragEnd = () => {
-    setDraggedColumn(null);
-    setDragOverColumn(null);
-  };
-
-  const getSortedVisibleColumns = () => {
-    return visibleColumns.filter(column => columnOrder.includes(column)).sort((a, b) => columnOrder.indexOf(a) - columnOrder.indexOf(b));
-  };
-
-  const sortedColumns = getSortedVisibleColumns();
-
-  const renderRating = (rating: number) => {
-    return <div className="flex items-center">
-        <span className="font-medium">{rating.toFixed(1)}</span>
-      </div>;
-  };
-
-  const renderStatus = (statusId: string) => {
-    const statusText = statusDictionary[statusId] || `Unknown (${statusId})`;
-    const statusColorClass = statusColors[statusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
-    return <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColorClass}`}>
-        {statusText}
-      </div>;
-  };
-
-  const renderHireStatus = (hireStatusId: string, driverId: number) => {
-    const hireStatusText = hireStatusDictionary[hireStatusId] || `Unknown (${hireStatusId})`;
-    return <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm" className="h-8 w-auto">
-            {hireStatusText}
-            <ChevronDown className="ml-1 h-4 w-4 opacity-70" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" className="w-[160px]">
-          {Object.entries(hireStatusDictionary).map(([key, value]) => <DropdownMenuItem key={key} onClick={() => updateDriverHireStatus(driverId, key)} className={hireStatusId === key ? "bg-muted" : ""}>
-              {value}
-            </DropdownMenuItem>)}
-        </DropdownMenuContent>
-      </DropdownMenu>;
-  };
-
-  const renderStripeStatus = (status: 'verified' | 'unverified' | 'pending') => {
-    let bgColor = '';
-    let icon = null;
-    let text = '';
-    switch (status) {
-      case 'verified':
-        bgColor = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-        icon = <Check className="h-3.5 w-3.5 mr-1" />;
-        text = 'Verified';
-        break;
-      case 'unverified':
-        bgColor = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
-        icon = <X className="h-3.5 w-3.5 mr-1" />;
-        text = 'Unverified';
-        break;
-      case 'pending':
-        bgColor = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
-        icon = <Clock className="h-3.5 w-3.5 mr-1" />;
-        text = 'Pending';
-        break;
-    }
-    return <div className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${bgColor}`}>
-        {icon}
-        {text}
-      </div>;
-  };
-
-  const allZipcodes = React.useMemo(() => {
-    const uniqueZipcodes = new Set<string>();
-    drivers.forEach(driver => {
-      if (driver.zipcode) {
-        uniqueZipcodes.add(driver.zipcode);
-      }
-    });
-    return Array.from(uniqueZipcodes).sort();
-  }, [drivers]);
-
-  return (
-    <Layout showFooter={false}>
-      <div className="flex flex-col h-screen">
-        <DriversFilters 
-          searchTerm={searchTerm} 
-          onSearchChange={setSearchTerm} 
-          dateRange={dateRange} 
-          onDateRangeChange={setDateRange} 
-          timezone={timezone} 
-          onTimezoneChange={setTimezone} 
-          availableColumns={availableColumns} 
-          visibleColumns={visibleColumns} 
-          onVisibleColumnsChange={setVisibleColumns} 
-          activeView={activeView} 
-          onActiveViewChange={setActiveView} 
-          onToggleFilterSidebar={handleToggleFilterSidebar} 
-          isFilterSidebarOpen={isFilterSidebarOpen} 
-        />
-
-        <div className="flex flex-1 overflow-hidden relative">
-          <DriversSidebar 
-            open={isFilterSidebarOpen}
-            onClose={() => setIsFilterSidebarOpen(false)}
-            selectedStatuses={selectedStatuses}
-            setSelectedStatuses={setSelectedStatuses}
-            allDeliveryStatuses={allDriverStatuses}
-            allZipcodes={allZipcodes}
-            selectedZipcodes={selectedZipcodes}
-            setSelectedZipcodes={setSelectedZipcodes}
-          />
-
-          <div className={`flex-1 transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-2"}`}>
-            <DriversTable 
-              currentItems={currentItems} 
-              sortedColumns={sortedColumns} 
-              availableColumns={availableColumns} 
-              transportTypes={transportTypes} 
-              statusDictionary={statusDictionary} 
-              statusColors={statusColors} 
-              editingNotes={editingNotes} 
-              draggedColumn={draggedColumn} 
-              dragOverColumn={dragOverColumn} 
-              onDragStart={handleDragStart} 
-              onDragOver={handleDragOver} 
-              onDrop={handleDrop} 
-              onDragEnd={handleDragEnd} 
-              renderRating={renderRating} 
-              renderStatus={renderStatus} 
-              renderHireStatus={renderHireStatus} 
-              renderStripeStatus={renderStripeStatus} 
-              handleNotesClick={handleNotesClick} 
-              handleNotesChange={handleNotesChange} 
-              saveNotes={saveNotes} 
-              className="mt-[10px]"
-            />
-          </div>
-        </div>
-
-        <DriversPagination 
-          currentPage={currentPage} 
-          totalPages={totalPages} 
-          totalItems={totalItems} 
-          pageSize={pageSize} 
-          pageSizeOptions={pageSizeOptions} 
-          onPageChange={handlePageChange} 
-          onPageSizeChange={handlePageSizeChange} 
-        />
-        
-        {chatOpen && selectedCourier && (
-          <CourierChat 
-            open={chatOpen} 
-            courierName={selectedCourier} 
-            onClose={handleChatClose} 
-            hasUnreadMessages={false} 
-          />
-        )}
-      </div>
-    </Layout>
-  );
-};
-
-export default DriversPage;
+        <TransportIcon transportType={randomType} size={14} className="h-[14px] w-[14px]"

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { GripVertical, FileText } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 import { UsersTableContainer } from "@/components/ui/users-table-container";
@@ -108,6 +109,16 @@ export const DriversTable = ({
               </div>
             </div>;
         }
+      case "profiles":
+        return (
+          <div className="flex flex-wrap gap-1">
+            {driver.profiles.map((profile: string) => (
+              <Badge key={profile} variant="secondary" className="text-xs">
+                {profile}
+              </Badge>
+            ))}
+          </div>
+        );
       case "actions":
         return <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
             View
