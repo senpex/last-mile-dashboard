@@ -57,6 +57,7 @@ export function DriversFilters({
             <DateRangePicker 
               dateRange={dateRange}
               onDateRangeChange={onDateRangeChange}
+              showStatePicker={false}
             />
             
             <Button 

@@ -36,9 +36,14 @@ const datePresets = [
 interface DateRangePickerProps {
   dateRange: DateRange | undefined;
   onDateRangeChange: (range: DateRange | undefined) => void;
+  showStatePicker?: boolean;
 }
 
-export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePickerProps) {
+export function DateRangePicker({ 
+  dateRange, 
+  onDateRangeChange,
+  showStatePicker = true 
+}: DateRangePickerProps) {
   const [isCalendarOpen, setIsCalendarOpen] = React.useState(false);
   const [startTime, setStartTime] = React.useState("12:00 AM");
   const [endTime, setEndTime] = React.useState("11:59 PM");
@@ -98,29 +103,28 @@ export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePicke
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start" alignOffset={0} sideOffset={5}>
         <div className="flex flex-col max-h-[500px] max-w-[500px]">
-          {/* Presets and calendar layout */}
           <div className="flex">
-            {/* Presets column */}
-            <div className="w-32 border-r p-2 max-h-[400px] overflow-y-auto">
-              {datePresets.map((preset) => (
-                <Button
-                  key={preset.label}
-                  variant="ghost"
-                  className="w-full justify-start text-left mb-1 text-xs h-8"
-                  onClick={() => {
-                    applyPreset(
-                      preset.days,
-                      preset.startOfDay || preset.startOfWeek || preset.startOfMonth,
-                      preset.startOfWeek ? 'week' : preset.startOfMonth ? 'month' : undefined
-                    );
-                  }}
-                >
-                  {preset.label}
-                </Button>
-              ))}
-            </div>
+            {showStatePicker ? (
+              <div className="w-32 border-r p-2 max-h-[400px] overflow-y-auto">
+                {datePresets.map((preset) => (
+                  <Button
+                    key={preset.label}
+                    variant="ghost"
+                    className="w-full justify-start text-left mb-1 text-xs h-8"
+                    onClick={() => {
+                      applyPreset(
+                        preset.days,
+                        preset.startOfDay || preset.startOfWeek || preset.startOfMonth,
+                        preset.startOfWeek ? 'week' : preset.startOfMonth ? 'month' : undefined
+                      );
+                    }}
+                  >
+                    {preset.label}
+                  </Button>
+                ))}
+              </div>
+            ) : null}
             
-            {/* Calendar and times */}
             <div className="p-2 flex-1">
               <div className="grid grid-cols-2 gap-2">
                 <div>
@@ -194,7 +198,6 @@ export function DateRangePicker({ dateRange, onDateRangeChange }: DateRangePicke
             </div>
           </div>
           
-          {/* Footer with actions */}
           <div className="border-t p-2 flex justify-end gap-2">
             <Button
               variant="outline"
