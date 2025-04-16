@@ -23,16 +23,20 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+
 type StripeStatus = 'verified' | 'unverified' | 'pending';
+
 const getRandomPhone = (): string => {
   const areaCode = Math.floor(Math.random() * 900) + 100;
   const prefix = Math.floor(Math.random() * 900) + 100;
   const lineNumber = Math.floor(Math.random() * 9000) + 1000;
   return `(${areaCode}) ${prefix}-${lineNumber}`;
 };
+
 const getRandomZipcode = (): string => {
   return String(Math.floor(Math.random() * 90000) + 10000);
 };
+
 const generateRandomTransports = (): string[] => {
   const transportIds = ['1', '2', '3', '4', '5', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
   const count = Math.floor(Math.random() * 3) + 1;
@@ -46,19 +50,23 @@ const generateRandomTransports = (): string[] => {
   }
   return result;
 };
+
 const generateRandomRating = (): number => {
   return Number((Math.random() * 2 + 3).toFixed(1));
 };
+
 const generateRandomHireStatus = (): string => {
   const hireStatuses = ['hired', 'left_vm', 'contact_again', 'not_interested', 'blacklist', 'out_of_service'];
   const randomIndex = Math.floor(Math.random() * hireStatuses.length);
   return hireStatuses[randomIndex];
 };
+
 const generateRandomStripeStatus = (): StripeStatus => {
   const statuses: StripeStatus[] = ['verified', 'unverified', 'pending'];
   const randomIndex = Math.floor(Math.random() * 3);
   return statuses[randomIndex];
 };
+
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{
     [key: string]: string;
@@ -555,6 +563,7 @@ const DriversPage = () => {
   const [dateRange, setDateRange] = useState<any>(undefined);
   const [timezone, setTimezone] = useState<string>("America/New_York");
   const [activeView, setActiveView] = useState("main");
+
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => prevDrivers.map(driver => driver.id === driverId ? {
       ...driver,
@@ -563,11 +572,13 @@ const DriversPage = () => {
     const statusLabel = hireStatusDictionary[newStatus] || newStatus;
     toast.success(`Driver status updated to ${statusLabel}`);
   };
+
   useEffect(() => {
     loadTransportDictionary();
     loadStatusDictionary();
     loadHireStatusDictionary();
   }, []);
+
   useEffect(() => {
     setColumnOrder(prevOrder => {
       const newOrder = [...prevOrder];
@@ -579,6 +590,7 @@ const DriversPage = () => {
       return newOrder.filter(column => visibleColumns.includes(column));
     });
   }, [visibleColumns]);
+
   useEffect(() => {
     if (searchTerm.length >= 3) {
       const filtered = drivers.filter(driver => driver.name.toLowerCase().includes(searchTerm.toLowerCase()) || driver.email.toLowerCase().includes(searchTerm.toLowerCase()) || driver.phone.includes(searchTerm) || driver.id.toString().includes(searchTerm));
@@ -587,21 +599,26 @@ const DriversPage = () => {
       setFilteredDrivers(drivers);
     }
   }, [searchTerm, drivers]);
+
   useEffect(() => {
     setFilteredDrivers(drivers);
   }, [drivers]);
+
   useEffect(() => {
     const randomDrivers = drivers.filter(() => Math.random() < 0.3).map(driver => driver.id);
     setDriversWithMessages(randomDrivers);
   }, [drivers]);
+
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
   };
+
   const handlePageSizeChange = (size: number) => {
     setPageSize(size);
     setCurrentPage(1);
   };
+
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -632,30 +649,37 @@ const DriversPage = () => {
     }
     return pages;
   };
+
   const handleCourierClick = (name: string) => {
     setSelectedCourier(name);
     setChatOpen(true);
   };
+
   const handleChatClose = () => {
     setChatOpen(false);
     setSelectedCourier(null);
   };
+
   const handleNotesClick = (driverId: number) => {
     setEditingNotes(driverId);
   };
+
   const handleNotesChange = (driverId: number, notes: string) => {
     setDrivers(prevDrivers => prevDrivers.map(driver => driver.id === driverId ? {
       ...driver,
       notes
     } : driver));
   };
+
   const saveNotes = (driverId: number) => {
     setEditingNotes(null);
     toast.success("Driver notes updated successfully");
   };
+
   const handleToggleFilterSidebar = () => {
     setIsFilterSidebarOpen(prev => !prev);
   };
+
   const loadTransportDictionary = () => {
     const transportDict = getDictionary("2");
     if (transportDict && transportDict.items.length > 0) {
@@ -679,6 +703,7 @@ const DriversPage = () => {
     }
     setIsLoading(false);
   };
+
   const loadStatusDictionary = () => {
     const statusDict = getDictionary("6");
     if (statusDict && statusDict.items.length > 0) {
@@ -708,6 +733,7 @@ const DriversPage = () => {
       console.log("Status dictionary not found or empty for ID: 6");
     }
   };
+
   const loadHireStatusDictionary = () => {
     const hireStatusDict = getDictionary("1455");
     if (hireStatusDict && hireStatusDict.items.length > 0) {
@@ -741,6 +767,7 @@ const DriversPage = () => {
       console.log("Hire status dictionary not found or empty for ID: 1455");
     }
   };
+
   const getRandomTransportIcon = () => {
     const transportTypes: TransportType[] = ['helper', 'car', 'suv', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
     const randomIndex = Math.floor(Math.random() * transportTypes.length);
@@ -749,6 +776,7 @@ const DriversPage = () => {
         <TransportIcon transportType={randomType} size={14} className="h-[14px] w-[14px]" />
       </div>;
   };
+
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     setDraggedColumn(columnId);
     e.dataTransfer.setData('text/plain', columnId);
@@ -756,12 +784,14 @@ const DriversPage = () => {
     dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     e.dataTransfer.setDragImage(dragImage, 0, 0);
   };
+
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     e.preventDefault();
     if (draggedColumn && draggedColumn !== columnId) {
       setDragOverColumn(columnId);
     }
   };
+
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
     e.preventDefault();
     if (!draggedColumn || draggedColumn === targetColumnId) {
@@ -780,18 +810,36 @@ const DriversPage = () => {
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
+
   const handleDragEnd = () => {
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
+
   const getSortedVisibleColumns = () => {
     return visibleColumns.filter(column => columnOrder.includes(column)).sort((a, b) => columnOrder.indexOf(a) - columnOrder.indexOf(b));
   };
+
   const sortedColumns = getSortedVisibleColumns();
+
   const renderRating = (rating: number) => {
     return <div className="flex items-center">
         <span className="font-medium">{rating.toFixed(1)}</span>
       </div>;
   };
+
   const renderStatus = (statusId: string) => {
-    const statusText = statusDictionary[statusId] || `Unknown
+    const statusText = statusDictionary[statusId] || 'Unknown Status';
+    return <div className="flex items-center">
+      <span>{statusText}</span>
+    </div>;
+  };
+
+  return (
+    <Layout>
+      {/* Rest of component code */}
+    </Layout>
+  );
+};
+
+export default DriversPage;
