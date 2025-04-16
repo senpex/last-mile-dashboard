@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,6 @@ import { DeliveryStatus } from "@/types/delivery";
 import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { Badge } from "@/components/ui/badge";
-import { User } from "lucide-react";
 import { Label } from "@/components/ui/label";
 
 interface DriversSidebarProps {
@@ -172,7 +172,7 @@ export function DriversSidebar({
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="profile" className="border-b">
               <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                Driver Profile
+                Profile Type
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
