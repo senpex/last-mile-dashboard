@@ -45,13 +45,13 @@ export function DeliveryPagination({
         <PaginationContent>
           <PaginationItem>
             <PaginationLink
+              href="#"
               onClick={(e) => {
                 e.preventDefault();
                 onPageChange(1);
               }}
-              disabled={currentPage === 1}
-              aria-disabled={currentPage === 1}
               className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+              aria-disabled={currentPage === 1}
             >
               <span className="sr-only">First page</span>
               ⟪
@@ -59,13 +59,13 @@ export function DeliveryPagination({
           </PaginationItem>
           <PaginationItem>
             <PaginationPrevious
+              href="#"
               onClick={(e) => {
                 e.preventDefault();
                 onPageChange(currentPage - 1);
               }}
-              disabled={currentPage === 1}
-              aria-disabled={currentPage === 1}
               className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+              aria-disabled={currentPage === 1}
             />
           </PaginationItem>
           
@@ -75,6 +75,7 @@ export function DeliveryPagination({
                 <PaginationEllipsis />
               ) : (
                 <PaginationLink 
+                  href="#" 
                   isActive={page === currentPage}
                   onClick={(e) => {
                     e.preventDefault();
@@ -89,24 +90,24 @@ export function DeliveryPagination({
           
           <PaginationItem>
             <PaginationNext
+              href="#"
               onClick={(e) => {
                 e.preventDefault();
                 onPageChange(currentPage + 1);
               }}
-              disabled={currentPage === totalPages}
-              aria-disabled={currentPage === totalPages}
               className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+              aria-disabled={currentPage === totalPages}
             />
           </PaginationItem>
           <PaginationItem>
             <PaginationLink
+              href="#"
               onClick={(e) => {
                 e.preventDefault();
                 onPageChange(totalPages);
               }}
-              disabled={currentPage === totalPages}
-              aria-disabled={currentPage === totalPages}
               className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+              aria-disabled={currentPage === totalPages}
             >
               <span className="sr-only">Last page</span>
               ⟫
