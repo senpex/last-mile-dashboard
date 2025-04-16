@@ -869,7 +869,8 @@ const DriversPage = () => {
       </div>;
   };
 
-  return <Layout showFooter={false}>
+  return (
+    <Layout showFooter={false}>
       <div className="flex flex-col h-screen">
         <DriversFilters 
           searchTerm={searchTerm} 
@@ -889,22 +890,14 @@ const DriversPage = () => {
 
         <div className="flex-1 overflow-hidden">
           <div className="space-y-0 w-full relative h-full">
-            <div style={{
-              width: "300px",
-              transform: isFilterSidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
-              position: 'absolute',
-              top: 0,
-              bottom: 0,
-              left: 0,
-              height: '100%',
-              marginTop: 0
-            }} className="absolute left-0 h-full bg-background border-r transition-all duration-300 ease-in-out z-10 px-0">
-              
-            </div>
+            <DriversSidebar 
+              open={isFilterSidebarOpen}
+              onClose={() => setIsFilterSidebarOpen(false)}
+            />
 
             <div className="h-full transition-all duration-300 ease-in-out" style={{
-            marginLeft: isFilterSidebarOpen ? "310px" : "10px"
-          }}>
+              marginLeft: isFilterSidebarOpen ? "310px" : "10px"
+            }}>
               <DriversTable 
                 currentItems={currentItems} 
                 sortedColumns={sortedColumns} 
@@ -941,14 +934,17 @@ const DriversPage = () => {
           onPageSizeChange={handlePageSizeChange} 
         />
         
-        {chatOpen && selectedCourier && <CourierChat 
-          open={chatOpen} 
-          courierName={selectedCourier} 
-          onClose={handleChatClose} 
-          hasUnreadMessages={false} 
-        />}
+        {chatOpen && selectedCourier && (
+          <CourierChat 
+            open={chatOpen} 
+            courierName={selectedCourier} 
+            onClose={handleChatClose} 
+            hasUnreadMessages={false} 
+          />
+        )}
       </div>
-    </Layout>;
+    </Layout>
+  );
 };
 
 export default DriversPage;
