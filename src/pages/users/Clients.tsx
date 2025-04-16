@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -615,6 +616,7 @@ const ClientsPage = () => {
               <PaginationContent>
                 <PaginationItem>
                   <PaginationLink
+                    href="#"
                     onClick={(e) => {
                       e.preventDefault();
                       handlePageChange(1);
@@ -628,6 +630,7 @@ const ClientsPage = () => {
                 </PaginationItem>
                 <PaginationItem>
                   <PaginationPrevious 
+                    href="#" 
                     onClick={(e) => {
                       e.preventDefault();
                       handlePageChange(currentPage - 1);
@@ -643,6 +646,7 @@ const ClientsPage = () => {
                       <PaginationEllipsis />
                     ) : (
                       <PaginationLink 
+                        href="#" 
                         isActive={page === currentPage}
                         onClick={(e) => {
                           e.preventDefault();
@@ -657,6 +661,7 @@ const ClientsPage = () => {
                 
                 <PaginationItem>
                   <PaginationNext 
+                    href="#" 
                     onClick={(e) => {
                       e.preventDefault();
                       handlePageChange(currentPage + 1);
@@ -667,6 +672,7 @@ const ClientsPage = () => {
                 </PaginationItem>
                 <PaginationItem>
                   <PaginationLink
+                    href="#"
                     onClick={(e) => {
                       e.preventDefault();
                       handlePageChange(totalPages);
