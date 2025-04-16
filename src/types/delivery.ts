@@ -1,4 +1,9 @@
 
+export interface Location {
+  name: string;
+  address: string;
+}
+
 export type DeliveryStatus = 
   | "Dropoff Complete" 
   | "Canceled By Customer" 
@@ -9,13 +14,7 @@ export type DeliveryStatus =
   | "Scheduled Order"
   | "Online"
   | "Offline"
-  | "Busy"
-  | "Not Approved";
-
-export interface DeliveryLocation {
-  name: string;
-  address: string;
-}
+  | "Busy";
 
 export interface Delivery {
   id: number;
@@ -23,9 +22,9 @@ export interface Delivery {
   orderName: string;
   status: string;
   pickupTime: string;
-  pickupLocation: DeliveryLocation;
+  pickupLocation: Location;
   dropoffTime: string;
-  dropoffLocation: DeliveryLocation;
+  dropoffLocation: Location;
   customerName: string;
   price: string;
   tip: string;
