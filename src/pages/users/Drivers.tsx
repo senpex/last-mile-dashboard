@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { DriversTable } from '@/components/drivers/DriversTable';
@@ -890,39 +889,35 @@ const DriversPage = () => {
           isFilterSidebarOpen={isFilterSidebarOpen} 
         />
 
-        <div className="flex-1 overflow-hidden">
-          <div className="space-y-0 w-full relative h-full">
-            <DriversSidebar 
-              open={isFilterSidebarOpen}
-              onClose={() => setIsFilterSidebarOpen(false)}
-            />
+        <div className="flex flex-1 overflow-hidden relative">
+          <DriversSidebar 
+            open={isFilterSidebarOpen}
+            onClose={() => setIsFilterSidebarOpen(false)}
+          />
 
-            <div className="h-full transition-all duration-300 ease-in-out" style={{
-              marginLeft: isFilterSidebarOpen ? "310px" : "10px"
-            }}>
-              <DriversTable 
-                currentItems={currentItems} 
-                sortedColumns={sortedColumns} 
-                availableColumns={availableColumns} 
-                transportTypes={transportTypes} 
-                statusDictionary={statusDictionary} 
-                statusColors={statusColors} 
-                editingNotes={editingNotes} 
-                draggedColumn={draggedColumn} 
-                dragOverColumn={dragOverColumn} 
-                onDragStart={handleDragStart} 
-                onDragOver={handleDragOver} 
-                onDrop={handleDrop} 
-                onDragEnd={handleDragEnd} 
-                renderRating={renderRating} 
-                renderStatus={renderStatus} 
-                renderHireStatus={renderHireStatus} 
-                renderStripeStatus={renderStripeStatus} 
-                handleNotesClick={handleNotesClick} 
-                handleNotesChange={handleNotesChange} 
-                saveNotes={saveNotes} 
-              />
-            </div>
+          <div className={`flex-1 transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[275px]" : "ml-2"}`}>
+            <DriversTable 
+              currentItems={currentItems} 
+              sortedColumns={sortedColumns} 
+              availableColumns={availableColumns} 
+              transportTypes={transportTypes} 
+              statusDictionary={statusDictionary} 
+              statusColors={statusColors} 
+              editingNotes={editingNotes} 
+              draggedColumn={draggedColumn} 
+              dragOverColumn={dragOverColumn} 
+              onDragStart={handleDragStart} 
+              onDragOver={handleDragOver} 
+              onDrop={handleDrop} 
+              onDragEnd={handleDragEnd} 
+              renderRating={renderRating} 
+              renderStatus={renderStatus} 
+              renderHireStatus={renderHireStatus} 
+              renderStripeStatus={renderStripeStatus} 
+              handleNotesClick={handleNotesClick} 
+              handleNotesChange={handleNotesChange} 
+              saveNotes={saveNotes} 
+            />
           </div>
         </div>
 
