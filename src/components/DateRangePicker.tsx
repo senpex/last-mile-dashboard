@@ -37,12 +37,14 @@ interface DateRangePickerProps {
   dateRange: DateRange | undefined;
   onDateRangeChange: (range: DateRange | undefined) => void;
   showStatePicker?: boolean;
+  useButton?: boolean;
 }
 
 export function DateRangePicker({ 
   dateRange, 
   onDateRangeChange,
-  showStatePicker = true 
+  showStatePicker = true,
+  useButton = true 
 }: DateRangePickerProps) {
   const [isCalendarOpen, setIsCalendarOpen] = React.useState(false);
   const [startTime, setStartTime] = React.useState("12:00 AM");
@@ -93,13 +95,27 @@ export function DateRangePicker({
     );
   }, []);
 
+  const content = (
+    <>
+      <CalendarIcon className="h-4 w-4" />
+      <span>{formatDisplayText()}</span>
+    </>
+  );
+
+  const triggerContent = useButton ? (
+    <Button variant="outline" className="flex items-center gap-2 text-sm h-9">
+      {content}
+    </Button>
+  ) : (
+    <div className="flex items-center gap-2 text-sm h-9 px-4 py-2 border rounded-md">
+      {content}
+    </div>
+  );
+
   return (
     <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="flex items-center gap-2 text-sm h-9">
-          <CalendarIcon className="h-4 w-4" />
-          <span>{formatDisplayText()}</span>
-        </Button>
+        {triggerContent}
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start" alignOffset={0} sideOffset={5}>
         <div className="flex flex-col max-h-[500px] max-w-[500px]">
