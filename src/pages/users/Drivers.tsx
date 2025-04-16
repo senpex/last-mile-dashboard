@@ -849,7 +849,6 @@ const DriversPage = () => {
             width: "300px",
             transform: isFilterSidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
             top: "var(--header-height, 120px)",
-            bottom: "var(--footer-height, 50px)",
             position: "fixed",
           }} className="left-0 bg-background border-r transition-all duration-300 ease-in-out z-10 px-[85px]">
               
