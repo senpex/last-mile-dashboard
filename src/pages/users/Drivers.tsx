@@ -915,7 +915,7 @@ const DriversPage = () => {
             </div>
 
             <div className="h-full transition-all duration-300 ease-in-out" style={{
-              marginLeft: isFilterSidebarOpen ? "305px" : "10px"
+              marginLeft: isFilterSidebarOpen ? "10px" : "10px"
             }}>
               <DriversTable 
                 currentItems={currentItems} 
