@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -117,7 +116,7 @@ export const DriversTable = ({
   };
 
   return (
-    <UsersTableContainer stickyHeader={false} className="w-full mt-2.5">
+    <UsersTableContainer stickyHeader={false} className="w-full">
       <Table>
         <TableHeader className="bg-muted/50">
           <TableRow>
