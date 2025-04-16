@@ -994,14 +994,18 @@ const DriversPage = () => {
       <div className="flex flex-col h-screen w-full">
         <div className="px-0 py-6 flex-1 overflow-auto">
           <div className="space-y-4 w-full">
-            <div className="flex items-center justify-between px-6">
+            <div className="flex flex-col px-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <h1 className="text-2xl font-bold">Drivers Management</h1>
+                  <Button size="sm" className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 h-7">
+                    <Plus className="w-3 h-3" />
+                    Add Driver
+                  </Button>
+                </div>
+              </div>
+              
               <div className="flex items-center gap-4">
-                <h1 className="text-2xl font-bold">Drivers Management</h1>
-                <Button size="sm" className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 h-7">
-                  <Plus className="w-3 h-3" />
-                  Add Driver
-                </Button>
-
                 <Button 
                   variant={isFilterSidebarOpen ? "default" : "outline"} 
                   className={`flex items-center gap-2 text-sm h-9 ${isFilterSidebarOpen ? 'bg-primary text-primary-foreground' : ''}`} 
@@ -1011,9 +1015,7 @@ const DriversPage = () => {
                   <Filter className="h-4 w-4" />
                   <span>{isFilterSidebarOpen ? 'Hide Filters' : 'Show Filters'}</span>
                 </Button>
-              </div>
 
-              <div className="flex items-center h-9 gap-2">
                 <div className="relative h-9">
                   <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                   <Input 
@@ -1024,6 +1026,7 @@ const DriversPage = () => {
                     onChange={e => setSearchTerm(e.target.value)} 
                   />
                 </div>
+
                 <ColumnSelector 
                   columns={availableColumns} 
                   visibleColumns={visibleColumns} 
