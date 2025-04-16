@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
@@ -41,7 +42,7 @@ export function DriversFilters({
   isFilterSidebarOpen,
 }: DriversFiltersProps) {
   return (
-    <div className="px-4 py-6 flex-shrink-0 border-b">
+    <div className="px-4 py-6 flex-shrink-0 border-b space-y-4">
       <div className="flex flex-col space-y-3">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold text-foreground">Drivers Management</h1>
@@ -50,8 +51,8 @@ export function DriversFilters({
           </span>
         </div>
         
-        <div className="flex flex-wrap justify-between items-center gap-2">
-          <div className="flex items-center gap-2">
+        <div className="flex flex-wrap justify-between items-center gap-4">
+          <div className="flex items-center space-x-2">
             <DateRangePicker 
               dateRange={dateRange}
               onDateRangeChange={onDateRangeChange}
@@ -70,7 +71,7 @@ export function DriversFilters({
             </Button>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center space-x-2">
             <div className="relative">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
@@ -103,10 +104,11 @@ export function DriversFilters({
               className="w-auto"
             >
                 
-              </Tabs>
+            </Tabs>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
