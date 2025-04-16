@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
@@ -50,7 +49,7 @@ export function DriversFilters({
           </span>
         </div>
         
-        <div className="flex flex-wrap justify-between items-center gap-4">
+        <div className="flex flex-wrap justify-between items-center gap-4 mt-5">
           <div className="flex items-center space-x-2">
             <DateRangePicker dateRange={dateRange} onDateRangeChange={onDateRangeChange} showStatePicker={false} useButton={false} />
             
