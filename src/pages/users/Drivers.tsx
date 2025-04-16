@@ -893,7 +893,7 @@ const DriversPage = () => {
               style={{
                 position: 'fixed',
                 left: isFilterSidebarOpen ? '0' : '-300px',
-                top: '140px',
+                top: '64px',
                 bottom: '0',
                 width: '300px',
                 overflowY: 'auto',
@@ -902,7 +902,7 @@ const DriversPage = () => {
                 backgroundColor: 'var(--background)',
                 borderRight: '1px solid var(--border)'
               }} 
-              className="h-[calc(100vh-140px)]"
+              className="h-[calc(100vh-64px)]"
             >
               <div className="p-4">
                 <div className="flex items-center justify-between">
