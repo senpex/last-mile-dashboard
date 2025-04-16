@@ -106,11 +106,7 @@ export function DateRangePicker({
     <Button variant="outline" className="flex items-center gap-2 text-sm h-9">
       {content}
     </Button>
-  ) : (
-    <div className="flex items-center gap-2 text-sm h-9 px-4 py-2 border rounded-md">
-      {content}
-    </div>
-  );
+  ) : null; // Removed the div element here
 
   return (
     <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
