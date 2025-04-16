@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { DriversTable } from '@/components/drivers/DriversTable';
@@ -895,7 +896,7 @@ const DriversPage = () => {
             onClose={() => setIsFilterSidebarOpen(false)}
           />
 
-          <div className={`flex-1 transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[275px]" : "ml-2"}`}>
+          <div className={`flex-1 transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-0" : "ml-2"}`}>
             <DriversTable 
               currentItems={currentItems} 
               sortedColumns={sortedColumns} 
