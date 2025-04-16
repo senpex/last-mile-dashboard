@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, FileText, ChevronUp, ChevronDown } from "lucide-react";
+import { GripVertical, FileText, ChevronUp } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
@@ -186,9 +185,6 @@ export const DriversTable = ({
                     <span className="truncate">{column.label}</span>
                     {sortable && isActive && direction === 'ascending' && (
                       <ChevronUp className="h-4 w-4 text-[#ea384c]" />
-                    )}
-                    {sortable && isActive && direction === 'descending' && (
-                      <ChevronDown className="h-4 w-4 text-[#ea384c]" />
                     )}
                   </div>
                 </TableHead>
