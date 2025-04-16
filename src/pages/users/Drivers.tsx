@@ -12,16 +12,20 @@ import { ColumnOption } from "@/components/table/ColumnSelector";
 import { getDictionary } from "@/lib/storage";
 import CourierChat from '@/components/chat/CourierChat';
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
+
 type StripeStatus = 'verified' | 'unverified' | 'pending';
+
 const getRandomPhone = (): string => {
   const areaCode = Math.floor(Math.random() * 900) + 100;
   const prefix = Math.floor(Math.random() * 900) + 100;
   const lineNumber = Math.floor(Math.random() * 9000) + 1000;
   return `(${areaCode}) ${prefix}-${lineNumber}`;
 };
+
 const getRandomZipcode = (): string => {
   return String(Math.floor(Math.random() * 90000) + 10000);
 };
+
 const generateRandomTransports = (): string[] => {
   const transportIds = ['1', '2', '3', '4', '5', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
   const count = Math.floor(Math.random() * 3) + 1;
@@ -35,19 +39,23 @@ const generateRandomTransports = (): string[] => {
   }
   return result;
 };
+
 const generateRandomRating = (): number => {
   return Number((Math.random() * 2 + 3).toFixed(1));
 };
+
 const generateRandomHireStatus = (): string => {
   const hireStatuses = ['hired', 'left_vm', 'contact_again', 'not_interested', 'blacklist', 'out_of_service'];
   const randomIndex = Math.floor(Math.random() * hireStatuses.length);
   return hireStatuses[randomIndex];
 };
+
 const generateRandomStripeStatus = (): StripeStatus => {
   const statuses: StripeStatus[] = ['verified', 'unverified', 'pending'];
   const randomIndex = Math.floor(Math.random() * 3);
   return statuses[randomIndex];
 };
+
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{
     [key: string]: string;
@@ -544,6 +552,7 @@ const DriversPage = () => {
   const [activeView, setActiveView] = useState("main");
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
   const [timezone, setTimezone] = useState<string>("America/New_York");
+
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => prevDrivers.map(driver => driver.id === driverId ? {
       ...driver,
@@ -552,11 +561,13 @@ const DriversPage = () => {
     const statusLabel = hireStatusDictionary[newStatus] || newStatus;
     toast.success(`Driver status updated to ${statusLabel}`);
   };
+
   useEffect(() => {
     loadTransportDictionary();
     loadStatusDictionary();
     loadHireStatusDictionary();
   }, []);
+
   useEffect(() => {
     setColumnOrder(prevOrder => {
       const newOrder = [...prevOrder];
@@ -568,6 +579,7 @@ const DriversPage = () => {
       return newOrder.filter(column => visibleColumns.includes(column));
     });
   }, [visibleColumns]);
+
   useEffect(() => {
     if (searchTerm.length >= 3) {
       const filtered = drivers.filter(driver => driver.name.toLowerCase().includes(searchTerm.toLowerCase()) || driver.email.toLowerCase().includes(searchTerm.toLowerCase()) || driver.phone.includes(searchTerm) || driver.id.toString().includes(searchTerm));
@@ -576,21 +588,26 @@ const DriversPage = () => {
       setFilteredDrivers(drivers);
     }
   }, [searchTerm, drivers]);
+
   useEffect(() => {
     setFilteredDrivers(drivers);
   }, [drivers]);
+
   useEffect(() => {
     const randomDrivers = drivers.filter(() => Math.random() < 0.3).map(driver => driver.id);
     setDriversWithMessages(randomDrivers);
   }, [drivers]);
+
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
   };
+
   const handlePageSizeChange = (size: number) => {
     setPageSize(size);
     setCurrentPage(1);
   };
+
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -621,30 +638,37 @@ const DriversPage = () => {
     }
     return pages;
   };
+
   const handleCourierClick = (name: string) => {
     setSelectedCourier(name);
     setChatOpen(true);
   };
+
   const handleChatClose = () => {
     setChatOpen(false);
     setSelectedCourier(null);
   };
+
   const handleNotesClick = (driverId: number) => {
     setEditingNotes(driverId);
   };
+
   const handleNotesChange = (driverId: number, notes: string) => {
     setDrivers(prevDrivers => prevDrivers.map(driver => driver.id === driverId ? {
       ...driver,
       notes
     } : driver));
   };
+
   const saveNotes = (driverId: number) => {
     setEditingNotes(null);
     toast.success("Driver notes updated successfully");
   };
+
   const handleToggleFilterSidebar = () => {
     setIsFilterSidebarOpen(prev => !prev);
   };
+
   const loadTransportDictionary = () => {
     const transportDict = getDictionary("2");
     if (transportDict && transportDict.items.length > 0) {
@@ -668,6 +692,7 @@ const DriversPage = () => {
     }
     setIsLoading(false);
   };
+
   const loadStatusDictionary = () => {
     const statusDict = getDictionary("6");
     if (statusDict && statusDict.items.length > 0) {
@@ -697,6 +722,7 @@ const DriversPage = () => {
       console.log("Status dictionary not found or empty for ID: 6");
     }
   };
+
   const loadHireStatusDictionary = () => {
     const hireStatusDict = getDictionary("1455");
     if (hireStatusDict && hireStatusDict.items.length > 0) {
@@ -730,6 +756,7 @@ const DriversPage = () => {
       console.log("Hire status dictionary not found or empty for ID: 1455");
     }
   };
+
   const getRandomTransportIcon = () => {
     const transportTypes: TransportType[] = ['helper', 'car', 'suv', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
     const randomIndex = Math.floor(Math.random() * transportTypes.length);
@@ -738,6 +765,7 @@ const DriversPage = () => {
         <TransportIcon transportType={randomType} size={14} className="h-[14px] w-[14px]" />
       </div>;
   };
+
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     setDraggedColumn(columnId);
     e.dataTransfer.setData('text/plain', columnId);
@@ -745,12 +773,14 @@ const DriversPage = () => {
     dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     e.dataTransfer.setDragImage(dragImage, 0, 0);
   };
+
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     e.preventDefault();
     if (draggedColumn && draggedColumn !== columnId) {
       setDragOverColumn(columnId);
     }
   };
+
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
     e.preventDefault();
     if (!draggedColumn || draggedColumn === targetColumnId) {
@@ -769,19 +799,24 @@ const DriversPage = () => {
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
+
   const handleDragEnd = () => {
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
+
   const getSortedVisibleColumns = () => {
     return visibleColumns.filter(column => columnOrder.includes(column)).sort((a, b) => columnOrder.indexOf(a) - columnOrder.indexOf(b));
   };
+
   const sortedColumns = getSortedVisibleColumns();
+
   const renderRating = (rating: number) => {
     return <div className="flex items-center">
         <span className="font-medium">{rating.toFixed(1)}</span>
       </div>;
   };
+
   const renderStatus = (statusId: string) => {
     const statusText = statusDictionary[statusId] || `Unknown (${statusId})`;
     const statusColorClass = statusColors[statusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
@@ -789,6 +824,7 @@ const DriversPage = () => {
         {statusText}
       </div>;
   };
+
   const renderHireStatus = (hireStatusId: string, driverId: number) => {
     const hireStatusText = hireStatusDictionary[hireStatusId] || `Unknown (${hireStatusId})`;
     return <DropdownMenu>
@@ -805,6 +841,7 @@ const DriversPage = () => {
         </DropdownMenuContent>
       </DropdownMenu>;
   };
+
   const renderStripeStatus = (status: 'verified' | 'unverified' | 'pending') => {
     let bgColor = '';
     let icon = null;
@@ -831,26 +868,94 @@ const DriversPage = () => {
         {text}
       </div>;
   };
+
   return <Layout showFooter={false}>
       <div className="flex flex-col h-screen">
-        <DriversFilters searchTerm={searchTerm} onSearchChange={setSearchTerm} dateRange={dateRange} onDateRangeChange={setDateRange} timezone={timezone} onTimezoneChange={setTimezone} availableColumns={availableColumns} visibleColumns={visibleColumns} onVisibleColumnsChange={setVisibleColumns} activeView={activeView} onActiveViewChange={setActiveView} onToggleFilterSidebar={handleToggleFilterSidebar} isFilterSidebarOpen={isFilterSidebarOpen} />
+        <DriversFilters 
+          searchTerm={searchTerm} 
+          onSearchChange={setSearchTerm} 
+          dateRange={dateRange} 
+          onDateRangeChange={setDateRange} 
+          timezone={timezone} 
+          onTimezoneChange={setTimezone} 
+          availableColumns={availableColumns} 
+          visibleColumns={visibleColumns} 
+          onVisibleColumnsChange={setVisibleColumns} 
+          activeView={activeView} 
+          onActiveViewChange={setActiveView} 
+          onToggleFilterSidebar={handleToggleFilterSidebar} 
+          isFilterSidebarOpen={isFilterSidebarOpen} 
+        />
 
         <div className="flex-1 overflow-hidden mb-[5px]">
           <div className="space-y-4 w-full relative h-full">
-            
+            <div style={{
+              width: "300px",
+              transform: isFilterSidebarOpen ? 'translateX(0)' : 'translateX(-100%)'
+            }} className="absolute top-0 left-0 h-full bg-background border-r transition-all duration-300 ease-in-out z-10 px-[85px] -mt-0">
+              <div className="p-6 space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Filters</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium">Status</label>
+                      {/* Add status filters */}
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Hire Status</label>
+                      {/* Add hire status filters */}
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Rating</label>
+                      {/* Add rating filters */}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div className="h-full transition-all duration-300 ease-in-out" style={{
-            marginLeft: isFilterSidebarOpen ? "310px" : "10px"
-          }}>
-              <DriversTable currentItems={currentItems} sortedColumns={sortedColumns} availableColumns={availableColumns} transportTypes={transportTypes} statusDictionary={statusDictionary} statusColors={statusColors} editingNotes={editingNotes} draggedColumn={draggedColumn} dragOverColumn={dragOverColumn} onDragStart={handleDragStart} onDragOver={handleDragOver} onDrop={handleDrop} onDragEnd={handleDragEnd} renderRating={renderRating} renderStatus={renderStatus} renderHireStatus={renderHireStatus} renderStripeStatus={renderStripeStatus} handleNotesClick={handleNotesClick} handleNotesChange={handleNotesChange} saveNotes={saveNotes} />
+              marginLeft: isFilterSidebarOpen ? "310px" : "10px"
+            }}>
+              <DriversTable 
+                currentItems={currentItems} 
+                sortedColumns={sortedColumns} 
+                availableColumns={availableColumns} 
+                transportTypes={transportTypes} 
+                statusDictionary={statusDictionary} 
+                statusColors={statusColors} 
+                editingNotes={editingNotes} 
+                draggedColumn={draggedColumn} 
+                dragOverColumn={dragOverColumn} 
+                onDragStart={handleDragStart} 
+                onDragOver={handleDragOver} 
+                onDrop={handleDrop} 
+                onDragEnd={handleDragEnd} 
+                renderRating={renderRating} 
+                renderStatus={renderStatus} 
+                renderHireStatus={renderHireStatus} 
+                renderStripeStatus={renderStripeStatus} 
+                handleNotesClick={handleNotesClick} 
+                handleNotesChange={handleNotesChange} 
+                saveNotes={saveNotes} 
+              />
             </div>
           </div>
         </div>
 
-        <DriversPagination currentPage={currentPage} totalPages={totalPages} totalItems={totalItems} pageSize={pageSize} pageSizeOptions={pageSizeOptions} onPageChange={handlePageChange} onPageSizeChange={handlePageSizeChange} />
+        <DriversPagination 
+          currentPage={currentPage} 
+          totalPages={totalPages} 
+          totalItems={totalItems} 
+          pageSize={pageSize} 
+          pageSizeOptions={pageSizeOptions} 
+          onPageChange={handlePageChange} 
+          onPageSizeChange={handlePageSizeChange} 
+        />
         
         {chatOpen && selectedCourier && <CourierChat open={chatOpen} courierName={selectedCourier} onClose={handleChatClose} hasUnreadMessages={false} />}
       </div>
     </Layout>;
 };
+
 export default DriversPage;
