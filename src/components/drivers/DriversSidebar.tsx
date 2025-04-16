@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -25,7 +24,9 @@ export function DriversSidebar({
   allDeliveryStatuses
 }: DriversSidebarProps) {
   const [selectedTransports, setSelectedTransports] = useState<string[]>([]);
+  const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
   const [transportTypes, setTransportTypes] = useState<{ id: string; value: string; icon?: string }[]>([]);
+  const [zipcodes, setZipcodes] = useState<string[]>([]);
 
   useEffect(() => {
     const transportDict = getDictionary("2");
@@ -50,6 +51,14 @@ export function DriversSidebar({
     }
   };
 
+  const handleZipcodeChange = (zipcode: string) => {
+    if (selectedZipcodes.includes(zipcode)) {
+      setSelectedZipcodes(selectedZipcodes.filter(z => z !== zipcode));
+    } else {
+      setSelectedZipcodes([...selectedZipcodes, zipcode]);
+    }
+  };
+
   const handleSaveFilters = () => {
     // TODO: Implement save functionality
   };
@@ -57,6 +66,7 @@ export function DriversSidebar({
   const handleResetFilters = () => {
     setSelectedStatuses([]);
     setSelectedTransports([]);
+    setSelectedZipcodes([]);
   };
 
   const filteredDeliveryStatuses = allDeliveryStatuses.filter(status => 
@@ -122,6 +132,31 @@ export function DriversSidebar({
                             />
                           )}
                           {transport.value}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="zipcode-filters">
+                <AccordionTrigger className="text-sm font-medium">
+                  Zipcodes
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-2 pt-1">
+                    {zipcodes.map((zipcode) => (
+                      <div key={zipcode} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`zipcode-${zipcode}`}
+                          checked={selectedZipcodes.includes(zipcode)}
+                          onCheckedChange={() => handleZipcodeChange(zipcode)}
+                        />
+                        <label
+                          htmlFor={`zipcode-${zipcode}`}
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          {zipcode}
                         </label>
                       </div>
                     ))}
