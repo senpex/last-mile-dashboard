@@ -878,21 +878,24 @@ const DriversPage = () => {
   return (
     <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
-        <DriversFilters 
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          dateRange={dateRange}
-          onDateRangeChange={setDateRange}
-          timezone={timezone}
-          onTimezoneChange={setTimezone}
-          availableColumns={availableColumns}
-          visibleColumns={visibleColumns}
-          onVisibleColumnsChange={setVisibleColumns}
-          activeView={activeView}
-          onActiveViewChange={setActiveView}
-          onToggleFilterSidebar={handleToggleFilterSidebar}
-          isFilterSidebarOpen={isFilterSidebarOpen}
-        />
+        <div className="px-6 py-4 flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-foreground">Drivers Management</h1>
+          <DriversFilters 
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            dateRange={dateRange}
+            onDateRangeChange={setDateRange}
+            timezone={timezone}
+            onTimezoneChange={setTimezone}
+            availableColumns={availableColumns}
+            visibleColumns={visibleColumns}
+            onVisibleColumnsChange={setVisibleColumns}
+            activeView={activeView}
+            onActiveViewChange={setActiveView}
+            onToggleFilterSidebar={handleToggleFilterSidebar}
+            isFilterSidebarOpen={isFilterSidebarOpen}
+          />
+        </div>
 
         <div className="px-0 py-6 flex-1 overflow-auto">
           <div className="space-y-4 w-full">
