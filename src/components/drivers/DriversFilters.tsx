@@ -108,12 +108,6 @@ export function DriversFilters({
                   >
                     Main view
                   </TabsTrigger>
-                  <TabsTrigger 
-                    value="attention" 
-                    className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative flex items-center"
-                  >
-                    Attention Required
-                  </TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
