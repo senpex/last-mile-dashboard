@@ -1,13 +1,15 @@
+
 import React from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Filter, Search } from "lucide-react";
+import { Filter, Search, Map, MapPin } from "lucide-react";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 interface DriversFiltersProps {
   searchTerm: string;
   onSearchChange: (value: string) => void;
@@ -23,6 +25,7 @@ interface DriversFiltersProps {
   onToggleFilterSidebar: () => void;
   isFilterSidebarOpen: boolean;
 }
+
 export function DriversFilters({
   searchTerm,
   onSearchChange,
@@ -54,6 +57,16 @@ export function DriversFilters({
             <Button variant={isFilterSidebarOpen ? "default" : "outline"} className={`flex items-center gap-2 text-sm h-9 ${isFilterSidebarOpen ? 'bg-primary text-primary-foreground' : ''}`} onClick={onToggleFilterSidebar} aria-expanded={isFilterSidebarOpen}>
               <Filter className="h-4 w-4" />
               <span>{isFilterSidebarOpen ? 'Hide Filters' : 'Show Filters'}</span>
+            </Button>
+            
+            <Button variant="outline" className="flex items-center gap-2 text-sm h-9" title="Filter by city">
+              <Map className="h-4 w-4" />
+              <span>City</span>
+            </Button>
+            
+            <Button variant="outline" className="flex items-center gap-2 text-sm h-9" title="Filter by state">
+              <MapPin className="h-4 w-4" />
+              <span>State</span>
             </Button>
           </div>
           

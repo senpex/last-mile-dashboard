@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -21,6 +20,12 @@ interface DriversSidebarProps {
   allZipcodes: string[];
   selectedZipcodes: string[];
   setSelectedZipcodes: (zipcodes: string[]) => void;
+  allCities: string[];
+  selectedCities: string[];
+  setSelectedCities: (cities: string[]) => void;
+  allStates: string[];
+  selectedStates: string[];
+  setSelectedStates: (states: string[]) => void;
 }
 
 export function DriversSidebar({
@@ -31,7 +36,13 @@ export function DriversSidebar({
   allDeliveryStatuses,
   allZipcodes,
   selectedZipcodes,
-  setSelectedZipcodes
+  setSelectedZipcodes,
+  allCities,
+  selectedCities,
+  setSelectedCities,
+  allStates,
+  selectedStates,
+  setSelectedStates
 }: DriversSidebarProps) {
   const [selectedTransports, setSelectedTransports] = useState<string[]>([]);
   const [transportTypes, setTransportTypes] = useState<{ id: string; value: string; icon?: string }[]>([]);
@@ -43,6 +54,8 @@ export function DriversSidebar({
   const [hireStatusOptions, setHireStatusOptions] = useState<{ id: string; value: string; description?: string }[]>([]);
   const [selectedProfiles, setSelectedProfiles] = useState<string[]>([]);
   const [profileSearchTerm, setProfileSearchTerm] = useState("");
+  const [citySearchTerm, setCitySearchTerm] = useState("");
+  const [stateSearchTerm, setStateSearchTerm] = useState("");
 
   useEffect(() => {
     const transportDict = getDictionary("2");
@@ -97,8 +110,20 @@ export function DriversSidebar({
     }
   };
 
-  const handleSaveFilters = () => {
-    // TODO: Implement save functionality
+  const handleCityChange = (city: string) => {
+    if (selectedCities.includes(city)) {
+      setSelectedCities(selectedCities.filter(c => c !== city));
+    } else {
+      setSelectedCities([...selectedCities, city]);
+    }
+  };
+
+  const handleStateChange = (state: string) => {
+    if (selectedStates.includes(state)) {
+      setSelectedStates(selectedStates.filter(s => s !== state));
+    } else {
+      setSelectedStates([...selectedStates, state]);
+    }
   };
 
   const handleResetFilters = () => {
@@ -106,6 +131,12 @@ export function DriversSidebar({
     setSelectedTransports([]);
     setSelectedZipcodes([]);
     setSelectedProfiles([]);
+    setSelectedCities([]);
+    setSelectedStates([]);
+  };
+
+  const handleSaveFilters = () => {
+    // TODO: Implement save functionality
   };
 
   const getProfileCount = (profileId: string) => {
@@ -122,6 +153,14 @@ export function DriversSidebar({
 
   const getTransportCount = (transportId: string) => {
     return transportTypes.filter(t => t.id === transportId).length;
+  };
+
+  const getCityCount = (city: string) => {
+    return Math.floor(Math.random() * 20) + 1;
+  };
+
+  const getStateCount = (state: string) => {
+    return Math.floor(Math.random() * 20) + 1;
   };
 
   const filteredDeliveryStatuses = allDeliveryStatuses.filter(status => 
@@ -145,10 +184,6 @@ export function DriversSidebar({
     { id: 'inactive', value: 'Inactive' }
   ];
 
-  const getHireStatusCount = (status: string) => {
-    return Math.floor(Math.random() * 20) + 1;
-  };
-
   const filteredHireStatuses = hireStatusOptions.filter(status =>
     status.value.toLowerCase().includes(hireStatusSearchTerm.toLowerCase())
   );
@@ -161,6 +196,14 @@ export function DriversSidebar({
 
   const filteredProfiles = driverProfiles.filter(profile =>
     profile.value.toLowerCase().includes(profileSearchTerm.toLowerCase())
+  );
+
+  const filteredCities = allCities.filter(city =>
+    city.toLowerCase().includes(citySearchTerm.toLowerCase())
+  );
+
+  const filteredStates = allStates.filter(state =>
+    state.toLowerCase().includes(stateSearchTerm.toLowerCase())
   );
 
   return (
@@ -312,6 +355,76 @@ export function DriversSidebar({
                   ))}
                   {filteredTransportTypes.length === 0 && (
                     <p className="text-sm text-muted-foreground">No matching transport types found</p>
+                  )}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="city-filters">
+              <AccordionTrigger className="text-sm font-medium">
+                Cities
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="space-y-2 pt-1">
+                  <Input
+                    placeholder="Search cities..."
+                    value={citySearchTerm}
+                    onChange={(e) => setCitySearchTerm(e.target.value)}
+                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                  />
+                  {filteredCities.map((city) => (
+                    <div key={city} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`city-${city}`}
+                        checked={selectedCities.includes(city)}
+                        onCheckedChange={() => handleCityChange(city)}
+                      />
+                      <label
+                        htmlFor={`city-${city}`}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between"
+                      >
+                        <span>{city}</span>
+                        <Badge variant="outline" className="ml-auto">{getCityCount(city)}</Badge>
+                      </label>
+                    </div>
+                  ))}
+                  {filteredCities.length === 0 && (
+                    <p className="text-sm text-muted-foreground">No matching cities found</p>
+                  )}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="state-filters">
+              <AccordionTrigger className="text-sm font-medium">
+                States
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="space-y-2 pt-1">
+                  <Input
+                    placeholder="Search states..."
+                    value={stateSearchTerm}
+                    onChange={(e) => setStateSearchTerm(e.target.value)}
+                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                  />
+                  {filteredStates.map((state) => (
+                    <div key={state} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`state-${state}`}
+                        checked={selectedStates.includes(state)}
+                        onCheckedChange={() => handleStateChange(state)}
+                      />
+                      <label
+                        htmlFor={`state-${state}`}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between"
+                      >
+                        <span>{state}</span>
+                        <Badge variant="outline" className="ml-auto">{getStateCount(state)}</Badge>
+                      </label>
+                    </div>
+                  ))}
+                  {filteredStates.length === 0 && (
+                    <p className="text-sm text-muted-foreground">No matching states found</p>
                   )}
                 </div>
               </AccordionContent>
