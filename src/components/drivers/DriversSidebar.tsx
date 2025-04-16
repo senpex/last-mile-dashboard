@@ -9,6 +9,7 @@ import { DeliveryStatus } from "@/types/delivery";
 import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { Badge } from "@/components/ui/badge";
+import { User } from "lucide-react";
 
 interface DriversSidebarProps {
   open: boolean;
@@ -39,6 +40,8 @@ export function DriversSidebar({
   const [hireStatusSearchTerm, setHireStatusSearchTerm] = useState("");
   const [selectedHireStatuses, setSelectedHireStatuses] = useState<string[]>([]);
   const [hireStatusOptions, setHireStatusOptions] = useState<{ id: string; value: string; description?: string }[]>([]);
+  const [selectedProfiles, setSelectedProfiles] = useState<string[]>([]);
+  const [profileSearchTerm, setProfileSearchTerm] = useState("");
 
   useEffect(() => {
     const transportDict = getDictionary("2");
@@ -85,6 +88,14 @@ export function DriversSidebar({
     }
   };
 
+  const handleProfileChange = (profile: string, checked: boolean) => {
+    if (checked) {
+      setSelectedProfiles([...selectedProfiles, profile]);
+    } else {
+      setSelectedProfiles(selectedProfiles.filter(p => p !== profile));
+    }
+  };
+
   const handleSaveFilters = () => {
     // TODO: Implement save functionality
   };
@@ -93,6 +104,7 @@ export function DriversSidebar({
     setSelectedStatuses([]);
     setSelectedTransports([]);
     setSelectedZipcodes([]);
+    setSelectedProfiles([]);
   };
 
   const getStatusCount = (status: DeliveryStatus) => {
@@ -136,6 +148,16 @@ export function DriversSidebar({
     status.value.toLowerCase().includes(hireStatusSearchTerm.toLowerCase())
   );
 
+  const driverProfiles = [
+    { id: 'courier', value: 'Courier' },
+    { id: 'mover', value: 'Mover' },
+    { id: 'helper', value: 'Helper' }
+  ];
+
+  const filteredProfiles = driverProfiles.filter(profile =>
+    profile.value.toLowerCase().includes(profileSearchTerm.toLowerCase())
+  );
+
   return (
     <div className={`h-full bg-background border-r shadow-lg transition-all duration-300 ${open ? 'w-[275px] max-w-[80vw]' : 'w-0 overflow-hidden'}`}>
       <div className="p-6 w-full h-full flex flex-col">
@@ -143,6 +165,41 @@ export function DriversSidebar({
         
         <ScrollArea className="flex-1 -mr-4 pr-4">
           <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="profile" className="border-b">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
+                <span className="flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  Driver Profile
+                </span>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-col space-y-3 py-2">
+                  <Input
+                    placeholder="Search profiles..."
+                    value={profileSearchTerm}
+                    onChange={(e) => setProfileSearchTerm(e.target.value)}
+                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                  />
+                  {filteredProfiles.map(profile => (
+                    <div key={profile.id} className="flex items-center space-x-2">
+                      <Checkbox 
+                        id={`profile-${profile.id}`} 
+                        checked={selectedProfiles.includes(profile.id)} 
+                        onCheckedChange={checked => handleProfileChange(profile.id, checked === true)} 
+                      />
+                      <Label 
+                        htmlFor={`profile-${profile.id}`} 
+                        className="flex flex-1 items-center justify-between"
+                      >
+                        <span>{profile.value}</span>
+                        <Badge variant="outline" className="ml-auto">{getProfileCount(profile.id)}</Badge>
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
             <AccordionItem value="status-filters">
               <AccordionTrigger className="text-sm font-medium">
                 Status
