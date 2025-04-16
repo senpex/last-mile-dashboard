@@ -9,7 +9,6 @@ import ColumnSelector from "@/components/table/ColumnSelector";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
 interface DriversFiltersProps {
   searchTerm: string;
   onSearchChange: (value: string) => void;
@@ -25,7 +24,6 @@ interface DriversFiltersProps {
   onToggleFilterSidebar: () => void;
   isFilterSidebarOpen: boolean;
 }
-
 export function DriversFilters({
   searchTerm,
   onSearchChange,
@@ -82,9 +80,9 @@ export function DriversFilters({
       </div>
       
       <div style={{
-        width: "300px",
-        transform: isFilterSidebarOpen ? 'translateX(0)' : 'translateX(-100%)'
-      }} className="absolute top-0 left-0 h-full bg-background border-r transition-all duration-300 ease-in-out z-10 px-[85px] -mt-0">
+      width: "300px",
+      transform: isFilterSidebarOpen ? 'translateX(0)' : 'translateX(-100%)'
+    }} className="absolute top-0 left-0 h-full bg-background border-r transition-all duration-300 ease-in-out z-10 px-[85px] -mt-0 py-0 my-[112px]">
         <div className="p-6 space-y-6">
           <div>
             <h3 className="text-lg font-semibold mb-4">Filters</h3>
