@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { DriversTable } from '@/components/drivers/DriversTable';
@@ -896,7 +895,7 @@ const DriversPage = () => {
         />
 
         <div className="flex-1 overflow-hidden">
-          <div className="space-y-4 w-full relative h-full">
+          <div className="space-y-4 w-full relative h-full mb-[3px]">
             {/* Filters panel */}
             <div 
               className="absolute top-0 left-0 h-full bg-background border-r transition-all duration-300 ease-in-out z-10"
