@@ -9,6 +9,7 @@ import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 interface DriversFiltersProps {
   searchTerm: string;
@@ -44,7 +45,7 @@ export function DriversFilters({
   return (
     <div className="px-4 py-4 flex-shrink-0 border-b space-y-0.5 pb-4">
       <div className="flex flex-col space-y-1">
-        <div className="flex justify-between items-center mb-3"> {/* Changed mb-7 to mb-3 for 4px less margin */}
+        <div className="flex justify-between items-center mb-3">
           <h1 className="text-2xl font-semibold text-foreground">Drivers Management</h1>
           <span className="text-sm text-muted-foreground">
             All times are displayed using {timezone.replace('_', ' ')} timezone
@@ -103,11 +104,47 @@ export function DriversFilters({
               onValueChange={onActiveViewChange} 
               className="w-auto"
             >
-                
+              <TabsList>
+                <TabsTrigger value="all">All Drivers</TabsTrigger>
+                <TabsTrigger value="active">Active</TabsTrigger>
+                <TabsTrigger value="inactive">Inactive</TabsTrigger>
+              </TabsList>
             </Tabs>
           </div>
         </div>
       </div>
+
+      <Sheet open={isFilterSidebarOpen} onOpenChange={onToggleFilterSidebar}>
+        <SheetContent 
+          side="left" 
+          className="w-[300px] border-r p-6"
+          style={{
+            left: "240px", // This aligns it with the end of the sidebar
+            transform: isFilterSidebarOpen ? 'translateX(0)' : 'translateX(-100%)'
+          }}
+        >
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Filters</h3>
+              {/* Add your filter content here */}
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium">Status</label>
+                  {/* Add status filters */}
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Hire Status</label>
+                  {/* Add hire status filters */}
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Rating</label>
+                  {/* Add rating filters */}
+                </div>
+              </div>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

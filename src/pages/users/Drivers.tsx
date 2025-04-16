@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { DriversTable } from '@/components/drivers/DriversTable';
@@ -894,7 +895,12 @@ const DriversPage = () => {
           isFilterSidebarOpen={isFilterSidebarOpen}
         />
 
-        <div className="px-0 py-6 flex-1 overflow-auto">
+        <div 
+          className={`px-0 py-6 flex-1 overflow-auto transition-all duration-300 ease-in-out`}
+          style={{
+            marginLeft: isFilterSidebarOpen ? "300px" : "0",
+          }}
+        >
           <div className="space-y-4 w-full">
             <DriversTable 
               currentItems={currentItems}
