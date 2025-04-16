@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
@@ -43,9 +42,12 @@ export function DriversFilters({
 }: DriversFiltersProps) {
   return (
     <div className="px-4 py-6 flex-shrink-0 border-b">
-      <div className="flex flex-col space-y-3">  {/* Reduced from space-y-2 to space-y-3 to split the difference */}
-        <div className="flex justify-start">
+      <div className="flex flex-col space-y-3">
+        <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold text-foreground">Drivers Management</h1>
+          <span className="text-sm text-muted-foreground">
+            All times are displayed using {timezone.replace('_', ' ')} timezone
+          </span>
         </div>
         
         <div className="flex flex-wrap justify-between items-center gap-2">
