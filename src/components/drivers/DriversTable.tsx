@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -182,11 +183,10 @@ export const DriversTable = ({
                       <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
                     </div>
                     <span className="truncate">{column.label}</span>
-                    {sortable && isActive && direction === 'ascending' && (
-                      <ChevronUp className="h-4 w-4 text-[#ea384c]" />
-                    )}
-                    {sortable && isActive && direction === 'descending' && (
-                      <ChevronDown className="h-4 w-4 text-[#ea384c]" />
+                    {sortable && isActive && direction && (
+                      direction === 'ascending' 
+                        ? <ChevronUp className="h-4 w-4 text-[#ea384c]" />
+                        : <ChevronDown className="h-4 w-4 text-[#ea384c]" />
                     )}
                   </div>
                 </TableHead>
