@@ -101,9 +101,7 @@ export function DriversFilters({
                 onValueChange={onActiveViewChange} 
                 className="w-auto"
               >
-                <TabsList className="inline-flex h-6 bg-muted space-x-1 items-center justify-center">
-                  {/* No tab trigger elements */}
-                </TabsList>
+                
               </Tabs>
             </div>
           </div>
