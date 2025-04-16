@@ -117,7 +117,7 @@ export const DriversTable = ({
   };
 
   return (
-    <UsersTableContainer stickyHeader={false} className="w-full">
+    <UsersTableContainer stickyHeader={false} className="w-full mt-2.5">
       <Table>
         <TableHeader className="bg-muted/50">
           <TableRow>

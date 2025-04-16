@@ -27,7 +27,20 @@ export function DriversSidebar({
         <h2 className="text-lg font-semibold mb-4">Filters</h2>
         
         <ScrollArea className="flex-1 -mr-4 pr-4">
-          {/* Filter content will go here */}
+          <div className="space-y-4">
+            <div className="border-b pb-3">
+              <p className="text-sm font-medium mb-2">Status Filters</p>
+              {/* Status filter content will be added here */}
+            </div>
+            <div className="border-b pb-3">
+              <p className="text-sm font-medium mb-2">Transport Filters</p>
+              {/* Transport filter content will be added here */}
+            </div>
+            <div>
+              <p className="text-sm font-medium mb-2">Rating Filters</p>
+              {/* Rating filter content will be added here */}
+            </div>
+          </div>
         </ScrollArea>
 
         <div className="mt-4 pt-4 border-t flex gap-2">
