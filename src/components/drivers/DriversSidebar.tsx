@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -110,7 +109,7 @@ export function DriversSidebar({
                       placeholder="Search status..."
                       value={statusSearchTerm}
                       onChange={(e) => setStatusSearchTerm(e.target.value)}
-                      className="mb-2"
+                      className="mb-2 transition-none"
                     />
                     {filteredDeliveryStatuses.map((status) => (
                       <div key={status} className="flex items-center space-x-2">
@@ -144,7 +143,7 @@ export function DriversSidebar({
                       placeholder="Search transport type..."
                       value={transportSearchTerm}
                       onChange={(e) => setTransportSearchTerm(e.target.value)}
-                      className="mb-2"
+                      className="mb-2 transition-none"
                     />
                     {filteredTransportTypes.map((transport) => (
                       <div key={transport.id} className="flex items-center space-x-2">
@@ -185,7 +184,7 @@ export function DriversSidebar({
                       placeholder="Search zipcode..."
                       value={zipcodeSearchTerm}
                       onChange={(e) => setZipcodeSearchTerm(e.target.value)}
-                      className="mb-2"
+                      className="mb-2 transition-none"
                     />
                     {filteredZipcodes.map((zipcode) => (
                       <div key={zipcode} className="flex items-center space-x-2">
