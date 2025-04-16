@@ -30,6 +30,7 @@ interface DriversTableProps {
   handleNotesClick: (driverId: number) => void;
   handleNotesChange: (driverId: number, notes: string) => void;
   saveNotes: (driverId: number) => void;
+  className?: string; // Add the className prop as an optional string
 }
 
 export const DriversTable = ({
@@ -52,7 +53,8 @@ export const DriversTable = ({
   renderStripeStatus,
   handleNotesClick,
   handleNotesChange,
-  saveNotes
+  saveNotes,
+  className
 }: DriversTableProps) => {
   const renderCellContent = (driver: any, columnId: string) => {
     switch (columnId) {
@@ -117,7 +119,7 @@ export const DriversTable = ({
   };
 
   return (
-    <UsersTableContainer stickyHeader={false} className="w-full mt-2.5">
+    <UsersTableContainer stickyHeader={false} className={cn("w-full mt-2.5", className)}>
       <Table>
         <TableHeader className="bg-muted/50">
           <TableRow>
