@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { DriversTable } from '@/components/drivers/DriversTable';
@@ -918,6 +917,7 @@ const DriversPage = () => {
               handleNotesClick={handleNotesClick} 
               handleNotesChange={handleNotesChange} 
               saveNotes={saveNotes} 
+              className="mt-[10px]"
             />
           </div>
         </div>
