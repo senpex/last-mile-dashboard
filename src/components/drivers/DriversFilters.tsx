@@ -41,8 +41,8 @@ export function DriversFilters({
   isFilterSidebarOpen,
 }: DriversFiltersProps) {
   return (
-    <div className="px-4 py-6 flex-shrink-0 border-b space-y-2">
-      <div className="flex flex-col space-y-2">
+    <div className="px-4 py-6 flex-shrink-0 border-b space-y-1">
+      <div className="flex flex-col space-y-1">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold text-foreground">Drivers Management</h1>
           <span className="text-sm text-muted-foreground">
