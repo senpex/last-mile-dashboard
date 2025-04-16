@@ -827,63 +827,57 @@ const DriversPage = () => {
 
   const renderHireStatus = (hireStatusId: string, driverId: number) => {
     const hireStatusText = hireStatusDictionary[hireStatusId] || `Unknown (${hireStatusId})`;
-    const hireStatusColorClass = hireStatusColors[hireStatusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
-    
-    return (
-      <DropdownMenu>
+    return <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" className={`${hireStatusColorClass} rounded-full px-2.5 py-0.5 h-auto text-xs font-medium flex items-center gap-1`}>
+          <Button variant="outline" size="sm" className="h-8 w-auto">
             {hireStatusText}
-            <ChevronDown className="h-3 w-3 opacity-50" />
+            <ChevronDown className="ml-1 h-4 w-4 opacity-70" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
-          {Object.keys(hireStatusDictionary).map(statusId => (
-            <DropdownMenuItem
-              key={statusId}
-              onClick={() => updateDriverHireStatus(driverId, statusId)}
-              className="flex items-center justify-between"
+        <DropdownMenuContent align="start" className="w-[160px]">
+          {Object.entries(hireStatusDictionary).map(([key, value]) => (
+            <DropdownMenuItem 
+              key={key} 
+              onClick={() => updateDriverHireStatus(driverId, key)} 
+              className={hireStatusId === key ? "bg-muted" : ""}
             >
-              <span>{hireStatusDictionary[statusId]}</span>
-              {hireStatusId === statusId && <Check className="h-4 w-4 ml-2" />}
+              {value}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
-      </DropdownMenu>
-    );
+      </DropdownMenu>;
   };
 
   const renderStripeStatus = (status: 'verified' | 'unverified' | 'pending') => {
+    let bgColor = '';
     let icon = null;
-    let statusText = status;
-    let colorClass = '';
-    
+    let text = '';
     switch (status) {
       case 'verified':
-        icon = <Check className="h-4 w-4 text-green-500" />;
-        colorClass = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+        bgColor = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+        icon = <Check className="h-3.5 w-3.5 mr-1" />;
+        text = 'Verified';
         break;
       case 'unverified':
-        icon = <X className="h-4 w-4 text-red-500" />;
-        colorClass = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+        bgColor = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+        icon = <X className="h-3.5 w-3.5 mr-1" />;
+        text = 'Unverified';
         break;
       case 'pending':
-        icon = <Clock className="h-4 w-4 text-yellow-500" />;
-        colorClass = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+        bgColor = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+        icon = <Clock className="h-3.5 w-3.5 mr-1" />;
+        text = 'Pending';
         break;
     }
-    
-    return (
-      <div className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${colorClass}`}>
+    return <div className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${bgColor}`}>
         {icon}
-        <span className="capitalize">{statusText}</span>
-      </div>
-    );
+        {text}
+      </div>;
   };
 
   return (
-    <Layout>
-      <div className="flex flex-col h-full overflow-hidden ml-[10px]">
+    <Layout showFooter={false}>
+      <div className="flex flex-col h-screen">
         <DriversFilters 
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
@@ -899,33 +893,72 @@ const DriversPage = () => {
           onToggleFilterSidebar={handleToggleFilterSidebar}
           isFilterSidebarOpen={isFilterSidebarOpen}
         />
-        
-        <div className="flex flex-1 overflow-hidden">
-          <DriversTable
-            currentItems={currentItems}
-            sortedColumns={sortedColumns}
-            availableColumns={availableColumns}
-            transportTypes={transportTypes}
-            statusDictionary={statusDictionary}
-            statusColors={statusColors}
-            editingNotes={editingNotes}
-            draggedColumn={draggedColumn}
-            dragOverColumn={dragOverColumn}
-            onDragStart={handleDragStart}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-            onDragEnd={handleDragEnd}
-            renderRating={renderRating}
-            renderStatus={renderStatus}
-            renderHireStatus={renderHireStatus}
-            renderStripeStatus={renderStripeStatus}
-            handleNotesClick={handleNotesClick}
-            handleNotesChange={handleNotesChange}
-            saveNotes={saveNotes}
-          />
+
+        <div className="flex-1 overflow-hidden mb-[5px]">
+          <div className="space-y-4 w-full relative h-full">
+            {/* Filters panel */}
+            <div 
+              className="absolute top-0 left-0 h-full bg-background border-r transition-all duration-300 ease-in-out z-10"
+              style={{
+                width: "300px",
+                transform: isFilterSidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
+              }}
+            >
+              <div className="p-6 space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Filters</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium">Status</label>
+                      {/* Add status filters */}
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Hire Status</label>
+                      {/* Add hire status filters */}
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Rating</label>
+                      {/* Add rating filters */}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Table container with margin transition */}
+            <div 
+              className="h-full transition-all duration-300 ease-in-out"
+              style={{
+                marginLeft: isFilterSidebarOpen ? "300px" : "10px",
+              }}
+            >
+              <DriversTable 
+                currentItems={currentItems}
+                sortedColumns={sortedColumns}
+                availableColumns={availableColumns}
+                transportTypes={transportTypes}
+                statusDictionary={statusDictionary}
+                statusColors={statusColors}
+                editingNotes={editingNotes}
+                draggedColumn={draggedColumn}
+                dragOverColumn={dragOverColumn}
+                onDragStart={handleDragStart}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                onDragEnd={handleDragEnd}
+                renderRating={renderRating}
+                renderStatus={renderStatus}
+                renderHireStatus={renderHireStatus}
+                renderStripeStatus={renderStripeStatus}
+                handleNotesClick={handleNotesClick}
+                handleNotesChange={handleNotesChange}
+                saveNotes={saveNotes}
+              />
+            </div>
+          </div>
         </div>
-        
-        <DriversPagination
+
+        <DriversPagination 
           currentPage={currentPage}
           totalPages={totalPages}
           totalItems={totalItems}
@@ -934,14 +967,16 @@ const DriversPage = () => {
           onPageChange={handlePageChange}
           onPageSizeChange={handlePageSizeChange}
         />
+        
+        {chatOpen && selectedCourier && (
+          <CourierChat 
+            open={chatOpen} 
+            courierName={selectedCourier} 
+            onClose={handleChatClose} 
+            hasUnreadMessages={false} 
+          />
+        )}
       </div>
-      
-      {chatOpen && selectedCourier && (
-        <CourierChat
-          courierName={selectedCourier}
-          onClose={handleChatClose}
-        />
-      )}
     </Layout>
   );
 };
