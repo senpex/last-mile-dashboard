@@ -11,6 +11,7 @@ import { DateRange } from "react-day-picker";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 import { getDictionary } from "@/lib/storage";
 import CourierChat from '@/components/chat/CourierChat';
+import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 
 type StripeStatus = 'verified' | 'unverified' | 'pending';
 
