@@ -827,6 +827,6 @@ const DriversPage = () => {
 
   const renderHireStatus = (hireStatusId: string, driverId: number) => {
     const hireStatusText = hireStatusDictionary[hireStatusId] || `Unknown (${hireStatusId})`;
-    return <DropdownMenu>
+    return (
+      <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant
