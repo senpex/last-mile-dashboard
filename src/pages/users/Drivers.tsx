@@ -12,16 +12,20 @@ import { ColumnOption } from "@/components/table/ColumnSelector";
 import { getDictionary } from "@/lib/storage";
 import CourierChat from '@/components/chat/CourierChat';
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
+
 type StripeStatus = 'verified' | 'unverified' | 'pending';
+
 const getRandomPhone = (): string => {
   const areaCode = Math.floor(Math.random() * 900) + 100;
   const prefix = Math.floor(Math.random() * 900) + 100;
   const lineNumber = Math.floor(Math.random() * 9000) + 1000;
   return `(${areaCode}) ${prefix}-${lineNumber}`;
 };
+
 const getRandomZipcode = (): string => {
   return String(Math.floor(Math.random() * 90000) + 10000);
 };
+
 const generateRandomTransports = (): string[] => {
   const transportIds = ['1', '2', '3', '4', '5', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
   const count = Math.floor(Math.random() * 3) + 1;
@@ -35,19 +39,23 @@ const generateRandomTransports = (): string[] => {
   }
   return result;
 };
+
 const generateRandomRating = (): number => {
   return Number((Math.random() * 2 + 3).toFixed(1));
 };
+
 const generateRandomHireStatus = (): string => {
   const hireStatuses = ['hired', 'left_vm', 'contact_again', 'not_interested', 'blacklist', 'out_of_service'];
   const randomIndex = Math.floor(Math.random() * hireStatuses.length);
   return hireStatuses[randomIndex];
 };
+
 const generateRandomStripeStatus = (): StripeStatus => {
   const statuses: StripeStatus[] = ['verified', 'unverified', 'pending'];
   const randomIndex = Math.floor(Math.random() * 3);
   return statuses[randomIndex];
 };
+
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{
     [key: string]: string;
@@ -839,8 +847,9 @@ const DriversPage = () => {
           <div className="space-y-4 w-full relative h-full">
             <div style={{
             width: "300px",
-            transform: isFilterSidebarOpen ? 'translateX(0)' : 'translateX(-100%)'
-          }} className="absolute top-0 left-0 h-[calc(100%+10px)] bg-background border-r transition-all duration-300 ease-in-out z-10 px-[85px]">
+            transform: isFilterSidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
+            top: "calc(-1 * var(--header-height, 120px))"
+          }} className="absolute top-[120px] left-0 h-[calc(100%+10px)] bg-background border-r transition-all duration-300 ease-in-out z-10 px-[85px]">
               
             </div>
 
@@ -858,4 +867,5 @@ const DriversPage = () => {
       </div>
     </Layout>;
 };
+
 export default DriversPage;
