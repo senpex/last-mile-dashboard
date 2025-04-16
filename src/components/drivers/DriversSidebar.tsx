@@ -109,7 +109,7 @@ export function DriversSidebar({
                       placeholder="Search status..."
                       value={statusSearchTerm}
                       onChange={(e) => setStatusSearchTerm(e.target.value)}
-                      className="mb-2 transition-none"
+                      className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
                     />
                     {filteredDeliveryStatuses.map((status) => (
                       <div key={status} className="flex items-center space-x-2">
@@ -143,7 +143,7 @@ export function DriversSidebar({
                       placeholder="Search transport type..."
                       value={transportSearchTerm}
                       onChange={(e) => setTransportSearchTerm(e.target.value)}
-                      className="mb-2 transition-none"
+                      className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
                     />
                     {filteredTransportTypes.map((transport) => (
                       <div key={transport.id} className="flex items-center space-x-2">
@@ -184,7 +184,7 @@ export function DriversSidebar({
                       placeholder="Search zipcode..."
                       value={zipcodeSearchTerm}
                       onChange={(e) => setZipcodeSearchTerm(e.target.value)}
-                      className="mb-2 transition-none"
+                      className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
                     />
                     {filteredZipcodes.map((zipcode) => (
                       <div key={zipcode} className="flex items-center space-x-2">
