@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
@@ -42,11 +43,6 @@ export function DriversFilters({
 }: DriversFiltersProps) {
   return <div className="px-4 py-4 flex-shrink-0 border-b space-y-0.5 pb-4">
       <div className="flex flex-col space-y-1">
-        {/* Add a title for Filters */}
-        <div className="flex items-center justify-between mb-2">
-          <h2 className="text-lg font-semibold text-foreground">Filters</h2>
-        </div>
-
         <div className="flex justify-between items-start">
           <h1 className="text-2xl font-semibold text-foreground text-left">Drivers Management</h1>
           <span className="text-sm text-muted-foreground text-right">
