@@ -825,4 +825,13 @@ const DriversPage = () => {
 
   const renderStatus = (statusId: string) => {
     const statusText = statusDictionary[statusId] || `Unknown (${statusId})`;
-    const statusColorClass = statusColors[statusId] ||
+    const statusColorClass = statusColors[statusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
+    
+    return (
+      <Badge className={statusColorClass} variant="outline">
+        {statusText}
+      </Badge>
+    );
+  };
+
+  export default DriversPage;
