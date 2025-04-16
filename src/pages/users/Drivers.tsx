@@ -546,7 +546,7 @@ const DriversPage = () => {
   const [selectedCourier, setSelectedCourier] = useState<string | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [driversWithMessages, setDriversWithMessages] = useState<number[]>([]);
-  const [editingNotes, setEditingNotes] = useState<number | null>(null);
+  const [editingNotes, setEditingNotes] = useState<number | null>(null);\
   const [sortConfig, setSortConfig] = useState<{
     key: string | null;
     direction: 'ascending' | 'descending' | null;
