@@ -829,7 +829,7 @@ const DriversPage = () => {
   };
 
   const renderStatus = (statusId: string) => {
-    const statusText = statusDictionary[statusId] || 'Unknown Status';
+    const statusText = statusDictionary[statusId] || "Unknown Status";
     return <div className="flex items-center">
       <span>{statusText}</span>
     </div>;
@@ -837,7 +837,187 @@ const DriversPage = () => {
 
   return (
     <Layout>
-      {/* Rest of component code */}
+      <div className="container mx-auto px-4 py-6">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">Drivers</h1>
+          <div className="flex items-center space-x-2">
+            <Button variant="outline" onClick={handleToggleFilterSidebar} className="flex items-center gap-2">
+              <Filter className="h-4 w-4" />
+              <span>Filters</span>
+              {isFilterSidebarOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronDown className="h-4 w-4 transform -rotate-90" />}
+            </Button>
+            <Button variant="default" className="flex items-center gap-2">
+              <Plus className="h-4 w-4" />
+              <span>Add Driver</span>
+            </Button>
+          </div>
+        </div>
+
+        {isFilterSidebarOpen && (
+          <div className="mb-6">
+            <Accordion type="single" collapsible defaultValue="status" className="w-full">
+              <AccordionItem value="status">
+                <AccordionTrigger>Status</AccordionTrigger>
+                <AccordionContent>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                    {Object.keys(statusDictionary).map(status => (
+                      <Button key={status} variant="outline" className="justify-start">
+                        {statusDictionary[status]}
+                      </Button>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="hireStatus">
+                <AccordionTrigger>Hire Status</AccordionTrigger>
+                <AccordionContent>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                    {Object.keys(hireStatusDictionary).map(status => (
+                      <Button key={status} variant="outline" className="justify-start">
+                        {hireStatusDictionary[status]}
+                      </Button>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="transport">
+                <AccordionTrigger>Transport Type</AccordionTrigger>
+                <AccordionContent>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                    {Object.keys(transportTypes).map(type => (
+                      <Button key={type} variant="outline" className="justify-start">
+                        {transportTypes[type]}
+                      </Button>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        )}
+
+        <div className="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="relative w-full sm:w-64">
+            <Input
+              placeholder="Search drivers..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+          </div>
+          <ColumnSelector
+            availableColumns={availableColumns}
+            visibleColumns={visibleColumns}
+            setVisibleColumns={setVisibleColumns}
+          />
+        </div>
+
+        <UsersTableContainer
+          height="h-[calc(100vh-350px)]"
+          className={isFilterSidebarOpen ? "w-full" : "w-full"}
+        >
+          <Table className="min-w-full">
+            <TableHeader>
+              <TableRow>
+                {sortedColumns.map(columnId => {
+                  const column = availableColumns.find(col => col.id === columnId);
+                  
+                  return (
+                    <TableHead 
+                      key={columnId} 
+                      dragOver={dragOverColumn === columnId}
+                      sortable={['name', 'rating', 'status', 'hireStatus'].includes(columnId)}
+                      sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
+                      onSort={() => requestSort(columnId)}
+                      className="whitespace-nowrap cursor-move"
+                      onDragStart={(e) => handleDragStart(e, columnId)}
+                      onDragOver={(e) => handleDragOver(e, columnId)}
+                      onDragEnd={handleDragEnd}
+                      onDrop={(e) => handleDrop(e, columnId)}
+                      draggable
+                    >
+                      <div className="flex items-center gap-2">
+                        <GripVertical className="h-4 w-4 text-muted-foreground/30" />
+                        {column?.label || columnId}
+                      </div>
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {currentItems.map(driver => (
+                <TableRow key={driver.id}>
+                  {sortedColumns.map(columnId => (
+                    <TableCell key={`${driver.id}-${columnId}`}>
+                      {renderCellContent(columnId, driver)}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </UsersTableContainer>
+
+        <div className="mt-4 flex items-center justify-between">
+          <PaginationInfo
+            totalItems={totalItems}
+            pageSize={pageSize}
+            currentPage={currentPage}
+          />
+          <div className="flex items-center space-x-6">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious 
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    className={cn(currentPage <= 1 && "pointer-events-none opacity-50")}
+                  />
+                </PaginationItem>
+                
+                {getPageNumbers().map((pageNum, idx) => (
+                  pageNum === -1 || pageNum === -2 ? (
+                    <PaginationItem key={`ellipsis-${idx}`}>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                  ) : (
+                    <PaginationItem key={pageNum}>
+                      <PaginationLink
+                        onClick={() => handlePageChange(pageNum)}
+                        isActive={pageNum === currentPage}
+                      >
+                        {pageNum}
+                      </PaginationLink>
+                    </PaginationItem>
+                  )
+                ))}
+                
+                <PaginationItem>
+                  <PaginationNext 
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    className={cn(currentPage >= totalPages && "pointer-events-none opacity-50")}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+            
+            <PaginationSize
+              options={pageSizeOptions}
+              value={pageSize}
+              onChange={handlePageSizeChange}
+            />
+          </div>
+        </div>
+      </div>
+      
+      {chatOpen && selectedCourier && (
+        <CourierChat 
+          isOpen={chatOpen} 
+          onClose={handleChatClose} 
+          courier={selectedCourier}
+        />
+      )}
     </Layout>
   );
 };
