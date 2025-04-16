@@ -834,4 +834,11 @@ const DriversPage = () => {
     );
   };
 
-  export default DriversPage;
+  return (
+    <div>
+      {/* Add your UI rendering code here */}
+    </div>
+  );
+};
+
+export default DriversPage;
