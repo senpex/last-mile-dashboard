@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { DriversTable } from '@/components/drivers/DriversTable';
@@ -895,7 +894,7 @@ const DriversPage = () => {
           isFilterSidebarOpen={isFilterSidebarOpen}
         />
 
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden mb-[5px]">
           <div className="space-y-4 w-full relative h-full">
             {/* Filters panel */}
             <div 
