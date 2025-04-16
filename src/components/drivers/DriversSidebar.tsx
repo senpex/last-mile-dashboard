@@ -37,6 +37,12 @@ export function DriversSidebar({
     setSelectedStatuses([]);
   };
 
+  // Filter out the specified statuses
+  const filteredDeliveryStatuses = allDeliveryStatuses.filter(status => 
+    !["Picking Up", "In Transit", "Arrived For Pickup", "Dropoff Complete", 
+      "Scheduled Order", "Canceled By Customer", "Cancelled By Admin"].includes(status)
+  );
+
   return (
     <div className={`h-full bg-background border-r shadow-lg transition-all duration-300 ${open ? 'w-[275px] max-w-[80vw]' : 'w-0 overflow-hidden'}`}>
       <div className="p-6 w-full h-full flex flex-col">
@@ -51,7 +57,7 @@ export function DriversSidebar({
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-2 pt-1">
-                    {allDeliveryStatuses.map((status) => (
+                    {filteredDeliveryStatuses.map((status) => (
                       <div key={status} className="flex items-center space-x-2">
                         <Checkbox
                           id={`status-${status}`}
