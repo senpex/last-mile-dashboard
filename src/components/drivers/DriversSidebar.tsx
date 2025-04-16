@@ -10,6 +10,7 @@ import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { Badge } from "@/components/ui/badge";
 import { User } from "lucide-react";
+import { Label } from "@/components/ui/label";
 
 interface DriversSidebarProps {
   open: boolean;
@@ -105,6 +106,10 @@ export function DriversSidebar({
     setSelectedTransports([]);
     setSelectedZipcodes([]);
     setSelectedProfiles([]);
+  };
+
+  const getProfileCount = (profileId: string) => {
+    return Math.floor(Math.random() * 20) + 1;
   };
 
   const getStatusCount = (status: DeliveryStatus) => {
