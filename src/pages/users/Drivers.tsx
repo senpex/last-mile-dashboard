@@ -25,6 +25,19 @@ import {
 } from "@/components/ui/accordion";
 
 type StripeStatus = 'verified' | 'unverified' | 'pending';
+type Driver = {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  status: string;
+  hireStatus: string;
+  transports: string[];
+  rating: number;
+  stripeStatus: StripeStatus;
+  zipcode: string;
+  notes: string;
+};
 
 const getRandomPhone = (): string => {
   const areaCode = Math.floor(Math.random() * 900) + 100;
@@ -822,6 +835,147 @@ const DriversPage = () => {
 
   const sortedColumns = getSortedVisibleColumns();
 
+  const renderCellContent = (columnId: string, driver: Driver) => {
+    switch (columnId) {
+      case "id":
+        return driver.id;
+      case "name":
+        return <span className="font-medium">{driver.name}</span>;
+      case "email":
+        return driver.email;
+      case "phone":
+        return driver.phone;
+      case "zipcode":
+        return driver.zipcode;
+      case "transport":
+        return driver.transports.map((id, index) => (
+          <span key={`${driver.id}-transport-${index}`} className="inline-block mr-1">
+            {getRandomTransportIcon()}
+          </span>
+        ));
+      case "rating":
+        return renderRating(driver.rating);
+      case "status":
+        return renderStatus(driver.status);
+      case "hireStatus":
+        return renderHireStatus(driver.hireStatus);
+      case "stripeStatus":
+        return renderStripeStatus(driver.stripeStatus);
+      case "notes":
+        if (editingNotes === driver.id) {
+          return (
+            <div className="flex flex-col gap-2">
+              <Textarea 
+                value={driver.notes} 
+                onChange={(e) => handleNotesChange(driver.id, e.target.value)}
+                className="min-h-[80px]"
+              />
+              <div className="flex justify-end gap-2">
+                <Button size="sm" variant="outline" onClick={() => setEditingNotes(null)}>Cancel</Button>
+                <Button size="sm" onClick={() => saveNotes(driver.id)}>Save</Button>
+              </div>
+            </div>
+          );
+        }
+        return (
+          <div className="flex items-center gap-1">
+            {driver.notes ? (
+              <span className="line-clamp-2">{driver.notes}</span>
+            ) : (
+              <span className="text-muted-foreground italic">No notes</span>
+            )}
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="ml-auto h-6 w-6 p-0" 
+              onClick={() => handleNotesClick(driver.id)}
+            >
+              <Pencil className="h-3 w-3" />
+            </Button>
+          </div>
+        );
+      case "actions":
+        return (
+          <div className="flex items-center gap-1">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-7 w-7 p-0"
+              onClick={() => handleCourierClick(driver.name)}
+            >
+              <MessageCircle className="h-4 w-4" />
+              {driversWithMessages.includes(driver.id) && (
+                <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+              )}
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem>
+                  <FileText className="mr-2 h-4 w-4" />
+                  <span>View Details</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => updateDriverHireStatus(driver.id, "hired")}>
+                  <Check className="mr-2 h-4 w-4 text-green-600" />
+                  <span>Mark as Hired</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => updateDriverHireStatus(driver.id, "blacklist")}>
+                  <X className="mr-2 h-4 w-4 text-red-600" />
+                  <span>Blacklist</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => updateDriverHireStatus(driver.id, "contact_again")}>
+                  <Clock className="mr-2 h-4 w-4 text-yellow-600" />
+                  <span>Contact Again</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  const renderHireStatus = (status: string) => {
+    const statusText = hireStatusDictionary[status] || "Unknown Status";
+    return (
+      <Badge variant="outline" className={cn("capitalize", hireStatusColors[status])}>
+        {statusText}
+      </Badge>
+    );
+  };
+
+  const renderStripeStatus = (status: StripeStatus) => {
+    switch (status) {
+      case "verified":
+        return <Badge variant="outline" className="bg-green-100 text-green-800">Verified</Badge>;
+      case "unverified":
+        return <Badge variant="outline" className="bg-red-100 text-red-800">Unverified</Badge>;
+      case "pending":
+        return <Badge variant="outline" className="bg-yellow-100 text-yellow-800">Pending</Badge>;
+      default:
+        return <Badge variant="outline">Unknown</Badge>;
+    }
+  };
+
+  const requestSort = (key: string) => {
+    let direction: 'ascending' | 'descending' | null = 'ascending';
+    
+    if (sortConfig.key === key) {
+      if (sortConfig.direction === 'ascending') {
+        direction = 'descending';
+      } else if (sortConfig.direction === 'descending') {
+        direction = null;
+      }
+    }
+    
+    setSortConfig({ key, direction });
+  };
+
   const renderRating = (rating: number) => {
     return <div className="flex items-center">
         <span className="font-medium">{rating.toFixed(1)}</span>
@@ -831,7 +985,9 @@ const DriversPage = () => {
   const renderStatus = (statusId: string) => {
     const statusText = statusDictionary[statusId] || "Unknown Status";
     return <div className="flex items-center">
-      <span>{statusText}</span>
+      <Badge variant="outline" className={cn("capitalize", statusColors[statusId])}>
+        {statusText}
+      </Badge>
     </div>;
   };
 
@@ -907,7 +1063,7 @@ const DriversPage = () => {
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
           </div>
           <ColumnSelector
-            availableColumns={availableColumns}
+            columns={availableColumns}
             visibleColumns={visibleColumns}
             setVisibleColumns={setVisibleColumns}
           />
@@ -962,7 +1118,7 @@ const DriversPage = () => {
 
         <div className="mt-4 flex items-center justify-between">
           <PaginationInfo
-            totalItems={totalItems}
+            total={totalItems}
             pageSize={pageSize}
             currentPage={currentPage}
           />
@@ -1003,8 +1159,8 @@ const DriversPage = () => {
             </Pagination>
             
             <PaginationSize
-              options={pageSizeOptions}
-              value={pageSize}
+              sizes={pageSizeOptions}
+              pageSize={pageSize}
               onChange={handlePageSizeChange}
             />
           </div>
@@ -1013,9 +1169,10 @@ const DriversPage = () => {
       
       {chatOpen && selectedCourier && (
         <CourierChat 
-          isOpen={chatOpen} 
+          open={chatOpen} 
           onClose={handleChatClose} 
-          courier={selectedCourier}
+          courierName={selectedCourier}
+          hasUnreadMessages={false} 
         />
       )}
     </Layout>
