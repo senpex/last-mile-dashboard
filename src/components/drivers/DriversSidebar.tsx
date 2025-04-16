@@ -8,6 +8,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { DeliveryStatus } from "@/types/delivery";
 import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
+import { Badge } from "@/components/ui/badge";
 
 interface DriversSidebarProps {
   open: boolean;
@@ -77,6 +78,18 @@ export function DriversSidebar({
     setSelectedZipcodes([]);
   };
 
+  const getStatusCount = (status: DeliveryStatus) => {
+    return allDeliveryStatuses.filter(s => s === status).length;
+  };
+
+  const getZipcodeCount = (zipcode: string) => {
+    return allZipcodes.filter(z => z === zipcode).length;
+  };
+
+  const getTransportCount = (transportId: string) => {
+    return transportTypes.filter(t => t.id === transportId).length;
+  };
+
   const filteredDeliveryStatuses = allDeliveryStatuses.filter(status => 
     !["Picking Up", "In Transit", "Arrived For Pickup", "Dropoff Complete", 
       "Scheduled Order", "Canceled By Customer", "Cancelled By Admin"].includes(status) &&
@@ -120,9 +133,10 @@ export function DriversSidebar({
                         />
                         <label
                           htmlFor={`status-${status}`}
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between"
                         >
-                          {status}
+                          <span>{status}</span>
+                          <Badge variant="outline" className="ml-auto">{getStatusCount(status)}</Badge>
                         </label>
                       </div>
                     ))}
@@ -154,16 +168,19 @@ export function DriversSidebar({
                         />
                         <label
                           htmlFor={`transport-${transport.id}`}
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between"
                         >
-                          {transport.icon && (
-                            <TransportIcon 
-                              transportType={transport.icon as TransportType} 
-                              size={16} 
-                              className="shrink-0"
-                            />
-                          )}
-                          {transport.value}
+                          <span className="flex items-center gap-2">
+                            {transport.icon && (
+                              <TransportIcon 
+                                transportType={transport.icon as TransportType} 
+                                size={16} 
+                                className="shrink-0"
+                              />
+                            )}
+                            {transport.value}
+                          </span>
+                          <Badge variant="outline" className="ml-auto shrink-0">{getTransportCount(transport.id)}</Badge>
                         </label>
                       </div>
                     ))}
@@ -195,9 +212,10 @@ export function DriversSidebar({
                         />
                         <label
                           htmlFor={`zipcode-${zipcode}`}
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between"
                         >
-                          {zipcode}
+                          <span>{zipcode}</span>
+                          <Badge variant="outline" className="ml-auto">{getZipcodeCount(zipcode)}</Badge>
                         </label>
                       </div>
                     ))}
