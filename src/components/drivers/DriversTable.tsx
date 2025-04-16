@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -141,7 +140,6 @@ export const DriversTable = ({
   };
 
   const getSortableColumnIds = () => {
-    // Define which columns are sortable
     const sortableColumns = ["id", "name", "email", "phone", "zipcode", "rating", "status"];
     return sortableColumns;
   };
@@ -184,12 +182,11 @@ export const DriversTable = ({
                       <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
                     </div>
                     <span className="truncate">{column.label}</span>
-                    {sortable && isActive && (
-                      direction === 'ascending' 
-                        ? <ChevronUp className="h-4 w-4 text-[#ea384c]" />
-                        : direction === 'descending'
-                        ? <ChevronDown className="h-4 w-4 text-[#ea384c]" />
-                        : null
+                    {sortable && isActive && direction === 'ascending' && (
+                      <ChevronUp className="h-4 w-4 text-[#ea384c]" />
+                    )}
+                    {sortable && isActive && direction === 'descending' && (
+                      <ChevronDown className="h-4 w-4 text-[#ea384c]" />
                     )}
                   </div>
                 </TableHead>
