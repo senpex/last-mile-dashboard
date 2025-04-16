@@ -43,7 +43,7 @@ export function DriversFilters({
 }: DriversFiltersProps) {
   return (
     <div className="px-4 py-6 flex-shrink-0 border-b">
-      <div className="flex flex-col space-y-3">  {/* Reduced from space-y-2 to space-y-3 to split the difference */}
+      <div className="flex flex-col space-y-3">
         <div className="flex justify-start">
           <h1 className="text-2xl font-semibold text-foreground">Drivers Management</h1>
         </div>
@@ -70,14 +70,19 @@ export function DriversFilters({
           
           <div className="flex items-center gap-2">
             <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search drivers..."
-                className="pl-8 h-9 w-[240px]"
-                value={searchTerm}
-                onChange={(e) => onSearchChange(e.target.value)}
-              />
+              <span className="block text-sm text-muted-foreground mb-1">
+                All times are displayed using {timezone.replace('_', ' ')} timezone
+              </span>
+              <div className="relative">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder="Search drivers..."
+                  className="pl-8 h-9 w-[240px]"
+                  value={searchTerm}
+                  onChange={(e) => onSearchChange(e.target.value)}
+                />
+              </div>
             </div>
             
             <TimezonePicker 
@@ -101,10 +106,11 @@ export function DriversFilters({
               className="w-auto"
             >
                 
-              </Tabs>
+            </Tabs>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
