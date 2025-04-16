@@ -1,68 +1,57 @@
-import React, { useState, useEffect } from 'react';
+
+import React from 'react';
 import Layout from "@/components/layout/Layout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus, Search, MessageCircle, ChevronDown, Check, X, Clock, Pencil, FileText, Filter } from "lucide-react";
-import { getDictionary } from "@/lib/storage";
-import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
-import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
+import { GripVertical, Plus, Search, MessageCircle, Filter } from "lucide-react";
+import TransportIcon from "@/components/icons/TransportIcon";
+import ColumnSelector from "@/components/table/ColumnSelector";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { toast } from "sonner";
 import { UsersTableContainer } from "@/components/ui/users-table-container";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis, PaginationInfo, PaginationSize } from "@/components/ui/pagination";
 import CourierChat from '@/components/chat/CourierChat';
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
-import { DeliveryFilters } from '@/components/deliveries/DeliveryFilters';
-
-type StripeStatus = 'verified' | 'unverified' | 'pending';
-
-const getRandomPhone = (): string => {
-  const areaCode = Math.floor(Math.random() * 900) + 100;
-  const prefix = Math.floor(Math.random() * 900) + 100;
-  const lineNumber = Math.floor(Math.random() * 9000) + 1000;
-  return `(${areaCode}) ${prefix}-${lineNumber}`;
-};
-
-const getRandomZipcode = (): string => {
-  return String(Math.floor(Math.random() * 90000) + 10000);
-};
-
-const generateRandomTransports = (): string[] => {
-  const transportIds = ['1', '2', '3', '4', '5', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
-  const count = Math.floor(Math.random() * 3) + 1;
-  const result: string[] = [];
-  for (let i = 0; i < count; i++) {
-    const randomIndex = Math.floor(Math.random() * transportIds.length);
-    const transportId = transportIds[randomIndex];
-    if (!result.includes(transportId)) {
-      result.push(transportId);
-    }
-  }
-  return result;
-};
-
-const generateRandomRating = (): number => {
-  return Number((Math.random() * 2 + 3).toFixed(1));
-};
-
-const generateRandomHireStatus = (): string => {
-  const hireStatuses = ['hired', 'left_vm', 'contact_again', 'not_interested', 'blacklist', 'out_of_service'];
-  const randomIndex = Math.floor(Math.random() * hireStatuses.length);
-  return hireStatuses[randomIndex];
-};
-
-const generateRandomStripeStatus = (): StripeStatus => {
-  const statuses: StripeStatus[] = ['verified', 'unverified', 'pending'];
-  const randomIndex = Math.floor(Math.random() * 3);
-  return statuses[randomIndex];
-};
+import { useDriversTable } from '@/hooks/useDriversTable';
 
 const DriversPage = () => {
-  // ... rest of the code remains unchanged until the div with className={`flex h-full py-4 ${isFilterSidebarOpen ? 'pl-0' : ''}`}
+  const {
+    currentItems,
+    totalItems,
+    totalPages,
+    pageSize,
+    currentPage,
+    pageSizeOptions,
+    handlePageChange,
+    handlePageSizeChange,
+    getPageNumbers,
+    
+    searchTerm,
+    setSearchTerm,
+    isFilterSidebarOpen,
+    handleToggleFilterSidebar,
+    
+    statusDictionary,
+    hireStatusDictionary,
+    transportTypes,
+    
+    availableColumns,
+    visibleColumns,
+    setVisibleColumns,
+    sortedColumns,
+    dragOverColumn,
+    handleDragStart,
+    handleDragOver,
+    handleDrop,
+    handleDragEnd,
+    
+    sortConfig,
+    requestSort,
+    
+    chatOpen,
+    selectedCourier,
+    handleChatClose,
+    
+    renderCellContent
+  } = useDriversTable();
 
   return <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
@@ -106,7 +95,7 @@ const DriversPage = () => {
                             {['online', 'offline', 'busy'].map(status => <div key={status} className="flex items-center">
                                 <input type="checkbox" id={`status-${status}`} className="h-4 w-4 rounded border-gray-300 mr-2" />
                                 <label htmlFor={`status-${status}`} className="text-sm">
-                                  {statusDictionary[status] || status}
+                                  {statusDictionary?.[status] || status}
                                 </label>
                               </div>)}
                           </div>
@@ -115,10 +104,10 @@ const DriversPage = () => {
                         <div>
                           <h4 className="text-sm font-medium mb-2">Hire Status</h4>
                           <div className="space-y-2">
-                            {Object.keys(hireStatusDictionary).map(status => <div key={status} className="flex items-center">
-                                <input type="checkbox" id={`hire-status-${status}`} className="h-4 w-4 rounded border-gray-300 mr-2" />
-                                <label htmlFor={`hire-status-${status}`} className="text-sm">
-                                  {hireStatusDictionary[status]}
+                            {Object.entries(hireStatusDictionary || {}).map(([id, label]) => <div key={id} className="flex items-center">
+                                <input type="checkbox" id={`hire-status-${id}`} className="h-4 w-4 rounded border-gray-300 mr-2" />
+                                <label htmlFor={`hire-status-${id}`} className="text-sm">
+                                  {label}
                                 </label>
                               </div>)}
                           </div>
@@ -127,10 +116,10 @@ const DriversPage = () => {
                         <div>
                           <h4 className="text-sm font-medium mb-2">Transport Type</h4>
                           <div className="space-y-2">
-                            {Object.entries(transportTypes).map(([id, name]) => <div key={id} className="flex items-center">
+                            {Object.entries(transportTypes || {}).map(([id, name]) => <div key={id} className="flex items-center">
                                 <input type="checkbox" id={`transport-${id}`} className="h-4 w-4 rounded border-gray-300 mr-2" />
                                 <label htmlFor={`transport-${id}`} className="text-sm flex items-center gap-1.5">
-                                  <TransportIcon transportType={id as TransportType} size={12} className="h-[12px] w-[12px]" />
+                                  <TransportIcon transportType={id} size={12} className="h-[12px] w-[12px]" />
                                   {name}
                                 </label>
                               </div>)}
