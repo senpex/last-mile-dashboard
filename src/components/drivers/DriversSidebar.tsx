@@ -38,11 +38,18 @@ export function DriversSidebar({
   const [zipcodeSearchTerm, setZipcodeSearchTerm] = useState("");
   const [hireStatusSearchTerm, setHireStatusSearchTerm] = useState("");
   const [selectedHireStatuses, setSelectedHireStatuses] = useState<string[]>([]);
+  const [hireStatusOptions, setHireStatusOptions] = useState<{ id: string; value: string; description?: string }[]>([]);
 
   useEffect(() => {
     const transportDict = getDictionary("2");
+    const hireStatusDict = getDictionary("1455");
+    
     if (transportDict) {
       setTransportTypes(transportDict.items);
+    }
+    
+    if (hireStatusDict) {
+      setHireStatusOptions(hireStatusDict.items);
     }
   }, []);
 
@@ -125,7 +132,7 @@ export function DriversSidebar({
     return Math.floor(Math.random() * 20) + 1;
   };
 
-  const filteredHireStatuses = hireStatuses.filter(status =>
+  const filteredHireStatuses = hireStatusOptions.filter(status =>
     status.value.toLowerCase().includes(hireStatusSearchTerm.toLowerCase())
   );
 
@@ -193,6 +200,7 @@ export function DriversSidebar({
                       <label
                         htmlFor={`hire-status-${status.id}`}
                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between"
+                        title={status.description || ''}
                       >
                         <span>{status.value}</span>
                         <Badge variant="outline" className="ml-auto">{getHireStatusCount(status.id)}</Badge>
