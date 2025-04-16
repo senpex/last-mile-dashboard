@@ -550,6 +550,8 @@ const DriversPage = () => {
   const [timezone, setTimezone] = useState<string>("America/New_York");
   const [selectedStatuses, setSelectedStatuses] = useState<DeliveryStatus[]>([]);
   const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
+  const [selectedCities, setSelectedCities] = useState<string[]>([]);
+  const [selectedStates, setSelectedStates] = useState<string[]>([]);
 
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => prevDrivers.map(driver => driver.id === driverId ? {
@@ -874,15 +876,19 @@ const DriversPage = () => {
       </div>;
   };
 
-  const allZipcodes = React.useMemo(() => {
-    const uniqueZipcodes = new Set<string>();
+  const allCities = React.useMemo(() => {
+    const cities = new Set<string>();
     drivers.forEach(driver => {
-      if (driver.zipcode) {
-        uniqueZipcodes.add(driver.zipcode);
-      }
+      const city = `City ${driver.id % 10}`;
+      cities.add(city);
     });
-    return Array.from(uniqueZipcodes).sort();
+    return Array.from(cities).sort();
   }, [drivers]);
+
+  const allStates = React.useMemo(() => {
+    const states = new Set<string>(["CA", "NY", "TX", "FL", "IL", "WA", "AZ", "CO", "GA", "NC"]);
+    return Array.from(states).sort();
+  }, []);
 
   return (
     <Layout showFooter={false}>
@@ -913,6 +919,12 @@ const DriversPage = () => {
             allZipcodes={allZipcodes}
             selectedZipcodes={selectedZipcodes}
             setSelectedZipcodes={setSelectedZipcodes}
+            allCities={allCities}
+            selectedCities={selectedCities}
+            setSelectedCities={setSelectedCities}
+            allStates={allStates}
+            selectedStates={selectedStates}
+            setSelectedStates={setSelectedStates}
           />
 
           <div className={`flex-1 transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-2"}`}>

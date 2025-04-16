@@ -163,6 +163,10 @@ export function DriversSidebar({
     return Math.floor(Math.random() * 20) + 1;
   };
 
+  const getHireStatusCount = (statusId: string) => {
+    return Math.floor(Math.random() * 15) + 1;
+  };
+
   const filteredDeliveryStatuses = allDeliveryStatuses.filter(status => 
     !["Picking Up", "In Transit", "Arrived For Pickup", "Dropoff Complete", 
       "Scheduled Order", "Canceled By Customer", "Cancelled By Admin"].includes(status) &&
