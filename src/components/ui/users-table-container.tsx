@@ -20,7 +20,8 @@ const UsersTableContainer = React.forwardRef<
     className={cn(
       "relative border rounded-md overflow-hidden flex-shrink-0 w-full sticky top-0",
       "transition-all duration-300 shadow-sm", 
-      "px-0", // Changed from px-[5px] to px-0 to remove left padding
+      "px-0", 
+      "mt-[10px]", // Added top margin
       height, 
       className
     )} 
