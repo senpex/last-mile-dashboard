@@ -827,4 +827,123 @@ const DriversPage = () => {
 
   const renderHireStatus = (hireStatusId: string, driverId: number) => {
     const hireStatusText = hireStatusDictionary[hireStatusId] || `Unknown (${hireStatusId})`;
-    const hireStatusColorClass = hireStatusColors[hireStatusId] || 'bg-gray
+    const hireStatusColorClass = hireStatusColors[hireStatusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
+    
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="sm" className={`${hireStatusColorClass} rounded-full px-2.5 py-0.5 h-auto text-xs font-medium flex items-center gap-1`}>
+            {hireStatusText}
+            <ChevronDown className="h-3 w-3 opacity-50" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          {Object.keys(hireStatusDictionary).map(statusId => (
+            <DropdownMenuItem
+              key={statusId}
+              onClick={() => updateDriverHireStatus(driverId, statusId)}
+              className="flex items-center justify-between"
+            >
+              <span>{hireStatusDictionary[statusId]}</span>
+              {hireStatusId === statusId && <Check className="h-4 w-4 ml-2" />}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  };
+
+  const renderStripeStatus = (status: 'verified' | 'unverified' | 'pending') => {
+    let icon = null;
+    let statusText = status;
+    let colorClass = '';
+    
+    switch (status) {
+      case 'verified':
+        icon = <Check className="h-4 w-4 text-green-500" />;
+        colorClass = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+        break;
+      case 'unverified':
+        icon = <X className="h-4 w-4 text-red-500" />;
+        colorClass = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+        break;
+      case 'pending':
+        icon = <Clock className="h-4 w-4 text-yellow-500" />;
+        colorClass = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+        break;
+    }
+    
+    return (
+      <div className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${colorClass}`}>
+        {icon}
+        <span className="capitalize">{statusText}</span>
+      </div>
+    );
+  };
+
+  return (
+    <Layout>
+      <div className="flex flex-col h-full overflow-hidden ml-[10px]">
+        <DriversFilters 
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          dateRange={dateRange}
+          onDateRangeChange={setDateRange}
+          timezone={timezone}
+          onTimezoneChange={setTimezone}
+          availableColumns={availableColumns}
+          visibleColumns={visibleColumns}
+          onVisibleColumnsChange={setVisibleColumns}
+          activeView={activeView}
+          onActiveViewChange={setActiveView}
+          onToggleFilterSidebar={handleToggleFilterSidebar}
+          isFilterSidebarOpen={isFilterSidebarOpen}
+        />
+        
+        <div className="flex flex-1 overflow-hidden">
+          <DriversTable
+            currentItems={currentItems}
+            sortedColumns={sortedColumns}
+            availableColumns={availableColumns}
+            transportTypes={transportTypes}
+            statusDictionary={statusDictionary}
+            statusColors={statusColors}
+            editingNotes={editingNotes}
+            draggedColumn={draggedColumn}
+            dragOverColumn={dragOverColumn}
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            onDragEnd={handleDragEnd}
+            renderRating={renderRating}
+            renderStatus={renderStatus}
+            renderHireStatus={renderHireStatus}
+            renderStripeStatus={renderStripeStatus}
+            handleNotesClick={handleNotesClick}
+            handleNotesChange={handleNotesChange}
+            saveNotes={saveNotes}
+          />
+        </div>
+        
+        <DriversPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          pageSize={pageSize}
+          pageSizeOptions={pageSizeOptions}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+        />
+      </div>
+      
+      {chatOpen && selectedCourier && (
+        <CourierChat
+          courierName={selectedCourier}
+          onClose={handleChatClose}
+        />
+      )}
+    </Layout>
+  );
+};
+
+export default DriversPage;
