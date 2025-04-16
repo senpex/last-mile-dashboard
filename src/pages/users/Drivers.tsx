@@ -17,6 +17,20 @@ import { DeliveryStatus } from "@/types/delivery";
 
 type StripeStatus = 'verified' | 'unverified' | 'pending';
 
+// Define all driver statuses
+const allDriverStatuses: DeliveryStatus[] = [
+  "Online",
+  "Offline",
+  "Busy",
+  "Picking Up",
+  "In Transit",
+  "Arrived For Pickup",
+  "Dropoff Complete",
+  "Scheduled Order",
+  "Canceled By Customer",
+  "Cancelled By Admin"
+];
+
 const getRandomPhone = (): string => {
   const areaCode = Math.floor(Math.random() * 900) + 100;
   const prefix = Math.floor(Math.random() * 900) + 100;
