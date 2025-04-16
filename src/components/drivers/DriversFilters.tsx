@@ -8,7 +8,6 @@ import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 interface DriversFiltersProps {
   searchTerm: string;
   onSearchChange: (value: string) => void;
@@ -24,7 +23,6 @@ interface DriversFiltersProps {
   onToggleFilterSidebar: () => void;
   isFilterSidebarOpen: boolean;
 }
-
 export function DriversFilters({
   searchTerm,
   onSearchChange,
@@ -42,7 +40,7 @@ export function DriversFilters({
 }: DriversFiltersProps) {
   return <div className="px-4 py-4 flex-shrink-0 border-b space-y-0.5 pb-4">
       <div className="flex flex-col space-y-1">
-        <div className="flex justify-between items-start">
+        <div className="flex justify-between items-start py-[10px]">
           <h1 className="text-2xl font-semibold text-foreground text-left">Drivers Management</h1>
           <span className="text-sm text-muted-foreground text-right">
             All times are displayed using {timezone.replace('_', ' ')} timezone
