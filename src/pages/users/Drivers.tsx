@@ -887,43 +887,24 @@ const DriversPage = () => {
           isFilterSidebarOpen={isFilterSidebarOpen} 
         />
 
-        <div className="flex-1 overflow-hidden relative">
+        <div className="flex-1 overflow-hidden">
           <div className="space-y-0 w-full relative h-full">
-            <div 
-              style={{
-                position: 'fixed',
-                left: isFilterSidebarOpen ? '0' : '-300px',
-                top: '64px',
-                bottom: '0',
-                width: '300px',
-                overflowY: 'auto',
-                transition: 'left 0.3s ease-in-out',
-                zIndex: 40,
-                backgroundColor: 'var(--background)',
-                borderRight: '1px solid var(--border)'
-              }} 
-              className="h-[calc(100vh-64px)]"
-            >
-              <div className="p-4">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-medium">Filter Sidebar</h2>
-                  <button onClick={handleToggleFilterSidebar} className="text-gray-500 hover:text-gray-700">
-                    <ChevronDown className="h-4 w-4" />
-                  </button>
-                </div>
-                <div className="mt-4">
-                  {/* Filter sidebar content */}
-                </div>
-              </div>
+            <div style={{
+              width: "300px",
+              transform: isFilterSidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              left: 0,
+              height: '100%',
+              marginTop: 0
+            }} className="absolute left-0 h-full bg-background border-r transition-all duration-300 ease-in-out z-10 px-0">
+              
             </div>
 
-            <div 
-              style={{
-                marginLeft: isFilterSidebarOpen ? '310px' : '10px',
-                transition: 'margin-left 0.3s ease-in-out',
-                width: isFilterSidebarOpen ? 'calc(100% - 310px)' : 'calc(100% - 10px)'
-              }}
-            >
+            <div className="h-full transition-all duration-300 ease-in-out" style={{
+            marginLeft: isFilterSidebarOpen ? "310px" : "10px"
+          }}>
               <DriversTable 
                 currentItems={currentItems} 
                 sortedColumns={sortedColumns} 
@@ -960,14 +941,12 @@ const DriversPage = () => {
           onPageSizeChange={handlePageSizeChange} 
         />
         
-        {chatOpen && selectedCourier && (
-          <CourierChat 
-            open={chatOpen} 
-            courierName={selectedCourier} 
-            onClose={handleChatClose} 
-            hasUnreadMessages={false} 
-          />
-        )}
+        {chatOpen && selectedCourier && <CourierChat 
+          open={chatOpen} 
+          courierName={selectedCourier} 
+          onClose={handleChatClose} 
+          hasUnreadMessages={false} 
+        />}
       </div>
     </Layout>;
 };
