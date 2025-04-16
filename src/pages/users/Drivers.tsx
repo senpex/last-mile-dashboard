@@ -1,8 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { DriversTable } from '@/components/drivers/DriversTable';
 import { DriversPagination } from '@/components/drivers/DriversPagination';
 import { DriversFilters } from "@/components/drivers/DriversFilters";
+import { DriversSidebar } from "@/components/drivers/DriversSidebar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Check, X, Clock, ChevronDown } from "lucide-react";
