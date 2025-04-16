@@ -890,6 +890,16 @@ const DriversPage = () => {
     return Array.from(states).sort();
   }, []);
 
+  const allZipcodes = React.useMemo(() => {
+    const uniqueZipcodes = new Set<string>();
+    drivers.forEach(driver => {
+      if (driver.zipcode) {
+        uniqueZipcodes.add(driver.zipcode);
+      }
+    });
+    return Array.from(uniqueZipcodes).sort();
+  }, [drivers]);
+
   return (
     <Layout showFooter={false}>
       <div className="flex flex-col h-screen">
