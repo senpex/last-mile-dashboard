@@ -531,7 +531,7 @@ const DriversPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const pageSizeOptions = [5, 10, 20, 30, 50];
-	const [rowsPerPage, setRowsPerPage] = useState<string>("10");
+  const [rowsPerPage, setRowsPerPage] = useState<string>("10");
   const totalItems = filteredDrivers.length;
   const totalPages = Math.ceil(totalItems / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
@@ -582,12 +582,7 @@ const DriversPage = () => {
 
   useEffect(() => {
     if (searchTerm.length >= 3) {
-      const filtered = drivers.filter(driver =>
-        driver.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        driver.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        driver.phone.includes(searchTerm) ||
-        driver.id.toString().includes(searchTerm)
-      );
+      const filtered = drivers.filter(driver => driver.name.toLowerCase().includes(searchTerm.toLowerCase()) || driver.email.toLowerCase().includes(searchTerm.toLowerCase()) || driver.phone.includes(searchTerm) || driver.id.toString().includes(searchTerm));
       setFilteredDrivers(filtered);
     } else {
       setFilteredDrivers(drivers);
@@ -616,7 +611,6 @@ const DriversPage = () => {
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
-
     if (totalPages <= maxVisiblePages) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
@@ -625,30 +619,23 @@ const DriversPage = () => {
       pages.push(1);
       let start = Math.max(2, currentPage - 1);
       let end = Math.min(totalPages - 1, currentPage + 1);
-
       if (currentPage <= 3) {
         end = Math.min(4, totalPages - 1);
       }
-
       if (currentPage >= totalPages - 2) {
         start = Math.max(totalPages - 3, 2);
       }
-
       if (start > 2) {
         pages.push(-1); // First ellipsis
       }
-
       for (let i = start; i <= end; i++) {
         pages.push(i);
       }
-
       if (end < totalPages - 1) {
         pages.push(-2); // Second ellipsis
       }
-
       pages.push(totalPages);
     }
-
     return pages;
   };
 
@@ -686,14 +673,16 @@ const DriversPage = () => {
     const transportDict = getDictionary("2");
     if (transportDict && transportDict.items.length > 0) {
       console.log("Transport Dictionary Items:", transportDict.items);
-      const types: { [key: string]: string } = {};
-      const icons: { [key: string]: string | undefined } = {};
-
+      const types: {
+        [key: string]: string;
+      } = {};
+      const icons: {
+        [key: string]: string | undefined;
+      } = {};
       transportDict.items.forEach(item => {
         types[item.id] = item.value;
         icons[item.id] = item.icon;
       });
-
       setTransportTypes(types);
       setTransportIcons(icons);
       console.log("Loaded transport types:", types);
@@ -708,9 +697,12 @@ const DriversPage = () => {
     const statusDict = getDictionary("6");
     if (statusDict && statusDict.items.length > 0) {
       console.log("Status Dictionary Items:", statusDict.items);
-      const statuses: { [key: string]: string } = {};
-      const colors: { [key: string]: string } = {};
-
+      const statuses: {
+        [key: string]: string;
+      } = {};
+      const colors: {
+        [key: string]: string;
+      } = {};
       statusDict.items.forEach(item => {
         statuses[item.id] = item.value;
         if (item.value.toLowerCase().includes('online')) {
@@ -723,7 +715,6 @@ const DriversPage = () => {
           colors[item.id] = 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
         }
       });
-
       setStatusDictionary(statuses);
       setStatusColors(colors);
       console.log("Loaded status types:", statuses);
@@ -736,9 +727,12 @@ const DriversPage = () => {
     const hireStatusDict = getDictionary("1455");
     if (hireStatusDict && hireStatusDict.items.length > 0) {
       console.log("Hire Status Dictionary Items:", hireStatusDict.items);
-      const statuses: { [key: string]: string } = {};
-      const colors: { [key: string]: string } = {};
-
+      const statuses: {
+        [key: string]: string;
+      } = {};
+      const colors: {
+        [key: string]: string;
+      } = {};
       hireStatusDict.items.forEach(item => {
         statuses[item.id] = item.value;
         if (item.id === 'hired') {
@@ -755,7 +749,6 @@ const DriversPage = () => {
           colors[item.id] = 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300';
         }
       });
-
       setHireStatusDictionary(statuses);
       setHireStatusColors(colors);
       console.log("Loaded hire status types:", statuses);
@@ -768,11 +761,9 @@ const DriversPage = () => {
     const transportTypes: TransportType[] = ['helper', 'car', 'suv', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
     const randomIndex = Math.floor(Math.random() * transportTypes.length);
     const randomType = transportTypes[randomIndex];
-    return (
-      <div className="flex items-center justify-center">
+    return <div className="flex items-center justify-center">
         <TransportIcon transportType={randomType} size={14} className="h-[14px] w-[14px]" />
-      </div>
-    );
+      </div>;
   };
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
@@ -797,17 +788,14 @@ const DriversPage = () => {
       setDragOverColumn(null);
       return;
     }
-
     const updatedOrder = [...columnOrder];
     const draggedIndex = updatedOrder.indexOf(draggedColumn);
     const targetIndex = updatedOrder.indexOf(targetColumnId);
-
     if (draggedIndex !== -1 && targetIndex !== -1) {
       updatedOrder.splice(draggedIndex, 1);
       updatedOrder.splice(targetIndex, 0, draggedColumn);
       setColumnOrder(updatedOrder);
     }
-
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
@@ -818,35 +806,149 @@ const DriversPage = () => {
   };
 
   const getSortedVisibleColumns = () => {
-    return visibleColumns
-      .filter(column => columnOrder.includes(column))
-      .sort((a, b) => columnOrder.indexOf(a) - columnOrder.indexOf(b));
+    return visibleColumns.filter(column => columnOrder.includes(column)).sort((a, b) => columnOrder.indexOf(a) - columnOrder.indexOf(b));
   };
 
   const sortedColumns = getSortedVisibleColumns();
 
   const renderRating = (rating: number) => {
-    return (
-      <div className="flex items-center">
+    return <div className="flex items-center">
         <span className="font-medium">{rating.toFixed(1)}</span>
-      </div>
-    );
+      </div>;
   };
 
   const renderStatus = (statusId: string) => {
     const statusText = statusDictionary[statusId] || `Unknown (${statusId})`;
     const statusColorClass = statusColors[statusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
-
-    return (
-      <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColorClass}`}>
+    return <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColorClass}`}>
         {statusText}
-      </div>
-    );
+      </div>;
   };
 
   const renderHireStatus = (hireStatusId: string, driverId: number) => {
     const hireStatusText = hireStatusDictionary[hireStatusId] || `Unknown (${hireStatusId})`;
-
-    return (
-      <DropdownMenu>
+    return <DropdownMenu>
         <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="sm" className="h-8 w-auto">
+            {hireStatusText}
+            <ChevronDown className="ml-1 h-4 w-4 opacity-70" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="w-[160px]">
+          {Object.entries(hireStatusDictionary).map(([key, value]) => <DropdownMenuItem key={key} onClick={() => updateDriverHireStatus(driverId, key)} className={hireStatusId === key ? "bg-muted" : ""}>
+              {value}
+            </DropdownMenuItem>)}
+        </DropdownMenuContent>
+      </DropdownMenu>;
+  };
+
+  const renderStripeStatus = (status: 'verified' | 'unverified' | 'pending') => {
+    let bgColor = '';
+    let icon = null;
+    let text = '';
+    switch (status) {
+      case 'verified':
+        bgColor = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+        icon = <Check className="h-3.5 w-3.5 mr-1" />;
+        text = 'Verified';
+        break;
+      case 'unverified':
+        bgColor = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+        icon = <X className="h-3.5 w-3.5 mr-1" />;
+        text = 'Unverified';
+        break;
+      case 'pending':
+        bgColor = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+        icon = <Clock className="h-3.5 w-3.5 mr-1" />;
+        text = 'Pending';
+        break;
+    }
+    return <div className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${bgColor}`}>
+        {icon}
+        {text}
+      </div>;
+  };
+
+  return <Layout showFooter={false}>
+      <div className="flex flex-col h-screen">
+        <DriversFilters 
+          searchTerm={searchTerm} 
+          onSearchChange={setSearchTerm} 
+          dateRange={dateRange} 
+          onDateRangeChange={setDateRange} 
+          timezone={timezone} 
+          onTimezoneChange={setTimezone} 
+          availableColumns={availableColumns} 
+          visibleColumns={visibleColumns} 
+          onVisibleColumnsChange={setVisibleColumns} 
+          activeView={activeView} 
+          onActiveViewChange={setActiveView} 
+          onToggleFilterSidebar={handleToggleFilterSidebar} 
+          isFilterSidebarOpen={isFilterSidebarOpen} 
+        />
+
+        <div className="flex-1 overflow-hidden">
+          <div className="space-y-0 w-full relative h-full">
+            <div style={{
+              width: "300px",
+              transform: isFilterSidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              left: 0,
+              height: '100%',
+              marginTop: 0
+            }} className="absolute left-0 h-full bg-background border-r transition-all duration-300 ease-in-out z-10 px-0">
+              
+            </div>
+
+            <div className="h-full transition-all duration-300 ease-in-out" style={{
+            marginLeft: isFilterSidebarOpen ? "310px" : "10px"
+          }}>
+              <DriversTable 
+                currentItems={currentItems} 
+                sortedColumns={sortedColumns} 
+                availableColumns={availableColumns} 
+                transportTypes={transportTypes} 
+                statusDictionary={statusDictionary} 
+                statusColors={statusColors} 
+                editingNotes={editingNotes} 
+                draggedColumn={draggedColumn} 
+                dragOverColumn={dragOverColumn} 
+                onDragStart={handleDragStart} 
+                onDragOver={handleDragOver} 
+                onDrop={handleDrop} 
+                onDragEnd={handleDragEnd} 
+                renderRating={renderRating} 
+                renderStatus={renderStatus} 
+                renderHireStatus={renderHireStatus} 
+                renderStripeStatus={renderStripeStatus} 
+                handleNotesClick={handleNotesClick} 
+                handleNotesChange={handleNotesChange} 
+                saveNotes={saveNotes} 
+              />
+            </div>
+          </div>
+        </div>
+
+        <DriversPagination 
+          currentPage={currentPage} 
+          totalPages={totalPages} 
+          totalItems={totalItems} 
+          pageSize={pageSize} 
+          pageSizeOptions={pageSizeOptions} 
+          onPageChange={handlePageChange} 
+          onPageSizeChange={handlePageSizeChange} 
+        />
+        
+        {chatOpen && selectedCourier && <CourierChat 
+          open={chatOpen} 
+          courierName={selectedCourier} 
+          onClose={handleChatClose} 
+          hasUnreadMessages={false} 
+        />}
+      </div>
+    </Layout>;
+};
+
+export default DriversPage;
