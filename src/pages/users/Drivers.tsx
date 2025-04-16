@@ -1019,7 +1019,7 @@ const DriversPage = () => {
               </div>
             </div>
 
-            <div className="border rounded-md mx-6">
+            <div className="border rounded-md mx-6 border-b-0">
               <div className="flex h-full py-4">
                 {isFilterSidebarOpen && <div className="min-w-[240px] max-w-[240px] border-r bg-background mr-5">
                     <div className="p-4">
@@ -1098,7 +1098,7 @@ const DriversPage = () => {
           </div>
         </div>
 
-        <div className="border-t mt-auto w-full">
+        <div className="border-t mt-0 w-full">
           <div className="px-6 py-4 flex justify-between items-center">
             <PaginationInfo total={totalItems} pageSize={pageSize} currentPage={currentPage} />
             
