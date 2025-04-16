@@ -17,7 +17,6 @@ import { DeliveryStatus } from "@/types/delivery";
 
 type StripeStatus = 'verified' | 'unverified' | 'pending';
 
-// Define all driver statuses
 const allDriverStatuses: DeliveryStatus[] = [
   "Online",
   "Offline",
@@ -569,6 +568,7 @@ const DriversPage = () => {
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
   const [timezone, setTimezone] = useState<string>("America/New_York");
   const [selectedStatuses, setSelectedStatuses] = useState<DeliveryStatus[]>([]);
+  const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
 
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => prevDrivers.map(driver => driver.id === driverId ? {
@@ -886,6 +886,16 @@ const DriversPage = () => {
       </div>;
   };
 
+  const allZipcodes = React.useMemo(() => {
+    const uniqueZipcodes = new Set<string>();
+    drivers.forEach(driver => {
+      if (driver.zipcode) {
+        uniqueZipcodes.add(driver.zipcode);
+      }
+    });
+    return Array.from(uniqueZipcodes).sort();
+  }, [drivers]);
+
   return (
     <Layout showFooter={false}>
       <div className="flex flex-col h-screen">
@@ -912,6 +922,9 @@ const DriversPage = () => {
             selectedStatuses={selectedStatuses}
             setSelectedStatuses={setSelectedStatuses}
             allDeliveryStatuses={allDriverStatuses}
+            allZipcodes={allZipcodes}
+            selectedZipcodes={selectedZipcodes}
+            setSelectedZipcodes={setSelectedZipcodes}
           />
 
           <div className={`flex-1 transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-2"}`}>
