@@ -848,8 +848,10 @@ const DriversPage = () => {
             <div style={{
             width: "300px",
             transform: isFilterSidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
-            top: "calc(-1 * var(--header-height, 120px))"
-          }} className="absolute top-[120px] left-0 h-[calc(100%+10px)] bg-background border-r transition-all duration-300 ease-in-out z-10 px-[85px]">
+            top: "var(--header-height, 120px)",
+            bottom: "var(--footer-height, 50px)",
+            position: "fixed",
+          }} className="left-0 bg-background border-r transition-all duration-300 ease-in-out z-10 px-[85px]">
               
             </div>
 
