@@ -72,7 +72,7 @@ export const DriversTable = ({
       case "zipcode":
         return driver.zipcode;
       case "address":
-        return <div className="max-w-[200px] truncate" title={driver.address}>
+        return <div className="max-w-[300px] break-words" title={driver.address}>
             {driver.address || "No address provided"}
           </div>;
       case "transport":
