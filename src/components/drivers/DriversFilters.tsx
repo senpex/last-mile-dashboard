@@ -3,7 +3,7 @@ import React from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Filter, Search, Plus } from "lucide-react";
+import { Filter, Search } from "lucide-react";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
@@ -45,13 +45,7 @@ export function DriversFilters({
     <div className="px-4 py-6 flex-shrink-0 border-b w-[200%] max-w-full">
       <div className="flex flex-col space-y-4">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-semibold">Drivers Management</h1>
-            <Button size="sm" className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 h-7">
-              <Plus className="w-3 h-3" />
-              Add Driver
-            </Button>
-          </div>
+          <h1 className="text-2xl font-semibold">Drivers Management</h1>
           <span className="text-sm text-muted-foreground">
             All times are displayed using {timezone.replace('_', ' ')} timezone
           </span>
