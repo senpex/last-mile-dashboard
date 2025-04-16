@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { DriversTable } from '@/components/drivers/DriversTable';
@@ -889,7 +890,7 @@ const DriversPage = () => {
           isFilterSidebarOpen={isFilterSidebarOpen} 
         />
 
-        <div className="flex flex-1 overflow-hidden relative">
+        <div className="flex flex-1 overflow-hidden relative mt-[10px]">
           <DriversSidebar 
             open={isFilterSidebarOpen}
             onClose={() => setIsFilterSidebarOpen(false)}
