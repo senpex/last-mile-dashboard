@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -48,7 +47,7 @@ export function DriversSidebar({
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="status-filters">
                 <AccordionTrigger className="text-sm font-medium">
-                  Status Filters
+                  Status
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-2 pt-1">
