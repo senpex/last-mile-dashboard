@@ -895,35 +895,67 @@ const DriversPage = () => {
           isFilterSidebarOpen={isFilterSidebarOpen}
         />
 
-        <div 
-          className={`px-0 py-6 flex-1 overflow-auto transition-all duration-300 ease-in-out`}
-          style={{
-            marginLeft: isFilterSidebarOpen ? "300px" : "0",
-          }}
-        >
-          <div className="space-y-4 w-full">
-            <DriversTable 
-              currentItems={currentItems}
-              sortedColumns={sortedColumns}
-              availableColumns={availableColumns}
-              transportTypes={transportTypes}
-              statusDictionary={statusDictionary}
-              statusColors={statusColors}
-              editingNotes={editingNotes}
-              draggedColumn={draggedColumn}
-              dragOverColumn={dragOverColumn}
-              onDragStart={handleDragStart}
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-              onDragEnd={handleDragEnd}
-              renderRating={renderRating}
-              renderStatus={renderStatus}
-              renderHireStatus={renderHireStatus}
-              renderStripeStatus={renderStripeStatus}
-              handleNotesClick={handleNotesClick}
-              handleNotesChange={handleNotesChange}
-              saveNotes={saveNotes}
-            />
+        <div className="px-0 py-6 flex-1 overflow-auto">
+          <div className="space-y-4 w-full relative">
+            {/* Filters panel */}
+            <div 
+              className="absolute top-0 left-0 h-full bg-background border-r transition-all duration-300 ease-in-out z-10"
+              style={{
+                width: "300px",
+                transform: isFilterSidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
+              }}
+            >
+              <div className="p-6 space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Filters</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium">Status</label>
+                      {/* Add status filters */}
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Hire Status</label>
+                      {/* Add hire status filters */}
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Rating</label>
+                      {/* Add rating filters */}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Table container with margin transition */}
+            <div 
+              className="transition-all duration-300 ease-in-out"
+              style={{
+                marginLeft: isFilterSidebarOpen ? "300px" : "0",
+              }}
+            >
+              <DriversTable 
+                currentItems={currentItems}
+                sortedColumns={sortedColumns}
+                availableColumns={availableColumns}
+                transportTypes={transportTypes}
+                statusDictionary={statusDictionary}
+                statusColors={statusColors}
+                editingNotes={editingNotes}
+                draggedColumn={draggedColumn}
+                dragOverColumn={dragOverColumn}
+                onDragStart={handleDragStart}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                onDragEnd={handleDragEnd}
+                renderRating={renderRating}
+                renderStatus={renderStatus}
+                renderHireStatus={renderHireStatus}
+                renderStripeStatus={renderStripeStatus}
+                handleNotesClick={handleNotesClick}
+                handleNotesChange={handleNotesChange}
+                saveNotes={saveNotes}
+              />
+            </div>
           </div>
         </div>
 
