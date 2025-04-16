@@ -8,7 +8,6 @@ import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 interface DriversFiltersProps {
   searchTerm: string;
   onSearchChange: (value: string) => void;
@@ -24,7 +23,6 @@ interface DriversFiltersProps {
   onToggleFilterSidebar: () => void;
   isFilterSidebarOpen: boolean;
 }
-
 export function DriversFilters({
   searchTerm,
   onSearchChange,
@@ -38,10 +36,9 @@ export function DriversFilters({
   activeView,
   onActiveViewChange,
   onToggleFilterSidebar,
-  isFilterSidebarOpen,
+  isFilterSidebarOpen
 }: DriversFiltersProps) {
-  return (
-    <div className="px-4 py-4 flex-shrink-0 border-b space-y-0.5 pb-4">
+  return <div className="px-4 py-4 flex-shrink-0 border-b space-y-0.5 pb-4">
       <div className="flex flex-col space-y-1">
         <div className="flex justify-between items-center mb-3">
           <h1 className="text-2xl font-semibold text-foreground">Drivers Management</h1>
@@ -52,19 +49,9 @@ export function DriversFilters({
         
         <div className="flex flex-wrap justify-between items-center gap-4">
           <div className="flex items-center space-x-2">
-            <DateRangePicker 
-              dateRange={dateRange}
-              onDateRangeChange={onDateRangeChange}
-              showStatePicker={false}
-              useButton={false}
-            />
+            <DateRangePicker dateRange={dateRange} onDateRangeChange={onDateRangeChange} showStatePicker={false} useButton={false} />
             
-            <Button 
-              variant={isFilterSidebarOpen ? "default" : "outline"} 
-              className={`flex items-center gap-2 text-sm h-9 ${isFilterSidebarOpen ? 'bg-primary text-primary-foreground' : ''}`}
-              onClick={onToggleFilterSidebar}
-              aria-expanded={isFilterSidebarOpen}
-            >
+            <Button variant={isFilterSidebarOpen ? "default" : "outline"} className={`flex items-center gap-2 text-sm h-9 ${isFilterSidebarOpen ? 'bg-primary text-primary-foreground' : ''}`} onClick={onToggleFilterSidebar} aria-expanded={isFilterSidebarOpen}>
               <Filter className="h-4 w-4" />
               <span>{isFilterSidebarOpen ? 'Hide Filters' : 'Show Filters'}</span>
             </Button>
@@ -73,44 +60,22 @@ export function DriversFilters({
           <div className="flex items-center space-x-2">
             <div className="relative">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search drivers..."
-                className="pl-8 h-9 w-[240px]"
-                value={searchTerm}
-                onChange={(e) => onSearchChange(e.target.value)}
-              />
+              <Input type="search" placeholder="Search drivers..." className="pl-8 h-9 w-[240px]" value={searchTerm} onChange={e => onSearchChange(e.target.value)} />
             </div>
             
-            <TimezonePicker 
-              selectedTimezone={timezone}
-              onTimezoneChange={onTimezoneChange}
-            />
+            <TimezonePicker selectedTimezone={timezone} onTimezoneChange={onTimezoneChange} />
             
-            <ColumnSelector 
-              columns={availableColumns}
-              visibleColumns={visibleColumns}
-              setVisibleColumns={onVisibleColumnsChange}
-            />
+            <ColumnSelector columns={availableColumns} visibleColumns={visibleColumns} setVisibleColumns={onVisibleColumnsChange} />
           </div>
         </div>
         
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Tabs 
-              value={activeView} 
-              onValueChange={onActiveViewChange} 
-              className="w-auto"
-            >
-              <TabsList>
-                <TabsTrigger value="all">All Drivers</TabsTrigger>
-                <TabsTrigger value="active">Active</TabsTrigger>
-                <TabsTrigger value="inactive">Inactive</TabsTrigger>
-              </TabsList>
+            <Tabs value={activeView} onValueChange={onActiveViewChange} className="w-auto">
+              
             </Tabs>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
