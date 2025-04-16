@@ -874,11 +874,17 @@ const DriversPage = () => {
         <DriversFilters searchTerm={searchTerm} onSearchChange={setSearchTerm} dateRange={dateRange} onDateRangeChange={setDateRange} timezone={timezone} onTimezoneChange={setTimezone} availableColumns={availableColumns} visibleColumns={visibleColumns} onVisibleColumnsChange={setVisibleColumns} activeView={activeView} onActiveViewChange={setActiveView} onToggleFilterSidebar={handleToggleFilterSidebar} isFilterSidebarOpen={isFilterSidebarOpen} />
 
         <div className="flex-1 overflow-hidden">
-          <div className="space-y-4 w-full relative h-full">
+          <div className="space-y-0 w-full relative h-full">
             <div style={{
             width: "300px",
-            transform: isFilterSidebarOpen ? 'translateX(0)' : 'translateX(-100%)'
-          }} className="absolute top-0 left-0 h-full bg-background border-r transition-all duration-300 ease-in-out z-10 px-[85px]">
+            transform: isFilterSidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            height: '100%',
+            marginTop: 0
+          }} className="absolute left-0 h-full bg-background border-r transition-all duration-300 ease-in-out z-10 px-[85px]">
               
             </div>
 
