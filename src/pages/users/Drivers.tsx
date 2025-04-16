@@ -829,4 +829,133 @@ const DriversPage = () => {
     const hireStatusText = hireStatusDictionary[hireStatusId] || `Unknown (${hireStatusId})`;
     return <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant
+          <Button variant="outline" size="sm" className="h-8 w-auto">
+            {hireStatusText}
+            <ChevronDown className="ml-1 h-4 w-4 opacity-70" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="w-[160px]">
+          {Object.entries(hireStatusDictionary).map(([key, value]) => <DropdownMenuItem key={key} onClick={() => updateDriverHireStatus(driverId, key)} className={hireStatusId === key ? "bg-muted" : ""}>
+              {value}
+            </DropdownMenuItem>)}
+        </DropdownMenuContent>
+      </DropdownMenu>;
+  };
+
+  const renderStripeStatus = (status: 'verified' | 'unverified' | 'pending') => {
+    let bgColor = '';
+    let icon = null;
+    let text = '';
+    switch (status) {
+      case 'verified':
+        bgColor = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+        icon = <Check className="h-3.5 w-3.5 mr-1" />;
+        text = 'Verified';
+        break;
+      case 'unverified':
+        bgColor = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+        icon = <X className="h-3.5 w-3.5 mr-1" />;
+        text = 'Unverified';
+        break;
+      case 'pending':
+        bgColor = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+        icon = <Clock className="h-3.5 w-3.5 mr-1" />;
+        text = 'Pending';
+        break;
+    }
+    return <div className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${bgColor}`}>
+        {icon}
+        {text}
+      </div>;
+  };
+
+  return <Layout showFooter={false}>
+      <div className="flex flex-col h-screen">
+        <DriversFilters 
+          searchTerm={searchTerm} 
+          onSearchChange={setSearchTerm} 
+          dateRange={dateRange} 
+          onDateRangeChange={setDateRange} 
+          timezone={timezone} 
+          onTimezoneChange={setTimezone} 
+          availableColumns={availableColumns} 
+          visibleColumns={visibleColumns} 
+          onVisibleColumnsChange={setVisibleColumns} 
+          activeView={activeView} 
+          onActiveViewChange={setActiveView} 
+          onToggleFilterSidebar={handleToggleFilterSidebar} 
+          isFilterSidebarOpen={isFilterSidebarOpen} 
+        />
+
+        <div className="flex-1 overflow-hidden mb-[5px]">
+          <div className="space-y-4 w-full relative h-full">
+            <div style={{
+              width: "300px",
+              transform: isFilterSidebarOpen ? 'translateX(0)' : 'translateX(-100%)'
+            }} className="absolute top-0 left-0 h-full bg-background border-r transition-all duration-300 ease-in-out z-10 px-[85px]">
+              <div className="p-6 space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Filters</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium">Status</label>
+                      {/* Add status filters */}
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Hire Status</label>
+                      {/* Add hire status filters */}
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Rating</label>
+                      {/* Add rating filters */}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="h-full transition-all duration-300 ease-in-out" style={{
+              marginLeft: isFilterSidebarOpen ? "310px" : "10px"
+            }}>
+              <DriversTable 
+                currentItems={currentItems} 
+                sortedColumns={sortedColumns} 
+                availableColumns={availableColumns} 
+                transportTypes={transportTypes} 
+                statusDictionary={statusDictionary} 
+                statusColors={statusColors} 
+                editingNotes={editingNotes} 
+                draggedColumn={draggedColumn} 
+                dragOverColumn={dragOverColumn} 
+                onDragStart={handleDragStart} 
+                onDragOver={handleDragOver} 
+                onDrop={handleDrop} 
+                onDragEnd={handleDragEnd} 
+                renderRating={renderRating} 
+                renderStatus={renderStatus} 
+                renderHireStatus={renderHireStatus} 
+                renderStripeStatus={renderStripeStatus} 
+                handleNotesClick={handleNotesClick} 
+                handleNotesChange={handleNotesChange} 
+                saveNotes={saveNotes} 
+              />
+            </div>
+          </div>
+        </div>
+
+        <DriversPagination 
+          currentPage={currentPage} 
+          totalPages={totalPages} 
+          totalItems={totalItems} 
+          pageSize={pageSize} 
+          pageSizeOptions={pageSizeOptions} 
+          onPageChange={handlePageChange} 
+          onPageSizeChange={handlePageSizeChange} 
+        />
+        
+        {chatOpen && selectedCourier && <CourierChat open={chatOpen} courierName={selectedCourier} onClose={handleChatClose} hasUnreadMessages={false} />}
+      </div>
+    </Layout>;
+};
+
+export default DriversPage;
