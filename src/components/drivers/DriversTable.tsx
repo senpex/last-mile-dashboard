@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -30,7 +29,7 @@ interface DriversTableProps {
   handleNotesClick: (driverId: number) => void;
   handleNotesChange: (driverId: number, notes: string) => void;
   saveNotes: (driverId: number) => void;
-  className?: string; // Add the className prop as an optional string
+  className?: string;
 }
 
 export const DriversTable = ({
@@ -119,7 +118,7 @@ export const DriversTable = ({
   };
 
   return (
-    <UsersTableContainer stickyHeader={false} className={cn("w-full mt-2.5", className)}>
+    <UsersTableContainer stickyHeader={false} className={cn("w-full mt-1.25", className)}>
       <Table>
         <TableHeader className="bg-muted/50">
           <TableRow>
