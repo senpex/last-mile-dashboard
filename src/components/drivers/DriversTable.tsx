@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -84,6 +85,19 @@ export const DriversTable = ({
         return renderHireStatus(driver.hireStatus, driver.id);
       case "stripeStatus":
         return renderStripeStatus(driver.stripeStatus);
+      case "profileType":
+        return (
+          <div className="flex flex-wrap gap-1">
+            {driver.profileTypes && Array.isArray(driver.profileTypes) ? 
+              driver.profileTypes.map((type: string) => (
+                <Badge key={type} variant="secondary" className="text-xs">
+                  {type}
+                </Badge>
+              )) : 
+              <span className="text-muted-foreground text-xs">No profiles</span>
+            }
+          </div>
+        );
       case "notes":
         if (editingNotes === driver.id) {
           return <div className="flex flex-col gap-2">
@@ -113,16 +127,6 @@ export const DriversTable = ({
         return <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
             View
           </Button>;
-      case "profileType":
-        return (
-          <div className="flex flex-wrap gap-1">
-            {driver.profileTypes.map((type: string) => (
-              <Badge key={type} variant="secondary" className="text-xs">
-                {type}
-              </Badge>
-            ))}
-          </div>
-        );
       default:
         return null;
     }
