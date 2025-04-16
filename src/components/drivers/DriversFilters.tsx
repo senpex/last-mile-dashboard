@@ -44,7 +44,12 @@ export function DriversFilters({
     <div className="px-4 py-6 flex-shrink-0 border-b">
       <div className="flex flex-col space-y-4">
         <div className="flex justify-end">
-          <h1 className="text-2xl font-semibold text-foreground">Drivers Management</h1>
+          <div className="flex items-center justify-between w-full">
+            <h1 className="text-2xl font-semibold text-foreground">Drivers Management</h1>
+            <span className="text-sm text-muted-foreground">
+              All times are displayed using {timezone.replace('_', ' ')} timezone
+            </span>
+          </div>
         </div>
         
         <div className="flex flex-wrap justify-between items-center gap-2">
