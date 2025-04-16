@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
-import { DateRange } from "react-day-picker";
-import { DeliveryFilters } from "@/components/deliveries/DeliveryFilters";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, Plus, Search, MessageCircle, ChevronDown, Check, X, Clock, Pencil, FileText, Filter } from "lucide-react";
+import { GripVertical, Plus, Search, MessageCircle, ChevronDown, Check, X, Clock, Pencil, FileText } from "lucide-react";
 import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import ColumnSelector, { ColumnOption } from "@/components/table/ColumnSelector";
@@ -555,8 +553,6 @@ const DriversPage = () => {
     direction: null
   });
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
-  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
-  const [timezone, setTimezone] = useState<string>("America/New_York");
   const [activeView, setActiveView] = useState("main");
 
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
@@ -1012,23 +1008,6 @@ const DriversPage = () => {
   return (
     <Layout showFooter={false}>
       <div className="flex flex-col h-screen w-full">
-        <DeliveryFilters 
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          dateRange={dateRange}
-          onDateRangeChange={setDateRange}
-          timezone={timezone}
-          onTimezoneChange={setTimezone}
-          availableColumns={availableColumns}
-          visibleColumns={visibleColumns}
-          onVisibleColumnsChange={setVisibleColumns}
-          activeView={activeView}
-          onActiveViewChange={setActiveView}
-          onToggleFilterSidebar={handleToggleFilterSidebar}
-          isFilterSidebarOpen={isFilterSidebarOpen}
-          hasAttentionRequiredOrders={false}
-        />
-        
         <div className="px-0 py-6 flex-1 overflow-auto">
           <div className="space-y-4 w-full">
             <div className="flex items-center justify-between px-6">
