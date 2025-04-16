@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Save, RotateCcw } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { DeliveryStatus } from "@/types/delivery";
+import { getDictionary } from "@/lib/storage";
+import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 
 interface DriversSidebarProps {
   open: boolean;
@@ -21,11 +24,29 @@ export function DriversSidebar({
   setSelectedStatuses,
   allDeliveryStatuses
 }: DriversSidebarProps) {
+  const [selectedTransports, setSelectedTransports] = useState<string[]>([]);
+  const [transportTypes, setTransportTypes] = useState<{ id: string; value: string; icon?: string }[]>([]);
+
+  useEffect(() => {
+    const transportDict = getDictionary("2");
+    if (transportDict) {
+      setTransportTypes(transportDict.items);
+    }
+  }, []);
+
   const handleStatusChange = (status: DeliveryStatus) => {
     if (selectedStatuses.includes(status)) {
       setSelectedStatuses(selectedStatuses.filter(s => s !== status));
     } else {
       setSelectedStatuses([...selectedStatuses, status]);
+    }
+  };
+
+  const handleTransportChange = (transportId: string) => {
+    if (selectedTransports.includes(transportId)) {
+      setSelectedTransports(selectedTransports.filter(t => t !== transportId));
+    } else {
+      setSelectedTransports([...selectedTransports, transportId]);
     }
   };
 
@@ -35,9 +56,9 @@ export function DriversSidebar({
 
   const handleResetFilters = () => {
     setSelectedStatuses([]);
+    setSelectedTransports([]);
   };
 
-  // Filter out the specified statuses
   const filteredDeliveryStatuses = allDeliveryStatuses.filter(status => 
     !["Picking Up", "In Transit", "Arrived For Pickup", "Dropoff Complete", 
       "Scheduled Order", "Canceled By Customer", "Cancelled By Admin"].includes(status)
@@ -75,12 +96,40 @@ export function DriversSidebar({
                   </div>
                 </AccordionContent>
               </AccordionItem>
+
+              <AccordionItem value="transport-filters">
+                <AccordionTrigger className="text-sm font-medium">
+                  Transport Types
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-2 pt-1">
+                    {transportTypes.map((transport) => (
+                      <div key={transport.id} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`transport-${transport.id}`}
+                          checked={selectedTransports.includes(transport.id)}
+                          onCheckedChange={() => handleTransportChange(transport.id)}
+                        />
+                        <label
+                          htmlFor={`transport-${transport.id}`}
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2"
+                        >
+                          {transport.icon && (
+                            <TransportIcon 
+                              transportType={transport.icon as TransportType} 
+                              size={16} 
+                              className="shrink-0"
+                            />
+                          )}
+                          {transport.value}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
             </Accordion>
-            
-            <div className="border-b pb-3">
-              <p className="text-sm font-medium mb-2">Transport Filters</p>
-              {/* Transport filter content will be added here */}
-            </div>
+
             <div>
               <p className="text-sm font-medium mb-2">Rating Filters</p>
               {/* Rating filter content will be added here */}
