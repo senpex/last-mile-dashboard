@@ -31,11 +31,11 @@ export function DriversSidebar({
   };
 
   const handleSaveFilters = () => {
-    // TODO: Implement save functionality
+    onClose(); // Close sidebar after saving
   };
 
   const handleResetFilters = () => {
-    setSelectedStatuses([]);
+    setSelectedStatuses([]); // Clear all selected statuses
   };
 
   return (
@@ -71,15 +71,6 @@ export function DriversSidebar({
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-            
-            <div className="border-b pb-3">
-              <p className="text-sm font-medium mb-2">Transport Filters</p>
-              {/* Transport filter content will be added here */}
-            </div>
-            <div>
-              <p className="text-sm font-medium mb-2">Rating Filters</p>
-              {/* Rating filter content will be added here */}
-            </div>
           </div>
         </ScrollArea>
 
