@@ -474,47 +474,7 @@ const DriversPage = () => {
   const sortedColumns = getSortedVisibleColumns();
 
   const requestSort = (key: string) => {
-    let direction: 'ascending' | 'descending' | null = 'ascending';
-    
-    if (sortConfig.key === key) {
-      if (sortConfig.direction === 'ascending') {
-        direction = 'descending';
-      } else if (sortConfig.direction === 'descending') {
-        direction = null;
-      }
-    }
-    
-    setSortConfig({ key, direction });
-    
-    const sortedDrivers = [...filteredDrivers].sort((a, b) => {
-      if (!key || direction === null) {
-        return 0;
-      }
-      
-      let aValue = a[key];
-      let bValue = b[key];
-      
-      if (key === 'rating') {
-        aValue = Number(aValue);
-        bValue = Number(bValue);
-      } else if (typeof aValue === 'string' && typeof bValue === 'string') {
-        aValue = aValue.toLowerCase();
-        bValue = bValue.toLowerCase();
-      }
-      
-      if (aValue === undefined || aValue === null) return direction === 'ascending' ? -1 : 1;
-      if (bValue === undefined || bValue === null) return direction === 'ascending' ? 1 : -1;
-      
-      if (aValue < bValue) {
-        return direction === 'ascending' ? -1 : 1;
-      }
-      if (aValue > bValue) {
-        return direction === 'ascending' ? 1 : -1;
-      }
-      return 0;
-    });
-    
-    setFilteredDrivers(sortedDrivers);
+    console.log("Sorting disabled");
   };
 
   const renderRating = (rating: number) => {

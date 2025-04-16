@@ -2,7 +2,7 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GripVertical, FileText, ChevronUp, ChevronDown } from "lucide-react";
+import { GripVertical, FileText } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
@@ -140,15 +140,6 @@ export const DriversTable = ({
     }
   };
 
-  const getSortableColumnIds = () => {
-    const sortableColumns = ["id", "name", "email", "phone", "zipcode", "rating", "status"];
-    return sortableColumns;
-  };
-
-  const isSortable = (columnId: string) => {
-    return getSortableColumnIds().includes(columnId);
-  };
-
   return (
     <UsersTableContainer stickyHeader={false} className={cn("w-full mt-1.25", className)}>
       <Table>
@@ -158,18 +149,11 @@ export const DriversTable = ({
               const column = availableColumns.find(col => col.id === columnId);
               if (!column) return null;
               
-              const sortable = isSortable(columnId);
-              const isActive = sortConfig.key === columnId;
-              const direction = isActive ? sortConfig.direction : null;
-              
               return (
                 <TableHead 
                   key={columnId} 
                   dragOver={dragOverColumn === columnId} 
                   className={`${columnId === "id" ? "text-right" : ""} whitespace-nowrap truncate max-w-[200px]`}
-                  sortable={sortable}
-                  sortDirection={direction}
-                  onSort={sortable ? () => requestSort(columnId) : undefined}
                 >
                   <div className="flex items-center gap-1 overflow-hidden">
                     <div 
@@ -183,11 +167,6 @@ export const DriversTable = ({
                       <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
                     </div>
                     <span className="truncate">{column.label}</span>
-                    {sortable && isActive && direction && (
-                      direction === 'ascending' 
-                        ? <ChevronUp className="h-4 w-4 text-[#ea384c]" />
-                        : <ChevronDown className="h-4 w-4 text-[#ea384c]" />
-                    )}
                   </div>
                 </TableHead>
               );
