@@ -1,5 +1,6 @@
+
 import React, { useState, useRef, useEffect } from "react";
-import { Search, Users, User, Send, Clock } from "lucide-react";
+import { Search, Users, User, Send, Clock, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -161,13 +162,19 @@ const CommunicationPanel = () => {
               <label htmlFor="client-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Find contact:
               </label>
-              <SearchInput 
-                id="client-search"
-                value={searchQuery} 
-                onChange={e => setSearchQuery(e.target.value)} 
-                placeholder="Search clients" 
-                className="w-full" 
-              />
+              <div className="relative">
+                <Input 
+                  id="client-search"
+                  value={searchQuery} 
+                  onChange={e => {
+                    setSearchQuery(e.target.value);
+                    setShowDropdown(e.target.value.length >= 3);
+                  }}
+                  placeholder="Search clients" 
+                  className="w-full pl-8" 
+                />
+                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
+              </div>
             </div>
 
             <div className="mb-4">
@@ -186,13 +193,19 @@ const CommunicationPanel = () => {
               <label htmlFor="dispatcher-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Find contact:
               </label>
-              <SearchInput 
-                id="dispatcher-search"
-                value={searchQuery} 
-                onChange={e => setSearchQuery(e.target.value)} 
-                placeholder="Search dispatchers" 
-                className="w-full" 
-              />
+              <div className="relative">
+                <Input 
+                  id="dispatcher-search"
+                  value={searchQuery} 
+                  onChange={e => {
+                    setSearchQuery(e.target.value);
+                    setShowDropdown(e.target.value.length >= 3);
+                  }}
+                  placeholder="Search dispatchers" 
+                  className="w-full pl-8" 
+                />
+                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
+              </div>
             </div>
 
             <div className="mb-4">
