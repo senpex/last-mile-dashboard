@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Search, Users, User, Send, Clock, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -54,27 +53,6 @@ const CommunicationPanel = () => {
   const [selectedDropoffAddresses, setSelectedDropoffAddresses] = useState<string[]>([]);
   const [selectedSenderNames, setSelectedSenderNames] = useState<string[]>([]);
   const [selectedRecipientNames, setSelectedRecipientNames] = useState<string[]>([]);
-  const [selectedFilters, setSelectedFilters] = useState<{
-    statuses: string[];
-    cities: string[];
-    states: string[];
-    zipcodes: string[];
-    organizations: string[];
-    pickupAddresses: string[];
-    dropoffAddresses: string[];
-    senderNames: string[];
-    recipientNames: string[];
-  }>({
-    statuses: [],
-    cities: [],
-    states: [],
-    zipcodes: [],
-    organizations: [],
-    pickupAddresses: [],
-    dropoffAddresses: [],
-    senderNames: [],
-    recipientNames: []
-  });
   const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -139,20 +117,6 @@ const CommunicationPanel = () => {
       description: `Message sent to ${selectedRecipients.length} recipient(s) via ${channels.join(", ")}`
     });
     setMessage("");
-  };
-
-  const handleSaveFilters = () => {
-    setSelectedFilters({
-      statuses: selectedStatuses,
-      cities: selectedCities,
-      states: selectedStates,
-      zipcodes: selectedZipcodes,
-      organizations: selectedOrganizations,
-      pickupAddresses: selectedPickupAddresses,
-      dropoffAddresses: selectedDropoffAddresses,
-      senderNames: selectedSenderNames,
-      recipientNames: selectedRecipientNames,
-    });
   };
 
   return (
@@ -233,7 +197,17 @@ const CommunicationPanel = () => {
               <RecipientList
                 selectedRecipients={selectedRecipients}
                 onRemoveRecipient={handleSelectRecipient}
-                selectedFilters={selectedFilters}
+                selectedFilters={{
+                  statuses: selectedStatuses,
+                  cities: selectedCities,
+                  states: selectedStates,
+                  zipcodes: selectedZipcodes,
+                  organizations: selectedOrganizations,
+                  pickupAddresses: selectedPickupAddresses,
+                  dropoffAddresses: selectedDropoffAddresses,
+                  senderNames: selectedSenderNames,
+                  recipientNames: selectedRecipientNames,
+                }}
               />
             </div>
           </TabsContent>

@@ -27,7 +27,6 @@ interface DriversSidebarProps {
   allStates: string[];
   selectedStates: string[];
   setSelectedStates: (states: string[]) => void;
-  onFiltersAdd: () => void;
 }
 
 export function DriversSidebar({
@@ -44,8 +43,7 @@ export function DriversSidebar({
   setSelectedCities,
   allStates,
   selectedStates,
-  setSelectedStates,
-  onFiltersAdd
+  setSelectedStates
 }: DriversSidebarProps) {
   const [selectedTransports, setSelectedTransports] = useState<string[]>([]);
   const [transportTypes, setTransportTypes] = useState<{ id: string; value: string; icon?: string }[]>([]);
@@ -140,7 +138,7 @@ export function DriversSidebar({
   };
 
   const handleSaveFilters = () => {
-    onFiltersAdd();
+    // Removed onClose() call to keep sidebar open
   };
 
   const getProfileCount = (profileId: string) => {

@@ -1,3 +1,4 @@
+
 import { Layout } from "@/components/layout/Layout";
 import { TowerControl } from "lucide-react";
 import CommunicationPanel from "@/components/communication/CommunicationPanel";
@@ -26,11 +27,6 @@ const CommunicationTower = () => {
   const allCities = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"];
   const allStates = ["NY", "CA", "IL", "TX", "AZ"];
 
-  const handleFiltersAdd = () => {
-    // This will trigger the filters to be added to the recipients list
-    // The actual state update is handled in CommunicationPanel
-  };
-
   return (
     <Layout>
       <div className="flex h-full">
@@ -57,7 +53,6 @@ const CommunicationTower = () => {
                 setSelectedStates={setSelectedStates}
                 open={isFilterSidebarOpen}
                 onClose={() => setIsFilterSidebarOpen(false)}
-                onFiltersAdd={handleFiltersAdd}
               />
               <div className="flex-1 h-full overflow-auto">
                 <CommunicationPanel />
