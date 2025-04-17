@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useTheme } from "./ThemeProvider";
 import ThemeToggle from "./ThemeToggle";
@@ -149,17 +150,6 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
                 <ul className="mt-1 ml-6 space-y-1">
                   <li>
                     <Link 
-                      to="/users/clients" 
-                      className={cn(
-                        "sidebar-item text-sm",
-                        location.pathname === "/users/clients" ? "active" : ""
-                      )}
-                    >
-                      <span>Clients</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link 
                       to="/users/drivers" 
                       className={cn(
                         "sidebar-item text-sm",
@@ -167,6 +157,17 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
                       )}
                     >
                       <span>Drivers</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link 
+                      to="/users/clients" 
+                      className={cn(
+                        "sidebar-item text-sm",
+                        location.pathname === "/users/clients" ? "active" : ""
+                      )}
+                    >
+                      <span>Clients</span>
                     </Link>
                   </li>
                 </ul>
