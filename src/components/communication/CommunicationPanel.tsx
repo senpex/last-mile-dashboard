@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Search, Users, User, Send, Clock, MessageSquare, Mail, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -153,7 +154,22 @@ const CommunicationPanel = () => {
           </div>
 
           <div className="space-y-2">
-            {filteredRecipients.map(recipient => {})}
+            {filteredRecipients.map(recipient => (
+              <div key={recipient.id} className="flex items-center space-x-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">
+                <Checkbox 
+                  id={recipient.id} 
+                  checked={selectedRecipients.some(r => r.id === recipient.id)}
+                  onCheckedChange={() => handleSelectRecipient(recipient)}
+                />
+                <label 
+                  htmlFor={recipient.id} 
+                  className="text-sm cursor-pointer flex-1"
+                  onClick={() => handleSelectRecipient(recipient)}
+                >
+                  {recipient.name}
+                </label>
+              </div>
+            ))}
           </div>
         </Tabs>
       </div>
