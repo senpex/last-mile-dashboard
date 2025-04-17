@@ -460,6 +460,7 @@ const ClientsPage = () => {
 
           <div className={`flex-1 transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[280px]" : "ml-[10px]"}`}>
             <ClientsTable
+              className="mt-[10px] ml-[10px]"
               currentItems={currentItems}
               sortedColumns={sortedColumns}
               availableColumns={availableColumns}
@@ -474,7 +475,6 @@ const ClientsPage = () => {
               handleNotesClick={handleNotesClick}
               handleNotesChange={handleNotesChange}
               saveNotes={saveNotes}
-              className="mt-[10px]"
               sortConfig={sortConfig}
               requestSort={requestSort}
               renderStatus={renderStatus}
