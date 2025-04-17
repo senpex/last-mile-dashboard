@@ -93,21 +93,26 @@ export function ClientsSidebar({
               <div className="max-h-[200px] overflow-y-auto mt-2">
                 {filteredCompanies.length > 0 ? (
                   filteredCompanies.map((company) => (
-                    <div key={company} className="flex items-center space-x-2 py-1">
-                      <Checkbox 
-                        id={`company-${company}`} 
-                        checked={selectedCompanies.includes(company)}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            setSelectedCompanies([...selectedCompanies, company]);
-                          } else {
-                            setSelectedCompanies(selectedCompanies.filter(c => c !== company));
-                          }
-                        }} 
-                      />
-                      <Label htmlFor={`company-${company}`} className="text-sm">
-                        {company}
-                      </Label>
+                    <div key={company} className="flex items-center justify-between space-x-2 py-1">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`company-${company}`} 
+                          checked={selectedCompanies.includes(company)}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setSelectedCompanies([...selectedCompanies, company]);
+                            } else {
+                              setSelectedCompanies(selectedCompanies.filter(c => c !== company));
+                            }
+                          }} 
+                        />
+                        <Label htmlFor={`company-${company}`} className="text-sm">
+                          {company}
+                        </Label>
+                      </div>
+                      <span className="text-xs bg-muted text-muted-foreground rounded-full px-2 py-0.5">
+                        {allCompanies.filter(c => c === company).length}
+                      </span>
                     </div>
                   ))
                 ) : (
@@ -132,21 +137,26 @@ export function ClientsSidebar({
               <div className="max-h-[200px] overflow-y-auto mt-2">
                 {filteredZipcodes.length > 0 ? (
                   filteredZipcodes.map((zipcode) => (
-                    <div key={zipcode} className="flex items-center space-x-2 py-1">
-                      <Checkbox 
-                        id={`zipcode-${zipcode}`} 
-                        checked={selectedZipcodes.includes(zipcode)}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            setSelectedZipcodes([...selectedZipcodes, zipcode]);
-                          } else {
-                            setSelectedZipcodes(selectedZipcodes.filter(z => z !== zipcode));
-                          }
-                        }} 
-                      />
-                      <Label htmlFor={`zipcode-${zipcode}`} className="text-sm">
-                        {zipcode}
-                      </Label>
+                    <div key={zipcode} className="flex items-center justify-between space-x-2 py-1">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`zipcode-${zipcode}`} 
+                          checked={selectedZipcodes.includes(zipcode)}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setSelectedZipcodes([...selectedZipcodes, zipcode]);
+                            } else {
+                              setSelectedZipcodes(selectedZipcodes.filter(z => z !== zipcode));
+                            }
+                          }} 
+                        />
+                        <Label htmlFor={`zipcode-${zipcode}`} className="text-sm">
+                          {zipcode}
+                        </Label>
+                      </div>
+                      <span className="text-xs bg-muted text-muted-foreground rounded-full px-2 py-0.5">
+                        {allZipcodes.filter(z => z === zipcode).length}
+                      </span>
                     </div>
                   ))
                 ) : (
@@ -171,21 +181,26 @@ export function ClientsSidebar({
               <div className="max-h-[200px] overflow-y-auto mt-2">
                 {filteredCities.length > 0 ? (
                   filteredCities.map((city) => (
-                    <div key={city} className="flex items-center space-x-2 py-1">
-                      <Checkbox 
-                        id={`city-${city}`} 
-                        checked={selectedCities.includes(city)}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            setSelectedCities([...selectedCities, city]);
-                          } else {
-                            setSelectedCities(selectedCities.filter(c => c !== city));
-                          }
-                        }} 
-                      />
-                      <Label htmlFor={`city-${city}`} className="text-sm">
-                        {city}
-                      </Label>
+                    <div key={city} className="flex items-center justify-between space-x-2 py-1">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`city-${city}`} 
+                          checked={selectedCities.includes(city)}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setSelectedCities([...selectedCities, city]);
+                            } else {
+                              setSelectedCities(selectedCities.filter(c => c !== city));
+                            }
+                          }} 
+                        />
+                        <Label htmlFor={`city-${city}`} className="text-sm">
+                          {city}
+                        </Label>
+                      </div>
+                      <span className="text-xs bg-muted text-muted-foreground rounded-full px-2 py-0.5">
+                        {allCities.filter(c => c === city).length}
+                      </span>
                     </div>
                   ))
                 ) : (
@@ -210,21 +225,26 @@ export function ClientsSidebar({
               <div className="max-h-[200px] overflow-y-auto mt-2">
                 {filteredStates.length > 0 ? (
                   filteredStates.map((state) => (
-                    <div key={state} className="flex items-center space-x-2 py-1">
-                      <Checkbox 
-                        id={`state-${state}`} 
-                        checked={selectedStates.includes(state)}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            setSelectedStates([...selectedStates, state]);
-                          } else {
-                            setSelectedStates(selectedStates.filter(s => s !== state));
-                          }
-                        }} 
-                      />
-                      <Label htmlFor={`state-${state}`} className="text-sm">
-                        {state}
-                      </Label>
+                    <div key={state} className="flex items-center justify-between space-x-2 py-1">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`state-${state}`} 
+                          checked={selectedStates.includes(state)}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setSelectedStates([...selectedStates, state]);
+                            } else {
+                              setSelectedStates(selectedStates.filter(s => s !== state));
+                            }
+                          }} 
+                        />
+                        <Label htmlFor={`state-${state}`} className="text-sm">
+                          {state}
+                        </Label>
+                      </div>
+                      <span className="text-xs bg-muted text-muted-foreground rounded-full px-2 py-0.5">
+                        {allStates.filter(s => s === state).length}
+                      </span>
                     </div>
                   ))
                 ) : (
