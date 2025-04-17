@@ -107,11 +107,15 @@ const CommunicationPanel = ({ selectedFilters }: CommunicationPanelProps = {}) =
     }
   };
 
+  const hasAnyFilters = selectedFilters && Object.values(selectedFilters).some(
+    filterArray => filterArray && filterArray.length > 0
+  );
+
   const handleSendMessage = () => {
-    if (!message.trim() || selectedRecipients.length === 0 || channels.length === 0) {
+    if (!message.trim() || (!selectedRecipients.length && !hasAnyFilters) || channels.length === 0) {
       toast({
         title: "Missing Information",
-        description: "Please fill in all required fields (message, recipients, and channels)",
+        description: "Please fill in all required fields (message, recipients or filters, and channels)",
         variant: "destructive"
       });
       return;
@@ -317,7 +321,7 @@ const CommunicationPanel = ({ selectedFilters }: CommunicationPanelProps = {}) =
           <Button 
             onClick={handleSendMessage} 
             className="flex items-center gap-1" 
-            disabled={message.trim() === "" || selectedRecipients.length === 0 || channels.length === 0}
+            disabled={message.trim() === "" || (!selectedRecipients.length && !hasAnyFilters) || channels.length === 0}
           >
             <Send className="h-4 w-4" />
             Send Now
