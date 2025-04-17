@@ -166,7 +166,7 @@ const CommunicationPanel = () => {
       </Tabs>
     </div>
 
-    <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 space-y-6">
+    <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 space-y-0">
       <div className="mb-5">
         <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
           Select Communication Channels:
