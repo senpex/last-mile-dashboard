@@ -571,7 +571,7 @@ export function DriversSidebar({
             onClick={handleSaveFilters}
           >
             <Save className="h-4 w-4" />
-            Save
+            Add
           </Button>
         </div>
       </div>

@@ -186,9 +186,14 @@ const CommunicationPanel = () => {
             </div>
 
             <div className="mb-4 h-[140px]">
-              <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
-                Selected Recipients:
-              </label>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-foreground dark:text-gray-300">
+                  Selected Recipients
+                </label>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {selectedRecipients.length} Selected
+                </span>
+              </div>
               <RecipientList
                 selectedRecipients={selectedRecipients}
                 onRemoveRecipient={handleSelectRecipient}
@@ -228,9 +233,14 @@ const CommunicationPanel = () => {
             </div>
 
             <div className="mb-4 h-[140px]">
-              <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
-                Selected Recipients:
-              </label>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-foreground dark:text-gray-300">
+                  Selected Recipients
+                </label>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {selectedRecipients.length} Selected
+                </span>
+              </div>
               <RecipientList 
                 selectedRecipients={selectedRecipients}
                 onRemoveRecipient={handleSelectRecipient}
@@ -259,9 +269,14 @@ const CommunicationPanel = () => {
             </div>
 
             <div className="mb-4 h-[140px]">
-              <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
-                Selected Recipients:
-              </label>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-foreground dark:text-gray-300">
+                  Selected Recipients
+                </label>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {selectedRecipients.length} Selected
+                </span>
+              </div>
               <RecipientList 
                 selectedRecipients={selectedRecipients}
                 onRemoveRecipient={handleSelectRecipient}
