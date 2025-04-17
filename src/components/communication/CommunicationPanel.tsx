@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Search, Users, User, Send, Clock, MessageSquare, Mail, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -176,7 +177,7 @@ const CommunicationPanel = () => {
             className={`
               dark:hover:bg-green-900 
               ${channels.includes('sms') 
-                ? 'bg-green-500 dark:bg-green-600 text-white' 
+                ? 'bg-green-600 dark:bg-green-600 text-white' 
                 : 'dark:text-gray-300 hover:bg-green-100 dark:hover:bg-green-900 hover:text-green-700 dark:hover:text-green-200'}
             `}
           >
@@ -189,7 +190,7 @@ const CommunicationPanel = () => {
             className={`
               dark:hover:bg-green-900 
               ${channels.includes('email') 
-                ? 'bg-green-500 dark:bg-green-600 text-white' 
+                ? 'bg-green-600 dark:bg-green-600 text-white' 
                 : 'dark:text-gray-300 hover:bg-green-100 dark:hover:bg-green-900 hover:text-green-700 dark:hover:text-green-200'}
             `}
           >
@@ -202,7 +203,7 @@ const CommunicationPanel = () => {
             className={`
               dark:hover:bg-green-900 
               ${channels.includes('inapp') 
-                ? 'bg-green-500 dark:bg-green-600 text-white' 
+                ? 'bg-green-600 dark:bg-green-600 text-white' 
                 : 'dark:text-gray-300 hover:bg-green-100 dark:hover:bg-green-900 hover:text-green-700 dark:hover:text-green-200'}
             `}
           >
