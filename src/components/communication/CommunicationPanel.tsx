@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+
 const messageTemplates = [{
   id: "template1",
   name: "Order Arriving",
@@ -27,6 +28,7 @@ const messageTemplates = [{
   name: "Delivery Completed",
   content: "Your delivery has been completed. Thank you for using our service!"
 }];
+
 const mockRecipients = {
   clients: [{
     id: "c1",
@@ -68,11 +70,13 @@ const mockRecipients = {
     type: "group"
   }]
 };
+
 type Recipient = {
   id: string;
   name: string;
   type: string;
 };
+
 const CommunicationPanel = () => {
   const {
     toast
@@ -82,7 +86,9 @@ const CommunicationPanel = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("drivers");
   const [channels, setChannels] = useState<string[]>(["sms", "email", "inapp"]);
+
   const filteredRecipients = searchQuery.length > 0 ? mockRecipients[activeTab as keyof typeof mockRecipients].filter(recipient => recipient.name.toLowerCase().includes(searchQuery.toLowerCase())) : mockRecipients[activeTab as keyof typeof mockRecipients];
+
   const handleSelectRecipient = (recipient: Recipient) => {
     const isAlreadySelected = selectedRecipients.some(r => r.id === recipient.id);
     if (isAlreadySelected) {
@@ -91,16 +97,19 @@ const CommunicationPanel = () => {
       setSelectedRecipients([...selectedRecipients, recipient]);
     }
   };
+
   const handleSelectTemplate = (templateId: string) => {
     const template = messageTemplates.find(t => t.id === templateId);
     if (template) {
       setMessage(template.content);
     }
   };
+
   const handleChannelToggle = (value: string[]) => {
     console.log("Channel toggled:", value);
     setChannels(value);
   };
+
   const handleSendMessage = () => {
     if (!message.trim() || selectedRecipients.length === 0 || channels.length === 0) {
       toast({
@@ -123,6 +132,7 @@ const CommunicationPanel = () => {
     });
     setMessage("");
   };
+
   return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-4 my-0 py-[18px]">
       <div className="mb-6">
         <Tabs defaultValue="drivers" onValueChange={setActiveTab}>
@@ -185,7 +195,7 @@ const CommunicationPanel = () => {
       </div>
 
       <div className="mb-5">
-        <div className="flex items-center justify-between my-[145px]">
+        <div className="flex items-center justify-between mb-2">
           <label className="block text-sm font-medium text-foreground dark:text-gray-300">
             Message:
           </label>
@@ -215,4 +225,5 @@ const CommunicationPanel = () => {
       </div>
     </div>;
 };
+
 export default CommunicationPanel;
