@@ -137,13 +137,13 @@ const CommunicationPanel = () => {
       <div className="mb-6">
         <Tabs defaultValue="drivers" onValueChange={setActiveTab}>
           <TabsList className="w-full mb-2 h-20">
-            <TabsTrigger value="drivers" className="flex-1">
+            <TabsTrigger value="drivers" className="flex-1 h-full">
               <User className="mr-2 h-4 w-4" />Drivers
             </TabsTrigger>
-            <TabsTrigger value="clients" className="flex-1">
+            <TabsTrigger value="clients" className="flex-1 h-full">
               <User className="mr-2 h-4 w-4" />Clients
             </TabsTrigger>
-            <TabsTrigger value="groups" className="flex-1">
+            <TabsTrigger value="groups" className="flex-1 h-full">
               <Users className="mr-2 h-4 w-4" />Dispatchers
             </TabsTrigger>
           </TabsList>
