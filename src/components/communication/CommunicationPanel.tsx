@@ -149,7 +149,16 @@ const CommunicationPanel = () => {
           </TabsList>
           
           <div className="mb-4">
-            <SearchInput value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder={`Search ${activeTab}`} className="w-full" />
+            <label htmlFor="contact-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Find contact:
+            </label>
+            <SearchInput 
+              id="contact-search"
+              value={searchQuery} 
+              onChange={e => setSearchQuery(e.target.value)} 
+              placeholder={`Search ${activeTab}`} 
+              className="w-full" 
+            />
           </div>
 
           <div className="space-y-2">
