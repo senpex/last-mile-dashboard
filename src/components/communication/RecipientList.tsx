@@ -13,7 +13,7 @@ interface RecipientListProps {
   selectedRecipients: Recipient[];
   onRemoveRecipient: (recipient: Recipient) => void;
   selectedFilters?: {
-    statuses?: DeliveryStatus[];
+    statuses?: DeliveryStatus[] | string[];
     cities?: string[];
     states?: string[];
     zipcodes?: string[];

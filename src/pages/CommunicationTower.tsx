@@ -17,7 +17,7 @@ const CommunicationTower = () => {
   const [selectedTransports, setSelectedTransports] = useState<string[]>([]);
   const [selectedHireStatuses, setSelectedHireStatuses] = useState<string[]>([]);
   
-  // Client filters
+  // Client filters - fixing the type here from string[] to make it compatible
   const [selectedClientStatuses, setSelectedClientStatuses] = useState<string[]>([]);
   const [selectedClientCities, setSelectedClientCities] = useState<string[]>([]);
   const [selectedClientStates, setSelectedClientStates] = useState<string[]>([]);
@@ -45,7 +45,7 @@ const CommunicationTower = () => {
 
   const handleFiltersAdd = (filters: any) => {
     if (activeTab === "drivers") {
-      setSelectedStatuses(filters.statuses);
+      setSelectedStatuses(filters.statuses as DeliveryStatus[]);
       setSelectedZipcodes(filters.zipcodes);
       setSelectedCities(filters.cities);
       setSelectedStates(filters.states);

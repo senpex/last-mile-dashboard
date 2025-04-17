@@ -13,13 +13,14 @@ import { DeliveryStatus } from "@/types/delivery";
 
 interface CommunicationPanelProps {
   selectedFilters?: {
-    statuses?: DeliveryStatus[];
+    statuses?: DeliveryStatus[] | string[];
     zipcodes?: string[];
     cities?: string[];
     states?: string[];
     profiles?: string[];
     transports?: string[];
     hireStatuses?: string[];
+    organizations?: string[];
   };
 }
 
@@ -57,6 +58,7 @@ const CommunicationPanel = ({ selectedFilters }: CommunicationPanelProps = {}) =
   const [activeTab, setActiveTab] = useState("drivers");
   const [channels, setChannels] = useState<string[]>(["sms", "email", "inapp"]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   const [selectedClientStatuses, setSelectedClientStatuses] = useState<string[]>([]);
   const [selectedClientCities, setSelectedClientCities] = useState<string[]>([]);
@@ -101,6 +103,24 @@ const CommunicationPanel = ({ selectedFilters }: CommunicationPanelProps = {}) =
     if (template) {
       setMessage(template.content);
     }
+  };
+
+  const handleSendMessage = () => {
+    const messageData: MessageData = {
+      content: message,
+      recipients: selectedRecipients,
+      channels: channels,
+      filters: selectedFilters
+    };
+    
+    console.log("Sending message:", messageData);
+    
+    toast({
+      title: "Message sent",
+      description: `Message sent to ${selectedRecipients.length} recipients and ${hasAnyFilters ? 'filtered audiences' : ''}`,
+    });
+    
+    setMessage("");
   };
 
   const hasAnyFilters = selectedFilters && Object.values(selectedFilters).some(
