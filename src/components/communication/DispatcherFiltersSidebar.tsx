@@ -5,7 +5,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 import { Save, RotateCcw } from "lucide-react";
@@ -70,10 +69,9 @@ export const DispatcherFiltersSidebar = ({
                       />
                       <Label
                         htmlFor={`dispatcher-${dispatcher}`}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
-                        <span>{dispatcher}</span>
-                        <Badge variant="outline" className="ml-auto">{Math.floor(Math.random() * 10) + 1}</Badge>
+                        {dispatcher}
                       </Label>
                     </div>
                   ))}
