@@ -161,6 +161,20 @@ const CommunicationPanel = () => {
           />
         </div>
 
+        <div className="mb-5">
+          <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
+            Selected Recipients:
+          </label>
+          {selectedRecipients.length > 0 ? <div className="flex flex-wrap gap-2">
+              {selectedRecipients.map(recipient => <div key={recipient.id} className="bg-gray-100 dark:bg-gray-700 rounded-md py-1 px-3 text-sm flex items-center">
+                  <span className="text-foreground dark:text-gray-300">{recipient.name}</span>
+                  <button className="ml-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" onClick={() => handleSelectRecipient(recipient)}>
+                    &times;
+                  </button>
+                </div>)}
+            </div> : <p className="text-gray-500 dark:text-gray-400 text-sm">No recipients selected</p>}
+        </div>
+
         <div className="space-y-2">
           {filteredRecipients.map(recipient => <div key={recipient.id} className={cn("flex items-center p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800", selectedRecipients.some(r => r.id === recipient.id) ? "bg-gray-200 dark:bg-gray-700" : "")} onClick={() => handleSelectRecipient(recipient)}>
               <Checkbox checked={selectedRecipients.some(r => r.id === recipient.id)} className="mr-2" onCheckedChange={() => handleSelectRecipient(recipient)} />
@@ -190,20 +204,6 @@ const CommunicationPanel = () => {
           <span>In-App</span>
         </ToggleGroupItem>
       </ToggleGroup>
-    </div>
-
-    <div className="mb-5">
-      <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
-        Selected Recipients:
-      </label>
-      {selectedRecipients.length > 0 ? <div className="flex flex-wrap gap-2">
-          {selectedRecipients.map(recipient => <div key={recipient.id} className="bg-gray-100 dark:bg-gray-700 rounded-md py-1 px-3 text-sm flex items-center">
-              <span className="text-foreground dark:text-gray-300">{recipient.name}</span>
-              <button className="ml-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" onClick={() => handleSelectRecipient(recipient)}>
-                &times;
-              </button>
-            </div>)}
-        </div> : <p className="text-gray-500 dark:text-gray-400 text-sm">No recipients selected</p>}
     </div>
 
     <div className="mb-5">
