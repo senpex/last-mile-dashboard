@@ -384,6 +384,16 @@ const DriversPage = () => {
     setIsFilterSidebarOpen(prev => !prev);
   };
 
+  const handleFiltersAdd = () => {
+    // Handle adding filters - can be customized as needed
+    console.log("Filters added:", { 
+      statuses: selectedStatuses, 
+      zipcodes: selectedZipcodes,
+      cities: selectedCities,
+      states: selectedStates
+    });
+  };
+
   const loadTransportDictionary = () => {
     const transportDict = getDictionary("2");
     if (transportDict && transportDict.items.length > 0) {
@@ -693,6 +703,7 @@ const DriversPage = () => {
             allStates={allStates}
             selectedStates={selectedStates}
             setSelectedStates={setSelectedStates}
+            onFiltersAdd={handleFiltersAdd}
           />
 
           <div className={`flex-1 transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-2"}`}>
@@ -702,49 +713,4 @@ const DriversPage = () => {
               availableColumns={availableColumns} 
               transportTypes={transportTypes} 
               statusDictionary={statusDictionary} 
-              statusColors={statusColors} 
-              editingNotes={editingNotes} 
-              draggedColumn={draggedColumn} 
-              dragOverColumn={dragOverColumn} 
-              onDragStart={handleDragStart} 
-              onDragOver={handleDragOver} 
-              onDrop={handleDrop} 
-              onDragEnd={handleDragEnd} 
-              renderRating={renderRating} 
-              renderStatus={renderStatus} 
-              renderHireStatus={renderHireStatus} 
-              renderStripeStatus={renderStripeStatus} 
-              handleNotesClick={handleNotesClick} 
-              handleNotesChange={handleNotesChange} 
-              saveNotes={saveNotes} 
-              className="mt-[10px]"
-              sortConfig={sortConfig}
-              requestSort={requestSort}
-            />
-          </div>
-        </div>
-
-        <DriversPagination 
-          currentPage={currentPage} 
-          totalPages={totalPages} 
-          totalItems={totalItems} 
-          pageSize={pageSize} 
-          pageSizeOptions={pageSizeOptions} 
-          onPageChange={handlePageChange} 
-          onPageSizeChange={handlePageSizeChange} 
-        />
-        
-        {chatOpen && selectedCourier && (
-          <CourierChat 
-            open={chatOpen} 
-            courierName={selectedCourier} 
-            onClose={handleChatClose} 
-            hasUnreadMessages={false} 
-          />
-        )}
-      </div>
-    </Layout>
-  );
-};
-
-export default DriversPage;
+              statusColors={statusColors
