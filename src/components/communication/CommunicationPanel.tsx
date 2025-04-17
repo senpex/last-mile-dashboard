@@ -153,7 +153,30 @@ const CommunicationPanel = () => {
           </div>
 
           <div className="space-y-2">
-            {filteredRecipients.map(recipient => {})}
+            {filteredRecipients.map(recipient => (
+              <div 
+                key={recipient.id}
+                className={cn(
+                  "flex items-center space-x-2 p-2 rounded-md cursor-pointer",
+                  selectedRecipients.some(r => r.id === recipient.id) 
+                    ? "bg-red-50 dark:bg-red-900/30" 
+                    : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                )}
+                onClick={() => handleSelectRecipient(recipient)}
+              >
+                <Checkbox 
+                  checked={selectedRecipients.some(r => r.id === recipient.id)} 
+                  id={`recipient-${recipient.id}`}
+                  className="data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600"
+                />
+                <label 
+                  htmlFor={`recipient-${recipient.id}`}
+                  className="flex-1 text-sm font-medium cursor-pointer"
+                >
+                  {recipient.name}
+                </label>
+              </div>
+            ))}
           </div>
         </Tabs>
       </div>
