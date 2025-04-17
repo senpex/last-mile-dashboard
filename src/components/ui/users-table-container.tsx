@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
@@ -11,7 +10,7 @@ const UsersTableContainer = React.forwardRef<
   }
 >(({ 
   className, 
-  height = "h-[calc(100vh-220px)]", 
+  height = "h-[calc(100vh-210px)]", // Reduced height by 10px 
   stickyHeader = true,
   ...props 
 }, ref) => (
@@ -39,4 +38,3 @@ const UsersTableContainer = React.forwardRef<
 UsersTableContainer.displayName = "UsersTableContainer"
 
 export { UsersTableContainer }
-
