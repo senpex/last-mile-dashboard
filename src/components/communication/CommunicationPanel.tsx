@@ -131,7 +131,7 @@ const CommunicationPanel = () => {
           </TabsList>
           
           <div className="mb-4">
-            <SearchInput placeholder={`Search ${activeTab}...`} value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full" />
+            
           </div>
 
           
