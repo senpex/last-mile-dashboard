@@ -2,7 +2,6 @@
 import React from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Filter, Search } from "lucide-react";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { TimezonePicker } from "@/components/TimezonePicker";
@@ -10,6 +9,7 @@ import ColumnSelector from "@/components/table/ColumnSelector";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserFiltersLayout } from "@/components/users/UserFiltersLayout";
+import { SearchInput } from "@/components/ui/search-input";
 
 interface ClientsFiltersProps {
   searchTerm: string;
@@ -60,16 +60,13 @@ export function ClientsFilters({
 
   const searchControls = (
     <>
-      <div className="relative">
-        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-        <Input 
-          type="search" 
-          placeholder="Search clients..." 
-          className="pl-8 h-9 w-[240px]" 
-          value={searchTerm} 
-          onChange={e => onSearchChange(e.target.value)} 
-        />
-      </div>
+      <SearchInput
+        type="search" 
+        placeholder="Search clients..." 
+        className="w-[240px]" 
+        value={searchTerm} 
+        onChange={e => onSearchChange(e.target.value)} 
+      />
       
       <TimezonePicker selectedTimezone={timezone} onTimezoneChange={onTimezoneChange} />
       

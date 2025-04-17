@@ -1,8 +1,8 @@
+
 import React from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Filter, Search } from "lucide-react";
+import { Filter } from "lucide-react";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
@@ -10,7 +10,7 @@ import { ColumnOption } from "@/components/table/ColumnSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DeliveryStatus } from "@/types/delivery";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { ChevronDown } from "lucide-react";
+import { SearchInput } from "@/components/ui/search-input";
 
 interface DeliveryFiltersProps {
   searchTerm: string;
@@ -78,16 +78,13 @@ export function DeliveryFilters({
           </div>
           
           <div className="flex items-center gap-2">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Type to search"
-                className="pl-8 h-9 w-[240px]"
-                value={searchTerm}
-                onChange={(e) => onSearchChange(e.target.value)}
-              />
-            </div>
+            <SearchInput
+              type="search"
+              placeholder="Type to search"
+              className="w-[240px]"
+              value={searchTerm}
+              onChange={(e) => onSearchChange(e.target.value)}
+            />
             
             <TimezonePicker 
               selectedTimezone={timezone}

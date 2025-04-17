@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
@@ -5,10 +6,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Save, RotateCcw } from "lucide-react";
+import { Save, RotateCcw } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { SearchInput } from "@/components/ui/search-input";
 
 interface ClientsSidebarProps {
   open: boolean;
@@ -97,15 +98,11 @@ export function ClientsSidebar({
           <AccordionItem value="company">
             <AccordionTrigger className="text-sm">Company</AccordionTrigger>
             <AccordionContent className="space-y-2">
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  placeholder="Search companies..." 
-                  className="pl-8 h-9"
-                  value={companySearchTerm}
-                  onChange={(e) => setCompanySearchTerm(e.target.value)}
-                />
-              </div>
+              <SearchInput 
+                placeholder="Search companies..." 
+                value={companySearchTerm}
+                onChange={(e) => setCompanySearchTerm(e.target.value)}
+              />
               <div className="max-h-[200px] overflow-y-auto mt-2">
                 {filteredCompanies.length > 0 ? (
                   filteredCompanies.map((company) => (
@@ -141,15 +138,11 @@ export function ClientsSidebar({
           <AccordionItem value="zipcode">
             <AccordionTrigger className="text-sm">Zipcode</AccordionTrigger>
             <AccordionContent className="space-y-2">
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  placeholder="Search zipcodes..." 
-                  className="pl-8 h-9"
-                  value={zipcodeSearchTerm}
-                  onChange={(e) => setZipcodeSearchTerm(e.target.value)}
-                />
-              </div>
+              <SearchInput 
+                placeholder="Search zipcodes..." 
+                value={zipcodeSearchTerm}
+                onChange={(e) => setZipcodeSearchTerm(e.target.value)}
+              />
               <div className="max-h-[200px] overflow-y-auto mt-2">
                 {filteredZipcodes.length > 0 ? (
                   filteredZipcodes.map((zipcode) => (
@@ -185,15 +178,11 @@ export function ClientsSidebar({
           <AccordionItem value="city">
             <AccordionTrigger className="text-sm">City</AccordionTrigger>
             <AccordionContent className="space-y-2">
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  placeholder="Search cities..." 
-                  className="pl-8 h-9"
-                  value={citySearchTerm}
-                  onChange={(e) => setCitySearchTerm(e.target.value)}
-                />
-              </div>
+              <SearchInput 
+                placeholder="Search cities..." 
+                value={citySearchTerm}
+                onChange={(e) => setCitySearchTerm(e.target.value)}
+              />
               <div className="max-h-[200px] overflow-y-auto mt-2">
                 {filteredCities.length > 0 ? (
                   filteredCities.map((city) => (
@@ -229,15 +218,11 @@ export function ClientsSidebar({
           <AccordionItem value="state">
             <AccordionTrigger className="text-sm">State</AccordionTrigger>
             <AccordionContent className="space-y-2">
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  placeholder="Search states..." 
-                  className="pl-8 h-9"
-                  value={stateSearchTerm}
-                  onChange={(e) => setStateSearchTerm(e.target.value)}
-                />
-              </div>
+              <SearchInput 
+                placeholder="Search states..." 
+                value={stateSearchTerm}
+                onChange={(e) => setStateSearchTerm(e.target.value)}
+              />
               <div className="max-h-[200px] overflow-y-auto mt-2">
                 {filteredStates.length > 0 ? (
                   filteredStates.map((state) => (
