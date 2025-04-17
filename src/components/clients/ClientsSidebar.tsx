@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Save, RotateCcw } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SearchInput } from "@/components/ui/search-input";
+
 interface ClientsSidebarProps {
   open: boolean;
   onClose: () => void;
@@ -28,6 +29,7 @@ interface ClientsSidebarProps {
   selectedCompanies: string[];
   setSelectedCompanies: (companies: string[]) => void;
 }
+
 export function ClientsSidebar({
   open,
   onClose,
@@ -56,6 +58,7 @@ export function ClientsSidebar({
   const filteredZipcodes = allZipcodes.filter(zipcode => zipcode.toLowerCase().includes(zipcodeSearchTerm.toLowerCase()));
   const filteredCities = allCities.filter(city => city.toLowerCase().includes(citySearchTerm.toLowerCase()));
   const filteredStates = allStates.filter(state => state.toLowerCase().includes(stateSearchTerm.toLowerCase()));
+
   const handleReset = () => {
     setSelectedCompanies([]);
     setSelectedZipcodes([]);
@@ -65,11 +68,11 @@ export function ClientsSidebar({
       setSelectedStatuses([]);
     }
   };
+
   const handleSave = () => {
-    // In a real application, this would save the current filter state
-    // For now, we'll just close the sidebar
     onClose();
   };
+
   const filterContent = <div className="h-full flex flex-col">
       <div className="p-4">
         <h2 className="text-lg font-medium">Filters</h2>
@@ -193,6 +196,7 @@ export function ClientsSidebar({
         </Button>
       </div>
     </div>;
+
   if (isMobile) {
     return <Drawer open={open} onOpenChange={onClose}>
         <DrawerContent className="h-[80vh]">
