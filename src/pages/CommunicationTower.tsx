@@ -21,7 +21,6 @@ const CommunicationTower = () => {
   const [selectedClientStatuses, setSelectedClientStatuses] = useState<string[]>([]);
   const [selectedClientCities, setSelectedClientCities] = useState<string[]>([]);
   const [selectedClientStates, setSelectedClientStates] = useState<string[]>([]);
-  const [selectedClientProfiles, setSelectedClientProfiles] = useState<string[]>([]);
   const [selectedOrganizations, setSelectedOrganizations] = useState<string[]>([]);
   
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(true);
@@ -56,7 +55,6 @@ const CommunicationTower = () => {
       setSelectedClientStatuses(filters.statuses);
       setSelectedClientCities(filters.cities);
       setSelectedClientStates(filters.states);
-      setSelectedClientProfiles(filters.profiles);
       setSelectedOrganizations(filters.organizations);
     }
   };
@@ -101,9 +99,6 @@ const CommunicationTower = () => {
                   selectedStates={selectedClientStates}
                   setSelectedStates={setSelectedClientStates}
                   allStates={allStates}
-                  selectedProfiles={selectedClientProfiles}
-                  setSelectedProfiles={setSelectedClientProfiles}
-                  allProfiles={allClientProfiles}
                   selectedOrganizations={selectedOrganizations}
                   setSelectedOrganizations={setSelectedOrganizations}
                   allOrganizations={allOrganizations}
@@ -121,7 +116,7 @@ const CommunicationTower = () => {
                     zipcodes: selectedZipcodes,
                     cities: activeTab === "drivers" ? selectedCities : selectedClientCities,
                     states: activeTab === "drivers" ? selectedStates : selectedClientStates,
-                    profiles: activeTab === "drivers" ? selectedProfiles : selectedClientProfiles,
+                    profiles: selectedProfiles,
                     transports: selectedTransports,
                     hireStatuses: selectedHireStatuses,
                     organizations: selectedOrganizations

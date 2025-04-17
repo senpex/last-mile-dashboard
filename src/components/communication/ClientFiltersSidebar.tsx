@@ -267,4 +267,3 @@ export const ClientFiltersSidebar = ({
     </div>
   );
 };
-
