@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import { Search, Users, User, Send, Clock, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,7 @@ interface CommunicationPanelProps {
     transports?: string[];
     hireStatuses?: string[];
     organizations?: string[];
+    dispatchers?: string[];
   };
   activeTab?: string;
   setActiveTab?: (tab: string) => void;
