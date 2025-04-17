@@ -265,6 +265,8 @@ export function DeliverySidebar({
       senderNames: selectedSenderNames,
       recipientNames: selectedRecipientNames
     });
+    
+    onClose();
   };
 
   const handleResetFilters = () => {
