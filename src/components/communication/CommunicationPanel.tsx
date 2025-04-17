@@ -52,7 +52,30 @@ const generateRandomDrivers = (count: number, startId: number = 10000): any[] =>
 
 const mockDrivers = generateRandomDrivers(20);
 
-const CommunicationPanel = ({ selectedFilters, activeTab = "drivers", setActiveTab }: CommunicationPanelProps) => {
+const generateRandomClients = (count: number, startId: number = 20000): any[] => {
+  const companyNames = ["ABC Corp", "XYZ Ltd", "123 Industries", "Tech Solutions", "Global Services"];
+  const contacts = ["John Smith", "Jane Doe", "Michael Brown", "Emma Wilson", "David Miller"];
+  
+  return Array.from({ length: count }, (_, i) => {
+    const companyName = companyNames[Math.floor(Math.random() * companyNames.length)];
+    const contact = contacts[Math.floor(Math.random() * contacts.length)];
+    const email = `${contact.toLowerCase().replace(' ', '.')}@${companyName.toLowerCase().replace(' ', '')}.com`;
+    const phone = `(${Math.floor(Math.random() * 900) + 100}) ${Math.floor(Math.random() * 900) + 100}-${Math.floor(Math.random() * 9000) + 1000}`;
+    
+    return {
+      id: startId + i,
+      name: companyName,
+      contactName: contact,
+      email,
+      phone,
+      status: "active"
+    };
+  });
+};
+
+const mockClients = generateRandomClients(20);
+
+const CommunicationPanel = ({ activeTab, setActiveTab, selectedFilters }: CommunicationPanelProps) => {
   const { toast } = useToast();
   const [message, setMessage] = useState("");
   const [selectedRecipients, setSelectedRecipients] = useState<Recipient[]>([]);
@@ -79,6 +102,17 @@ const CommunicationPanel = ({ selectedFilters, activeTab = "drivers", setActiveT
         const phoneMatch = driver.phone.includes(searchQuery);
         const idMatch = driver.id.toString().includes(searchQuery);
         return nameMatch || emailMatch || phoneMatch || idMatch;
+      })
+    : [];
+
+  const filteredClients = searchQuery.length >= 3 
+    ? mockClients.filter(client => {
+        const nameMatch = client.name.toLowerCase().includes(searchQuery.toLowerCase());
+        const contactMatch = client.contactName.toLowerCase().includes(searchQuery.toLowerCase());
+        const emailMatch = client.email.toLowerCase().includes(searchQuery.toLowerCase());
+        const phoneMatch = client.phone.includes(searchQuery);
+        const idMatch = client.id.toString().includes(searchQuery);
+        return nameMatch || contactMatch || emailMatch || phoneMatch || idMatch;
       })
     : [];
 
@@ -215,17 +249,48 @@ const CommunicationPanel = ({ selectedFilters, activeTab = "drivers", setActiveT
                 Find contact:
               </label>
               <div className="relative">
-                <Input 
+                <Input
                   id="client-search"
-                  value={searchQuery} 
-                  onChange={e => {
+                  value={searchQuery}
+                  onChange={(e) => {
                     setSearchQuery(e.target.value);
                     setShowDropdown(e.target.value.length >= 3);
                   }}
-                  placeholder="Search clients" 
-                  className="w-full pl-8" 
+                  placeholder="Search clients"
+                  className="w-full pl-8"
                 />
                 <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
+
+                {showDropdown && searchQuery.length >= 3 && (
+                  <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 max-h-60 overflow-auto">
+                    {filteredClients.length > 0 ? (
+                      filteredClients.map((client) => (
+                        <div
+                          key={client.id}
+                          onClick={() => handleSelectRecipient(client)}
+                          className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center justify-between"
+                        >
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-gray-500">ID: {client.id}</span>
+                              <div className="font-medium">{client.name}</div>
+                            </div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">{client.contactName}</div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">{client.email}</div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">{client.phone}</div>
+                          </div>
+                          {selectedRecipients.some(r => r.id === client.id) && (
+                            <Check className="h-4 w-4 text-green-500" />
+                          )}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="px-4 py-2 text-gray-500 dark:text-gray-400">
+                        No results found
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
