@@ -181,33 +181,39 @@ const CommunicationPanel = () => {
             aria-label="Toggle SMS" 
             className={`
               dark:hover:bg-gray-700 
-              ${channels.includes('sms') ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' : ''}
+              ${channels.includes('sms') 
+                ? 'bg-green-500 dark:bg-green-600 text-white' 
+                : 'dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}
             `}
           >
-            <Smartphone className={`mr-1 h-4 w-4 ${channels.includes('sms') ? 'text-green-700 dark:text-green-300' : 'dark:text-gray-300'}`} />
-            <span className={`text-foreground ${channels.includes('sms') ? 'text-green-700 dark:text-green-300' : 'dark:text-gray-300'}`}>SMS</span>
+            <Smartphone className={`mr-1 h-4 w-4 ${channels.includes('sms') ? 'text-white' : 'dark:text-gray-300'}`} />
+            <span className={`${channels.includes('sms') ? 'text-white' : 'text-foreground dark:text-gray-300'}`}>SMS</span>
           </ToggleGroupItem>
           <ToggleGroupItem 
             value="email" 
             aria-label="Toggle Email" 
             className={`
               dark:hover:bg-gray-700 
-              ${channels.includes('email') ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' : ''}
+              ${channels.includes('email') 
+                ? 'bg-green-500 dark:bg-green-600 text-white' 
+                : 'dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}
             `}
           >
-            <Mail className={`mr-1 h-4 w-4 ${channels.includes('email') ? 'text-green-700 dark:text-green-300' : 'dark:text-gray-300'}`} />
-            <span className={`text-foreground ${channels.includes('email') ? 'text-green-700 dark:text-green-300' : 'dark:text-gray-300'}`}>Email</span>
+            <Mail className={`mr-1 h-4 w-4 ${channels.includes('email') ? 'text-white' : 'dark:text-gray-300'}`} />
+            <span className={`${channels.includes('email') ? 'text-white' : 'text-foreground dark:text-gray-300'}`}>Email</span>
           </ToggleGroupItem>
           <ToggleGroupItem 
             value="inapp" 
             aria-label="Toggle In-App" 
             className={`
               dark:hover:bg-gray-700 
-              ${channels.includes('inapp') ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' : ''}
+              ${channels.includes('inapp') 
+                ? 'bg-green-500 dark:bg-green-600 text-white' 
+                : 'dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}
             `}
           >
-            <MessageSquare className={`mr-1 h-4 w-4 ${channels.includes('inapp') ? 'text-green-700 dark:text-green-300' : 'dark:text-gray-300'}`} />
-            <span className={`text-foreground ${channels.includes('inapp') ? 'text-green-700 dark:text-green-300' : 'dark:text-gray-300'}`}>In-App</span>
+            <MessageSquare className={`mr-1 h-4 w-4 ${channels.includes('inapp') ? 'text-white' : 'dark:text-gray-300'}`} />
+            <span className={`${channels.includes('inapp') ? 'text-white' : 'text-foreground dark:text-gray-300'}`}>In-App</span>
           </ToggleGroupItem>
         </ToggleGroup>
       </div>
