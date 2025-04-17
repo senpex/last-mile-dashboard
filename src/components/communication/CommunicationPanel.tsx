@@ -107,10 +107,10 @@ const CommunicationPanel = ({ selectedFilters }: CommunicationPanelProps = {}) =
 
   const handleSendMessage = () => {
     const messageData: MessageData = {
-      content: message,
+      message: message,
       recipients: selectedRecipients,
       channels: channels,
-      filters: selectedFilters
+      timestamp: new Date().toISOString()
     };
     
     console.log("Sending message:", messageData);
