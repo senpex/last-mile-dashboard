@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Search, Users, User, Send, Clock, MessageSquare, Mail, Smartphone, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils"; // Add the import for cn utility
 
 const messageTemplates = [{
   id: "template1",
@@ -155,7 +157,24 @@ const CommunicationPanel = ({ className = "", isFilterSidebarOpen }: { className
             </Button>
 
             <div className="space-y-2">
-              {filteredRecipients.map(recipient => {})}
+              {filteredRecipients.map((recipient) => (
+                <div 
+                  key={recipient.id}
+                  className="flex items-center space-x-2 p-2 rounded border border-gray-200 dark:border-gray-700"
+                >
+                  <Checkbox
+                    id={`recipient-${recipient.id}`}
+                    checked={selectedRecipients.some(r => r.id === recipient.id)}
+                    onCheckedChange={() => handleSelectRecipient(recipient)}
+                  />
+                  <label
+                    htmlFor={`recipient-${recipient.id}`}
+                    className="text-sm font-medium leading-none dark:text-gray-300"
+                  >
+                    {recipient.name}
+                  </label>
+                </div>
+              ))}
             </div>
           </div>
         </Tabs>
