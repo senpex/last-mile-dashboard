@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Search, Users, User, Send, Clock, MessageSquare, Mail, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-
 const messageTemplates = [{
   id: "template1",
   name: "Order Arriving",
@@ -29,7 +27,6 @@ const messageTemplates = [{
   name: "Delivery Completed",
   content: "Your delivery has been completed. Thank you for using our service!"
 }];
-
 const mockRecipients = {
   clients: [{
     id: "c1",
@@ -71,27 +68,21 @@ const mockRecipients = {
     type: "group"
   }]
 };
-
 type Recipient = {
   id: string;
   name: string;
   type: string;
 };
-
 const CommunicationPanel = () => {
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [message, setMessage] = useState("");
   const [selectedRecipients, setSelectedRecipients] = useState<Recipient[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("drivers");
   const [channels, setChannels] = useState<string[]>(["sms", "email", "inapp"]);
-
-  const filteredRecipients = searchQuery.length > 0 
-    ? mockRecipients[activeTab as keyof typeof mockRecipients].filter(recipient => 
-        recipient.name.toLowerCase().includes(searchQuery.toLowerCase())
-      ) 
-    : mockRecipients[activeTab as keyof typeof mockRecipients];
-
+  const filteredRecipients = searchQuery.length > 0 ? mockRecipients[activeTab as keyof typeof mockRecipients].filter(recipient => recipient.name.toLowerCase().includes(searchQuery.toLowerCase())) : mockRecipients[activeTab as keyof typeof mockRecipients];
   const handleSelectRecipient = (recipient: Recipient) => {
     const isAlreadySelected = selectedRecipients.some(r => r.id === recipient.id);
     if (isAlreadySelected) {
@@ -100,19 +91,16 @@ const CommunicationPanel = () => {
       setSelectedRecipients([...selectedRecipients, recipient]);
     }
   };
-
   const handleSelectTemplate = (templateId: string) => {
     const template = messageTemplates.find(t => t.id === templateId);
     if (template) {
       setMessage(template.content);
     }
   };
-
   const handleChannelToggle = (value: string[]) => {
     console.log("Channel toggled:", value);
     setChannels(value);
   };
-
   const handleSendMessage = () => {
     if (!message.trim() || selectedRecipients.length === 0 || channels.length === 0) {
       toast({
@@ -122,14 +110,12 @@ const CommunicationPanel = () => {
       });
       return;
     }
-
     const messageData = {
       message,
       recipients: selectedRecipients,
       channels,
       timestamp: new Date().toISOString()
     };
-
     console.log("Sending message:", messageData);
     toast({
       title: "Message Sent",
@@ -137,7 +123,6 @@ const CommunicationPanel = () => {
     });
     setMessage("");
   };
-
   return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-4">
       <div className="mb-6">
         <Tabs defaultValue="drivers" onValueChange={setActiveTab}>
@@ -152,23 +137,7 @@ const CommunicationPanel = () => {
           </div>
 
           <div className="space-y-2">
-            {filteredRecipients.map(recipient => (
-              <div 
-                key={recipient.id} 
-                className={cn(
-                  "flex items-center space-x-2 p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800",
-                  selectedRecipients.some(r => r.id === recipient.id) ? "bg-gray-100 dark:bg-gray-800" : ""
-                )}
-                onClick={() => handleSelectRecipient(recipient)}
-              >
-                <Checkbox 
-                  checked={selectedRecipients.some(r => r.id === recipient.id)} 
-                  onCheckedChange={() => handleSelectRecipient(recipient)}
-                  className="data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600"
-                />
-                <span>{recipient.name}</span>
-              </div>
-            ))}
+            {filteredRecipients.map(recipient => {})}
           </div>
         </Tabs>
       </div>
@@ -234,5 +203,4 @@ const CommunicationPanel = () => {
       </div>
     </div>;
 };
-
 export default CommunicationPanel;
