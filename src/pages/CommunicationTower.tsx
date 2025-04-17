@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { TowerControl } from "lucide-react";
 import CommunicationPanel from "@/components/communication/CommunicationPanel";
@@ -17,8 +16,7 @@ const CommunicationTower = () => {
   const [selectedTransports, setSelectedTransports] = useState<string[]>([]);
   const [selectedHireStatuses, setSelectedHireStatuses] = useState<string[]>([]);
   
-  // Client filters - fixing the type here from string[] to make it compatible
-  const [selectedClientStatuses, setSelectedClientStatuses] = useState<string[]>([]);
+  // Client filters
   const [selectedClientCities, setSelectedClientCities] = useState<string[]>([]);
   const [selectedClientStates, setSelectedClientStates] = useState<string[]>([]);
   const [selectedOrganizations, setSelectedOrganizations] = useState<string[]>([]);
@@ -52,7 +50,6 @@ const CommunicationTower = () => {
       setSelectedTransports(filters.transports || []);
       setSelectedHireStatuses(filters.hireStatuses || []);
     } else if (activeTab === "clients") {
-      setSelectedClientStatuses(filters.statuses);
       setSelectedClientCities(filters.cities);
       setSelectedClientStates(filters.states);
       setSelectedOrganizations(filters.organizations);
@@ -90,9 +87,6 @@ const CommunicationTower = () => {
                 />
               ) : (
                 <ClientFiltersSidebar
-                  selectedStatuses={selectedClientStatuses}
-                  setSelectedStatuses={setSelectedClientStatuses}
-                  allClientStatuses={allClientStatuses}
                   selectedCities={selectedClientCities}
                   setSelectedCities={setSelectedClientCities}
                   allCities={allCities}
@@ -112,7 +106,7 @@ const CommunicationTower = () => {
                   activeTab={activeTab}
                   setActiveTab={setActiveTab}
                   selectedFilters={{
-                    statuses: activeTab === "drivers" ? selectedStatuses : selectedClientStatuses,
+                    statuses: activeTab === "drivers" ? selectedStatuses : [],
                     zipcodes: selectedZipcodes,
                     cities: activeTab === "drivers" ? selectedCities : selectedClientCities,
                     states: activeTab === "drivers" ? selectedStates : selectedClientStates,

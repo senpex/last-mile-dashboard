@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -12,9 +11,6 @@ import { Save, RotateCcw } from "lucide-react";
 import { Label } from "@/components/ui/label";
 
 interface ClientFiltersSidebarProps {
-  selectedStatuses: string[];
-  setSelectedStatuses: (statuses: string[]) => void;
-  allClientStatuses: string[];
   selectedCities: string[];
   setSelectedCities: (cities: string[]) => void;
   allCities: string[];
@@ -30,9 +26,6 @@ interface ClientFiltersSidebarProps {
 }
 
 export const ClientFiltersSidebar = ({
-  selectedStatuses,
-  setSelectedStatuses,
-  allClientStatuses,
   selectedCities,
   setSelectedCities,
   allCities,
@@ -58,45 +51,8 @@ export const ClientFiltersSidebar = ({
         
         <ScrollArea className="flex-1 -mr-4 pr-4">
           <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="status" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                Status
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col space-y-3 py-2">
-                  {allClientStatuses.map((status) => (
-                    <div key={status} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`status-${status}`}
-                        checked={selectedStatuses.includes(status)}
-                        onCheckedChange={() => {
-                          const newStatuses = selectedStatuses.includes(status)
-                            ? selectedStatuses.filter(s => s !== status)
-                            : [...selectedStatuses, status];
-                          setSelectedStatuses(newStatuses);
-                          onFiltersAdd({
-                            statuses: newStatuses,
-                            cities: selectedCities,
-                            states: selectedStates,
-                            organizations: selectedOrganizations
-                          });
-                        }}
-                      />
-                      <Label
-                        htmlFor={`status-${status}`}
-                        className="flex flex-1 items-center justify-between"
-                      >
-                        <span>{status.charAt(0).toUpperCase() + status.slice(1)}</span>
-                        <Badge variant="outline" className="ml-auto">{Math.floor(Math.random() * 20) + 1}</Badge>
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-
             <AccordionItem value="cities">
-              <AccordionTrigger className="text-sm font-medium">
+              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
                 Cities
               </AccordionTrigger>
               <AccordionContent>
@@ -122,7 +78,6 @@ export const ClientFiltersSidebar = ({
                             : [...selectedCities, city];
                           setSelectedCities(newCities);
                           onFiltersAdd({
-                            statuses: selectedStatuses,
                             cities: newCities,
                             states: selectedStates,
                             organizations: selectedOrganizations
@@ -169,7 +124,6 @@ export const ClientFiltersSidebar = ({
                             : [...selectedStates, state];
                           setSelectedStates(newStates);
                           onFiltersAdd({
-                            statuses: selectedStatuses,
                             cities: selectedCities,
                             states: newStates,
                             organizations: selectedOrganizations
@@ -206,7 +160,6 @@ export const ClientFiltersSidebar = ({
                             : [...selectedOrganizations, org];
                           setSelectedOrganizations(newOrgs);
                           onFiltersAdd({
-                            statuses: selectedStatuses,
                             cities: selectedCities,
                             states: selectedStates,
                             organizations: newOrgs
@@ -233,12 +186,10 @@ export const ClientFiltersSidebar = ({
             variant="outline" 
             className="flex-1 gap-1" 
             onClick={() => {
-              setSelectedStatuses([]);
               setSelectedCities([]);
               setSelectedStates([]);
               setSelectedOrganizations([]);
               onFiltersAdd({
-                statuses: [],
                 cities: [],
                 states: [],
                 organizations: []
@@ -252,7 +203,6 @@ export const ClientFiltersSidebar = ({
             className="flex-1 gap-1" 
             onClick={() => {
               onFiltersAdd({
-                statuses: selectedStatuses,
                 cities: selectedCities,
                 states: selectedStates,
                 organizations: selectedOrganizations
