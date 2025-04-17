@@ -41,7 +41,7 @@ export function ClientsSidebar({
 }: ClientsSidebarProps) {
   return (
     <Sheet open={open} onOpenChange={onClose}>
-      <SheetContent side="right" className="w-[280px] p-0 bg-background">
+      <SheetContent side="left" className="w-[280px] p-0 bg-background">
         <div className="h-full flex flex-col">
           <div className="p-4 border-b">
             <h2 className="text-lg font-medium">Filters</h2>
