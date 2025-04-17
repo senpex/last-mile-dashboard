@@ -1,3 +1,4 @@
+
 import { Layout } from "@/components/layout/Layout";
 import { TowerControl } from "lucide-react";
 import CommunicationPanel from "@/components/communication/CommunicationPanel";
@@ -36,7 +37,7 @@ const CommunicationTower = () => {
               <h1 className="text-2xl font-bold">Communication Tower</h1>
             </div>
 
-            <div className="flex gap-6 h-[calc(100vh-180px)]">
+            <div className="flex gap-[10px] h-[calc(100vh-180px)]">
               <DriversSidebar
                 selectedStatuses={selectedStatuses}
                 setSelectedStatuses={setSelectedStatuses}
