@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { Save, RotateCcw } from "lucide-react";
+import { Save, RotateCcw, Search } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -223,18 +224,27 @@ export function DriversSidebar({
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search profiles..."
-                    value={profileSearchTerm}
-                    onChange={(e) => setProfileSearchTerm(e.target.value)}
-                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
-                  />
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search profiles..."
+                      value={profileSearchTerm}
+                      onChange={(e) => setProfileSearchTerm(e.target.value)}
+                      className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                    />
+                  </div>
                   {filteredProfiles.map(profile => (
                     <div key={profile.id} className="flex items-center space-x-2">
                       <Checkbox 
                         id={`profile-${profile.id}`} 
                         checked={selectedProfiles.includes(profile.id)} 
-                        onCheckedChange={checked => handleProfileChange(profile.id, checked === true)} 
+                        onCheckedChange={checked => {
+                          if (checked) {
+                            setSelectedProfiles([...selectedProfiles, profile.id]);
+                          } else {
+                            setSelectedProfiles(selectedProfiles.filter(p => p !== profile.id));
+                          }
+                        }} 
                       />
                       <Label 
                         htmlFor={`profile-${profile.id}`} 
@@ -245,6 +255,9 @@ export function DriversSidebar({
                       </Label>
                     </div>
                   ))}
+                  {filteredProfiles.length === 0 && (
+                    <p className="text-sm text-muted-foreground">No matching profiles found</p>
+                  )}
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -255,18 +268,27 @@ export function DriversSidebar({
               </AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-2 pt-1">
-                  <Input
-                    placeholder="Search status..."
-                    value={statusSearchTerm}
-                    onChange={(e) => setStatusSearchTerm(e.target.value)}
-                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
-                  />
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search status..."
+                      value={statusSearchTerm}
+                      onChange={(e) => setStatusSearchTerm(e.target.value)}
+                      className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                    />
+                  </div>
                   {filteredDeliveryStatuses.map((status) => (
                     <div key={status} className="flex items-center space-x-2">
                       <Checkbox
                         id={`status-${status}`}
                         checked={selectedStatuses.includes(status)}
-                        onCheckedChange={() => handleStatusChange(status)}
+                        onCheckedChange={() => {
+                          if (selectedStatuses.includes(status)) {
+                            setSelectedStatuses(selectedStatuses.filter(s => s !== status));
+                          } else {
+                            setSelectedStatuses([...selectedStatuses, status]);
+                          }
+                        }}
                       />
                       <label
                         htmlFor={`status-${status}`}
@@ -290,18 +312,27 @@ export function DriversSidebar({
               </AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-2 pt-1">
-                  <Input
-                    placeholder="Search hire status..."
-                    value={hireStatusSearchTerm}
-                    onChange={(e) => setHireStatusSearchTerm(e.target.value)}
-                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
-                  />
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search hire status..."
+                      value={hireStatusSearchTerm}
+                      onChange={(e) => setHireStatusSearchTerm(e.target.value)}
+                      className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                    />
+                  </div>
                   {filteredHireStatuses.map((status) => (
                     <div key={status.id} className="flex items-center space-x-2">
                       <Checkbox
                         id={`hire-status-${status.id}`}
                         checked={selectedHireStatuses.includes(status.id)}
-                        onCheckedChange={() => handleHireStatusChange(status.id)}
+                        onCheckedChange={() => {
+                          if (selectedHireStatuses.includes(status.id)) {
+                            setSelectedHireStatuses(selectedHireStatuses.filter(s => s !== status.id));
+                          } else {
+                            setSelectedHireStatuses([...selectedHireStatuses, status.id]);
+                          }
+                        }}
                       />
                       <label
                         htmlFor={`hire-status-${status.id}`}
@@ -326,18 +357,27 @@ export function DriversSidebar({
               </AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-2 pt-1">
-                  <Input
-                    placeholder="Search transport type..."
-                    value={transportSearchTerm}
-                    onChange={(e) => setTransportSearchTerm(e.target.value)}
-                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
-                  />
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search transport type..."
+                      value={transportSearchTerm}
+                      onChange={(e) => setTransportSearchTerm(e.target.value)}
+                      className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                    />
+                  </div>
                   {filteredTransportTypes.map((transport) => (
                     <div key={transport.id} className="flex items-center space-x-2">
                       <Checkbox
                         id={`transport-${transport.id}`}
                         checked={selectedTransports.includes(transport.id)}
-                        onCheckedChange={() => handleTransportChange(transport.id)}
+                        onCheckedChange={() => {
+                          if (selectedTransports.includes(transport.id)) {
+                            setSelectedTransports(selectedTransports.filter(t => t !== transport.id));
+                          } else {
+                            setSelectedTransports([...selectedTransports, transport.id]);
+                          }
+                        }}
                       />
                       <label
                         htmlFor={`transport-${transport.id}`}
@@ -370,18 +410,27 @@ export function DriversSidebar({
               </AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-2 pt-1">
-                  <Input
-                    placeholder="Search cities..."
-                    value={citySearchTerm}
-                    onChange={(e) => setCitySearchTerm(e.target.value)}
-                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
-                  />
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search cities..."
+                      value={citySearchTerm}
+                      onChange={(e) => setCitySearchTerm(e.target.value)}
+                      className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                    />
+                  </div>
                   {filteredCities.map((city) => (
                     <div key={city} className="flex items-center space-x-2">
                       <Checkbox
                         id={`city-${city}`}
                         checked={selectedCities.includes(city)}
-                        onCheckedChange={() => handleCityChange(city)}
+                        onCheckedChange={() => {
+                          if (selectedCities.includes(city)) {
+                            setSelectedCities(selectedCities.filter(c => c !== city));
+                          } else {
+                            setSelectedCities([...selectedCities, city]);
+                          }
+                        }}
                       />
                       <label
                         htmlFor={`city-${city}`}
@@ -405,18 +454,27 @@ export function DriversSidebar({
               </AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-2 pt-1">
-                  <Input
-                    placeholder="Search states..."
-                    value={stateSearchTerm}
-                    onChange={(e) => setStateSearchTerm(e.target.value)}
-                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
-                  />
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search states..."
+                      value={stateSearchTerm}
+                      onChange={(e) => setStateSearchTerm(e.target.value)}
+                      className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                    />
+                  </div>
                   {filteredStates.map((state) => (
                     <div key={state} className="flex items-center space-x-2">
                       <Checkbox
                         id={`state-${state}`}
                         checked={selectedStates.includes(state)}
-                        onCheckedChange={() => handleStateChange(state)}
+                        onCheckedChange={() => {
+                          if (selectedStates.includes(state)) {
+                            setSelectedStates(selectedStates.filter(s => s !== state));
+                          } else {
+                            setSelectedStates([...selectedStates, state]);
+                          }
+                        }}
                       />
                       <label
                         htmlFor={`state-${state}`}
@@ -440,18 +498,27 @@ export function DriversSidebar({
               </AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-2 pt-1">
-                  <Input
-                    placeholder="Search zipcode..."
-                    value={zipcodeSearchTerm}
-                    onChange={(e) => setZipcodeSearchTerm(e.target.value)}
-                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
-                  />
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search zipcode..."
+                      value={zipcodeSearchTerm}
+                      onChange={(e) => setZipcodeSearchTerm(e.target.value)}
+                      className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                    />
+                  </div>
                   {filteredZipcodes.map((zipcode) => (
                     <div key={zipcode} className="flex items-center space-x-2">
                       <Checkbox
                         id={`zipcode-${zipcode}`}
                         checked={selectedZipcodes.includes(zipcode)}
-                        onCheckedChange={() => handleZipcodeChange(zipcode)}
+                        onCheckedChange={() => {
+                          if (selectedZipcodes.includes(zipcode)) {
+                            setSelectedZipcodes(selectedZipcodes.filter(z => z !== zipcode));
+                          } else {
+                            setSelectedZipcodes([...selectedZipcodes, zipcode]);
+                          }
+                        }}
                       />
                       <label
                         htmlFor={`zipcode-${zipcode}`}

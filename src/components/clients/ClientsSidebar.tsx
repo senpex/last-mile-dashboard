@@ -1,10 +1,13 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ClientsSidebarProps {
@@ -47,6 +50,26 @@ export function ClientsSidebar({
   setSelectedCompanies
 }: ClientsSidebarProps) {
   const isMobile = useIsMobile();
+  const [companySearchTerm, setCompanySearchTerm] = useState('');
+  const [zipcodeSearchTerm, setZipcodeSearchTerm] = useState('');
+  const [citySearchTerm, setCitySearchTerm] = useState('');
+  const [stateSearchTerm, setStateSearchTerm] = useState('');
+
+  const filteredCompanies = allCompanies.filter(company => 
+    company.toLowerCase().includes(companySearchTerm.toLowerCase())
+  );
+
+  const filteredZipcodes = allZipcodes.filter(zipcode => 
+    zipcode.toLowerCase().includes(zipcodeSearchTerm.toLowerCase())
+  );
+
+  const filteredCities = allCities.filter(city => 
+    city.toLowerCase().includes(citySearchTerm.toLowerCase())
+  );
+
+  const filteredStates = allStates.filter(state => 
+    state.toLowerCase().includes(stateSearchTerm.toLowerCase())
+  );
 
   const filterContent = (
     <div className="h-full flex flex-col">
@@ -57,97 +80,157 @@ export function ClientsSidebar({
         <Accordion type="multiple" className="w-full">
           <AccordionItem value="company">
             <AccordionTrigger className="text-sm">Company</AccordionTrigger>
-            <AccordionContent className="space-y-2 max-h-[200px] overflow-y-auto">
-              {allCompanies.map((company) => (
-                <div key={company} className="flex items-center space-x-2">
-                  <Checkbox 
-                    id={`company-${company}`} 
-                    checked={selectedCompanies.includes(company)}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedCompanies([...selectedCompanies, company]);
-                      } else {
-                        setSelectedCompanies(selectedCompanies.filter(c => c !== company));
-                      }
-                    }} 
-                  />
-                  <Label htmlFor={`company-${company}`}>
-                    {company}
-                  </Label>
-                </div>
-              ))}
+            <AccordionContent className="space-y-2">
+              <div className="relative">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input 
+                  placeholder="Search companies..." 
+                  className="pl-8 h-9"
+                  value={companySearchTerm}
+                  onChange={(e) => setCompanySearchTerm(e.target.value)}
+                />
+              </div>
+              <div className="max-h-[200px] overflow-y-auto mt-2">
+                {filteredCompanies.length > 0 ? (
+                  filteredCompanies.map((company) => (
+                    <div key={company} className="flex items-center space-x-2 py-1">
+                      <Checkbox 
+                        id={`company-${company}`} 
+                        checked={selectedCompanies.includes(company)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedCompanies([...selectedCompanies, company]);
+                          } else {
+                            setSelectedCompanies(selectedCompanies.filter(c => c !== company));
+                          }
+                        }} 
+                      />
+                      <Label htmlFor={`company-${company}`} className="text-sm">
+                        {company}
+                      </Label>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground py-2">No companies found</p>
+                )}
+              </div>
             </AccordionContent>
           </AccordionItem>
           
           <AccordionItem value="zipcode">
             <AccordionTrigger className="text-sm">Zipcode</AccordionTrigger>
-            <AccordionContent className="space-y-2 max-h-[200px] overflow-y-auto">
-              {allZipcodes.map((zipcode) => (
-                <div key={zipcode} className="flex items-center space-x-2">
-                  <Checkbox 
-                    id={`zipcode-${zipcode}`} 
-                    checked={selectedZipcodes.includes(zipcode)}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedZipcodes([...selectedZipcodes, zipcode]);
-                      } else {
-                        setSelectedZipcodes(selectedZipcodes.filter(z => z !== zipcode));
-                      }
-                    }} 
-                  />
-                  <Label htmlFor={`zipcode-${zipcode}`}>
-                    {zipcode}
-                  </Label>
-                </div>
-              ))}
+            <AccordionContent className="space-y-2">
+              <div className="relative">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input 
+                  placeholder="Search zipcodes..." 
+                  className="pl-8 h-9"
+                  value={zipcodeSearchTerm}
+                  onChange={(e) => setZipcodeSearchTerm(e.target.value)}
+                />
+              </div>
+              <div className="max-h-[200px] overflow-y-auto mt-2">
+                {filteredZipcodes.length > 0 ? (
+                  filteredZipcodes.map((zipcode) => (
+                    <div key={zipcode} className="flex items-center space-x-2 py-1">
+                      <Checkbox 
+                        id={`zipcode-${zipcode}`} 
+                        checked={selectedZipcodes.includes(zipcode)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedZipcodes([...selectedZipcodes, zipcode]);
+                          } else {
+                            setSelectedZipcodes(selectedZipcodes.filter(z => z !== zipcode));
+                          }
+                        }} 
+                      />
+                      <Label htmlFor={`zipcode-${zipcode}`} className="text-sm">
+                        {zipcode}
+                      </Label>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground py-2">No zipcodes found</p>
+                )}
+              </div>
             </AccordionContent>
           </AccordionItem>
           
           <AccordionItem value="city">
             <AccordionTrigger className="text-sm">City</AccordionTrigger>
-            <AccordionContent className="space-y-2 max-h-[200px] overflow-y-auto">
-              {allCities.map((city) => (
-                <div key={city} className="flex items-center space-x-2">
-                  <Checkbox 
-                    id={`city-${city}`} 
-                    checked={selectedCities.includes(city)}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedCities([...selectedCities, city]);
-                      } else {
-                        setSelectedCities(selectedCities.filter(c => c !== city));
-                      }
-                    }} 
-                  />
-                  <Label htmlFor={`city-${city}`}>
-                    {city}
-                  </Label>
-                </div>
-              ))}
+            <AccordionContent className="space-y-2">
+              <div className="relative">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input 
+                  placeholder="Search cities..." 
+                  className="pl-8 h-9"
+                  value={citySearchTerm}
+                  onChange={(e) => setCitySearchTerm(e.target.value)}
+                />
+              </div>
+              <div className="max-h-[200px] overflow-y-auto mt-2">
+                {filteredCities.length > 0 ? (
+                  filteredCities.map((city) => (
+                    <div key={city} className="flex items-center space-x-2 py-1">
+                      <Checkbox 
+                        id={`city-${city}`} 
+                        checked={selectedCities.includes(city)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedCities([...selectedCities, city]);
+                          } else {
+                            setSelectedCities(selectedCities.filter(c => c !== city));
+                          }
+                        }} 
+                      />
+                      <Label htmlFor={`city-${city}`} className="text-sm">
+                        {city}
+                      </Label>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground py-2">No cities found</p>
+                )}
+              </div>
             </AccordionContent>
           </AccordionItem>
           
           <AccordionItem value="state">
             <AccordionTrigger className="text-sm">State</AccordionTrigger>
-            <AccordionContent className="space-y-2 max-h-[200px] overflow-y-auto">
-              {allStates.map((state) => (
-                <div key={state} className="flex items-center space-x-2">
-                  <Checkbox 
-                    id={`state-${state}`} 
-                    checked={selectedStates.includes(state)}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedStates([...selectedStates, state]);
-                      } else {
-                        setSelectedStates(selectedStates.filter(s => s !== state));
-                      }
-                    }} 
-                  />
-                  <Label htmlFor={`state-${state}`}>
-                    {state}
-                  </Label>
-                </div>
-              ))}
+            <AccordionContent className="space-y-2">
+              <div className="relative">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input 
+                  placeholder="Search states..." 
+                  className="pl-8 h-9"
+                  value={stateSearchTerm}
+                  onChange={(e) => setStateSearchTerm(e.target.value)}
+                />
+              </div>
+              <div className="max-h-[200px] overflow-y-auto mt-2">
+                {filteredStates.length > 0 ? (
+                  filteredStates.map((state) => (
+                    <div key={state} className="flex items-center space-x-2 py-1">
+                      <Checkbox 
+                        id={`state-${state}`} 
+                        checked={selectedStates.includes(state)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedStates([...selectedStates, state]);
+                          } else {
+                            setSelectedStates(selectedStates.filter(s => s !== state));
+                          }
+                        }} 
+                      />
+                      <Label htmlFor={`state-${state}`} className="text-sm">
+                        {state}
+                      </Label>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground py-2">No states found</p>
+                )}
+              </div>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
