@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Search, Users, User, Send, Clock, MessageSquare, Mail, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -148,7 +149,7 @@ const CommunicationPanel = () => {
           </TabsTrigger>
         </TabsList>
         
-        <div className="mb-6">
+        <div className="mb-16"> {/* Changed from mb-6 to mb-16 to add 10px of additional margin */}
           <label htmlFor="contact-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Find contact:
           </label>
