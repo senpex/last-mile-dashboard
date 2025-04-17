@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -212,7 +213,7 @@ export function DriversSidebar({
 
   return (
     <div 
-      className={`h-full bg-background border-r shadow-lg transition-all duration-300 
+      className={`h-full bg-white dark:bg-gray-900 rounded-lg shadow-md transition-all duration-300 
         ${open ? 'w-[275px] max-w-[80vw]' : 'w-0 overflow-hidden'}`}
     >
       <div className="p-6 w-full h-full flex flex-col overflow-y-auto">
