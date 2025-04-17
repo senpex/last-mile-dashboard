@@ -3,7 +3,7 @@ import React from 'react';
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Filter, Search, Map, MapPin } from "lucide-react";
+import { Filter, Search } from "lucide-react";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
@@ -11,7 +11,7 @@ import { ColumnOption } from "@/components/table/ColumnSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserFiltersLayout } from "@/components/users/UserFiltersLayout";
 
-interface DriversFiltersProps {
+interface ClientsFiltersProps {
   searchTerm: string;
   onSearchChange: (value: string) => void;
   dateRange: DateRange | undefined;
@@ -27,7 +27,7 @@ interface DriversFiltersProps {
   isFilterSidebarOpen: boolean;
 }
 
-export function DriversFilters({
+export function ClientsFilters({
   searchTerm,
   onSearchChange,
   dateRange,
@@ -41,7 +41,7 @@ export function DriversFilters({
   onActiveViewChange,
   onToggleFilterSidebar,
   isFilterSidebarOpen
-}: DriversFiltersProps) {
+}: ClientsFiltersProps) {
   const filterControls = (
     <>
       <DateRangePicker dateRange={dateRange} onDateRangeChange={onDateRangeChange} showStatePicker={false} useButton={false} />
@@ -64,7 +64,7 @@ export function DriversFilters({
         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input 
           type="search" 
-          placeholder="Search drivers..." 
+          placeholder="Search clients..." 
           className="pl-8 h-9 w-[240px]" 
           value={searchTerm} 
           onChange={e => onSearchChange(e.target.value)} 
@@ -83,13 +83,13 @@ export function DriversFilters({
 
   const viewControls = (
     <Tabs value={activeView} onValueChange={onActiveViewChange} className="w-auto">
-      {/* Tabs content */}
+      {/* Tabs content - can be customized for clients */}
     </Tabs>
   );
 
   return (
     <UserFiltersLayout
-      title="Drivers Management"
+      title="Clients Management"
       timezoneInfo={`All times are displayed using ${timezone.replace('_', ' ')} timezone`}
       filterControls={filterControls}
       searchControls={searchControls}
