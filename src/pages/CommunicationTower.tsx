@@ -6,7 +6,7 @@ import CommunicationPanel from "@/components/communication/CommunicationPanel";
 const CommunicationTower = () => {
   return (
     <Layout>
-      <div className="container mx-auto p-6">
+      <div className="container mx-auto p-6 pl-[150px]">
         <div className="flex items-center gap-2 mb-6">
           <TowerControl className="h-6 w-6" />
           <h1 className="text-2xl font-bold">Communication Tower</h1>
