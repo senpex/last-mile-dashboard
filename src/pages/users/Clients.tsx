@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo } from 'react';
 import Layout from "@/components/layout/Layout";
 import { DateRange } from "react-day-picker";
@@ -441,24 +442,7 @@ const ClientsPage = () => {
         />
 
         <div className="flex flex-1 overflow-hidden relative">
-          <ClientsSidebar
-            open={isFilterSidebarOpen}
-            onClose={() => setIsFilterSidebarOpen(false)}
-            selectedStatuses={selectedStatuses}
-            setSelectedStatuses={setSelectedStatuses}
-            allClientStatuses={allClientStatuses}
-            allZipcodes={allZipcodes}
-            selectedZipcodes={selectedZipcodes}
-            setSelectedZipcodes={setSelectedZipcodes}
-            allCities={allCities}
-            selectedCities={selectedCities}
-            setSelectedCities={setSelectedCities}
-            allStates={allStates}
-            selectedStates={selectedStates}
-            setSelectedStates={setSelectedStates}
-          />
-
-          <div className={`flex-1 transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-2"}`}>
+          <div className={`flex-1 transition-all duration-300 ease-in-out`}>
             <ClientsTable
               currentItems={currentItems}
               sortedColumns={sortedColumns}
@@ -480,6 +464,23 @@ const ClientsPage = () => {
               renderStatus={renderStatus}
             />
           </div>
+
+          <ClientsSidebar
+            open={isFilterSidebarOpen}
+            onClose={() => setIsFilterSidebarOpen(false)}
+            selectedStatuses={selectedStatuses}
+            setSelectedStatuses={setSelectedStatuses}
+            allClientStatuses={allClientStatuses}
+            allZipcodes={allZipcodes}
+            selectedZipcodes={selectedZipcodes}
+            setSelectedZipcodes={setSelectedZipcodes}
+            allCities={allCities}
+            selectedCities={selectedCities}
+            setSelectedCities={setSelectedCities}
+            allStates={allStates}
+            selectedStates={selectedStates}
+            setSelectedStates={setSelectedStates}
+          />
         </div>
 
         <ClientsPagination
