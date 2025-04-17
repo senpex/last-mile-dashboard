@@ -185,11 +185,11 @@ const CommunicationPanel = () => {
           <ToggleGroupItem 
             value="sms" 
             aria-label="Toggle SMS" 
-            className={
+            className={`${
               channels.includes('sms') 
                 ? 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700' 
-                : 'hover:bg-red-100 hover:text-red-700 dark:text-gray-300 dark:hover:bg-red-900/30 dark:hover:text-red-200'
-            }
+                : 'bg-transparent text-foreground dark:text-gray-300 hover:bg-red-100 hover:text-red-700 dark:hover:bg-red-900/30 dark:hover:text-red-200'
+            } transition-colors`}
           >
             <Smartphone className={`mr-1 h-4 w-4 ${channels.includes('sms') ? 'text-white' : ''}`} />
             <span>SMS</span>
@@ -198,11 +198,11 @@ const CommunicationPanel = () => {
           <ToggleGroupItem 
             value="email" 
             aria-label="Toggle Email" 
-            className={
+            className={`${
               channels.includes('email') 
                 ? 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700' 
-                : 'hover:bg-red-100 hover:text-red-700 dark:text-gray-300 dark:hover:bg-red-900/30 dark:hover:text-red-200'
-            }
+                : 'bg-transparent text-foreground dark:text-gray-300 hover:bg-red-100 hover:text-red-700 dark:hover:bg-red-900/30 dark:hover:text-red-200'
+            } transition-colors`}
           >
             <Mail className={`mr-1 h-4 w-4 ${channels.includes('email') ? 'text-white' : ''}`} />
             <span>Email</span>
@@ -211,11 +211,11 @@ const CommunicationPanel = () => {
           <ToggleGroupItem 
             value="inapp" 
             aria-label="Toggle In-App" 
-            className={
+            className={`${
               channels.includes('inapp') 
                 ? 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700' 
-                : 'hover:bg-red-100 hover:text-red-700 dark:text-gray-300 dark:hover:bg-red-900/30 dark:hover:text-red-200'
-            }
+                : 'bg-transparent text-foreground dark:text-gray-300 hover:bg-red-100 hover:text-red-700 dark:hover:bg-red-900/30 dark:hover:text-red-200'
+            } transition-colors`}
           >
             <MessageSquare className={`mr-1 h-4 w-4 ${channels.includes('inapp') ? 'text-white' : ''}`} />
             <span>In-App</span>
