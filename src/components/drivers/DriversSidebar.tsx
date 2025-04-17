@@ -10,6 +10,7 @@ import { getDictionary } from "@/lib/storage";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
 interface DriversSidebarProps {
   open: boolean;
