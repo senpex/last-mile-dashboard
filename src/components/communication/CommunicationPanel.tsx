@@ -188,7 +188,7 @@ const CommunicationPanel = () => {
       </div>
 
       <div className="mb-5">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between my-[40px]">
           <label className="block text-sm font-medium text-foreground dark:text-gray-300">
             Message:
           </label>
