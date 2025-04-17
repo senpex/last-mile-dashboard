@@ -44,6 +44,15 @@ const CommunicationPanel = () => {
   const [activeTab, setActiveTab] = useState("drivers");
   const [channels, setChannels] = useState<string[]>(["sms", "email", "inapp"]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
+  const [selectedCities, setSelectedCities] = useState<string[]>([]);
+  const [selectedStates, setSelectedStates] = useState<string[]>([]);
+  const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
+  const [selectedOrganizations, setSelectedOrganizations] = useState<string[]>([]);
+  const [selectedPickupAddresses, setSelectedPickupAddresses] = useState<string[]>([]);
+  const [selectedDropoffAddresses, setSelectedDropoffAddresses] = useState<string[]>([]);
+  const [selectedSenderNames, setSelectedSenderNames] = useState<string[]>([]);
+  const [selectedRecipientNames, setSelectedRecipientNames] = useState<string[]>([]);
   const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -183,6 +192,17 @@ const CommunicationPanel = () => {
               <RecipientList
                 selectedRecipients={selectedRecipients}
                 onRemoveRecipient={handleSelectRecipient}
+                selectedFilters={{
+                  statuses: selectedStatuses,
+                  cities: selectedCities,
+                  states: selectedStates,
+                  zipcodes: selectedZipcodes,
+                  organizations: selectedOrganizations,
+                  pickupAddresses: selectedPickupAddresses,
+                  dropoffAddresses: selectedDropoffAddresses,
+                  senderNames: selectedSenderNames,
+                  recipientNames: selectedRecipientNames,
+                }}
               />
             </div>
           </TabsContent>
