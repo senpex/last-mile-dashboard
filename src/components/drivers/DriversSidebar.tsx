@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -137,7 +136,7 @@ export function DriversSidebar({
   };
 
   const handleSaveFilters = () => {
-    // TODO: Implement save functionality
+    onClose();
   };
 
   const getProfileCount = (profileId: string) => {
