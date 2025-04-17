@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
@@ -273,18 +272,17 @@ export function ClientsSidebar({
         </Accordion>
       </ScrollArea>
       
-      {/* Add Save and Reset buttons */}
-      <div className="p-4 border-t flex justify-between">
+      <div className="mt-4 pt-4 border-t flex gap-2">
         <Button 
           variant="outline" 
-          className="flex items-center gap-1" 
+          className="flex-1 gap-1" 
           onClick={handleReset}
         >
           <RotateCcw className="h-4 w-4" />
           Reset
         </Button>
         <Button 
-          className="flex items-center gap-1" 
+          className="flex-1 gap-1" 
           onClick={handleSave}
         >
           <Save className="h-4 w-4" />
