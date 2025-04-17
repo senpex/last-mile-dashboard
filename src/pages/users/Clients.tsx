@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo } from 'react';
 import Layout from "@/components/layout/Layout";
 import { DateRange } from "react-day-picker";
@@ -106,6 +107,13 @@ const ClientsPage = () => {
       notes: "New client"
     }
   ]);
+  
+  // These declarations need to be moved up before they're used
+  const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
+  const [selectedCities, setSelectedCities] = useState<string[]>([]);
+  const [selectedStates, setSelectedStates] = useState<string[]>([]);
+  const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
+  
   const availableColumns: ColumnOption[] = [
     { id: "id", label: "ID", default: true },
     { id: "name", label: "Name", default: true },
@@ -143,7 +151,6 @@ const ClientsPage = () => {
   });
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
-  const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
 
   useEffect(() => {
     setFilteredClients(clients);
@@ -454,15 +461,9 @@ const ClientsPage = () => {
     return Array.from(companies).sort();
   }, [clients]);
 
-  const selectedStatuses = [];
+  const selectedStatuses: string[] = [];
   const setSelectedStatuses = () => {};
   const allClientStatuses = ["active", "inactive", "pending"];
-  const selectedZipcodes: string[] = [];
-  const setSelectedZipcodes = () => {};
-  const selectedCities: string[] = [];
-  const setSelectedCities = () => {};
-  const selectedStates: string[] = [];
-  const setSelectedStates = () => {};
 
   return (
     <Layout showFooter={false}>
