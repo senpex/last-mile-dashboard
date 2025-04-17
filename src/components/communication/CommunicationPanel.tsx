@@ -25,7 +25,11 @@ const generateRandomDrivers = (count: number, startId: number = 10000): any[] =>
       id: startId + i,
       name,
       email,
-      phone
+      phone,
+      status: "online",
+      transports: ["1", "2"],
+      rating: 4.5,
+      hireStatus: "hired"
     };
   });
 };
@@ -55,10 +59,11 @@ const CommunicationPanel = () => {
 
   const filteredDrivers = searchQuery.length >= 3 
     ? mockDrivers.filter(driver => {
-        const nameMatch = driver.name ? driver.name.toLowerCase().includes(searchQuery.toLowerCase()) : false;
-        const emailMatch = driver.email ? driver.email.toLowerCase().includes(searchQuery.toLowerCase()) : false;
-        const phoneMatch = driver.phone ? driver.phone.includes(searchQuery) : false;
-        return nameMatch || emailMatch || phoneMatch;
+        const nameMatch = driver.name.toLowerCase().includes(searchQuery.toLowerCase());
+        const emailMatch = driver.email.toLowerCase().includes(searchQuery.toLowerCase());
+        const phoneMatch = driver.phone.includes(searchQuery);
+        const idMatch = driver.id.toString().includes(searchQuery);
+        return nameMatch || emailMatch || phoneMatch || idMatch;
       })
     : [];
 
@@ -148,9 +153,13 @@ const CommunicationPanel = () => {
                           onClick={() => handleSelectRecipient(driver)}
                           className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center justify-between"
                         >
-                          <div>
-                            <div className="font-medium">{driver.name}</div>
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-gray-500">ID: {driver.id}</span>
+                              <div className="font-medium">{driver.name}</div>
+                            </div>
                             <div className="text-sm text-gray-500 dark:text-gray-400">{driver.email}</div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">{driver.phone}</div>
                           </div>
                           {selectedRecipients.some(r => r.id === driver.id) && (
                             <Check className="h-4 w-4 text-green-500" />
