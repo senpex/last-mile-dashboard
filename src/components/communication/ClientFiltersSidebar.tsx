@@ -21,9 +21,6 @@ interface ClientFiltersSidebarProps {
   selectedStates: string[];
   setSelectedStates: (states: string[]) => void;
   allStates: string[];
-  selectedProfiles: string[];
-  setSelectedProfiles: (profiles: string[]) => void;
-  allProfiles: string[];
   selectedOrganizations: string[];
   setSelectedOrganizations: (organizations: string[]) => void;
   allOrganizations: string[];
@@ -42,9 +39,6 @@ export const ClientFiltersSidebar = ({
   selectedStates,
   setSelectedStates,
   allStates,
-  selectedProfiles,
-  setSelectedProfiles,
-  allProfiles,
   selectedOrganizations,
   setSelectedOrganizations,
   allOrganizations,
@@ -84,7 +78,6 @@ export const ClientFiltersSidebar = ({
                             statuses: newStatuses,
                             cities: selectedCities,
                             states: selectedStates,
-                            profiles: selectedProfiles,
                             organizations: selectedOrganizations
                           });
                         }}
@@ -94,44 +87,6 @@ export const ClientFiltersSidebar = ({
                         className="flex flex-1 items-center justify-between"
                       >
                         <span>{status.charAt(0).toUpperCase() + status.slice(1)}</span>
-                        <Badge variant="outline" className="ml-auto">{Math.floor(Math.random() * 20) + 1}</Badge>
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="profile">
-              <AccordionTrigger className="text-sm font-medium">
-                Profile Type
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-2 pt-1">
-                  {allProfiles.map((profile) => (
-                    <div key={profile} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`profile-${profile}`}
-                        checked={selectedProfiles.includes(profile)}
-                        onCheckedChange={() => {
-                          const newProfiles = selectedProfiles.includes(profile)
-                            ? selectedProfiles.filter(p => p !== profile)
-                            : [...selectedProfiles, profile];
-                          setSelectedProfiles(newProfiles);
-                          onFiltersAdd({
-                            statuses: selectedStatuses,
-                            cities: selectedCities,
-                            states: selectedStates,
-                            profiles: newProfiles,
-                            organizations: selectedOrganizations
-                          });
-                        }}
-                      />
-                      <Label
-                        htmlFor={`profile-${profile}`}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between"
-                      >
-                        <span>{profile}</span>
                         <Badge variant="outline" className="ml-auto">{Math.floor(Math.random() * 20) + 1}</Badge>
                       </Label>
                     </div>
@@ -170,7 +125,6 @@ export const ClientFiltersSidebar = ({
                             statuses: selectedStatuses,
                             cities: newCities,
                             states: selectedStates,
-                            profiles: selectedProfiles,
                             organizations: selectedOrganizations
                           });
                         }}
@@ -218,7 +172,6 @@ export const ClientFiltersSidebar = ({
                             statuses: selectedStatuses,
                             cities: selectedCities,
                             states: newStates,
-                            profiles: selectedProfiles,
                             organizations: selectedOrganizations
                           });
                         }}
@@ -256,7 +209,6 @@ export const ClientFiltersSidebar = ({
                             statuses: selectedStatuses,
                             cities: selectedCities,
                             states: selectedStates,
-                            profiles: selectedProfiles,
                             organizations: newOrgs
                           });
                         }}
@@ -284,13 +236,11 @@ export const ClientFiltersSidebar = ({
               setSelectedStatuses([]);
               setSelectedCities([]);
               setSelectedStates([]);
-              setSelectedProfiles([]);
               setSelectedOrganizations([]);
               onFiltersAdd({
                 statuses: [],
                 cities: [],
                 states: [],
-                profiles: [],
                 organizations: []
               });
             }}
@@ -305,7 +255,6 @@ export const ClientFiltersSidebar = ({
                 statuses: selectedStatuses,
                 cities: selectedCities,
                 states: selectedStates,
-                profiles: selectedProfiles,
                 organizations: selectedOrganizations
               });
             }}
@@ -318,3 +267,4 @@ export const ClientFiltersSidebar = ({
     </div>
   );
 };
+
