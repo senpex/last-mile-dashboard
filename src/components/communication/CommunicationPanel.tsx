@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Search, Users, User, Send, Clock, MessageSquare, Mail, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -182,7 +183,7 @@ const CommunicationPanel = () => {
               dark:hover:bg-gray-700 
               ${channels.includes('sms') 
                 ? 'bg-green-500 dark:bg-green-600 text-white' 
-                : 'dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}
+                : 'dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:bg-green-100 dark:hover:bg-green-900'}
             `}
           >
             <Smartphone className={`mr-1 h-4 w-4 ${channels.includes('sms') ? 'text-white' : 'dark:text-gray-300'}`} />
@@ -195,7 +196,7 @@ const CommunicationPanel = () => {
               dark:hover:bg-gray-700 
               ${channels.includes('email') 
                 ? 'bg-green-500 dark:bg-green-600 text-white' 
-                : 'dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}
+                : 'dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:bg-green-100 dark:hover:bg-green-900'}
             `}
           >
             <Mail className={`mr-1 h-4 w-4 ${channels.includes('email') ? 'text-white' : 'dark:text-gray-300'}`} />
@@ -208,7 +209,7 @@ const CommunicationPanel = () => {
               dark:hover:bg-gray-700 
               ${channels.includes('inapp') 
                 ? 'bg-green-500 dark:bg-green-600 text-white' 
-                : 'dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}
+                : 'dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:bg-green-100 dark:hover:bg-green-900'}
             `}
           >
             <MessageSquare className={`mr-1 h-4 w-4 ${channels.includes('inapp') ? 'text-white' : 'dark:text-gray-300'}`} />
@@ -291,3 +292,4 @@ const CommunicationPanel = () => {
 };
 
 export default CommunicationPanel;
+
