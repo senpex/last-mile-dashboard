@@ -65,10 +65,10 @@ const CommunicationPanel = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-4 my-0 h-[calc(100vh-180px)] overflow-auto">
-      <div className="mb-8">
+    <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 my-0 h-[calc(100vh-180px)] overflow-auto">
+      <div className="mb-6">
         <Tabs defaultValue="drivers" onValueChange={setActiveTab}>
-          <TabsList className="w-full mb-2 h-14">
+          <TabsList className="w-full mb-4 h-14">
             <TabsTrigger value="drivers" className="flex-1 h-full">
               <User className="mr-2 h-4 w-4" />Drivers
             </TabsTrigger>
@@ -80,7 +80,7 @@ const CommunicationPanel = () => {
             </TabsTrigger>
           </TabsList>
           
-          <div className="mt-[10px] mb-[40px]">
+          <div className="mt-4 mb-6">
             <label htmlFor="contact-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Find contact:
             </label>
@@ -93,7 +93,7 @@ const CommunicationPanel = () => {
             />
           </div>
 
-          <div className="mb-5">
+          <div className="mb-4">
             <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
               Selected Recipients:
             </label>
@@ -119,12 +119,12 @@ const CommunicationPanel = () => {
         </Tabs>
       </div>
 
-      <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 space-y-6 mt-[160px] mb-[10px]">
+      <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 space-y-4 mt-6">
         <CommunicationChannels 
           channels={channels}
           onChannelToggle={setChannels}
         />
-        <div className="mb-5">
+        <div className="space-y-4">
           <div className="flex items-center justify-between">
             <label className="block text-sm font-medium text-foreground dark:text-gray-300">
               Message:
@@ -135,11 +135,11 @@ const CommunicationPanel = () => {
             value={message} 
             onChange={e => setMessage(e.target.value)} 
             placeholder="Type your message here..." 
-            className="mt-2 min-h-[120px] dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300" 
+            className="min-h-[120px] dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300" 
           />
         </div>
 
-        <div className="flex justify-end space-x-4">
+        <div className="flex justify-end space-x-4 mt-6">
           <Button variant="outline" className="flex items-center gap-1 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
             <Clock className="h-4 w-4 dark:text-gray-300" />
             Schedule
