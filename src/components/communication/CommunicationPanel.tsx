@@ -119,7 +119,7 @@ const CommunicationPanel = () => {
         </Tabs>
       </div>
 
-      <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 space-y-4 mt-6">
+      <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 space-y-4 mt-[160px]">
         <CommunicationChannels 
           channels={channels}
           onChannelToggle={setChannels}
