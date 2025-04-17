@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Search, Users, User, Send, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -104,20 +103,6 @@ const CommunicationPanel = () => {
                 onRemoveRecipient={handleSelectRecipient}
               />
             </div>
-
-            <div className="space-y-2">
-              {filteredRecipients.filter(r => mockRecipients.drivers.includes(r)).map(recipient => (
-                <div 
-                  key={recipient.id} 
-                  className={`flex items-center p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                    selectedRecipients.some(r => r.id === recipient.id) ? "bg-gray-200 dark:bg-gray-700" : ""
-                  }`} 
-                  onClick={() => handleSelectRecipient(recipient)}
-                >
-                  <span>{recipient.name}</span>
-                </div>
-              ))}
-            </div>
           </TabsContent>
 
           <TabsContent value="clients">
@@ -143,20 +128,6 @@ const CommunicationPanel = () => {
                 onRemoveRecipient={handleSelectRecipient}
               />
             </div>
-
-            <div className="space-y-2">
-              {filteredRecipients.filter(r => mockRecipients.clients.includes(r)).map(recipient => (
-                <div 
-                  key={recipient.id} 
-                  className={`flex items-center p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                    selectedRecipients.some(r => r.id === recipient.id) ? "bg-gray-200 dark:bg-gray-700" : ""
-                  }`} 
-                  onClick={() => handleSelectRecipient(recipient)}
-                >
-                  <span>{recipient.name}</span>
-                </div>
-              ))}
-            </div>
           </TabsContent>
 
           <TabsContent value="groups">
@@ -181,20 +152,6 @@ const CommunicationPanel = () => {
                 selectedRecipients={selectedRecipients}
                 onRemoveRecipient={handleSelectRecipient}
               />
-            </div>
-
-            <div className="space-y-2">
-              {filteredRecipients.filter(r => mockRecipients.groups.includes(r)).map(recipient => (
-                <div 
-                  key={recipient.id} 
-                  className={`flex items-center p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                    selectedRecipients.some(r => r.id === recipient.id) ? "bg-gray-200 dark:bg-gray-700" : ""
-                  }`} 
-                  onClick={() => handleSelectRecipient(recipient)}
-                >
-                  <span>{recipient.name}</span>
-                </div>
-              ))}
             </div>
           </TabsContent>
         </Tabs>
