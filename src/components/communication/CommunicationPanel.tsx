@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Search, Users, User, Send, Clock, MessageSquare, Mail, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-
 const messageTemplates = [{
   id: "template1",
   name: "Order Arriving",
@@ -29,7 +27,6 @@ const messageTemplates = [{
   name: "Delivery Completed",
   content: "Your delivery has been completed. Thank you for using our service!"
 }];
-
 const mockRecipients = {
   clients: [{
     id: "c1",
@@ -71,13 +68,11 @@ const mockRecipients = {
     type: "group"
   }]
 };
-
 type Recipient = {
   id: string;
   name: string;
   type: string;
 };
-
 const CommunicationPanel = () => {
   const {
     toast
@@ -87,9 +82,7 @@ const CommunicationPanel = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("drivers");
   const [channels, setChannels] = useState<string[]>(["sms", "email", "inapp"]);
-
   const filteredRecipients = searchQuery.length > 0 ? mockRecipients[activeTab as keyof typeof mockRecipients].filter(recipient => recipient.name.toLowerCase().includes(searchQuery.toLowerCase())) : mockRecipients[activeTab as keyof typeof mockRecipients];
-
   const handleSelectRecipient = (recipient: Recipient) => {
     const isAlreadySelected = selectedRecipients.some(r => r.id === recipient.id);
     if (isAlreadySelected) {
@@ -98,19 +91,16 @@ const CommunicationPanel = () => {
       setSelectedRecipients([...selectedRecipients, recipient]);
     }
   };
-
   const handleSelectTemplate = (templateId: string) => {
     const template = messageTemplates.find(t => t.id === templateId);
     if (template) {
       setMessage(template.content);
     }
   };
-
   const handleChannelToggle = (value: string[]) => {
     console.log("Channel toggled:", value);
     setChannels(value);
   };
-
   const handleSendMessage = () => {
     if (!message.trim() || selectedRecipients.length === 0 || channels.length === 0) {
       toast({
@@ -133,8 +123,7 @@ const CommunicationPanel = () => {
     });
     setMessage("");
   };
-
-  return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-4 my-0 py-[18px]">
+  return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-4 py-[74px]">
       <div className="mb-6">
         <Tabs defaultValue="drivers" onValueChange={setActiveTab}>
           <TabsList className="w-full mb-2">
@@ -154,22 +143,10 @@ const CommunicationPanel = () => {
           </div>
 
           <div className="space-y-2">
-            {filteredRecipients.map(recipient => (
-              <div key={recipient.id} className="flex items-center space-x-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">
-                <Checkbox 
-                  id={recipient.id} 
-                  checked={selectedRecipients.some(r => r.id === recipient.id)}
-                  onCheckedChange={() => handleSelectRecipient(recipient)}
-                />
-                <label 
-                  htmlFor={recipient.id} 
-                  className="text-sm cursor-pointer flex-1"
-                  onClick={() => handleSelectRecipient(recipient)}
-                >
-                  {recipient.name}
-                </label>
-              </div>
-            ))}
+            {filteredRecipients.map(recipient => <div key={recipient.id} className={cn("flex items-center p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800", selectedRecipients.some(r => r.id === recipient.id) ? "bg-gray-200 dark:bg-gray-700" : "")} onClick={() => handleSelectRecipient(recipient)}>
+                <Checkbox checked={selectedRecipients.some(r => r.id === recipient.id)} className="mr-2" onCheckedChange={() => handleSelectRecipient(recipient)} />
+                <span>{recipient.name}</span>
+              </div>)}
           </div>
         </Tabs>
       </div>
@@ -211,10 +188,10 @@ const CommunicationPanel = () => {
       </div>
 
       <div className="mb-5">
-        <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
-          Message:
-        </label>
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between">
+          <label className="block text-sm font-medium text-foreground dark:text-gray-300">
+            Message:
+          </label>
           <Select onValueChange={handleSelectTemplate}>
             <SelectTrigger className="w-[180px] dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300">
               <SelectValue placeholder="Select template" />
@@ -226,7 +203,7 @@ const CommunicationPanel = () => {
             </SelectContent>
           </Select>
         </div>
-        <Textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Type your message here..." className="min-h-[120px] dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300" />
+        <Textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Type your message here..." className="mt-2 min-h-[120px] dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300" />
       </div>
 
       <div className="flex justify-end space-x-4">
@@ -241,5 +218,4 @@ const CommunicationPanel = () => {
       </div>
     </div>;
 };
-
 export default CommunicationPanel;
