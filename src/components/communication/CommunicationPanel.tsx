@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Search, Users, User, Send, Clock, MessageSquare, Mail, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@ import { SearchInput } from "@/components/ui/search-input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { useToast } from "@/hooks/use-toast";
 
 const messageTemplates = [{
   id: "template1",
@@ -76,6 +78,7 @@ type Recipient = {
 };
 
 const CommunicationPanel = () => {
+  const { toast } = useToast();
   const [message, setMessage] = useState("");
   const [selectedRecipients, setSelectedRecipients] = useState<Recipient[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -101,12 +104,17 @@ const CommunicationPanel = () => {
   };
 
   const handleChannelToggle = (value: string[]) => {
+    console.log("Channel toggled:", value);
     setChannels(value);
   };
 
   const handleSendMessage = () => {
     if (!message.trim() || selectedRecipients.length === 0 || channels.length === 0) {
-      console.log("Please fill in all required fields (message, recipients, and channels)");
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields (message, recipients, and channels)",
+        variant: "destructive"
+      });
       return;
     }
     const messageData = {
@@ -116,6 +124,10 @@ const CommunicationPanel = () => {
       timestamp: new Date().toISOString()
     };
     console.log("Sending message:", messageData);
+    toast({
+      title: "Message Sent",
+      description: `Message sent to ${selectedRecipients.length} recipient(s) via ${channels.join(", ")}`,
+    });
     setMessage("");
   };
 
@@ -173,43 +185,40 @@ const CommunicationPanel = () => {
           <ToggleGroupItem 
             value="sms" 
             aria-label="Toggle SMS" 
-            className={`
-              dark:hover:bg-red-900 
-              ${channels.includes('sms') 
-                ? 'bg-red-600 text-white dark:bg-red-600' 
-                : 'hover:bg-red-100 hover:text-red-700 dark:text-gray-300 dark:hover:bg-red-900 dark:hover:text-red-200'}
-            `}
+            className={
+              channels.includes('sms') 
+                ? 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700' 
+                : 'hover:bg-red-100 hover:text-red-700 dark:text-gray-300 dark:hover:bg-red-900/30 dark:hover:text-red-200'
+            }
           >
-            <Smartphone className={`mr-1 h-4 w-4 ${channels.includes('sms') ? 'text-white' : 'dark:text-gray-300 group-hover:text-red-700 dark:group-hover:text-red-200'}`} />
-            <span className={`${channels.includes('sms') ? 'text-white' : 'text-foreground dark:text-gray-300 group-hover:text-red-700 dark:group-hover:text-red-200'}`}>SMS</span>
+            <Smartphone className={`mr-1 h-4 w-4 ${channels.includes('sms') ? 'text-white' : ''}`} />
+            <span>SMS</span>
           </ToggleGroupItem>
           
           <ToggleGroupItem 
             value="email" 
             aria-label="Toggle Email" 
-            className={`
-              dark:hover:bg-red-900 
-              ${channels.includes('email') 
-                ? 'bg-red-600 text-white dark:bg-red-600' 
-                : 'hover:bg-red-100 hover:text-red-700 dark:text-gray-300 dark:hover:bg-red-900 dark:hover:text-red-200'}
-            `}
+            className={
+              channels.includes('email') 
+                ? 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700' 
+                : 'hover:bg-red-100 hover:text-red-700 dark:text-gray-300 dark:hover:bg-red-900/30 dark:hover:text-red-200'
+            }
           >
-            <Mail className={`mr-1 h-4 w-4 ${channels.includes('email') ? 'text-white' : 'dark:text-gray-300 group-hover:text-red-700 dark:group-hover:text-red-200'}`} />
-            <span className={`${channels.includes('email') ? 'text-white' : 'text-foreground dark:text-gray-300 group-hover:text-red-700 dark:group-hover:text-red-200'}`}>Email</span>
+            <Mail className={`mr-1 h-4 w-4 ${channels.includes('email') ? 'text-white' : ''}`} />
+            <span>Email</span>
           </ToggleGroupItem>
           
           <ToggleGroupItem 
             value="inapp" 
             aria-label="Toggle In-App" 
-            className={`
-              dark:hover:bg-red-900 
-              ${channels.includes('inapp') 
-                ? 'bg-red-600 text-white dark:bg-red-600' 
-                : 'hover:bg-red-100 hover:text-red-700 dark:text-gray-300 dark:hover:bg-red-900 dark:hover:text-red-200'}
-            `}
+            className={
+              channels.includes('inapp') 
+                ? 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700' 
+                : 'hover:bg-red-100 hover:text-red-700 dark:text-gray-300 dark:hover:bg-red-900/30 dark:hover:text-red-200'
+            }
           >
-            <MessageSquare className={`mr-1 h-4 w-4 ${channels.includes('inapp') ? 'text-white' : 'dark:text-gray-300 group-hover:text-red-700 dark:group-hover:text-red-200'}`} />
-            <span className={`${channels.includes('inapp') ? 'text-white' : 'text-foreground dark:text-gray-300 group-hover:text-red-700 dark:group-hover:text-red-200'}`}>In-App</span>
+            <MessageSquare className={`mr-1 h-4 w-4 ${channels.includes('inapp') ? 'text-white' : ''}`} />
+            <span>In-App</span>
           </ToggleGroupItem>
         </ToggleGroup>
       </div>
