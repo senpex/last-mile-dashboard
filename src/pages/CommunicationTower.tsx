@@ -54,7 +54,7 @@ const CommunicationTower = () => {
                 selectedStates={selectedStates}
                 setSelectedStates={setSelectedStates}
               />
-              <div className="flex-1">
+              <div className="flex-1 h-[calc(100vh-180px)] overflow-auto">
                 <CommunicationPanel />
               </div>
             </div>
@@ -66,3 +66,4 @@ const CommunicationTower = () => {
 };
 
 export default CommunicationTower;
+
