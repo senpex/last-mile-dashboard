@@ -11,7 +11,7 @@ const UsersTableContainer = React.forwardRef<
   }
 >(({ 
   className, 
-  height = "h-[calc(100vh-220px)]", // Increased height by reducing the subtracted value from 240px to 220px
+  height = "h-[calc(100vh-220px)]", 
   stickyHeader = true,
   ...props 
 }, ref) => (
@@ -20,7 +20,7 @@ const UsersTableContainer = React.forwardRef<
     className={cn(
       "relative border rounded-md overflow-hidden flex-shrink-0 w-full sticky top-0",
       "transition-all duration-300 shadow-sm", 
-      "px-0 mt-[5px]",
+      "px-0 mt-[5px] mb-[10px]", // Added mb-[10px] for bottom margin
       height, 
       className
     )} 
@@ -39,4 +39,3 @@ const UsersTableContainer = React.forwardRef<
 UsersTableContainer.displayName = "UsersTableContainer"
 
 export { UsersTableContainer }
-
