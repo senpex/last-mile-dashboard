@@ -36,7 +36,7 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
     <aside 
       className={cn(
         "fixed left-0 top-0 h-screen flex flex-col transition-all-300 z-10 bg-sidebar shadow-lg",
-        "border-r border-sidebar-border",
+        "border-r border-sidebar-border", // Added border-r for vertical line
         collapsed ? "w-[70px]" : "w-[240px]",
         mounting ? "animate-slide-in-left" : ""
       )}
@@ -149,17 +149,6 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
                 <ul className="mt-1 ml-6 space-y-1">
                   <li>
                     <Link 
-                      to="/users/drivers" 
-                      className={cn(
-                        "sidebar-item text-sm",
-                        location.pathname === "/users/drivers" ? "active" : ""
-                      )}
-                    >
-                      <span>Drivers</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link 
                       to="/users/clients" 
                       className={cn(
                         "sidebar-item text-sm",
@@ -167,6 +156,17 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
                       )}
                     >
                       <span>Clients</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link 
+                      to="/users/drivers" 
+                      className={cn(
+                        "sidebar-item text-sm",
+                        location.pathname === "/users/drivers" ? "active" : ""
+                      )}
+                    >
+                      <span>Drivers</span>
                     </Link>
                   </li>
                 </ul>
