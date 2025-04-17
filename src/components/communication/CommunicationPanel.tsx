@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Search, Users, User, Send, Clock, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -252,7 +251,7 @@ const CommunicationPanel = () => {
         </Tabs>
       </div>
 
-      <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 space-y-4 mt-[160px]">
+      <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 space-y-4 mt-[90px]">
         <CommunicationChannels 
           channels={channels}
           onChannelToggle={setChannels}
