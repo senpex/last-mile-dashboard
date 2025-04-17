@@ -10,6 +10,15 @@ import { CommunicationChannels } from "./CommunicationChannels";
 import { MessageTemplates, messageTemplates } from "./MessageTemplates";
 import { Recipient, MessageData } from "./types";
 
+interface CommunicationPanelProps {
+  selectedFilters?: {
+    statuses: DeliveryStatus[];
+    zipcodes: string[];
+    cities: string[];
+    states: string[];
+  };
+}
+
 const generateRandomDrivers = (count: number, startId: number = 10000): any[] => {
   const firstNames = ["John", "Jane", "Michael", "Emma", "David"];
   const lastNames = ["Smith", "Johnson", "Williams", "Jones", "Brown"];
@@ -36,7 +45,7 @@ const generateRandomDrivers = (count: number, startId: number = 10000): any[] =>
 
 const mockDrivers = generateRandomDrivers(20);
 
-const CommunicationPanel = () => {
+const CommunicationPanel = ({ selectedFilters }: CommunicationPanelProps = {}) => {
   const { toast } = useToast();
   const [message, setMessage] = useState("");
   const [selectedRecipients, setSelectedRecipients] = useState<Recipient[]>([]);
@@ -197,17 +206,7 @@ const CommunicationPanel = () => {
               <RecipientList
                 selectedRecipients={selectedRecipients}
                 onRemoveRecipient={handleSelectRecipient}
-                selectedFilters={{
-                  statuses: selectedStatuses,
-                  cities: selectedCities,
-                  states: selectedStates,
-                  zipcodes: selectedZipcodes,
-                  organizations: selectedOrganizations,
-                  pickupAddresses: selectedPickupAddresses,
-                  dropoffAddresses: selectedDropoffAddresses,
-                  senderNames: selectedSenderNames,
-                  recipientNames: selectedRecipientNames,
-                }}
+                selectedFilters={selectedFilters}
               />
             </div>
           </TabsContent>
