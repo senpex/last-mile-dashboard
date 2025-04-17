@@ -3,6 +3,7 @@ import { TowerControl } from "lucide-react";
 import CommunicationPanel from "@/components/communication/CommunicationPanel";
 import { DriversSidebar } from "@/components/drivers/DriversSidebar";
 import { ClientFiltersSidebar } from "@/components/communication/ClientFiltersSidebar";
+import { DispatcherFiltersSidebar } from "@/components/communication/DispatcherFiltersSidebar";
 import { useState } from "react";
 import { DeliveryStatus } from "@/types/delivery";
 
@@ -20,6 +21,9 @@ const CommunicationTower = () => {
   const [selectedClientCities, setSelectedClientCities] = useState<string[]>([]);
   const [selectedClientStates, setSelectedClientStates] = useState<string[]>([]);
   const [selectedOrganizations, setSelectedOrganizations] = useState<string[]>([]);
+  
+  // Dispatcher filters
+  const [selectedDispatchers, setSelectedDispatchers] = useState<string[]>([]);
   
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("drivers");
@@ -39,6 +43,7 @@ const CommunicationTower = () => {
   const allClientStatuses = ["active", "inactive", "pending"];
   const allClientProfiles = ["Business", "Individual", "Enterprise"];
   const allOrganizations = ["Acme Corp", "Globex Corp", "Initech"];
+  const allDispatchers = ["John Doe", "Jane Smith", "Mike Johnson", "Sarah Wilson", "Tom Brown"];
 
   const handleFiltersAdd = (filters: any) => {
     if (activeTab === "drivers") {
@@ -53,6 +58,8 @@ const CommunicationTower = () => {
       setSelectedClientCities(filters.cities);
       setSelectedClientStates(filters.states);
       setSelectedOrganizations(filters.organizations);
+    } else if (activeTab === "groups") {
+      setSelectedDispatchers(filters.dispatchers);
     }
   };
 
@@ -85,7 +92,7 @@ const CommunicationTower = () => {
                   onClose={() => setIsFilterSidebarOpen(false)}
                   onFiltersAdd={handleFiltersAdd}
                 />
-              ) : (
+              ) : activeTab === "clients" ? (
                 <ClientFiltersSidebar
                   selectedCities={selectedClientCities}
                   setSelectedCities={setSelectedClientCities}
@@ -96,6 +103,15 @@ const CommunicationTower = () => {
                   selectedOrganizations={selectedOrganizations}
                   setSelectedOrganizations={setSelectedOrganizations}
                   allOrganizations={allOrganizations}
+                  onFiltersAdd={handleFiltersAdd}
+                  open={isFilterSidebarOpen}
+                  onClose={() => setIsFilterSidebarOpen(false)}
+                />
+              ) : (
+                <DispatcherFiltersSidebar
+                  selectedDispatchers={selectedDispatchers}
+                  setSelectedDispatchers={setSelectedDispatchers}
+                  allDispatchers={allDispatchers}
                   onFiltersAdd={handleFiltersAdd}
                   open={isFilterSidebarOpen}
                   onClose={() => setIsFilterSidebarOpen(false)}
@@ -113,7 +129,8 @@ const CommunicationTower = () => {
                     profiles: selectedProfiles,
                     transports: selectedTransports,
                     hireStatuses: selectedHireStatuses,
-                    organizations: selectedOrganizations
+                    organizations: selectedOrganizations,
+                    dispatchers: selectedDispatchers
                   }}
                 />
               </div>
