@@ -13,10 +13,13 @@ import { DeliveryStatus } from "@/types/delivery";
 
 interface CommunicationPanelProps {
   selectedFilters?: {
-    statuses: DeliveryStatus[];
-    zipcodes: string[];
-    cities: string[];
-    states: string[];
+    statuses?: DeliveryStatus[];
+    zipcodes?: string[];
+    cities?: string[];
+    states?: string[];
+    profiles?: string[];
+    transports?: string[];
+    hireStatuses?: string[];
   };
 }
 

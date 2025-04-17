@@ -32,6 +32,9 @@ interface DriversSidebarProps {
     zipcodes: string[];
     cities: string[];
     states: string[];
+    profiles?: string[];
+    transports?: string[];
+    hireStatuses?: string[];
   }) => void;
 }
 
@@ -150,6 +153,9 @@ export function DriversSidebar({
       zipcodes: selectedZipcodes,
       cities: selectedCities,
       states: selectedStates,
+      profiles: selectedProfiles,
+      transports: selectedTransports,
+      hireStatuses: selectedHireStatuses
     });
   };
 

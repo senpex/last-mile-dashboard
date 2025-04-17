@@ -1,3 +1,4 @@
+
 import { Layout } from "@/components/layout/Layout";
 import { TowerControl } from "lucide-react";
 import CommunicationPanel from "@/components/communication/CommunicationPanel";
@@ -11,6 +12,9 @@ const CommunicationTower = () => {
   const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
+  const [selectedProfiles, setSelectedProfiles] = useState<string[]>([]);
+  const [selectedTransports, setSelectedTransports] = useState<string[]>([]);
+  const [selectedHireStatuses, setSelectedHireStatuses] = useState<string[]>([]);
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(true);
 
   // Mock data for demonstration
@@ -31,11 +35,27 @@ const CommunicationTower = () => {
     zipcodes: string[];
     cities: string[];
     states: string[];
+    profiles?: string[];
+    transports?: string[];
+    hireStatuses?: string[];
   }) => {
     setSelectedStatuses(filters.statuses);
     setSelectedZipcodes(filters.zipcodes);
     setSelectedCities(filters.cities);
     setSelectedStates(filters.states);
+    
+    // Add support for new filter types
+    if (filters.profiles) {
+      setSelectedProfiles(filters.profiles);
+    }
+    
+    if (filters.transports) {
+      setSelectedTransports(filters.transports);
+    }
+    
+    if (filters.hireStatuses) {
+      setSelectedHireStatuses(filters.hireStatuses);
+    }
   };
 
   return (
@@ -72,7 +92,10 @@ const CommunicationTower = () => {
                     statuses: selectedStatuses,
                     zipcodes: selectedZipcodes,
                     cities: selectedCities,
-                    states: selectedStates
+                    states: selectedStates,
+                    profiles: selectedProfiles,
+                    transports: selectedTransports,
+                    hireStatuses: selectedHireStatuses
                   }}
                 />
               </div>

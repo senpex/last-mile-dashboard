@@ -21,6 +21,9 @@ interface RecipientListProps {
     dropoffAddresses?: string[];
     senderNames?: string[];
     recipientNames?: string[];
+    profiles?: string[];
+    transports?: string[];
+    hireStatuses?: string[];
   };
 }
 
@@ -60,6 +63,16 @@ export const RecipientList: React.FC<RecipientListProps> = ({
     }
     if (selectedFilters.recipientNames?.length) {
       groups.push({ type: "Recipient", values: selectedFilters.recipientNames });
+    }
+    // Add the new filter types
+    if (selectedFilters.profiles?.length) {
+      groups.push({ type: "Profile", values: selectedFilters.profiles });
+    }
+    if (selectedFilters.transports?.length) {
+      groups.push({ type: "Transport", values: selectedFilters.transports });
+    }
+    if (selectedFilters.hireStatuses?.length) {
+      groups.push({ type: "Hire Status", values: selectedFilters.hireStatuses });
     }
 
     return groups;
