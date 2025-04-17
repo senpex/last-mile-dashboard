@@ -123,7 +123,7 @@ const CommunicationPanel = () => {
     });
     setMessage("");
   };
-  return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-4 my-0 py-[46px]">
+  return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-4 my-0 py-[47px]">
       <div className="mb-6">
         <Tabs defaultValue="drivers" onValueChange={setActiveTab}>
           <TabsList className="w-full mb-2">
