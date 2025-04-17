@@ -173,7 +173,19 @@ const CommunicationPanel = () => {
         </ToggleGroup>
       </div>
 
-      
+      <div className="mb-5">
+        <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
+          Selected Recipients:
+        </label>
+        {selectedRecipients.length > 0 ? <div className="flex flex-wrap gap-2">
+            {selectedRecipients.map(recipient => <div key={recipient.id} className="bg-gray-100 dark:bg-gray-700 rounded-md py-1 px-3 text-sm flex items-center">
+                <span className="text-foreground dark:text-gray-300">{recipient.name}</span>
+                <button className="ml-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" onClick={() => handleSelectRecipient(recipient)}>
+                  &times;
+                </button>
+              </div>)}
+          </div> : <p className="text-gray-500 dark:text-gray-400 text-sm">No recipients selected</p>}
+      </div>
 
       <div className="mb-5">
         <div className="flex items-center justify-between my-[40px]">
@@ -206,5 +218,4 @@ const CommunicationPanel = () => {
       </div>
     </div>;
 };
-
 export default CommunicationPanel;
