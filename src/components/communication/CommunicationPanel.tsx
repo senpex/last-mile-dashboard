@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import { Search, Users, User, Send, Clock, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -176,7 +177,7 @@ const CommunicationPanel = () => {
               </div>
             </div>
 
-            <div className="mb-4">
+            <div className="mb-4 h-[140px]">
               <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
                 Selected Recipients:
               </label>
@@ -207,7 +208,7 @@ const CommunicationPanel = () => {
               </div>
             </div>
 
-            <div className="mb-4">
+            <div className="mb-4 h-[140px]">
               <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
                 Selected Recipients:
               </label>
@@ -238,7 +239,7 @@ const CommunicationPanel = () => {
               </div>
             </div>
 
-            <div className="mb-4">
+            <div className="mb-4 h-[140px]">
               <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
                 Selected Recipients:
               </label>

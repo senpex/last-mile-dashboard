@@ -17,7 +17,7 @@ export const RecipientList: React.FC<RecipientListProps> = ({
   }
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2 max-h-[120px] overflow-y-auto">
       {selectedRecipients.map(recipient => (
         <div 
           key={recipient.id} 
