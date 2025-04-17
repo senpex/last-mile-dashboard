@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
@@ -10,9 +11,9 @@ import { useIsMobile } from "@/hooks/use-mobile";
 interface ClientsSidebarProps {
   open: boolean;
   onClose: () => void;
-  selectedStatuses: string[];
-  setSelectedStatuses: (statuses: string[]) => void;
-  allClientStatuses: string[];
+  selectedStatuses?: string[];
+  setSelectedStatuses?: (statuses: string[]) => void;
+  allClientStatuses?: string[];
   allZipcodes: string[];
   selectedZipcodes: string[];
   setSelectedZipcodes: (zipcodes: string[]) => void;
@@ -27,17 +28,17 @@ interface ClientsSidebarProps {
 export function ClientsSidebar({
   open,
   onClose,
-  selectedStatuses,
-  setSelectedStatuses,
-  allClientStatuses,
-  allZipcodes,
-  selectedZipcodes,
+  selectedStatuses = [],
+  setSelectedStatuses = () => {},
+  allClientStatuses = [],
+  allZipcodes = [],
+  selectedZipcodes = [],
   setSelectedZipcodes,
-  allCities,
-  selectedCities,
+  allCities = [],
+  selectedCities = [],
   setSelectedCities,
-  allStates,
-  selectedStates,
+  allStates = [],
+  selectedStates = [],
   setSelectedStates
 }: ClientsSidebarProps) {
   const isMobile = useIsMobile();
@@ -47,34 +48,36 @@ export function ClientsSidebar({
       <div className="p-4 border-b">
         <h2 className="text-lg font-medium">Filters</h2>
         <p className="text-sm text-muted-foreground">
-          Filter clients by status, location, etc.
+          Filter clients by location, etc.
         </p>
       </div>
       <ScrollArea className="flex-1 p-4">
         <Accordion type="multiple" className="w-full">
-          <AccordionItem value="status">
-            <AccordionTrigger className="text-sm">Status</AccordionTrigger>
-            <AccordionContent className="space-y-2">
-              {allClientStatuses.map((status) => (
-                <div key={status} className="flex items-center space-x-2">
-                  <Checkbox 
-                    id={`status-${status}`} 
-                    checked={selectedStatuses.includes(status)}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedStatuses([...selectedStatuses, status]);
-                      } else {
-                        setSelectedStatuses(selectedStatuses.filter(s => s !== status));
-                      }
-                    }} 
-                  />
-                  <Label htmlFor={`status-${status}`} className="capitalize">
-                    {status}
-                  </Label>
-                </div>
-              ))}
-            </AccordionContent>
-          </AccordionItem>
+          {allClientStatuses && allClientStatuses.length > 0 && (
+            <AccordionItem value="status">
+              <AccordionTrigger className="text-sm">Status</AccordionTrigger>
+              <AccordionContent className="space-y-2">
+                {allClientStatuses.map((status) => (
+                  <div key={status} className="flex items-center space-x-2">
+                    <Checkbox 
+                      id={`status-${status}`} 
+                      checked={selectedStatuses.includes(status)}
+                      onCheckedChange={(checked) => {
+                        if (checked && setSelectedStatuses) {
+                          setSelectedStatuses([...selectedStatuses, status]);
+                        } else if (setSelectedStatuses) {
+                          setSelectedStatuses(selectedStatuses.filter(s => s !== status));
+                        }
+                      }} 
+                    />
+                    <Label htmlFor={`status-${status}`} className="capitalize">
+                      {status}
+                    </Label>
+                  </div>
+                ))}
+              </AccordionContent>
+            </AccordionItem>
+          )}
           
           <AccordionItem value="zipcode">
             <AccordionTrigger className="text-sm">Zipcode</AccordionTrigger>
