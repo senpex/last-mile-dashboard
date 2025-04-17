@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Search, Users, User, Send, Clock, MessageSquare, Mail, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -177,34 +176,36 @@ const CommunicationPanel = () => {
             className={`
               dark:hover:bg-green-900 
               ${channels.includes('sms') 
-                ? 'bg-green-600 dark:bg-green-600 text-white' 
-                : 'dark:text-gray-300 hover:bg-green-100 dark:hover:bg-green-900 hover:text-green-700 dark:hover:text-green-200'}
+                ? 'bg-green-600 text-white dark:bg-green-600' 
+                : 'hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-green-900 dark:hover:text-green-200'}
             `}
           >
             <Smartphone className={`mr-1 h-4 w-4 ${channels.includes('sms') ? 'text-white' : 'dark:text-gray-300 group-hover:text-green-700 dark:group-hover:text-green-200'}`} />
             <span className={`${channels.includes('sms') ? 'text-white' : 'text-foreground dark:text-gray-300 group-hover:text-green-700 dark:group-hover:text-green-200'}`}>SMS</span>
           </ToggleGroupItem>
+          
           <ToggleGroupItem 
             value="email" 
             aria-label="Toggle Email" 
             className={`
               dark:hover:bg-green-900 
               ${channels.includes('email') 
-                ? 'bg-green-600 dark:bg-green-600 text-white' 
-                : 'dark:text-gray-300 hover:bg-green-100 dark:hover:bg-green-900 hover:text-green-700 dark:hover:text-green-200'}
+                ? 'bg-green-600 text-white dark:bg-green-600' 
+                : 'hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-green-900 dark:hover:text-green-200'}
             `}
           >
             <Mail className={`mr-1 h-4 w-4 ${channels.includes('email') ? 'text-white' : 'dark:text-gray-300 group-hover:text-green-700 dark:group-hover:text-green-200'}`} />
             <span className={`${channels.includes('email') ? 'text-white' : 'text-foreground dark:text-gray-300 group-hover:text-green-700 dark:group-hover:text-green-200'}`}>Email</span>
           </ToggleGroupItem>
+          
           <ToggleGroupItem 
             value="inapp" 
             aria-label="Toggle In-App" 
             className={`
               dark:hover:bg-green-900 
               ${channels.includes('inapp') 
-                ? 'bg-green-600 dark:bg-green-600 text-white' 
-                : 'dark:text-gray-300 hover:bg-green-100 dark:hover:bg-green-900 hover:text-green-700 dark:hover:text-green-200'}
+                ? 'bg-green-600 text-white dark:bg-green-600' 
+                : 'hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-green-900 dark:hover:text-green-200'}
             `}
           >
             <MessageSquare className={`mr-1 h-4 w-4 ${channels.includes('inapp') ? 'text-white' : 'dark:text-gray-300 group-hover:text-green-700 dark:group-hover:text-green-200'}`} />
