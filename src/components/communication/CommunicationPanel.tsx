@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Search, Users, User, Send, Clock, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +8,29 @@ import { useToast } from "@/hooks/use-toast";
 import { RecipientList } from "./RecipientList";
 import { CommunicationChannels } from "./CommunicationChannels";
 import { MessageTemplates, messageTemplates } from "./MessageTemplates";
-import { Recipient, mockRecipients, MessageData } from "./types";
+import { Recipient, MessageData } from "./types";
+
+const generateRandomDrivers = (count: number, startId: number = 10000): any[] => {
+  const firstNames = ["John", "Jane", "Michael", "Emma", "David"];
+  const lastNames = ["Smith", "Johnson", "Williams", "Jones", "Brown"];
+  
+  return Array.from({ length: count }, (_, i) => {
+    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+    const name = `${firstName} ${lastName}`;
+    const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@example.com`;
+    const phone = `(${Math.floor(Math.random() * 900) + 100}) ${Math.floor(Math.random() * 900) + 100}-${Math.floor(Math.random() * 9000) + 1000}`;
+    
+    return {
+      id: startId + i,
+      name,
+      email,
+      phone
+    };
+  });
+};
+
+const mockDrivers = generateRandomDrivers(20);
 
 const CommunicationPanel = () => {
   const { toast } = useToast();
@@ -32,15 +53,13 @@ const CommunicationPanel = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Add safe checks for mockRecipients and ensure the tab exists before filtering
-  const filteredRecipients = searchQuery.length >= 3 
-    ? (mockRecipients[activeTab as keyof typeof mockRecipients] || [])
-        .filter(recipient => {
-          const nameMatch = recipient.name ? recipient.name.toLowerCase().includes(searchQuery.toLowerCase()) : false;
-          const emailMatch = recipient.email ? recipient.email.toLowerCase().includes(searchQuery.toLowerCase()) : false;
-          const phoneMatch = recipient.phone ? recipient.phone.includes(searchQuery) : false;
-          return nameMatch || emailMatch || phoneMatch;
-        })
+  const filteredDrivers = searchQuery.length >= 3 
+    ? mockDrivers.filter(driver => {
+        const nameMatch = driver.name ? driver.name.toLowerCase().includes(searchQuery.toLowerCase()) : false;
+        const emailMatch = driver.email ? driver.email.toLowerCase().includes(searchQuery.toLowerCase()) : false;
+        const phoneMatch = driver.phone ? driver.phone.includes(searchQuery) : false;
+        return nameMatch || emailMatch || phoneMatch;
+      })
     : [];
 
   const handleSelectRecipient = (recipient: Recipient) => {
@@ -122,18 +141,18 @@ const CommunicationPanel = () => {
                 
                 {showDropdown && searchQuery.length >= 3 && (
                   <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 max-h-60 overflow-auto">
-                    {filteredRecipients.length > 0 ? (
-                      filteredRecipients.map((recipient) => (
+                    {filteredDrivers.length > 0 ? (
+                      filteredDrivers.map((driver) => (
                         <div
-                          key={recipient.id}
-                          onClick={() => handleSelectRecipient(recipient)}
+                          key={driver.id}
+                          onClick={() => handleSelectRecipient(driver)}
                           className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center justify-between"
                         >
                           <div>
-                            <div className="font-medium">{recipient.name}</div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">{recipient.email}</div>
+                            <div className="font-medium">{driver.name}</div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">{driver.email}</div>
                           </div>
-                          {selectedRecipients.some(r => r.id === recipient.id) && (
+                          {selectedRecipients.some(r => r.id === driver.id) && (
                             <Check className="h-4 w-4 text-green-500" />
                           )}
                         </div>
