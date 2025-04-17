@@ -9,7 +9,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { Checkbox } from "@/components/ui/checkbox";
 
 const messageTemplates = [{
   id: "template1",
@@ -39,15 +38,7 @@ const mockRecipients = {
     name: "Michael Brown",
     type: "client"
   }],
-  drivers: [{
-    id: "d2",
-    name: "Sarah Wilson",
-    type: "driver"
-  }, {
-    id: "d3",
-    name: "James Taylor",
-    type: "driver"
-  }],
+  drivers: [],
   groups: [{
     id: "g1",
     name: "All Drivers in Zone 3",
