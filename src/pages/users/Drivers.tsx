@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { DriversTable } from '@/components/drivers/DriversTable';
@@ -713,4 +714,52 @@ const DriversPage = () => {
             <DriversTable 
               currentItems={currentItems} 
               sortedColumns={sortedColumns} 
-              availableColumns={availableColumns
+              availableColumns={availableColumns} 
+              transportTypes={transportTypes} 
+              statusDictionary={statusDictionary} 
+              statusColors={statusColors} 
+              editingNotes={editingNotes} 
+              draggedColumn={draggedColumn} 
+              dragOverColumn={dragOverColumn} 
+              onDragStart={handleDragStart} 
+              onDragOver={handleDragOver} 
+              onDrop={handleDrop} 
+              onDragEnd={handleDragEnd} 
+              renderRating={renderRating} 
+              renderStatus={renderStatus} 
+              renderHireStatus={renderHireStatus} 
+              renderStripeStatus={renderStripeStatus} 
+              handleNotesClick={handleNotesClick} 
+              handleNotesChange={handleNotesChange} 
+              saveNotes={saveNotes} 
+              className="mt-[10px]"
+              sortConfig={sortConfig}
+              requestSort={requestSort}
+            />
+          </div>
+        </div>
+
+        <DriversPagination 
+          currentPage={currentPage} 
+          totalPages={totalPages} 
+          totalItems={totalItems} 
+          pageSize={pageSize} 
+          pageSizeOptions={pageSizeOptions} 
+          onPageChange={handlePageChange} 
+          onPageSizeChange={handlePageSizeChange} 
+        />
+        
+        {chatOpen && selectedCourier && (
+          <CourierChat 
+            open={chatOpen} 
+            courierName={selectedCourier} 
+            onClose={handleChatClose} 
+            hasUnreadMessages={false} 
+          />
+        )}
+      </div>
+    </Layout>
+  );
+};
+
+export default DriversPage;
