@@ -123,7 +123,7 @@ const CommunicationPanel = () => {
     });
     setMessage("");
   };
-  return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-4 py-[74px]">
+  return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-4 my-0 py-[18px]">
       <div className="mb-6">
         <Tabs defaultValue="drivers" onValueChange={setActiveTab}>
           <TabsList className="w-full mb-2">
@@ -143,10 +143,7 @@ const CommunicationPanel = () => {
           </div>
 
           <div className="space-y-2">
-            {filteredRecipients.map(recipient => <div key={recipient.id} className={cn("flex items-center p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800", selectedRecipients.some(r => r.id === recipient.id) ? "bg-gray-200 dark:bg-gray-700" : "")} onClick={() => handleSelectRecipient(recipient)}>
-                <Checkbox checked={selectedRecipients.some(r => r.id === recipient.id)} className="mr-2" onCheckedChange={() => handleSelectRecipient(recipient)} />
-                <span>{recipient.name}</span>
-              </div>)}
+            {filteredRecipients.map(recipient => {})}
           </div>
         </Tabs>
       </div>

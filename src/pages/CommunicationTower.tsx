@@ -4,7 +4,6 @@ import CommunicationPanel from "@/components/communication/CommunicationPanel";
 import { DriversSidebar } from "@/components/drivers/DriversSidebar";
 import { useState } from "react";
 import { DeliveryStatus } from "@/types/delivery";
-
 const CommunicationTower = () => {
   // State for filters
   const [selectedStatuses, setSelectedStatuses] = useState<DeliveryStatus[]>([]);
@@ -14,22 +13,13 @@ const CommunicationTower = () => {
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(true);
 
   // Mock data for demonstration
-  const allDriverStatuses: DeliveryStatus[] = [
-    "Online",
-    "Offline",
-    "Busy",
-    "Available",
-    "On Break"
-  ];
-
+  const allDriverStatuses: DeliveryStatus[] = ["Online", "Offline", "Busy", "Available", "On Break"];
   const allZipcodes = ["12345", "23456", "34567", "45678", "56789"];
   const allCities = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"];
   const allStates = ["NY", "CA", "IL", "TX", "AZ"];
-
-  return (
-    <Layout>
+  return <Layout>
       <div className="flex h-full">
-        <div className="flex-1">
+        <div className="flex-1 my-0 py-0">
           <div className="container mx-auto p-6">
             <div className="flex items-center gap-2 mb-6">
               <TowerControl className="h-6 w-6" />
@@ -37,22 +27,7 @@ const CommunicationTower = () => {
             </div>
 
             <div className="flex gap-6 h-[calc(100vh-180px)]">
-              <DriversSidebar
-                selectedStatuses={selectedStatuses}
-                setSelectedStatuses={setSelectedStatuses}
-                allDeliveryStatuses={allDriverStatuses}
-                allZipcodes={allZipcodes}
-                selectedZipcodes={selectedZipcodes}
-                setSelectedZipcodes={setSelectedZipcodes}
-                allCities={allCities}
-                selectedCities={selectedCities}
-                setSelectedCities={setSelectedCities}
-                allStates={allStates}
-                selectedStates={selectedStates}
-                setSelectedStates={setSelectedStates}
-                open={isFilterSidebarOpen}
-                onClose={() => setIsFilterSidebarOpen(false)}
-              />
+              <DriversSidebar selectedStatuses={selectedStatuses} setSelectedStatuses={setSelectedStatuses} allDeliveryStatuses={allDriverStatuses} allZipcodes={allZipcodes} selectedZipcodes={selectedZipcodes} setSelectedZipcodes={setSelectedZipcodes} allCities={allCities} selectedCities={selectedCities} setSelectedCities={setSelectedCities} allStates={allStates} selectedStates={selectedStates} setSelectedStates={setSelectedStates} open={isFilterSidebarOpen} onClose={() => setIsFilterSidebarOpen(false)} />
               <div className="flex-1 h-full overflow-auto">
                 <CommunicationPanel />
               </div>
@@ -60,8 +35,6 @@ const CommunicationTower = () => {
           </div>
         </div>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default CommunicationTower;
