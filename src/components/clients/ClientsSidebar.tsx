@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
@@ -47,9 +46,6 @@ export function ClientsSidebar({
     <div className="h-full flex flex-col">
       <div className="p-4 border-b">
         <h2 className="text-lg font-medium">Filters</h2>
-        <p className="text-sm text-muted-foreground">
-          Filter clients by location, etc.
-        </p>
       </div>
       <ScrollArea className="flex-1 p-4">
         <Accordion type="multiple" className="w-full">
