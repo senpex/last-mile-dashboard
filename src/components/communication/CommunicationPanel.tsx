@@ -57,16 +57,12 @@ const CommunicationPanel = ({ selectedFilters }: CommunicationPanelProps = {}) =
   const [activeTab, setActiveTab] = useState("drivers");
   const [channels, setChannels] = useState<string[]>(["sms", "email", "inapp"]);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
-  const [selectedCities, setSelectedCities] = useState<string[]>([]);
-  const [selectedStates, setSelectedStates] = useState<string[]>([]);
-  const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
+
+  const [selectedClientStatuses, setSelectedClientStatuses] = useState<string[]>([]);
+  const [selectedClientCities, setSelectedClientCities] = useState<string[]>([]);
+  const [selectedClientStates, setSelectedClientStates] = useState<string[]>([]);
+  const [selectedClientProfiles, setSelectedClientProfiles] = useState<string[]>([]);
   const [selectedOrganizations, setSelectedOrganizations] = useState<string[]>([]);
-  const [selectedPickupAddresses, setSelectedPickupAddresses] = useState<string[]>([]);
-  const [selectedDropoffAddresses, setSelectedDropoffAddresses] = useState<string[]>([]);
-  const [selectedSenderNames, setSelectedSenderNames] = useState<string[]>([]);
-  const [selectedRecipientNames, setSelectedRecipientNames] = useState<string[]>([]);
-  const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -111,35 +107,25 @@ const CommunicationPanel = ({ selectedFilters }: CommunicationPanelProps = {}) =
     filterArray => filterArray && filterArray.length > 0
   );
 
-  const handleSendMessage = () => {
-    if (!message.trim() || (!selectedRecipients.length && !hasAnyFilters) || channels.length === 0) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in all required fields (message, recipients or filters, and channels)",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    const messageData: MessageData = {
-      message,
-      recipients: selectedRecipients,
-      channels,
-      timestamp: new Date().toISOString()
-    };
-    
-    console.log("Sending message:", messageData);
-    toast({
-      title: "Message Sent",
-      description: `Message sent to ${selectedRecipients.length} recipient(s) via ${channels.join(", ")}`
-    });
-    setMessage("");
-  };
+  const allClientStatuses = ["active", "inactive", "pending"];
+  const allClientCities = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"];
+  const allClientStates = ["NY", "CA", "IL", "TX", "AZ"];
+  const allClientProfiles = ["Business", "Individual", "Enterprise"];
+  const allOrganizations = ["Acme Corp", "Globex Corp", "Initech"];
 
   return (
     <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 my-0 h-[calc(100vh-180px)] overflow-auto">
       <div className="mb-6">
-        <Tabs defaultValue="drivers" onValueChange={setActiveTab}>
+        <Tabs defaultValue="drivers" onValueChange={(value) => {
+          setActiveTab(value);
+          if (value === "clients") {
+            setSelectedClientStatuses([]);
+            setSelectedClientCities([]);
+            setSelectedClientStates([]);
+            setSelectedClientProfiles([]);
+            setSelectedOrganizations([]);
+          }
+        }}>
           <TabsList className="w-full mb-4 h-14">
             <TabsTrigger value="drivers" className="flex-1 h-full">
               <User className="mr-2 h-4 w-4" />Drivers

@@ -3,11 +3,12 @@ import { Layout } from "@/components/layout/Layout";
 import { TowerControl } from "lucide-react";
 import CommunicationPanel from "@/components/communication/CommunicationPanel";
 import { DriversSidebar } from "@/components/drivers/DriversSidebar";
+import { ClientFiltersSidebar } from "@/components/communication/ClientFiltersSidebar";
 import { useState } from "react";
 import { DeliveryStatus } from "@/types/delivery";
 
 const CommunicationTower = () => {
-  // State for filters
+  // Driver filters
   const [selectedStatuses, setSelectedStatuses] = useState<DeliveryStatus[]>([]);
   const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
@@ -15,9 +16,18 @@ const CommunicationTower = () => {
   const [selectedProfiles, setSelectedProfiles] = useState<string[]>([]);
   const [selectedTransports, setSelectedTransports] = useState<string[]>([]);
   const [selectedHireStatuses, setSelectedHireStatuses] = useState<string[]>([]);
+  
+  // Client filters
+  const [selectedClientStatuses, setSelectedClientStatuses] = useState<string[]>([]);
+  const [selectedClientCities, setSelectedClientCities] = useState<string[]>([]);
+  const [selectedClientStates, setSelectedClientStates] = useState<string[]>([]);
+  const [selectedClientProfiles, setSelectedClientProfiles] = useState<string[]>([]);
+  const [selectedOrganizations, setSelectedOrganizations] = useState<string[]>([]);
+  
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(true);
+  const [activeTab, setActiveTab] = useState("drivers");
 
-  // Mock data for demonstration
+  // Mock data
   const allDriverStatuses: DeliveryStatus[] = [
     "Online",
     "Offline",
@@ -29,32 +39,25 @@ const CommunicationTower = () => {
   const allZipcodes = ["12345", "23456", "34567", "45678", "56789"];
   const allCities = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"];
   const allStates = ["NY", "CA", "IL", "TX", "AZ"];
+  const allClientStatuses = ["active", "inactive", "pending"];
+  const allClientProfiles = ["Business", "Individual", "Enterprise"];
+  const allOrganizations = ["Acme Corp", "Globex Corp", "Initech"];
 
-  const handleFiltersAdd = (filters: {
-    statuses: DeliveryStatus[];
-    zipcodes: string[];
-    cities: string[];
-    states: string[];
-    profiles?: string[];
-    transports?: string[];
-    hireStatuses?: string[];
-  }) => {
-    setSelectedStatuses(filters.statuses);
-    setSelectedZipcodes(filters.zipcodes);
-    setSelectedCities(filters.cities);
-    setSelectedStates(filters.states);
-    
-    // Add support for new filter types
-    if (filters.profiles) {
-      setSelectedProfiles(filters.profiles);
-    }
-    
-    if (filters.transports) {
-      setSelectedTransports(filters.transports);
-    }
-    
-    if (filters.hireStatuses) {
-      setSelectedHireStatuses(filters.hireStatuses);
+  const handleFiltersAdd = (filters: any) => {
+    if (activeTab === "drivers") {
+      setSelectedStatuses(filters.statuses);
+      setSelectedZipcodes(filters.zipcodes);
+      setSelectedCities(filters.cities);
+      setSelectedStates(filters.states);
+      setSelectedProfiles(filters.profiles || []);
+      setSelectedTransports(filters.transports || []);
+      setSelectedHireStatuses(filters.hireStatuses || []);
+    } else if (activeTab === "clients") {
+      setSelectedClientStatuses(filters.statuses);
+      setSelectedClientCities(filters.cities);
+      setSelectedClientStates(filters.states);
+      setSelectedClientProfiles(filters.profiles);
+      setSelectedOrganizations(filters.organizations);
     }
   };
 
@@ -69,33 +72,55 @@ const CommunicationTower = () => {
             </div>
 
             <div className="flex gap-[10px] h-[calc(100vh-180px)]">
-              <DriversSidebar
-                selectedStatuses={selectedStatuses}
-                setSelectedStatuses={setSelectedStatuses}
-                allDeliveryStatuses={allDriverStatuses}
-                allZipcodes={allZipcodes}
-                selectedZipcodes={selectedZipcodes}
-                setSelectedZipcodes={setSelectedZipcodes}
-                allCities={allCities}
-                selectedCities={selectedCities}
-                setSelectedCities={setSelectedCities}
-                allStates={allStates}
-                selectedStates={selectedStates}
-                setSelectedStates={setSelectedStates}
-                open={isFilterSidebarOpen}
-                onClose={() => setIsFilterSidebarOpen(false)}
-                onFiltersAdd={handleFiltersAdd}
-              />
+              {activeTab === "drivers" ? (
+                <DriversSidebar
+                  selectedStatuses={selectedStatuses}
+                  setSelectedStatuses={setSelectedStatuses}
+                  allDeliveryStatuses={allDriverStatuses}
+                  allZipcodes={allZipcodes}
+                  selectedZipcodes={selectedZipcodes}
+                  setSelectedZipcodes={setSelectedZipcodes}
+                  allCities={allCities}
+                  selectedCities={selectedCities}
+                  setSelectedCities={setSelectedCities}
+                  allStates={allStates}
+                  selectedStates={selectedStates}
+                  setSelectedStates={setSelectedStates}
+                  open={isFilterSidebarOpen}
+                  onClose={() => setIsFilterSidebarOpen(false)}
+                  onFiltersAdd={handleFiltersAdd}
+                />
+              ) : (
+                <ClientFiltersSidebar
+                  selectedStatuses={selectedClientStatuses}
+                  setSelectedStatuses={setSelectedClientStatuses}
+                  allClientStatuses={allClientStatuses}
+                  selectedCities={selectedClientCities}
+                  setSelectedCities={setSelectedClientCities}
+                  allCities={allCities}
+                  selectedStates={selectedClientStates}
+                  setSelectedStates={setSelectedClientStates}
+                  allStates={allStates}
+                  selectedProfiles={selectedClientProfiles}
+                  setSelectedProfiles={setSelectedClientProfiles}
+                  allProfiles={allClientProfiles}
+                  selectedOrganizations={selectedOrganizations}
+                  setSelectedOrganizations={setSelectedOrganizations}
+                  allOrganizations={allOrganizations}
+                  onFiltersAdd={handleFiltersAdd}
+                />
+              )}
               <div className="flex-1 h-full overflow-auto">
                 <CommunicationPanel
                   selectedFilters={{
-                    statuses: selectedStatuses,
+                    statuses: activeTab === "drivers" ? selectedStatuses : selectedClientStatuses,
                     zipcodes: selectedZipcodes,
-                    cities: selectedCities,
-                    states: selectedStates,
-                    profiles: selectedProfiles,
+                    cities: activeTab === "drivers" ? selectedCities : selectedClientCities,
+                    states: activeTab === "drivers" ? selectedStates : selectedClientStates,
+                    profiles: activeTab === "drivers" ? selectedProfiles : selectedClientProfiles,
                     transports: selectedTransports,
-                    hireStatuses: selectedHireStatuses
+                    hireStatuses: selectedHireStatuses,
+                    organizations: selectedOrganizations
                   }}
                 />
               </div>
