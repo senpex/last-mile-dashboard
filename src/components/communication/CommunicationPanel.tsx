@@ -80,7 +80,7 @@ const CommunicationPanel = () => {
             </TabsTrigger>
           </TabsList>
           
-          <div className="mb-[40px]">
+          <div className="mt-[10px] mb-[40px]">
             <label htmlFor="contact-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Find contact:
             </label>
