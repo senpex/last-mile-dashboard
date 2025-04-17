@@ -1,6 +1,5 @@
-
 import React, { useState } from "react";
-import { Search, Users, User, Send, Clock, MessageSquare, Mail, Smartphone, Filter } from "lucide-react";
+import { Search, Users, User, Send, Clock, MessageSquare, Mail, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,8 +9,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils"; // Add the import for cn utility
-
 const messageTemplates = [{
   id: "template1",
   name: "Order Arriving",
@@ -29,7 +26,6 @@ const messageTemplates = [{
   name: "Delivery Completed",
   content: "Your delivery has been completed. Thank you for using our service!"
 }];
-
 const mockRecipients = {
   clients: [{
     id: "c1",
@@ -71,14 +67,12 @@ const mockRecipients = {
     type: "group"
   }]
 };
-
 type Recipient = {
   id: string;
   name: string;
   type: string;
 };
-
-const CommunicationPanel = ({ className = "", isFilterSidebarOpen }: { className?: string, isFilterSidebarOpen?: boolean }) => {
+const CommunicationPanel = () => {
   const {
     toast
   } = useToast();
@@ -87,9 +81,7 @@ const CommunicationPanel = ({ className = "", isFilterSidebarOpen }: { className
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("drivers");
   const [channels, setChannels] = useState<string[]>(["sms", "email", "inapp"]);
-
   const filteredRecipients = searchQuery.length > 0 ? mockRecipients[activeTab as keyof typeof mockRecipients].filter(recipient => recipient.name.toLowerCase().includes(searchQuery.toLowerCase())) : mockRecipients[activeTab as keyof typeof mockRecipients];
-
   const handleSelectRecipient = (recipient: Recipient) => {
     const isAlreadySelected = selectedRecipients.some(r => r.id === recipient.id);
     if (isAlreadySelected) {
@@ -98,19 +90,16 @@ const CommunicationPanel = ({ className = "", isFilterSidebarOpen }: { className
       setSelectedRecipients([...selectedRecipients, recipient]);
     }
   };
-
   const handleSelectTemplate = (templateId: string) => {
     const template = messageTemplates.find(t => t.id === templateId);
     if (template) {
       setMessage(template.content);
     }
   };
-
   const handleChannelToggle = (value: string[]) => {
     console.log("Channel toggled:", value);
     setChannels(value);
   };
-
   const handleSendMessage = () => {
     if (!message.trim() || selectedRecipients.length === 0 || channels.length === 0) {
       toast({
@@ -133,11 +122,7 @@ const CommunicationPanel = ({ className = "", isFilterSidebarOpen }: { className
     });
     setMessage("");
   };
-
-  return <div className={cn("bg-white dark:bg-gray-900 rounded-lg shadow-md p-4", 
-    className,
-    isFilterSidebarOpen ? "ml-[10px]" : "ml-2"
-  )}>
+  return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-4">
       <div className="mb-6">
         <Tabs defaultValue="drivers" onValueChange={setActiveTab}>
           <TabsList className="w-full mb-2">
@@ -146,36 +131,12 @@ const CommunicationPanel = ({ className = "", isFilterSidebarOpen }: { className
             <TabsTrigger value="groups" className="flex-1"><Users className="mr-2 h-4 w-4" />Dispatchers</TabsTrigger>
           </TabsList>
           
-          <div className="space-y-2">
-            <div className="mb-4">
-              <SearchInput value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder={`Search ${activeTab}`} className="w-full" />
-            </div>
-            
-            <Button variant="outline" className="w-full flex items-center gap-2">
-              <Filter className="h-4 w-4" />
-              Filter
-            </Button>
+          <div className="mb-4">
+            <SearchInput value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder={`Search ${activeTab}`} className="w-full" />
+          </div>
 
-            <div className="space-y-2">
-              {filteredRecipients.map((recipient) => (
-                <div 
-                  key={recipient.id}
-                  className="flex items-center space-x-2 p-2 rounded border border-gray-200 dark:border-gray-700"
-                >
-                  <Checkbox
-                    id={`recipient-${recipient.id}`}
-                    checked={selectedRecipients.some(r => r.id === recipient.id)}
-                    onCheckedChange={() => handleSelectRecipient(recipient)}
-                  />
-                  <label
-                    htmlFor={`recipient-${recipient.id}`}
-                    className="text-sm font-medium leading-none dark:text-gray-300"
-                  >
-                    {recipient.name}
-                  </label>
-                </div>
-              ))}
-            </div>
+          <div className="space-y-2">
+            {filteredRecipients.map(recipient => {})}
           </div>
         </Tabs>
       </div>
@@ -241,5 +202,4 @@ const CommunicationPanel = ({ className = "", isFilterSidebarOpen }: { className
       </div>
     </div>;
 };
-
 export default CommunicationPanel;
