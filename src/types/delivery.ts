@@ -15,7 +15,9 @@ export type DeliveryStatus =
   | "Online"
   | "Offline"
   | "Busy"
-  | "Not approved";
+  | "Not approved"
+  | "Available"
+  | "On Break";
 
 export interface Delivery {
   id: number;
