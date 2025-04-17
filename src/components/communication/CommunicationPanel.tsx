@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Search, Users, User, Send, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,7 @@ const generateDispatchers = () => {
     const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
     const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
     dispatchers.push({
-      id: 30000 + i,
+      id: (30000 + i).toString(), // Convert number to string to match the Recipient type
       name: `${firstName} ${lastName}`,
       type: "dispatcher"
     });
