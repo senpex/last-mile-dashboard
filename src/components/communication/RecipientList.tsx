@@ -25,6 +25,7 @@ interface RecipientListProps {
     profiles?: string[];
     transports?: string[];
     hireStatuses?: string[];
+    dispatchers?: string[];
   };
 }
 
@@ -74,6 +75,10 @@ export const RecipientList: React.FC<RecipientListProps> = ({
     }
     if (selectedFilters.hireStatuses?.length) {
       groups.push({ type: "Hire Status", values: selectedFilters.hireStatuses });
+    }
+    // Add the dispatchers filter
+    if (selectedFilters.dispatchers?.length) {
+      groups.push({ type: "Dispatcher", values: selectedFilters.dispatchers });
     }
 
     return groups;
