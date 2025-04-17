@@ -136,7 +136,7 @@ const CommunicationPanel = () => {
   return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-4 my-0 h-[calc(100vh-180px)] overflow-auto">
       <div className="mb-6">
         <Tabs defaultValue="drivers" onValueChange={setActiveTab}>
-          <TabsList className="w-full mb-2 h-20">
+          <TabsList className="w-full mb-2 h-14">
             <TabsTrigger value="drivers" className="flex-1 h-full">
               <User className="mr-2 h-4 w-4" />Drivers
             </TabsTrigger>
