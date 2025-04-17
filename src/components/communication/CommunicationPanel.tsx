@@ -32,13 +32,15 @@ const CommunicationPanel = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Add safe checks for mockRecipients and ensure the tab exists before filtering
   const filteredRecipients = searchQuery.length >= 3 
-    ? mockRecipients[activeTab as keyof typeof mockRecipients]
-        .filter(recipient => 
-          recipient.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-          recipient.email.toLowerCase().includes(searchQuery.toLowerCase()) || 
-          recipient.phone.includes(searchQuery)
-        )
+    ? (mockRecipients[activeTab as keyof typeof mockRecipients] || [])
+        .filter(recipient => {
+          const nameMatch = recipient.name ? recipient.name.toLowerCase().includes(searchQuery.toLowerCase()) : false;
+          const emailMatch = recipient.email ? recipient.email.toLowerCase().includes(searchQuery.toLowerCase()) : false;
+          const phoneMatch = recipient.phone ? recipient.phone.includes(searchQuery) : false;
+          return nameMatch || emailMatch || phoneMatch;
+        })
     : [];
 
   const handleSelectRecipient = (recipient: Recipient) => {
