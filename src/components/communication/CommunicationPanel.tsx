@@ -148,7 +148,7 @@ const CommunicationPanel = () => {
             </TabsTrigger>
           </TabsList>
           
-          <div className="mb-4">
+          <div className="mb-6">
             <label htmlFor="contact-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Find contact:
             </label>
