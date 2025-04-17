@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Search, Users, User, Send, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -79,43 +80,123 @@ const CommunicationPanel = () => {
               <Users className="mr-2 h-4 w-4" />Dispatchers
             </TabsTrigger>
           </TabsList>
-          
-          <div className="mt-4 mb-6">
-            <label htmlFor="contact-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Find contact:
-            </label>
-            <SearchInput 
-              id="contact-search"
-              value={searchQuery} 
-              onChange={e => setSearchQuery(e.target.value)} 
-              placeholder={`Search ${activeTab}`} 
-              className="w-full" 
-            />
-          </div>
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
-              Selected Recipients:
-            </label>
-            <RecipientList 
-              selectedRecipients={selectedRecipients}
-              onRemoveRecipient={handleSelectRecipient}
-            />
-          </div>
+          <TabsContent value="drivers">
+            <div className="mt-4 mb-6">
+              <label htmlFor="contact-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Find contact:
+              </label>
+              <SearchInput 
+                id="contact-search"
+                value={searchQuery} 
+                onChange={e => setSearchQuery(e.target.value)} 
+                placeholder="Search drivers" 
+                className="w-full" 
+              />
+            </div>
 
-          <div className="space-y-2">
-            {filteredRecipients.map(recipient => (
-              <div 
-                key={recipient.id} 
-                className={`flex items-center p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                  selectedRecipients.some(r => r.id === recipient.id) ? "bg-gray-200 dark:bg-gray-700" : ""
-                }`} 
-                onClick={() => handleSelectRecipient(recipient)}
-              >
-                <span>{recipient.name}</span>
-              </div>
-            ))}
-          </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
+                Selected Recipients:
+              </label>
+              <RecipientList 
+                selectedRecipients={selectedRecipients}
+                onRemoveRecipient={handleSelectRecipient}
+              />
+            </div>
+
+            <div className="space-y-2">
+              {filteredRecipients.filter(r => mockRecipients.drivers.includes(r)).map(recipient => (
+                <div 
+                  key={recipient.id} 
+                  className={`flex items-center p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 ${
+                    selectedRecipients.some(r => r.id === recipient.id) ? "bg-gray-200 dark:bg-gray-700" : ""
+                  }`} 
+                  onClick={() => handleSelectRecipient(recipient)}
+                >
+                  <span>{recipient.name}</span>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="clients">
+            <div className="mt-4 mb-6">
+              <label htmlFor="client-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Find contact:
+              </label>
+              <SearchInput 
+                id="client-search"
+                value={searchQuery} 
+                onChange={e => setSearchQuery(e.target.value)} 
+                placeholder="Search clients" 
+                className="w-full" 
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
+                Selected Recipients:
+              </label>
+              <RecipientList 
+                selectedRecipients={selectedRecipients}
+                onRemoveRecipient={handleSelectRecipient}
+              />
+            </div>
+
+            <div className="space-y-2">
+              {filteredRecipients.filter(r => mockRecipients.clients.includes(r)).map(recipient => (
+                <div 
+                  key={recipient.id} 
+                  className={`flex items-center p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 ${
+                    selectedRecipients.some(r => r.id === recipient.id) ? "bg-gray-200 dark:bg-gray-700" : ""
+                  }`} 
+                  onClick={() => handleSelectRecipient(recipient)}
+                >
+                  <span>{recipient.name}</span>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="groups">
+            <div className="mt-4 mb-6">
+              <label htmlFor="dispatcher-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Find contact:
+              </label>
+              <SearchInput 
+                id="dispatcher-search"
+                value={searchQuery} 
+                onChange={e => setSearchQuery(e.target.value)} 
+                placeholder="Search dispatchers" 
+                className="w-full" 
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
+                Selected Recipients:
+              </label>
+              <RecipientList 
+                selectedRecipients={selectedRecipients}
+                onRemoveRecipient={handleSelectRecipient}
+              />
+            </div>
+
+            <div className="space-y-2">
+              {filteredRecipients.filter(r => mockRecipients.groups.includes(r)).map(recipient => (
+                <div 
+                  key={recipient.id} 
+                  className={`flex items-center p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 ${
+                    selectedRecipients.some(r => r.id === recipient.id) ? "bg-gray-200 dark:bg-gray-700" : ""
+                  }`} 
+                  onClick={() => handleSelectRecipient(recipient)}
+                >
+                  <span>{recipient.name}</span>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
 
