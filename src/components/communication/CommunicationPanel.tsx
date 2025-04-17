@@ -75,6 +75,7 @@ type Recipient = {
   name: string;
   type: string;
 };
+
 const CommunicationPanel = () => {
   const [message, setMessage] = useState("");
   const [selectedRecipients, setSelectedRecipients] = useState<Recipient[]>([]);
@@ -120,7 +121,9 @@ const CommunicationPanel = () => {
     setMessage("");
     // Optionally: setSelectedRecipients([]);
   };
-  return <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+
+  return (
+    <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-4">
       {/* Recipient Type Filtering */}
       <div className="mb-6">
         <Tabs defaultValue="clients" onValueChange={setActiveTab}>
@@ -131,74 +134,133 @@ const CommunicationPanel = () => {
           </TabsList>
           
           <div className="mb-4">
-            
+            <SearchInput 
+              value={searchQuery} 
+              onChange={(e) => setSearchQuery(e.target.value)} 
+              placeholder={`Search ${activeTab}`} 
+              className="w-full"
+            />
           </div>
 
-          
+          <div className="space-y-2">
+            {filteredRecipients.map((recipient) => (
+              <div 
+                key={recipient.id} 
+                onClick={() => handleSelectRecipient(recipient)}
+                className={`
+                  flex items-center p-2 rounded-md cursor-pointer 
+                  ${selectedRecipients.some(r => r.id === recipient.id) 
+                    ? 'bg-primary/10 dark:bg-primary/20' 
+                    : 'hover:bg-gray-100 dark:hover:bg-gray-700'}
+                `}
+              >
+                <Checkbox 
+                  checked={selectedRecipients.some(r => r.id === recipient.id)}
+                  className="mr-3"
+                />
+                <span className="text-foreground dark:text-gray-200">{recipient.name}</span>
+              </div>
+            ))}
+          </div>
         </Tabs>
       </div>
 
       {/* Channel Selection UI */}
       <div className="mb-5">
-        <label className="block text-sm font-medium mb-2">Select Communication Channels:</label>
-        <ToggleGroup type="multiple" variant="outline" className="justify-start" value={channels} onValueChange={handleChannelToggle}>
-          <ToggleGroupItem value="sms" aria-label="Toggle SMS">
-            <Smartphone className="mr-1 h-4 w-4" />
-            <span>SMS</span>
+        <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">Select Communication Channels:</label>
+        <ToggleGroup 
+          type="multiple" 
+          variant="outline" 
+          className="justify-start" 
+          value={channels} 
+          onValueChange={handleChannelToggle}
+        >
+          <ToggleGroupItem value="sms" aria-label="Toggle SMS" className="dark:hover:bg-gray-700">
+            <Smartphone className="mr-1 h-4 w-4 dark:text-gray-300" />
+            <span className="text-foreground dark:text-gray-300">SMS</span>
           </ToggleGroupItem>
-          <ToggleGroupItem value="email" aria-label="Toggle Email">
-            <Mail className="mr-1 h-4 w-4" />
-            <span>Email</span>
+          <ToggleGroupItem value="email" aria-label="Toggle Email" className="dark:hover:bg-gray-700">
+            <Mail className="mr-1 h-4 w-4 dark:text-gray-300" />
+            <span className="text-foreground dark:text-gray-300">Email</span>
           </ToggleGroupItem>
-          <ToggleGroupItem value="inapp" aria-label="Toggle In-App">
-            <MessageSquare className="mr-1 h-4 w-4" />
-            <span>In-App</span>
+          <ToggleGroupItem value="inapp" aria-label="Toggle In-App" className="dark:hover:bg-gray-700">
+            <MessageSquare className="mr-1 h-4 w-4 dark:text-gray-300" />
+            <span className="text-foreground dark:text-gray-300">In-App</span>
           </ToggleGroupItem>
         </ToggleGroup>
       </div>
 
       {/* Selected Recipients */}
       <div className="mb-5">
-        <label className="block text-sm font-medium mb-2">Selected Recipients:</label>
-        {selectedRecipients.length > 0 ? <div className="flex flex-wrap gap-2">
-            {selectedRecipients.map(recipient => <div key={recipient.id} className="bg-gray-100 dark:bg-gray-700 rounded-md py-1 px-3 text-sm flex items-center">
-                <span>{recipient.name}</span>
-                <button className="ml-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300" onClick={() => handleSelectRecipient(recipient)}>
+        <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">Selected Recipients:</label>
+        {selectedRecipients.length > 0 ? (
+          <div className="flex flex-wrap gap-2">
+            {selectedRecipients.map(recipient => (
+              <div 
+                key={recipient.id} 
+                className="bg-gray-100 dark:bg-gray-700 rounded-md py-1 px-3 text-sm flex items-center"
+              >
+                <span className="text-foreground dark:text-gray-300">{recipient.name}</span>
+                <button 
+                  className="ml-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" 
+                  onClick={() => handleSelectRecipient(recipient)}
+                >
                   &times;
                 </button>
-              </div>)}
-          </div> : <p className="text-gray-500 text-sm">No recipients selected</p>}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500 dark:text-gray-400 text-sm">No recipients selected</p>
+        )}
       </div>
 
       {/* Message Templates */}
       <div className="mb-5">
         <div className="flex items-center justify-between">
-          <label className="block text-sm font-medium">Message:</label>
+          <label className="block text-sm font-medium text-foreground dark:text-gray-300">Message:</label>
           <Select onValueChange={handleSelectTemplate}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[180px] dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300">
               <SelectValue placeholder="Select template" />
             </SelectTrigger>
-            <SelectContent>
-              {messageTemplates.map(template => <SelectItem key={template.id} value={template.id}>
+            <SelectContent className="dark:bg-gray-800 dark:border-gray-700">
+              {messageTemplates.map(template => (
+                <SelectItem 
+                  key={template.id} 
+                  value={template.id} 
+                  className="dark:hover:bg-gray-700 dark:text-gray-300"
+                >
                   {template.name}
-                </SelectItem>)}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
-        <Textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Type your message here..." className="mt-2 min-h-[120px]" />
+        <Textarea 
+          value={message} 
+          onChange={e => setMessage(e.target.value)} 
+          placeholder="Type your message here..." 
+          className="mt-2 min-h-[120px] dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300" 
+        />
       </div>
 
       {/* Action Buttons */}
       <div className="flex justify-end space-x-4">
-        <Button variant="outline" className="flex items-center gap-1">
-          <Clock className="h-4 w-4" />
+        <Button variant="outline" className="flex items-center gap-1 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
+          <Clock className="h-4 w-4 dark:text-gray-300" />
           Schedule
         </Button>
-        <Button onClick={handleSendMessage} className="flex items-center gap-1" disabled={message.trim() === "" || selectedRecipients.length === 0 || channels.length === 0}>
+        <Button 
+          onClick={handleSendMessage} 
+          className="flex items-center gap-1" 
+          disabled={message.trim() === "" || selectedRecipients.length === 0 || channels.length === 0}
+        >
           <Send className="h-4 w-4" />
           Send Now
         </Button>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default CommunicationPanel;
