@@ -22,6 +22,8 @@ interface CommunicationPanelProps {
     hireStatuses?: string[];
     organizations?: string[];
   };
+  activeTab?: string;
+  setActiveTab?: (tab: string) => void;
 }
 
 const generateRandomDrivers = (count: number, startId: number = 10000): any[] => {
@@ -50,21 +52,14 @@ const generateRandomDrivers = (count: number, startId: number = 10000): any[] =>
 
 const mockDrivers = generateRandomDrivers(20);
 
-const CommunicationPanel = ({ selectedFilters }: CommunicationPanelProps = {}) => {
+const CommunicationPanel = ({ selectedFilters, activeTab = "drivers", setActiveTab }: CommunicationPanelProps) => {
   const { toast } = useToast();
   const [message, setMessage] = useState("");
   const [selectedRecipients, setSelectedRecipients] = useState<Recipient[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState("drivers");
   const [channels, setChannels] = useState<string[]>(["sms", "email", "inapp"]);
   const [showDropdown, setShowDropdown] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
-
-  const [selectedClientStatuses, setSelectedClientStatuses] = useState<string[]>([]);
-  const [selectedClientCities, setSelectedClientCities] = useState<string[]>([]);
-  const [selectedClientStates, setSelectedClientStates] = useState<string[]>([]);
-  const [selectedClientProfiles, setSelectedClientProfiles] = useState<string[]>([]);
-  const [selectedOrganizations, setSelectedOrganizations] = useState<string[]>([]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -127,23 +122,12 @@ const CommunicationPanel = ({ selectedFilters }: CommunicationPanelProps = {}) =
     filterArray => filterArray && filterArray.length > 0
   );
 
-  const allClientStatuses = ["active", "inactive", "pending"];
-  const allClientCities = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"];
-  const allClientStates = ["NY", "CA", "IL", "TX", "AZ"];
-  const allClientProfiles = ["Business", "Individual", "Enterprise"];
-  const allOrganizations = ["Acme Corp", "Globex Corp", "Initech"];
-
   return (
     <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 my-0 h-[calc(100vh-180px)] overflow-auto">
       <div className="mb-6">
-        <Tabs defaultValue="drivers" onValueChange={(value) => {
-          setActiveTab(value);
-          if (value === "clients") {
-            setSelectedClientStatuses([]);
-            setSelectedClientCities([]);
-            setSelectedClientStates([]);
-            setSelectedClientProfiles([]);
-            setSelectedOrganizations([]);
+        <Tabs defaultValue={activeTab} value={activeTab} onValueChange={(value) => {
+          if (setActiveTab) {
+            setActiveTab(value);
           }
         }}>
           <TabsList className="w-full mb-4 h-14">
@@ -226,7 +210,7 @@ const CommunicationPanel = ({ selectedFilters }: CommunicationPanelProps = {}) =
           </TabsContent>
 
           <TabsContent value="clients">
-            <div className="mt-4 mb-6">
+            <div className="mt-4 mb-6" ref={searchRef}>
               <label htmlFor="client-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Find contact:
               </label>
@@ -257,6 +241,7 @@ const CommunicationPanel = ({ selectedFilters }: CommunicationPanelProps = {}) =
               <RecipientList 
                 selectedRecipients={selectedRecipients}
                 onRemoveRecipient={handleSelectRecipient}
+                selectedFilters={selectedFilters}
               />
             </div>
           </TabsContent>
@@ -293,6 +278,7 @@ const CommunicationPanel = ({ selectedFilters }: CommunicationPanelProps = {}) =
               <RecipientList 
                 selectedRecipients={selectedRecipients}
                 onRemoveRecipient={handleSelectRecipient}
+                selectedFilters={selectedFilters}
               />
             </div>
           </TabsContent>

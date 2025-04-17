@@ -108,10 +108,14 @@ const CommunicationTower = () => {
                   setSelectedOrganizations={setSelectedOrganizations}
                   allOrganizations={allOrganizations}
                   onFiltersAdd={handleFiltersAdd}
+                  open={isFilterSidebarOpen}
+                  onClose={() => setIsFilterSidebarOpen(false)}
                 />
               )}
               <div className="flex-1 h-full overflow-auto">
                 <CommunicationPanel
+                  activeTab={activeTab}
+                  setActiveTab={setActiveTab}
                   selectedFilters={{
                     statuses: activeTab === "drivers" ? selectedStatuses : selectedClientStatuses,
                     zipcodes: selectedZipcodes,
