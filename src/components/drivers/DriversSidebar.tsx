@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -57,6 +56,7 @@ export function DriversSidebar({
   const [profileSearchTerm, setProfileSearchTerm] = useState("");
   const [citySearchTerm, setCitySearchTerm] = useState("");
   const [stateSearchTerm, setStateSearchTerm] = useState("");
+  const [activeTab, setActiveTab] = useState('drivers');
 
   useEffect(() => {
     const transportDict = getDictionary("2");
@@ -211,13 +211,28 @@ export function DriversSidebar({
     state.toLowerCase().includes(stateSearchTerm.toLowerCase())
   );
 
+  const getTitle = () => {
+    switch (activeTab) {
+      case 'drivers':
+        return 'Filter Drivers';
+      case 'clients':
+        return 'Filter Clients';
+      case 'groups':
+        return 'Filter Dispatchers';
+      default:
+        return 'Filter';
+    }
+  };
+
   return (
     <div 
-      className={`h-full bg-white dark:bg-gray-900 rounded-lg shadow-md transition-all duration-300 
-        ${open ? 'w-[275px] max-w-[80vw]' : 'w-0 overflow-hidden'}`}
+      className={cn(
+        "h-full bg-white dark:bg-gray-900 rounded-lg shadow-md transition-all duration-300",
+        open ? "w-[275px] max-w-[80vw]" : "w-0 overflow-hidden"
+      )}
     >
       <div className="p-6 w-full h-full flex flex-col overflow-y-auto">
-        <h2 className="text-lg font-semibold mb-4">Filter Drivers</h2>
+        <h2 className="text-lg font-semibold mb-4">{getTitle()}</h2>
         
         <ScrollArea className="flex-1 -mr-4 pr-4">
           <Accordion type="single" collapsible className="w-full">
