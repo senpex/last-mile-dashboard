@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Search, Users, User, Send, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { SearchInput } from "@/components/ui/search-input";
+import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { RecipientList } from "./RecipientList";
@@ -17,11 +17,28 @@ const CommunicationPanel = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("drivers");
   const [channels, setChannels] = useState<string[]>(["sms", "email", "inapp"]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
 
-  const filteredRecipients = searchQuery.length > 0 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const filteredRecipients = searchQuery.length >= 3 
     ? mockRecipients[activeTab as keyof typeof mockRecipients]
-        .filter(recipient => recipient.name.toLowerCase().includes(searchQuery.toLowerCase())) 
-    : mockRecipients[activeTab as keyof typeof mockRecipients];
+        .filter(recipient => 
+          recipient.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+          recipient.email.toLowerCase().includes(searchQuery.toLowerCase()) || 
+          recipient.phone.includes(searchQuery)
+        )
+    : [];
 
   const handleSelectRecipient = (recipient: Recipient) => {
     const isAlreadySelected = selectedRecipients.some(r => r.id === recipient.id);
@@ -30,6 +47,8 @@ const CommunicationPanel = () => {
     } else {
       setSelectedRecipients([...selectedRecipients, recipient]);
     }
+    setShowDropdown(false);
+    setSearchQuery("");
   };
 
   const handleSelectTemplate = (templateId: string) => {
@@ -81,24 +100,56 @@ const CommunicationPanel = () => {
           </TabsList>
 
           <TabsContent value="drivers">
-            <div className="mt-4 mb-6">
+            <div className="mt-4 mb-6" ref={searchRef}>
               <label htmlFor="contact-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Find contact:
               </label>
-              <SearchInput 
-                id="contact-search"
-                value={searchQuery} 
-                onChange={e => setSearchQuery(e.target.value)} 
-                placeholder="Search drivers" 
-                className="w-full" 
-              />
+              <div className="relative">
+                <Input
+                  id="contact-search"
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setShowDropdown(e.target.value.length >= 3);
+                  }}
+                  placeholder="Search drivers"
+                  className="w-full pl-8"
+                />
+                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
+                
+                {showDropdown && searchQuery.length >= 3 && (
+                  <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 max-h-60 overflow-auto">
+                    {filteredRecipients.length > 0 ? (
+                      filteredRecipients.map((recipient) => (
+                        <div
+                          key={recipient.id}
+                          onClick={() => handleSelectRecipient(recipient)}
+                          className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center justify-between"
+                        >
+                          <div>
+                            <div className="font-medium">{recipient.name}</div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">{recipient.email}</div>
+                          </div>
+                          {selectedRecipients.some(r => r.id === recipient.id) && (
+                            <Check className="h-4 w-4 text-green-500" />
+                          )}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="px-4 py-2 text-gray-500 dark:text-gray-400">
+                        No results found
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="mb-4">
               <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
                 Selected Recipients:
               </label>
-              <RecipientList 
+              <RecipientList
                 selectedRecipients={selectedRecipients}
                 onRemoveRecipient={handleSelectRecipient}
               />
