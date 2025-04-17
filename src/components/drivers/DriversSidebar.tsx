@@ -217,7 +217,7 @@ export function DriversSidebar({
         ${open ? 'w-[275px] max-w-[80vw]' : 'w-0 overflow-hidden'}`}
     >
       <div className="p-6 w-full h-full flex flex-col overflow-y-auto">
-        <h2 className="text-lg font-semibold mb-4">Filters</h2>
+        <h2 className="text-lg font-semibold mb-4">Filter Drivers</h2>
         
         <ScrollArea className="flex-1 -mr-4 pr-4">
           <Accordion type="single" collapsible className="w-full">
