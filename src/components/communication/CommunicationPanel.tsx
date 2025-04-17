@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Search, Users, User, Send, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,23 +10,6 @@ import { CommunicationChannels } from "./CommunicationChannels";
 import { MessageTemplates, messageTemplates } from "./MessageTemplates";
 import { Recipient, mockRecipients, MessageData } from "./types";
 
-const generateDispatchers = () => {
-  const dispatchers: Recipient[] = [];
-  const firstNames = ["Alex", "Sam", "Jordan", "Taylor", "Morgan", "Casey", "Drew", "Pat", "Chris", "Jamie"];
-  const lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez"];
-
-  for (let i = 0; i < 20; i++) {
-    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
-    dispatchers.push({
-      id: (30000 + i).toString(), // Convert number to string to match the Recipient type
-      name: `${firstName} ${lastName}`,
-      type: "dispatcher"
-    });
-  }
-  return dispatchers;
-};
-
 const CommunicationPanel = () => {
   const { toast } = useToast();
   const [message, setMessage] = useState("");
@@ -35,35 +17,11 @@ const CommunicationPanel = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("drivers");
   const [channels, setChannels] = useState<string[]>(["sms", "email", "inapp"]);
-  const [dispatchers, setDispatchers] = useState<Recipient[]>([]);
 
-  useEffect(() => {
-    const generatedDispatchers = generateDispatchers();
-    setDispatchers(generatedDispatchers);
-  }, []);
-
-  const getFilteredRecipients = () => {
-    const query = searchQuery.toLowerCase();
-    
-    switch (activeTab) {
-      case "drivers":
-        return mockRecipients.drivers.filter(recipient => 
-          recipient.name.toLowerCase().includes(query)
-        );
-      case "clients":
-        return mockRecipients.clients.filter(recipient => 
-          recipient.name.toLowerCase().includes(query)
-        );
-      case "groups":
-        return dispatchers.filter(dispatcher => 
-          dispatcher.name.toLowerCase().includes(query)
-        );
-      default:
-        return [];
-    }
-  };
-
-  const filteredRecipients = getFilteredRecipients();
+  const filteredRecipients = searchQuery.length > 0 
+    ? mockRecipients[activeTab as keyof typeof mockRecipients]
+        .filter(recipient => recipient.name.toLowerCase().includes(searchQuery.toLowerCase())) 
+    : mockRecipients[activeTab as keyof typeof mockRecipients];
 
   const handleSelectRecipient = (recipient: Recipient) => {
     const isAlreadySelected = selectedRecipients.some(r => r.id === recipient.id);
@@ -145,20 +103,6 @@ const CommunicationPanel = () => {
                 onRemoveRecipient={handleSelectRecipient}
               />
             </div>
-
-            <div className="space-y-2">
-              {filteredRecipients.map(recipient => (
-                <div 
-                  key={recipient.id} 
-                  className={`flex items-center p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                    selectedRecipients.some(r => r.id === recipient.id) ? "bg-gray-200 dark:bg-gray-700" : ""
-                  }`} 
-                  onClick={() => handleSelectRecipient(recipient)}
-                >
-                  <span>{recipient.name}</span>
-                </div>
-              ))}
-            </div>
           </TabsContent>
 
           <TabsContent value="clients">
@@ -184,20 +128,6 @@ const CommunicationPanel = () => {
                 onRemoveRecipient={handleSelectRecipient}
               />
             </div>
-
-            <div className="space-y-2">
-              {filteredRecipients.map(recipient => (
-                <div 
-                  key={recipient.id} 
-                  className={`flex items-center p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                    selectedRecipients.some(r => r.id === recipient.id) ? "bg-gray-200 dark:bg-gray-700" : ""
-                  }`} 
-                  onClick={() => handleSelectRecipient(recipient)}
-                >
-                  <span>{recipient.name}</span>
-                </div>
-              ))}
-            </div>
           </TabsContent>
 
           <TabsContent value="groups">
@@ -222,20 +152,6 @@ const CommunicationPanel = () => {
                 selectedRecipients={selectedRecipients}
                 onRemoveRecipient={handleSelectRecipient}
               />
-            </div>
-
-            <div className="space-y-2">
-              {filteredRecipients.map(recipient => (
-                <div 
-                  key={recipient.id} 
-                  className={`flex items-center p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                    selectedRecipients.some(r => r.id === recipient.id) ? "bg-gray-200 dark:bg-gray-700" : ""
-                  }`} 
-                  onClick={() => handleSelectRecipient(recipient)}
-                >
-                  <span>{recipient.name}</span>
-                </div>
-              ))}
             </div>
           </TabsContent>
         </Tabs>
