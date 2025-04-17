@@ -9,6 +9,13 @@ import { RecipientList } from "./RecipientList";
 import { CommunicationChannels } from "./CommunicationChannels";
 import { MessageTemplates, messageTemplates } from "./MessageTemplates";
 import { Recipient, mockRecipients, MessageData } from "./types";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const CommunicationPanel = () => {
   const { toast } = useToast();
@@ -17,11 +24,12 @@ const CommunicationPanel = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("drivers");
   const [channels, setChannels] = useState<string[]>(["sms", "email", "inapp"]);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const filteredRecipients = searchQuery.length > 0 
     ? mockRecipients[activeTab as keyof typeof mockRecipients]
         .filter(recipient => recipient.name.toLowerCase().includes(searchQuery.toLowerCase())) 
-    : mockRecipients[activeTab as keyof typeof mockRecipients];
+    : [];
 
   const handleSelectRecipient = (recipient: Recipient) => {
     const isAlreadySelected = selectedRecipients.some(r => r.id === recipient.id);
@@ -30,6 +38,8 @@ const CommunicationPanel = () => {
     } else {
       setSelectedRecipients([...selectedRecipients, recipient]);
     }
+    setSearchQuery("");
+    setIsSearchOpen(false);
   };
 
   const handleSelectTemplate = (templateId: string) => {
@@ -85,13 +95,53 @@ const CommunicationPanel = () => {
               <label htmlFor="contact-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Find contact:
               </label>
-              <SearchInput 
-                id="contact-search"
-                value={searchQuery} 
-                onChange={e => setSearchQuery(e.target.value)} 
-                placeholder="Search drivers" 
-                className="w-full" 
-              />
+              <div className="relative">
+                <DropdownMenu open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+                  <DropdownMenuTrigger asChild>
+                    <div>
+                      <SearchInput 
+                        id="contact-search"
+                        value={searchQuery} 
+                        onChange={(e) => {
+                          setSearchQuery(e.target.value);
+                          setIsSearchOpen(!!e.target.value);
+                        }}
+                        placeholder="Search drivers" 
+                        className="w-full" 
+                      />
+                    </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent 
+                    className="w-[--radix-dropdown-menu-trigger-width] max-h-[300px] overflow-hidden bg-popover" 
+                    align="start"
+                  >
+                    {searchQuery && (
+                      <ScrollArea className="max-h-[300px]">
+                        {filteredRecipients.length > 0 ? (
+                          <div className="py-2">
+                            {filteredRecipients.map((recipient) => (
+                              <button
+                                key={recipient.id}
+                                onClick={() => handleSelectRecipient(recipient)}
+                                className={cn(
+                                  "w-full px-4 py-2 text-sm text-left hover:bg-accent hover:text-accent-foreground cursor-pointer",
+                                  selectedRecipients.some(r => r.id === recipient.id) && "bg-accent"
+                                )}
+                              >
+                                {recipient.name}
+                              </button>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="py-2 px-4 text-sm text-muted-foreground">
+                            No results found
+                          </div>
+                        )}
+                      </ScrollArea>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
 
             <div className="mb-4">
