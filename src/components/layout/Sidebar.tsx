@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useTheme } from "./ThemeProvider";
 import ThemeToggle from "./ThemeToggle";
@@ -37,7 +36,7 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
     <aside 
       className={cn(
         "fixed left-0 top-0 h-screen flex flex-col transition-all-300 z-10 bg-sidebar shadow-lg",
-        "border-r border-sidebar-border", // Added border-r for vertical line
+        "border-r border-sidebar-border",
         collapsed ? "w-[70px]" : "w-[240px]",
         mounting ? "animate-slide-in-left" : ""
       )}
