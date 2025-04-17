@@ -14,6 +14,7 @@ import { getDictionary } from "@/lib/storage";
 import CourierChat from '@/components/chat/CourierChat';
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { DeliveryStatus } from "@/types/delivery";
+import { Dispatch, SetStateAction } from 'react';
 
 type StripeStatus = 'verified' | 'unverified' | 'pending';
 
@@ -658,6 +659,18 @@ const DriversPage = () => {
     return Array.from(uniqueZipcodes).sort();
   }, [drivers]);
 
+  const handleFiltersAdd = (filters: {
+    statuses: DeliveryStatus[];
+    zipcodes: string[];
+    cities: string[];
+    states: string[];
+  }) => {
+    setSelectedStatuses(filters.statuses);
+    setSelectedZipcodes(filters.zipcodes);
+    setSelectedCities(filters.cities);
+    setSelectedStates(filters.states);
+  };
+
   return (
     <Layout showFooter={false}>
       <div className="flex flex-col h-screen">
@@ -693,58 +706,11 @@ const DriversPage = () => {
             allStates={allStates}
             selectedStates={selectedStates}
             setSelectedStates={setSelectedStates}
+            onFiltersAdd={handleFiltersAdd}
           />
 
           <div className={`flex-1 transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-2"}`}>
             <DriversTable 
               currentItems={currentItems} 
               sortedColumns={sortedColumns} 
-              availableColumns={availableColumns} 
-              transportTypes={transportTypes} 
-              statusDictionary={statusDictionary} 
-              statusColors={statusColors} 
-              editingNotes={editingNotes} 
-              draggedColumn={draggedColumn} 
-              dragOverColumn={dragOverColumn} 
-              onDragStart={handleDragStart} 
-              onDragOver={handleDragOver} 
-              onDrop={handleDrop} 
-              onDragEnd={handleDragEnd} 
-              renderRating={renderRating} 
-              renderStatus={renderStatus} 
-              renderHireStatus={renderHireStatus} 
-              renderStripeStatus={renderStripeStatus} 
-              handleNotesClick={handleNotesClick} 
-              handleNotesChange={handleNotesChange} 
-              saveNotes={saveNotes} 
-              className="mt-[10px]"
-              sortConfig={sortConfig}
-              requestSort={requestSort}
-            />
-          </div>
-        </div>
-
-        <DriversPagination 
-          currentPage={currentPage} 
-          totalPages={totalPages} 
-          totalItems={totalItems} 
-          pageSize={pageSize} 
-          pageSizeOptions={pageSizeOptions} 
-          onPageChange={handlePageChange} 
-          onPageSizeChange={handlePageSizeChange} 
-        />
-        
-        {chatOpen && selectedCourier && (
-          <CourierChat 
-            open={chatOpen} 
-            courierName={selectedCourier} 
-            onClose={handleChatClose} 
-            hasUnreadMessages={false} 
-          />
-        )}
-      </div>
-    </Layout>
-  );
-};
-
-export default DriversPage;
+              availableColumns={availableColumns

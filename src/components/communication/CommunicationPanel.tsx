@@ -9,6 +9,7 @@ import { RecipientList } from "./RecipientList";
 import { CommunicationChannels } from "./CommunicationChannels";
 import { MessageTemplates, messageTemplates } from "./MessageTemplates";
 import { Recipient, MessageData } from "./types";
+import { DeliveryStatus } from "@/types/delivery";
 
 interface CommunicationPanelProps {
   selectedFilters?: {
