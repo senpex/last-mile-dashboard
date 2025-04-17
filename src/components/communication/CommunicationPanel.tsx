@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Search, Users, User, Send, Clock, MessageSquare, Mail, Smartphone } from "lucide-react";
+import { Search, Users, User, Send, Clock, MessageSquare, Mail, Smartphone, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
+
 const messageTemplates = [{
   id: "template1",
   name: "Order Arriving",
@@ -26,6 +27,7 @@ const messageTemplates = [{
   name: "Delivery Completed",
   content: "Your delivery has been completed. Thank you for using our service!"
 }];
+
 const mockRecipients = {
   clients: [{
     id: "c1",
@@ -67,11 +69,13 @@ const mockRecipients = {
     type: "group"
   }]
 };
+
 type Recipient = {
   id: string;
   name: string;
   type: string;
 };
+
 const CommunicationPanel = () => {
   const {
     toast
@@ -81,7 +85,9 @@ const CommunicationPanel = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("drivers");
   const [channels, setChannels] = useState<string[]>(["sms", "email", "inapp"]);
+
   const filteredRecipients = searchQuery.length > 0 ? mockRecipients[activeTab as keyof typeof mockRecipients].filter(recipient => recipient.name.toLowerCase().includes(searchQuery.toLowerCase())) : mockRecipients[activeTab as keyof typeof mockRecipients];
+
   const handleSelectRecipient = (recipient: Recipient) => {
     const isAlreadySelected = selectedRecipients.some(r => r.id === recipient.id);
     if (isAlreadySelected) {
@@ -90,16 +96,19 @@ const CommunicationPanel = () => {
       setSelectedRecipients([...selectedRecipients, recipient]);
     }
   };
+
   const handleSelectTemplate = (templateId: string) => {
     const template = messageTemplates.find(t => t.id === templateId);
     if (template) {
       setMessage(template.content);
     }
   };
+
   const handleChannelToggle = (value: string[]) => {
     console.log("Channel toggled:", value);
     setChannels(value);
   };
+
   const handleSendMessage = () => {
     if (!message.trim() || selectedRecipients.length === 0 || channels.length === 0) {
       toast({
@@ -122,6 +131,7 @@ const CommunicationPanel = () => {
     });
     setMessage("");
   };
+
   return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-4">
       <div className="mb-6">
         <Tabs defaultValue="drivers" onValueChange={setActiveTab}>
@@ -131,12 +141,19 @@ const CommunicationPanel = () => {
             <TabsTrigger value="groups" className="flex-1"><Users className="mr-2 h-4 w-4" />Dispatchers</TabsTrigger>
           </TabsList>
           
-          <div className="mb-4">
-            <SearchInput value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder={`Search ${activeTab}`} className="w-full" />
-          </div>
-
           <div className="space-y-2">
-            {filteredRecipients.map(recipient => {})}
+            <div className="mb-4">
+              <SearchInput value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder={`Search ${activeTab}`} className="w-full" />
+            </div>
+            
+            <Button variant="outline" className="w-full flex items-center gap-2">
+              <Filter className="h-4 w-4" />
+              Filter
+            </Button>
+
+            <div className="space-y-2">
+              {filteredRecipients.map(recipient => {})}
+            </div>
           </div>
         </Tabs>
       </div>
@@ -202,4 +219,5 @@ const CommunicationPanel = () => {
       </div>
     </div>;
 };
+
 export default CommunicationPanel;
