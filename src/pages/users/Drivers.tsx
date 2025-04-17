@@ -94,6 +94,47 @@ const getRandomAddress = (): string => {
   return `${streetNumbers[randomIndex]} ${streetNames[randomIndex]}, ${cities[randomIndex]}, ${states[randomIndex]}`;
 };
 
+const generateRandomDrivers = (count: number, startId: number = 10000): any[] => {
+  const firstNames = ["John", "Jane", "Michael", "Emma", "David", "Sarah", "Robert", "Jennifer", "William", "Elizabeth", 
+                     "Richard", "Linda", "Joseph", "Barbara", "Thomas", "Susan", "Charles", "Jessica", "Daniel", "Mary",
+                     "Matthew", "Patricia", "Anthony", "Margaret", "Mark", "Sandra", "Donald", "Ashley", "Steven", "Emily",
+                     "Paul", "Donna", "Andrew", "Michelle", "Joshua", "Dorothy", "Kenneth", "Carol", "Kevin", "Amanda",
+                     "Brian", "Melissa", "George", "Deborah", "Timothy", "Stephanie", "Ronald", "Rebecca", "Edward", "Sharon"];
+  
+  const lastNames = ["Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor",
+                    "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Martinez", "Robinson",
+                    "Clark", "Rodriguez", "Lewis", "Lee", "Walker", "Hall", "Allen", "Young", "Hernandez", "King",
+                    "Wright", "Lopez", "Hill", "Scott", "Green", "Adams", "Baker", "Gonzalez", "Nelson", "Carter",
+                    "Mitchell", "Perez", "Roberts", "Turner", "Phillips", "Campbell", "Parker", "Evans", "Edwards", "Collins"];
+  
+  const statuses = ["online", "offline", "busy"];
+  const hireStatuses = ['hired', 'left_vm', 'contact_again', 'not_interested', 'blacklist', 'out_of_service'];
+  const stripeStatuses: StripeStatus[] = ['verified', 'unverified', 'pending'];
+  
+  return Array.from({ length: count }, (_, i) => {
+    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+    const name = `${firstName} ${lastName}`;
+    const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@example.com`;
+    
+    return {
+      id: startId + i,
+      name,
+      email,
+      phone: getRandomPhone(),
+      status: statuses[Math.floor(Math.random() * statuses.length)],
+      hireStatus: hireStatuses[Math.floor(Math.random() * hireStatuses.length)],
+      transports: generateRandomTransports(),
+      rating: generateRandomRating(),
+      stripeStatus: stripeStatuses[Math.floor(Math.random() * stripeStatuses.length)],
+      zipcode: getRandomZipcode(),
+      address: getRandomAddress(),
+      notes: Math.random() > 0.7 ? `Notes for ${name}` : "",
+      profileTypes: generateRandomProfileTypes()
+    };
+  });
+};
+
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{
     [key: string]: string;
@@ -118,48 +159,52 @@ const DriversPage = () => {
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filteredDrivers, setFilteredDrivers] = useState<any[]>([]);
-  const [drivers, setDrivers] = useState([{
-    id: 5432,
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "(123) 456-7890",
-    status: "online",
-    hireStatus: "hired",
-    transports: ["1", "3", "pickup_truck", "9ft_cargo_van"],
-    rating: 4.8,
-    stripeStatus: 'verified' as StripeStatus,
-    zipcode: "94105",
-    address: "123 Main St, San Francisco, CA",
-    notes: "Excellent driver, always on time.",
-    profileTypes: ["Driver", "Mover"]
-  }, {
-    id: 6543,
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phone: "(123) 456-7891",
-    status: "offline",
-    hireStatus: "contact_again",
-    transports: ["2"],
-    rating: 3.5,
-    stripeStatus: 'unverified' as StripeStatus,
-    zipcode: "90210",
-    address: "456 Oak Ave, Beverly Hills, CA",
-    notes: "Prefers weekend shifts.",
-    profileTypes: ["Helper"]
-  }, {
-    id: 7654,
-    name: "Mike Johnson",
-    email: "mike.johnson@example.com",
-    phone: "(123) 456-7892",
-    status: "busy",
-    hireStatus: "blacklist",
-    transports: ["4", "5"],
-    rating: 5.0,
-    stripeStatus: 'pending' as StripeStatus,
-    zipcode: "10001",
-    address: "789 Pine Rd, New York, NY",
-    notes: "Not available on Mondays."
-  }]);
+  const [drivers, setDrivers] = useState([
+    {
+      id: 5432,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      phone: "(123) 456-7890",
+      status: "online",
+      hireStatus: "hired",
+      transports: ["1", "3", "pickup_truck", "9ft_cargo_van"],
+      rating: 4.8,
+      stripeStatus: 'verified' as StripeStatus,
+      zipcode: "94105",
+      address: "123 Main St, San Francisco, CA",
+      notes: "Excellent driver, always on time.",
+      profileTypes: ["Driver", "Mover"]
+    },
+    {
+      id: 6543,
+      name: "Jane Smith",
+      email: "jane.smith@example.com",
+      phone: "(123) 456-7891",
+      status: "offline",
+      hireStatus: "contact_again",
+      transports: ["2"],
+      rating: 3.5,
+      stripeStatus: 'unverified' as StripeStatus,
+      zipcode: "90210",
+      address: "456 Oak Ave, Beverly Hills, CA",
+      notes: "Prefers weekend shifts.",
+      profileTypes: ["Helper"]
+    },
+    {
+      id: 7654,
+      name: "Mike Johnson",
+      email: "mike.johnson@example.com",
+      phone: "(123) 456-7892",
+      status: "busy",
+      hireStatus: "blacklist",
+      transports: ["4", "5"],
+      rating: 5.0,
+      stripeStatus: 'pending' as StripeStatus,
+      zipcode: "10001",
+      address: "789 Pine Rd, New York, NY",
+      notes: "Not available on Mondays."
+    }
+  ]);
   const availableColumns: ColumnOption[] = [
     { id: "id", label: "ID", default: true },
     { id: "name", label: "Name", default: true },
@@ -258,6 +303,14 @@ const DriversPage = () => {
       profileTypes: driver.profileTypes || generateRandomProfileTypes(),
       address: driver.address || getRandomAddress()
     })));
+  }, []);
+
+  useEffect(() => {
+    setDrivers(prevDrivers => {
+      const highestId = Math.max(...prevDrivers.map(d => d.id));
+      const newDrivers = generateRandomDrivers(50, highestId + 1);
+      return [...prevDrivers, ...newDrivers];
+    });
   }, []);
 
   const handlePageChange = (page: number) => {
