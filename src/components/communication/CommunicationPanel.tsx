@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Search, Users, User, Send, Clock, MessageSquare, Mail, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,7 +9,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
-// Mock data for templates
 const messageTemplates = [{
   id: "template1",
   name: "Order Arriving",
@@ -29,7 +27,6 @@ const messageTemplates = [{
   content: "Your delivery has been completed. Thank you for using our service!"
 }];
 
-// Mock data for recipients
 const mockRecipients = {
   clients: [{
     id: "c1",
@@ -71,6 +68,7 @@ const mockRecipients = {
     type: "group"
   }]
 };
+
 type Recipient = {
   id: string;
   name: string;
@@ -84,8 +82,8 @@ const CommunicationPanel = () => {
   const [activeTab, setActiveTab] = useState("clients");
   const [channels, setChannels] = useState<string[]>(["sms", "email", "inapp"]);
 
-  // Search results based on the active tab and search query
   const filteredRecipients = searchQuery.length > 0 ? mockRecipients[activeTab as keyof typeof mockRecipients].filter(recipient => recipient.name.toLowerCase().includes(searchQuery.toLowerCase())) : mockRecipients[activeTab as keyof typeof mockRecipients];
+
   const handleSelectRecipient = (recipient: Recipient) => {
     const isAlreadySelected = selectedRecipients.some(r => r.id === recipient.id);
     if (isAlreadySelected) {
@@ -94,18 +92,20 @@ const CommunicationPanel = () => {
       setSelectedRecipients([...selectedRecipients, recipient]);
     }
   };
+
   const handleSelectTemplate = (templateId: string) => {
     const template = messageTemplates.find(t => t.id === templateId);
     if (template) {
       setMessage(template.content);
     }
   };
+
   const handleChannelToggle = (value: string[]) => {
     setChannels(value);
   };
+
   const handleSendMessage = () => {
     if (!message.trim() || selectedRecipients.length === 0 || channels.length === 0) {
-      // In a real application, you would show a toast notification here
       console.log("Please fill in all required fields (message, recipients, and channels)");
       return;
     }
@@ -116,16 +116,11 @@ const CommunicationPanel = () => {
       timestamp: new Date().toISOString()
     };
     console.log("Sending message:", messageData);
-    // In a real application, you would send this data to your backend
-
-    // Reset form
     setMessage("");
-    // Optionally: setSelectedRecipients([]);
   };
 
   return (
     <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-4">
-      {/* Recipient Type Filtering */}
       <div className="mb-6">
         <Tabs defaultValue="clients" onValueChange={setActiveTab}>
           <TabsList className="w-full mb-2">
@@ -166,7 +161,6 @@ const CommunicationPanel = () => {
         </Tabs>
       </div>
 
-      {/* Channel Selection UI */}
       <div className="mb-5">
         <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">Select Communication Channels:</label>
         <ToggleGroup 
@@ -180,45 +174,44 @@ const CommunicationPanel = () => {
             value="sms" 
             aria-label="Toggle SMS" 
             className={`
-              dark:hover:bg-gray-700 
+              dark:hover:bg-green-900 
               ${channels.includes('sms') 
                 ? 'bg-green-500 dark:bg-green-600 text-white' 
-                : 'dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:bg-green-100 dark:hover:bg-green-900'}
+                : 'dark:text-gray-300 hover:bg-green-100 dark:hover:bg-green-900 hover:text-green-700 dark:hover:text-green-200'}
             `}
           >
-            <Smartphone className={`mr-1 h-4 w-4 ${channels.includes('sms') ? 'text-white' : 'dark:text-gray-300'}`} />
-            <span className={`${channels.includes('sms') ? 'text-white' : 'text-foreground dark:text-gray-300'}`}>SMS</span>
+            <Smartphone className={`mr-1 h-4 w-4 ${channels.includes('sms') ? 'text-white' : 'dark:text-gray-300 group-hover:text-green-700 dark:group-hover:text-green-200'}`} />
+            <span className={`${channels.includes('sms') ? 'text-white' : 'text-foreground dark:text-gray-300 group-hover:text-green-700 dark:group-hover:text-green-200'}`}>SMS</span>
           </ToggleGroupItem>
           <ToggleGroupItem 
             value="email" 
             aria-label="Toggle Email" 
             className={`
-              dark:hover:bg-gray-700 
+              dark:hover:bg-green-900 
               ${channels.includes('email') 
                 ? 'bg-green-500 dark:bg-green-600 text-white' 
-                : 'dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:bg-green-100 dark:hover:bg-green-900'}
+                : 'dark:text-gray-300 hover:bg-green-100 dark:hover:bg-green-900 hover:text-green-700 dark:hover:text-green-200'}
             `}
           >
-            <Mail className={`mr-1 h-4 w-4 ${channels.includes('email') ? 'text-white' : 'dark:text-gray-300'}`} />
-            <span className={`${channels.includes('email') ? 'text-white' : 'text-foreground dark:text-gray-300'}`}>Email</span>
+            <Mail className={`mr-1 h-4 w-4 ${channels.includes('email') ? 'text-white' : 'dark:text-gray-300 group-hover:text-green-700 dark:group-hover:text-green-200'}`} />
+            <span className={`${channels.includes('email') ? 'text-white' : 'text-foreground dark:text-gray-300 group-hover:text-green-700 dark:group-hover:text-green-200'}`}>Email</span>
           </ToggleGroupItem>
           <ToggleGroupItem 
             value="inapp" 
             aria-label="Toggle In-App" 
             className={`
-              dark:hover:bg-gray-700 
+              dark:hover:bg-green-900 
               ${channels.includes('inapp') 
                 ? 'bg-green-500 dark:bg-green-600 text-white' 
-                : 'dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:bg-green-100 dark:hover:bg-green-900'}
+                : 'dark:text-gray-300 hover:bg-green-100 dark:hover:bg-green-900 hover:text-green-700 dark:hover:text-green-200'}
             `}
           >
-            <MessageSquare className={`mr-1 h-4 w-4 ${channels.includes('inapp') ? 'text-white' : 'dark:text-gray-300'}`} />
-            <span className={`${channels.includes('inapp') ? 'text-white' : 'text-foreground dark:text-gray-300'}`}>In-App</span>
+            <MessageSquare className={`mr-1 h-4 w-4 ${channels.includes('inapp') ? 'text-white' : 'dark:text-gray-300 group-hover:text-green-700 dark:group-hover:text-green-200'}`} />
+            <span className={`${channels.includes('inapp') ? 'text-white' : 'text-foreground dark:text-gray-300 group-hover:text-green-700 dark:group-hover:text-green-200'}`}>In-App</span>
           </ToggleGroupItem>
         </ToggleGroup>
       </div>
 
-      {/* Selected Recipients */}
       <div className="mb-5">
         <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">Selected Recipients:</label>
         {selectedRecipients.length > 0 ? (
@@ -243,7 +236,6 @@ const CommunicationPanel = () => {
         )}
       </div>
 
-      {/* Message Templates */}
       <div className="mb-5">
         <div className="flex items-center justify-between">
           <label className="block text-sm font-medium text-foreground dark:text-gray-300">Message:</label>
@@ -272,7 +264,6 @@ const CommunicationPanel = () => {
         />
       </div>
 
-      {/* Action Buttons */}
       <div className="flex justify-end space-x-4">
         <Button variant="outline" className="flex items-center gap-1 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
           <Clock className="h-4 w-4 dark:text-gray-300" />
@@ -292,4 +283,3 @@ const CommunicationPanel = () => {
 };
 
 export default CommunicationPanel;
-
