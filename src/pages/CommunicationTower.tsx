@@ -37,7 +37,7 @@ const CommunicationTower = () => {
               <h1 className="text-2xl font-bold">Communication Tower</h1>
             </div>
 
-            <div className="flex gap-6">
+            <div className="flex gap-6 h-[calc(100vh-180px)]">
               <DriversSidebar
                 open={isFilterSidebarOpen}
                 onClose={() => setIsFilterSidebarOpen(false)}
