@@ -76,7 +76,7 @@ type Recipient = {
   type: string;
 };
 
-const CommunicationPanel = () => {
+const CommunicationPanel = ({ className = "", isFilterSidebarOpen }: { className?: string, isFilterSidebarOpen?: boolean }) => {
   const {
     toast
   } = useToast();
@@ -132,7 +132,10 @@ const CommunicationPanel = () => {
     setMessage("");
   };
 
-  return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-4">
+  return <div className={cn("bg-white dark:bg-gray-900 rounded-lg shadow-md p-4", 
+    className,
+    isFilterSidebarOpen ? "ml-[10px]" : "ml-2"
+  )}>
       <div className="mb-6">
         <Tabs defaultValue="drivers" onValueChange={setActiveTab}>
           <TabsList className="w-full mb-2">
