@@ -457,8 +457,8 @@ const ClientsPage = () => {
             selectedStates={selectedStates}
             setSelectedStates={setSelectedStates}
           />
-
-          <div className={`flex-1 transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-2"}`}>
+          
+          <div className={`flex-1 transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[280px]" : "ml-0"}`}>
             <ClientsTable
               currentItems={currentItems}
               sortedColumns={sortedColumns}
