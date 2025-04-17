@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
@@ -23,6 +22,9 @@ interface ClientsSidebarProps {
   allStates: string[];
   selectedStates: string[];
   setSelectedStates: (states: string[]) => void;
+  allCompanies: string[];
+  selectedCompanies: string[];
+  setSelectedCompanies: (companies: string[]) => void;
 }
 
 export function ClientsSidebar({
@@ -39,7 +41,10 @@ export function ClientsSidebar({
   setSelectedCities,
   allStates = [],
   selectedStates = [],
-  setSelectedStates
+  setSelectedStates,
+  allCompanies = [],
+  selectedCompanies = [],
+  setSelectedCompanies
 }: ClientsSidebarProps) {
   const isMobile = useIsMobile();
 
@@ -50,6 +55,30 @@ export function ClientsSidebar({
       </div>
       <ScrollArea className="flex-1 p-4">
         <Accordion type="multiple" className="w-full">
+          <AccordionItem value="company">
+            <AccordionTrigger className="text-sm">Company</AccordionTrigger>
+            <AccordionContent className="space-y-2 max-h-[200px] overflow-y-auto">
+              {allCompanies.map((company) => (
+                <div key={company} className="flex items-center space-x-2">
+                  <Checkbox 
+                    id={`company-${company}`} 
+                    checked={selectedCompanies.includes(company)}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setSelectedCompanies([...selectedCompanies, company]);
+                      } else {
+                        setSelectedCompanies(selectedCompanies.filter(c => c !== company));
+                      }
+                    }} 
+                  />
+                  <Label htmlFor={`company-${company}`}>
+                    {company}
+                  </Label>
+                </div>
+              ))}
+            </AccordionContent>
+          </AccordionItem>
+          
           <AccordionItem value="zipcode">
             <AccordionTrigger className="text-sm">Zipcode</AccordionTrigger>
             <AccordionContent className="space-y-2 max-h-[200px] overflow-y-auto">

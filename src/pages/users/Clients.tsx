@@ -143,25 +143,58 @@ const ClientsPage = () => {
   });
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
+  const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
 
   useEffect(() => {
     setFilteredClients(clients);
   }, [clients]);
 
   useEffect(() => {
+    let filtered = clients;
+    
     if (searchTerm.length >= 3) {
-      const filtered = clients.filter(client =>
+      filtered = filtered.filter(client =>
         client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         client.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         client.phone.includes(searchTerm) ||
         client.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
         client.id.toString().includes(searchTerm)
       );
-      setFilteredClients(filtered);
-    } else {
-      setFilteredClients(clients);
     }
-  }, [searchTerm, clients]);
+    
+    if (selectedCompanies.length > 0) {
+      filtered = filtered.filter(client => selectedCompanies.includes(client.company));
+    }
+    
+    if (selectedZipcodes.length > 0) {
+      filtered = filtered.filter(client => selectedZipcodes.includes(client.zipcode));
+    }
+    
+    if (selectedCities.length > 0) {
+      filtered = filtered.filter(client => selectedCities.includes(`City ${client.id % 10}`));
+    }
+    
+    if (selectedStates.length > 0) {
+      const addressStateMap: { [key: string]: string } = {
+        "NY": "NY", 
+        "CA": "CA", 
+        "IL": "IL", 
+        "TX": "TX", 
+        "AZ": "AZ", 
+        "PA": "PA", 
+        "WA": "WA", 
+        "FL": "FL", 
+        "CO": "CO", 
+        "GA": "GA"
+      };
+      filtered = filtered.filter(client => {
+        const state = addressStateMap[client.id % 10] || "CA";
+        return selectedStates.includes(state);
+      });
+    }
+    
+    setFilteredClients(filtered);
+  }, [searchTerm, selectedCompanies, selectedZipcodes, selectedCities, selectedStates, clients]);
 
   useEffect(() => {
     setColumnOrder(prevOrder => {
@@ -411,6 +444,16 @@ const ClientsPage = () => {
     return Array.from(states).sort();
   }, []);
 
+  const allCompanies = useMemo(() => {
+    const companies = new Set<string>();
+    clients.forEach(client => {
+      if (client.company) {
+        companies.add(client.company);
+      }
+    });
+    return Array.from(companies).sort();
+  }, [clients]);
+
   const selectedStatuses = [];
   const setSelectedStatuses = () => {};
   const allClientStatuses = ["active", "inactive", "pending"];
@@ -456,6 +499,9 @@ const ClientsPage = () => {
             allStates={allStates}
             selectedStates={selectedStates}
             setSelectedStates={setSelectedStates}
+            allCompanies={allCompanies}
+            selectedCompanies={selectedCompanies}
+            setSelectedCompanies={setSelectedCompanies}
           />
 
           <div className={`flex-1 transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-[10px]"}`}>
