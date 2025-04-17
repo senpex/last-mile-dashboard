@@ -182,7 +182,7 @@ export function ClientsSidebar({
         </Accordion>
       </ScrollArea>
       
-      <div className="mt-4 pt-4 border-t flex gap-2 py-[17px] mx-[23px]">
+      <div className="mt-4 pt-4 border-t flex gap-2 mx-[23px] py-[24px]">
         <Button variant="outline" className="flex-1 gap-1" onClick={handleReset}>
           <RotateCcw className="h-4 w-4" />
           Reset
