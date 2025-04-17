@@ -50,32 +50,6 @@ export function ClientsSidebar({
       </div>
       <ScrollArea className="flex-1 p-4">
         <Accordion type="multiple" className="w-full">
-          {allClientStatuses && allClientStatuses.length > 0 && (
-            <AccordionItem value="status">
-              <AccordionTrigger className="text-sm">Status</AccordionTrigger>
-              <AccordionContent className="space-y-2">
-                {allClientStatuses.map((status) => (
-                  <div key={status} className="flex items-center space-x-2">
-                    <Checkbox 
-                      id={`status-${status}`} 
-                      checked={selectedStatuses.includes(status)}
-                      onCheckedChange={(checked) => {
-                        if (checked && setSelectedStatuses) {
-                          setSelectedStatuses([...selectedStatuses, status]);
-                        } else if (setSelectedStatuses) {
-                          setSelectedStatuses(selectedStatuses.filter(s => s !== status));
-                        }
-                      }} 
-                    />
-                    <Label htmlFor={`status-${status}`} className="capitalize">
-                      {status}
-                    </Label>
-                  </div>
-                ))}
-              </AccordionContent>
-            </AccordionItem>
-          )}
-          
           <AccordionItem value="zipcode">
             <AccordionTrigger className="text-sm">Zipcode</AccordionTrigger>
             <AccordionContent className="space-y-2 max-h-[200px] overflow-y-auto">
