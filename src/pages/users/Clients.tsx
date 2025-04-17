@@ -114,6 +114,8 @@ const ClientsPage = () => {
     { id: "company", label: "Company", default: true },
     { id: "address", label: "Address", default: true },
     { id: "zipcode", label: "Zipcode", default: false },
+    { id: "status", label: "Status", default: true },
+    { id: "stripeStatus", label: "Stripe Status", default: true },
     { id: "notes", label: "Notes", default: true },
     { id: "actions", label: "Actions", default: true }
   ];
@@ -442,6 +444,9 @@ const ClientsPage = () => {
           <ClientsSidebar
             open={isFilterSidebarOpen}
             onClose={() => setIsFilterSidebarOpen(false)}
+            selectedStatuses={selectedStatuses}
+            setSelectedStatuses={setSelectedStatuses}
+            allClientStatuses={allClientStatuses}
             allZipcodes={allZipcodes}
             selectedZipcodes={selectedZipcodes}
             setSelectedZipcodes={setSelectedZipcodes}
@@ -465,12 +470,14 @@ const ClientsPage = () => {
               onDragOver={handleDragOver}
               onDrop={handleDrop}
               onDragEnd={handleDragEnd}
+              renderStripeStatus={renderStripeStatus}
               handleNotesClick={handleNotesClick}
               handleNotesChange={handleNotesChange}
               saveNotes={saveNotes}
               className="mt-[10px]"
               sortConfig={sortConfig}
               requestSort={requestSort}
+              renderStatus={renderStatus}
             />
           </div>
         </div>
