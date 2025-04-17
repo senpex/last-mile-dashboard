@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { TowerControl } from "lucide-react";
 import CommunicationPanel from "@/components/communication/CommunicationPanel";
@@ -39,8 +38,6 @@ const CommunicationTower = () => {
 
             <div className="flex gap-6 h-[calc(100vh-180px)]">
               <DriversSidebar
-                open={isFilterSidebarOpen}
-                onClose={() => setIsFilterSidebarOpen(false)}
                 selectedStatuses={selectedStatuses}
                 setSelectedStatuses={setSelectedStatuses}
                 allDeliveryStatuses={allDriverStatuses}
@@ -53,8 +50,10 @@ const CommunicationTower = () => {
                 allStates={allStates}
                 selectedStates={selectedStates}
                 setSelectedStates={setSelectedStates}
+                open={isFilterSidebarOpen}
+                onClose={() => setIsFilterSidebarOpen(false)}
               />
-              <div className="flex-1 h-[calc(100vh-180px)] overflow-auto">
+              <div className="flex-1 h-full overflow-auto">
                 <CommunicationPanel />
               </div>
             </div>
@@ -66,4 +65,3 @@ const CommunicationTower = () => {
 };
 
 export default CommunicationTower;
-
