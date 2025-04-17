@@ -82,6 +82,10 @@ export function DriversSidebar({
     }
   }, []);
 
+  useEffect(() => {
+    updateFilters();
+  }, [selectedStatuses, selectedZipcodes, selectedCities, selectedStates, selectedProfiles, selectedTransports, selectedHireStatuses]);
+
   const handleStatusChange = (status: DeliveryStatus) => {
     if (selectedStatuses.includes(status)) {
       setSelectedStatuses(selectedStatuses.filter(s => s !== status));
@@ -145,9 +149,10 @@ export function DriversSidebar({
     setSelectedProfiles([]);
     setSelectedCities([]);
     setSelectedStates([]);
+    setSelectedHireStatuses([]);
   };
 
-  const handleSaveFilters = () => {
+  const updateFilters = () => {
     onFiltersAdd({
       statuses: selectedStatuses,
       zipcodes: selectedZipcodes,
@@ -157,6 +162,10 @@ export function DriversSidebar({
       transports: selectedTransports,
       hireStatuses: selectedHireStatuses
     });
+  };
+
+  const handleSaveFilters = () => {
+    updateFilters();
   };
 
   const getProfileCount = (profileId: string) => {
@@ -319,13 +328,7 @@ export function DriversSidebar({
                       <Checkbox
                         id={`status-${status}`}
                         checked={selectedStatuses.includes(status)}
-                        onCheckedChange={() => {
-                          if (selectedStatuses.includes(status)) {
-                            setSelectedStatuses(selectedStatuses.filter(s => s !== status));
-                          } else {
-                            setSelectedStatuses([...selectedStatuses, status]);
-                          }
-                        }}
+                        onCheckedChange={() => handleStatusChange(status)}
                       />
                       <label
                         htmlFor={`status-${status}`}
@@ -363,13 +366,7 @@ export function DriversSidebar({
                       <Checkbox
                         id={`hire-status-${status.id}`}
                         checked={selectedHireStatuses.includes(status.id)}
-                        onCheckedChange={() => {
-                          if (selectedHireStatuses.includes(status.id)) {
-                            setSelectedHireStatuses(selectedHireStatuses.filter(s => s !== status.id));
-                          } else {
-                            setSelectedHireStatuses([...selectedHireStatuses, status.id]);
-                          }
-                        }}
+                        onCheckedChange={() => handleHireStatusChange(status.id)}
                       />
                       <label
                         htmlFor={`hire-status-${status.id}`}
@@ -408,13 +405,7 @@ export function DriversSidebar({
                       <Checkbox
                         id={`transport-${transport.id}`}
                         checked={selectedTransports.includes(transport.id)}
-                        onCheckedChange={() => {
-                          if (selectedTransports.includes(transport.id)) {
-                            setSelectedTransports(selectedTransports.filter(t => t !== transport.id));
-                          } else {
-                            setSelectedTransports([...selectedTransports, transport.id]);
-                          }
-                        }}
+                        onCheckedChange={() => handleTransportChange(transport.id)}
                       />
                       <label
                         htmlFor={`transport-${transport.id}`}
@@ -589,7 +580,7 @@ export function DriversSidebar({
             onClick={handleSaveFilters}
           >
             <Save className="h-4 w-4" />
-            Add
+            Apply
           </Button>
         </div>
       </div>

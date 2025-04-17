@@ -2,6 +2,7 @@
 import React from 'react';
 import { cn } from "@/lib/utils";
 import { Recipient } from './types';
+import { DeliveryStatus } from '@/types/delivery';
 
 interface FilterGroup {
   type: string;
@@ -12,7 +13,7 @@ interface RecipientListProps {
   selectedRecipients: Recipient[];
   onRemoveRecipient: (recipient: Recipient) => void;
   selectedFilters?: {
-    statuses?: string[];
+    statuses?: DeliveryStatus[];
     cities?: string[];
     states?: string[];
     zipcodes?: string[];
