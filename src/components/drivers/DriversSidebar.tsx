@@ -138,7 +138,7 @@ export function DriversSidebar({
   };
 
   const handleSaveFilters = () => {
-    onClose();
+    // Removed onClose() call to keep sidebar open
   };
 
   const getProfileCount = (profileId: string) => {
