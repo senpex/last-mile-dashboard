@@ -18,7 +18,6 @@ interface ClientsTableProps {
   onDragOver: (e: React.DragEvent<HTMLDivElement>, columnId: string) => void;
   onDrop: (e: React.DragEvent<HTMLDivElement>, columnId: string) => void;
   onDragEnd: () => void;
-  renderStripeStatus: (status: 'verified' | 'unverified' | 'pending') => JSX.Element;
   handleNotesClick: (clientId: number) => void;
   handleNotesChange: (clientId: number, notes: string) => void;
   saveNotes: (clientId: number) => void;
@@ -28,7 +27,6 @@ interface ClientsTableProps {
     direction: 'ascending' | 'descending' | null;
   };
   requestSort: (key: string) => void;
-  renderStatus: (status: string) => JSX.Element;
 }
 
 export function ClientsTable({
@@ -42,14 +40,12 @@ export function ClientsTable({
   onDragOver,
   onDrop,
   onDragEnd,
-  renderStripeStatus,
   handleNotesClick,
   handleNotesChange,
   saveNotes,
   className = '',
   sortConfig,
-  requestSort,
-  renderStatus
+  requestSort
 }: ClientsTableProps) {
   return (
     <UsersTableContainer className={className}>
@@ -70,7 +66,7 @@ export function ClientsTable({
                   onDrop={e => onDrop(e, columnId)}
                   onDragEnd={onDragEnd}
                   dragOver={dragOverColumn === columnId}
-                  sortable={['id', 'name', 'email', 'status', 'company'].includes(columnId)}
+                  sortable={['id', 'name', 'email', 'phone', 'company', 'address'].includes(columnId)}
                   sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
                   onSort={() => requestSort(columnId)}
                 >
@@ -102,8 +98,6 @@ export function ClientsTable({
                     {columnId === 'company' && client.company}
                     {columnId === 'address' && client.address}
                     {columnId === 'zipcode' && client.zipcode}
-                    {columnId === 'status' && renderStatus(client.status)}
-                    {columnId === 'stripeStatus' && renderStripeStatus(client.stripeStatus)}
                     {columnId === 'notes' && (
                       <>
                         {editingNotes === client.id ? (
