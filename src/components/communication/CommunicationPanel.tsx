@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Search, Users, User, Send, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -98,8 +99,8 @@ const CommunicationPanel = () => {
               <div className="relative">
                 <DropdownMenu open={isSearchOpen} onOpenChange={setIsSearchOpen}>
                   <DropdownMenuTrigger asChild>
-                    <div>
-                      <SearchInput 
+                    <div className="w-full">
+                      <Input 
                         id="contact-search"
                         value={searchQuery} 
                         onChange={(e) => {
@@ -107,8 +108,9 @@ const CommunicationPanel = () => {
                           setIsSearchOpen(!!e.target.value);
                         }}
                         placeholder="Search drivers" 
-                        className="w-full" 
+                        className="w-full pl-8" 
                       />
+                      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
                     </div>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent 
