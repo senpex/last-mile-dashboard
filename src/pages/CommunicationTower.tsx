@@ -30,23 +30,6 @@ const CommunicationTower = () => {
   return (
     <Layout>
       <div className="flex h-full">
-        <DriversSidebar
-          open={isFilterSidebarOpen}
-          onClose={() => setIsFilterSidebarOpen(false)}
-          selectedStatuses={selectedStatuses}
-          setSelectedStatuses={setSelectedStatuses}
-          allDeliveryStatuses={allDriverStatuses}
-          allZipcodes={allZipcodes}
-          selectedZipcodes={selectedZipcodes}
-          setSelectedZipcodes={setSelectedZipcodes}
-          allCities={allCities}
-          selectedCities={selectedCities}
-          setSelectedCities={setSelectedCities}
-          allStates={allStates}
-          selectedStates={selectedStates}
-          setSelectedStates={setSelectedStates}
-        />
-        
         <div className="flex-1">
           <div className="container mx-auto p-6">
             <div className="flex items-center gap-2 mb-6">
@@ -54,8 +37,26 @@ const CommunicationTower = () => {
               <h1 className="text-2xl font-bold">Communication Tower</h1>
             </div>
 
-            <div className="grid gap-6">
-              <CommunicationPanel />
+            <div className="flex gap-6">
+              <DriversSidebar
+                open={isFilterSidebarOpen}
+                onClose={() => setIsFilterSidebarOpen(false)}
+                selectedStatuses={selectedStatuses}
+                setSelectedStatuses={setSelectedStatuses}
+                allDeliveryStatuses={allDriverStatuses}
+                allZipcodes={allZipcodes}
+                selectedZipcodes={selectedZipcodes}
+                setSelectedZipcodes={setSelectedZipcodes}
+                allCities={allCities}
+                selectedCities={selectedCities}
+                setSelectedCities={setSelectedCities}
+                allStates={allStates}
+                selectedStates={selectedStates}
+                setSelectedStates={setSelectedStates}
+              />
+              <div className="flex-1">
+                <CommunicationPanel />
+              </div>
             </div>
           </div>
         </div>
