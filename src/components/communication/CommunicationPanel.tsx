@@ -3,13 +3,13 @@ import { Search, Users, User, Send, Clock, MessageSquare, Mail, Smartphone } fro
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import { SearchInput } from "@/components/ui/search-input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const messageTemplates = [{
   id: "template1",
@@ -31,10 +31,6 @@ const messageTemplates = [{
 
 const mockRecipients = {
   clients: [{
-    id: "c1",
-    name: "John Smith",
-    type: "client"
-  }, {
     id: "c2",
     name: "Emma Johnson",
     type: "client"
@@ -44,10 +40,6 @@ const mockRecipients = {
     type: "client"
   }],
   drivers: [{
-    id: "d1",
-    name: "David Miller",
-    type: "driver"
-  }, {
     id: "d2",
     name: "Sarah Wilson",
     type: "driver"
@@ -177,7 +169,6 @@ const CommunicationPanel = () => {
 
         <div className="space-y-2">
           {filteredRecipients.map(recipient => <div key={recipient.id} className={cn("flex items-center p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800", selectedRecipients.some(r => r.id === recipient.id) ? "bg-gray-200 dark:bg-gray-700" : "")} onClick={() => handleSelectRecipient(recipient)}>
-              <Checkbox checked={selectedRecipients.some(r => r.id === recipient.id)} className="mr-2" onCheckedChange={() => handleSelectRecipient(recipient)} />
               <span>{recipient.name}</span>
             </div>)}
         </div>
