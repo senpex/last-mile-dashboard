@@ -23,7 +23,7 @@ const Layout = ({ children, showFooter = true }: LayoutProps) => {
         }}
       >
         <div 
-          className="zoom-content w-full h-full flex flex-col"
+          className="zoom-content w-full h-full flex flex-col gap-[10px]"
           style={{
             transformOrigin: "top left",
             transform: `scale(var(--zoom-level, 1))`
