@@ -7,7 +7,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Search, Save, RotateCcw } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ClientsSidebarProps {
@@ -70,6 +71,22 @@ export function ClientsSidebar({
   const filteredStates = allStates.filter(state => 
     state.toLowerCase().includes(stateSearchTerm.toLowerCase())
   );
+
+  const handleReset = () => {
+    setSelectedCompanies([]);
+    setSelectedZipcodes([]);
+    setSelectedCities([]);
+    setSelectedStates([]);
+    if (setSelectedStatuses) {
+      setSelectedStatuses([]);
+    }
+  };
+
+  const handleSave = () => {
+    // In a real application, this would save the current filter state
+    // For now, we'll just close the sidebar
+    onClose();
+  };
 
   const filterContent = (
     <div className="h-full flex flex-col">
@@ -255,6 +272,25 @@ export function ClientsSidebar({
           </AccordionItem>
         </Accordion>
       </ScrollArea>
+      
+      {/* Add Save and Reset buttons */}
+      <div className="p-4 border-t flex justify-between">
+        <Button 
+          variant="outline" 
+          className="flex items-center gap-1" 
+          onClick={handleReset}
+        >
+          <RotateCcw className="h-4 w-4" />
+          Reset
+        </Button>
+        <Button 
+          className="flex items-center gap-1" 
+          onClick={handleSave}
+        >
+          <Save className="h-4 w-4" />
+          Save
+        </Button>
+      </div>
     </div>
   );
 
