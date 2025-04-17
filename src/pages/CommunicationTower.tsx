@@ -1,7 +1,11 @@
+
 import { Layout } from "@/components/layout/Layout";
 import { TowerControl } from "lucide-react";
+import CommunicationPanel from "@/components/communication/CommunicationPanel";
+
 const CommunicationTower = () => {
-  return <Layout>
+  return (
+    <Layout>
       <div className="container mx-auto p-6">
         <div className="flex items-center gap-2 mb-6">
           <TowerControl className="h-6 w-6" />
@@ -9,9 +13,11 @@ const CommunicationTower = () => {
         </div>
 
         <div className="grid gap-6">
-          
+          <CommunicationPanel />
         </div>
       </div>
-    </Layout>;
+    </Layout>
+  );
 };
+
 export default CommunicationTower;
