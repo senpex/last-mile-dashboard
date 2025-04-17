@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Search, Users, User, Send, Clock, MessageSquare, Mail, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,97 +10,117 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 // Mock data for templates
-const messageTemplates = [
-  { id: "template1", name: "Order Arriving", content: "Your order is arriving soon. Please be ready to receive it." },
-  { id: "template2", name: "Driver Delayed", content: "Your driver is delayed due to traffic. We apologize for the inconvenience." },
-  { id: "template3", name: "Confirm Availability", content: "Please confirm your availability for the scheduled delivery." },
-  { id: "template4", name: "Delivery Completed", content: "Your delivery has been completed. Thank you for using our service!" },
-];
+const messageTemplates = [{
+  id: "template1",
+  name: "Order Arriving",
+  content: "Your order is arriving soon. Please be ready to receive it."
+}, {
+  id: "template2",
+  name: "Driver Delayed",
+  content: "Your driver is delayed due to traffic. We apologize for the inconvenience."
+}, {
+  id: "template3",
+  name: "Confirm Availability",
+  content: "Please confirm your availability for the scheduled delivery."
+}, {
+  id: "template4",
+  name: "Delivery Completed",
+  content: "Your delivery has been completed. Thank you for using our service!"
+}];
 
 // Mock data for recipients
 const mockRecipients = {
-  clients: [
-    { id: "c1", name: "John Smith", type: "client" },
-    { id: "c2", name: "Emma Johnson", type: "client" },
-    { id: "c3", name: "Michael Brown", type: "client" },
-  ],
-  drivers: [
-    { id: "d1", name: "David Miller", type: "driver" },
-    { id: "d2", name: "Sarah Wilson", type: "driver" },
-    { id: "d3", name: "James Taylor", type: "driver" },
-  ],
-  groups: [
-    { id: "g1", name: "All Drivers in Zone 3", type: "group" },
-    { id: "g2", name: "Clients with active orders", type: "group" },
-    { id: "g3", name: "Today's Deliveries", type: "group" },
-  ]
+  clients: [{
+    id: "c1",
+    name: "John Smith",
+    type: "client"
+  }, {
+    id: "c2",
+    name: "Emma Johnson",
+    type: "client"
+  }, {
+    id: "c3",
+    name: "Michael Brown",
+    type: "client"
+  }],
+  drivers: [{
+    id: "d1",
+    name: "David Miller",
+    type: "driver"
+  }, {
+    id: "d2",
+    name: "Sarah Wilson",
+    type: "driver"
+  }, {
+    id: "d3",
+    name: "James Taylor",
+    type: "driver"
+  }],
+  groups: [{
+    id: "g1",
+    name: "All Drivers in Zone 3",
+    type: "group"
+  }, {
+    id: "g2",
+    name: "Clients with active orders",
+    type: "group"
+  }, {
+    id: "g3",
+    name: "Today's Deliveries",
+    type: "group"
+  }]
 };
-
 type Recipient = {
   id: string;
   name: string;
   type: string;
 };
-
 const CommunicationPanel = () => {
   const [message, setMessage] = useState("");
   const [selectedRecipients, setSelectedRecipients] = useState<Recipient[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("clients");
   const [channels, setChannels] = useState<string[]>(["sms", "email", "inapp"]);
-  
-  // Search results based on the active tab and search query
-  const filteredRecipients = searchQuery.length > 0 
-    ? mockRecipients[activeTab as keyof typeof mockRecipients].filter(
-        recipient => recipient.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : mockRecipients[activeTab as keyof typeof mockRecipients];
 
+  // Search results based on the active tab and search query
+  const filteredRecipients = searchQuery.length > 0 ? mockRecipients[activeTab as keyof typeof mockRecipients].filter(recipient => recipient.name.toLowerCase().includes(searchQuery.toLowerCase())) : mockRecipients[activeTab as keyof typeof mockRecipients];
   const handleSelectRecipient = (recipient: Recipient) => {
     const isAlreadySelected = selectedRecipients.some(r => r.id === recipient.id);
-    
     if (isAlreadySelected) {
       setSelectedRecipients(selectedRecipients.filter(r => r.id !== recipient.id));
     } else {
       setSelectedRecipients([...selectedRecipients, recipient]);
     }
   };
-
   const handleSelectTemplate = (templateId: string) => {
     const template = messageTemplates.find(t => t.id === templateId);
     if (template) {
       setMessage(template.content);
     }
   };
-
   const handleChannelToggle = (value: string[]) => {
     setChannels(value);
   };
-
   const handleSendMessage = () => {
     if (!message.trim() || selectedRecipients.length === 0 || channels.length === 0) {
       // In a real application, you would show a toast notification here
       console.log("Please fill in all required fields (message, recipients, and channels)");
       return;
     }
-
     const messageData = {
       message,
       recipients: selectedRecipients,
       channels,
-      timestamp: new Date().toISOString(),
+      timestamp: new Date().toISOString()
     };
-
     console.log("Sending message:", messageData);
     // In a real application, you would send this data to your backend
-    
+
     // Reset form
     setMessage("");
     // Optionally: setSelectedRecipients([]);
   };
-
-  return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+  return <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
       {/* Recipient Type Filtering */}
       <div className="mb-6">
         <Tabs defaultValue="clients" onValueChange={setActiveTab}>
@@ -112,34 +131,10 @@ const CommunicationPanel = () => {
           </TabsList>
           
           <div className="mb-4">
-            <SearchInput
-              placeholder={`Search ${activeTab}...`}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full"
-            />
+            <SearchInput placeholder={`Search ${activeTab}...`} value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full" />
           </div>
 
-          <div className="h-48 overflow-y-auto border rounded-md p-2 mb-4">
-            {filteredRecipients.length > 0 ? (
-              <ul className="space-y-1">
-                {filteredRecipients.map((recipient) => (
-                  <li key={recipient.id} className="flex items-center">
-                    <Checkbox 
-                      id={recipient.id}
-                      checked={selectedRecipients.some(r => r.id === recipient.id)}
-                      onCheckedChange={() => handleSelectRecipient(recipient)}
-                    />
-                    <label htmlFor={recipient.id} className="ml-2 cursor-pointer text-sm flex-1 py-2">
-                      {recipient.name}
-                    </label>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-500 text-center py-4">No {activeTab} found</p>
-            )}
-          </div>
+          
         </Tabs>
       </div>
 
@@ -165,26 +160,14 @@ const CommunicationPanel = () => {
       {/* Selected Recipients */}
       <div className="mb-5">
         <label className="block text-sm font-medium mb-2">Selected Recipients:</label>
-        {selectedRecipients.length > 0 ? (
-          <div className="flex flex-wrap gap-2">
-            {selectedRecipients.map((recipient) => (
-              <div 
-                key={recipient.id} 
-                className="bg-gray-100 dark:bg-gray-700 rounded-md py-1 px-3 text-sm flex items-center"
-              >
+        {selectedRecipients.length > 0 ? <div className="flex flex-wrap gap-2">
+            {selectedRecipients.map(recipient => <div key={recipient.id} className="bg-gray-100 dark:bg-gray-700 rounded-md py-1 px-3 text-sm flex items-center">
                 <span>{recipient.name}</span>
-                <button 
-                  className="ml-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-                  onClick={() => handleSelectRecipient(recipient)}
-                >
+                <button className="ml-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300" onClick={() => handleSelectRecipient(recipient)}>
                   &times;
                 </button>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-500 text-sm">No recipients selected</p>
-        )}
+              </div>)}
+          </div> : <p className="text-gray-500 text-sm">No recipients selected</p>}
       </div>
 
       {/* Message Templates */}
@@ -196,20 +179,13 @@ const CommunicationPanel = () => {
               <SelectValue placeholder="Select template" />
             </SelectTrigger>
             <SelectContent>
-              {messageTemplates.map(template => (
-                <SelectItem key={template.id} value={template.id}>
+              {messageTemplates.map(template => <SelectItem key={template.id} value={template.id}>
                   {template.name}
-                </SelectItem>
-              ))}
+                </SelectItem>)}
             </SelectContent>
           </Select>
         </div>
-        <Textarea 
-          value={message} 
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type your message here..." 
-          className="mt-2 min-h-[120px]"
-        />
+        <Textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Type your message here..." className="mt-2 min-h-[120px]" />
       </div>
 
       {/* Action Buttons */}
@@ -218,17 +194,11 @@ const CommunicationPanel = () => {
           <Clock className="h-4 w-4" />
           Schedule
         </Button>
-        <Button 
-          onClick={handleSendMessage}
-          className="flex items-center gap-1" 
-          disabled={message.trim() === "" || selectedRecipients.length === 0 || channels.length === 0}
-        >
+        <Button onClick={handleSendMessage} className="flex items-center gap-1" disabled={message.trim() === "" || selectedRecipients.length === 0 || channels.length === 0}>
           <Send className="h-4 w-4" />
           Send Now
         </Button>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default CommunicationPanel;
