@@ -13,8 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import DriversPage from "./pages/users/Drivers";
 import ClientsPage from "./pages/users/Clients";
-import PushCommunication from "./pages/communication/PushCommunication";
-import CustomerSupport from "./pages/communication/CustomerSupport";
+import CommunicationTower from "./pages/CommunicationTower";
 import NotFound from "./pages/NotFound";
 
 // Create a client outside the component to avoid re-initialization on re-renders
@@ -43,8 +42,8 @@ const App = () => {
               <Route path="/profile" element={<Profile />} />
               <Route path="/users/drivers" element={<DriversPage />} />
               <Route path="/users/clients" element={<ClientsPage />} />
-              <Route path="/communication/push" element={<PushCommunication />} />
-              <Route path="/communication/support" element={<CustomerSupport />} />
+              <Route path="/communication-tower" element={<CommunicationTower />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
