@@ -1,10 +1,10 @@
-
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { OrderDetails } from './OrderDetails';
 import { ChatHeader } from './chat/ChatHeader';
 import { ChatMessages } from './chat/ChatMessages';
 import { ChatInput } from './chat/ChatInput';
+import { ChatHistory } from './chat/ChatHistory';
 
 interface ChatInterfaceProps {
   chatId: string;
@@ -117,6 +117,36 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
     setAttachedFiles([]);
   };
 
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'chat':
+        return (
+          <>
+            <ScrollArea className="flex-1 p-4">
+              <ChatMessages messages={messages} />
+            </ScrollArea>
+            <ChatInput 
+              onSendMessage={handleSendMessage}
+              message={message}
+              setMessage={setMessage}
+              attachedFiles={attachedFiles}
+              setAttachedFiles={setAttachedFiles}
+            />
+          </>
+        );
+      case 'history':
+        return <ChatHistory userId={user.id} />;
+      case 'notes':
+        return (
+          <div className="flex-1 p-4">
+            <p className="text-muted-foreground">No notes available.</p>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="flex gap-4 h-full">
       <div className="flex-1 flex flex-col rounded-lg border bg-card shadow-sm overflow-hidden">
@@ -127,17 +157,7 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
         />
         
         <div className="flex-1 overflow-hidden flex flex-col">
-          <ScrollArea className="flex-1 p-4">
-            <ChatMessages messages={messages} />
-          </ScrollArea>
-          
-          <ChatInput 
-            onSendMessage={handleSendMessage}
-            message={message}
-            setMessage={setMessage}
-            attachedFiles={attachedFiles}
-            setAttachedFiles={setAttachedFiles}
-          />
+          {renderContent()}
         </div>
       </div>
 
@@ -147,4 +167,3 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
     </div>
   );
 };
-
