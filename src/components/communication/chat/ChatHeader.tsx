@@ -1,9 +1,9 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { Phone, Mail, MoreVertical, User, UserRound, X } from "lucide-react";
+import { Phone, Mail, MoreVertical, User, UserRound, X, FileText, History } from "lucide-react";
 
 interface ChatHeaderProps {
   user: {
@@ -76,9 +76,27 @@ export const ChatHeader = ({ user, activeTab, setActiveTab }: ChatHeaderProps) =
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="h-9">
             <TabsTrigger value="chat" className="text-sm">Chat</TabsTrigger>
-            <TabsTrigger value="notes" className="text-sm">Notes</TabsTrigger>
-            <TabsTrigger value="history" className="text-sm">Chat History</TabsTrigger>
+            <TabsTrigger value="notes" className="text-sm">
+              <FileText className="h-4 w-4 mr-2" />
+              Notes
+            </TabsTrigger>
+            <TabsTrigger value="history" className="text-sm">
+              <History className="h-4 w-4 mr-2" />
+              Chat History
+            </TabsTrigger>
           </TabsList>
+          <TabsContent value="notes" className="p-4 bg-background rounded-md mt-2">
+            <div className="space-y-4">
+              <h3 className="font-medium">Notes</h3>
+              <p className="text-sm text-muted-foreground">No notes available for this conversation.</p>
+            </div>
+          </TabsContent>
+          <TabsContent value="history" className="p-4 bg-background rounded-md mt-2">
+            <div className="space-y-4">
+              <h3 className="font-medium">Chat History</h3>
+              <p className="text-sm text-muted-foreground">No previous conversations found.</p>
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
     </div>
