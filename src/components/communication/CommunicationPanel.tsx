@@ -383,7 +383,11 @@ const CommunicationPanel = ({ activeTab, setActiveTab, selectedFilters }: Commun
           </Button>
           <Button 
             onClick={handleSendMessage} 
-            className="flex items-center gap-1" 
+            className={`flex items-center gap-1 ${
+              message.trim() !== "" && (selectedRecipients.length > 0 || hasAnyFilters) && channels.length > 0
+                ? "bg-green-600 text-white hover:bg-green-700"
+                : ""
+            }`} 
             disabled={message.trim() === "" || (!selectedRecipients.length && !hasAnyFilters) || channels.length === 0}
           >
             <Send className="h-4 w-4" />
