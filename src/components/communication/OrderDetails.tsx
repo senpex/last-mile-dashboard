@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -32,6 +33,15 @@ const StatusBadge = ({ status }: { status: 'active' | 'completed' | 'cancelled' 
 
 export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
   const [orderDetailsExpanded, setOrderDetailsExpanded] = useState(true);
+  
+  // Ensure addresses are specific enough for Google Maps geocoding
+  const enhancedPickupAddress = orderData.pickupAddress.includes(", ") 
+    ? orderData.pickupAddress 
+    : `${orderData.pickupAddress}, San Francisco, CA`;
+    
+  const enhancedDeliveryAddress = orderData.deliveryAddress.includes(", ") 
+    ? orderData.deliveryAddress 
+    : `${orderData.deliveryAddress}, San Francisco, CA`;
 
   return (
     <div className="p-4">
@@ -50,8 +60,8 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
           </div>
           
           <OrderMap 
-            pickupAddress={orderData.pickupAddress}
-            deliveryAddress={orderData.deliveryAddress}
+            pickupAddress={enhancedPickupAddress}
+            deliveryAddress={enhancedDeliveryAddress}
             driverName={orderData.driverName}
           />
           
@@ -70,7 +80,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
               <MapPin className="h-4 w-4 text-muted-foreground dark:text-gray-500 mt-0.5" />
               <div>
                 <div className="text-xs text-muted-foreground dark:text-gray-400 mb-1">Pickup Address:</div>
-                <div className="text-sm dark:text-gray-300">{orderData.pickupAddress}</div>
+                <div className="text-sm dark:text-gray-300">{enhancedPickupAddress}</div>
               </div>
             </div>
             
@@ -82,7 +92,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
               <MapPin className="h-4 w-4 text-muted-foreground dark:text-gray-500 mt-0.5" />
               <div>
                 <div className="text-xs text-muted-foreground dark:text-gray-400 mb-1">Delivery Address:</div>
-                <div className="text-sm dark:text-gray-300">{orderData.deliveryAddress}</div>
+                <div className="text-sm dark:text-gray-300">{enhancedDeliveryAddress}</div>
               </div>
             </div>
           </div>

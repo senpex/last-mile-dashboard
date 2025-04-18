@@ -1,5 +1,5 @@
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 
 interface OrderMapProps {
@@ -10,6 +10,7 @@ interface OrderMapProps {
 
 export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
+  const [mapError, setMapError] = useState<string | null>(null);
 
   useEffect(() => {
     const initMap = async () => {
@@ -20,13 +21,9 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
 
       try {
         const google = await loader.load();
-        const directionsService = new google.maps.DirectionsService();
-        const directionsRenderer = new google.maps.DirectionsRenderer();
-
-        if (!mapRef.current) return;
-
-        const map = new google.maps.Map(mapRef.current, {
+        const map = new google.maps.Map(mapRef.current!, {
           zoom: 12,
+          center: { lat: 37.7749, lng: -122.4194 }, // Default to San Francisco
           styles: [
             { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
             { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
@@ -35,25 +32,76 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
           disableDefaultUI: true,
         });
 
-        directionsRenderer.setMap(map);
+        // Create geocoder to convert addresses to coordinates
+        const geocoder = new google.maps.Geocoder();
+        
+        // More specific addresses that will work with the API
+        const enhancedPickupAddress = pickupAddress.includes(",") ? pickupAddress : `${pickupAddress}, San Francisco, CA`;
+        const enhancedDeliveryAddress = deliveryAddress.includes(",") ? deliveryAddress : `${deliveryAddress}, San Francisco, CA`;
 
-        // Calculate and display route
-        const request = {
-          origin: pickupAddress,
-          destination: deliveryAddress,
-          travelMode: google.maps.TravelMode.DRIVING,
-        };
+        // Get pickup location
+        geocoder.geocode({ address: enhancedPickupAddress }, (pickupResults, pickupStatus) => {
+          if (pickupStatus !== "OK" || !pickupResults?.[0]) {
+            setMapError("Could not find pickup location");
+            return;
+          }
 
-        directionsService.route(request, (result, status) => {
-          if (status === "OK" && result) {
-            directionsRenderer.setDirections(result);
+          const pickupLocation = pickupResults[0].geometry.location;
+          
+          // Create pickup marker
+          new google.maps.Marker({
+            position: pickupLocation,
+            map,
+            title: "Pickup",
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 8,
+              fillColor: "#FF5252",
+              fillOpacity: 1,
+              strokeColor: "#fff",
+              strokeWeight: 2,
+            },
+          });
+
+          // Get delivery location
+          geocoder.geocode({ address: enhancedDeliveryAddress }, (deliveryResults, deliveryStatus) => {
+            if (deliveryStatus !== "OK" || !deliveryResults?.[0]) {
+              setMapError("Could not find delivery location");
+              return;
+            }
+
+            const deliveryLocation = deliveryResults[0].geometry.location;
             
-            // Add driver marker at a point along the route (simulated)
-            const route = result.routes[0].overview_path;
-            const middlePoint = route[Math.floor(route.length / 2)];
-            
+            // Create delivery marker
             new google.maps.Marker({
-              position: middlePoint,
+              position: deliveryLocation,
+              map,
+              title: "Delivery",
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 8,
+                fillColor: "#2196F3",
+                fillOpacity: 1,
+                strokeColor: "#fff",
+                strokeWeight: 2,
+              },
+            });
+
+            // Try to fit both markers in the view
+            const bounds = new google.maps.LatLngBounds();
+            bounds.extend(pickupLocation);
+            bounds.extend(deliveryLocation);
+            map.fitBounds(bounds);
+
+            // Calculate a point between pickup and delivery for the driver
+            const driverLocation = new google.maps.LatLng(
+              (pickupLocation.lat() + deliveryLocation.lat()) / 2,
+              (pickupLocation.lng() + deliveryLocation.lng()) / 2
+            );
+
+            // Create driver marker
+            new google.maps.Marker({
+              position: driverLocation,
               map,
               title: `Driver: ${driverName}`,
               icon: {
@@ -65,20 +113,42 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
                 strokeWeight: 2,
               },
             });
-          }
+
+            // Draw a simple polyline between pickup and delivery
+            new google.maps.Polyline({
+              path: [pickupLocation, deliveryLocation],
+              geodesic: true,
+              strokeColor: "#FFFFFF",
+              strokeOpacity: 0.8,
+              strokeWeight: 2,
+              map,
+            });
+          });
         });
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error loading Google Maps:", error);
+        setMapError(`Map error: ${error?.message || "Unknown error"}`);
       }
     };
 
-    initMap();
+    if (mapRef.current) {
+      initMap();
+    }
   }, [pickupAddress, deliveryAddress, driverName]);
 
   return (
-    <div 
-      ref={mapRef} 
-      className="w-full h-[200px] rounded-md overflow-hidden shadow-sm"
-    />
+    <div className="relative w-full h-[200px] rounded-md overflow-hidden shadow-sm">
+      <div 
+        ref={mapRef} 
+        className="w-full h-full"
+      />
+      {mapError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+          <div className="text-white text-sm p-2 text-center">
+            {mapError}
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
