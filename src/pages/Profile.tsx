@@ -33,6 +33,7 @@ const Profile = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editRuleIndex, setEditRuleIndex] = useState<number | null>(null);
   const [selectedTemplate, setSelectedTemplate] = useState('');
+  const [selectedTemplateContent, setSelectedTemplateContent] = useState('');
 
   const [attentionRules, setAttentionRules] = useState<AttentionRule[]>([
     { name: "Late Orders", query: "Driver is going late for more than 15 minutes" },
@@ -108,6 +109,8 @@ const Profile = () => {
 
   const handleTemplateSelect = (templateId: string) => {
     setSelectedTemplate(templateId);
+    const template = messageTemplates.find(t => t.id === templateId);
+    setSelectedTemplateContent(template?.content || '');
   };
 
   return (
@@ -411,20 +414,30 @@ const Profile = () => {
                     <CardContent className="pt-6">
                       <h3 className="text-lg font-medium mb-4">Message Templates</h3>
                       <div className="space-y-4">
-                        <div className="flex flex-col space-y-4">
-                          <MessageTemplates onSelectTemplate={handleTemplateSelect} />
-                          <div className="mt-4">
-                            <Button 
-                              variant="outline" 
-                              className="flex items-center gap-2"
-                              onClick={() => {
-                                // Template creation logic will go here
-                              }}
-                            >
-                              <Plus className="w-4 h-4" />
-                              Add Template
-                            </Button>
+                        <div className="flex gap-4">
+                          <div className="w-[180px]">
+                            <MessageTemplates onSelectTemplate={handleTemplateSelect} />
                           </div>
+                          <div className="flex-1">
+                            <Textarea 
+                              value={selectedTemplateContent}
+                              readOnly
+                              className="min-h-[100px]"
+                              placeholder="Select a template to view its content"
+                            />
+                          </div>
+                        </div>
+                        <div className="mt-4">
+                          <Button 
+                            variant="outline" 
+                            className="flex items-center gap-2"
+                            onClick={() => {
+                              // Template creation logic will go here
+                            }}
+                          >
+                            <Plus className="w-4 h-4" />
+                            Add Template
+                          </Button>
                         </div>
                       </div>
                     </CardContent>
