@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil, Calendar, Clock, FileText } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -428,7 +427,7 @@ const Profile = () => {
                             />
                           </div>
                         </div>
-                        <div className="mt-4">
+                        <div className="mt-4 flex justify-start">
                           <Button 
                             variant="outline" 
                             className="flex items-center gap-2"
@@ -437,7 +436,7 @@ const Profile = () => {
                             }}
                           >
                             <Plus className="w-4 h-4" />
-                            Add Template
+                            Save
                           </Button>
                         </div>
                       </div>
