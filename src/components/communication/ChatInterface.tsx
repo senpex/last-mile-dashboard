@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -103,7 +102,72 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
   }>>([]);
   const messageEndRef = useRef<HTMLDivElement>(null);
   
-  // Mock data - replace with actual data from your backend
+  const handleFileAttachment = () => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.multiple = true;
+    fileInput.accept = '.doc,.docx,.pdf,.xls,.xlsx,.jpg,.jpeg,.png,.gif';
+    fileInput.onchange = (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      if (target.files) {
+        const newFiles = Array.from(target.files).map(file => ({
+          file,
+          type: getFileType(file)
+        }));
+        setAttachedFiles(prev => [...prev, ...newFiles]);
+      }
+    };
+    fileInput.click();
+  };
+
+  const removeFile = (index: number) => {
+    setAttachedFiles(files => files.filter((_, i) => i !== index));
+  };
+
+  const handleSendMessage = () => {
+    if (message.trim() === '' && attachedFiles.length === 0) return;
+    console.log("Sending message:", message, attachedFiles);
+    setMessage('');
+    setAttachedFiles([]);
+  };
+  
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+  
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+  
+  const FileIcon = ({ type }: { type: 'image' | 'document' | 'spreadsheet' | 'pdf' | 'voice' }) => {
+    switch (type) {
+      case 'image':
+        return <ImageIcon className="h-4 w-4 text-purple-600" />;
+      case 'document':
+        return <FileText className="h-4 w-4 text-blue-600" />;
+      case 'spreadsheet':
+        return <FileSpreadsheet className="h-4 w-4 text-green-600" />;
+      case 'pdf':
+        return <FileText className="h-4 w-4 text-red-600" />;
+      case 'voice':
+        return <Mic className="h-4 w-4 text-amber-600" />;
+    }
+  };
+
+  const StatusBadge = ({ status }: { status: 'active' | 'completed' | 'cancelled' }) => {
+    switch (status) {
+      case 'active':
+        return <Badge className="bg-green-500">Active</Badge>;
+      case 'completed':
+        return <Badge className="bg-blue-500">Completed</Badge>;
+      case 'cancelled':
+        return <Badge className="bg-red-500">Cancelled</Badge>;
+    }
+  };
+  
   const messages: MessageType[] = [
     {
       id: '1',
@@ -162,8 +226,7 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
       timestamp: '10:23 AM'
     }
   ];
-  
-  // Mock order data
+
   const orderData: OrderType = {
     id: "ORD-1234",
     status: "active",
@@ -174,8 +237,7 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
     eta: "15 minutes",
     createdAt: "Today at 9:30 AM"
   };
-  
-  // Mock notes
+
   const notes: NoteType[] = [
     {
       id: "note1",
@@ -190,7 +252,7 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
       createdAt: "9:50 AM"
     }
   ];
-  
+
   const getFileType = (file: File): 'image' | 'document' | 'spreadsheet' | 'pdf' => {
     const extension = file.name.split('.').pop()?.toLowerCase();
     if (['jpg', 'jpeg', 'png', 'gif'].includes(extension || '')) return 'image';
@@ -199,77 +261,8 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
     return 'document'; // fallback for doc, docx, etc.
   };
 
-  const handleFileAttachment = () => {
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.multiple = true;
-    fileInput.accept = '.doc,.docx,.pdf,.xls,.xlsx,.jpg,.jpeg,.png,.gif';
-    fileInput.onchange = (e: Event) => {
-      const target = e.target as HTMLInputElement;
-      if (target.files) {
-        const newFiles = Array.from(target.files).map(file => ({
-          file,
-          type: getFileType(file)
-        }));
-        setAttachedFiles(prev => [...prev, ...newFiles]);
-      }
-    };
-    fileInput.click();
-  };
-
-  const removeFile = (index: number) => {
-    setAttachedFiles(files => files.filter((_, i) => i !== index));
-  };
-
-  const handleSendMessage = () => {
-    if (message.trim() === '' && attachedFiles.length === 0) return;
-    // Here you would send the message to your backend
-    console.log("Sending message:", message, attachedFiles);
-    setMessage('');
-    setAttachedFiles([]);
-  };
-  
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
-  
-  useEffect(() => {
-    // Scroll to the bottom of the messages
-    messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-  
-  const FileIcon = ({ type }: { type: 'image' | 'document' | 'spreadsheet' | 'pdf' | 'voice' }) => {
-    switch (type) {
-      case 'image':
-        return <ImageIcon className="h-4 w-4 text-purple-600" />;
-      case 'document':
-        return <FileText className="h-4 w-4 text-blue-600" />;
-      case 'spreadsheet':
-        return <FileSpreadsheet className="h-4 w-4 text-green-600" />;
-      case 'pdf':
-        return <FileText className="h-4 w-4 text-red-600" />;
-      case 'voice':
-        return <Mic className="h-4 w-4 text-amber-600" />;
-    }
-  };
-
-  const StatusBadge = ({ status }: { status: 'active' | 'completed' | 'cancelled' }) => {
-    switch (status) {
-      case 'active':
-        return <Badge className="bg-green-500">Active</Badge>;
-      case 'completed':
-        return <Badge className="bg-blue-500">Completed</Badge>;
-      case 'cancelled':
-        return <Badge className="bg-red-500">Cancelled</Badge>;
-    }
-  };
-  
   return (
     <div className="flex flex-col h-full border rounded-md overflow-hidden">
-      {/* Chat Header */}
       <div className="bg-white border-b p-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -335,132 +328,130 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
       </div>
       
       <div className="flex flex-1 overflow-hidden">
-        {/* Main Chat Area */}
         <div className="flex-1 flex flex-col">
-          <TabsContent value="chat" className="flex-1 overflow-hidden flex flex-col m-0">
-            {/* Messages */}
-            <ScrollArea className="flex-1 p-4">
-              {messages.map((msg) => (
-                <div key={msg.id} className={`mb-4 flex ${msg.senderRole === 'dispatcher' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[75%] ${msg.senderRole === 'dispatcher' ? 'bg-primary text-primary-foreground' : 'bg-muted'} rounded-lg p-3`}>
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-sm">{msg.senderName}</span>
-                      <span className="text-xs opacity-70">{msg.timestamp}</span>
-                    </div>
-                    <p className="mt-1">{msg.content}</p>
-                    {msg.attachments && msg.attachments.length > 0 && (
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {msg.attachments.map(attachment => (
-                          <div 
-                            key={attachment.id}
-                            className="flex items-center gap-1 bg-background/80 px-2 py-1 rounded text-xs"
-                          >
-                            <FileIcon type={attachment.type} />
-                            <span className="max-w-[120px] truncate">{attachment.name}</span>
-                          </div>
-                        ))}
+          <Tabs value={activeTab}>
+            <TabsContent value="chat" className="flex-1 overflow-hidden flex flex-col m-0">
+              <ScrollArea className="flex-1 p-4">
+                {messages.map((msg) => (
+                  <div key={msg.id} className={`mb-4 flex ${msg.senderRole === 'dispatcher' ? 'justify-end' : 'justify-start'}`}>
+                    <div className={`max-w-[75%] ${msg.senderRole === 'dispatcher' ? 'bg-primary text-primary-foreground' : 'bg-muted'} rounded-lg p-3`}>
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium text-sm">{msg.senderName}</span>
+                        <span className="text-xs opacity-70">{msg.timestamp}</span>
                       </div>
-                    )}
+                      <p className="mt-1">{msg.content}</p>
+                      {msg.attachments && msg.attachments.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          {msg.attachments.map(attachment => (
+                            <div 
+                              key={attachment.id}
+                              className="flex items-center gap-1 bg-background/80 px-2 py-1 rounded text-xs"
+                            >
+                              <FileIcon type={attachment.type} />
+                              <span className="max-w-[120px] truncate">{attachment.name}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                <div ref={messageEndRef} />
+              </ScrollArea>
+              
+              <div className="p-4 border-t bg-background">
+                {attachedFiles.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-2 p-2 bg-muted rounded-md">
+                    {attachedFiles.map((file, index) => (
+                      <div 
+                        key={index}
+                        className="flex items-center gap-1 bg-background px-2 py-1 rounded-md text-xs"
+                      >
+                        <FileIcon type={file.type} />
+                        <span className="max-w-[100px] truncate">{file.file.name}</span>
+                        <button
+                          onClick={() => removeFile(index)}
+                          className="ml-1 hover:text-destructive"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                <div className="flex items-end gap-2">
+                  <Textarea 
+                    value={message} 
+                    onChange={e => setMessage(e.target.value)} 
+                    placeholder="Type your message here..." 
+                    className="min-h-[80px]"
+                    onKeyDown={handleKeyPress}
+                  />
+                  <div className="flex flex-col gap-2">
+                    <Button variant="ghost" size="icon" onClick={handleFileAttachment}>
+                      <Paperclip className="h-5 w-5" />
+                    </Button>
+                    <Button variant="ghost" size="icon">
+                      <Mic className="h-5 w-5" />
+                    </Button>
+                    <Button size="icon" onClick={handleSendMessage} disabled={message.trim() === '' && attachedFiles.length === 0}>
+                      <Send className="h-5 w-5" />
+                    </Button>
                   </div>
                 </div>
-              ))}
-              <div ref={messageEndRef} />
-            </ScrollArea>
+              </div>
+            </TabsContent>
             
-            {/* Message Input */}
-            <div className="p-4 border-t bg-background">
-              {attachedFiles.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-2 p-2 bg-muted rounded-md">
-                  {attachedFiles.map((file, index) => (
-                    <div 
-                      key={index}
-                      className="flex items-center gap-1 bg-background px-2 py-1 rounded-md text-xs"
-                    >
-                      <FileIcon type={file.type} />
-                      <span className="max-w-[100px] truncate">{file.file.name}</span>
-                      <button
-                        onClick={() => removeFile(index)}
-                        className="ml-1 hover:text-destructive"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </div>
-                  ))}
+            <TabsContent value="notes" className="flex-1 overflow-auto p-4 m-0">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-medium">Notes</h3>
+                  <Button size="sm">Add Note</Button>
                 </div>
-              )}
-              
-              <div className="flex items-end gap-2">
-                <Textarea 
-                  value={message} 
-                  onChange={e => setMessage(e.target.value)} 
-                  placeholder="Type your message here..." 
-                  className="min-h-[80px]"
-                  onKeyDown={handleKeyPress}
-                />
-                <div className="flex flex-col gap-2">
-                  <Button variant="ghost" size="icon" onClick={handleFileAttachment}>
-                    <Paperclip className="h-5 w-5" />
-                  </Button>
-                  <Button variant="ghost" size="icon">
-                    <Mic className="h-5 w-5" />
-                  </Button>
-                  <Button size="icon" onClick={handleSendMessage} disabled={message.trim() === '' && attachedFiles.length === 0}>
-                    <Send className="h-5 w-5" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="notes" className="flex-1 overflow-auto p-4 m-0">
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <h3 className="text-lg font-medium">Notes</h3>
-                <Button size="sm">Add Note</Button>
-              </div>
-              
-              {notes.map(note => (
-                <Card key={note.id} className="mb-3">
-                  <CardHeader className="py-3 px-4">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">{note.createdBy}</span>
-                      <span className="text-xs text-muted-foreground">{note.createdAt}</span>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="py-2 px-4">
-                    <p>{note.content}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="history" className="flex-1 overflow-auto p-4 m-0">
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-lg font-medium mb-3">Previous Conversations</h3>
                 
-                <div className="space-y-3">
-                  {[...Array(3)].map((_, i) => (
-                    <Card key={i} className="cursor-pointer hover:bg-muted/50">
-                      <CardContent className="p-3">
-                        <div className="flex justify-between items-center">
-                          <span className="font-medium">{new Date(Date.now() - i * 86400000).toLocaleDateString()}</span>
-                          <Badge variant="outline">12 messages</Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground mt-1 truncate">
-                          Last message: Thanks for your help with the delivery issue...
-                        </p>
-                      </CardContent>
-                    </Card>
-                  ))}
+                {notes.map(note => (
+                  <Card key={note.id} className="mb-3">
+                    <CardHeader className="py-3 px-4">
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium">{note.createdBy}</span>
+                        <span className="text-xs text-muted-foreground">{note.createdAt}</span>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="py-2 px-4">
+                      <p>{note.content}</p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="history" className="flex-1 overflow-auto p-4 m-0">
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-lg font-medium mb-3">Previous Conversations</h3>
+                  
+                  <div className="space-y-3">
+                    {[...Array(3)].map((_, i) => (
+                      <Card key={i} className="cursor-pointer hover:bg-muted/50">
+                        <CardContent className="p-3">
+                          <div className="flex justify-between items-center">
+                            <span className="font-medium">{new Date(Date.now() - i * 86400000).toLocaleDateString()}</span>
+                            <Badge variant="outline">12 messages</Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground mt-1 truncate">
+                            Last message: Thanks for your help with the delivery issue...
+                          </p>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          </TabsContent>
+            </TabsContent>
+          </Tabs>
         </div>
         
-        {/* Sidebar with Order Details */}
         <Sheet>
           <div className="w-72 border-l bg-gray-50 flex flex-col">
             <div className="p-4">

@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronUp, MessageSquare, Send, X, Paperclip, Users, Calendar } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface InternalChatProps {
   onClose?: () => void;
@@ -115,29 +116,27 @@ export const InternalChat = ({ onClose, initialExpanded = false }: InternalChatP
           </div>
 
           {/* Tab Buttons */}
-          <div className="flex border-b">
-            <Button
-              variant="ghost"
-              className={`flex-1 rounded-none ${activeTab === 'chat' ? 'bg-muted' : ''}`}
-              onClick={() => setActiveTab('chat')}
-            >
-              <MessageSquare className="h-4 w-4 mr-2" />
-              Chat
-            </Button>
-            <Button
-              variant="ghost"
-              className={`flex-1 rounded-none ${activeTab === 'team' ? 'bg-muted' : ''}`}
-              onClick={() => setActiveTab('team')}
-            >
-              <Users className="h-4 w-4 mr-2" />
-              Team
-            </Button>
-          </div>
+          <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'chat' | 'team')}>
+            <TabsList className="flex border-b">
+              <TabsTrigger 
+                value="chat"
+                className="flex-1 rounded-none"
+              >
+                <MessageSquare className="h-4 w-4 mr-2" />
+                Chat
+              </TabsTrigger>
+              <TabsTrigger 
+                value="team"
+                className="flex-1 rounded-none"
+              >
+                <Users className="h-4 w-4 mr-2" />
+                Team
+              </TabsTrigger>
+            </TabsList>
 
-          {/* Chat Content */}
-          {activeTab === 'chat' && (
-            <>
-              <ScrollArea className="flex-1 p-3">
+            {/* Chat Content */}
+            <TabsContent value="chat">
+              <ScrollArea className="flex-1 p-3 h-[calc(100%-90px)]">
                 {messages.map((msg) => (
                   <div key={msg.id} className="mb-3">
                     <div className="flex items-start gap-2">
@@ -173,65 +172,65 @@ export const InternalChat = ({ onClose, initialExpanded = false }: InternalChatP
                   </Button>
                 </div>
               </div>
-            </>
-          )}
+            </TabsContent>
 
-          {/* Team Content */}
-          {activeTab === 'team' && (
-            <ScrollArea className="flex-1 p-3">
-              <div className="space-y-2">
-                <h4 className="text-xs font-medium text-muted-foreground mb-2">ONLINE - {dispatchers.filter(d => d.online).length}</h4>
-                {dispatchers.filter(d => d.online).map(dispatcher => (
-                  <div key={dispatcher.id} className="flex items-center justify-between py-1">
-                    <div className="flex items-center gap-2">
-                      <div className="relative">
-                        <Avatar className="h-8 w-8">
-                          <AvatarFallback>
-                            {dispatcher.name.split(' ').map(n => n[0]).join('')}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-green-500 border-2 border-white"></div>
+            {/* Team Content */}
+            <TabsContent value="team">
+              <ScrollArea className="flex-1 p-3 h-[calc(100%-50px)]">
+                <div className="space-y-2">
+                  <h4 className="text-xs font-medium text-muted-foreground mb-2">ONLINE - {dispatchers.filter(d => d.online).length}</h4>
+                  {dispatchers.filter(d => d.online).map(dispatcher => (
+                    <div key={dispatcher.id} className="flex items-center justify-between py-1">
+                      <div className="flex items-center gap-2">
+                        <div className="relative">
+                          <Avatar className="h-8 w-8">
+                            <AvatarFallback>
+                              {dispatcher.name.split(' ').map(n => n[0]).join('')}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-green-500 border-2 border-white"></div>
+                        </div>
+                        <div className="text-sm">{dispatcher.name}</div>
                       </div>
-                      <div className="text-sm">{dispatcher.name}</div>
+                      <div className="flex">
+                        <Button variant="ghost" size="icon" className="h-7 w-7">
+                          <MessageSquare className="h-3 w-3" />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="h-7 w-7">
+                          <Calendar className="h-3 w-3" />
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex">
-                      <Button variant="ghost" size="icon" className="h-7 w-7">
-                        <MessageSquare className="h-3 w-3" />
-                      </Button>
-                      <Button variant="ghost" size="icon" className="h-7 w-7">
-                        <Calendar className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+                  ))}
 
-                <h4 className="text-xs font-medium text-muted-foreground mt-4 mb-2">OFFLINE - {dispatchers.filter(d => !d.online).length}</h4>
-                {dispatchers.filter(d => !d.online).map(dispatcher => (
-                  <div key={dispatcher.id} className="flex items-center justify-between py-1">
-                    <div className="flex items-center gap-2">
-                      <div className="relative">
-                        <Avatar className="h-8 w-8">
-                          <AvatarFallback className="bg-muted">
-                            {dispatcher.name.split(' ').map(n => n[0]).join('')}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-gray-400 border-2 border-white"></div>
+                  <h4 className="text-xs font-medium text-muted-foreground mt-4 mb-2">OFFLINE - {dispatchers.filter(d => !d.online).length}</h4>
+                  {dispatchers.filter(d => !d.online).map(dispatcher => (
+                    <div key={dispatcher.id} className="flex items-center justify-between py-1">
+                      <div className="flex items-center gap-2">
+                        <div className="relative">
+                          <Avatar className="h-8 w-8">
+                            <AvatarFallback className="bg-muted">
+                              {dispatcher.name.split(' ').map(n => n[0]).join('')}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-gray-400 border-2 border-white"></div>
+                        </div>
+                        <div className="text-sm text-muted-foreground">{dispatcher.name}</div>
                       </div>
-                      <div className="text-sm text-muted-foreground">{dispatcher.name}</div>
+                      <div className="flex">
+                        <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground">
+                          <MessageSquare className="h-3 w-3" />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground">
+                          <Calendar className="h-3 w-3" />
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex">
-                      <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground">
-                        <MessageSquare className="h-3 w-3" />
-                      </Button>
-                      <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground">
-                        <Calendar className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
-          )}
+                  ))}
+                </div>
+              </ScrollArea>
+            </TabsContent>
+          </Tabs>
         </div>
       ) : (
         <Button 
