@@ -1,6 +1,9 @@
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { Eye } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import {
   Select,
   SelectContent,
@@ -27,6 +30,8 @@ const Dashboard = () => {
   ];
 
   const [ordersPeriod, setOrdersPeriod] = useState("lifetime");
+
+  const navigate = useNavigate();
 
   return (
     <Layout>
@@ -66,10 +71,16 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <Card>
                 <CardContent className="pt-6">
-                  <div className="flex items-center space-x-4">
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground">My AR Orders</p>
-                      <h3 className="text-2xl font-bold">{stats.arOrders}</h3>
+                  <div className="flex flex-col space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">My AR Orders</p>
+                        <h3 className="text-2xl font-bold">{stats.arOrders}</h3>
+                      </div>
+                      <Button variant="outline" size="sm" onClick={() => navigate('/ar-orders')}>
+                        <Eye className="mr-2 h-4 w-4" />
+                        View
+                      </Button>
                     </div>
                   </div>
                 </CardContent>
@@ -77,10 +88,16 @@ const Dashboard = () => {
 
               <Card>
                 <CardContent className="pt-6">
-                  <div className="flex items-center space-x-4">
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground">Working Drivers Chats</p>
-                      <h3 className="text-2xl font-bold">{stats.workingDriversChats}</h3>
+                  <div className="flex flex-col space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">Working Drivers Chats</p>
+                        <h3 className="text-2xl font-bold">{stats.workingDriversChats}</h3>
+                      </div>
+                      <Button variant="outline" size="sm" onClick={() => navigate('/communication/support')}>
+                        <Eye className="mr-2 h-4 w-4" />
+                        View
+                      </Button>
                     </div>
                   </div>
                 </CardContent>
@@ -88,10 +105,16 @@ const Dashboard = () => {
 
               <Card>
                 <CardContent className="pt-6">
-                  <div className="flex items-center space-x-4">
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground">Customer Chats</p>
-                      <h3 className="text-2xl font-bold">{stats.customerChats}</h3>
+                  <div className="flex flex-col space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">Customer Chats</p>
+                        <h3 className="text-2xl font-bold">{stats.customerChats}</h3>
+                      </div>
+                      <Button variant="outline" size="sm" onClick={() => navigate('/communication/support')}>
+                        <Eye className="mr-2 h-4 w-4" />
+                        View
+                      </Button>
                     </div>
                   </div>
                 </CardContent>
@@ -111,6 +134,10 @@ const Dashboard = () => {
                         <span className="text-xl font-bold">{stats.ezCaterModifications}</span>
                       </div>
                     </div>
+                    <Button variant="outline" size="sm" onClick={() => navigate('/ezcater')}>
+                      <Eye className="mr-2 h-4 w-4" />
+                      View
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
