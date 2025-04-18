@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { Phone, Mail, MoreVertical, User, UserRound, X } from "lucide-react";
+import { Mail, MoreVertical, User, UserRound, X } from "lucide-react";
 
 interface ChatHeaderProps {
   user: {
@@ -36,10 +35,6 @@ export const ChatHeader = ({ user, activeTab, setActiveTab }: ChatHeaderProps) =
         </div>
         
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="h-8">
-            <Phone className="h-4 w-4 mr-1" />
-            Call
-          </Button>
           <Button variant="outline" size="sm" className="h-8">
             <Mail className="h-4 w-4 mr-1" />
             Email
