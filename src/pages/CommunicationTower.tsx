@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { TowerControl, Filter } from "lucide-react";
 import CommunicationPanel from "@/components/communication/CommunicationPanel";
@@ -70,20 +69,19 @@ const CommunicationTower = () => {
       <div className="flex h-full">
         <div className="flex-1">
           <div className="container mx-auto p-6">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-2">
-                <TowerControl className="h-6 w-6" />
-                <h1 className="text-2xl font-bold">Communication Tower</h1>
-              </div>
-              <Button 
-                variant={isFilterSidebarOpen ? "default" : "outline"}
-                onClick={() => setIsFilterSidebarOpen(!isFilterSidebarOpen)}
-                className="flex items-center gap-2"
-              >
-                <Filter className="h-4 w-4" />
-                {isFilterSidebarOpen ? "Hide Filters" : "Show Filters"}
-              </Button>
+            <div className="flex items-center gap-2 mb-6">
+              <TowerControl className="h-6 w-6" />
+              <h1 className="text-2xl font-bold">Communication Tower</h1>
             </div>
+            
+            <Button 
+              variant={isFilterSidebarOpen ? "default" : "outline"}
+              onClick={() => setIsFilterSidebarOpen(!isFilterSidebarOpen)}
+              className="mb-4 flex items-center gap-2"
+            >
+              <Filter className="h-4 w-4" />
+              {isFilterSidebarOpen ? "Hide Filters" : "Show Filters"}
+            </Button>
 
             <div className="flex gap-[10px] h-[calc(100vh-180px)]">
               {activeTab === "drivers" ? (
