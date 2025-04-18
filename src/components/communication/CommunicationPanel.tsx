@@ -387,15 +387,8 @@ const CommunicationPanel = ({ activeTab, setActiveTab, selectedFilters }: Commun
               value={message} 
               onChange={e => setMessage(e.target.value)} 
               placeholder="Type your message here..." 
-              className="min-h-[120px] dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 pr-10" 
+              className="min-h-[120px] dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300" 
             />
-            <button 
-              onClick={handleFileAttachment}
-              className="absolute bottom-2 left-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
-              title="Attach files"
-            >
-              <Paperclip className="h-5 w-5" />
-            </button>
           </div>
           {attachedFiles.length > 0 && (
             <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
@@ -404,7 +397,14 @@ const CommunicationPanel = ({ activeTab, setActiveTab, selectedFilters }: Commun
           )}
         </div>
 
-        <div className="flex justify-end space-x-4 mt-6">
+        <div className="flex justify-end items-center space-x-4 mt-6">
+          <button 
+            onClick={handleFileAttachment}
+            className="flex items-center gap-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+            title="Attach files"
+          >
+            <Paperclip className="h-4 w-4" />
+          </button>
           <Button variant="outline" className="flex items-center gap-1 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
             <Clock className="h-4 w-4 dark:text-gray-300" />
             Schedule
