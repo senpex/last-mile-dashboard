@@ -22,8 +22,8 @@ export const CommunicationChannels: React.FC<CommunicationChannelsProps> = ({
           value="sms" 
           aria-label="Toggle SMS" 
           className={channels.includes('sms') 
-            ? "bg-green-600 !text-white" 
-            : "bg-gray-100 text-foreground dark:bg-gray-800 dark:text-gray-300 hover:bg-green-100 hover:text-green-700 dark:hover:bg-green-900/30 dark:hover:text-green-200"
+            ? "bg-blue-600 !text-white" 
+            : "bg-blue-100 text-foreground dark:bg-blue-800 dark:text-gray-300 hover:bg-blue-200 hover:text-blue-700 dark:hover:bg-blue-900/30 dark:hover:text-blue-200"
           }
         >
           <Smartphone className={`mr-1 h-4 w-4 ${channels.includes('sms') ? 'text-white' : ''}`} />
@@ -34,8 +34,8 @@ export const CommunicationChannels: React.FC<CommunicationChannelsProps> = ({
           value="email" 
           aria-label="Toggle Email" 
           className={channels.includes('email') 
-            ? "bg-green-600 !text-white" 
-            : "bg-gray-100 text-foreground dark:bg-gray-800 dark:text-gray-300 hover:bg-green-100 hover:text-green-700 dark:hover:bg-green-900/30 dark:hover:text-green-200"
+            ? "bg-blue-600 !text-white" 
+            : "bg-blue-100 text-foreground dark:bg-blue-800 dark:text-gray-300 hover:bg-blue-200 hover:text-blue-700 dark:hover:bg-blue-900/30 dark:hover:text-blue-200"
           }
         >
           <Mail className={`mr-1 h-4 w-4 ${channels.includes('email') ? 'text-white' : ''}`} />
@@ -46,8 +46,8 @@ export const CommunicationChannels: React.FC<CommunicationChannelsProps> = ({
           value="inapp" 
           aria-label="Toggle In-App" 
           className={channels.includes('inapp') 
-            ? "bg-green-600 !text-white" 
-            : "bg-gray-100 text-foreground dark:bg-gray-800 dark:text-gray-300 hover:bg-green-100 hover:text-green-700 dark:hover:bg-green-900/30 dark:hover:text-green-200"
+            ? "bg-blue-600 !text-white" 
+            : "bg-blue-100 text-foreground dark:bg-blue-800 dark:text-gray-300 hover:bg-blue-200 hover:text-blue-700 dark:hover:bg-blue-900/30 dark:hover:text-blue-200"
           }
         >
           <MessageSquare className={`mr-1 h-4 w-4 ${channels.includes('inapp') ? 'text-white' : ''}`} />
