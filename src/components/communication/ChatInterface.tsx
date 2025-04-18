@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -501,11 +502,23 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
                 </div>
                 
                 <div className="flex justify-between">
-                  <SheetTrigger asChild>
-                    <Button variant="outline" size="sm" className="w-full">
-                      View Full Order
-                    </Button>
-                  </SheetTrigger>
+                  {/* FIX: Wrap the SheetTrigger within a Sheet component */}
+                  <Sheet>
+                    <SheetTrigger asChild>
+                      <Button variant="outline" size="sm" className="w-full">
+                        View Full Order
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent>
+                      <SheetHeader>
+                        <SheetTitle>Order Details</SheetTitle>
+                      </SheetHeader>
+                      <div className="py-4">
+                        <h3 className="font-medium mb-2">Order #{orderData.id}</h3>
+                        <p>Full order details would be displayed here.</p>
+                      </div>
+                    </SheetContent>
+                  </Sheet>
                 </div>
               </div>
             )}
@@ -589,3 +602,4 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
     </div>
   );
 };
+
