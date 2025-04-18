@@ -33,11 +33,24 @@ export const ChatMessages = ({ messages }: ChatMessagesProps) => {
   return (
     <>
       {messages.map((msg) => (
-        <div key={msg.id} className={`mb-4 flex ${msg.senderRole === 'dispatcher' ? 'justify-end' : 'justify-start'}`}>
-          <div className={`max-w-[75%] ${msg.senderRole === 'dispatcher' ? 'bg-primary text-primary-foreground' : 'bg-muted'} rounded-lg p-3`}>
+        <div 
+          key={msg.id} 
+          className={`mb-4 flex ${msg.senderRole === 'dispatcher' ? 'justify-end' : 'justify-start'}`}
+        >
+          <div 
+            className={`
+              max-w-[75%] 
+              ${msg.senderRole === 'dispatcher' 
+                ? 'bg-primary/80 text-primary-foreground' 
+                : 'bg-muted/70 text-foreground'}
+              rounded-lg p-3
+              dark:bg-gray-700/60 
+              dark:text-gray-200
+            `}
+          >
             <div className="flex items-center gap-2">
-              <span className="font-medium text-sm">{msg.senderName}</span>
-              <span className="text-xs opacity-70">{msg.timestamp}</span>
+              <span className="font-medium text-sm dark:text-gray-300">{msg.senderName}</span>
+              <span className="text-xs opacity-70 dark:text-gray-400">{msg.timestamp}</span>
             </div>
             <p className="mt-1">{msg.content}</p>
             {msg.attachments && msg.attachments.length > 0 && (
@@ -45,7 +58,14 @@ export const ChatMessages = ({ messages }: ChatMessagesProps) => {
                 {msg.attachments.map(attachment => (
                   <div 
                     key={attachment.id}
-                    className="flex items-center gap-1 bg-background/80 px-2 py-1 rounded text-xs"
+                    className="
+                      flex items-center gap-1 
+                      bg-background/50 
+                      dark:bg-gray-800/50 
+                      px-2 py-1 
+                      rounded 
+                      text-xs
+                    "
                   >
                     <FileIcon type={attachment.type} />
                     <span className="max-w-[120px] truncate">{attachment.name}</span>
