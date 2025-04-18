@@ -3,8 +3,6 @@ import { Layout } from "@/components/layout/Layout";
 import { ChatInterface } from "@/components/communication/ChatInterface";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { 
@@ -97,24 +95,6 @@ const CustomerSupport = () => {
       case "low": return "bg-blue-400";
       default: return "bg-gray-400";
     }
-  };
-
-  const getRoleBadge = (role: string, status: string) => {
-    if (role === "client") {
-      return <Badge variant="outline" className="bg-purple-100 text-purple-800 border-purple-300">Client</Badge>;
-    } else if (role === "driver") {
-      switch (status) {
-        case "working":
-          return <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300">Working Driver</Badge>;
-        case "approved":
-          return <Badge variant="outline" className="bg-blue-100 text-blue-800 border-blue-300">Approved Driver</Badge>;
-        case "unapproved":
-          return <Badge variant="outline" className="bg-orange-100 text-orange-800 border-orange-300">Unapproved Driver</Badge>;
-        default:
-          return <Badge variant="outline" className="bg-gray-100 text-gray-800 border-gray-300">Driver</Badge>;
-      }
-    }
-    return null;
   };
 
   const onlineUsers = [
@@ -273,13 +253,6 @@ const CustomerSupport = () => {
                         <div className="flex justify-between items-center">
                           <h3 className="font-medium truncate text-sm">{chat.name}</h3>
                           <span className="text-xs text-muted-foreground whitespace-nowrap ml-2">{chat.timestamp}</span>
-                        </div>
-                        
-                        <div className="flex items-center gap-1 mt-0.5">
-                          {getRoleBadge(chat.role, chat.status)}
-                          {chat.assignedTo && (
-                            <Badge variant="outline" className="bg-muted/50">Assigned</Badge>
-                          )}
                         </div>
                         
                         <p className="text-sm text-muted-foreground truncate mt-1">
