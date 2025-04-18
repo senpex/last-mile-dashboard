@@ -14,7 +14,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
   useEffect(() => {
     const initMap = async () => {
       const loader = new Loader({
-        apiKey: process.env.VITE_GOOGLE_MAPS_API_KEY || "",
+        apiKey: "AIzaSyD--I0r1HmH90XbB_l-KzBEx-Y3I1uGtOE",
         version: "weekly",
       });
 
