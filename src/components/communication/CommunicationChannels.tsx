@@ -22,11 +22,11 @@ export const CommunicationChannels: React.FC<CommunicationChannelsProps> = ({
           value="sms" 
           aria-label="Toggle SMS" 
           className={channels.includes('sms') 
-            ? "bg-red-600 !text-white" 
-            : "bg-red-100 text-gray-600 dark:bg-red-800 dark:text-gray-300 hover:bg-red-200 hover:text-red-700 dark:hover:bg-red-900/30 dark:hover:text-red-200"
+            ? "bg-red-600 text-gray-600" 
+            : "bg-red-100 text-gray-600 hover:bg-red-200 hover:text-red-700 dark:bg-red-800 dark:text-gray-300 dark:hover:bg-red-900/30 dark:hover:text-red-200"
           }
         >
-          <Smartphone className={`mr-1 h-4 w-4 ${channels.includes('sms') ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`} />
+          <Smartphone className={`mr-1 h-4 w-4 ${channels.includes('sms') ? 'text-gray-600' : 'text-gray-600 dark:text-gray-300'}`} />
           <span>SMS</span>
         </ToggleGroupItem>
         
@@ -34,11 +34,11 @@ export const CommunicationChannels: React.FC<CommunicationChannelsProps> = ({
           value="email" 
           aria-label="Toggle Email" 
           className={channels.includes('email') 
-            ? "bg-red-600 !text-white" 
-            : "bg-red-100 text-gray-600 dark:bg-red-800 dark:text-gray-300 hover:bg-red-200 hover:text-red-700 dark:hover:bg-red-900/30 dark:hover:text-red-200"
+            ? "bg-red-600 text-gray-600" 
+            : "bg-red-100 text-gray-600 hover:bg-red-200 hover:text-red-700 dark:bg-red-800 dark:text-gray-300 dark:hover:bg-red-900/30 dark:hover:text-red-200"
           }
         >
-          <Mail className={`mr-1 h-4 w-4 ${channels.includes('email') ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`} />
+          <Mail className={`mr-1 h-4 w-4 ${channels.includes('email') ? 'text-gray-600' : 'text-gray-600 dark:text-gray-300'}`} />
           <span>Email</span>
         </ToggleGroupItem>
         
@@ -46,11 +46,11 @@ export const CommunicationChannels: React.FC<CommunicationChannelsProps> = ({
           value="inapp" 
           aria-label="Toggle In-App" 
           className={channels.includes('inapp') 
-            ? "bg-red-600 !text-white" 
-            : "bg-red-100 text-gray-600 dark:bg-red-800 dark:text-gray-300 hover:bg-red-200 hover:text-red-700 dark:hover:bg-red-900/30 dark:hover:text-red-200"
+            ? "bg-red-600 text-gray-600" 
+            : "bg-red-100 text-gray-600 hover:bg-red-200 hover:text-red-700 dark:bg-red-800 dark:text-gray-300 dark:hover:bg-red-900/30 dark:hover:text-red-200"
           }
         >
-          <MessageSquare className={`mr-1 h-4 w-4 ${channels.includes('inapp') ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`} />
+          <MessageSquare className={`mr-1 h-4 w-4 ${channels.includes('inapp') ? 'text-gray-600' : 'text-gray-600 dark:text-gray-300'}`} />
           <span>In-App</span>
         </ToggleGroupItem>
       </ToggleGroup>
