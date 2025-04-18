@@ -427,7 +427,7 @@ const Profile = () => {
                             />
                           </div>
                         </div>
-                        <div className="mt-4 flex justify-start">
+                        <div className="mt-4 flex justify-end">
                           <Button 
                             variant="outline" 
                             className="flex items-center gap-2"
@@ -435,7 +435,6 @@ const Profile = () => {
                               // Template creation logic will go here
                             }}
                           >
-                            <Plus className="w-4 h-4" />
                             Save
                           </Button>
                         </div>
