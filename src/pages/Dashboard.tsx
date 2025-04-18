@@ -1,7 +1,6 @@
 
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
-import { ShoppingCart, DollarSign, MessageSquare } from "lucide-react";
 
 const Dashboard = () => {
   const stats = {
@@ -20,9 +19,6 @@ const Dashboard = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-4">
-                <div className="p-2 bg-primary/10 rounded-full">
-                  <ShoppingCart className="h-6 w-6 text-primary" />
-                </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">My Orders</p>
                   <h3 className="text-2xl font-bold">{stats.orders}</h3>
@@ -34,9 +30,6 @@ const Dashboard = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-4">
-                <div className="p-2 bg-primary/10 rounded-full">
-                  <DollarSign className="h-6 w-6 text-primary" />
-                </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">My AR Orders</p>
                   <h3 className="text-2xl font-bold">{stats.arOrders}</h3>
@@ -48,9 +41,6 @@ const Dashboard = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-4">
-                <div className="p-2 bg-primary/10 rounded-full">
-                  <MessageSquare className="h-6 w-6 text-primary" />
-                </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Working Drivers Chats</p>
                   <h3 className="text-2xl font-bold">{stats.workingDriversChats}</h3>
@@ -62,9 +52,6 @@ const Dashboard = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-4">
-                <div className="p-2 bg-primary/10 rounded-full">
-                  <MessageSquare className="h-6 w-6 text-primary" />
-                </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Customer Chats</p>
                   <h3 className="text-2xl font-bold">{stats.customerChats}</h3>
@@ -79,3 +66,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
