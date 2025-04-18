@@ -9,17 +9,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Textarea } from "@/components/ui/textarea";
 import { MessageTemplates, messageTemplates } from "@/components/communication/MessageTemplates";
 import React, { useState } from 'react';
-
 interface AttentionRule {
   name: string;
   query: string;
 }
-
 interface Automation {
   name: string;
   description: string;
 }
-
 const Profile = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -34,65 +31,91 @@ const Profile = () => {
   const [editRuleIndex, setEditRuleIndex] = useState<number | null>(null);
   const [selectedTemplate, setSelectedTemplate] = useState('');
   const [selectedTemplateContent, setSelectedTemplateContent] = useState('');
-
-  const [attentionRules, setAttentionRules] = useState<AttentionRule[]>([
-    { name: "Late Orders", query: "Driver is going late for more than 15 minutes" },
-    { name: "Incomplete Orders", query: "Show last minute cancelled orders by driver" },
-    { name: "High Value Orders", query: "value of the order is more than $10000" }
-  ]);
-
-  const [automations, setAutomations] = useState<Automation[]>([
-    { name: "Auto Assign", description: "Automatically assign orders to available couriers" },
-    { name: "Send Reminder", description: "Send reminder notification when order is 15 minutes late" }
-  ]);
-
-  const [workingShifts, setWorkingShifts] = useState([
-    { day: "Monday", startTime: "09:00 AM", endTime: "05:00 PM", active: true },
-    { day: "Tuesday", startTime: "09:00 AM", endTime: "05:00 PM", active: true },
-    { day: "Wednesday", startTime: "09:00 AM", endTime: "05:00 PM", active: true },
-    { day: "Thursday", startTime: "09:00 AM", endTime: "05:00 PM", active: true },
-    { day: "Friday", startTime: "09:00 AM", endTime: "05:00 PM", active: true },
-    { day: "Saturday", startTime: "10:00 AM", endTime: "03:00 PM", active: false },
-    { day: "Sunday", startTime: "10:00 AM", endTime: "03:00 PM", active: false }
-  ]);
-
+  const [attentionRules, setAttentionRules] = useState<AttentionRule[]>([{
+    name: "Late Orders",
+    query: "Driver is going late for more than 15 minutes"
+  }, {
+    name: "Incomplete Orders",
+    query: "Show last minute cancelled orders by driver"
+  }, {
+    name: "High Value Orders",
+    query: "value of the order is more than $10000"
+  }]);
+  const [automations, setAutomations] = useState<Automation[]>([{
+    name: "Auto Assign",
+    description: "Automatically assign orders to available couriers"
+  }, {
+    name: "Send Reminder",
+    description: "Send reminder notification when order is 15 minutes late"
+  }]);
+  const [workingShifts, setWorkingShifts] = useState([{
+    day: "Monday",
+    startTime: "09:00 AM",
+    endTime: "05:00 PM",
+    active: true
+  }, {
+    day: "Tuesday",
+    startTime: "09:00 AM",
+    endTime: "05:00 PM",
+    active: true
+  }, {
+    day: "Wednesday",
+    startTime: "09:00 AM",
+    endTime: "05:00 PM",
+    active: true
+  }, {
+    day: "Thursday",
+    startTime: "09:00 AM",
+    endTime: "05:00 PM",
+    active: true
+  }, {
+    day: "Friday",
+    startTime: "09:00 AM",
+    endTime: "05:00 PM",
+    active: true
+  }, {
+    day: "Saturday",
+    startTime: "10:00 AM",
+    endTime: "03:00 PM",
+    active: false
+  }, {
+    day: "Sunday",
+    startTime: "10:00 AM",
+    endTime: "03:00 PM",
+    active: false
+  }]);
   const togglePasswordVisibility = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
-    setter((prev) => !prev);
+    setter(prev => !prev);
   };
-
   const handleAddRule = () => {
     if (isEditMode && editRuleIndex !== null) {
       const updatedRules = [...attentionRules];
-      updatedRules[editRuleIndex] = { 
+      updatedRules[editRuleIndex] = {
         name: ruleName,
-        query: newRule 
+        query: newRule
       };
       setAttentionRules(updatedRules);
     } else {
-      setAttentionRules([...attentionRules, { 
+      setAttentionRules([...attentionRules, {
         name: ruleName || `Rule ${attentionRules.length + 1}`,
-        query: newRule 
+        query: newRule
       }]);
     }
-    
     setNewRule('');
     setRuleName('');
     setIsEditMode(false);
     setEditRuleIndex(null);
     setIsAddRuleDialogOpen(false);
   };
-
   const handleAddAutomation = () => {
-    setAutomations([...automations, { 
+    setAutomations([...automations, {
       name: automationName || `Automation ${automations.length + 1}`,
-      description: newAutomation 
+      description: newAutomation
     }]);
-    
     setNewAutomation('');
     setAutomationName('');
     setIsAddAutomationDialogOpen(false);
   };
-
   const handleEditRule = (index: number) => {
     setNewRule(attentionRules[index].query);
     setRuleName(attentionRules[index].name);
@@ -100,21 +123,20 @@ const Profile = () => {
     setEditRuleIndex(index);
     setIsAddRuleDialogOpen(true);
   };
-
   const updateWorkingShift = (index: number, field: 'startTime' | 'endTime' | 'active', value: string | boolean) => {
     const updatedShifts = [...workingShifts];
-    updatedShifts[index] = { ...updatedShifts[index], [field]: value };
+    updatedShifts[index] = {
+      ...updatedShifts[index],
+      [field]: value
+    };
     setWorkingShifts(updatedShifts);
   };
-
   const handleTemplateSelect = (templateId: string) => {
     setSelectedTemplate(templateId);
     const template = messageTemplates.find(t => t.id === templateId);
     setSelectedTemplateContent(template?.content || '');
   };
-
-  return (
-    <Layout>
+  return <Layout>
       <div className="container mx-auto p-6">
         <h1 className="text-2xl font-bold mb-6">Profile</h1>
         
@@ -144,44 +166,25 @@ const Profile = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="text-sm font-medium block mb-1">First Name</label>
-                      <input 
-                        type="text" 
-                        className="w-full px-3 py-2 border border-input rounded-md" 
-                        defaultValue="John" 
-                      />
+                      <input type="text" className="w-full px-3 py-2 border border-input rounded-md" defaultValue="John" />
                     </div>
                     <div>
                       <label className="text-sm font-medium block mb-1">Last Name</label>
-                      <input 
-                        type="text" 
-                        className="w-full px-3 py-2 border border-input rounded-md" 
-                        defaultValue="Doe" 
-                      />
+                      <input type="text" className="w-full px-3 py-2 border border-input rounded-md" defaultValue="Doe" />
                     </div>
                     <div>
                       <label className="text-sm font-medium block mb-1">Email</label>
-                      <input 
-                        type="email" 
-                        className="w-full px-3 py-2 border border-input rounded-md" 
-                        defaultValue="john.doe@example.com" 
-                      />
+                      <input type="email" className="w-full px-3 py-2 border border-input rounded-md" defaultValue="john.doe@example.com" />
                     </div>
                     <div>
                       <label className="text-sm font-medium block mb-1">Phone</label>
-                      <input 
-                        type="tel" 
-                        className="w-full px-3 py-2 border border-input rounded-md" 
-                        defaultValue="+1 (555) 123-4567" 
-                      />
+                      <input type="tel" className="w-full px-3 py-2 border border-input rounded-md" defaultValue="+1 (555) 123-4567" />
                     </div>
                   </div>
                   
                   <div>
                     <label className="text-sm font-medium block mb-1">Bio</label>
-                    <textarea 
-                      className="w-full px-3 py-2 border border-input rounded-md min-h-[100px]"
-                      defaultValue="Delivery manager with 5+ years of experience in logistics and transportation."
-                    />
+                    <textarea className="w-full px-3 py-2 border border-input rounded-md min-h-[100px]" defaultValue="Delivery manager with 5+ years of experience in logistics and transportation." />
                   </div>
                   
                   <div className="pt-6 border-t">
@@ -194,16 +197,8 @@ const Profile = () => {
                       <div className="relative">
                         <label className="text-sm font-medium block mb-1">Current Password</label>
                         <div className="relative">
-                          <input 
-                            type={showCurrentPassword ? "text" : "password"} 
-                            className="w-full px-3 py-2 border border-input rounded-md pr-10" 
-                            placeholder="Enter current password" 
-                          />
-                          <button 
-                            type="button"
-                            className="absolute inset-y-0 right-0 px-3 flex items-center"
-                            onClick={() => togglePasswordVisibility(setShowCurrentPassword)}
-                          >
+                          <input type={showCurrentPassword ? "text" : "password"} className="w-full px-3 py-2 border border-input rounded-md pr-10" placeholder="Enter current password" />
+                          <button type="button" className="absolute inset-y-0 right-0 px-3 flex items-center" onClick={() => togglePasswordVisibility(setShowCurrentPassword)}>
                             {showCurrentPassword ? <EyeOff className="w-4 h-4 text-muted-foreground" /> : <Eye className="w-4 h-4 text-muted-foreground" />}
                           </button>
                         </div>
@@ -214,16 +209,8 @@ const Profile = () => {
                       <div className="relative">
                         <label className="text-sm font-medium block mb-1">New Password</label>
                         <div className="relative">
-                          <input 
-                            type={showNewPassword ? "text" : "password"} 
-                            className="w-full px-3 py-2 border border-input rounded-md pr-10" 
-                            placeholder="Enter new password" 
-                          />
-                          <button 
-                            type="button"
-                            className="absolute inset-y-0 right-0 px-3 flex items-center"
-                            onClick={() => togglePasswordVisibility(setShowNewPassword)}
-                          >
+                          <input type={showNewPassword ? "text" : "password"} className="w-full px-3 py-2 border border-input rounded-md pr-10" placeholder="Enter new password" />
+                          <button type="button" className="absolute inset-y-0 right-0 px-3 flex items-center" onClick={() => togglePasswordVisibility(setShowNewPassword)}>
                             {showNewPassword ? <EyeOff className="w-4 h-4 text-muted-foreground" /> : <Eye className="w-4 h-4 text-muted-foreground" />}
                           </button>
                         </div>
@@ -232,16 +219,8 @@ const Profile = () => {
                       <div className="relative">
                         <label className="text-sm font-medium block mb-1">Confirm New Password</label>
                         <div className="relative">
-                          <input 
-                            type={showConfirmPassword ? "text" : "password"} 
-                            className="w-full px-3 py-2 border border-input rounded-md pr-10" 
-                            placeholder="Confirm new password" 
-                          />
-                          <button 
-                            type="button"
-                            className="absolute inset-y-0 right-0 px-3 flex items-center"
-                            onClick={() => togglePasswordVisibility(setShowConfirmPassword)}
-                          >
+                          <input type={showConfirmPassword ? "text" : "password"} className="w-full px-3 py-2 border border-input rounded-md pr-10" placeholder="Confirm new password" />
+                          <button type="button" className="absolute inset-y-0 right-0 px-3 flex items-center" onClick={() => togglePasswordVisibility(setShowConfirmPassword)}>
                             {showConfirmPassword ? <EyeOff className="w-4 h-4 text-muted-foreground" /> : <Eye className="w-4 h-4 text-muted-foreground" />}
                           </button>
                         </div>
@@ -286,35 +265,24 @@ const Profile = () => {
                     <CardContent className="pt-6">
                       <h3 className="text-lg font-medium mb-4">Attention Required Orders</h3>
                       <div className="space-y-4">
-                        {attentionRules.map((rule, index) => (
-                          <div key={index} className="flex items-center">
+                        {attentionRules.map((rule, index) => <div key={index} className="flex items-center">
                             <div className="flex-1 flex items-center space-x-2">
                               <Checkbox id={`rule-${index}`} />
                               <label htmlFor={`rule-${index}`} className="text-sm font-medium">
                                 {rule.name}: {rule.query}
                               </label>
                             </div>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleEditRule(index)}
-                              className="ml-2"
-                            >
+                            <Button variant="ghost" size="sm" onClick={() => handleEditRule(index)} className="ml-2">
                               <Pencil className="w-4 h-4" />
                             </Button>
-                          </div>
-                        ))}
+                          </div>)}
                         <div className="mt-4">
-                          <Button 
-                            variant="outline" 
-                            className="flex items-center gap-2"
-                            onClick={() => {
-                              setIsEditMode(false);
-                              setNewRule('');
-                              setRuleName('');
-                              setIsAddRuleDialogOpen(true);
-                            }}
-                          >
+                          <Button variant="outline" className="flex items-center gap-2" onClick={() => {
+                          setIsEditMode(false);
+                          setNewRule('');
+                          setRuleName('');
+                          setIsAddRuleDialogOpen(true);
+                        }}>
                             <Plus className="w-4 h-4" />
                             Add Rule
                           </Button>
@@ -329,24 +297,18 @@ const Profile = () => {
                     <CardContent className="pt-6">
                       <h3 className="text-lg font-medium mb-4">Automatic Actions</h3>
                       <div className="space-y-4">
-                        {automations.map((automation, index) => (
-                          <div key={index} className="flex items-center space-x-2">
+                        {automations.map((automation, index) => <div key={index} className="flex items-center space-x-2">
                             <Checkbox id={`auto-${index}`} />
                             <label htmlFor={`auto-${index}`} className="text-sm font-medium">
                               {automation.name}: {automation.description}
                             </label>
-                          </div>
-                        ))}
+                          </div>)}
                         <div className="mt-4">
-                          <Button 
-                            variant="outline" 
-                            className="flex items-center gap-2"
-                            onClick={() => {
-                              setNewAutomation('');
-                              setAutomationName('');
-                              setIsAddAutomationDialogOpen(true);
-                            }}
-                          >
+                          <Button variant="outline" className="flex items-center gap-2" onClick={() => {
+                          setNewAutomation('');
+                          setAutomationName('');
+                          setIsAddAutomationDialogOpen(true);
+                        }}>
                             <Plus className="w-4 h-4" />
                             Add Automation
                           </Button>
@@ -368,42 +330,23 @@ const Profile = () => {
                           <div>Active</div>
                         </div>
                         
-                        {workingShifts.map((shift, index) => (
-                          <div key={index} className="grid grid-cols-4 gap-4 items-center">
+                        {workingShifts.map((shift, index) => <div key={index} className="grid grid-cols-4 gap-4 items-center">
                             <div className="font-medium">{shift.day}</div>
                             <div className="relative">
-                              <Input
-                                value={shift.startTime}
-                                onChange={(e) => updateWorkingShift(index, 'startTime', e.target.value)}
-                                className="pr-8"
-                              />
+                              <Input value={shift.startTime} onChange={e => updateWorkingShift(index, 'startTime', e.target.value)} className="pr-8" />
                               <Clock className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                             </div>
                             <div className="relative">
-                              <Input
-                                value={shift.endTime}
-                                onChange={(e) => updateWorkingShift(index, 'endTime', e.target.value)}
-                                className="pr-8"
-                              />
+                              <Input value={shift.endTime} onChange={e => updateWorkingShift(index, 'endTime', e.target.value)} className="pr-8" />
                               <Clock className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                             </div>
                             <div>
-                              <Checkbox 
-                                checked={shift.active} 
-                                onCheckedChange={(checked) => 
-                                  updateWorkingShift(index, 'active', checked === true)
-                                }
-                                id={`shift-${index}`}
-                              />
-                              <label 
-                                htmlFor={`shift-${index}`} 
-                                className="ml-2 text-sm font-medium"
-                              >
+                              <Checkbox checked={shift.active} onCheckedChange={checked => updateWorkingShift(index, 'active', checked === true)} id={`shift-${index}`} />
+                              <label htmlFor={`shift-${index}`} className="ml-2 text-sm font-medium">
                                 {shift.active ? 'Active' : 'Inactive'}
                               </label>
                             </div>
-                          </div>
-                        ))}
+                          </div>)}
                       </div>
                     </CardContent>
                   </Card>
@@ -419,22 +362,13 @@ const Profile = () => {
                             <MessageTemplates onSelectTemplate={handleTemplateSelect} />
                           </div>
                           <div className="flex-1">
-                            <Textarea 
-                              value={selectedTemplateContent}
-                              readOnly
-                              className="min-h-[100px]"
-                              placeholder="Select a template to view its content"
-                            />
+                            <Textarea value={selectedTemplateContent} readOnly className="min-h-[100px]" placeholder="Select a template to view its content" />
                           </div>
                         </div>
                         <div className="mt-4 flex justify-end">
-                          <Button 
-                            variant="outline" 
-                            className="flex items-center gap-2"
-                            onClick={() => {
-                              // Template creation logic will go here
-                            }}
-                          >
+                          <Button variant="outline" className="flex items-center gap-2" onClick={() => {
+                          // Template creation logic will go here
+                        }}>
                             Save
                           </Button>
                         </div>
@@ -445,9 +379,7 @@ const Profile = () => {
               </Tabs>
               
               <div className="flex justify-end pt-6">
-                <Button>
-                  Save
-                </Button>
+                
               </div>
             </div>
           </TabsContent>
@@ -464,33 +396,22 @@ const Profile = () => {
               <label htmlFor="rule-name" className="text-sm font-medium block mb-2">
                 Rule Name
               </label>
-              <Input
-                id="rule-name"
-                placeholder="Enter rule name..."
-                value={ruleName}
-                onChange={(e) => setRuleName(e.target.value)}
-              />
+              <Input id="rule-name" placeholder="Enter rule name..." value={ruleName} onChange={e => setRuleName(e.target.value)} />
             </div>
             <div>
               <label htmlFor="new-rule" className="text-sm font-medium block mb-2">
                 Text to SQL
               </label>
-              <Textarea 
-                id="new-rule" 
-                placeholder="Write SQL query or description..." 
-                value={newRule}
-                onChange={(e) => setNewRule(e.target.value)}
-                className="w-full"
-              />
+              <Textarea id="new-rule" placeholder="Write SQL query or description..." value={newRule} onChange={e => setNewRule(e.target.value)} className="w-full" />
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => {
-              setIsAddRuleDialogOpen(false);
-              setIsEditMode(false);
-              setNewRule('');
-              setRuleName('');
-            }}>
+            setIsAddRuleDialogOpen(false);
+            setIsEditMode(false);
+            setNewRule('');
+            setRuleName('');
+          }}>
               Cancel
             </Button>
             <Button onClick={handleAddRule}>
@@ -510,32 +431,21 @@ const Profile = () => {
               <label htmlFor="automation-name" className="text-sm font-medium block mb-2">
                 Automation Name
               </label>
-              <Input
-                id="automation-name"
-                placeholder="Enter automation name..."
-                value={automationName}
-                onChange={(e) => setAutomationName(e.target.value)}
-              />
+              <Input id="automation-name" placeholder="Enter automation name..." value={automationName} onChange={e => setAutomationName(e.target.value)} />
             </div>
             <div>
               <label htmlFor="new-automation" className="text-sm font-medium block mb-2">
                 Description
               </label>
-              <Textarea 
-                id="new-automation" 
-                placeholder="Describe what this automation should do..." 
-                value={newAutomation}
-                onChange={(e) => setNewAutomation(e.target.value)}
-                className="w-full"
-              />
+              <Textarea id="new-automation" placeholder="Describe what this automation should do..." value={newAutomation} onChange={e => setNewAutomation(e.target.value)} className="w-full" />
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => {
-              setIsAddAutomationDialogOpen(false);
-              setNewAutomation('');
-              setAutomationName('');
-            }}>
+            setIsAddAutomationDialogOpen(false);
+            setNewAutomation('');
+            setAutomationName('');
+          }}>
               Cancel
             </Button>
             <Button onClick={handleAddAutomation}>
@@ -544,8 +454,6 @@ const Profile = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Profile;
