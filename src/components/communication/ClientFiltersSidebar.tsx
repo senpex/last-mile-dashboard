@@ -38,7 +38,7 @@ export const ClientFiltersSidebar = ({
   onClose
 }: ClientFiltersSidebarProps) => {
   return <div className={cn("h-full bg-white dark:bg-gray-900 rounded-lg shadow-md transition-all duration-300", "border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md", "light:border-2 light:border-gray-300 light:hover:border-gray-400", open ? "w-[275px] opacity-100 max-w-[80vw]" : "w-0 opacity-0 invisible overflow-hidden")}>
-      <div className="p-6 w-full h-full flex flex-col overflow-y-auto mx-0 my-0 py-[38px] px-[21px]">
+      <div className="p-6 w-full h-full flex flex-col overflow-y-auto px-0 mx-0">
         <h2 className="text-lg font-semibold mb-4">Client Filters</h2>
         
         <ScrollArea className="flex-1 -mr-4 pr-4">
@@ -122,7 +122,7 @@ export const ClientFiltersSidebar = ({
                     });
                   }} />
                       <Label htmlFor={`org-${org}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between">
-                        <span>{org}</span>
+                        <span className="my-0">{org}</span>
                         <Badge variant="outline" className="ml-auto">{Math.floor(Math.random() * 20) + 1}</Badge>
                       </Label>
                     </div>)}
