@@ -177,10 +177,10 @@ const CustomerSupport = () => {
               </div>
 
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mb-2">
-                <TabsList className="grid w-full grid-cols-3 h-9">
-                  <TabsTrigger value="all">My</TabsTrigger>
-                  <TabsTrigger value="unassigned">Unassigned</TabsTrigger>
-                  <TabsTrigger value="assigned">All</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-3 h-9 items-center">
+                  <TabsTrigger value="all" className="flex items-center justify-center">My</TabsTrigger>
+                  <TabsTrigger value="unassigned" className="flex items-center justify-center">Unassigned</TabsTrigger>
+                  <TabsTrigger value="assigned" className="flex items-center justify-center">All</TabsTrigger>
                 </TabsList>
               </Tabs>
 
