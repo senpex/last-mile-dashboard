@@ -163,8 +163,7 @@ const CommunicationPanel = ({ activeTab, setActiveTab, selectedFilters }: Commun
       shadow-sm hover:shadow-md 
       transition-all duration-300 
       light:border-2 light:border-gray-300 
-      light:hover:border-gray-400 
-      -ml-[10px]">
+      light:hover:border-gray-400">
       <div className="mb-6">
         <Tabs defaultValue={activeTab} value={activeTab} onValueChange={(value) => {
           if (setActiveTab) {
