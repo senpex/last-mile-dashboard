@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -372,7 +373,7 @@ const DeliveryTable = ({
                 filterSidebarOpen={isFilterSidebarOpen}
               >
                 <Table>
-                  <TableHeader>
+                  <TableHeader className="bg-muted/50">
                     <TableRow>
                       {sortedColumns.map(columnId => {
                         const column = availableColumns.find(col => col.id === columnId);
