@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -103,7 +102,6 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
   }>>([]);
   const messageEndRef = useRef<HTMLDivElement>(null);
   
-  // Define messages array before it's used in any functions
   const messages: MessageType[] = [
     {
       id: '1',
@@ -264,16 +262,16 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
   };
 
   return (
-    <div className="flex flex-col h-full border rounded-md overflow-hidden">
-      <div className="bg-white border-b p-4">
+    <div className="flex flex-col h-full rounded-lg border bg-card shadow-sm overflow-hidden">
+      <div className="p-4 border-b bg-card">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-              <UserRound className="h-6 w-6 text-gray-600" />
+            <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+              <UserRound className="h-6 w-6 text-muted-foreground" />
             </div>
             <div>
               <h2 className="font-medium">{user.name}</h2>
-              <div className="text-sm text-gray-500 flex items-center gap-1">
+              <div className="text-sm text-muted-foreground flex items-center gap-1">
                 {user.role === 'driver' ? 'Driver' : 'Client'} • 
                 <span className={`w-2 h-2 rounded-full ${user.status === 'online' ? 'bg-green-500' : 'bg-gray-500'}`}></span>
                 {user.status === 'online' ? 'Online' : 'Offline'}
@@ -282,11 +280,11 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
           </div>
           
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="h-8">
               <Phone className="h-4 w-4 mr-1" />
               Call
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="h-8">
               <Mail className="h-4 w-4 mr-1" />
               Email
             </Button>
@@ -318,9 +316,9 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
           </div>
         </div>
         
-        <div className="mt-2">
+        <div className="mt-4">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList>
+            <TabsList className="h-9">
               <TabsTrigger value="chat">Chat</TabsTrigger>
               <TabsTrigger value="notes">Notes</TabsTrigger>
               <TabsTrigger value="history">Chat History</TabsTrigger>
@@ -331,7 +329,7 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
       
       <div className="flex flex-1 overflow-hidden">
         <div className="flex-1 flex flex-col">
-          <Tabs value={activeTab}>
+          <Tabs value={activeTab} className="flex-1 flex flex-col">
             <TabsContent value="chat" className="flex-1 overflow-hidden flex flex-col m-0">
               <ScrollArea className="flex-1 p-4">
                 {messages.map((msg) => (
@@ -454,212 +452,139 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
           </Tabs>
         </div>
         
-        <Sheet>
-          <div className="w-72 border-l bg-gray-50 flex flex-col">
-            <div className="p-4">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="font-medium">Order Details</h3>
-                <Button variant="ghost" size="sm" onClick={() => setOrderDetailsExpanded(!orderDetailsExpanded)}>
-                  {orderDetailsExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-                </Button>
-              </div>
-              
-              {orderDetailsExpanded && (
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <div className="text-sm font-medium">Order #{orderData.id}</div>
-                    <StatusBadge status={orderData.status} />
-                  </div>
-                  
-                  <div className="p-3 bg-white rounded-md shadow-sm">
-                    <div className="grid grid-cols-3 gap-2 text-xs">
-                      <div className="text-gray-500">Created:</div>
-                      <div className="col-span-2 font-medium">{orderData.createdAt}</div>
-                      
-                      <div className="text-gray-500">ETA:</div>
-                      <div className="col-span-2 font-medium">{orderData.eta}</div>
-                    </div>
-                  </div>
-                  
-                  <div className="p-3 bg-white rounded-md shadow-sm">
-                    <div className="flex items-start gap-2 mb-2">
-                      <MapPin className="h-4 w-4 text-gray-500 mt-0.5" />
-                      <div>
-                        <div className="text-xs text-gray-500 mb-1">Pickup Address:</div>
-                        <div className="text-sm">{orderData.pickupAddress}</div>
-                      </div>
-                    </div>
+        <div className="w-80 border-l bg-muted/30">
+          <div className="p-4">
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="font-medium">Order Details</h3>
+              <Button variant="ghost" size="sm" onClick={() => setOrderDetailsExpanded(!orderDetailsExpanded)}>
+                {orderDetailsExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              </Button>
+            </div>
+            
+            {orderDetailsExpanded && (
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <div className="text-sm font-medium">Order #{orderData.id}</div>
+                  <StatusBadge status={orderData.status} />
+                </div>
+                
+                <div className="p-3 bg-white rounded-md shadow-sm">
+                  <div className="grid grid-cols-3 gap-2 text-xs">
+                    <div className="text-gray-500">Created:</div>
+                    <div className="col-span-2 font-medium">{orderData.createdAt}</div>
                     
-                    <div className="flex justify-center my-2">
-                      <div className="h-6 border-l border-dashed"></div>
-                    </div>
-                    
-                    <div className="flex items-start gap-2">
-                      <MapPin className="h-4 w-4 text-gray-500 mt-0.5" />
-                      <div>
-                        <div className="text-xs text-gray-500 mb-1">Delivery Address:</div>
-                        <div className="text-sm">{orderData.deliveryAddress}</div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex justify-between">
-                    <SheetTrigger asChild>
-                      <Button variant="outline" size="sm" className="w-full">
-                        View Full Order
-                      </Button>
-                    </SheetTrigger>
+                    <div className="text-gray-500">ETA:</div>
+                    <div className="col-span-2 font-medium">{orderData.eta}</div>
                   </div>
                 </div>
-              )}
-            </div>
-            
-            <Separator />
-            
-            <div className="p-4">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="font-medium">Contact Info</h3>
-                <Button variant="ghost" size="sm" onClick={() => setNotesExpanded(!notesExpanded)}>
-                  {notesExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-                </Button>
-              </div>
-              
-              {notesExpanded && (
-                <div className="space-y-3">
-                  {user.role === 'driver' ? (
-                    <>
-                      <div className="flex items-center gap-2">
-                        <Avatar className="h-8 w-8">
-                          <AvatarFallback>D</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="text-sm font-medium">{orderData.driverName}</div>
-                          <div className="text-xs text-gray-500">Driver</div>
-                        </div>
-                      </div>
-                      <div className="text-sm">
-                        <div className="flex items-center gap-2 mb-1">
-                          <Phone className="h-3 w-3" />
-                          <span>+1 (123) 456-7890</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Mail className="h-3 w-3" />
-                          <span className="truncate">driver@example.com</span>
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="flex items-center gap-2">
-                        <Avatar className="h-8 w-8">
-                          <AvatarFallback>C</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="text-sm font-medium">{orderData.clientName}</div>
-                          <div className="text-xs text-gray-500">Client</div>
-                        </div>
-                      </div>
-                      <div className="text-sm">
-                        <div className="flex items-center gap-2 mb-1">
-                          <Phone className="h-3 w-3" />
-                          <span>+1 (234) 567-8901</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Mail className="h-3 w-3" />
-                          <span className="truncate">client@example.com</span>
-                        </div>
-                      </div>
-                    </>
-                  )}
+                
+                <div className="p-3 bg-white rounded-md shadow-sm">
+                  <div className="flex items-start gap-2 mb-2">
+                    <MapPin className="h-4 w-4 text-gray-500 mt-0.5" />
+                    <div>
+                      <div className="text-xs text-gray-500 mb-1">Pickup Address:</div>
+                      <div className="text-sm">{orderData.pickupAddress}</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-center my-2">
+                    <div className="h-6 border-l border-dashed"></div>
+                  </div>
+                  
+                  <div className="flex items-start gap-2">
+                    <MapPin className="h-4 w-4 text-gray-500 mt-0.5" />
+                    <div>
+                      <div className="text-xs text-gray-500 mb-1">Delivery Address:</div>
+                      <div className="text-sm">{orderData.deliveryAddress}</div>
+                    </div>
+                  </div>
                 </div>
-              )}
-            </div>
-            
-            <div className="mt-auto p-4">
-              <div className="flex justify-between mb-2">
-                <Button variant="outline" size="sm">
-                  <ArrowLeft className="h-4 w-4 mr-1" />
-                  Previous
-                </Button>
-                <Button variant="outline" size="sm">
-                  Next
-                  <ArrowRight className="h-4 w-4 ml-1" />
-                </Button>
+                
+                <div className="flex justify-between">
+                  <SheetTrigger asChild>
+                    <Button variant="outline" size="sm" className="w-full">
+                      View Full Order
+                    </Button>
+                  </SheetTrigger>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           
-          <SheetContent side="right" className="w-full sm:max-w-xl p-0">
-            <SheetHeader className="p-6 border-b">
-              <SheetTitle>Order #{orderData.id}</SheetTitle>
-            </SheetHeader>
-            <div className="p-6">
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-medium mb-2">Order Timeline</h3>
-                  <div className="space-y-4">
-                    {[...Array(4)].map((_, i) => (
-                      <div key={i} className="flex gap-3">
-                        <div className="relative">
-                          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
-                            {i === 0 && <Package className="h-4 w-4" />}
-                            {i === 1 && <Clock className="h-4 w-4" />}
-                            {i === 2 && <MapPin className="h-4 w-4" />}
-                            {i === 3 && <User className="h-4 w-4" />}
-                          </div>
-                          {i < 3 && <div className="absolute top-8 bottom-0 left-4 w-0.5 bg-gray-200"></div>}
-                        </div>
-                        <div>
-                          <div className="font-medium">{
-                            i === 0 ? "Order Created" : 
-                            i === 1 ? "Driver Assigned" :
-                            i === 2 ? "In Transit" :
-                            "Delivered"
-                          }</div>
-                          <div className="text-sm text-gray-500">
-                            {new Date(Date.now() - i * 3600000).toLocaleString()}
-                          </div>
-                          <div className="text-sm mt-1">
-                            {
-                              i === 0 ? "Order was created and confirmed." : 
-                              i === 1 ? "John Smith was assigned to this delivery." :
-                              i === 2 ? "Driver is en route to delivery location." :
-                              "Package was delivered successfully."
-                            }
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                
-                <Separator />
-                
-                <div>
-                  <h3 className="text-lg font-medium mb-2">Package Information</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <div className="text-sm text-gray-500">Package Size</div>
-                      <div className="font-medium">Medium</div>
-                    </div>
-                    <div>
-                      <div className="text-sm text-gray-500">Weight</div>
-                      <div className="font-medium">2.3 kg</div>
-                    </div>
-                    <div>
-                      <div className="text-sm text-gray-500">Delivery Type</div>
-                      <div className="font-medium">Express</div>
-                    </div>
-                    <div>
-                      <div className="text-sm text-gray-500">Handling</div>
-                      <div className="font-medium">Fragile</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <Separator />
+          
+          <div className="p-4">
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="font-medium">Contact Info</h3>
+              <Button variant="ghost" size="sm" onClick={() => setNotesExpanded(!notesExpanded)}>
+                {notesExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              </Button>
             </div>
-          </SheetContent>
-        </Sheet>
+            
+            {notesExpanded && (
+              <div className="space-y-3">
+                {user.role === 'driver' ? (
+                  <>
+                    <div className="flex items-center gap-2">
+                      <Avatar className="h-8 w-8">
+                        <AvatarFallback>D</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="text-sm font-medium">{orderData.driverName}</div>
+                        <div className="text-xs text-gray-500">Driver</div>
+                      </div>
+                    </div>
+                    <div className="text-sm">
+                      <div className="flex items-center gap-2 mb-1">
+                        <Phone className="h-3 w-3" />
+                        <span>+1 (123) 456-7890</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Mail className="h-3 w-3" />
+                        <span className="truncate">driver@example.com</span>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex items-center gap-2">
+                      <Avatar className="h-8 w-8">
+                        <AvatarFallback>C</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="text-sm font-medium">{orderData.clientName}</div>
+                        <div className="text-xs text-gray-500">Client</div>
+                      </div>
+                    </div>
+                    <div className="text-sm">
+                      <div className="flex items-center gap-2 mb-1">
+                        <Phone className="h-3 w-3" />
+                        <span>+1 (234) 567-8901</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Mail className="h-3 w-3" />
+                        <span className="truncate">client@example.com</span>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+          
+          <div className="mt-auto p-4">
+            <div className="flex justify-between mb-2">
+              <Button variant="outline" size="sm">
+                <ArrowLeft className="h-4 w-4 mr-1" />
+                Previous
+              </Button>
+              <Button variant="outline" size="sm">
+                Next
+                <ArrowRight className="h-4 w-4 ml-1" />
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
