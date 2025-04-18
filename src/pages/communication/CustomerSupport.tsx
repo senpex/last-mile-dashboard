@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { ChatInterface } from "@/components/communication/ChatInterface";
@@ -83,8 +82,7 @@ const CustomerSupport = () => {
     if (activeTab === "unassigned" && chat.assignedTo !== null) return false;
     
     if (filterStatus === "client" && chat.role !== "client") return false;
-    if (filterStatus === "driver" && chat.role !== "driver") return false;
-    if (filterStatus === "high" && chat.priority !== "high") return false;
+    if (filterStatus === "drivers-general" && chat.role !== "driver") return false;
     if (filterStatus === "working-drivers" && !(chat.role === "driver" && chat.status === "working")) return false;
     if (filterStatus === "unapproved-drivers" && !(chat.role === "driver" && chat.status === "unapproved")) return false;
     
@@ -184,12 +182,12 @@ const CustomerSupport = () => {
 
               <div className="flex gap-2 overflow-x-auto py-2 scrollbar-none">
                 <Button 
-                  variant={filterStatus === "all" ? "default" : "outline"} 
+                  variant={filterStatus === "working-drivers" ? "default" : "outline"} 
                   size="sm"
-                  onClick={() => setFilterStatus("all")}
+                  onClick={() => setFilterStatus("working-drivers")}
                   className="h-8"
                 >
-                  All
+                  Working Drivers
                 </Button>
                 <Button 
                   variant={filterStatus === "client" ? "default" : "outline"} 
@@ -200,38 +198,22 @@ const CustomerSupport = () => {
                   Clients
                 </Button>
                 <Button 
-                  variant={filterStatus === "driver" ? "default" : "outline"} 
-                  size="sm"
-                  onClick={() => setFilterStatus("driver")}
-                  className="h-8"
-                >
-                  Drivers
-                </Button>
-                <Button 
-                  variant={filterStatus === "high" ? "default" : "outline"} 
-                  size="sm"
-                  onClick={() => setFilterStatus("high")}
-                  className="h-8"
-                >
-                  High Priority
-                </Button>
-                <Button 
-                  variant={filterStatus === "working-drivers" ? "default" : "outline"} 
-                  size="sm"
-                  onClick={() => setFilterStatus("working-drivers")}
-                  className="h-8"
-                >
-                  Working Drivers
-                </Button>
-                <Button 
                   variant={filterStatus === "unapproved-drivers" ? "default" : "outline"} 
                   size="sm"
                   onClick={() => setFilterStatus("unapproved-drivers")}
                   className="h-8"
                 >
-                  Unapproved
+                  Unapproved Drivers
                 </Button>
-              </div>
+                <Button 
+                  variant={filterStatus === "drivers-general" ? "default" : "outline"} 
+                  size="sm"
+                  onClick={() => setFilterStatus("drivers-general")}
+                  className="h-8"
+                >
+                  Drivers General
+                </Button>
+            </div>
             </div>
 
             <div className="flex-1 overflow-auto">
