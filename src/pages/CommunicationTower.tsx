@@ -98,7 +98,7 @@ const CommunicationTower = () => {
               <Button 
                 variant={getCurrentSidebarState() ? "default" : "outline"}
                 onClick={toggleFilterSidebar}
-                className="flex items-center gap-2 w-fit ml-[10px]"
+                className={`flex items-center gap-2 w-fit ${getCurrentSidebarState() ? '' : 'ml-[10px]'}`}
               >
                 <Filter className="h-4 w-4" />
                 {getCurrentSidebarState() ? "Hide Filters" : "Show Filters"}
