@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -102,6 +103,66 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
   }>>([]);
   const messageEndRef = useRef<HTMLDivElement>(null);
   
+  // Define messages array before it's used in any functions
+  const messages: MessageType[] = [
+    {
+      id: '1',
+      senderId: 'driver1',
+      senderName: user.name,
+      senderRole: user.role === 'driver' ? 'driver' : 'client',
+      content: 'Hello, I have a question about my delivery.',
+      timestamp: '10:15 AM'
+    },
+    {
+      id: '2',
+      senderId: 'dispatcher1',
+      senderName: 'Jane Dispatcher',
+      senderRole: 'dispatcher',
+      content: 'Hi there! How can I help you today?',
+      timestamp: '10:16 AM'
+    },
+    {
+      id: '3',
+      senderId: 'driver1',
+      senderName: user.name,
+      senderRole: user.role === 'driver' ? 'driver' : 'client',
+      content: "I'm not sure where exactly to deliver this package. The address is a bit confusing.",
+      timestamp: '10:18 AM'
+    },
+    {
+      id: '4',
+      senderId: 'dispatcher1',
+      senderName: 'Jane Dispatcher',
+      senderRole: 'dispatcher',
+      content: 'Let me check the delivery instructions for you.',
+      timestamp: '10:19 AM'
+    },
+    {
+      id: '5',
+      senderId: 'dispatcher1',
+      senderName: 'Jane Dispatcher',
+      senderRole: 'dispatcher',
+      content: 'The customer has specified to leave the package at the back door. There should be a gate with a keypad. The code is 4532.',
+      timestamp: '10:21 AM',
+      attachments: [
+        {
+          id: 'att1',
+          name: 'delivery_instructions.jpg',
+          type: 'image',
+          url: '#'
+        }
+      ]
+    },
+    {
+      id: '6',
+      senderId: 'driver1',
+      senderName: user.name,
+      senderRole: user.role === 'driver' ? 'driver' : 'client',
+      content: 'Got it, thanks! I see the gate now.',
+      timestamp: '10:23 AM'
+    }
+  ];
+  
   const handleFileAttachment = () => {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
@@ -168,65 +229,6 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
     }
   };
   
-  const messages: MessageType[] = [
-    {
-      id: '1',
-      senderId: 'driver1',
-      senderName: user.name,
-      senderRole: user.role === 'driver' ? 'driver' : 'client',
-      content: 'Hello, I have a question about my delivery.',
-      timestamp: '10:15 AM'
-    },
-    {
-      id: '2',
-      senderId: 'dispatcher1',
-      senderName: 'Jane Dispatcher',
-      senderRole: 'dispatcher',
-      content: 'Hi there! How can I help you today?',
-      timestamp: '10:16 AM'
-    },
-    {
-      id: '3',
-      senderId: 'driver1',
-      senderName: user.name,
-      senderRole: user.role === 'driver' ? 'driver' : 'client',
-      content: "I'm not sure where exactly to deliver this package. The address is a bit confusing.",
-      timestamp: '10:18 AM'
-    },
-    {
-      id: '4',
-      senderId: 'dispatcher1',
-      senderName: 'Jane Dispatcher',
-      senderRole: 'dispatcher',
-      content: 'Let me check the delivery instructions for you.',
-      timestamp: '10:19 AM'
-    },
-    {
-      id: '5',
-      senderId: 'dispatcher1',
-      senderName: 'Jane Dispatcher',
-      senderRole: 'dispatcher',
-      content: 'The customer has specified to leave the package at the back door. There should be a gate with a keypad. The code is 4532.',
-      timestamp: '10:21 AM',
-      attachments: [
-        {
-          id: 'att1',
-          name: 'delivery_instructions.jpg',
-          type: 'image',
-          url: '#'
-        }
-      ]
-    },
-    {
-      id: '6',
-      senderId: 'driver1',
-      senderName: user.name,
-      senderRole: user.role === 'driver' ? 'driver' : 'client',
-      content: 'Got it, thanks! I see the gate now.',
-      timestamp: '10:23 AM'
-    }
-  ];
-
   const orderData: OrderType = {
     id: "ORD-1234",
     status: "active",
