@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -364,7 +363,7 @@ const DeliveryTable = ({
           onRecipientNameChange={setSelectedRecipientNames}
         />
         
-        <div className="flex-1 transition-all duration-300 my-4 ml-2">
+        <div className="flex-1 transition-all duration-300 my-0">
           <div className="flex flex-col h-full w-full">
             <div className="w-full flex-grow flex-shrink-0">
               <TableContainer 

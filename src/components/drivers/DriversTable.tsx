@@ -148,9 +148,9 @@ export const DriversTable = ({
   };
 
   return (
-    <UsersTableContainer stickyHeader={false} className={cn("w-full mt-1.25", className)}>
+    <UsersTableContainer stickyHeader={false} className={cn("w-full mt-0", className)}>
       <Table>
-        <TableHeader className="bg-muted/50">
+        <TableHeader className="bg-muted/50 border-none">
           <TableRow>
             {sortedColumns.map(columnId => {
               const column = availableColumns.find(col => col.id === columnId);
