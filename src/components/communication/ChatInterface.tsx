@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { OrderDetails } from './OrderDetails';
@@ -117,34 +118,33 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
   };
 
   return (
-    <div className="flex flex-col h-full rounded-lg border bg-card shadow-sm overflow-hidden">
-      <ChatHeader 
-        user={user}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-      />
-      
-      <div className="flex flex-1 overflow-hidden">
-        <div className="flex-1 flex flex-col">
-          <div className="flex-1 overflow-hidden flex flex-col m-0">
-            <ScrollArea className="flex-1 p-4">
-              <ChatMessages messages={messages} />
-            </ScrollArea>
-            
-            <ChatInput 
-              onSendMessage={handleSendMessage}
-              message={message}
-              setMessage={setMessage}
-              attachedFiles={attachedFiles}
-              setAttachedFiles={setAttachedFiles}
-            />
-          </div>
-        </div>
+    <div className="flex gap-4 h-full">
+      <div className="flex-1 flex flex-col rounded-lg border bg-card shadow-sm overflow-hidden">
+        <ChatHeader 
+          user={user}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        />
         
-        <div className="w-80 border-l bg-muted/30">
-          <OrderDetails orderData={orderData} />
+        <div className="flex-1 overflow-hidden flex flex-col">
+          <ScrollArea className="flex-1 p-4">
+            <ChatMessages messages={messages} />
+          </ScrollArea>
+          
+          <ChatInput 
+            onSendMessage={handleSendMessage}
+            message={message}
+            setMessage={setMessage}
+            attachedFiles={attachedFiles}
+            setAttachedFiles={setAttachedFiles}
+          />
         </div>
+      </div>
+
+      <div className="w-80 rounded-lg border bg-card shadow-sm overflow-hidden">
+        <OrderDetails orderData={orderData} />
       </div>
     </div>
   );
 };
+
