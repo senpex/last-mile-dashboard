@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -49,34 +48,34 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
             <StatusBadge status={orderData.status} />
           </div>
           
-          <div className="p-3 bg-white rounded-md shadow-sm">
+          <div className="p-3 bg-card dark:bg-gray-900/50 rounded-md shadow-sm">
             <div className="grid grid-cols-3 gap-2 text-xs">
-              <div className="text-gray-500">Created:</div>
-              <div className="col-span-2 font-medium">{orderData.createdAt}</div>
+              <div className="text-muted-foreground dark:text-gray-400">Created:</div>
+              <div className="col-span-2 font-medium dark:text-gray-300">{orderData.createdAt}</div>
               
-              <div className="text-gray-500">ETA:</div>
-              <div className="col-span-2 font-medium">{orderData.eta}</div>
+              <div className="text-muted-foreground dark:text-gray-400">ETA:</div>
+              <div className="col-span-2 font-medium dark:text-gray-300">{orderData.eta}</div>
             </div>
           </div>
           
-          <div className="p-3 bg-white rounded-md shadow-sm">
+          <div className="p-3 bg-card dark:bg-gray-900/50 rounded-md shadow-sm">
             <div className="flex items-start gap-2 mb-2">
-              <MapPin className="h-4 w-4 text-gray-500 mt-0.5" />
+              <MapPin className="h-4 w-4 text-muted-foreground dark:text-gray-500 mt-0.5" />
               <div>
-                <div className="text-xs text-gray-500 mb-1">Pickup Address:</div>
-                <div className="text-sm">{orderData.pickupAddress}</div>
+                <div className="text-xs text-muted-foreground dark:text-gray-400 mb-1">Pickup Address:</div>
+                <div className="text-sm dark:text-gray-300">{orderData.pickupAddress}</div>
               </div>
             </div>
             
             <div className="flex justify-center my-2">
-              <div className="h-6 border-l border-dashed"></div>
+              <div className="h-6 border-l border-dashed dark:border-gray-700"></div>
             </div>
             
             <div className="flex items-start gap-2">
-              <MapPin className="h-4 w-4 text-gray-500 mt-0.5" />
+              <MapPin className="h-4 w-4 text-muted-foreground dark:text-gray-500 mt-0.5" />
               <div>
-                <div className="text-xs text-gray-500 mb-1">Delivery Address:</div>
-                <div className="text-sm">{orderData.deliveryAddress}</div>
+                <div className="text-xs text-muted-foreground dark:text-gray-400 mb-1">Delivery Address:</div>
+                <div className="text-sm dark:text-gray-300">{orderData.deliveryAddress}</div>
               </div>
             </div>
           </div>
