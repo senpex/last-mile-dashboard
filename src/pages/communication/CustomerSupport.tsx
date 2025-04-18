@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-// Removed Headphones import
 import { 
   Users,
   Filter,
@@ -123,7 +122,10 @@ const CustomerSupport = () => {
         <h1 className="text-2xl font-semibold">Customer Support</h1>
       </div>
 
-      <div className="container mx-auto p-4 h-[calc(100vh-8rem)] bg-background" style={{ marginLeft: 'calc(240px - 25px)' }}>
+      <div 
+        className="container mx-auto p-4 h-[calc(100vh-8rem)] bg-background" 
+        style={{ marginLeft: 'calc(240px - 200px)' }}
+      >
         <div className="flex h-full gap-4">
           <div className="w-[380px] flex-shrink-0 flex flex-col rounded-lg border bg-card shadow-sm">
             <div className="p-4 border-b">
