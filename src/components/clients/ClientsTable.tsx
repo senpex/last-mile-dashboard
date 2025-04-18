@@ -54,7 +54,7 @@ export function ClientsTable({
   return (
     <UsersTableContainer className={className}>
       <Table>
-        <TableHeader className="bg-muted/50 sticky top-0 border-none">
+        <TableHeader className="bg-muted/50 sticky top-0">
           <TableRow>
             {sortedColumns.map(columnId => {
               const column = availableColumns.find(col => col.id === columnId);

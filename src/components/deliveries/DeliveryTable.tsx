@@ -363,7 +363,7 @@ const DeliveryTable = ({
           onRecipientNameChange={setSelectedRecipientNames}
         />
         
-        <div className="flex-1 transition-all duration-300 my-0">
+        <div className="flex-1 transition-all duration-300 my-4 ml-2">
           <div className="flex flex-col h-full w-full">
             <div className="w-full flex-grow flex-shrink-0">
               <TableContainer 
@@ -372,7 +372,7 @@ const DeliveryTable = ({
                 filterSidebarOpen={isFilterSidebarOpen}
               >
                 <Table>
-                  <TableHeader className="bg-muted/50">
+                  <TableHeader>
                     <TableRow>
                       {sortedColumns.map(columnId => {
                         const column = availableColumns.find(col => col.id === columnId);
