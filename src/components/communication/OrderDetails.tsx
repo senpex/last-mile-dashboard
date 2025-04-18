@@ -1,10 +1,10 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { MapPin, ChevronUp, ChevronDown } from "lucide-react";
+import { LocationMap } from "./LocationMap";
 
 interface OrderDetailsProps {
   orderData: {
@@ -32,6 +32,11 @@ const StatusBadge = ({ status }: { status: 'active' | 'completed' | 'cancelled' 
 
 export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
   const [orderDetailsExpanded, setOrderDetailsExpanded] = useState(true);
+
+  const driverLocation = {
+    lat: 40.7128,
+    lng: -74.0060
+  };
 
   return (
     <div className="p-4">
@@ -79,6 +84,14 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                 <div className="text-sm">{orderData.deliveryAddress}</div>
               </div>
             </div>
+          </div>
+          
+          <div className="h-[200px] rounded-md overflow-hidden">
+            <LocationMap 
+              driverLocation={driverLocation}
+              pickupLocation={{ lat: 40.7128, lng: -74.0060 }}
+              dropoffLocation={{ lat: 40.7580, lng: -73.9855 }}
+            />
           </div>
           
           <div className="flex justify-between">
