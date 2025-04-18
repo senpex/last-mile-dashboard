@@ -1,3 +1,4 @@
+
 import { Layout } from "@/components/layout/Layout";
 import { TowerControl, Filter } from "lucide-react";
 import CommunicationPanel from "@/components/communication/CommunicationPanel";
@@ -9,7 +10,8 @@ import { DeliveryStatus } from "@/types/delivery";
 import { Button } from "@/components/ui/button";
 
 const CommunicationTower = () => {
-  // Driver filters
+  // Driver filters state
+  const [driverFilterSidebarOpen, setDriverFilterSidebarOpen] = useState(true);
   const [selectedStatuses, setSelectedStatuses] = useState<DeliveryStatus[]>([]);
   const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
@@ -18,15 +20,16 @@ const CommunicationTower = () => {
   const [selectedTransports, setSelectedTransports] = useState<string[]>([]);
   const [selectedHireStatuses, setSelectedHireStatuses] = useState<string[]>([]);
   
-  // Client filters
+  // Client filters state
+  const [clientFilterSidebarOpen, setClientFilterSidebarOpen] = useState(true);
   const [selectedClientCities, setSelectedClientCities] = useState<string[]>([]);
   const [selectedClientStates, setSelectedClientStates] = useState<string[]>([]);
   const [selectedOrganizations, setSelectedOrganizations] = useState<string[]>([]);
   
-  // Dispatcher filters
+  // Dispatcher filters state
+  const [dispatcherFilterSidebarOpen, setDispatcherFilterSidebarOpen] = useState(true);
   const [selectedDispatchers, setSelectedDispatchers] = useState<string[]>([]);
   
-  const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("drivers");
 
   // Mock data
@@ -64,6 +67,23 @@ const CommunicationTower = () => {
     }
   };
 
+  const toggleFilterSidebar = () => {
+    if (activeTab === "drivers") {
+      setDriverFilterSidebarOpen(!driverFilterSidebarOpen);
+    } else if (activeTab === "clients") {
+      setClientFilterSidebarOpen(!clientFilterSidebarOpen);
+    } else if (activeTab === "groups") {
+      setDispatcherFilterSidebarOpen(!dispatcherFilterSidebarOpen);
+    }
+  };
+
+  const getCurrentSidebarState = () => {
+    if (activeTab === "drivers") return driverFilterSidebarOpen;
+    if (activeTab === "clients") return clientFilterSidebarOpen;
+    if (activeTab === "groups") return dispatcherFilterSidebarOpen;
+    return false;
+  };
+
   return (
     <Layout>
       <div className="flex h-full">
@@ -75,12 +95,12 @@ const CommunicationTower = () => {
             </div>
             
             <Button 
-              variant={isFilterSidebarOpen ? "default" : "outline"}
-              onClick={() => setIsFilterSidebarOpen(!isFilterSidebarOpen)}
+              variant={getCurrentSidebarState() ? "default" : "outline"}
+              onClick={toggleFilterSidebar}
               className="mb-4 flex items-center gap-2"
             >
               <Filter className="h-4 w-4" />
-              {isFilterSidebarOpen ? "Hide Filters" : "Show Filters"}
+              {getCurrentSidebarState() ? "Hide Filters" : "Show Filters"}
             </Button>
 
             <div className="flex gap-[10px] h-[calc(100vh-180px)]">
@@ -98,8 +118,8 @@ const CommunicationTower = () => {
                   allStates={allStates}
                   selectedStates={selectedStates}
                   setSelectedStates={setSelectedStates}
-                  open={isFilterSidebarOpen}
-                  onClose={() => setIsFilterSidebarOpen(false)}
+                  open={driverFilterSidebarOpen}
+                  onClose={() => setDriverFilterSidebarOpen(false)}
                   onFiltersAdd={handleFiltersAdd}
                 />
               ) : activeTab === "clients" ? (
@@ -114,8 +134,8 @@ const CommunicationTower = () => {
                   setSelectedOrganizations={setSelectedOrganizations}
                   allOrganizations={allOrganizations}
                   onFiltersAdd={handleFiltersAdd}
-                  open={isFilterSidebarOpen}
-                  onClose={() => setIsFilterSidebarOpen(false)}
+                  open={clientFilterSidebarOpen}
+                  onClose={() => setClientFilterSidebarOpen(false)}
                 />
               ) : (
                 <DispatcherFiltersSidebar
@@ -123,8 +143,8 @@ const CommunicationTower = () => {
                   setSelectedDispatchers={setSelectedDispatchers}
                   allDispatchers={allDispatchers}
                   onFiltersAdd={handleFiltersAdd}
-                  open={isFilterSidebarOpen}
-                  onClose={() => setIsFilterSidebarOpen(false)}
+                  open={dispatcherFilterSidebarOpen}
+                  onClose={() => setDispatcherFilterSidebarOpen(false)}
                 />
               )}
               <div className="flex-1 h-full overflow-auto">
@@ -153,3 +173,4 @@ const CommunicationTower = () => {
 };
 
 export default CommunicationTower;
+
