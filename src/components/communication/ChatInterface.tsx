@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { OrderDetails } from './OrderDetails';
@@ -20,7 +21,8 @@ interface ChatInterfaceProps {
   };
 }
 
-type MessageType = {
+// Define MessageType to ensure consistency across components
+export type MessageType = {
   id: string;
   senderId: string;
   senderName: string;
@@ -30,7 +32,8 @@ type MessageType = {
   attachments?: Array<{
     id: string;
     name: string;
-    type: 'image' | 'document' | 'spreadsheet' | 'pdf';
+    type: 'image' | 'document' | 'spreadsheet' | 'pdf' | 'voice';
+    url: string;
   }>;
 };
 

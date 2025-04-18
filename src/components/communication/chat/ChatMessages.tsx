@@ -2,21 +2,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { FileText, FileSpreadsheet, ImageIcon, Mic } from "lucide-react";
-
-interface MessageType {
-  id: string;
-  senderId: string;
-  senderName: string;
-  senderRole: 'dispatcher' | 'driver' | 'client';
-  content: string;
-  timestamp: string;
-  attachments?: Array<{
-    id: string;
-    name: string;
-    type: 'image' | 'document' | 'spreadsheet' | 'pdf' | 'voice';
-    url: string;
-  }>;
-}
+import { MessageType } from '../ChatInterface';
 
 interface ChatMessagesProps {
   messages: MessageType[];
