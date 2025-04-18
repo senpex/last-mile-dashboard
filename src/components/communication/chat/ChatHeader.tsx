@@ -75,9 +75,9 @@ export const ChatHeader = ({ user, activeTab, setActiveTab }: ChatHeaderProps) =
       <div className="mt-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="h-9">
-            <TabsTrigger value="chat">Chat</TabsTrigger>
-            <TabsTrigger value="notes">Notes</TabsTrigger>
-            <TabsTrigger value="history">Chat History</TabsTrigger>
+            <TabsTrigger value="chat" className="text-sm">Chat</TabsTrigger>
+            <TabsTrigger value="notes" className="text-sm">Notes</TabsTrigger>
+            <TabsTrigger value="history" className="text-sm">Chat History</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
