@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Search, Users, User, Send, Clock, Paperclip, X, FileText, FileImage, FileSpreadsheet } from "lucide-react";
+import { Search, Users, User, Send, Clock, Paperclip, X, FileText, FileImage, FileSpreadsheet, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -26,6 +26,7 @@ interface CommunicationPanelProps {
   activeTab?: string;
   setActiveTab?: (tab: string) => void;
 }
+
 const generateRandomDrivers = (count: number, startId: number = 10000): any[] => {
   const firstNames = ["John", "Jane", "Michael", "Emma", "David"];
   const lastNames = ["Smith", "Johnson", "Williams", "Jones", "Brown"];
@@ -49,7 +50,9 @@ const generateRandomDrivers = (count: number, startId: number = 10000): any[] =>
     };
   });
 };
+
 const mockDrivers = generateRandomDrivers(20);
+
 const generateRandomClients = (count: number, startId: number = 20000): any[] => {
   const companyNames = ["ABC Corp", "XYZ Ltd", "123 Industries", "Tech Solutions", "Global Services"];
   const contacts = ["John Smith", "Jane Doe", "Michael Brown", "Emma Wilson", "David Miller"];
@@ -70,6 +73,7 @@ const generateRandomClients = (count: number, startId: number = 20000): any[] =>
     };
   });
 };
+
 const mockClients = generateRandomClients(20);
 
 const CommunicationPanel = ({
@@ -145,6 +149,7 @@ const CommunicationPanel = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
   const filteredDrivers = searchQuery.length >= 3 ? mockDrivers.filter(driver => {
     const nameMatch = driver.name.toLowerCase().includes(searchQuery.toLowerCase());
     const emailMatch = driver.email.toLowerCase().includes(searchQuery.toLowerCase());
@@ -152,6 +157,7 @@ const CommunicationPanel = ({
     const idMatch = driver.id.toString().includes(searchQuery);
     return nameMatch || emailMatch || phoneMatch || idMatch;
   }) : [];
+
   const filteredClients = searchQuery.length >= 3 ? mockClients.filter(client => {
     const nameMatch = client.name.toLowerCase().includes(searchQuery.toLowerCase());
     const contactMatch = client.contactName.toLowerCase().includes(searchQuery.toLowerCase());
@@ -160,6 +166,7 @@ const CommunicationPanel = ({
     const idMatch = client.id.toString().includes(searchQuery);
     return nameMatch || contactMatch || emailMatch || phoneMatch || idMatch;
   }) : [];
+
   const handleSelectRecipient = (recipient: Recipient) => {
     const isAlreadySelected = selectedRecipients.some(r => r.id === recipient.id);
     if (isAlreadySelected) {
@@ -170,12 +177,14 @@ const CommunicationPanel = ({
     setShowDropdown(false);
     setSearchQuery("");
   };
+
   const handleSelectTemplate = (templateId: string) => {
     const template = messageTemplates.find(t => t.id === templateId);
     if (template) {
       setMessage(template.content);
     }
   };
+
   const handleSendMessage = () => {
     const messageData: MessageData = {
       message: message,
@@ -190,7 +199,9 @@ const CommunicationPanel = ({
     });
     setMessage("");
   };
+
   const hasAnyFilters = selectedFilters && Object.values(selectedFilters).some(filterArray => filterArray && filterArray.length > 0);
+
   return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 my-0 h-[calc(100vh-180px)] overflow-auto 
       border border-gray-200 dark:border-gray-700 
       shadow-sm hover:shadow-md 
@@ -407,4 +418,5 @@ const CommunicationPanel = ({
       </div>
     </div>;
 };
+
 export default CommunicationPanel;
