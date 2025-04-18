@@ -147,7 +147,8 @@ const CommunicationTower = () => {
                     onClose={() => setDispatcherFilterSidebarOpen(false)}
                   />
                 )}
-                <div className="flex-1 h-full overflow-auto">
+                
+                <div className="flex-1 mt-[10px]">
                   <CommunicationPanel
                     activeTab={activeTab}
                     setActiveTab={setActiveTab}
