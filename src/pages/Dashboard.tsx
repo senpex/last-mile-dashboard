@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -16,10 +15,11 @@ const Dashboard = () => {
     orders: 12,
     arOrders: 5,
     workingDriversChats: 3,
-    customerChats: 8
+    customerChats: 8,
+    ezCaterNewOrders: 4,
+    ezCaterModifications: 2
   };
 
-  // Sample company data - in a real app this would come from an API
   const companies = [
     { name: "Acme Corp", count: 5 },
     { name: "TechStart Inc", count: 3 },
@@ -34,7 +34,6 @@ const Dashboard = () => {
         <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
         
         <div className="space-y-6">
-          {/* Statistics Section */}
           <div>
             <h2 className="text-lg font-semibold mb-4">Statistics</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -62,7 +61,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Action Required Section */}
           <div>
             <h2 className="text-lg font-semibold mb-4">Action Required</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -98,10 +96,27 @@ const Dashboard = () => {
                   </div>
                 </CardContent>
               </Card>
+
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="flex flex-col space-y-4">
+                    <p className="text-sm font-medium text-muted-foreground">eZcater Requests</p>
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">New Orders</span>
+                        <span className="text-xl font-bold">{stats.ezCaterNewOrders}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Modifications</span>
+                        <span className="text-xl font-bold">{stats.ezCaterModifications}</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
 
-          {/* Batching Section */}
           <div>
             <h2 className="text-lg font-semibold mb-4">Batching</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
