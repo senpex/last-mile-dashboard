@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Search, Users, User, Send, Clock, Check } from "lucide-react";
+import { Search, Users, User, Send, Clock, Check, Paperclip } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -83,6 +83,7 @@ const CommunicationPanel = ({ activeTab, setActiveTab, selectedFilters }: Commun
   const [searchQuery, setSearchQuery] = useState("");
   const [channels, setChannels] = useState<string[]>(["sms", "email", "inapp"]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
   const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -151,6 +152,19 @@ const CommunicationPanel = ({ activeTab, setActiveTab, selectedFilters }: Commun
     });
     
     setMessage("");
+  };
+
+  const handleFileAttachment = () => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.multiple = true;
+    fileInput.onchange = (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      if (target.files) {
+        setAttachedFiles(Array.from(target.files));
+      }
+    };
+    fileInput.click();
   };
 
   const hasAnyFilters = selectedFilters && Object.values(selectedFilters).some(
@@ -368,12 +382,26 @@ const CommunicationPanel = ({ activeTab, setActiveTab, selectedFilters }: Commun
             </label>
             <MessageTemplates onSelectTemplate={handleSelectTemplate} />
           </div>
-          <Textarea 
-            value={message} 
-            onChange={e => setMessage(e.target.value)} 
-            placeholder="Type your message here..." 
-            className="min-h-[120px] dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300" 
-          />
+          <div className="relative">
+            <Textarea 
+              value={message} 
+              onChange={e => setMessage(e.target.value)} 
+              placeholder="Type your message here..." 
+              className="min-h-[120px] dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 pr-10" 
+            />
+            <button 
+              onClick={handleFileAttachment}
+              className="absolute bottom-2 left-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+              title="Attach files"
+            >
+              <Paperclip className="h-5 w-5" />
+            </button>
+          </div>
+          {attachedFiles.length > 0 && (
+            <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+              Attached files: {attachedFiles.map(file => file.name).join(', ')}
+            </div>
+          )}
         </div>
 
         <div className="flex justify-end space-x-4 mt-6">
