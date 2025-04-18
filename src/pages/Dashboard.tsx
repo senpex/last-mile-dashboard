@@ -1,8 +1,7 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Eye } from "lucide-react";
+import { Eye, DollarSign } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   Select,
@@ -20,7 +19,8 @@ const Dashboard = () => {
     workingDriversChats: 3,
     customerChats: 8,
     ezCaterNewOrders: 4,
-    ezCaterModifications: 2
+    ezCaterModifications: 2,
+    profitability: 85.5
   };
 
   const companies = [
@@ -30,6 +30,7 @@ const Dashboard = () => {
   ];
 
   const [ordersPeriod, setOrdersPeriod] = useState("lifetime");
+  const [profitabilityPeriod, setProfitabilityPeriod] = useState("lifetime");
 
   const navigate = useNavigate();
 
@@ -59,6 +60,29 @@ const Dashboard = () => {
                     </Select>
                   </div>
                   <h3 className="text-2xl font-bold text-right">{stats.orders}</h3>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="pt-6 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-medium text-muted-foreground">Profitability</p>
+                    <Select value={profitabilityPeriod} onValueChange={setProfitabilityPeriod}>
+                      <SelectTrigger className="w-[130px] h-8">
+                        <SelectValue placeholder="Select period" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="lifetime">Lifetime</SelectItem>
+                        <SelectItem value="lastMonth">Last Month</SelectItem>
+                        <SelectItem value="lastWeek">Last Week</SelectItem>
+                        <SelectItem value="today">Today</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex items-center justify-end gap-2">
+                    <DollarSign className="h-5 w-5 text-green-500" />
+                    <h3 className="text-2xl font-bold">{stats.profitability}%</h3>
+                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -148,4 +172,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
