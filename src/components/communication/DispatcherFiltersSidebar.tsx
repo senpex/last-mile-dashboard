@@ -8,6 +8,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { cn } from "@/lib/utils";
 import { Save, RotateCcw } from "lucide-react";
 import { Label } from "@/components/ui/label";
+
 interface DispatcherFiltersSidebarProps {
   selectedDispatchers: string[];
   setSelectedDispatchers: (dispatchers: string[]) => void;
@@ -16,6 +17,7 @@ interface DispatcherFiltersSidebarProps {
   open: boolean;
   onClose: () => void;
 }
+
 export const DispatcherFiltersSidebar = ({
   selectedDispatchers,
   setSelectedDispatchers,
@@ -24,7 +26,15 @@ export const DispatcherFiltersSidebar = ({
   open,
   onClose
 }: DispatcherFiltersSidebarProps) => {
-  return <div className={cn("h-full bg-white dark:bg-gray-900 rounded-lg shadow-md transition-all duration-300 p-6 w-full", "border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md", "light:border-2 light:border-gray-300 light:hover:border-gray-400", open ? "w-[275px] max-w-[80vw]" : "w-0 overflow-hidden")}>
+  return (
+    <div 
+      className={cn(
+        "h-full bg-white dark:bg-gray-900 rounded-lg shadow-md transition-all duration-300",
+        "border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md",
+        "light:border-2 light:border-gray-300 light:hover:border-gray-400",
+        open ? "w-[275px] opacity-100 max-w-[80vw]" : "w-0 opacity-0 invisible overflow-hidden"
+      )}
+    >
       <div className="p-6 w-full h-full flex flex-col overflow-y-auto px-0">
         <h2 className="text-lg font-semibold mb-4">Dispatcher Filters</h2>
         
@@ -78,5 +88,6 @@ export const DispatcherFiltersSidebar = ({
           </Button>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
