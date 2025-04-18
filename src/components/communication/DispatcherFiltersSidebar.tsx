@@ -35,7 +35,7 @@ export const DispatcherFiltersSidebar = ({
         open ? "w-[275px] opacity-100 max-w-[80vw]" : "w-0 opacity-0 invisible overflow-hidden"
       )}
     >
-      <div className="p-6 w-full h-full flex flex-col overflow-y-auto px-0">
+      <div className="p-4 w-full h-full flex flex-col overflow-y-auto px-3">
         <h2 className="text-lg font-semibold mb-4">Dispatcher Filters</h2>
         
         <ScrollArea className="flex-1 -mr-4 pr-4">
