@@ -202,13 +202,13 @@ const CommunicationPanel = ({
 
   const hasAnyFilters = selectedFilters && Object.values(selectedFilters).some(filterArray => filterArray && filterArray.length > 0);
 
-  return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 my-0 h-[calc(100vh-180px)] overflow-auto 
+  return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 my-0 flex flex-col h-[calc(100vh-180px)]
       border border-gray-200 dark:border-gray-700 
       shadow-sm hover:shadow-md 
       transition-all duration-300 
       light:border-2 light:border-gray-300 
       light:hover:border-gray-400">
-      <div className="mb-6">
+      <div>
         <Tabs defaultValue={activeTab} value={activeTab} onValueChange={value => {
         if (setActiveTab) {
           setActiveTab(value);
@@ -342,7 +342,9 @@ const CommunicationPanel = ({
         </Tabs>
       </div>
 
-      <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 space-y-4 mt-[60px]">
+      <div className="flex-1" />
+
+      <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 space-y-4">
         <CommunicationChannels channels={channels} onChannelToggle={setChannels} />
         <div className="space-y-4">
           <div className="flex items-center justify-between">
