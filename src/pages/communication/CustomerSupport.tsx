@@ -180,19 +180,19 @@ const CustomerSupport = () => {
                 <TabsList className="grid w-full grid-cols-3 h-9 items-stretch gap-1 p-1">
                   <TabsTrigger 
                     value="all" 
-                    className="flex items-center justify-center w-full rounded-sm"
+                    className="flex items-center justify-center flex-1 w-full rounded-sm"
                   >
                     My
                   </TabsTrigger>
                   <TabsTrigger 
                     value="unassigned" 
-                    className="flex items-center justify-center w-full rounded-sm"
+                    className="flex items-center justify-center flex-1 w-full rounded-sm"
                   >
                     Unassigned
                   </TabsTrigger>
                   <TabsTrigger 
                     value="assigned" 
-                    className="flex items-center justify-center w-full rounded-sm"
+                    className="flex items-center justify-center flex-1 w-full rounded-sm"
                   >
                     Closed
                   </TabsTrigger>
