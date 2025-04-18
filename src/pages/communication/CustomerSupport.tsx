@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { 
   Users,
   Filter,
@@ -116,6 +117,14 @@ const CustomerSupport = () => {
     return null;
   };
 
+  const onlineUsers = [
+    "John Smith",
+    "Emma Johnson",
+    "Mike Wilson",
+    "Sarah Davis",
+    "Robert Taylor"
+  ];
+
   return (
     <Layout>
       <div className="flex items-center gap-2 p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -134,10 +143,27 @@ const CustomerSupport = () => {
                   <h2 className="text-lg font-medium">Messages</h2>
                 </div>
 
-                <Button variant="outline" size="sm" className="h-8">
-                  <Users className="h-4 w-4 mr-1" />
-                  Online (5)
-                </Button>
+                <HoverCard>
+                  <HoverCardTrigger asChild>
+                    <Button variant="outline" size="sm" className="h-8">
+                      <Users className="h-4 w-4 mr-1" />
+                      Online (5)
+                    </Button>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-48">
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-semibold">Online Users</h4>
+                      <div className="text-sm space-y-1">
+                        {onlineUsers.map((user, index) => (
+                          <div key={index} className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                            <span>{user}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
               </div>
 
               <div className="flex items-center gap-2 mb-2">
