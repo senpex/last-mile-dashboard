@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { MapPin, ChevronUp, ChevronDown } from "lucide-react";
+import { OrderMap } from "./OrderMap";
 
 interface OrderDetailsProps {
   orderData: {
@@ -47,6 +48,12 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
             <div className="text-sm font-medium">Order #{orderData.id}</div>
             <StatusBadge status={orderData.status} />
           </div>
+          
+          <OrderMap 
+            pickupAddress={orderData.pickupAddress}
+            deliveryAddress={orderData.deliveryAddress}
+            driverName={orderData.driverName}
+          />
           
           <div className="p-3 bg-card dark:bg-gray-900/50 rounded-md shadow-sm">
             <div className="grid grid-cols-3 gap-2 text-xs">
