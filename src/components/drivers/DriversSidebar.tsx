@@ -411,7 +411,7 @@ export function DriversSidebar({
         </Accordion>
       </ScrollArea>
 
-      <div className="mt-4 pt-4 border-t flex gap-2">
+      <div className="mt-4 pt-4 border-t flex gap-2 my-[6px]">
         <Button variant="outline" className="flex-1 gap-1" onClick={handleResetFilters}>
           <RotateCcw className="h-4 w-4" />
           Reset
