@@ -19,7 +19,6 @@ const CustomerSupport = () => {
   const [activeTab, setActiveTab] = useState("all");
   const [filterStatus, setFilterStatus] = useState<string>("all");
 
-  // Mock data - would be fetched from your API
   const chats = [
     { 
       id: "chat1", 
@@ -77,8 +76,7 @@ const CustomerSupport = () => {
       assignedTo: "dispatcher1"
     },
   ];
-  
-  // Filter chats based on active tab and filter status
+
   const filteredChats = chats.filter(chat => {
     if (activeTab === "assigned" && chat.assignedTo !== "dispatcher1") return false;
     if (activeTab === "unassigned" && chat.assignedTo !== null) return false;
@@ -121,15 +119,22 @@ const CustomerSupport = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto p-4 h-[calc(100vh-6rem)] bg-background">
+      <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-16 items-center px-4">
+          <div className="flex items-center gap-2">
+            <Headphones className="h-6 w-6 text-muted-foreground" />
+            <h1 className="text-2xl font-semibold">Customer Support</h1>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto p-4 h-[calc(100vh-8rem)] bg-background">
         <div className="flex h-full gap-4">
-          {/* Left sidebar - Chat List */}
           <div className="w-[380px] flex-shrink-0 flex flex-col rounded-lg border bg-card shadow-sm">
             <div className="p-4 border-b">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <Headphones className="h-5 w-5 text-muted-foreground" />
-                  <h1 className="text-xl font-semibold">Communication</h1>
+                  <h2 className="text-lg font-medium">Messages</h2>
                 </div>
 
                 <Button variant="outline" size="sm" className="h-8">
@@ -147,61 +152,61 @@ const CustomerSupport = () => {
                   <Filter className="h-4 w-4" />
                 </Button>
               </div>
-            </div>
 
-            <div className="p-4 border-b">
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-3 h-9">
-                  <TabsTrigger value="all">All</TabsTrigger>
-                  <TabsTrigger value="assigned">Assigned</TabsTrigger>
-                  <TabsTrigger value="unassigned">Unassigned</TabsTrigger>
-                </TabsList>
-              </Tabs>
+              <div className="flex h-9">
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                  <TabsList className="grid w-full grid-cols-3 h-9">
+                    <TabsTrigger value="all">All</TabsTrigger>
+                    <TabsTrigger value="assigned">Assigned</TabsTrigger>
+                    <TabsTrigger value="unassigned">Unassigned</TabsTrigger>
+                  </TabsList>
+                </Tabs>
 
-              <div className="flex gap-2 overflow-x-auto py-3 scrollbar-none">
-                <Button 
-                  variant={filterStatus === "all" ? "default" : "outline"} 
-                  size="sm"
-                  onClick={() => setFilterStatus("all")}
-                  className="h-8"
-                >
-                  All
-                </Button>
-                <Button 
-                  variant={filterStatus === "client" ? "default" : "outline"} 
-                  size="sm"
-                  onClick={() => setFilterStatus("client")}
-                >
-                  Clients
-                </Button>
-                <Button 
-                  variant={filterStatus === "driver" ? "default" : "outline"} 
-                  size="sm"
-                  onClick={() => setFilterStatus("driver")}
-                >
-                  Drivers
-                </Button>
-                <Button 
-                  variant={filterStatus === "high" ? "default" : "outline"} 
-                  size="sm"
-                  onClick={() => setFilterStatus("high")}
-                >
-                  High Priority
-                </Button>
-                <Button 
-                  variant={filterStatus === "working-drivers" ? "default" : "outline"} 
-                  size="sm"
-                  onClick={() => setFilterStatus("working-drivers")}
-                >
-                  Working Drivers
-                </Button>
-                <Button 
-                  variant={filterStatus === "unapproved-drivers" ? "default" : "outline"} 
-                  size="sm"
-                  onClick={() => setFilterStatus("unapproved-drivers")}
-                >
-                  Unapproved
-                </Button>
+                <div className="flex gap-2 overflow-x-auto py-3 scrollbar-none">
+                  <Button 
+                    variant={filterStatus === "all" ? "default" : "outline"} 
+                    size="sm"
+                    onClick={() => setFilterStatus("all")}
+                    className="h-8"
+                  >
+                    All
+                  </Button>
+                  <Button 
+                    variant={filterStatus === "client" ? "default" : "outline"} 
+                    size="sm"
+                    onClick={() => setFilterStatus("client")}
+                  >
+                    Clients
+                  </Button>
+                  <Button 
+                    variant={filterStatus === "driver" ? "default" : "outline"} 
+                    size="sm"
+                    onClick={() => setFilterStatus("driver")}
+                  >
+                    Drivers
+                  </Button>
+                  <Button 
+                    variant={filterStatus === "high" ? "default" : "outline"} 
+                    size="sm"
+                    onClick={() => setFilterStatus("high")}
+                  >
+                    High Priority
+                  </Button>
+                  <Button 
+                    variant={filterStatus === "working-drivers" ? "default" : "outline"} 
+                    size="sm"
+                    onClick={() => setFilterStatus("working-drivers")}
+                  >
+                    Working Drivers
+                  </Button>
+                  <Button 
+                    variant={filterStatus === "unapproved-drivers" ? "default" : "outline"} 
+                    size="sm"
+                    onClick={() => setFilterStatus("unapproved-drivers")}
+                  >
+                    Unapproved
+                  </Button>
+                </div>
               </div>
             </div>
 
@@ -255,7 +260,6 @@ const CustomerSupport = () => {
             </div>
           </div>
 
-          {/* Right side - Chat Interface */}
           <div className="flex-1 min-w-0">
             {selectedChat ? (
               <ChatInterface 
