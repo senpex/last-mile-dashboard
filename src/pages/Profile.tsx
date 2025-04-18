@@ -1,5 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
-import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil, Calendar, Clock } from "lucide-react";
+import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil, Calendar, Clock, FileText } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { MessageTemplates } from "@/components/communication/MessageTemplates";
 import React, { useState } from 'react';
 
-// Define interfaces for the rules and automations
 interface AttentionRule {
   name: string;
   query: string;
@@ -32,8 +32,8 @@ const Profile = () => {
   const [automationName, setAutomationName] = useState('');
   const [isEditMode, setIsEditMode] = useState(false);
   const [editRuleIndex, setEditRuleIndex] = useState<number | null>(null);
-  
-  // Keeping the state variables to avoid reference errors
+  const [selectedTemplate, setSelectedTemplate] = useState('');
+
   const [attentionRules, setAttentionRules] = useState<AttentionRule[]>([
     { name: "Late Orders", query: "Driver is going late for more than 15 minutes" },
     { name: "Incomplete Orders", query: "Show last minute cancelled orders by driver" },
@@ -104,6 +104,10 @@ const Profile = () => {
     const updatedShifts = [...workingShifts];
     updatedShifts[index] = { ...updatedShifts[index], [field]: value };
     setWorkingShifts(updatedShifts);
+  };
+
+  const handleTemplateSelect = (templateId: string) => {
+    setSelectedTemplate(templateId);
   };
 
   return (
@@ -268,6 +272,10 @@ const Profile = () => {
                     <Clock className="w-4 h-4" />
                     Working Shifts
                   </TabsTrigger>
+                  <TabsTrigger value="templates" className="flex items-center gap-2">
+                    <FileText className="w-4 h-4" />
+                    Templates
+                  </TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="attention-required">
@@ -393,6 +401,31 @@ const Profile = () => {
                             </div>
                           </div>
                         ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="templates">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-medium mb-4">Message Templates</h3>
+                      <div className="space-y-4">
+                        <div className="flex flex-col space-y-4">
+                          <MessageTemplates onSelectTemplate={handleTemplateSelect} />
+                          <div className="mt-4">
+                            <Button 
+                              variant="outline" 
+                              className="flex items-center gap-2"
+                              onClick={() => {
+                                // Template creation logic will go here
+                              }}
+                            >
+                              <Plus className="w-4 h-4" />
+                              Add Template
+                            </Button>
+                          </div>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
