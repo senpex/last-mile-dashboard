@@ -18,6 +18,7 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
   
   const [mounting, setMounting] = useState(true);
   const [usersMenuOpen, setUsersMenuOpen] = useState(false);
+  const [communicationMenuOpen, setCommunicationMenuOpen] = useState(false);
   
   useEffect(() => {
     const timer = setTimeout(() => setMounting(false), 300);
@@ -32,11 +33,15 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
     setUsersMenuOpen(!usersMenuOpen);
   };
 
+  const toggleCommunicationMenu = () => {
+    setCommunicationMenuOpen(!communicationMenuOpen);
+  };
+
   return (
     <aside 
       className={cn(
         "fixed left-0 top-0 h-screen flex flex-col transition-all-300 z-10 bg-sidebar shadow-lg",
-        "border-r border-sidebar-border", // Added border-r for vertical line
+        "border-r border-sidebar-border",
         collapsed ? "w-[70px]" : "w-[240px]",
         mounting ? "animate-slide-in-left" : ""
       )}
@@ -103,7 +108,7 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
             
             <li>
               <button
-                onClick={toggleUsersMenu}
+                onClick={toggleCommunicationMenu}
                 className={cn(
                   "sidebar-item w-full text-left",
                   location.pathname.includes("/communication") ? "active" : ""
@@ -122,12 +127,12 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
                   <ChevronRight 
                     className={cn(
                       "ml-auto w-4 h-4 transition-transform",
-                      usersMenuOpen ? "rotate-90" : ""
+                      communicationMenuOpen ? "rotate-90" : ""
                     )} 
                   />
                 )}
               </button>
-              {!collapsed && usersMenuOpen && (
+              {!collapsed && communicationMenuOpen && (
                 <ul className="mt-1 ml-6 space-y-1">
                   <li>
                     <Link 
@@ -149,6 +154,60 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
                       )}
                     >
                       <span>Customer Support</span>
+                    </Link>
+                  </li>
+                </ul>
+              )}
+            </li>
+            
+            <li>
+              <button
+                onClick={toggleUsersMenu}
+                className={cn(
+                  "sidebar-item w-full text-left",
+                  location.pathname.includes("/users") ? "active" : ""
+                )}
+              >
+                <Users className="sidebar-icon" />
+                <span 
+                  className={cn(
+                    "menu-item-text",
+                    collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+                  )}
+                >
+                  User Management
+                </span>
+                {!collapsed && (
+                  <ChevronRight 
+                    className={cn(
+                      "ml-auto w-4 h-4 transition-transform",
+                      usersMenuOpen ? "rotate-90" : ""
+                    )} 
+                  />
+                )}
+              </button>
+              {!collapsed && usersMenuOpen && (
+                <ul className="mt-1 ml-6 space-y-1">
+                  <li>
+                    <Link 
+                      to="/users/drivers" 
+                      className={cn(
+                        "sidebar-item text-sm",
+                        location.pathname === "/users/drivers" ? "active" : ""
+                      )}
+                    >
+                      <span>Drivers</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link 
+                      to="/users/clients" 
+                      className={cn(
+                        "sidebar-item text-sm",
+                        location.pathname === "/users/clients" ? "active" : ""
+                      )}
+                    >
+                      <span>Clients</span>
                     </Link>
                   </li>
                 </ul>
