@@ -14,6 +14,9 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
 
   useEffect(() => {
     const initMap = async () => {
+      // Clear any previous errors
+      setMapError(null);
+      
       const loader = new Loader({
         apiKey: "AIzaSyD--I0r1HmH90XbB_l-KzBEx-Y3I1uGtOE",
         version: "weekly",
@@ -35,18 +38,27 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
         // Create geocoder to convert addresses to coordinates
         const geocoder = new google.maps.Geocoder();
         
-        // More specific addresses that will work with the API
-        const enhancedPickupAddress = pickupAddress.includes(",") ? pickupAddress : `${pickupAddress}, San Francisco, CA`;
-        const enhancedDeliveryAddress = deliveryAddress.includes(",") ? deliveryAddress : `${deliveryAddress}, San Francisco, CA`;
+        // Always use city and state for better geocoding results
+        const enhancedPickupAddress = pickupAddress.includes(", San Francisco") 
+          ? pickupAddress 
+          : `${pickupAddress}, San Francisco, CA, USA`;
+        
+        const enhancedDeliveryAddress = deliveryAddress.includes(", San Francisco") 
+          ? deliveryAddress 
+          : `${deliveryAddress}, San Francisco, CA, USA`;
 
+        console.log("Geocoding pickup:", enhancedPickupAddress);
+        
         // Get pickup location
         geocoder.geocode({ address: enhancedPickupAddress }, (pickupResults, pickupStatus) => {
           if (pickupStatus !== "OK" || !pickupResults?.[0]) {
-            setMapError("Could not find pickup location");
+            console.error("Pickup geocode failed:", pickupStatus, enhancedPickupAddress);
+            setMapError(`Could not find pickup location: ${enhancedPickupAddress}`);
             return;
           }
 
           const pickupLocation = pickupResults[0].geometry.location;
+          console.log("Pickup location found:", pickupLocation.toString());
           
           // Create pickup marker
           new google.maps.Marker({
@@ -63,14 +75,18 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
             },
           });
 
+          console.log("Geocoding delivery:", enhancedDeliveryAddress);
+          
           // Get delivery location
           geocoder.geocode({ address: enhancedDeliveryAddress }, (deliveryResults, deliveryStatus) => {
             if (deliveryStatus !== "OK" || !deliveryResults?.[0]) {
-              setMapError("Could not find delivery location");
+              console.error("Delivery geocode failed:", deliveryStatus, enhancedDeliveryAddress);
+              setMapError(`Could not find delivery location: ${enhancedDeliveryAddress}`);
               return;
             }
 
             const deliveryLocation = deliveryResults[0].geometry.location;
+            console.log("Delivery location found:", deliveryLocation.toString());
             
             // Create delivery marker
             new google.maps.Marker({
@@ -92,6 +108,9 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
             bounds.extend(pickupLocation);
             bounds.extend(deliveryLocation);
             map.fitBounds(bounds);
+            
+            // Add some padding to the bounds
+            map.setZoom(map.getZoom() - 0.5);
 
             // Calculate a point between pickup and delivery for the driver
             const driverLocation = new google.maps.LatLng(

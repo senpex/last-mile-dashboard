@@ -34,14 +34,22 @@ const StatusBadge = ({ status }: { status: 'active' | 'completed' | 'cancelled' 
 export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
   const [orderDetailsExpanded, setOrderDetailsExpanded] = useState(true);
   
-  // Ensure addresses are specific enough for Google Maps geocoding
-  const enhancedPickupAddress = orderData.pickupAddress.includes(", ") 
-    ? orderData.pickupAddress 
-    : `${orderData.pickupAddress}, San Francisco, CA`;
+  // Use more specific addresses to improve geocoding success
+  const knownLocations = {
+    "123 Pickup St, City": "123 Pickup St, San Francisco, CA 94103",
+    "456 Delivery Ave, City": "456 Delivery Ave, San Francisco, CA 94107"
+  };
+  
+  // Map generic addresses to more specific ones or add city/state info
+  const enhancedPickupAddress = knownLocations[orderData.pickupAddress] || 
+    (orderData.pickupAddress.includes(", ") 
+      ? orderData.pickupAddress 
+      : `${orderData.pickupAddress}, San Francisco, CA 94103`);
     
-  const enhancedDeliveryAddress = orderData.deliveryAddress.includes(", ") 
-    ? orderData.deliveryAddress 
-    : `${orderData.deliveryAddress}, San Francisco, CA`;
+  const enhancedDeliveryAddress = knownLocations[orderData.deliveryAddress] ||
+    (orderData.deliveryAddress.includes(", ") 
+      ? orderData.deliveryAddress 
+      : `${orderData.deliveryAddress}, San Francisco, CA 94107`);
 
   return (
     <div className="p-4">
