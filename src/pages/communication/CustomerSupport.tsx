@@ -179,8 +179,8 @@ const CustomerSupport = () => {
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mb-2">
                 <TabsList className="grid w-full grid-cols-3 h-9">
                   <TabsTrigger value="all">My</TabsTrigger>
-                  <TabsTrigger value="assigned">All</TabsTrigger>
                   <TabsTrigger value="unassigned">Unassigned</TabsTrigger>
+                  <TabsTrigger value="assigned">All</TabsTrigger>
                 </TabsList>
               </Tabs>
 
