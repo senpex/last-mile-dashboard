@@ -5,6 +5,9 @@ import { ChatHeader } from './chat/ChatHeader';
 import { ChatMessages } from './chat/ChatMessages';
 import { ChatInput } from './chat/ChatInput';
 import { ChatHistory } from './chat/ChatHistory';
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { PenLine } from "lucide-react";
 
 interface ChatInterfaceProps {
   chatId: string;
@@ -27,8 +30,7 @@ type MessageType = {
   attachments?: Array<{
     id: string;
     name: string;
-    type: 'image' | 'document' | 'spreadsheet' | 'pdf' | 'voice';
-    url: string;
+    type: 'image' | 'document' | 'spreadsheet' | 'pdf';
   }>;
 };
 
@@ -39,6 +41,7 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
     file: File;
     type: 'image' | 'document' | 'spreadsheet' | 'pdf';
   }>>([]);
+  const [noteText, setNoteText] = useState("");
 
   const messages: MessageType[] = [
     {
@@ -117,6 +120,13 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
     setAttachedFiles([]);
   };
 
+  const handleAddNote = () => {
+    if (noteText.trim()) {
+      console.log("Adding note:", noteText);
+      setNoteText("");
+    }
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case 'chat':
@@ -138,8 +148,25 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
         return <ChatHistory userId={user.id} />;
       case 'notes':
         return (
-          <div className="flex-1 p-4">
-            <p className="text-muted-foreground">No notes available.</p>
+          <div className="flex-1 p-4 space-y-4">
+            <div className="space-y-4">
+              <Textarea
+                placeholder="Write your note here..."
+                value={noteText}
+                onChange={(e) => setNoteText(e.target.value)}
+                className="min-h-[120px] resize-none"
+              />
+              <Button
+                onClick={handleAddNote}
+                className="w-full"
+              >
+                <PenLine className="mr-2 h-4 w-4" />
+                Add Note
+              </Button>
+            </div>
+            <div className="mt-6">
+              <p className="text-muted-foreground">No notes available.</p>
+            </div>
           </div>
         );
       default:
