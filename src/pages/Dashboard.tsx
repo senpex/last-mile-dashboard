@@ -19,6 +19,13 @@ const Dashboard = () => {
     customerChats: 8
   };
 
+  // Sample company data - in a real app this would come from an API
+  const companies = [
+    { name: "Acme Corp", count: 5 },
+    { name: "TechStart Inc", count: 3 },
+    { name: "Global Logistics", count: 7 }
+  ];
+
   const [ordersPeriod, setOrdersPeriod] = useState("lifetime");
 
   return (
@@ -93,6 +100,25 @@ const Dashboard = () => {
               </Card>
             </div>
           </div>
+
+          {/* Batching Section */}
+          <div>
+            <h2 className="text-lg font-semibold mb-4">Batching</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="space-y-4">
+                    {companies.map((company, index) => (
+                      <div key={index} className="flex items-center justify-between">
+                        <p className="text-sm font-medium">{company.name}</p>
+                        <span className="text-sm font-bold">{company.count}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
       </div>
     </Layout>
@@ -100,4 +126,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
