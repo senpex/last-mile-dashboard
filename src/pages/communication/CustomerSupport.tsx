@@ -7,8 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// Removed Headphones import
 import { 
-  Headphones,
   Users,
   Filter,
   UserRound,
@@ -121,7 +121,7 @@ const CustomerSupport = () => {
   return (
     <Layout>
       <div className="flex items-center gap-2 p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <Headphones className="h-6 w-6 text-muted-foreground" />
+        {/* Removed Headphones icon */}
         <h1 className="text-2xl font-semibold">Customer Support</h1>
       </div>
 
