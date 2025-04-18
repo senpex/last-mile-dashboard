@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { ChatInterface } from "@/components/communication/ChatInterface";
@@ -125,7 +124,7 @@ const CustomerSupport = () => {
 
       <div 
         className="container mx-auto p-4 h-[calc(100vh-8rem)] bg-background" 
-        style={{ marginLeft: 'calc(240px - 220px)' }}
+        style={{ marginLeft: 'calc(240px - 240px)' }}
       >
         <div className="flex h-full gap-4">
           <div className="w-[380px] flex-shrink-0 flex flex-col rounded-lg border bg-card shadow-sm">
