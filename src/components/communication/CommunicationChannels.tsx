@@ -23,7 +23,7 @@ export const CommunicationChannels: React.FC<CommunicationChannelsProps> = ({
           aria-label="Toggle SMS" 
           className={`
             ${channels.includes('sms') 
-              ? 'bg-green-600 text-white hover:bg-green-700 dark:bg-green-600 dark:text-white dark:hover:bg-green-700 light:bg-green-600 light:text-white light:hover:bg-green-700' 
+              ? 'bg-green-600 text-white hover:bg-green-700' 
               : 'bg-gray-100 text-foreground dark:bg-gray-800 dark:text-gray-300 hover:bg-green-100 hover:text-green-700 dark:hover:bg-green-900/30 dark:hover:text-green-200'} 
             transition-colors`}
         >
@@ -36,7 +36,7 @@ export const CommunicationChannels: React.FC<CommunicationChannelsProps> = ({
           aria-label="Toggle Email" 
           className={`
             ${channels.includes('email') 
-              ? 'bg-green-600 text-white hover:bg-green-700 dark:bg-green-600 dark:text-white dark:hover:bg-green-700 light:bg-green-600 light:text-white light:hover:bg-green-700' 
+              ? 'bg-green-600 text-white hover:bg-green-700' 
               : 'bg-gray-100 text-foreground dark:bg-gray-800 dark:text-gray-300 hover:bg-green-100 hover:text-green-700 dark:hover:bg-green-900/30 dark:hover:text-green-200'} 
             transition-colors`}
         >
@@ -49,7 +49,7 @@ export const CommunicationChannels: React.FC<CommunicationChannelsProps> = ({
           aria-label="Toggle In-App" 
           className={`
             ${channels.includes('inapp') 
-              ? 'bg-green-600 text-white hover:bg-green-700 dark:bg-green-600 dark:text-white dark:hover:bg-green-700 light:bg-green-600 light:text-white light:hover:bg-green-700' 
+              ? 'bg-green-600 text-white hover:bg-green-700' 
               : 'bg-gray-100 text-foreground dark:bg-gray-800 dark:text-gray-300 hover:bg-green-100 hover:text-green-700 dark:hover:bg-green-900/30 dark:hover:text-green-200'} 
             transition-colors`}
         >
@@ -60,4 +60,3 @@ export const CommunicationChannels: React.FC<CommunicationChannelsProps> = ({
     </div>
   );
 };
-
