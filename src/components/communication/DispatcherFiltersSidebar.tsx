@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -35,8 +36,8 @@ export const DispatcherFiltersSidebar = ({
         open ? "w-[275px] opacity-100 max-w-[80vw]" : "w-0 opacity-0 invisible overflow-hidden"
       )}
     >
-      <div className="p-4 w-full h-full flex flex-col overflow-y-auto px-3">
-        <h2 className="text-lg font-semibold mb-4">Dispatcher Filters</h2>
+      <div className="p-6 w-full h-full flex flex-col overflow-y-auto mx-0 px-[24px] py-[29px]">
+        <h2 className="text-lg font-semibold mb-4 px-0 py-[15px] my-[9px]">Dispatcher Filters</h2>
         
         <ScrollArea className="flex-1 -mr-4 pr-4">
           <Accordion type="single" collapsible className="w-full">
@@ -68,7 +69,7 @@ export const DispatcherFiltersSidebar = ({
           </Accordion>
         </ScrollArea>
 
-        <div className="mt-4 pt-4 border-t flex gap-2">
+        <div className="mt-4 pt-4 border-t flex gap-2 my-0">
           <Button variant="outline" className="flex-1 gap-1" onClick={() => {
           setSelectedDispatchers([]);
           onFiltersAdd({
