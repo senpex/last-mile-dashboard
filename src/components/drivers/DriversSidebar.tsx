@@ -11,7 +11,6 @@ import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-
 interface DriversSidebarProps {
   open: boolean;
   onClose: () => void;
@@ -37,7 +36,6 @@ interface DriversSidebarProps {
     hireStatuses?: string[];
   }) => void;
 }
-
 export function DriversSidebar({
   open,
   onClose,
@@ -76,7 +74,6 @@ export function DriversSidebar({
   const [citySearchTerm, setCitySearchTerm] = useState("");
   const [stateSearchTerm, setStateSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState('drivers');
-
   useEffect(() => {
     const transportDict = getDictionary("2");
     const hireStatusDict = getDictionary("1455");
@@ -87,11 +84,9 @@ export function DriversSidebar({
       setHireStatusOptions(hireStatusDict.items);
     }
   }, []);
-
   useEffect(() => {
     updateFilters();
   }, [selectedStatuses, selectedZipcodes, selectedCities, selectedStates, selectedProfiles, selectedTransports, selectedHireStatuses]);
-
   const handleStatusChange = (status: DeliveryStatus) => {
     if (selectedStatuses.includes(status)) {
       setSelectedStatuses(selectedStatuses.filter(s => s !== status));
@@ -99,7 +94,6 @@ export function DriversSidebar({
       setSelectedStatuses([...selectedStatuses, status]);
     }
   };
-
   const handleTransportChange = (transportId: string) => {
     if (selectedTransports.includes(transportId)) {
       setSelectedTransports(selectedTransports.filter(t => t !== transportId));
@@ -107,7 +101,6 @@ export function DriversSidebar({
       setSelectedTransports([...selectedTransports, transportId]);
     }
   };
-
   const handleZipcodeChange = (zipcode: string) => {
     if (selectedZipcodes.includes(zipcode)) {
       setSelectedZipcodes(selectedZipcodes.filter(z => z !== zipcode));
@@ -115,7 +108,6 @@ export function DriversSidebar({
       setSelectedZipcodes([...selectedZipcodes, zipcode]);
     }
   };
-
   const handleHireStatusChange = (status: string) => {
     if (selectedHireStatuses.includes(status)) {
       setSelectedHireStatuses(selectedHireStatuses.filter(s => s !== status));
@@ -123,7 +115,6 @@ export function DriversSidebar({
       setSelectedHireStatuses([...selectedHireStatuses, status]);
     }
   };
-
   const handleProfileChange = (profile: string, checked: boolean) => {
     if (checked) {
       setSelectedProfiles([...selectedProfiles, profile]);
@@ -131,7 +122,6 @@ export function DriversSidebar({
       setSelectedProfiles(selectedProfiles.filter(p => p !== profile));
     }
   };
-
   const handleCityChange = (city: string) => {
     if (selectedCities.includes(city)) {
       setSelectedCities(selectedCities.filter(c => c !== city));
@@ -139,7 +129,6 @@ export function DriversSidebar({
       setSelectedCities([...selectedCities, city]);
     }
   };
-
   const handleStateChange = (state: string) => {
     if (selectedStates.includes(state)) {
       setSelectedStates(selectedStates.filter(s => s !== state));
@@ -147,7 +136,6 @@ export function DriversSidebar({
       setSelectedStates([...selectedStates, state]);
     }
   };
-
   const handleResetFilters = () => {
     setSelectedStatuses([]);
     setSelectedTransports([]);
@@ -157,7 +145,6 @@ export function DriversSidebar({
     setSelectedStates([]);
     setSelectedHireStatuses([]);
   };
-
   const updateFilters = () => {
     onFiltersAdd({
       statuses: selectedStatuses,
@@ -169,45 +156,33 @@ export function DriversSidebar({
       hireStatuses: selectedHireStatuses
     });
   };
-
   const handleSaveFilters = () => {
     updateFilters();
   };
-
   const getProfileCount = (profileId: string) => {
     return Math.floor(Math.random() * 20) + 1;
   };
-
   const getStatusCount = (status: DeliveryStatus) => {
     return allDeliveryStatuses.filter(s => s === status).length;
   };
-
   const getZipcodeCount = (zipcode: string) => {
     return allZipcodes.filter(z => z === zipcode).length;
   };
-
   const getTransportCount = (transportId: string) => {
     return transportTypes.filter(t => t.id === transportId).length;
   };
-
   const getCityCount = (city: string) => {
     return Math.floor(Math.random() * 20) + 1;
   };
-
   const getStateCount = (state: string) => {
     return Math.floor(Math.random() * 20) + 1;
   };
-
   const getHireStatusCount = (statusId: string) => {
     return Math.floor(Math.random() * 15) + 1;
   };
-
   const filteredDeliveryStatuses = allDeliveryStatuses.filter(status => !["Picking Up", "In Transit", "Arrived For Pickup", "Dropoff Complete", "Scheduled Order", "Canceled By Customer", "Cancelled By Admin"].includes(status) && status.toLowerCase().includes(statusSearchTerm.toLowerCase()));
-
   const filteredTransportTypes = transportTypes.filter(transport => transport.value.toLowerCase().includes(transportSearchTerm.toLowerCase()));
-
   const filteredZipcodes = allZipcodes.filter(zipcode => zipcode.toLowerCase().includes(zipcodeSearchTerm.toLowerCase()));
-
   const hireStatuses = [{
     id: 'active',
     value: 'Active'
@@ -221,9 +196,7 @@ export function DriversSidebar({
     id: 'inactive',
     value: 'Inactive'
   }];
-
   const filteredHireStatuses = hireStatusOptions.filter(status => status.value.toLowerCase().includes(hireStatusSearchTerm.toLowerCase()));
-
   const driverProfiles = [{
     id: 'courier',
     value: 'Courier'
@@ -234,13 +207,9 @@ export function DriversSidebar({
     id: 'helper',
     value: 'Helper'
   }];
-
   const filteredProfiles = driverProfiles.filter(profile => profile.value.toLowerCase().includes(profileSearchTerm.toLowerCase()));
-
   const filteredCities = allCities.filter(city => city.toLowerCase().includes(citySearchTerm.toLowerCase()));
-
   const filteredStates = allStates.filter(state => state.toLowerCase().includes(stateSearchTerm.toLowerCase()));
-
   const getTitle = () => {
     switch (activeTab) {
       case 'drivers':
@@ -253,12 +222,8 @@ export function DriversSidebar({
         return 'Filter';
     }
   };
-
-  return <div className={cn("h-full bg-white dark:bg-gray-900 rounded-lg shadow-md transition-all duration-300", 
-    "border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md", 
-    open ? "w-[275px] max-w-[80vw] opacity-100 visible" : "w-0 opacity-0 invisible overflow-hidden"
-  )}>
-    <div className="p-6 w-full h-full flex flex-col overflow-y-auto mx-0 px-0">
+  return <div className={cn("h-full bg-white dark:bg-gray-900 rounded-lg shadow-md transition-all duration-300", "border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md", open ? "w-[275px] max-w-[80vw] opacity-100 visible" : "w-0 opacity-0 invisible overflow-hidden")}>
+    <div className="p-6 w-full h-full flex flex-col overflow-y-auto mx-0 px-[20px]">
       <h2 className="text-lg font-semibold mb-4">{getTitle()}</h2>
       
       <ScrollArea className="flex-1 -mr-4 pr-4">
@@ -275,12 +240,12 @@ export function DriversSidebar({
                 </div>
                 {filteredProfiles.map(profile => <div key={profile.id} className="flex items-center space-x-2">
                     <Checkbox id={`profile-${profile.id}`} checked={selectedProfiles.includes(profile.id)} onCheckedChange={checked => {
-                      if (checked) {
-                        setSelectedProfiles([...selectedProfiles, profile.id]);
-                      } else {
-                        setSelectedProfiles(selectedProfiles.filter(p => p !== profile.id));
-                      }
-                    }} />
+                    if (checked) {
+                      setSelectedProfiles([...selectedProfiles, profile.id]);
+                    } else {
+                      setSelectedProfiles(selectedProfiles.filter(p => p !== profile.id));
+                    }
+                  }} />
                     <Label htmlFor={`profile-${profile.id}`} className="flex flex-1 items-center justify-between">
                       <span>{profile.value}</span>
                       <Badge variant="outline" className="ml-auto">{getProfileCount(profile.id)}</Badge>
@@ -372,12 +337,12 @@ export function DriversSidebar({
                 </div>
                 {filteredCities.map(city => <div key={city} className="flex items-center space-x-2">
                     <Checkbox id={`city-${city}`} checked={selectedCities.includes(city)} onCheckedChange={() => {
-                      if (selectedCities.includes(city)) {
-                        setSelectedCities(selectedCities.filter(c => c !== city));
-                      } else {
-                        setSelectedCities([...selectedCities, city]);
-                      }
-                    }} />
+                    if (selectedCities.includes(city)) {
+                      setSelectedCities(selectedCities.filter(c => c !== city));
+                    } else {
+                      setSelectedCities([...selectedCities, city]);
+                    }
+                  }} />
                     <label htmlFor={`city-${city}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between">
                       <span>{city}</span>
                       <Badge variant="outline" className="ml-auto">{getCityCount(city)}</Badge>
@@ -400,12 +365,12 @@ export function DriversSidebar({
                 </div>
                 {filteredStates.map(state => <div key={state} className="flex items-center space-x-2">
                     <Checkbox id={`state-${state}`} checked={selectedStates.includes(state)} onCheckedChange={() => {
-                      if (selectedStates.includes(state)) {
-                        setSelectedStates(selectedStates.filter(s => s !== state));
-                      } else {
-                        setSelectedStates([...selectedStates, state]);
-                      }
-                    }} />
+                    if (selectedStates.includes(state)) {
+                      setSelectedStates(selectedStates.filter(s => s !== state));
+                    } else {
+                      setSelectedStates([...selectedStates, state]);
+                    }
+                  }} />
                     <label htmlFor={`state-${state}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between">
                       <span>{state}</span>
                       <Badge variant="outline" className="ml-auto">{getStateCount(state)}</Badge>
@@ -428,12 +393,12 @@ export function DriversSidebar({
                 </div>
                 {filteredZipcodes.map(zipcode => <div key={zipcode} className="flex items-center space-x-2">
                     <Checkbox id={`zipcode-${zipcode}`} checked={selectedZipcodes.includes(zipcode)} onCheckedChange={() => {
-                      if (selectedZipcodes.includes(zipcode)) {
-                        setSelectedZipcodes(selectedZipcodes.filter(z => z !== zipcode));
-                      } else {
-                        setSelectedZipcodes([...selectedZipcodes, zipcode]);
-                      }
-                    }} />
+                    if (selectedZipcodes.includes(zipcode)) {
+                      setSelectedZipcodes(selectedZipcodes.filter(z => z !== zipcode));
+                    } else {
+                      setSelectedZipcodes([...selectedZipcodes, zipcode]);
+                    }
+                  }} />
                     <label htmlFor={`zipcode-${zipcode}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between">
                       <span>{zipcode}</span>
                       <Badge variant="outline" className="ml-auto">{getZipcodeCount(zipcode)}</Badge>
