@@ -177,22 +177,22 @@ const CustomerSupport = () => {
               </div>
 
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mb-2">
-                <TabsList className="grid w-full grid-cols-3 h-9 items-stretch gap-1 p-1">
+                <TabsList className="grid w-full grid-cols-3 bg-muted/50 rounded-md h-10 p-1 gap-1">
                   <TabsTrigger 
                     value="all" 
-                    className="flex items-center justify-center flex-1 w-full rounded-sm"
+                    className="inline-flex items-center justify-center rounded-sm h-8 px-3 text-sm font-medium transition-colors hover:bg-background/80 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
                   >
                     My
                   </TabsTrigger>
                   <TabsTrigger 
                     value="unassigned" 
-                    className="flex items-center justify-center flex-1 w-full rounded-sm"
+                    className="inline-flex items-center justify-center rounded-sm h-8 px-3 text-sm font-medium transition-colors hover:bg-background/80 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
                   >
                     Unassigned
                   </TabsTrigger>
                   <TabsTrigger 
                     value="assigned" 
-                    className="flex items-center justify-center flex-1 w-full rounded-sm"
+                    className="inline-flex items-center justify-center rounded-sm h-8 px-3 text-sm font-medium transition-colors hover:bg-background/80 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
                   >
                     Closed
                   </TabsTrigger>
