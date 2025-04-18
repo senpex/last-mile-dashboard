@@ -1,3 +1,4 @@
+
 import { Layout } from "@/components/layout/Layout";
 import { UserRound, Settings, AlertTriangle, Bot, Lock, Eye, EyeOff, Plus, Pencil, Calendar, Clock, FileText } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -7,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { MessageTemplates } from "@/components/communication/MessageTemplates";
+import { MessageTemplates, messageTemplates } from "@/components/communication/MessageTemplates";
 import React, { useState } from 'react';
 
 interface AttentionRule {
