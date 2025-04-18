@@ -372,7 +372,7 @@ const DeliveryTable = ({
                 filterSidebarOpen={isFilterSidebarOpen}
               >
                 <Table>
-                  <TableHeader>
+                  <TableHeader className="bg-muted/50 sticky top-0 border-b-0">
                     <TableRow>
                       {sortedColumns.map(columnId => {
                         const column = availableColumns.find(col => col.id === columnId);

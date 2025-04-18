@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -140,9 +139,7 @@ export const DriversTable = ({
     }
   };
 
-  // Determine if a column is sortable
   const isSortable = (columnId: string) => {
-    // Define which columns should be sortable
     const sortableColumns = ["id", "name", "email", "phone", "zipcode", "rating"];
     return sortableColumns.includes(columnId);
   };
@@ -150,7 +147,7 @@ export const DriversTable = ({
   return (
     <UsersTableContainer stickyHeader={false} className={cn("w-full mt-1.25", className)}>
       <Table>
-        <TableHeader className="bg-muted/50">
+        <TableHeader className="bg-muted/50 border-b-0">
           <TableRow>
             {sortedColumns.map(columnId => {
               const column = availableColumns.find(col => col.id === columnId);
