@@ -100,12 +100,13 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
                 </span>
               </Link>
             </li>
+            
             <li>
-              <Link 
-                to="/communication-tower" 
+              <button
+                onClick={toggleUsersMenu}
                 className={cn(
-                  "sidebar-item",
-                  location.pathname === "/communication-tower" ? "active" : ""
+                  "sidebar-item w-full text-left",
+                  location.pathname.includes("/communication") ? "active" : ""
                 )}
               >
                 <TowerControl className="sidebar-icon" />
@@ -115,26 +116,7 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
                     collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
                   )}
                 >
-                  Communication Tower
-                </span>
-              </Link>
-            </li>
-            <li>
-              <button
-                onClick={toggleUsersMenu}
-                className={cn(
-                  "sidebar-item w-full text-left",
-                  location.pathname.includes("/users") ? "active" : ""
-                )}
-              >
-                <Users className="sidebar-icon" />
-                <span 
-                  className={cn(
-                    "menu-item-text",
-                    collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
-                  )}
-                >
-                  User Management
+                  Communication
                 </span>
                 {!collapsed && (
                   <ChevronRight 
@@ -149,29 +131,30 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
                 <ul className="mt-1 ml-6 space-y-1">
                   <li>
                     <Link 
-                      to="/users/clients" 
+                      to="/communication/push" 
                       className={cn(
                         "sidebar-item text-sm",
-                        location.pathname === "/users/clients" ? "active" : ""
+                        location.pathname === "/communication/push" ? "active" : ""
                       )}
                     >
-                      <span>Clients</span>
+                      <span>Push Communication</span>
                     </Link>
                   </li>
                   <li>
                     <Link 
-                      to="/users/drivers" 
+                      to="/communication/support" 
                       className={cn(
                         "sidebar-item text-sm",
-                        location.pathname === "/users/drivers" ? "active" : ""
+                        location.pathname === "/communication/support" ? "active" : ""
                       )}
                     >
-                      <span>Drivers</span>
+                      <span>Customer Support</span>
                     </Link>
                   </li>
                 </ul>
               )}
             </li>
+            
             <li>
               <Link 
                 to="/agent-ai" 
