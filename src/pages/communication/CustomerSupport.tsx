@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { ChatInterface } from "@/components/communication/ChatInterface";
@@ -121,11 +120,10 @@ const CustomerSupport = () => {
   return (
     <Layout>
       <div className="flex items-center gap-2 p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        {/* Removed Headphones icon */}
         <h1 className="text-2xl font-semibold">Customer Support</h1>
       </div>
 
-      <div className="container mx-auto p-4 h-[calc(100vh-8rem)] bg-background">
+      <div className="container mx-auto p-4 h-[calc(100vh-8rem)] bg-background" style={{ marginLeft: 'calc(240px - 25px)' }}>
         <div className="flex h-full gap-4">
           <div className="w-[380px] flex-shrink-0 flex flex-col rounded-lg border bg-card shadow-sm">
             <div className="p-4 border-b">
