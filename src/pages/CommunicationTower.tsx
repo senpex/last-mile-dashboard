@@ -88,80 +88,82 @@ const CommunicationTower = () => {
       <div className="flex h-full">
         <div className="flex-1">
           <div className="container mx-auto p-4">
-            <div className="flex items-center gap-2 mb-4">
-              <TowerControl className="h-6 w-6" />
-              <h1 className="text-2xl font-bold">Communication Tower</h1>
-            </div>
-            
-            <Button 
-              variant={getCurrentSidebarState() ? "default" : "outline"}
-              onClick={toggleFilterSidebar}
-              className="mb-4 flex items-center gap-2"
-            >
-              <Filter className="h-4 w-4" />
-              {getCurrentSidebarState() ? "Hide Filters" : "Show Filters"}
-            </Button>
+            <div className="flex flex-col space-y-4">
+              <div className="flex items-center gap-2">
+                <TowerControl className="h-6 w-6" />
+                <h1 className="text-2xl font-bold">Communication Tower</h1>
+              </div>
+              
+              <Button 
+                variant={getCurrentSidebarState() ? "default" : "outline"}
+                onClick={toggleFilterSidebar}
+                className="flex items-center gap-2 w-fit"
+              >
+                <Filter className="h-4 w-4" />
+                {getCurrentSidebarState() ? "Hide Filters" : "Show Filters"}
+              </Button>
 
-            <div className="flex gap-[10px] h-[calc(100vh-140px)]">
-              {activeTab === "drivers" ? (
-                <DriversSidebar
-                  selectedStatuses={selectedStatuses}
-                  setSelectedStatuses={setSelectedStatuses}
-                  allDeliveryStatuses={allDriverStatuses}
-                  allZipcodes={allZipcodes}
-                  selectedZipcodes={selectedZipcodes}
-                  setSelectedZipcodes={setSelectedZipcodes}
-                  allCities={allCities}
-                  selectedCities={selectedCities}
-                  setSelectedCities={setSelectedCities}
-                  allStates={allStates}
-                  selectedStates={selectedStates}
-                  setSelectedStates={setSelectedStates}
-                  open={driverFilterSidebarOpen}
-                  onClose={() => setDriverFilterSidebarOpen(false)}
-                  onFiltersAdd={handleFiltersAdd}
-                />
-              ) : activeTab === "clients" ? (
-                <ClientFiltersSidebar
-                  selectedCities={selectedClientCities}
-                  setSelectedCities={setSelectedClientCities}
-                  allCities={allCities}
-                  selectedStates={selectedClientStates}
-                  setSelectedStates={setSelectedClientStates}
-                  allStates={allStates}
-                  selectedOrganizations={selectedOrganizations}
-                  setSelectedOrganizations={setSelectedOrganizations}
-                  allOrganizations={allOrganizations}
-                  onFiltersAdd={handleFiltersAdd}
-                  open={clientFilterSidebarOpen}
-                  onClose={() => setClientFilterSidebarOpen(false)}
-                />
-              ) : (
-                <DispatcherFiltersSidebar
-                  selectedDispatchers={selectedDispatchers}
-                  setSelectedDispatchers={setSelectedDispatchers}
-                  allDispatchers={allDispatchers}
-                  onFiltersAdd={handleFiltersAdd}
-                  open={dispatcherFilterSidebarOpen}
-                  onClose={() => setDispatcherFilterSidebarOpen(false)}
-                />
-              )}
-              <div className="flex-1 h-full overflow-auto">
-                <CommunicationPanel
-                  activeTab={activeTab}
-                  setActiveTab={setActiveTab}
-                  selectedFilters={{
-                    statuses: activeTab === "drivers" ? selectedStatuses : [],
-                    zipcodes: selectedZipcodes,
-                    cities: activeTab === "drivers" ? selectedCities : selectedClientCities,
-                    states: activeTab === "drivers" ? selectedStates : selectedClientStates,
-                    profiles: selectedProfiles,
-                    transports: selectedTransports,
-                    hireStatuses: selectedHireStatuses,
-                    organizations: selectedOrganizations,
-                    dispatchers: selectedDispatchers
-                  }}
-                />
+              <div className="flex gap-[10px] h-[calc(100vh-140px)]">
+                {activeTab === "drivers" ? (
+                  <DriversSidebar
+                    selectedStatuses={selectedStatuses}
+                    setSelectedStatuses={setSelectedStatuses}
+                    allDeliveryStatuses={allDriverStatuses}
+                    allZipcodes={allZipcodes}
+                    selectedZipcodes={selectedZipcodes}
+                    setSelectedZipcodes={setSelectedZipcodes}
+                    allCities={allCities}
+                    selectedCities={selectedCities}
+                    setSelectedCities={setSelectedCities}
+                    allStates={allStates}
+                    selectedStates={selectedStates}
+                    setSelectedStates={setSelectedStates}
+                    open={driverFilterSidebarOpen}
+                    onClose={() => setDriverFilterSidebarOpen(false)}
+                    onFiltersAdd={handleFiltersAdd}
+                  />
+                ) : activeTab === "clients" ? (
+                  <ClientFiltersSidebar
+                    selectedCities={selectedClientCities}
+                    setSelectedCities={setSelectedClientCities}
+                    allCities={allCities}
+                    selectedStates={selectedClientStates}
+                    setSelectedStates={setSelectedClientStates}
+                    allStates={allStates}
+                    selectedOrganizations={selectedOrganizations}
+                    setSelectedOrganizations={setSelectedOrganizations}
+                    allOrganizations={allOrganizations}
+                    onFiltersAdd={handleFiltersAdd}
+                    open={clientFilterSidebarOpen}
+                    onClose={() => setClientFilterSidebarOpen(false)}
+                  />
+                ) : (
+                  <DispatcherFiltersSidebar
+                    selectedDispatchers={selectedDispatchers}
+                    setSelectedDispatchers={setSelectedDispatchers}
+                    allDispatchers={allDispatchers}
+                    onFiltersAdd={handleFiltersAdd}
+                    open={dispatcherFilterSidebarOpen}
+                    onClose={() => setDispatcherFilterSidebarOpen(false)}
+                  />
+                )}
+                <div className="flex-1 h-full overflow-auto">
+                  <CommunicationPanel
+                    activeTab={activeTab}
+                    setActiveTab={setActiveTab}
+                    selectedFilters={{
+                      statuses: activeTab === "drivers" ? selectedStatuses : [],
+                      zipcodes: selectedZipcodes,
+                      cities: activeTab === "drivers" ? selectedCities : selectedClientCities,
+                      states: activeTab === "drivers" ? selectedStates : selectedClientStates,
+                      profiles: selectedProfiles,
+                      transports: selectedTransports,
+                      hireStatuses: selectedHireStatuses,
+                      organizations: selectedOrganizations,
+                      dispatchers: selectedDispatchers
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>
