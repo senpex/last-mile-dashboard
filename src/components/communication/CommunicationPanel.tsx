@@ -202,18 +202,20 @@ const CommunicationPanel = ({
 
   const hasAnyFilters = selectedFilters && Object.values(selectedFilters).some(filterArray => filterArray && filterArray.length > 0);
 
-  return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 my-0 flex flex-col h-[calc(100vh-180px)]
+  return (
+    <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 my-0 flex flex-col h-[calc(100vh-180px)]
       border border-gray-200 dark:border-gray-700 
       shadow-sm hover:shadow-md 
       transition-all duration-300 
       light:border-2 light:border-gray-300 
       light:hover:border-gray-400">
-      <div>
+      
+      <div className="flex-none">
         <Tabs defaultValue={activeTab} value={activeTab} onValueChange={value => {
-        if (setActiveTab) {
-          setActiveTab(value);
-        }
-      }}>
+          if (setActiveTab) {
+            setActiveTab(value);
+          }
+        }}>
           <TabsList className="w-full mb-4 h-14">
             <TabsTrigger value="drivers" className="flex-1 h-full">
               <User className="mr-2 h-4 w-4" />Drivers
@@ -227,36 +229,42 @@ const CommunicationPanel = ({
           </TabsList>
 
           <TabsContent value="drivers">
-            <div className="mt-4 mb-6" ref={searchRef}>
+            <div className="mt-4 mb-4" ref={searchRef}>
               <label htmlFor="contact-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Find contact:
               </label>
               <div className="relative">
                 <Input id="contact-search" value={searchQuery} onChange={e => {
-                setSearchQuery(e.target.value);
-                setShowDropdown(e.target.value.length >= 3);
-              }} placeholder="Search drivers" className="w-full pl-8" />
+                  setSearchQuery(e.target.value);
+                  setShowDropdown(e.target.value.length >= 3);
+                }} placeholder="Search drivers" className="w-full pl-8" />
                 <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
                 
-                {showDropdown && searchQuery.length >= 3 && <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 max-h-60 overflow-auto">
-                    {filteredDrivers.length > 0 ? filteredDrivers.map(driver => <div key={driver.id} onClick={() => handleSelectRecipient(driver)} className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center justify-between">
-                          <div className="space-y-1">
-                            <div className="flex items-center gap-2">
-                              <span className="text-xs text-gray-500">ID: {driver.id}</span>
-                              <div className="font-medium">{driver.name}</div>
-                            </div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">{driver.email}</div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">{driver.phone}</div>
+                {showDropdown && searchQuery.length >= 3 && (
+                  <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 max-h-60 overflow-auto">
+                    {filteredDrivers.length > 0 ? filteredDrivers.map(driver => (
+                      <div key={driver.id} onClick={() => handleSelectRecipient(driver)} className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center justify-between">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-gray-500">ID: {driver.id}</span>
+                            <div className="font-medium">{driver.name}</div>
                           </div>
-                          {selectedRecipients.some(r => r.id === driver.id) && <Check className="h-4 w-4 text-green-500" />}
-                        </div>) : <div className="px-4 py-2 text-gray-500 dark:text-gray-400">
+                          <div className="text-sm text-gray-500 dark:text-gray-400">{driver.email}</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">{driver.phone}</div>
+                        </div>
+                        {selectedRecipients.some(r => r.id === driver.id) && <Check className="h-4 w-4 text-green-500" />}
+                      </div>
+                    )) : (
+                      <div className="px-4 py-2 text-gray-500 dark:text-gray-400">
                         No results found
-                      </div>}
-                  </div>}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
-            <div className="mb-4 h-[140px]">
+            <div className="mb-4 h-[120px] overflow-y-auto">
               <div className="flex justify-between items-center mb-2">
                 <label className="block text-sm font-medium text-foreground dark:text-gray-300">
                   Selected Recipients
@@ -270,37 +278,43 @@ const CommunicationPanel = ({
           </TabsContent>
 
           <TabsContent value="clients">
-            <div className="mt-4 mb-6" ref={searchRef}>
+            <div className="mt-4 mb-4" ref={searchRef}>
               <label htmlFor="client-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Find contact:
               </label>
               <div className="relative">
                 <Input id="client-search" value={searchQuery} onChange={e => {
-                setSearchQuery(e.target.value);
-                setShowDropdown(e.target.value.length >= 3);
-              }} placeholder="Search clients" className="w-full pl-8" />
+                  setSearchQuery(e.target.value);
+                  setShowDropdown(e.target.value.length >= 3);
+                }} placeholder="Search clients" className="w-full pl-8" />
                 <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
 
-                {showDropdown && searchQuery.length >= 3 && <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 max-h-60 overflow-auto">
-                    {filteredClients.length > 0 ? filteredClients.map(client => <div key={client.id} onClick={() => handleSelectRecipient(client)} className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center justify-between">
-                          <div className="space-y-1">
-                            <div className="flex items-center gap-2">
-                              <span className="text-xs text-gray-500">ID: {client.id}</span>
-                              <div className="font-medium">{client.name}</div>
-                            </div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">{client.contactName}</div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">{client.email}</div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">{client.phone}</div>
+                {showDropdown && searchQuery.length >= 3 && (
+                  <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 max-h-60 overflow-auto">
+                    {filteredClients.length > 0 ? filteredClients.map(client => (
+                      <div key={client.id} onClick={() => handleSelectRecipient(client)} className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center justify-between">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-gray-500">ID: {client.id}</span>
+                            <div className="font-medium">{client.name}</div>
                           </div>
-                          {selectedRecipients.some(r => r.id === client.id) && <Check className="h-4 w-4 text-green-500" />}
-                        </div>) : <div className="px-4 py-2 text-gray-500 dark:text-gray-400">
+                          <div className="text-sm text-gray-500 dark:text-gray-400">{client.contactName}</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">{client.email}</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">{client.phone}</div>
+                        </div>
+                        {selectedRecipients.some(r => r.id === client.id) && <Check className="h-4 w-4 text-green-500" />}
+                      </div>
+                    )) : (
+                      <div className="px-4 py-2 text-gray-500 dark:text-gray-400">
                         No results found
-                      </div>}
-                  </div>}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
-            <div className="mb-4 h-[140px]">
+            <div className="mb-4 h-[120px] overflow-y-auto">
               <div className="flex justify-between items-center mb-2">
                 <label className="block text-sm font-medium text-foreground dark:text-gray-300">
                   Selected Recipients
@@ -320,9 +334,9 @@ const CommunicationPanel = ({
               </label>
               <div className="relative">
                 <Input id="dispatcher-search" value={searchQuery} onChange={e => {
-                setSearchQuery(e.target.value);
-                setShowDropdown(e.target.value.length >= 3);
-              }} placeholder="Search dispatchers" className="w-full pl-8" />
+                  setSearchQuery(e.target.value);
+                  setShowDropdown(e.target.value.length >= 3);
+                }} placeholder="Search dispatchers" className="w-full pl-8" />
                 <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
               </div>
             </div>
@@ -342,11 +356,11 @@ const CommunicationPanel = ({
         </Tabs>
       </div>
 
-      <div className="flex-1" />
+      <div className="flex-1 min-h-[20px]" />
 
-      <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 space-y-4">
+      <div className="flex-none mt-4 bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-3">
         <CommunicationChannels channels={channels} onChannelToggle={setChannels} />
-        <div className="space-y-4">
+        <div className="space-y-3">
           <div className="flex items-center justify-between">
             <label className="block text-sm font-medium text-foreground dark:text-gray-300">
               Message:
@@ -358,7 +372,7 @@ const CommunicationPanel = ({
               value={message} 
               onChange={e => setMessage(e.target.value)} 
               placeholder="Type your message here..." 
-              className="min-h-[120px] dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300" 
+              className="min-h-[100px] resize-none dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300" 
             />
             {attachedFiles.length > 0 && (
               <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-2 bg-background/80 p-2 rounded-md">
@@ -381,7 +395,7 @@ const CommunicationPanel = ({
             )}
           </div>
 
-          <div className="flex justify-between items-center space-x-4 mt-6">
+          <div className="flex justify-between items-center space-x-4 mt-3">
             <Button 
               variant="ghost" 
               size="icon"
@@ -418,7 +432,8 @@ const CommunicationPanel = ({
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
 
 export default CommunicationPanel;
