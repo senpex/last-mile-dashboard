@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -145,10 +146,10 @@ export const DriversTable = ({
   };
 
   return (
-    <UsersTableContainer stickyHeader={false} className={cn("w-full mt-1.25", className)}>
+    <UsersTableContainer stickyHeader={false} className={cn("w-full mt-0", className)}>
       <Table>
-        <TableHeader className="bg-muted/50 border-b-0">
-          <TableRow>
+        <TableHeader className="bg-muted/50 border-b-0 m-0 p-0">
+          <TableRow className="border-b-0">
             {sortedColumns.map(columnId => {
               const column = availableColumns.find(col => col.id === columnId);
               if (!column) return null;

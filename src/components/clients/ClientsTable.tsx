@@ -53,8 +53,8 @@ export function ClientsTable({
   return (
     <UsersTableContainer className={className}>
       <Table>
-        <TableHeader className="bg-muted/50 sticky top-0 border-b-0">
-          <TableRow>
+        <TableHeader className="bg-muted/50 sticky top-0 border-b-0 m-0 p-0">
+          <TableRow className="border-b-0">
             {sortedColumns.map(columnId => {
               const column = availableColumns.find(col => col.id === columnId);
               if (!column) return null;
