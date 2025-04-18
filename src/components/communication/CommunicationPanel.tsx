@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Search, Users, User, Send, Clock, Check, Paperclip } from "lucide-react";
+import { Search, Users, User, Send, Clock, Paperclip, X, FileText, FileImage, FileSpreadsheet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,7 @@ import { CommunicationChannels } from "./CommunicationChannels";
 import { MessageTemplates, messageTemplates } from "./MessageTemplates";
 import { Recipient, MessageData } from "./types";
 import { DeliveryStatus } from "@/types/delivery";
+
 interface CommunicationPanelProps {
   selectedFilters?: {
     statuses?: DeliveryStatus[] | string[];
@@ -70,6 +71,7 @@ const generateRandomClients = (count: number, startId: number = 20000): any[] =>
   });
 };
 const mockClients = generateRandomClients(20);
+
 const CommunicationPanel = ({
   activeTab,
   setActiveTab,
@@ -83,8 +85,57 @@ const CommunicationPanel = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [channels, setChannels] = useState<string[]>(["sms", "email", "inapp"]);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
   const searchRef = useRef<HTMLDivElement>(null);
+
+  const [attachedFiles, setAttachedFiles] = useState<Array<{
+    file: File;
+    type: 'excel' | 'doc' | 'pdf' | 'image';
+  }>>([]);
+
+  const getFileType = (file: File): 'excel' | 'doc' | 'pdf' | 'image' => {
+    const extension = file.name.split('.').pop()?.toLowerCase();
+    if (['xls', 'xlsx'].includes(extension || '')) return 'excel';
+    if (['doc', 'docx'].includes(extension || '')) return 'doc';
+    if (extension === 'pdf') return 'pdf';
+    if (['jpg', 'jpeg', 'png'].includes(extension || '')) return 'image';
+    return 'doc'; // fallback
+  };
+
+  const handleFileAttachment = () => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.multiple = true;
+    fileInput.accept = '.doc,.docx,.pdf,.xls,.xlsx,.jpg,.jpeg,.png';
+    fileInput.onchange = (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      if (target.files) {
+        const newFiles = Array.from(target.files).map(file => ({
+          file,
+          type: getFileType(file)
+        }));
+        setAttachedFiles(prev => [...prev, ...newFiles]);
+      }
+    };
+    fileInput.click();
+  };
+
+  const removeFile = (index: number) => {
+    setAttachedFiles(files => files.filter((_, i) => i !== index));
+  };
+
+  const FileIcon = ({ type }: { type: 'excel' | 'doc' | 'pdf' | 'image' }) => {
+    switch (type) {
+      case 'excel':
+        return <FileSpreadsheet className="h-4 w-4 text-green-600" />;
+      case 'doc':
+        return <FileText className="h-4 w-4 text-blue-600" />;
+      case 'pdf':
+        return <FileText className="h-4 w-4 text-red-600" />;
+      case 'image':
+        return <FileImage className="h-4 w-4 text-purple-600" />;
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
@@ -138,18 +189,6 @@ const CommunicationPanel = ({
       description: `Message sent to ${selectedRecipients.length} recipients and ${hasAnyFilters ? 'filtered audiences' : ''}`
     });
     setMessage("");
-  };
-  const handleFileAttachment = () => {
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.multiple = true;
-    fileInput.onchange = (e: Event) => {
-      const target = e.target as HTMLInputElement;
-      if (target.files) {
-        setAttachedFiles(Array.from(target.files));
-      }
-    };
-    fileInput.click();
   };
   const hasAnyFilters = selectedFilters && Object.values(selectedFilters).some(filterArray => filterArray && filterArray.length > 0);
   return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 my-0 h-[calc(100vh-180px)] overflow-auto 
@@ -302,26 +341,67 @@ const CommunicationPanel = ({
             <MessageTemplates onSelectTemplate={handleSelectTemplate} />
           </div>
           <div className="relative">
-            <Textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Type your message here..." className="min-h-[120px] dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300" />
+            <Textarea 
+              value={message} 
+              onChange={e => setMessage(e.target.value)} 
+              placeholder="Type your message here..." 
+              className="min-h-[120px] dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300" 
+            />
+            {attachedFiles.length > 0 && (
+              <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-2 bg-background/80 p-2 rounded-md">
+                {attachedFiles.map((file, index) => (
+                  <div 
+                    key={index}
+                    className="flex items-center gap-1 bg-muted px-2 py-1 rounded-md text-xs"
+                  >
+                    <FileIcon type={file.type} />
+                    <span className="max-w-[100px] truncate">{file.file.name}</span>
+                    <button
+                      onClick={() => removeFile(index)}
+                      className="ml-1 hover:text-destructive"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-          {attachedFiles.length > 0 && <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              Attached files: {attachedFiles.map(file => file.name).join(', ')}
-            </div>}
-        </div>
 
-        <div className="flex justify-between items-center space-x-4 mt-6">
-          <button onClick={handleFileAttachment} title="Attach files" className="flex items-center gap-1 px-[14px] text-blue-50 rounded-lg text-base font-bold">
-            <Paperclip className="h-4 w-4" />
-          </button>
-          <div className="flex items-center space-x-4">
-            <Button variant="outline" className="flex items-center gap-1 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
-              <Clock className="h-4 w-4 dark:text-gray-300" />
-              Schedule
+          <div className="flex justify-between items-center space-x-4 mt-6">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={handleFileAttachment} 
+              title="Attach files"
+              className="hover:bg-accent"
+            >
+              <Paperclip className="h-4 w-4" />
             </Button>
-            <Button onClick={handleSendMessage} className={`flex items-center gap-1 ${message.trim() !== "" && (selectedRecipients.length > 0 || hasAnyFilters) && channels.length > 0 ? "bg-green-600 text-white hover:bg-green-700" : ""}`} disabled={message.trim() === "" || !selectedRecipients.length && !hasAnyFilters || channels.length === 0}>
-              <Send className="h-4 w-4" />
-              Send Now
-            </Button>
+            <div className="flex items-center space-x-4">
+              <Button variant="outline" className="flex items-center gap-1 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
+                <Clock className="h-4 w-4 dark:text-gray-300" />
+                Schedule
+              </Button>
+              <Button 
+                onClick={handleSendMessage} 
+                className={`flex items-center gap-1 ${
+                  message.trim() !== "" && 
+                  (selectedRecipients.length > 0 || hasAnyFilters) && 
+                  channels.length > 0 
+                    ? "bg-green-600 text-white hover:bg-green-700" 
+                    : ""
+                }`} 
+                disabled={
+                  message.trim() === "" || 
+                  (!selectedRecipients.length && !hasAnyFilters) || 
+                  channels.length === 0
+                }
+              >
+                <Send className="h-4 w-4" />
+                Send Now
+              </Button>
+            </div>
           </div>
         </div>
       </div>
