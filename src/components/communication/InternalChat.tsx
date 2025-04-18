@@ -48,7 +48,7 @@ export const InternalChat = ({ onClose, initialExpanded = false }: InternalChatP
       id: '2',
       senderId: 'disp2',
       senderName: 'Alex Morgan',
-      content: 'I'm on it. Driver got stuck in traffic but should be moving again soon.',
+      content: 'I\'m on it. Driver got stuck in traffic but should be moving again soon.',
       timestamp: '10:17 AM'
     },
     {
