@@ -397,7 +397,7 @@ const CommunicationPanel = ({ activeTab, setActiveTab, selectedFilters }: Commun
           )}
         </div>
 
-        <div className="flex justify-end items-center space-x-4 mt-6">
+        <div className="flex justify-between items-center space-x-4 mt-6">
           <button 
             onClick={handleFileAttachment}
             className="flex items-center gap-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
@@ -405,22 +405,24 @@ const CommunicationPanel = ({ activeTab, setActiveTab, selectedFilters }: Commun
           >
             <Paperclip className="h-4 w-4" />
           </button>
-          <Button variant="outline" className="flex items-center gap-1 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
-            <Clock className="h-4 w-4 dark:text-gray-300" />
-            Schedule
-          </Button>
-          <Button 
-            onClick={handleSendMessage} 
-            className={`flex items-center gap-1 ${
-              message.trim() !== "" && (selectedRecipients.length > 0 || hasAnyFilters) && channels.length > 0
-                ? "bg-green-600 text-white hover:bg-green-700"
-                : ""
-            }`} 
-            disabled={message.trim() === "" || (!selectedRecipients.length && !hasAnyFilters) || channels.length === 0}
-          >
-            <Send className="h-4 w-4" />
-            Send Now
-          </Button>
+          <div className="flex items-center space-x-4">
+            <Button variant="outline" className="flex items-center gap-1 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
+              <Clock className="h-4 w-4 dark:text-gray-300" />
+              Schedule
+            </Button>
+            <Button 
+              onClick={handleSendMessage} 
+              className={`flex items-center gap-1 ${
+                message.trim() !== "" && (selectedRecipients.length > 0 || hasAnyFilters) && channels.length > 0
+                  ? "bg-green-600 text-white hover:bg-green-700"
+                  : ""
+              }`} 
+              disabled={message.trim() === "" || (!selectedRecipients.length && !hasAnyFilters) || channels.length === 0}
+            >
+              <Send className="h-4 w-4" />
+              Send Now
+            </Button>
+          </div>
         </div>
       </div>
     </div>
