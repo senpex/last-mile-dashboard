@@ -194,7 +194,7 @@ const CustomerSupport = () => {
                     value="assigned" 
                     className="flex items-center justify-center w-full rounded-sm"
                   >
-                    All
+                    Closed
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
