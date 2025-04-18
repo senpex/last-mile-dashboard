@@ -105,7 +105,7 @@ const CommunicationTower = () => {
               </Button>
 
               <div className="flex gap-[10px] h-[calc(100vh-140px)]">
-                {activeTab === "drivers" ? (
+                {activeTab === "drivers" && (
                   <DriversSidebar
                     selectedStatuses={selectedStatuses}
                     setSelectedStatuses={setSelectedStatuses}
@@ -123,7 +123,8 @@ const CommunicationTower = () => {
                     onClose={() => setDriverFilterSidebarOpen(false)}
                     onFiltersAdd={handleFiltersAdd}
                   />
-                ) : activeTab === "clients" ? (
+                )}
+                {activeTab === "clients" && (
                   <ClientFiltersSidebar
                     selectedCities={selectedClientCities}
                     setSelectedCities={setSelectedClientCities}
@@ -138,7 +139,8 @@ const CommunicationTower = () => {
                     open={clientFilterSidebarOpen}
                     onClose={() => setClientFilterSidebarOpen(false)}
                   />
-                ) : (
+                )}
+                {activeTab === "groups" && (
                   <DispatcherFiltersSidebar
                     selectedDispatchers={selectedDispatchers}
                     setSelectedDispatchers={setSelectedDispatchers}
@@ -148,7 +150,7 @@ const CommunicationTower = () => {
                     onClose={() => setDispatcherFilterSidebarOpen(false)}
                   />
                 )}
-                <div className="flex-1 h-full overflow-auto">
+                <div className="flex-1 h-full overflow-auto mt-[10px]">
                   <CommunicationPanel
                     activeTab={activeTab}
                     setActiveTab={setActiveTab}
