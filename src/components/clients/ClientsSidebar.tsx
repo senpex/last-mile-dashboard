@@ -199,12 +199,13 @@ export function ClientsSidebar({
 
   if (isMobile) {
     return <Drawer open={open} onOpenChange={onClose}>
-        <DrawerContent className="h-[80vh]">
-          {filterContent}
-        </DrawerContent>
-      </Drawer>;
+      <DrawerContent className="h-[80vh]">
+        {filterContent}
+      </DrawerContent>
+    </Drawer>;
   }
-  return <div className={`h-full transition-all duration-300 bg-background border-r ${open ? 'w-[280px]' : 'w-0 overflow-hidden'}`}>
-      {filterContent}
-    </div>;
+  
+  return <div className={`h-full transition-all duration-300 bg-background border-r ${open ? 'w-[280px] opacity-100 visible' : 'w-0 opacity-0 invisible overflow-hidden'}`}>
+    {filterContent}
+  </div>;
 }
