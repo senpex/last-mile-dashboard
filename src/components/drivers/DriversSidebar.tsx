@@ -224,7 +224,7 @@ export function DriversSidebar({
   };
   return <div className={cn("h-full bg-white dark:bg-gray-900 rounded-lg shadow-md transition-all duration-300", "border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md", open ? "w-[275px] max-w-[80vw] opacity-100 visible" : "w-0 opacity-0 invisible overflow-hidden")}>
     <div className="p-6 w-full h-full flex flex-col overflow-y-auto mx-0 px-[20px]">
-      <h2 className="text-lg font-semibold mb-4 px-0 py-[15px] my-[6px]">{getTitle()}</h2>
+      <h2 className="text-lg font-semibold mb-4 px-0 py-[15px] my-[7px]">{getTitle()}</h2>
       
       <ScrollArea className="flex-1 -mr-4 pr-4">
         <Accordion type="single" collapsible className="w-full">
