@@ -77,9 +77,8 @@ const Dashboard = () => {
                         <p className="text-sm font-medium text-muted-foreground">My AR Orders</p>
                         <h3 className="text-2xl font-bold">{stats.arOrders}</h3>
                       </div>
-                      <Button variant="outline" size="sm" onClick={() => navigate('/ar-orders')}>
-                        <Eye className="mr-2 h-4 w-4" />
-                        View
+                      <Button variant="outline" size="icon" onClick={() => navigate('/ar-orders')}>
+                        <Eye className="h-4 w-4" />
                       </Button>
                     </div>
                   </div>
@@ -94,9 +93,8 @@ const Dashboard = () => {
                         <p className="text-sm font-medium text-muted-foreground">Working Drivers Chats</p>
                         <h3 className="text-2xl font-bold">{stats.workingDriversChats}</h3>
                       </div>
-                      <Button variant="outline" size="sm" onClick={() => navigate('/communication/support')}>
-                        <Eye className="mr-2 h-4 w-4" />
-                        View
+                      <Button variant="outline" size="icon" onClick={() => navigate('/communication/support')}>
+                        <Eye className="h-4 w-4" />
                       </Button>
                     </div>
                   </div>
@@ -111,9 +109,8 @@ const Dashboard = () => {
                         <p className="text-sm font-medium text-muted-foreground">Customer Chats</p>
                         <h3 className="text-2xl font-bold">{stats.customerChats}</h3>
                       </div>
-                      <Button variant="outline" size="sm" onClick={() => navigate('/communication/support')}>
-                        <Eye className="mr-2 h-4 w-4" />
-                        View
+                      <Button variant="outline" size="icon" onClick={() => navigate('/communication/support')}>
+                        <Eye className="h-4 w-4" />
                       </Button>
                     </div>
                   </div>
@@ -134,10 +131,11 @@ const Dashboard = () => {
                         <span className="text-xl font-bold">{stats.ezCaterModifications}</span>
                       </div>
                     </div>
-                    <Button variant="outline" size="sm" onClick={() => navigate('/ezcater')}>
-                      <Eye className="mr-2 h-4 w-4" />
-                      View
-                    </Button>
+                    <div className="flex justify-end">
+                      <Button variant="outline" size="icon" onClick={() => navigate('/ezcater')}>
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
