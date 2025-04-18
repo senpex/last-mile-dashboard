@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Card } from "@/components/ui/card";
-import { Clock, Package } from "lucide-react";
 import { OrderDetails } from './OrderDetails';
 import { ChatHeader } from './chat/ChatHeader';
 import { ChatMessages } from './chat/ChatMessages';
@@ -102,7 +100,7 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
 
   const orderData = {
     id: "ORD-1234",
-    status: "active",
+    status: "active" as "active" | "completed" | "cancelled",
     pickupAddress: "123 Pickup St, City",
     deliveryAddress: "456 Delivery Ave, City",
     driverName: user.role === 'driver' ? user.name : "Alex Driver",
