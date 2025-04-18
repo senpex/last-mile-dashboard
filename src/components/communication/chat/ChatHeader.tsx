@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { MoreVertical, User, UserRound, X, UserOff, UserCheck } from "lucide-react";
+import { MoreVertical, User, UserRound, X, UserX, UserCheck } from "lucide-react";
 
 interface ChatHeaderProps {
   user: {
@@ -54,7 +54,7 @@ export const ChatHeader = ({ user, activeTab, setActiveTab }: ChatHeaderProps) =
             <DropdownMenuLabel>Assign to</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <UserOff className="h-4 w-4 mr-2" />
+              <UserX className="h-4 w-4 mr-2" />
               Not assigned
             </DropdownMenuItem>
             <DropdownMenuItem>
