@@ -1,3 +1,4 @@
+
 import { Layout } from "@/components/layout/Layout";
 import { TowerControl, Filter } from "lucide-react";
 import CommunicationPanel from "@/components/communication/CommunicationPanel";
@@ -97,7 +98,7 @@ const CommunicationTower = () => {
               <Button 
                 variant={getCurrentSidebarState() ? "default" : "outline"}
                 onClick={toggleFilterSidebar}
-                className="flex items-center gap-2 w-fit"
+                className="flex items-center gap-2 w-fit ml-[15px]"
               >
                 <Filter className="h-4 w-4" />
                 {getCurrentSidebarState() ? "Hide Filters" : "Show Filters"}
