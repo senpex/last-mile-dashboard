@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -42,7 +43,9 @@ export const ClientFiltersSidebar = ({
   return (
     <div 
       className={cn(
-        "h-full bg-white dark:bg-gray-900 rounded-lg shadow-md transition-all duration-300",
+        "h-full bg-white dark:bg-gray-900 rounded-lg shadow-md transition-all duration-300 p-6 w-full",
+        "border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md",
+        "light:border-2 light:border-gray-300 light:hover:border-gray-400",
         open ? "w-[275px] max-w-[80vw]" : "w-0 overflow-hidden"
       )}
     >
