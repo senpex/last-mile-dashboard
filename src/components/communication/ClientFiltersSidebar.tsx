@@ -122,7 +122,7 @@ export const ClientFiltersSidebar = ({
                     });
                   }} />
                       <Label htmlFor={`org-${org}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between">
-                        <span className="my-0">{org}</span>
+                        <span className="my-0 px-[15px]">{org}</span>
                         <Badge variant="outline" className="ml-auto">{Math.floor(Math.random() * 20) + 1}</Badge>
                       </Label>
                     </div>)}
