@@ -1,3 +1,4 @@
+
 import { Layout } from "@/components/layout/Layout";
 import { TowerControl, Filter } from "lucide-react";
 import CommunicationPanel from "@/components/communication/CommunicationPanel";
@@ -103,7 +104,7 @@ const CommunicationTower = () => {
                 {getCurrentSidebarState() ? "Hide Filters" : "Show Filters"}
               </Button>
 
-              <div className="flex gap-[10px] h-[calc(100vh-140px)]">
+              <div className="flex gap-[10px] h-[calc(100vh-180px)]">
                 {activeTab === "drivers" ? (
                   <DriversSidebar
                     selectedStatuses={selectedStatuses}
@@ -148,7 +149,7 @@ const CommunicationTower = () => {
                   />
                 )}
                 
-                <div className="flex-1 mt-[10px]">
+                <div className="flex-1 h-[calc(100vh-180px)] overflow-auto">
                   <CommunicationPanel
                     activeTab={activeTab}
                     setActiveTab={setActiveTab}
