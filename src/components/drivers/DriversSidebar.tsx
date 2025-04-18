@@ -11,6 +11,7 @@ import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+
 interface DriversSidebarProps {
   open: boolean;
   onClose: () => void;
@@ -36,6 +37,7 @@ interface DriversSidebarProps {
     hireStatuses?: string[];
   }) => void;
 }
+
 export function DriversSidebar({
   open,
   onClose,
@@ -74,6 +76,7 @@ export function DriversSidebar({
   const [citySearchTerm, setCitySearchTerm] = useState("");
   const [stateSearchTerm, setStateSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState('drivers');
+
   useEffect(() => {
     const transportDict = getDictionary("2");
     const hireStatusDict = getDictionary("1455");
@@ -84,9 +87,11 @@ export function DriversSidebar({
       setHireStatusOptions(hireStatusDict.items);
     }
   }, []);
+
   useEffect(() => {
     updateFilters();
   }, [selectedStatuses, selectedZipcodes, selectedCities, selectedStates, selectedProfiles, selectedTransports, selectedHireStatuses]);
+
   const handleStatusChange = (status: DeliveryStatus) => {
     if (selectedStatuses.includes(status)) {
       setSelectedStatuses(selectedStatuses.filter(s => s !== status));
@@ -94,6 +99,7 @@ export function DriversSidebar({
       setSelectedStatuses([...selectedStatuses, status]);
     }
   };
+
   const handleTransportChange = (transportId: string) => {
     if (selectedTransports.includes(transportId)) {
       setSelectedTransports(selectedTransports.filter(t => t !== transportId));
@@ -101,6 +107,7 @@ export function DriversSidebar({
       setSelectedTransports([...selectedTransports, transportId]);
     }
   };
+
   const handleZipcodeChange = (zipcode: string) => {
     if (selectedZipcodes.includes(zipcode)) {
       setSelectedZipcodes(selectedZipcodes.filter(z => z !== zipcode));
@@ -108,6 +115,7 @@ export function DriversSidebar({
       setSelectedZipcodes([...selectedZipcodes, zipcode]);
     }
   };
+
   const handleHireStatusChange = (status: string) => {
     if (selectedHireStatuses.includes(status)) {
       setSelectedHireStatuses(selectedHireStatuses.filter(s => s !== status));
@@ -115,6 +123,7 @@ export function DriversSidebar({
       setSelectedHireStatuses([...selectedHireStatuses, status]);
     }
   };
+
   const handleProfileChange = (profile: string, checked: boolean) => {
     if (checked) {
       setSelectedProfiles([...selectedProfiles, profile]);
@@ -122,6 +131,7 @@ export function DriversSidebar({
       setSelectedProfiles(selectedProfiles.filter(p => p !== profile));
     }
   };
+
   const handleCityChange = (city: string) => {
     if (selectedCities.includes(city)) {
       setSelectedCities(selectedCities.filter(c => c !== city));
@@ -129,6 +139,7 @@ export function DriversSidebar({
       setSelectedCities([...selectedCities, city]);
     }
   };
+
   const handleStateChange = (state: string) => {
     if (selectedStates.includes(state)) {
       setSelectedStates(selectedStates.filter(s => s !== state));
@@ -136,6 +147,7 @@ export function DriversSidebar({
       setSelectedStates([...selectedStates, state]);
     }
   };
+
   const handleResetFilters = () => {
     setSelectedStatuses([]);
     setSelectedTransports([]);
@@ -145,6 +157,7 @@ export function DriversSidebar({
     setSelectedStates([]);
     setSelectedHireStatuses([]);
   };
+
   const updateFilters = () => {
     onFiltersAdd({
       statuses: selectedStatuses,
@@ -156,30 +169,39 @@ export function DriversSidebar({
       hireStatuses: selectedHireStatuses
     });
   };
+
   const handleSaveFilters = () => {
     updateFilters();
   };
+
   const getProfileCount = (profileId: string) => {
     return Math.floor(Math.random() * 20) + 1;
   };
+
   const getStatusCount = (status: DeliveryStatus) => {
     return allDeliveryStatuses.filter(s => s === status).length;
   };
+
   const getZipcodeCount = (zipcode: string) => {
     return allZipcodes.filter(z => z === zipcode).length;
   };
+
   const getTransportCount = (transportId: string) => {
     return transportTypes.filter(t => t.id === transportId).length;
   };
+
   const getCityCount = (city: string) => {
     return Math.floor(Math.random() * 20) + 1;
   };
+
   const getStateCount = (state: string) => {
     return Math.floor(Math.random() * 20) + 1;
   };
+
   const getHireStatusCount = (statusId: string) => {
     return Math.floor(Math.random() * 15) + 1;
   };
+
   const filteredDeliveryStatuses = allDeliveryStatuses.filter(status => !["Picking Up", "In Transit", "Arrived For Pickup", "Dropoff Complete", "Scheduled Order", "Canceled By Customer", "Cancelled By Admin"].includes(status) && status.toLowerCase().includes(statusSearchTerm.toLowerCase()));
   const filteredTransportTypes = transportTypes.filter(transport => transport.value.toLowerCase().includes(transportSearchTerm.toLowerCase()));
   const filteredZipcodes = allZipcodes.filter(zipcode => zipcode.toLowerCase().includes(zipcodeSearchTerm.toLowerCase()));
@@ -210,6 +232,7 @@ export function DriversSidebar({
   const filteredProfiles = driverProfiles.filter(profile => profile.value.toLowerCase().includes(profileSearchTerm.toLowerCase()));
   const filteredCities = allCities.filter(city => city.toLowerCase().includes(citySearchTerm.toLowerCase()));
   const filteredStates = allStates.filter(state => state.toLowerCase().includes(stateSearchTerm.toLowerCase()));
+
   const getTitle = () => {
     switch (activeTab) {
       case 'drivers':
@@ -222,7 +245,12 @@ export function DriversSidebar({
         return 'Filter';
     }
   };
-  return <div className={cn("h-full bg-white dark:bg-gray-900 rounded-lg shadow-md transition-all duration-300", "border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md", open ? "w-[275px] max-w-[80vw] opacity-100 visible" : "w-0 opacity-0 invisible overflow-hidden")}>
+
+  return <div className={cn("h-full bg-white dark:bg-gray-900 rounded-lg shadow-md transition-all duration-300", 
+    "border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md", 
+    open ? "w-[275px] max-w-[80vw] opacity-100 visible" : "w-0 opacity-0 invisible overflow-hidden",
+    "rounded-none"
+  )}>
     <div className="p-6 w-full h-full flex flex-col overflow-y-auto mx-0 px-[24px] py-[29px]">
       <h2 className="text-lg font-semibold mb-4 px-0 py-[15px] my-[9px]">{getTitle()}</h2>
       
