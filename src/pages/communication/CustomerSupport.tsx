@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { ChatInterface } from "@/components/communication/ChatInterface";
@@ -23,7 +22,8 @@ const CustomerSupport = () => {
     // Clients (20)
     { 
       id: "client1", 
-      name: "Emma Johnson", 
+      name: "Emma Johnson",
+      orderId: "909001", // Added order ID
       role: "client", 
       status: "active", 
       lastMessage: "Is my delivery on the way?", 
@@ -35,6 +35,7 @@ const CustomerSupport = () => {
     {
       id: "client2",
       name: "Robert Davis",
+      orderId: "909002", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "I need to change my delivery address",
@@ -46,6 +47,7 @@ const CustomerSupport = () => {
     {
       id: "client3",
       name: "Lisa Anderson",
+      orderId: "909003", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "Can you expedite my delivery?",
@@ -57,6 +59,7 @@ const CustomerSupport = () => {
     {
       id: "client4",
       name: "Carlos Rodriguez",
+      orderId: "909004", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "Package received, thank you!",
@@ -68,6 +71,7 @@ const CustomerSupport = () => {
     {
       id: "client5",
       name: "Sarah Chen",
+      orderId: "909005", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "When will my package arrive?",
@@ -79,6 +83,7 @@ const CustomerSupport = () => {
     {
       id: "client6",
       name: "Michael Thompson",
+      orderId: "909006", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "Need urgent delivery status update",
@@ -90,6 +95,7 @@ const CustomerSupport = () => {
     {
       id: "client7",
       name: "Jessica Lee",
+      orderId: "909007", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "Wrong delivery address provided",
@@ -101,6 +107,7 @@ const CustomerSupport = () => {
     {
       id: "client8",
       name: "David Wilson",
+      orderId: "909008", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "Package damaged during transit",
@@ -112,6 +119,7 @@ const CustomerSupport = () => {
     {
       id: "client9",
       name: "Amanda Martinez",
+      orderId: "909009", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "Need to reschedule delivery",
@@ -123,6 +131,7 @@ const CustomerSupport = () => {
     {
       id: "client10",
       name: "Kevin Brown",
+      orderId: "909010", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "Thanks for quick delivery",
@@ -134,6 +143,7 @@ const CustomerSupport = () => {
     {
       id: "client11",
       name: "Patricia Garcia",
+      orderId: "909011", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "Missing item in delivery",
@@ -145,6 +155,7 @@ const CustomerSupport = () => {
     {
       id: "client12",
       name: "Thomas Wright",
+      orderId: "909012", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "Need delivery confirmation",
@@ -156,6 +167,7 @@ const CustomerSupport = () => {
     {
       id: "client13",
       name: "Elizabeth Taylor",
+      orderId: "909013", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "Wrong item delivered",
@@ -167,6 +179,7 @@ const CustomerSupport = () => {
     {
       id: "client14",
       name: "Christopher Lee",
+      orderId: "909014", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "Delivery instructions updated",
@@ -178,6 +191,7 @@ const CustomerSupport = () => {
     {
       id: "client15",
       name: "Michelle Rodriguez",
+      orderId: "909015", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "Need urgent delivery",
@@ -189,6 +203,7 @@ const CustomerSupport = () => {
     {
       id: "client16",
       name: "Daniel Kim",
+      orderId: "909016", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "Package not received",
@@ -200,6 +215,7 @@ const CustomerSupport = () => {
     {
       id: "client17",
       name: "Rachel Green",
+      orderId: "909017", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "Delivery time inquiry",
@@ -211,6 +227,7 @@ const CustomerSupport = () => {
     {
       id: "client18",
       name: "Brandon Wilson",
+      orderId: "909018", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "Need to cancel order",
@@ -222,6 +239,7 @@ const CustomerSupport = () => {
     {
       id: "client19",
       name: "Sophia Martinez",
+      orderId: "909019", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "Address verification needed",
@@ -233,6 +251,7 @@ const CustomerSupport = () => {
     {
       id: "client20",
       name: "William Chang",
+      orderId: "909020", // Added order ID
       role: "client",
       status: "active",
       lastMessage: "Requesting refund",
@@ -246,6 +265,7 @@ const CustomerSupport = () => {
     {
       id: "driver1",
       name: "John Smith",
+      orderId: "808001", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Where should I deliver this package?",
@@ -257,6 +277,7 @@ const CustomerSupport = () => {
     {
       id: "driver2",
       name: "David Martinez",
+      orderId: "808002", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Traffic is heavy, might be delayed",
@@ -268,6 +289,7 @@ const CustomerSupport = () => {
     {
       id: "driver3",
       name: "Emily White",
+      orderId: "808003", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Starting my delivery route now",
@@ -279,6 +301,7 @@ const CustomerSupport = () => {
     {
       id: "driver4",
       name: "James Wilson",
+      orderId: "808004", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Package delivered successfully",
@@ -290,6 +313,7 @@ const CustomerSupport = () => {
     {
       id: "driver5",
       name: "Maria Garcia",
+      orderId: "808005", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Vehicle maintenance required",
@@ -301,6 +325,7 @@ const CustomerSupport = () => {
     {
       id: "driver6",
       name: "Alex Thompson",
+      orderId: "808006", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Loading packages now",
@@ -312,6 +337,7 @@ const CustomerSupport = () => {
     {
       id: "driver7",
       name: "Steven Lee",
+      orderId: "808007", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Need route update",
@@ -323,6 +349,7 @@ const CustomerSupport = () => {
     {
       id: "driver8",
       name: "Linda Martinez",
+      orderId: "808008", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Fuel stop required",
@@ -334,6 +361,7 @@ const CustomerSupport = () => {
     {
       id: "driver9",
       name: "Robert Johnson",
+      orderId: "808009", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Customer not available",
@@ -345,6 +373,7 @@ const CustomerSupport = () => {
     {
       id: "driver10",
       name: "Sarah Davis",
+      orderId: "808010", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Package pickup completed",
@@ -356,6 +385,7 @@ const CustomerSupport = () => {
     {
       id: "driver11",
       name: "Kevin Anderson",
+      orderId: "808011", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Route optimization needed",
@@ -367,6 +397,7 @@ const CustomerSupport = () => {
     {
       id: "driver12",
       name: "Jennifer Taylor",
+      orderId: "808012", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Weather delay expected",
@@ -378,6 +409,7 @@ const CustomerSupport = () => {
     {
       id: "driver13",
       name: "Michael Brown",
+      orderId: "808013", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Last delivery completed",
@@ -389,6 +421,7 @@ const CustomerSupport = () => {
     {
       id: "driver14",
       name: "Lisa Rodriguez",
+      orderId: "808014", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Starting lunch break",
@@ -400,6 +433,7 @@ const CustomerSupport = () => {
     {
       id: "driver15",
       name: "Daniel Wilson",
+      orderId: "808015", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Package damaged during handling",
@@ -411,6 +445,7 @@ const CustomerSupport = () => {
     {
       id: "driver16",
       name: "Amanda Clark",
+      orderId: "808016", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Route completed early",
@@ -422,6 +457,7 @@ const CustomerSupport = () => {
     {
       id: "driver17",
       name: "Thomas Wright",
+      orderId: "808017", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Need additional packages",
@@ -433,6 +469,7 @@ const CustomerSupport = () => {
     {
       id: "driver18",
       name: "Patricia Lee",
+      orderId: "808018", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Vehicle issue resolved",
@@ -444,6 +481,7 @@ const CustomerSupport = () => {
     {
       id: "driver19",
       name: "George Martinez",
+      orderId: "808019", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Returning to depot",
@@ -455,6 +493,7 @@ const CustomerSupport = () => {
     {
       id: "driver20",
       name: "Sandra Kim",
+      orderId: "808020", // Added order ID
       role: "driver",
       status: "working",
       lastMessage: "Route adjustment needed",
@@ -468,6 +507,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved1",
       name: "Sarah Wilson",
+      orderId: "707001", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "When will my application be reviewed?",
@@ -479,6 +519,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved2",
       name: "Jennifer Lee",
+      orderId: "707002", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Submitted my documents for review",
@@ -490,6 +531,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved3",
       name: "Mark Thompson",
+      orderId: "707003", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Background check status?",
@@ -501,6 +543,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved4",
       name: "Alice Chen",
+      orderId: "707004", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Additional documents submitted",
@@ -512,6 +555,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved5",
       name: "Ryan Jackson",
+      orderId: "707005", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Vehicle inspection pending",
@@ -523,6 +567,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved6",
       name: "Diana Martinez",
+      orderId: "707006", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Insurance documents uploaded",
@@ -534,6 +579,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved7",
       name: "Peter Kim",
+      orderId: "707007", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Application status inquiry",
@@ -545,6 +591,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved8",
       name: "Laura Wilson",
+      orderId: "707008", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Driver's license verification",
@@ -556,6 +603,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved9",
       name: "Chris Davis",
+      orderId: "707009", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Vehicle registration pending",
@@ -567,6 +615,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved10",
       name: "Michelle Lee",
+      orderId: "707010", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Training completion status",
@@ -578,6 +627,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved11",
       name: "Brian Taylor",
+      orderId: "707011", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Application update needed",
@@ -589,6 +639,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved12",
       name: "Rachel Green",
+      orderId: "707012", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Document verification pending",
@@ -600,6 +651,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved13",
       name: "Andrew Johnson",
+      orderId: "707013", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Background check inquiry",
@@ -611,6 +663,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved14",
       name: "Emma Rodriguez",
+      orderId: "707014", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Vehicle photos submitted",
@@ -622,6 +675,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved15",
       name: "Justin Wilson",
+      orderId: "707015", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Application review timeline",
@@ -633,6 +687,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved16",
       name: "Sophia Clark",
+      orderId: "707016", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Insurance verification needed",
@@ -644,6 +699,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved17",
       name: "Brandon Lee",
+      orderId: "707017", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Document resubmission",
@@ -655,6 +711,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved18",
       name: "Victoria Martinez",
+      orderId: "707018", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Training schedule request",
@@ -666,6 +723,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved19",
       name: "Eric Thompson",
+      orderId: "707019", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Application status check",
@@ -677,6 +735,7 @@ const CustomerSupport = () => {
     {
       id: "unapproved20",
       name: "Hannah Kim",
+      orderId: "707020", // Added order ID
       role: "driver",
       status: "unapproved",
       lastMessage: "Document verification status",
@@ -690,6 +749,7 @@ const CustomerSupport = () => {
     {
       id: "general1",
       name: "Michael Brown",
+      orderId: "606001", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "I'm available for deliveries today",
@@ -701,6 +761,7 @@ const CustomerSupport = () => {
     {
       id: "general2",
       name: "Anna Martinez",
+      orderId: "606002", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Schedule update request",
@@ -712,6 +773,7 @@ const CustomerSupport = () => {
     {
       id: "general3",
       name: "William Davis",
+      orderId: "606003", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Tomorrow's availability",
@@ -723,6 +785,7 @@ const CustomerSupport = () => {
     {
       id: "general4",
       name: "Sophie Wilson",
+      orderId: "606004", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Route preference update",
@@ -734,6 +797,7 @@ const CustomerSupport = () => {
     {
       id: "general5",
       name: "James Lee",
+      orderId: "606005", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Vehicle maintenance schedule",
@@ -745,6 +809,7 @@ const CustomerSupport = () => {
     {
       id: "general6",
       name: "Elena Rodriguez",
+      orderId: "606006", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Time off request",
@@ -756,6 +821,7 @@ const CustomerSupport = () => {
     {
       id: "general7",
       name: "David Clark",
+      orderId: "606007", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Schedule confirmation",
@@ -767,6 +833,7 @@ const CustomerSupport = () => {
     {
       id: "general8",
       name: "Lucy Thompson",
+      orderId: "606008", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Route area preference",
@@ -778,6 +845,7 @@ const CustomerSupport = () => {
     {
       id: "general9",
       name: "Henry Wilson",
+      orderId: "606009", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Equipment request",
@@ -789,6 +857,7 @@ const CustomerSupport = () => {
     {
       id: "general10",
       name: "Isabella Martinez",
+      orderId: "606010", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Availability update",
@@ -800,6 +869,7 @@ const CustomerSupport = () => {
     {
       id: "general11",
       name: "Oliver Brown",
+      orderId: "606011", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Schedule adjustment needed",
@@ -811,6 +881,7 @@ const CustomerSupport = () => {
     {
       id: "general12",
       name: "Ava Davis",
+      orderId: "606012", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Next week's schedule",
@@ -822,6 +893,7 @@ const CustomerSupport = () => {
     {
       id: "general13",
       name: "Liam Johnson",
+      orderId: "606013", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Vehicle assignment request",
@@ -833,6 +905,7 @@ const CustomerSupport = () => {
     {
       id: "general14",
       name: "Mia Wilson",
+      orderId: "606014", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Training completion notice",
@@ -844,6 +917,7 @@ const CustomerSupport = () => {
     {
       id: "general15",
       name: "Noah Lee",
+      orderId: "606015", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Schedule preference update",
@@ -855,6 +929,7 @@ const CustomerSupport = () => {
     {
       id: "general16",
       name: "Emma Thompson",
+      orderId: "606016", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Vacation request",
@@ -866,6 +941,7 @@ const CustomerSupport = () => {
     {
       id: "general17",
       name: "Lucas Martinez",
+      orderId: "606017", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Equipment maintenance notice",
@@ -877,6 +953,7 @@ const CustomerSupport = () => {
     {
       id: "general18",
       name: "Sophia Davis",
+      orderId: "606018", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Route assignment inquiry",
@@ -888,6 +965,7 @@ const CustomerSupport = () => {
     {
       id: "general19",
       name: "Ethan Wilson",
+      orderId: "606019", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Schedule confirmation needed",
@@ -899,6 +977,7 @@ const CustomerSupport = () => {
     {
       id: "general20",
       name: "Olivia Brown",
+      orderId: "606020", // Added order ID
       role: "driver",
       status: "approved",
       lastMessage: "Vehicle condition report",
@@ -925,191 +1004,4 @@ const CustomerSupport = () => {
     switch (priority) {
       case "high": return "bg-red-500";
       case "medium": return "bg-amber-400";
-      case "low": return "bg-blue-400";
-      default: return "bg-gray-400";
-    }
-  };
-
-  const onlineUsers = [
-    "John Smith",
-    "Emma Johnson",
-    "Mike Wilson",
-    "Sarah Davis",
-    "Robert Taylor"
-  ];
-
-  return (
-    <Layout>
-      <div className="flex items-center gap-2 p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <h1 className="text-2xl font-semibold">Customer Support</h1>
-      </div>
-
-      <div 
-        className="container mx-auto p-4 h-[calc(100vh-8rem)] bg-background" 
-        style={{ marginLeft: 'calc(240px - 240px)' }}
-      >
-        <div className="flex h-full gap-4">
-          <div className="w-[380px] flex-shrink-0 flex flex-col rounded-lg border bg-card shadow-sm">
-            <div className="p-4 border-b">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-medium">Messages</h2>
-                </div>
-
-                <HoverCard>
-                  <HoverCardTrigger asChild>
-                    <Button variant="outline" size="sm" className="h-8">
-                      <Users className="h-4 w-4 mr-1" />
-                      Online (5)
-                    </Button>
-                  </HoverCardTrigger>
-                  <HoverCardContent className="w-48">
-                    <div className="space-y-2">
-                      <h4 className="text-sm font-semibold">Online Users</h4>
-                      <div className="text-sm space-y-1">
-                        {onlineUsers.map((user, index) => (
-                          <div key={index} className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                            <span>{user}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </HoverCardContent>
-                </HoverCard>
-              </div>
-
-              <div className="flex items-center gap-2 mb-2">
-                <Input 
-                  placeholder="Search chats..." 
-                  className="h-9 flex-1"
-                />
-              </div>
-
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mb-2">
-                <TabsList className="grid w-full grid-cols-3 bg-muted/50 rounded-md h-10 p-1 gap-1">
-                  <TabsTrigger 
-                    value="all" 
-                    className="inline-flex items-center justify-center rounded-sm h-8 px-3 text-sm font-medium transition-colors hover:bg-background/80 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
-                  >
-                    My
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="unassigned" 
-                    className="inline-flex items-center justify-center rounded-sm h-8 px-3 text-sm font-medium transition-colors hover:bg-background/80 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
-                  >
-                    Unassigned
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="assigned" 
-                    className="inline-flex items-center justify-center rounded-sm h-8 px-3 text-sm font-medium transition-colors hover:bg-background/80 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
-                  >
-                    Closed
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-
-              <div className="flex gap-2 overflow-x-auto py-2 scrollbar-none">
-                <Button 
-                  variant={filterStatus === "working-drivers" ? "default" : "outline"} 
-                  size="sm"
-                  onClick={() => setFilterStatus("working-drivers")}
-                  className="h-8"
-                >
-                  Working Drivers
-                </Button>
-                <Button 
-                  variant={filterStatus === "client" ? "default" : "outline"} 
-                  size="sm"
-                  onClick={() => setFilterStatus("client")}
-                  className="h-8"
-                >
-                  Clients
-                </Button>
-                <Button 
-                  variant={filterStatus === "unapproved-drivers" ? "default" : "outline"} 
-                  size="sm"
-                  onClick={() => setFilterStatus("unapproved-drivers")}
-                  className="h-8"
-                >
-                  Unapproved Drivers
-                </Button>
-                <Button 
-                  variant={filterStatus === "drivers-general" ? "default" : "outline"} 
-                  size="sm"
-                  onClick={() => setFilterStatus("drivers-general")}
-                  className="h-8"
-                >
-                  Drivers General
-                </Button>
-              </div>
-            </div>
-
-            <div className="flex-1 overflow-auto">
-              <div className="divide-y">
-                {filteredChats.map(chat => (
-                  <div 
-                    key={chat.id}
-                    onClick={() => setSelectedChat(chat.id)}
-                    className={`p-3 hover:bg-muted/50 cursor-pointer transition-colors ${
-                      selectedChat === chat.id ? 'bg-muted' : ''
-                    }`}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="relative flex-shrink-0">
-                        <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                          <UserRound className="h-5 w-5 text-muted-foreground" />
-                        </div>
-                        <div className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full ${getPriorityColor(chat.priority)} border-2 border-background`}></div>
-                      </div>
-                      
-                      <div className="flex-1 min-w-0">
-                        <div className="flex justify-between items-center">
-                          <h3 className="font-medium truncate text-sm">{chat.name}</h3>
-                          <span className="text-xs text-muted-foreground whitespace-nowrap ml-2">{chat.timestamp}</span>
-                        </div>
-                        
-                        <p className="text-sm text-muted-foreground truncate mt-1">
-                          {chat.lastMessage}
-                        </p>
-                      </div>
-                      
-                      {chat.unread > 0 && (
-                        <div className="flex-shrink-0">
-                          <Badge variant="default" className="rounded-full h-5 min-w-[20px]">
-                            {chat.unread}
-                          </Badge>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="flex-1 min-w-0">
-            {selectedChat ? (
-              <ChatInterface 
-                chatId={selectedChat}
-                user={chats.find(chat => chat.id === selectedChat)!}
-              />
-            ) : (
-              <div className="h-full flex items-center justify-center">
-                <Card className="w-full max-w-md mx-auto p-8 text-center">
-                  <MessageSquare className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                  <h2 className="text-xl font-semibold mb-2">No chat selected</h2>
-                  <p className="text-muted-foreground">
-                    Select a conversation from the list to start chatting or use the filters to find a specific conversation.
-                  </p>
-                </Card>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </Layout>
-  );
-};
-
-export default CustomerSupport;
+      case
