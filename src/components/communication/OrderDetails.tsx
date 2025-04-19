@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -62,26 +61,27 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
   return (
     <ScrollArea className="h-screen px-4">
       <div className="pr-4">
-        <h2 className="text-lg font-semibold mb-4 text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-2 z-10">Orders on Hand</h2>
+        <h2 className="text-lg font-semibold mb-2 text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10">Orders on Hand</h2>
         
         {orders.map((order, index) => {
           const isExpanded = expandedOrderId === order.id;
           
           return (
-            <div key={order.id} className="mb-6 last:mb-0">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="font-medium">Order Details ({order.id})</h3>
+            <div key={order.id} className="mb-3 last:mb-0">
+              <div className="flex justify-between items-center mb-1">
+                <h3 className="font-medium text-sm">Order Details ({order.id})</h3>
                 <Button 
                   variant="ghost" 
                   size="sm" 
                   onClick={() => setExpandedOrderId(isExpanded ? null : order.id)}
+                  className="h-7 px-2"
                 >
                   {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                 </Button>
               </div>
               
               {isExpanded && (
-                <div className="space-y-4">
+                <div className="space-y-2">
                   <div className="flex justify-start">
                     <Badge 
                       variant={
@@ -156,7 +156,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
               )}
               
               {index !== orders.length - 1 && (
-                <Separator className="my-4" />
+                <Separator className="my-2" />
               )}
             </div>
           );
