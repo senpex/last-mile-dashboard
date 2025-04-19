@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -74,6 +75,20 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
             
             {orderDetailsExpanded && (
               <div className="space-y-3">
+                <div className="flex justify-end">
+                  <Badge 
+                    variant={
+                      order.status === 'active' ? 'success' : 
+                      order.status === 'completed' ? 'default' : 
+                      'destructive'
+                    }
+                  >
+                    {order.status === 'active' ? 'Active' : 
+                     order.status === 'completed' ? 'Completed' : 
+                     'Cancelled'}
+                  </Badge>
+                </div>
+                
                 <OrderMap 
                   pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress}
                   deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress}
