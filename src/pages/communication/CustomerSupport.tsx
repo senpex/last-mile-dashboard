@@ -9,7 +9,6 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { 
   Users,
-  Filter,
   UserRound,
   MessageSquare
 } from "lucide-react";
@@ -152,9 +151,6 @@ const CustomerSupport = () => {
                   placeholder="Search chats..." 
                   className="h-9 flex-1"
                 />
-                <Button variant="outline" size="sm" className="h-9 w-9 p-0">
-                  <Filter className="h-4 w-4" />
-                </Button>
               </div>
 
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mb-2">
@@ -213,7 +209,7 @@ const CustomerSupport = () => {
                 >
                   Drivers General
                 </Button>
-            </div>
+              </div>
             </div>
 
             <div className="flex-1 overflow-auto">
