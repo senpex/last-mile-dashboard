@@ -5,42 +5,41 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    --foreground: 240 5% 26%; /* Softened dark color */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 240 5% 26%; /* Match foreground */
  
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 240 5% 26%; /* Match foreground */
  
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 240 5% 35%; /* Slightly lighter dark color */
+    --primary-foreground: 0 0% 98%;
  
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5% 35%;
  
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 36.1%; /* Softened muted foreground */
  
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5% 35%;
  
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 74.2% 50.2%; /* Slightly softer red */
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 240 5.9% 85%; /* Softer border color */
+    --input: 240 5.9% 85%;
+    --ring: 240 5% 35%;
  
-    --radius: 0.5rem;
+    --radius: 1rem;
 
     /* Sidebar colors */
     --sidebar: 0 0% 100%;
-    --sidebar-foreground: 222.2 84% 4.9%;
-    --sidebar-border: 214.3 31.8% 91.4%;
-    --sidebar-accent: 210 40% 96.1%;
-    --sidebar-accent-foreground: 222.2 47.4% 11.2%;
-    --sidebar-ring: 222.2 84% 4.9%;
+    --sidebar-foreground: 240 5% 26%;
+    --sidebar-border: 240 5.9% 85%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5% 35%;
+    --sidebar-ring: 240 5% 35%;
     
     /* Zoom level */
     --zoom-level: 1;
@@ -48,13 +47,13 @@
   }
  
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 240 84% 4.9%;
     --foreground: 210 40% 98%;
  
-    --card: 222.2 84% 4.9%;
+    --card: 240 84% 4.9%;
     --card-foreground: 210 40% 98%;
  
-    --popover: 222.2 84% 4.9%;
+    --popover: 240 84% 4.9%;
     --popover-foreground: 210 40% 98%;
  
     --primary: 210 40% 98%;
