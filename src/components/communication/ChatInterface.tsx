@@ -191,16 +191,9 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
         </div>
       </div>
 
-      {/* Isolated Orders panel with its own scroll area and styling */}
-      <aside className="rounded-lg border bg-card shadow-sm overflow-hidden flex flex-col">
-        <div className="p-3 border-b bg-muted/30">
-          <h2 className="text-sm font-semibold">Orders on Hand</h2>
-        </div>
-        <ScrollArea className="flex-1">
-          <OrderDetails orderData={orderData} />
-        </ScrollArea>
-      </aside>
+      <div className="rounded-lg border bg-card shadow-sm overflow-hidden">
+        <OrderDetails orderData={orderData} />
+      </div>
     </div>
   );
 };
-
