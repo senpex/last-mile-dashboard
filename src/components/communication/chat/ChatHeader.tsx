@@ -85,10 +85,6 @@ export const ChatHeader = ({ user, activeTab, setActiveTab }: ChatHeaderProps) =
               <User className="h-4 w-4 mr-2" />
               View Profile
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <User className="h-4 w-4 mr-2" />
-              Reassign Chat
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="text-red-600">
               <X className="h-4 w-4 mr-2" />
