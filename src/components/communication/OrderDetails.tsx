@@ -60,9 +60,9 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
   };
 
   return (
-    <ScrollArea className="h-screen">
-      <div className="px-6 py-4 space-y-4">
-        <h2 className="text-lg font-semibold text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-2 z-10">
+    <ScrollArea className="h-full">
+      <div className="px-4 py-2 space-y-2">
+        <h2 className="text-sm font-semibold text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10">
           Orders on Hand
         </h2>
         
@@ -71,20 +71,20 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
           
           return (
             <div key={order.id} className="rounded-lg">
-              <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
-                <h3 className="font-medium text-sm">Order #{order.id}</h3>
+              <div className="flex justify-between items-center px-2 py-1 hover:bg-muted/40 rounded-lg transition-colors">
+                <h3 className="font-medium text-xs">Order #{order.id}</h3>
                 <Button 
                   variant="ghost" 
                   size="sm" 
                   onClick={() => setExpandedOrderId(isExpanded ? null : order.id)}
-                  className="h-7 w-7 p-0"
+                  className="h-6 w-6 p-0"
                 >
-                  {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                  {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
                 </Button>
               </div>
               
               {isExpanded && (
-                <div className="px-3 pt-2 pb-3 space-y-3">
+                <div className="px-2 pt-1 pb-2 space-y-2">
                   <div className="flex justify-start">
                     <Badge 
                       variant={
@@ -92,6 +92,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                         order.status === 'completed' ? 'default' : 
                         'destructive'
                       }
+                      className="text-[10px] px-2 py-0.5"
                     >
                       {order.status === 'active' ? 'Active' : 
                        order.status === 'completed' ? 'Completed' : 
@@ -105,8 +106,8 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                     driverName={order.driverName}
                   />
                   
-                  <div className="rounded-md bg-card dark:bg-gray-900/50 p-3 shadow-sm">
-                    <div className="grid grid-cols-3 gap-2 text-xs">
+                  <div className="rounded-md bg-card dark:bg-gray-900/50 p-2 shadow-sm">
+                    <div className="grid grid-cols-3 gap-1 text-[10px]">
                       <div className="text-muted-foreground dark:text-gray-400">Created:</div>
                       <div className="col-span-2 font-medium dark:text-gray-300">{order.createdAt}</div>
                       
@@ -115,31 +116,31 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                     </div>
                   </div>
                   
-                  <div className="rounded-md bg-card dark:bg-gray-900/50 p-3 shadow-sm space-y-3">
-                    <div className="flex items-start gap-2">
-                      <MapPin className="h-4 w-4 text-muted-foreground dark:text-gray-500 mt-0.5 flex-shrink-0" />
+                  <div className="rounded-md bg-card dark:bg-gray-900/50 p-2 shadow-sm space-y-2">
+                    <div className="flex items-start gap-1">
+                      <MapPin className="h-3 w-3 text-muted-foreground dark:text-gray-500 mt-0.5 flex-shrink-0" />
                       <div>
-                        <div className="text-xs text-muted-foreground dark:text-gray-400 mb-1">Pickup Address:</div>
-                        <div className="text-sm dark:text-gray-300">{order.pickupAddress}</div>
+                        <div className="text-[10px] text-muted-foreground dark:text-gray-400 mb-0.5">Pickup Address:</div>
+                        <div className="text-xs dark:text-gray-300">{order.pickupAddress}</div>
                       </div>
                     </div>
                     
                     <div className="flex justify-center">
-                      <div className="h-5 border-l border-dashed dark:border-gray-700"></div>
+                      <div className="h-3 border-l border-dashed dark:border-gray-700"></div>
                     </div>
                     
-                    <div className="flex items-start gap-2">
-                      <MapPin className="h-4 w-4 text-muted-foreground dark:text-gray-500 mt-0.5 flex-shrink-0" />
+                    <div className="flex items-start gap-1">
+                      <MapPin className="h-3 w-3 text-muted-foreground dark:text-gray-500 mt-0.5 flex-shrink-0" />
                       <div>
-                        <div className="text-xs text-muted-foreground dark:text-gray-400 mb-1">Delivery Address:</div>
-                        <div className="text-sm dark:text-gray-300">{order.deliveryAddress}</div>
+                        <div className="text-[10px] text-muted-foreground dark:text-gray-400 mb-0.5">Delivery Address:</div>
+                        <div className="text-xs dark:text-gray-300">{order.deliveryAddress}</div>
                       </div>
                     </div>
                   </div>
                   
                   <Sheet>
                     <SheetTrigger asChild>
-                      <Button variant="outline" size="sm" className="w-full">
+                      <Button variant="outline" size="sm" className="w-full text-xs py-1">
                         View Full Order
                       </Button>
                     </SheetTrigger>
@@ -147,9 +148,9 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                       <SheetHeader>
                         <SheetTitle>Order Details</SheetTitle>
                       </SheetHeader>
-                      <div className="py-4">
-                        <h3 className="font-medium mb-2">Order #{order.id}</h3>
-                        <p>Full order details would be displayed here.</p>
+                      <div className="py-2">
+                        <h3 className="text-sm font-medium mb-1">Order #{order.id}</h3>
+                        <p className="text-xs">Full order details would be displayed here.</p>
                       </div>
                     </SheetContent>
                   </Sheet>
@@ -157,7 +158,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
               )}
               
               {index !== orders.length - 1 && (
-                <Separator className="my-3" />
+                <Separator className="my-1" />
               )}
             </div>
           );
