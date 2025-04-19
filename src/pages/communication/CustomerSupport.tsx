@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { ChatInterface } from "@/components/communication/ChatInterface";
@@ -19,19 +20,9 @@ const CustomerSupport = () => {
   const [filterStatus, setFilterStatus] = useState<string>("all");
 
   const chats = [
+    // Clients (20)
     { 
-      id: "chat1", 
-      name: "John Smith", 
-      role: "driver", 
-      status: "working", 
-      lastMessage: "Where should I deliver this package?", 
-      timestamp: "10:23 AM",
-      unread: 2,
-      priority: "high",
-      assignedTo: "dispatcher1"
-    },
-    { 
-      id: "chat2", 
+      id: "client1", 
       name: "Emma Johnson", 
       role: "client", 
       status: "active", 
@@ -41,41 +32,19 @@ const CustomerSupport = () => {
       priority: "high",
       assignedTo: "dispatcher2"
     },
-    { 
-      id: "chat3", 
-      name: "Michael Brown", 
-      role: "driver", 
-      status: "approved", 
-      lastMessage: "I'm available for deliveries today", 
-      timestamp: "Yesterday",
-      unread: 0,
-      priority: "medium",
-      assignedTo: "dispatcher1"
-    },
-    { 
-      id: "chat4", 
-      name: "Sarah Wilson", 
-      role: "driver", 
-      status: "unapproved", 
-      lastMessage: "When will my application be reviewed?", 
-      timestamp: "Yesterday",
-      unread: 0,
-      priority: "low",
-      assignedTo: null
-    },
-    { 
-      id: "chat5", 
-      name: "Robert Davis", 
-      role: "client", 
-      status: "active", 
-      lastMessage: "I need to change my delivery address", 
+    {
+      id: "client2",
+      name: "Robert Davis",
+      role: "client",
+      status: "active",
+      lastMessage: "I need to change my delivery address",
       timestamp: "Yesterday",
       unread: 3,
       priority: "high",
       assignedTo: "dispatcher1"
     },
     {
-      id: "chat6",
+      id: "client3",
       name: "Lisa Anderson",
       role: "client",
       status: "active",
@@ -86,29 +55,7 @@ const CustomerSupport = () => {
       assignedTo: null
     },
     {
-      id: "chat7",
-      name: "David Martinez",
-      role: "driver",
-      status: "working",
-      lastMessage: "Traffic is heavy, might be delayed",
-      timestamp: "12:15 PM",
-      unread: 1,
-      priority: "medium",
-      assignedTo: "dispatcher1"
-    },
-    {
-      id: "chat8",
-      name: "Jennifer Lee",
-      role: "driver",
-      status: "unapproved",
-      lastMessage: "Submitted my documents for review",
-      timestamp: "1:20 PM",
-      unread: 0,
-      priority: "low",
-      assignedTo: null
-    },
-    {
-      id: "chat9",
+      id: "client4",
       name: "Carlos Rodriguez",
       role: "client",
       status: "active",
@@ -119,7 +66,207 @@ const CustomerSupport = () => {
       assignedTo: "dispatcher2"
     },
     {
-      id: "chat10",
+      id: "client5",
+      name: "Sarah Chen",
+      role: "client",
+      status: "active",
+      lastMessage: "When will my package arrive?",
+      timestamp: "Just now",
+      unread: 1,
+      priority: "medium",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "client6",
+      name: "Michael Thompson",
+      role: "client",
+      status: "active",
+      lastMessage: "Need urgent delivery status update",
+      timestamp: "5 min ago",
+      unread: 2,
+      priority: "high",
+      assignedTo: null
+    },
+    {
+      id: "client7",
+      name: "Jessica Lee",
+      role: "client",
+      status: "active",
+      lastMessage: "Wrong delivery address provided",
+      timestamp: "15 min ago",
+      unread: 3,
+      priority: "high",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "client8",
+      name: "David Wilson",
+      role: "client",
+      status: "active",
+      lastMessage: "Package damaged during transit",
+      timestamp: "30 min ago",
+      unread: 1,
+      priority: "high",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "client9",
+      name: "Amanda Martinez",
+      role: "client",
+      status: "active",
+      lastMessage: "Need to reschedule delivery",
+      timestamp: "1 hour ago",
+      unread: 0,
+      priority: "medium",
+      assignedTo: null
+    },
+    {
+      id: "client10",
+      name: "Kevin Brown",
+      role: "client",
+      status: "active",
+      lastMessage: "Thanks for quick delivery",
+      timestamp: "2 hours ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "client11",
+      name: "Patricia Garcia",
+      role: "client",
+      status: "active",
+      lastMessage: "Missing item in delivery",
+      timestamp: "3 hours ago",
+      unread: 2,
+      priority: "high",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "client12",
+      name: "Thomas Wright",
+      role: "client",
+      status: "active",
+      lastMessage: "Need delivery confirmation",
+      timestamp: "4 hours ago",
+      unread: 1,
+      priority: "medium",
+      assignedTo: null
+    },
+    {
+      id: "client13",
+      name: "Elizabeth Taylor",
+      role: "client",
+      status: "active",
+      lastMessage: "Wrong item delivered",
+      timestamp: "5 hours ago",
+      unread: 3,
+      priority: "high",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "client14",
+      name: "Christopher Lee",
+      role: "client",
+      status: "active",
+      lastMessage: "Delivery instructions updated",
+      timestamp: "6 hours ago",
+      unread: 0,
+      priority: "medium",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "client15",
+      name: "Michelle Rodriguez",
+      role: "client",
+      status: "active",
+      lastMessage: "Need urgent delivery",
+      timestamp: "7 hours ago",
+      unread: 2,
+      priority: "high",
+      assignedTo: null
+    },
+    {
+      id: "client16",
+      name: "Daniel Kim",
+      role: "client",
+      status: "active",
+      lastMessage: "Package not received",
+      timestamp: "8 hours ago",
+      unread: 4,
+      priority: "high",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "client17",
+      name: "Rachel Green",
+      role: "client",
+      status: "active",
+      lastMessage: "Delivery time inquiry",
+      timestamp: "9 hours ago",
+      unread: 1,
+      priority: "medium",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "client18",
+      name: "Brandon Wilson",
+      role: "client",
+      status: "active",
+      lastMessage: "Need to cancel order",
+      timestamp: "10 hours ago",
+      unread: 2,
+      priority: "high",
+      assignedTo: null
+    },
+    {
+      id: "client19",
+      name: "Sophia Martinez",
+      role: "client",
+      status: "active",
+      lastMessage: "Address verification needed",
+      timestamp: "11 hours ago",
+      unread: 0,
+      priority: "medium",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "client20",
+      name: "William Chang",
+      role: "client",
+      status: "active",
+      lastMessage: "Requesting refund",
+      timestamp: "12 hours ago",
+      unread: 3,
+      priority: "high",
+      assignedTo: "dispatcher1"
+    },
+
+    // Working Drivers (20)
+    {
+      id: "driver1",
+      name: "John Smith",
+      role: "driver",
+      status: "working",
+      lastMessage: "Where should I deliver this package?",
+      timestamp: "10:23 AM",
+      unread: 2,
+      priority: "high",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "driver2",
+      name: "David Martinez",
+      role: "driver",
+      status: "working",
+      lastMessage: "Traffic is heavy, might be delayed",
+      timestamp: "12:15 PM",
+      unread: 1,
+      priority: "medium",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "driver3",
       name: "Emily White",
       role: "driver",
       status: "working",
@@ -128,6 +275,637 @@ const CustomerSupport = () => {
       unread: 2,
       priority: "medium",
       assignedTo: "dispatcher1"
+    },
+    {
+      id: "driver4",
+      name: "James Wilson",
+      role: "driver",
+      status: "working",
+      lastMessage: "Package delivered successfully",
+      timestamp: "5 min ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "driver5",
+      name: "Maria Garcia",
+      role: "driver",
+      status: "working",
+      lastMessage: "Vehicle maintenance required",
+      timestamp: "10 min ago",
+      unread: 3,
+      priority: "high",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "driver6",
+      name: "Alex Thompson",
+      role: "driver",
+      status: "working",
+      lastMessage: "Loading packages now",
+      timestamp: "15 min ago",
+      unread: 0,
+      priority: "medium",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "driver7",
+      name: "Steven Lee",
+      role: "driver",
+      status: "working",
+      lastMessage: "Need route update",
+      timestamp: "20 min ago",
+      unread: 1,
+      priority: "medium",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "driver8",
+      name: "Linda Martinez",
+      role: "driver",
+      status: "working",
+      lastMessage: "Fuel stop required",
+      timestamp: "25 min ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "driver9",
+      name: "Robert Johnson",
+      role: "driver",
+      status: "working",
+      lastMessage: "Customer not available",
+      timestamp: "30 min ago",
+      unread: 2,
+      priority: "high",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "driver10",
+      name: "Sarah Davis",
+      role: "driver",
+      status: "working",
+      lastMessage: "Package pickup completed",
+      timestamp: "35 min ago",
+      unread: 0,
+      priority: "medium",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "driver11",
+      name: "Kevin Anderson",
+      role: "driver",
+      status: "working",
+      lastMessage: "Route optimization needed",
+      timestamp: "40 min ago",
+      unread: 1,
+      priority: "medium",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "driver12",
+      name: "Jennifer Taylor",
+      role: "driver",
+      status: "working",
+      lastMessage: "Weather delay expected",
+      timestamp: "45 min ago",
+      unread: 2,
+      priority: "high",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "driver13",
+      name: "Michael Brown",
+      role: "driver",
+      status: "working",
+      lastMessage: "Last delivery completed",
+      timestamp: "50 min ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "driver14",
+      name: "Lisa Rodriguez",
+      role: "driver",
+      status: "working",
+      lastMessage: "Starting lunch break",
+      timestamp: "55 min ago",
+      unread: 0,
+      priority: "medium",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "driver15",
+      name: "Daniel Wilson",
+      role: "driver",
+      status: "working",
+      lastMessage: "Package damaged during handling",
+      timestamp: "1 hour ago",
+      unread: 3,
+      priority: "high",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "driver16",
+      name: "Amanda Clark",
+      role: "driver",
+      status: "working",
+      lastMessage: "Route completed early",
+      timestamp: "1.5 hours ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "driver17",
+      name: "Thomas Wright",
+      role: "driver",
+      status: "working",
+      lastMessage: "Need additional packages",
+      timestamp: "2 hours ago",
+      unread: 1,
+      priority: "medium",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "driver18",
+      name: "Patricia Lee",
+      role: "driver",
+      status: "working",
+      lastMessage: "Vehicle issue resolved",
+      timestamp: "2.5 hours ago",
+      unread: 0,
+      priority: "medium",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "driver19",
+      name: "George Martinez",
+      role: "driver",
+      status: "working",
+      lastMessage: "Returning to depot",
+      timestamp: "3 hours ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "driver20",
+      name: "Sandra Kim",
+      role: "driver",
+      status: "working",
+      lastMessage: "Route adjustment needed",
+      timestamp: "3.5 hours ago",
+      unread: 2,
+      priority: "high",
+      assignedTo: "dispatcher2"
+    },
+
+    // Unapproved Drivers (20)
+    {
+      id: "unapproved1",
+      name: "Sarah Wilson",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "When will my application be reviewed?",
+      timestamp: "Yesterday",
+      unread: 0,
+      priority: "low",
+      assignedTo: null
+    },
+    {
+      id: "unapproved2",
+      name: "Jennifer Lee",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Submitted my documents for review",
+      timestamp: "1:20 PM",
+      unread: 0,
+      priority: "low",
+      assignedTo: null
+    },
+    {
+      id: "unapproved3",
+      name: "Mark Thompson",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Background check status?",
+      timestamp: "2 hours ago",
+      unread: 1,
+      priority: "medium",
+      assignedTo: null
+    },
+    {
+      id: "unapproved4",
+      name: "Alice Chen",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Additional documents submitted",
+      timestamp: "3 hours ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: null
+    },
+    {
+      id: "unapproved5",
+      name: "Ryan Jackson",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Vehicle inspection pending",
+      timestamp: "4 hours ago",
+      unread: 2,
+      priority: "medium",
+      assignedTo: null
+    },
+    {
+      id: "unapproved6",
+      name: "Diana Martinez",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Insurance documents uploaded",
+      timestamp: "5 hours ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: null
+    },
+    {
+      id: "unapproved7",
+      name: "Peter Kim",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Application status inquiry",
+      timestamp: "6 hours ago",
+      unread: 1,
+      priority: "medium",
+      assignedTo: null
+    },
+    {
+      id: "unapproved8",
+      name: "Laura Wilson",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Driver's license verification",
+      timestamp: "7 hours ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: null
+    },
+    {
+      id: "unapproved9",
+      name: "Chris Davis",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Vehicle registration pending",
+      timestamp: "8 hours ago",
+      unread: 1,
+      priority: "medium",
+      assignedTo: null
+    },
+    {
+      id: "unapproved10",
+      name: "Michelle Lee",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Training completion status",
+      timestamp: "9 hours ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: null
+    },
+    {
+      id: "unapproved11",
+      name: "Brian Taylor",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Application update needed",
+      timestamp: "10 hours ago",
+      unread: 2,
+      priority: "medium",
+      assignedTo: null
+    },
+    {
+      id: "unapproved12",
+      name: "Rachel Green",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Document verification pending",
+      timestamp: "11 hours ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: null
+    },
+    {
+      id: "unapproved13",
+      name: "Andrew Johnson",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Background check inquiry",
+      timestamp: "12 hours ago",
+      unread: 1,
+      priority: "medium",
+      assignedTo: null
+    },
+    {
+      id: "unapproved14",
+      name: "Emma Rodriguez",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Vehicle photos submitted",
+      timestamp: "13 hours ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: null
+    },
+    {
+      id: "unapproved15",
+      name: "Justin Wilson",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Application review timeline",
+      timestamp: "14 hours ago",
+      unread: 2,
+      priority: "medium",
+      assignedTo: null
+    },
+    {
+      id: "unapproved16",
+      name: "Sophia Clark",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Insurance verification needed",
+      timestamp: "15 hours ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: null
+    },
+    {
+      id: "unapproved17",
+      name: "Brandon Lee",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Document resubmission",
+      timestamp: "16 hours ago",
+      unread: 1,
+      priority: "medium",
+      assignedTo: null
+    },
+    {
+      id: "unapproved18",
+      name: "Victoria Martinez",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Training schedule request",
+      timestamp: "17 hours ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: null
+    },
+    {
+      id: "unapproved19",
+      name: "Eric Thompson",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Application status check",
+      timestamp: "18 hours ago",
+      unread: 2,
+      priority: "medium",
+      assignedTo: null
+    },
+    {
+      id: "unapproved20",
+      name: "Hannah Kim",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Document verification status",
+      timestamp: "19 hours ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: null
+    },
+
+    // Drivers General (20)
+    {
+      id: "general1",
+      name: "Michael Brown",
+      role: "driver",
+      status: "approved",
+      lastMessage: "I'm available for deliveries today",
+      timestamp: "Yesterday",
+      unread: 0,
+      priority: "medium",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "general2",
+      name: "Anna Martinez",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Schedule update request",
+      timestamp: "2 days ago",
+      unread: 1,
+      priority: "low",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "general3",
+      name: "William Davis",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Tomorrow's availability",
+      timestamp: "3 days ago",
+      unread: 0,
+      priority: "medium",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "general4",
+      name: "Sophie Wilson",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Route preference update",
+      timestamp: "4 days ago",
+      unread: 2,
+      priority: "medium",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "general5",
+      name: "James Lee",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Vehicle maintenance schedule",
+      timestamp: "5 days ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "general6",
+      name: "Elena Rodriguez",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Time off request",
+      timestamp: "6 days ago",
+      unread: 1,
+      priority: "medium",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "general7",
+      name: "David Clark",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Schedule confirmation",
+      timestamp: "1 week ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "general8",
+      name: "Lucy Thompson",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Route area preference",
+      timestamp: "1 week ago",
+      unread: 2,
+      priority: "medium",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "general9",
+      name: "Henry Wilson",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Equipment request",
+      timestamp: "1 week ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "general10",
+      name: "Isabella Martinez",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Availability update",
+      timestamp: "1 week ago",
+      unread: 1,
+      priority: "medium",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "general11",
+      name: "Oliver Brown",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Schedule adjustment needed",
+      timestamp: "1 week ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "general12",
+      name: "Ava Davis",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Next week's schedule",
+      timestamp: "1 week ago",
+      unread: 2,
+      priority: "medium",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "general13",
+      name: "Liam Johnson",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Vehicle assignment request",
+      timestamp: "2 weeks ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "general14",
+      name: "Mia Wilson",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Training completion notice",
+      timestamp: "2 weeks ago",
+      unread: 1,
+      priority: "medium",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "general15",
+      name: "Noah Lee",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Schedule preference update",
+      timestamp: "2 weeks ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "general16",
+      name: "Emma Thompson",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Vacation request",
+      timestamp: "2 weeks ago",
+      unread: 2,
+      priority: "medium",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "general17",
+      name: "Lucas Martinez",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Equipment maintenance notice",
+      timestamp: "2 weeks ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "general18",
+      name: "Sophia Davis",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Route assignment inquiry",
+      timestamp: "3 weeks ago",
+      unread: 1,
+      priority: "medium",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "general19",
+      name: "Ethan Wilson",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Schedule confirmation needed",
+      timestamp: "3 weeks ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "general20",
+      name: "Olivia Brown",
+      role: "driver",
+      status: "approved",
+      lastMessage: "Vehicle condition report",
+      timestamp: "3 weeks ago",
+      unread: 2,
+      priority: "medium",
+      assignedTo: "dispatcher2"
     }
   ];
 
