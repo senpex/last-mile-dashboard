@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { ChatInterface } from "@/components/communication/ChatInterface";
@@ -1065,7 +1064,7 @@ const CustomerSupport = () => {
                       
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-center">
-                          <h3 className="font-medium truncate text-sm">{chat.name}</h3>
+                          <h3 className="font-medium truncate text-sm">{chat.name} Order</h3>
                           <span className="text-xs text-muted-foreground whitespace-nowrap ml-2">{chat.timestamp}</span>
                         </div>
                         
