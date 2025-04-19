@@ -1010,6 +1010,11 @@ const CustomerSupport = () => {
     }
   };
 
+  // Find the selected chat user data when a chat is selected
+  const selectedChatData = selectedChat 
+    ? chats.find(chat => chat.id === selectedChat) 
+    : null;
+
   return (
     <Layout>
       <div className="flex h-full">
@@ -1137,8 +1142,17 @@ const CustomerSupport = () => {
         </div>
         
         <div className="flex-1">
-          {selectedChat ? (
-            <ChatInterface />
+          {selectedChat && selectedChatData ? (
+            <ChatInterface 
+              chatId={selectedChat}
+              user={{
+                id: selectedChatData.id,
+                name: selectedChatData.name,
+                role: selectedChatData.role,
+                status: selectedChatData.status,
+                priority: selectedChatData.priority
+              }}
+            />
           ) : (
             <div className="flex items-center justify-center h-full">
               <Card className="w-96 p-6 text-center">
