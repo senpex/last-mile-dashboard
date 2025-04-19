@@ -74,6 +74,61 @@ const CustomerSupport = () => {
       priority: "high",
       assignedTo: "dispatcher1"
     },
+    {
+      id: "chat6",
+      name: "Lisa Anderson",
+      role: "client",
+      status: "active",
+      lastMessage: "Can you expedite my delivery?",
+      timestamp: "11:30 AM",
+      unread: 4,
+      priority: "high",
+      assignedTo: null
+    },
+    {
+      id: "chat7",
+      name: "David Martinez",
+      role: "driver",
+      status: "working",
+      lastMessage: "Traffic is heavy, might be delayed",
+      timestamp: "12:15 PM",
+      unread: 1,
+      priority: "medium",
+      assignedTo: "dispatcher1"
+    },
+    {
+      id: "chat8",
+      name: "Jennifer Lee",
+      role: "driver",
+      status: "unapproved",
+      lastMessage: "Submitted my documents for review",
+      timestamp: "1:20 PM",
+      unread: 0,
+      priority: "low",
+      assignedTo: null
+    },
+    {
+      id: "chat9",
+      name: "Carlos Rodriguez",
+      role: "client",
+      status: "active",
+      lastMessage: "Package received, thank you!",
+      timestamp: "2 days ago",
+      unread: 0,
+      priority: "low",
+      assignedTo: "dispatcher2"
+    },
+    {
+      id: "chat10",
+      name: "Emily White",
+      role: "driver",
+      status: "working",
+      lastMessage: "Starting my delivery route now",
+      timestamp: "Just now",
+      unread: 2,
+      priority: "medium",
+      assignedTo: "dispatcher1"
+    }
   ];
 
   const filteredChats = chats.filter(chat => {
