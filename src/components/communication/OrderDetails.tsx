@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -34,13 +33,11 @@ const StatusBadge = ({ status }: { status: 'active' | 'completed' | 'cancelled' 
 export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
   const [orderDetailsExpanded, setOrderDetailsExpanded] = useState(true);
   
-  // Use more specific addresses to improve geocoding success
   const knownLocations = {
     "123 Pickup St, City": "123 Pickup St, San Francisco, CA 94103",
     "456 Delivery Ave, City": "456 Delivery Ave, San Francisco, CA 94107"
   };
   
-  // Map generic addresses to more specific ones or add city/state info
   const enhancedPickupAddress = knownLocations[orderData.pickupAddress] || 
     (orderData.pickupAddress.includes(", ") 
       ? orderData.pickupAddress 
@@ -53,6 +50,8 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
 
   return (
     <div className="p-4">
+      <h2 className="text-lg font-semibold mb-4 text-foreground">Orders on Hand</h2>
+      
       <div className="flex justify-between items-center mb-2">
         <h3 className="font-medium">Order Details</h3>
         <Button variant="ghost" size="sm" onClick={() => setOrderDetailsExpanded(!orderDetailsExpanded)}>
