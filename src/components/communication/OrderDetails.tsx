@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -75,7 +74,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
             
             {orderDetailsExpanded && (
               <div className="space-y-3">
-                <div className="flex justify-end">
+                <div className="flex justify-start">
                   <Badge 
                     variant={
                       order.status === 'active' ? 'success' : 
