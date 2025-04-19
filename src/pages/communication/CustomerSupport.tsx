@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { ChatInterface } from "@/components/communication/ChatInterface";
@@ -1004,4 +1005,152 @@ const CustomerSupport = () => {
     switch (priority) {
       case "high": return "bg-red-500";
       case "medium": return "bg-amber-400";
-      case
+      case "low": return "bg-green-500";
+      default: return "bg-gray-500";
+    }
+  };
+
+  return (
+    <Layout>
+      <div className="flex h-full">
+        <div className="w-1/3 border-r overflow-auto">
+          <div className="p-4 border-b sticky top-0 bg-background z-10">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold">Messages</h2>
+              <Button size="sm" variant="outline" className="flex items-center gap-1">
+                <MessageSquare className="h-4 w-4" /> New Chat
+              </Button>
+            </div>
+            
+            <div className="relative mb-4">
+              <Input 
+                placeholder="Search messages..." 
+                className="pl-8"
+              />
+              <div className="absolute left-2.5 top-2.5 text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                  <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clipRule="evenodd" />
+                </svg>
+              </div>
+            </div>
+            
+            <Tabs defaultValue="all" className="mb-4" value={activeTab} onValueChange={setActiveTab}>
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="all">All</TabsTrigger>
+                <TabsTrigger value="assigned">Assigned</TabsTrigger>
+                <TabsTrigger value="unassigned">Unassigned</TabsTrigger>
+              </TabsList>
+            </Tabs>
+            
+            <div className="flex flex-wrap gap-1 mb-2">
+              <Badge 
+                className={`cursor-pointer ${filterStatus === 'all' ? 'bg-primary' : 'bg-secondary'}`}
+                onClick={() => setFilterStatus('all')}
+              >
+                All
+              </Badge>
+              <Badge 
+                className={`cursor-pointer ${filterStatus === 'client' ? 'bg-primary' : 'bg-secondary'}`}
+                onClick={() => setFilterStatus('client')}
+              >
+                Clients
+              </Badge>
+              <Badge 
+                className={`cursor-pointer ${filterStatus === 'working-drivers' ? 'bg-primary' : 'bg-secondary'}`}
+                onClick={() => setFilterStatus('working-drivers')}
+              >
+                Working Drivers
+              </Badge>
+              <Badge 
+                className={`cursor-pointer ${filterStatus === 'drivers-general' ? 'bg-primary' : 'bg-secondary'}`}
+                onClick={() => setFilterStatus('drivers-general')}
+              >
+                Drivers General
+              </Badge>
+              <Badge 
+                className={`cursor-pointer ${filterStatus === 'unapproved-drivers' ? 'bg-primary' : 'bg-secondary'}`}
+                onClick={() => setFilterStatus('unapproved-drivers')}
+              >
+                Unapproved Drivers
+              </Badge>
+            </div>
+          </div>
+
+          <div className="divide-y">
+            {filteredChats.map((chat) => (
+              <div 
+                key={chat.id}
+                className={`p-4 hover:bg-muted cursor-pointer flex items-start gap-3 ${selectedChat === chat.id ? 'bg-muted' : ''}`}
+                onClick={() => setSelectedChat(chat.id)}
+              >
+                <div className="relative">
+                  {chat.role === "client" ? (
+                    <UserRound className="h-10 w-10 bg-blue-100 text-blue-600 rounded-full p-2" />
+                  ) : (
+                    <Users className="h-10 w-10 bg-green-100 text-green-600 rounded-full p-2" />
+                  )}
+                  {chat.unread > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">{chat.unread}</span>
+                  )}
+                </div>
+                <div className="flex-grow min-w-0">
+                  <div className="flex justify-between items-start">
+                    <HoverCard>
+                      <HoverCardTrigger asChild>
+                        <h3 className="font-medium truncate">
+                          {chat.name} ({chat.orderId})
+                        </h3>
+                      </HoverCardTrigger>
+                      <HoverCardContent className="w-80">
+                        <div className="flex justify-between space-x-4">
+                          <div className="space-y-1">
+                            <h4 className="text-sm font-semibold">{chat.name} ({chat.orderId})</h4>
+                            <div className="flex items-center pt-2">
+                              <span className={`w-2 h-2 rounded-full mr-2 ${getPriorityColor(chat.priority)}`}></span>
+                              <span className="text-xs capitalize">{chat.priority} Priority</span>
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {chat.role === "client" ? "Customer" : chat.status === "working" ? "Working Driver" : chat.status === "unapproved" ? "Unapproved Driver" : "Driver General"}
+                            </div>
+                            {chat.assignedTo && (
+                              <div className="text-xs">
+                                Assigned to: <span className="font-medium">{chat.assignedTo}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </HoverCardContent>
+                    </HoverCard>
+                    <span className="text-xs text-gray-500 whitespace-nowrap ml-2">{chat.timestamp}</span>
+                  </div>
+                  <p className="text-sm truncate text-muted-foreground">{chat.lastMessage}</p>
+                  <div className="flex gap-1 mt-1">
+                    <span className={`w-2 h-2 rounded-full ${getPriorityColor(chat.priority)}`}></span>
+                    {chat.assignedTo === null && (
+                      <Badge variant="outline" className="text-xs py-0 h-5">Unassigned</Badge>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <div className="flex-1">
+          {selectedChat ? (
+            <ChatInterface />
+          ) : (
+            <div className="flex items-center justify-center h-full">
+              <Card className="w-96 p-6 text-center">
+                <h3 className="text-lg font-medium mb-2">Select a conversation</h3>
+                <p className="text-muted-foreground mb-4">Choose a conversation from the list to start chatting</p>
+              </Card>
+            </div>
+          )}
+        </div>
+      </div>
+    </Layout>
+  );
+};
+
+export default CustomerSupport;
