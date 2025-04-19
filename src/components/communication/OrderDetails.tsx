@@ -74,11 +74,6 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
             
             {orderDetailsExpanded && (
               <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <div className="text-sm font-medium">Order #{order.id}</div>
-                  <StatusBadge status={order.status} />
-                </div>
-                
                 <OrderMap 
                   pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress}
                   deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress}
