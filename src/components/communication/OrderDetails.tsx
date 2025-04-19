@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -59,7 +60,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
   };
 
   return (
-    <ScrollArea className="h-[500px] px-4">
+    <ScrollArea className="h-screen px-4">
       <div className="pr-4">
         <h2 className="text-lg font-semibold mb-4 text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-2 z-10">Orders on Hand</h2>
         
