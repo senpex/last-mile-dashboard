@@ -1,6 +1,7 @@
+
 import { useRef, useEffect, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ZoomIn, ZoomOut } from "lucide-react";
 
@@ -12,6 +13,7 @@ interface OrderMapProps {
 
 export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
+  const dialogMapRef = useRef<HTMLDivElement>(null);
   const [mapError, setMapError] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [map, setMap] = useState<google.maps.Map | null>(null);
@@ -160,7 +162,17 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
     if (mapRef.current) {
       initMap(mapRef.current);
     }
-  }, [pickupAddress, deliveryAddress, driverName]);
+  }, []);
+
+  // Initialize dialog map when dialog opens
+  useEffect(() => {
+    if (isDialogOpen && dialogMapRef.current) {
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        initMap(dialogMapRef.current!);
+      }, 100);
+    }
+  }, [isDialogOpen]);
 
   const handleZoomIn = () => {
     if (map) {
@@ -195,6 +207,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-3xl h-[80vh]">
+          <DialogTitle className="sr-only">Map View</DialogTitle>
           <div className="relative w-full h-full rounded-md overflow-hidden">
             <div className="absolute top-4 right-4 flex gap-2 z-10">
               <Button
@@ -215,7 +228,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
               </Button>
             </div>
             <div 
-              ref={isDialogOpen ? mapRef : null} 
+              ref={dialogMapRef}
               className="w-full h-full"
             />
           </div>
