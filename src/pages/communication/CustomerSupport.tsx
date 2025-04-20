@@ -220,6 +220,7 @@ const CustomerSupport = () => {
     {
       id: "driver1",
       name: "John Smith",
+      orderId: "ORD-2341",
       role: "driver",
       status: "working",
       lastMessage: "Where should I deliver this package?",
@@ -230,6 +231,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver2",
       name: "David Martinez",
+      orderId: "ORD-2342",
       role: "driver",
       status: "working",
       lastMessage: "Traffic is heavy, might be delayed",
@@ -928,7 +930,12 @@ const CustomerSupport = () => {
                       
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-center">
-                          <h3 className="font-medium truncate text-sm">{chat.name}</h3>
+                          <h3 className="font-medium truncate text-sm">
+                            {chat.name}
+                            {chat.role === 'driver' && chat.status === 'working' && chat.orderId && (
+                              <span className="ml-1 text-muted-foreground">({chat.orderId})</span>
+                            )}
+                          </h3>
                           <span className="text-xs text-muted-foreground whitespace-nowrap ml-2">{chat.timestamp}</span>
                         </div>
                         
