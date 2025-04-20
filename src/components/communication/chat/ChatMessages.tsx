@@ -1,9 +1,10 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { FileText, FileSpreadsheet, ImageIcon, Mic, Play } from "lucide-react";
+import { FileText, FileSpreadsheet, ImageIcon, Mic, Play, Stop } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MessageType } from '../ChatInterface';
+import { toast } from "sonner";
 
 interface ChatMessagesProps {
   messages: MessageType[];
@@ -34,24 +35,51 @@ export const ChatMessages = ({ messages }: ChatMessagesProps) => {
   }, [messages]);
 
   const handlePlayVoice = (attachmentId: string, url: string) => {
-    if (!audioRefs.current[attachmentId]) {
-      audioRefs.current[attachmentId] = new Audio(url);
-      audioRefs.current[attachmentId].addEventListener('ended', () => {
-        setPlayingAudio(null);
-      });
-    }
-
-    if (playingAudio === attachmentId) {
-      audioRefs.current[attachmentId].pause();
-      audioRefs.current[attachmentId].currentTime = 0;
-      setPlayingAudio(null);
-    } else {
-      if (playingAudio) {
-        audioRefs.current[playingAudio].pause();
-        audioRefs.current[playingAudio].currentTime = 0;
+    console.log("Playing voice message:", attachmentId);
+    
+    try {
+      if (!audioRefs.current[attachmentId]) {
+        audioRefs.current[attachmentId] = new Audio(url);
+        
+        audioRefs.current[attachmentId].addEventListener('ended', () => {
+          console.log("Audio playback ended");
+          setPlayingAudio(null);
+        });
+        
+        audioRefs.current[attachmentId].addEventListener('error', (e) => {
+          console.error("Error playing audio:", e);
+          toast.error("Failed to play voice message");
+          setPlayingAudio(null);
+        });
       }
-      audioRefs.current[attachmentId].play();
-      setPlayingAudio(attachmentId);
+
+      if (playingAudio === attachmentId) {
+        // Stop the current audio
+        audioRefs.current[attachmentId].pause();
+        audioRefs.current[attachmentId].currentTime = 0;
+        setPlayingAudio(null);
+        console.log("Stopped playback");
+      } else {
+        // Stop any currently playing audio
+        if (playingAudio && audioRefs.current[playingAudio]) {
+          audioRefs.current[playingAudio].pause();
+          audioRefs.current[playingAudio].currentTime = 0;
+        }
+        
+        // Play the selected audio
+        audioRefs.current[attachmentId].play()
+          .then(() => {
+            console.log("Audio playback started");
+            setPlayingAudio(attachmentId);
+          })
+          .catch(err => {
+            console.error("Failed to play audio:", err);
+            toast.error("Failed to play voice message");
+          });
+      }
+    } catch (error) {
+      console.error("Error in voice playback:", error);
+      toast.error("Error playing voice message");
     }
   };
 
@@ -77,7 +105,8 @@ export const ChatMessages = ({ messages }: ChatMessagesProps) => {
               <span className="font-medium text-sm dark:text-gray-300">{msg.senderName}</span>
               <span className="text-xs opacity-70 dark:text-gray-400">{msg.timestamp}</span>
             </div>
-            <p className="mt-1">{msg.content}</p>
+            {msg.content && <p className="mt-1">{msg.content}</p>}
+            
             {msg.attachments && msg.attachments.length > 0 && (
               <div className="mt-2 flex flex-wrap gap-2">
                 {msg.attachments.map(attachment => (
@@ -96,15 +125,20 @@ export const ChatMessages = ({ messages }: ChatMessagesProps) => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-6 px-2"
+                        className="h-6 px-2 flex items-center gap-1"
                         onClick={() => handlePlayVoice(attachment.id, attachment.url)}
                       >
                         {playingAudio === attachment.id ? (
-                          <span>Playing...</span>
+                          <>
+                            <Stop className="h-4 w-4" />
+                            <span>Stop</span>
+                          </>
                         ) : (
-                          <Play className="h-4 w-4 mr-1" />
+                          <>
+                            <Play className="h-4 w-4" />
+                            <span>Voice Message</span>
+                          </>
                         )}
-                        Voice Message
                       </Button>
                     ) : (
                       <>

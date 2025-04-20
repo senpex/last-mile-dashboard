@@ -1,19 +1,26 @@
 
+import { useRef, useState } from 'react';
+
 export const useVoiceRecorder = () => {
-  let mediaRecorder: MediaRecorder | null = null;
-  let audioChunks: Blob[] = [];
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const [isRecording, setIsRecording] = useState(false);
 
   const startRecording = async (): Promise<void> => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorder = new MediaRecorder(stream);
-      audioChunks = [];
+      mediaRecorderRef.current = new MediaRecorder(stream);
+      audioChunksRef.current = [];
 
-      mediaRecorder.ondataavailable = (event) => {
-        audioChunks.push(event.data);
+      mediaRecorderRef.current.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
       };
 
-      mediaRecorder.start();
+      mediaRecorderRef.current.start();
+      setIsRecording(true);
+      console.log('Recording started');
     } catch (error) {
       console.error('Error accessing microphone:', error);
       throw error;
@@ -21,22 +28,28 @@ export const useVoiceRecorder = () => {
   };
 
   const stopRecording = (): Promise<Blob> => {
-    return new Promise((resolve) => {
-      if (!mediaRecorder) return;
+    return new Promise((resolve, reject) => {
+      if (!mediaRecorderRef.current || mediaRecorderRef.current.state === 'inactive') {
+        reject('Not recording');
+        return;
+      }
 
-      mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-        const tracks = mediaRecorder?.stream.getTracks();
+      mediaRecorderRef.current.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        const tracks = mediaRecorderRef.current?.stream.getTracks();
         tracks?.forEach(track => track.stop());
+        setIsRecording(false);
+        console.log('Recording stopped, blob created:', audioBlob);
         resolve(audioBlob);
       };
 
-      mediaRecorder.stop();
+      mediaRecorderRef.current.stop();
     });
   };
 
   return {
     startRecording,
     stopRecording,
+    isRecording
   };
 };
