@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -364,11 +365,11 @@ const DeliveryTable = ({
         />
         
         <div className="flex-1 transition-all duration-300 my-4 ml-2">
-          <div className="flex flex-col h-full w-full">
+          <div className="flex flex-col h-full w-[1200px]">
             <div className="w-full flex-grow flex-shrink-0">
               <TableContainer 
                 stickyHeader 
-                className="w-full mr-[5px]"
+                className="w-full"
                 filterSidebarOpen={isFilterSidebarOpen}
               >
                 <Table>
@@ -435,3 +436,4 @@ const DeliveryTable = ({
 };
 
 export default DeliveryTable;
+
