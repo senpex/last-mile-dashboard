@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
@@ -20,7 +19,6 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
   const [dialogMap, setDialogMap] = useState<google.maps.Map | null>(null);
 
   const initMap = async (container: HTMLDivElement, setMapInstance: (map: google.maps.Map) => void) => {
-    // Clear any previous errors
     setMapError(null);
     console.log("Initializing map in container:", container);
     
@@ -47,10 +45,8 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
       console.log("Map instance created");
       setMapInstance(mapInstance);
 
-      // Create geocoder to convert addresses to coordinates
       const geocoder = new google.maps.Geocoder();
       
-      // Always use city and state for better geocoding results
       const enhancedPickupAddress = pickupAddress.includes(", San Francisco") 
         ? pickupAddress 
         : `${pickupAddress}, San Francisco, CA, USA`;
@@ -61,7 +57,6 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
 
       console.log("Geocoding pickup:", enhancedPickupAddress);
       
-      // Get pickup location
       geocoder.geocode({ address: enhancedPickupAddress }, (pickupResults, pickupStatus) => {
         if (pickupStatus !== "OK" || !pickupResults?.[0]) {
           console.error("Pickup geocode failed:", pickupStatus, enhancedPickupAddress);
@@ -72,7 +67,6 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
         const pickupLocation = pickupResults[0].geometry.location;
         console.log("Pickup location found:", pickupLocation.toString());
         
-        // Create pickup marker
         new google.maps.Marker({
           position: pickupLocation,
           map: mapInstance,
@@ -89,7 +83,6 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
 
         console.log("Geocoding delivery:", enhancedDeliveryAddress);
         
-        // Get delivery location
         geocoder.geocode({ address: enhancedDeliveryAddress }, (deliveryResults, deliveryStatus) => {
           if (deliveryStatus !== "OK" || !deliveryResults?.[0]) {
             console.error("Delivery geocode failed:", deliveryStatus, enhancedDeliveryAddress);
@@ -100,7 +93,6 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
           const deliveryLocation = deliveryResults[0].geometry.location;
           console.log("Delivery location found:", deliveryLocation.toString());
           
-          // Create delivery marker
           new google.maps.Marker({
             position: deliveryLocation,
             map: mapInstance,
@@ -115,22 +107,18 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
             },
           });
 
-          // Try to fit both markers in the view
           const bounds = new google.maps.LatLngBounds();
           bounds.extend(pickupLocation);
           bounds.extend(deliveryLocation);
           mapInstance.fitBounds(bounds);
           
-          // Add some padding to the bounds
           mapInstance.setZoom(mapInstance.getZoom() - 0.5);
 
-          // Calculate a point between pickup and delivery for the driver
           const driverLocation = new google.maps.LatLng(
             (pickupLocation.lat() + deliveryLocation.lat()) / 2,
             (pickupLocation.lng() + deliveryLocation.lng()) / 2
           );
 
-          // Create driver marker
           new google.maps.Marker({
             position: driverLocation,
             map: mapInstance,
@@ -145,7 +133,6 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
             },
           });
 
-          // Draw a simple polyline between pickup and delivery
           new google.maps.Polyline({
             path: [pickupLocation, deliveryLocation],
             geodesic: true,
@@ -172,14 +159,11 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
   useEffect(() => {
     if (isDialogOpen) {
       console.log("Dialog opened, initializing map...");
-      // Completely reset dialogMap when dialog opens
       setDialogMap(null);
       
-      // Wait for DOM to fully render
       const timer = setTimeout(() => {
         console.log("Timeout finished, dialog ref exists:", !!dialogMapRef.current);
         if (dialogMapRef.current) {
-          // Force element to be visible and sized before map initialization
           dialogMapRef.current.style.display = 'block';
           dialogMapRef.current.style.height = '500px';
           dialogMapRef.current.style.width = '100%';
@@ -234,8 +218,8 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
             Interactive map showing pickup, delivery, and driver locations
           </DialogDescription>
           
-          <div className="relative w-full h-full p-6">
-            <div className="absolute top-0 right-0 flex gap-2 z-10 p-4">
+          <div className="relative w-full h-full">
+            <div className="absolute top-4 right-4 flex gap-2 z-10">
               <Button
                 variant="secondary"
                 size="icon"
@@ -264,4 +248,3 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
     </>
   );
 };
-
