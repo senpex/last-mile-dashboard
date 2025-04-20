@@ -48,7 +48,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
           {
             featureType: "road",
             elementType: "geometry.stroke",
-            stylers: [{ color: "#212a37" }]
+            stylers: [{ color: "#212835" }]
           },
           {
             featureType: "road.highway",
@@ -254,7 +254,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-[556px] h-[140px] p-0 bg-[#242f3e] border-[#3a4c63] text-white overflow-hidden">
+        <DialogContent className="max-w-[800px] h-[420px] p-0 bg-[#242f3e] border-[#3a4c63] text-white overflow-hidden">
           <DialogTitle className="sr-only">Map View</DialogTitle>
           <DialogDescription className="sr-only">
             Interactive map showing pickup, delivery, and driver locations
