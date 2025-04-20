@@ -48,16 +48,18 @@ export const OrderDetails = ({
     id: "909090"
   }];
 
-  const repeatedOrders = [{
-    ...orderData,
-    id: "909093",
-    status: "repeated" as const,
-    schedule: [
-      { day: "Tuesday", time: "14:00" },
-      { day: "Wednesday", time: "15:30" },
-      { day: "Friday", time: "16:00" }
-    ]
-  }];
+  const repeatedOrders = [
+    {
+      ...orderData,
+      id: "909093",
+      status: "repeated" as const,
+      schedule: [
+        { day: "Tuesday", time: "14:00" },
+        { day: "Wednesday", time: "15:30" },
+        { day: "Friday", time: "16:00" }
+      ]
+    }
+  ];
 
   const historyOrders = Array.from({ length: 5 }, (_, index) => ({
     ...orderData,
@@ -85,7 +87,10 @@ export const OrderDetails = ({
 
   const driverInfo = {
     name: orderData.driverName,
-    phone: "+1 (555) 234-5678"
+    phone: "+1 (555) 234-5678",
+    vehicle: "Cargo Van",
+    rating: "4.8",
+    totalDeliveries: "1,234"
   };
 
   return <ScrollArea independentPanel={true} className="h-full px-[14px] my-0">
@@ -129,27 +134,43 @@ export const OrderDetails = ({
                     </div>
                     
                     <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
-                      <div className="flex items-start gap-2">
-                        <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
-                        <div>
-                          <div className="text-[11px] text-muted-foreground mb-0.5">Sender:</div>
-                          <div className="text-xs font-medium">{senderInfo.name}</div>
-                          <div className="text-xs text-muted-foreground">{senderInfo.phone}</div>
+                      {orderData.id ? (
+                        <div className="flex items-start gap-2">
+                          <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                          <div>
+                            <div className="text-[11px] text-muted-foreground mb-0.5">Driver Details:</div>
+                            <div className="text-xs font-medium">{driverInfo.name}</div>
+                            <div className="text-xs text-muted-foreground">{driverInfo.phone}</div>
+                            <div className="text-xs text-muted-foreground">Vehicle: {driverInfo.vehicle}</div>
+                            <div className="text-xs text-muted-foreground">Rating: ⭐️ {driverInfo.rating}</div>
+                            <div className="text-xs text-muted-foreground">Deliveries: {driverInfo.totalDeliveries}</div>
+                          </div>
                         </div>
-                      </div>
-                      
-                      <div className="flex justify-center">
-                        <div className="h-3 border-l border-dashed border-border/50"></div>
-                      </div>
-                      
-                      <div className="flex items-start gap-2">
-                        <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
-                        <div>
-                          <div className="text-[11px] text-muted-foreground mb-0.5">Recipient:</div>
-                          <div className="text-xs font-medium">{recipientInfo.name}</div>
-                          <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
-                        </div>
-                      </div>
+                      ) : (
+                        <>
+                          <div className="flex items-start gap-2">
+                            <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                            <div>
+                              <div className="text-[11px] text-muted-foreground mb-0.5">Sender:</div>
+                              <div className="text-xs font-medium">{senderInfo.name}</div>
+                              <div className="text-xs text-muted-foreground">{senderInfo.phone}</div>
+                            </div>
+                          </div>
+                          
+                          <div className="flex justify-center">
+                            <div className="h-3 border-l border-dashed border-border/50"></div>
+                          </div>
+                          
+                          <div className="flex items-start gap-2">
+                            <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                            <div>
+                              <div className="text-[11px] text-muted-foreground mb-0.5">Recipient:</div>
+                              <div className="text-xs font-medium">{recipientInfo.name}</div>
+                              <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </div>
                     
                     <Sheet>
