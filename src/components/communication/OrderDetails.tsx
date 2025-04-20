@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +18,8 @@ interface OrderDetailsProps {
     clientName: string;
     eta: string;
     createdAt: string;
+    pickupTime: string;
+    dropoffTime: string;
   };
 }
 
@@ -98,9 +99,12 @@ export const OrderDetails = ({
                     
                     <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
                       <div className="grid grid-cols-3 gap-1.5 text-[11px]">
-                        <div className="text-muted-foreground">Created:</div>
-                        <div className="col-span-2 font-medium">{order.createdAt}</div>
+                        <div className="text-muted-foreground">Pickup time:</div>
+                        <div className="col-span-2 font-medium">{order.pickupTime || "Not scheduled"}</div>
                         
+                        <div className="text-muted-foreground">Dropoff time:</div>
+                        <div className="col-span-2 font-medium">{order.dropoffTime || "Not scheduled"}</div>
+
                         <div className="text-muted-foreground">ETA:</div>
                         <div className="col-span-2 font-medium">{order.eta}</div>
                       </div>
