@@ -22,6 +22,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
   const initMap = async (container: HTMLDivElement, setMapInstance: (map: google.maps.Map) => void) => {
     // Clear any previous errors
     setMapError(null);
+    console.log("Initializing map in container:", container);
     
     const loader = new Loader({
       apiKey: "AIzaSyD--I0r1HmH90XbB_l-KzBEx-Y3I1uGtOE",
@@ -30,6 +31,8 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
 
     try {
       const google = await loader.load();
+      console.log("Google Maps API loaded");
+      
       const mapInstance = new google.maps.Map(container, {
         zoom: 12,
         center: { lat: 37.7749, lng: -122.4194 }, // Default to San Francisco
@@ -40,7 +43,8 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
         ],
         disableDefaultUI: true,
       });
-
+      
+      console.log("Map instance created");
       setMapInstance(mapInstance);
 
       // Create geocoder to convert addresses to coordinates
@@ -165,15 +169,24 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
     }
   }, []);
 
-  // Initialize dialog map when dialog opens
   useEffect(() => {
-    if (isDialogOpen && dialogMapRef.current) {
-      // Small delay to ensure DOM is ready
+    if (isDialogOpen) {
+      console.log("Dialog opened, initializing map...");
+      // Completely reset dialogMap when dialog opens
+      setDialogMap(null);
+      
+      // Wait for DOM to fully render
       const timer = setTimeout(() => {
+        console.log("Timeout finished, dialog ref exists:", !!dialogMapRef.current);
         if (dialogMapRef.current) {
+          // Force element to be visible and sized before map initialization
+          dialogMapRef.current.style.display = 'block';
+          dialogMapRef.current.style.height = '500px';
+          dialogMapRef.current.style.width = '100%';
+          
           initMap(dialogMapRef.current, setDialogMap);
         }
-      }, 300);
+      }, 500);
       
       return () => clearTimeout(timer);
     }
@@ -240,9 +253,10 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
               </Button>
             </div>
             <div 
+              id="dialogMap"
               ref={dialogMapRef}
-              className="w-full h-full"
-              style={{ minHeight: "400px" }}
+              className="absolute inset-0 w-full h-full bg-[#242f3e]"
+              style={{ minHeight: "500px" }}
             />
           </div>
         </DialogContent>
