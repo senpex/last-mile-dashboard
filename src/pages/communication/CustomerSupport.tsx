@@ -948,8 +948,11 @@ const CustomerSupport = () => {
             </div>
           </div>
 
-          <div className="flex-1 min-w-0">
-            {selectedChat ? <ChatInterface chatId={selectedChat} user={chats.find(chat => chat.id === selectedChat)!} /> : <div className="h-full flex items-center justify-center">
+          <div className="flex-1 min-w-0 grid grid-cols-[1fr_320px] gap-4">
+            {selectedChat ? (
+              <ChatInterface chatId={selectedChat} user={chats.find(chat => chat.id === selectedChat)!} />
+            ) : (
+              <div className="h-full flex items-center justify-center">
                 <Card className="w-full max-w-md mx-auto p-8 text-center">
                   <MessageSquare className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
                   <h2 className="text-xl font-semibold mb-2">No chat selected</h2>
@@ -957,7 +960,8 @@ const CustomerSupport = () => {
                     Select a conversation from the list to start chatting or use the filters to find a specific conversation.
                   </p>
                 </Card>
-              </div>}
+              </div>
+            )}
           </div>
         </div>
       </div>
