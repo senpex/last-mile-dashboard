@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -37,7 +36,7 @@ const StatusBadge = ({
   }
 };
 
-export const OrderDetails = ({
+const OrderDetails = ({
   orderData
 }: OrderDetailsProps) => {
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
@@ -59,6 +58,17 @@ export const OrderDetails = ({
     "123 Pickup St, City": "123 Pickup St, San Francisco, CA 94103",
     "456 Delivery Ave, City": "456 Delivery Ave, San Francisco, CA 94107"
   };
+
+  const senderInfo = {
+    name: "John Smith",
+    phone: "+1 (555) 123-4567"
+  };
+
+  const recipientInfo = {
+    name: "Maria Rodriguez",
+    phone: "+1 (555) 987-6543"
+  };
+
   return <ScrollArea independentPanel={true} className="h-full px-[14px] my-0">
       <div className="orders-panel">
         <div className="right-panel-container p-[5px]">
@@ -97,10 +107,11 @@ export const OrderDetails = ({
                     
                     <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
                       <div className="flex items-start gap-2">
-                        <MapPin className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                        <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                         <div>
-                          <div className="text-[11px] text-muted-foreground mb-0.5">Pickup Address:</div>
-                          <div className="text-xs font-medium">{order.pickupAddress}</div>
+                          <div className="text-[11px] text-muted-foreground mb-0.5">Sender:</div>
+                          <div className="text-xs font-medium">{senderInfo.name}</div>
+                          <div className="text-xs text-muted-foreground">{senderInfo.phone}</div>
                         </div>
                       </div>
                       
@@ -109,10 +120,11 @@ export const OrderDetails = ({
                       </div>
                       
                       <div className="flex items-start gap-2">
-                        <MapPin className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                        <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                         <div>
-                          <div className="text-[11px] text-muted-foreground mb-0.5">Delivery Address:</div>
-                          <div className="text-xs font-medium">{order.deliveryAddress}</div>
+                          <div className="text-[11px] text-muted-foreground mb-0.5">Recipient:</div>
+                          <div className="text-xs font-medium">{recipientInfo.name}</div>
+                          <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
                         </div>
                       </div>
                     </div>
