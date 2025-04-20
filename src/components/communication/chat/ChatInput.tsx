@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Send, Paperclip, Mic, X } from "lucide-react";
@@ -82,17 +82,15 @@ export const ChatInput = ({
         </div>
       )}
       
-      <div className="flex items-center space-x-2">
-        <div className="flex-grow">
-          <Textarea 
-            value={message} 
-            onChange={e => setMessage(e.target.value)} 
-            placeholder="Type your message here..." 
-            className="min-h-[80px] resize-none"
-            onKeyDown={handleKeyPress}
-          />
-        </div>
-        <div className="flex flex-col space-y-2">
+      <div className="flex flex-col space-y-2">
+        <Textarea 
+          value={message} 
+          onChange={e => setMessage(e.target.value)} 
+          placeholder="Type your message here..." 
+          className="min-h-[80px] resize-none"
+          onKeyDown={handleKeyPress}
+        />
+        <div className="flex items-center space-x-2">
           <Button variant="ghost" size="icon" onClick={handleFileAttachment} title="Attach files">
             <Paperclip className="h-5 w-5" />
           </Button>
