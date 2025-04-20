@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
@@ -49,7 +48,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
           {
             featureType: "road",
             elementType: "geometry.stroke",
-            stylers: [{ color: "#212835" }]
+            stylers: [{ color: "#212a37" }]
           },
           {
             featureType: "road.highway",
@@ -255,13 +254,13 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-[800px] h-[840px] p-0 bg-[#242f3e] border-[#3a4c63] text-white overflow-hidden flex flex-col">
+        <DialogContent className="max-w-[556px] h-[140px] p-0 bg-[#242f3e] border-[#3a4c63] text-white overflow-hidden">
           <DialogTitle className="sr-only">Map View</DialogTitle>
           <DialogDescription className="sr-only">
             Interactive map showing pickup, delivery, and driver locations
           </DialogDescription>
           
-          <div className="relative w-full flex-1 overflow-hidden">
+          <div className="relative w-full h-full">
             <div className="absolute top-2 right-2 flex gap-2 z-10">
               <Button
                 variant="secondary"
