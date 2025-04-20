@@ -228,13 +228,14 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-3xl h-[80vh] bg-[#242f3e] border-[#3a4c63] text-white">
+        <DialogContent className="max-w-4xl h-[90vh] p-0 bg-[#242f3e] border-[#3a4c63] text-white overflow-hidden">
           <DialogTitle className="sr-only">Map View</DialogTitle>
           <DialogDescription className="sr-only">
             Interactive map showing pickup, delivery, and driver locations
           </DialogDescription>
-          <div className="relative w-full h-full rounded-md overflow-hidden">
-            <div className="absolute top-4 right-4 flex gap-2 z-10">
+          
+          <div className="relative w-full h-full p-6">
+            <div className="absolute top-0 right-0 flex gap-2 z-10 p-4">
               <Button
                 variant="secondary"
                 size="icon"
@@ -255,8 +256,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
             <div 
               id="dialogMap"
               ref={dialogMapRef}
-              className="absolute inset-0 w-full h-full bg-[#242f3e]"
-              style={{ minHeight: "500px" }}
+              className="w-full h-full bg-[#242f3e]"
             />
           </div>
         </DialogContent>
@@ -264,3 +264,4 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
     </>
   );
 };
+
