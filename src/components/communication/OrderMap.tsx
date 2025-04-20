@@ -156,7 +156,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
   }, [pickupAddress, deliveryAddress, driverName]);
 
   return (
-    <div className="relative w-full h-[200px] rounded-md overflow-hidden shadow-sm">
+    <div className="relative w-full h-[140px] rounded-md overflow-hidden shadow-sm">
       <div 
         ref={mapRef} 
         className="w-full h-full"
