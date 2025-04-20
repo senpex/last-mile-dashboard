@@ -1,8 +1,10 @@
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, Paperclip, Mic, X } from "lucide-react";
+import { Send, Paperclip, Mic, X, MicOff } from "lucide-react";
+import { useVoiceRecorder } from '@/hooks/useVoiceRecorder';
+import { toast } from "sonner";
 
 interface ChatInputProps {
   onSendMessage: () => void;
@@ -16,6 +18,7 @@ interface ChatInputProps {
     file: File;
     type: 'image' | 'document' | 'spreadsheet' | 'pdf';
   }>>>;
+  onSendVoiceMessage?: (audioBlob: Blob) => void;
 }
 
 export const ChatInput = ({ 
@@ -23,8 +26,12 @@ export const ChatInput = ({
   message, 
   setMessage, 
   attachedFiles, 
-  setAttachedFiles 
+  setAttachedFiles,
+  onSendVoiceMessage 
 }: ChatInputProps) => {
+  const { startRecording, stopRecording, isRecording } = useVoiceRecorder();
+  const recordingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const handleFileAttachment = () => {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
@@ -62,6 +69,43 @@ export const ChatInput = ({
     }
   };
 
+  const handleVoiceButtonMouseDown = async () => {
+    try {
+      await startRecording();
+      
+      // Safety timeout to stop recording after 60 seconds
+      recordingTimeoutRef.current = setTimeout(() => {
+        handleVoiceButtonMouseUp();
+        toast.warning("Voice recording stopped after 60 seconds");
+      }, 60000);
+      
+    } catch (error) {
+      console.error('Failed to start recording:', error);
+      toast.error("Failed to start recording. Make sure microphone permissions are granted.");
+    }
+  };
+
+  const handleVoiceButtonMouseUp = async () => {
+    if (recordingTimeoutRef.current) {
+      clearTimeout(recordingTimeoutRef.current);
+      recordingTimeoutRef.current = null;
+    }
+    
+    try {
+      const audioBlob = await stopRecording();
+      console.log('Voice recording completed, blob size:', audioBlob.size);
+      
+      if (audioBlob.size > 0 && onSendVoiceMessage) {
+        onSendVoiceMessage(audioBlob);
+        toast.success("Voice message sent");
+      } else if (audioBlob.size === 0) {
+        toast.error("Voice message is empty");
+      }
+    } catch (error) {
+      console.error('Failed to stop recording:', error);
+    }
+  };
+
   return (
     <div className="p-4 border-t bg-background">
       {attachedFiles.length > 0 && (
@@ -96,8 +140,15 @@ export const ChatInput = ({
             <Paperclip className="h-5 w-5" />
           </Button>
           <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="icon" title="Voice message">
-              <Mic className="h-5 w-5" />
+            <Button 
+              variant={isRecording ? "destructive" : "ghost"}
+              size="icon" 
+              onMouseDown={handleVoiceButtonMouseDown}
+              onMouseUp={handleVoiceButtonMouseUp}
+              onMouseLeave={handleVoiceButtonMouseUp}
+              title={isRecording ? "Recording... Release to send" : "Hold to record"}
+            >
+              {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
             </Button>
             <Button 
               size="icon" 

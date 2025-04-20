@@ -11,16 +11,16 @@ const UsersTableContainer = React.forwardRef<
   }
 >(({ 
   className, 
-  height = "h-[calc(100vh-220px)]", // Reduced height by 10px 
+  height = "h-[calc(100vh-220px)]",
   stickyHeader = true,
   ...props 
 }, ref) => (
   <div 
     ref={ref}
     className={cn(
-      "relative border rounded-md overflow-hidden flex-shrink-0 w-full sticky top-0",
+      "relative border rounded-md overflow-hidden flex-shrink-0 w-full",
       "transition-all duration-300 shadow-sm", 
-      "px-0 mt-0 mb-[5px]", // Remove top margin
+      "px-0 mt-0 mb-[5px]",
       height, 
       className
     )} 
@@ -31,7 +31,9 @@ const UsersTableContainer = React.forwardRef<
     {...props} 
   >
     <ScrollArea orientation="both" className="h-full w-full">
-      {props.children}
+      <div className="min-w-max">
+        {props.children}
+      </div>
     </ScrollArea>
   </div>
 ))

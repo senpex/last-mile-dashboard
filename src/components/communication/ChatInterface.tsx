@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { OrderDetails } from './OrderDetails';
 import { ChatHeader } from './chat/ChatHeader';
@@ -17,7 +17,9 @@ interface ChatInterfaceProps {
     role: string;
     status: string;
     priority: string;
+    orderId?: string;
   };
+  onClose?: () => void;
 }
 
 export type MessageType = {
@@ -35,7 +37,7 @@ export type MessageType = {
   }>;
 };
 
-export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
+export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => {
   const [message, setMessage] = useState("");
   const [activeTab, setActiveTab] = useState("chat");
   const [attachedFiles, setAttachedFiles] = useState<Array<{
@@ -43,8 +45,7 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
     type: 'image' | 'document' | 'spreadsheet' | 'pdf';
   }>>([]);
   const [noteText, setNoteText] = useState("");
-
-  const messages: MessageType[] = [
+  const [messages, setMessages] = useState<MessageType[]>([
     {
       id: '1',
       senderId: 'driver1',
@@ -101,10 +102,10 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
       content: 'Got it, thanks! I see the gate now.',
       timestamp: '10:23 AM'
     }
-  ];
+  ]);
 
-  const orderData = {
-    id: "ORD-1234",
+  const orderData = user.orderId ? {
+    id: user.orderId,
     status: "active" as "active" | "completed" | "cancelled",
     pickupAddress: "123 Pickup St, City",
     deliveryAddress: "456 Delivery Ave, City",
@@ -114,11 +115,29 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
     createdAt: "Today at 9:30 AM",
     pickupTime: "10:00 AM",
     dropoffTime: "11:30 AM"
-  };
+  } : null;
+
+  const showDriverInfo = !(user.role === 'driver' && user.status === 'working');
 
   const handleSendMessage = () => {
     if (message.trim() === '' && attachedFiles.length === 0) return;
-    console.log("Sending message:", message, attachedFiles);
+    
+    const newMessage: MessageType = {
+      id: `msg-${Date.now()}`,
+      senderId: user.id,
+      senderName: user.name,
+      senderRole: user.role === 'driver' ? 'driver' : 'client',
+      content: message,
+      timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
+      attachments: attachedFiles.map(file => ({
+        id: `att-${Date.now()}-${file.file.name}`,
+        name: file.file.name,
+        type: file.type,
+        url: URL.createObjectURL(file.file)
+      }))
+    };
+
+    setMessages(prev => [...prev, newMessage]);
     setMessage('');
     setAttachedFiles([]);
   };
@@ -130,12 +149,37 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
     }
   };
 
+  const handleSendVoiceMessage = (audioBlob: Blob) => {
+    const newMessage: MessageType = {
+      id: `msg-${Date.now()}`,
+      senderId: user.id,
+      senderName: user.name,
+      senderRole: user.role === 'driver' ? 'driver' : 'client',
+      content: '',
+      timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
+      attachments: [{
+        id: `voice-${Date.now()}`,
+        name: 'Voice Message',
+        type: 'voice',
+        url: URL.createObjectURL(audioBlob)
+      }]
+    };
+
+    setMessages(prev => [...prev, newMessage]);
+  };
+
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case 'chat':
         return (
           <>
-            <ScrollArea className="flex-1 p-4">
+            <ScrollArea className="flex-1 p-4 overflow-y-auto">
               <ChatMessages messages={messages} />
             </ScrollArea>
             <ChatInput 
@@ -144,11 +188,16 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
               setMessage={setMessage}
               attachedFiles={attachedFiles}
               setAttachedFiles={setAttachedFiles}
+              onSendVoiceMessage={handleSendVoiceMessage}
             />
           </>
         );
       case 'history':
-        return <ChatHistory userId={user.id} />;
+        return (
+          <ScrollArea className="flex-1 p-4 overflow-y-auto">
+            <ChatHistory userId={user.id} />
+          </ScrollArea>
+        );
       case 'notes':
         return (
           <div className="flex-1 p-4 space-y-4">
@@ -178,12 +227,13 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
   };
 
   return (
-    <div className="grid grid-cols-[1fr_320px] gap-4 h-full">
+    <div className={`grid ${orderData ? 'grid-cols-[1fr_320px]' : 'grid-cols-[1fr]'} gap-4 h-full`}>
       <div className="flex flex-col rounded-lg border bg-card shadow-sm overflow-hidden">
         <ChatHeader 
           user={user}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
+          onClose={handleClose}
         />
         
         <div className="flex-1 overflow-hidden flex flex-col">
@@ -191,9 +241,13 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
         </div>
       </div>
 
-      <div className="rounded-lg border bg-card shadow-sm overflow-hidden">
-        <OrderDetails orderData={orderData} />
-      </div>
+      {orderData && (
+        <div className="rounded-lg border bg-card shadow-sm overflow-hidden">
+          <OrderDetails orderData={orderData} showDriverInfo={showDriverInfo} />
+        </div>
+      )}
     </div>
   );
 };
+
+export default ChatInterface;
