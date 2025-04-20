@@ -21,13 +21,13 @@ const UsersTableContainer = React.forwardRef<
       "relative border rounded-md overflow-hidden flex-1",
       "transition-all duration-300 shadow-sm", 
       "px-0 mt-0 mb-[5px]",
-      "w-full max-w-full",
+      "w-full",
       height, 
       className
     )}
   >
     <ScrollArea orientation="both" className="h-full w-full">
-      <div className="min-w-[600px] w-full">
+      <div className="w-full">
         {props.children}
       </div>
     </ScrollArea>
