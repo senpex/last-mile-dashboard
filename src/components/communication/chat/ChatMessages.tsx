@@ -1,7 +1,8 @@
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { FileText, FileSpreadsheet, ImageIcon, Mic } from "lucide-react";
+import { FileText, FileSpreadsheet, ImageIcon, Mic, Play } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { MessageType } from '../ChatInterface';
 
 interface ChatMessagesProps {
@@ -25,10 +26,34 @@ const FileIcon = ({ type }: { type: 'image' | 'document' | 'spreadsheet' | 'pdf'
 
 export const ChatMessages = ({ messages }: ChatMessagesProps) => {
   const messageEndRef = useRef<HTMLDivElement>(null);
+  const [playingAudio, setPlayingAudio] = useState<string | null>(null);
+  const audioRefs = useRef<{ [key: string]: HTMLAudioElement }>({});
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  const handlePlayVoice = (attachmentId: string, url: string) => {
+    if (!audioRefs.current[attachmentId]) {
+      audioRefs.current[attachmentId] = new Audio(url);
+      audioRefs.current[attachmentId].addEventListener('ended', () => {
+        setPlayingAudio(null);
+      });
+    }
+
+    if (playingAudio === attachmentId) {
+      audioRefs.current[attachmentId].pause();
+      audioRefs.current[attachmentId].currentTime = 0;
+      setPlayingAudio(null);
+    } else {
+      if (playingAudio) {
+        audioRefs.current[playingAudio].pause();
+        audioRefs.current[playingAudio].currentTime = 0;
+      }
+      audioRefs.current[attachmentId].play();
+      setPlayingAudio(attachmentId);
+    }
+  };
 
   return (
     <>
@@ -67,8 +92,26 @@ export const ChatMessages = ({ messages }: ChatMessagesProps) => {
                       text-xs
                     "
                   >
-                    <FileIcon type={attachment.type} />
-                    <span className="max-w-[120px] truncate">{attachment.name}</span>
+                    {attachment.type === 'voice' ? (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 px-2"
+                        onClick={() => handlePlayVoice(attachment.id, attachment.url)}
+                      >
+                        {playingAudio === attachment.id ? (
+                          <span>Playing...</span>
+                        ) : (
+                          <Play className="h-4 w-4 mr-1" />
+                        )}
+                        Voice Message
+                      </Button>
+                    ) : (
+                      <>
+                        <FileIcon type={attachment.type} />
+                        <span className="max-w-[120px] truncate">{attachment.name}</span>
+                      </>
+                    )}
                   </div>
                 ))}
               </div>

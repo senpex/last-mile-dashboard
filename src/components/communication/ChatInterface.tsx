@@ -149,6 +149,25 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
     }
   };
 
+  const handleSendVoiceMessage = (audioBlob: Blob) => {
+    const newMessage: MessageType = {
+      id: `msg-${Date.now()}`,
+      senderId: user.id,
+      senderName: user.name,
+      senderRole: user.role === 'driver' ? 'driver' : 'client',
+      content: '',
+      timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
+      attachments: [{
+        id: `voice-${Date.now()}`,
+        name: 'Voice Message',
+        type: 'voice',
+        url: URL.createObjectURL(audioBlob)
+      }]
+    };
+
+    setMessages(prev => [...prev, newMessage]);
+  };
+
   const handleClose = () => {
     if (onClose) {
       onClose();
@@ -169,6 +188,7 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
               setMessage={setMessage}
               attachedFiles={attachedFiles}
               setAttachedFiles={setAttachedFiles}
+              onSendVoiceMessage={handleSendVoiceMessage}
             />
           </>
         );

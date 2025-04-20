@@ -1,8 +1,8 @@
-
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, Paperclip, Mic, X } from "lucide-react";
+import { Send, Paperclip, Mic, X, Play } from "lucide-react";
+import { useVoiceRecorder } from '@/hooks/useVoiceRecorder';
 
 interface ChatInputProps {
   onSendMessage: () => void;
@@ -16,6 +16,7 @@ interface ChatInputProps {
     file: File;
     type: 'image' | 'document' | 'spreadsheet' | 'pdf';
   }>>>;
+  onSendVoiceMessage?: (audioBlob: Blob) => void;
 }
 
 export const ChatInput = ({ 
@@ -23,8 +24,12 @@ export const ChatInput = ({
   message, 
   setMessage, 
   attachedFiles, 
-  setAttachedFiles 
+  setAttachedFiles,
+  onSendVoiceMessage 
 }: ChatInputProps) => {
+  const { startRecording, stopRecording } = useVoiceRecorder();
+  const [isRecording, setIsRecording] = useState(false);
+
   const handleFileAttachment = () => {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
@@ -62,6 +67,30 @@ export const ChatInput = ({
     }
   };
 
+  const handleVoiceButtonMouseDown = async () => {
+    try {
+      await startRecording();
+      setIsRecording(true);
+    } catch (error) {
+      console.error('Failed to start recording:', error);
+    }
+  };
+
+  const handleVoiceButtonMouseUp = async () => {
+    if (!isRecording) return;
+    
+    try {
+      const audioBlob = await stopRecording();
+      setIsRecording(false);
+      if (onSendVoiceMessage) {
+        onSendVoiceMessage(audioBlob);
+      }
+    } catch (error) {
+      console.error('Failed to stop recording:', error);
+      setIsRecording(false);
+    }
+  };
+
   return (
     <div className="p-4 border-t bg-background">
       {attachedFiles.length > 0 && (
@@ -96,7 +125,14 @@ export const ChatInput = ({
             <Paperclip className="h-5 w-5" />
           </Button>
           <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="icon" title="Voice message">
+            <Button 
+              variant={isRecording ? "destructive" : "ghost"}
+              size="icon" 
+              onMouseDown={handleVoiceButtonMouseDown}
+              onMouseUp={handleVoiceButtonMouseUp}
+              onMouseLeave={handleVoiceButtonMouseUp}
+              title={isRecording ? "Recording... Release to send" : "Hold to record"}
+            >
               <Mic className="h-5 w-5" />
             </Button>
             <Button 
