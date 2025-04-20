@@ -95,7 +95,7 @@ export const OrderDetails = ({
   return <ScrollArea independentPanel={true} className="h-full px-[14px] my-0">
       <div className="orders-panel">
         <div className="right-panel-container p-[5px]">
-          <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b px-[22px] my-[17px]">
+          <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
             Orders on Hand
           </h2>
           
@@ -177,7 +177,7 @@ export const OrderDetails = ({
               </div>;
         })}
 
-          <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b px-[22px] my-[17px]">
+          <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
             Accepted Repeated Orders
           </h2>
           
