@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -107,6 +108,22 @@ export const OrderDetails = ({
   const isRepeatedOrder = (orderId: string) => repeatedOrders.some(order => order.id === orderId);
   const isHistoryOrder = (orderId: string) => historyOrders.some(order => order.id === orderId);
 
+  // Helper function to determine what info to show based on user role, order type and status
+  const shouldShowDriverInfo = (orderId: string) => {
+    // For client users viewing history orders - show driver info
+    if (user?.role === 'client' && isHistoryOrder(orderId)) {
+      return true;
+    }
+    
+    // For driver users with active orders - show recipient/sender info
+    if (user?.role === 'driver' && user?.status === 'working') {
+      return false;
+    }
+    
+    // For all other cases, use the showDriverInfo prop
+    return showDriverInfo;
+  };
+
   return <ScrollArea independentPanel={true} className="h-full px-[14px] my-0">
     <div className="orders-panel">
       <div className="right-panel-container p-[5px]">
@@ -148,9 +165,7 @@ export const OrderDetails = ({
                   </div>
                   
                   <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
-                    {(showDriverInfo && !isHistoryOrder(order.id)) || 
-                     (user?.role === 'client') || 
-                     (user?.role === 'driver' && user?.status !== 'working') ? (
+                    {shouldShowDriverInfo(order.id) ? (
                       <div className="flex items-start gap-2">
                         <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                         <div>
@@ -256,9 +271,7 @@ export const OrderDetails = ({
                   </div>
                   
                   <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
-                    {(showDriverInfo && !isHistoryOrder(order.id)) || 
-                     (user?.role === 'client') || 
-                     (user?.role === 'driver' && user?.status !== 'working') ? (
+                    {shouldShowDriverInfo(order.id) ? (
                       <div className="flex items-start gap-2">
                         <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                         <div>
@@ -369,8 +382,7 @@ export const OrderDetails = ({
                   </div>
                   
                   <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
-                    {((user?.role === 'client' && isHistoryOrder(order.id)) || 
-                      showDriverInfo && !isHistoryOrder(order.id)) ? (
+                    {shouldShowDriverInfo(order.id) ? (
                       <div className="flex items-start gap-2">
                         <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                         <div>
