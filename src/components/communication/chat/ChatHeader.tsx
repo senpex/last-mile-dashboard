@@ -15,9 +15,10 @@ interface ChatHeaderProps {
   };
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  onClose?: () => void;
 }
 
-export const ChatHeader = ({ user, activeTab, setActiveTab }: ChatHeaderProps) => {
+export const ChatHeader = ({ user, activeTab, setActiveTab, onClose }: ChatHeaderProps) => {
   const onlineUsers = [
     "John Smith",
     "Emma Johnson",
@@ -27,6 +28,12 @@ export const ChatHeader = ({ user, activeTab, setActiveTab }: ChatHeaderProps) =
   ];
 
   const profileType = user.role === 'driver' ? 'Driver' : 'Customer';
+
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
 
   return (
     <div className="p-4 border-b bg-card">
@@ -94,7 +101,7 @@ export const ChatHeader = ({ user, activeTab, setActiveTab }: ChatHeaderProps) =
                 View Profile
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-600">
+              <DropdownMenuItem onClick={handleClose} className="text-red-600">
                 <X className="h-4 w-4 mr-2" />
                 Close Chat
               </DropdownMenuItem>

@@ -19,6 +19,7 @@ interface ChatInterfaceProps {
     priority: string;
     orderId?: string;
   };
+  onClose?: () => void;
 }
 
 export type MessageType = {
@@ -36,7 +37,7 @@ export type MessageType = {
   }>;
 };
 
-export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
+export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => {
   const [message, setMessage] = useState("");
   const [activeTab, setActiveTab] = useState("chat");
   const [attachedFiles, setAttachedFiles] = useState<Array<{
@@ -133,6 +134,12 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
     }
   };
 
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case 'chat':
@@ -187,6 +194,7 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
           user={user}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
+          onClose={handleClose}
         />
         
         <div className="flex-1 overflow-hidden flex flex-col">

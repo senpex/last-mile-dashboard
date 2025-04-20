@@ -867,14 +867,19 @@ const CustomerSupport = () => {
     }
   };
   const onlineUsers = ["John Smith", "Emma Johnson", "Mike Wilson", "Sarah Davis", "Robert Taylor"];
-  return <Layout>
+  const handleCloseChat = () => {
+    setSelectedChat(null);
+  };
+
+  return (
+    <Layout>
       <div className="flex items-center gap-2 p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <h1 className="text-2xl font-semibold">Customer Support</h1>
       </div>
 
       <div className="container mx-auto p-4 h-[calc(100vh-8rem)] bg-background" style={{
-      marginLeft: 'calc(240px - 240px)'
-    }}>
+        marginLeft: 'calc(240px - 240px)'
+      }}>
         <div className="flex h-full gap-4">
           <div className="w-[410px] flex-shrink-0 flex flex-col rounded-lg border bg-card shadow-sm mx-0 px-0">
             <div className="p-4 border-b">
@@ -978,7 +983,14 @@ const CustomerSupport = () => {
           </div>
 
           <div className="flex-1 min-w-0">
-            {selectedChat ? <ChatInterface chatId={selectedChat} user={chats.find(chat => chat.id === selectedChat)!} /> : <div className="h-full flex items-center justify-center">
+            {selectedChat ? (
+              <ChatInterface 
+                chatId={selectedChat} 
+                user={chats.find(chat => chat.id === selectedChat)!}
+                onClose={handleCloseChat}
+              />
+            ) : (
+              <div className="h-full flex items-center justify-center">
                 <Card className="w-full max-w-md mx-auto p-8 text-center">
                   <MessageSquare className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
                   <h2 className="text-xl font-semibold mb-2">No chat selected</h2>
@@ -986,11 +998,13 @@ const CustomerSupport = () => {
                     Select a conversation from the list to start chatting or use the filters to find a specific conversation.
                   </p>
                 </Card>
-              </div>}
+              </div>
+            )}
           </div>
         </div>
       </div>
-    </Layout>;
+    </Layout>
+  );
 };
 
 export default CustomerSupport;
