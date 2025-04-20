@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -104,10 +103,11 @@ export const ChatInput = ({
               onClick={onSendMessage} 
               disabled={message.trim() === '' && attachedFiles.length === 0}
               title="Send message"
-              className="min-w-[80px]" // Added to give space for text
+              variant={message.trim() !== '' || attachedFiles.length > 0 ? 'default' : 'outline'}
+              className="min-w-[80px] inline-flex items-center gap-1" 
             >
-              <Send className="h-5 w-5 mr-2" /> {/* Added margin to separate icon and text */}
-              Send
+              <Send className="h-4 w-4" /> 
+              <span>Send</span>
             </Button>
           </div>
         </div>
@@ -115,4 +115,3 @@ export const ChatInput = ({
     </div>
   );
 };
-
