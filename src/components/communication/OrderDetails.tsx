@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -6,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MapPin, ChevronUp, ChevronDown } from "lucide-react";
 import { OrderMap } from "./OrderMap";
+
 interface OrderDetailsProps {
   orderData: {
     id: string;
@@ -18,11 +20,8 @@ interface OrderDetailsProps {
     createdAt: string;
   };
 }
-const StatusBadge = ({
-  status
-}: {
-  status: 'active' | 'completed' | 'cancelled';
-}) => {
+
+const StatusBadge = ({ status }: { status: 'active' | 'completed' | 'cancelled' }) => {
   switch (status) {
     case 'active':
       return <Badge className="bg-green-500">Active</Badge>;
@@ -32,53 +31,84 @@ const StatusBadge = ({
       return <Badge className="bg-red-500">Cancelled</Badge>;
   }
 };
-export const OrderDetails = ({
-  orderData
-}: OrderDetailsProps) => {
+
+export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
-  const orders = [{
-    ...orderData,
-    id: "909090"
-  }, {
-    ...orderData,
-    id: "909091",
-    status: "active" as const,
-    eta: "15:45 PM"
-  }, {
-    ...orderData,
-    id: "909092",
-    status: "active" as const,
-    eta: "16:30 PM"
-  }];
+  
+  const orders = [
+    {
+      ...orderData,
+      id: "909090"
+    },
+    {
+      ...orderData,
+      id: "909091",
+      status: "active" as const,
+      eta: "15:45 PM"
+    },
+    {
+      ...orderData,
+      id: "909092",
+      status: "active" as const,
+      eta: "16:30 PM"
+    }
+  ];
+  
   const knownLocations = {
     "123 Pickup St, City": "123 Pickup St, San Francisco, CA 94103",
     "456 Delivery Ave, City": "456 Delivery Ave, San Francisco, CA 94107"
   };
-  return <ScrollArea className="h-full" independentPanel={true}>
+
+  return (
+    <ScrollArea 
+      className="h-full" 
+      independentPanel={true}
+    >
       <div className="orders-panel">
-        <div className="px-4 space-y-2 py-[5px]">
+        <div className="px-4 py-2 space-y-2">
           <h2 className="text-sm font-semibold text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
             Orders on Hand
           </h2>
           
           {orders.map((order, index) => {
-          const isExpanded = expandedOrderId === order.id;
-          return <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
+            const isExpanded = expandedOrderId === order.id;
+            
+            return (
+              <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
                 <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
                   <h3 className="font-medium text-xs text-foreground/90">Order #{order.id}</h3>
-                  <Button variant="ghost" size="sm" onClick={() => setExpandedOrderId(isExpanded ? null : order.id)} className="h-6 w-6 p-0">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => setExpandedOrderId(isExpanded ? null : order.id)}
+                    className="h-6 w-6 p-0"
+                  >
                     {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
                   </Button>
                 </div>
                 
-                {isExpanded && <div className="px-3 pt-1 pb-3 space-y-3">
+                {isExpanded && (
+                  <div className="px-3 pt-1 pb-3 space-y-3">
                     <div className="flex justify-start">
-                      <Badge variant={order.status === 'active' ? 'success' : order.status === 'completed' ? 'default' : 'destructive'} className="text-[10px] px-2 py-0.5">
-                        {order.status === 'active' ? 'Active' : order.status === 'completed' ? 'Completed' : 'Cancelled'}
+                      <Badge 
+                        variant={
+                          order.status === 'active' ? 'success' : 
+                          order.status === 'completed' ? 'default' : 
+                          'destructive'
+                        }
+                        className="text-[10px] px-2 py-0.5"
+                      >
+                        {order.status === 'active' ? 'Active' : 
+                         order.status === 'completed' ? 'Completed' : 
+                         'Cancelled'}
                       </Badge>
                     </div>
                     
-                    <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
+                    <OrderMap 
+                      pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress}
+                      deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress}
+                      driverName={order.driverName}
+                    />
                     
                     <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
                       <div className="grid grid-cols-3 gap-1.5 text-[11px]">
@@ -128,15 +158,20 @@ export const OrderDetails = ({
                         </div>
                       </SheetContent>
                     </Sheet>
-                  </div>}
+                  </div>
+                )}
                 
-                {index !== orders.length - 1 && <Separator className="my-1 opacity-50" />}
-              </div>;
-        })}
+                {index !== orders.length - 1 && (
+                  <Separator className="my-1 opacity-50" />
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      <style jsx>{`
+      <style>
+        {`
         .orders-panel {
           @apply flex-1 transition-all duration-200;
           background: linear-gradient(to bottom, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
@@ -166,6 +201,8 @@ export const OrderDetails = ({
         :global(.dark) .address-card {
           background: rgba(0, 0, 0, 0.2);
         }
-      `}</style>
-    </ScrollArea>;
+        `}
+      </style>
+    </ScrollArea>
+  );
 };
