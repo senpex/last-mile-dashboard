@@ -82,6 +82,9 @@ const Dashboard = () => {
                   <div className="flex items-center justify-end gap-2">
                     <DollarSign className="h-5 w-5 text-green-500" />
                     <h3 className="text-2xl font-bold">{stats.profitability}%</h3>
+                    <div className="text-right text-xs text-muted-foreground">
+                      Target: 15%
+                    </div>
                   </div>
                 </CardContent>
               </Card>
