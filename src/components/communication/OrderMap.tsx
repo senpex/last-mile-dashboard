@@ -1,7 +1,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ZoomIn, ZoomOut } from "lucide-react";
 
@@ -17,8 +17,9 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
   const [mapError, setMapError] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [dialogMap, setDialogMap] = useState<google.maps.Map | null>(null);
 
-  const initMap = async (container: HTMLDivElement) => {
+  const initMap = async (container: HTMLDivElement, setMapInstance: (map: google.maps.Map) => void) => {
     // Clear any previous errors
     setMapError(null);
     
@@ -40,7 +41,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
         disableDefaultUI: true,
       });
 
-      setMap(mapInstance);
+      setMapInstance(mapInstance);
 
       // Create geocoder to convert addresses to coordinates
       const geocoder = new google.maps.Geocoder();
@@ -160,7 +161,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
 
   useEffect(() => {
     if (mapRef.current) {
-      initMap(mapRef.current);
+      initMap(mapRef.current, setMap);
     }
   }, []);
 
@@ -168,20 +169,28 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
   useEffect(() => {
     if (isDialogOpen && dialogMapRef.current) {
       // Small delay to ensure DOM is ready
-      setTimeout(() => {
-        initMap(dialogMapRef.current!);
-      }, 100);
+      const timer = setTimeout(() => {
+        if (dialogMapRef.current) {
+          initMap(dialogMapRef.current, setDialogMap);
+        }
+      }, 300);
+      
+      return () => clearTimeout(timer);
     }
   }, [isDialogOpen]);
 
   const handleZoomIn = () => {
-    if (map) {
+    if (isDialogOpen && dialogMap) {
+      dialogMap.setZoom((dialogMap.getZoom() || 12) + 1);
+    } else if (map) {
       map.setZoom((map.getZoom() || 12) + 1);
     }
   };
 
   const handleZoomOut = () => {
-    if (map) {
+    if (isDialogOpen && dialogMap) {
+      dialogMap.setZoom((dialogMap.getZoom() || 12) - 1);
+    } else if (map) {
       map.setZoom((map.getZoom() || 12) - 1);
     }
   };
@@ -208,6 +217,9 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-3xl h-[80vh] bg-[#242f3e] border-[#3a4c63] text-white">
           <DialogTitle className="sr-only">Map View</DialogTitle>
+          <DialogDescription className="sr-only">
+            Interactive map showing pickup, delivery, and driver locations
+          </DialogDescription>
           <div className="relative w-full h-full rounded-md overflow-hidden">
             <div className="absolute top-4 right-4 flex gap-2 z-10">
               <Button
@@ -230,6 +242,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
             <div 
               ref={dialogMapRef}
               className="w-full h-full"
+              style={{ minHeight: "400px" }}
             />
           </div>
         </DialogContent>
