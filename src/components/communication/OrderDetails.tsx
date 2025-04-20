@@ -267,6 +267,10 @@ export const OrderDetails = ({
               </div>
             );
           })}
+
+          <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
+            History
+          </h2>
         </div>
       </div>
 
