@@ -178,15 +178,21 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
   };
 
   return (
-    <div className="flex flex-col rounded-lg border bg-card shadow-sm overflow-hidden h-full w-full">
-      <ChatHeader 
-        user={user}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-      />
-      
-      <div className="flex-1 overflow-hidden flex flex-col">
-        {renderContent()}
+    <div className="grid grid-cols-[1fr_320px] gap-4 h-full">
+      <div className="flex flex-col rounded-lg border bg-card shadow-sm overflow-hidden">
+        <ChatHeader 
+          user={user}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        />
+        
+        <div className="flex-1 overflow-hidden flex flex-col">
+          {renderContent()}
+        </div>
+      </div>
+
+      <div className="rounded-lg border bg-card shadow-sm overflow-hidden">
+        <OrderDetails orderData={orderData} />
       </div>
     </div>
   );
