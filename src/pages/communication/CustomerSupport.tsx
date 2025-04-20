@@ -927,7 +927,7 @@ const CustomerSupport = () => {
                   Working Drivers
                 </Button>
                 <Button variant={filterStatus === "client" ? "default" : "outline"} size="sm" onClick={() => setFilterStatus("client")} className="h-8">
-                  Clients
+                  Customers
                 </Button>
                 <Button variant={filterStatus === "unapproved-drivers" ? "default" : "outline"} size="sm" onClick={() => setFilterStatus("unapproved-drivers")} className="h-8">
                   Unapproved Drivers
