@@ -79,9 +79,11 @@ const Dashboard = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="flex items-center justify-end gap-2">
-                    <DollarSign className="h-5 w-5 text-green-500" />
-                    <h3 className="text-2xl font-bold">{stats.profitability}%</h3>
+                  <div className="flex flex-col items-end gap-1">
+                    <div className="flex items-center justify-end gap-2">
+                      <DollarSign className="h-5 w-5 text-green-500" />
+                      <h3 className="text-2xl font-bold">{stats.profitability}%</h3>
+                    </div>
                     <div className="text-right text-xs text-muted-foreground">
                       Target: 15%
                     </div>
