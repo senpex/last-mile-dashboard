@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -83,22 +82,29 @@ export const ChatInput = ({
         </div>
       )}
       
-      <div className="flex items-end gap-2">
-        <Textarea 
-          value={message} 
-          onChange={e => setMessage(e.target.value)} 
-          placeholder="Type your message here..." 
-          className="min-h-[80px]"
-          onKeyDown={handleKeyPress}
-        />
-        <div className="flex flex-col gap-2">
-          <Button variant="ghost" size="icon" onClick={handleFileAttachment}>
+      <div className="flex items-center space-x-2">
+        <div className="flex-grow">
+          <Textarea 
+            value={message} 
+            onChange={e => setMessage(e.target.value)} 
+            placeholder="Type your message here..." 
+            className="min-h-[80px] resize-none"
+            onKeyDown={handleKeyPress}
+          />
+        </div>
+        <div className="flex flex-col space-y-2">
+          <Button variant="ghost" size="icon" onClick={handleFileAttachment} title="Attach files">
             <Paperclip className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" title="Voice message">
             <Mic className="h-5 w-5" />
           </Button>
-          <Button size="icon" onClick={onSendMessage} disabled={message.trim() === '' && attachedFiles.length === 0}>
+          <Button 
+            size="icon" 
+            onClick={onSendMessage} 
+            disabled={message.trim() === '' && attachedFiles.length === 0}
+            title="Send message"
+          >
             <Send className="h-5 w-5" />
           </Button>
         </div>
