@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
@@ -213,29 +212,29 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-4xl h-[70vh] p-0 bg-[#242f3e] border-[#3a4c63] text-white overflow-hidden">
+        <DialogContent className="max-w-[556px] h-[140px] p-0 bg-[#242f3e] border-[#3a4c63] text-white overflow-hidden">
           <DialogTitle className="sr-only">Map View</DialogTitle>
           <DialogDescription className="sr-only">
             Interactive map showing pickup, delivery, and driver locations
           </DialogDescription>
           
           <div className="relative w-full h-full">
-            <div className="absolute top-4 right-4 flex gap-2 z-10">
+            <div className="absolute top-2 right-2 flex gap-2 z-10">
               <Button
                 variant="secondary"
                 size="icon"
                 onClick={handleZoomIn}
-                className="h-8 w-8 bg-[#3a4c63] hover:bg-[#4a5c73] text-white border-none"
+                className="h-6 w-6 bg-[#3a4c63] hover:bg-[#4a5c73] text-white border-none"
               >
-                <ZoomIn className="h-4 w-4" />
+                <ZoomIn className="h-3 w-3" />
               </Button>
               <Button
                 variant="secondary"
                 size="icon"
                 onClick={handleZoomOut}
-                className="h-8 w-8 bg-[#3a4c63] hover:bg-[#4a5c73] text-white border-none"
+                className="h-6 w-6 bg-[#3a4c63] hover:bg-[#4a5c73] text-white border-none"
               >
-                <ZoomOut className="h-4 w-4" />
+                <ZoomOut className="h-3 w-3" />
               </Button>
             </div>
             <div 
