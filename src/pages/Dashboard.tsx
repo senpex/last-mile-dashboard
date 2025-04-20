@@ -20,7 +20,7 @@ const Dashboard = () => {
     customerChats: 8,
     ezCaterNewOrders: 4,
     ezCaterModifications: 2,
-    profitability: 85.5
+    profitability: 16
   };
 
   const companies = [
