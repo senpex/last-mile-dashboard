@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -6,6 +7,8 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MapPin, ChevronUp, ChevronDown } from "lucide-react";
 import { OrderMap } from "./OrderMap";
+import { cn } from "@/lib/utils";
+
 interface OrderDetailsProps {
   orderData: {
     id: string;
@@ -18,6 +21,7 @@ interface OrderDetailsProps {
     createdAt: string;
   };
 }
+
 const StatusBadge = ({
   status
 }: {
@@ -32,6 +36,7 @@ const StatusBadge = ({
       return <Badge className="bg-red-500">Cancelled</Badge>;
   }
 };
+
 export const OrderDetails = ({
   orderData
 }: OrderDetailsProps) => {
@@ -56,8 +61,8 @@ export const OrderDetails = ({
   };
   return <ScrollArea independentPanel={true} className="h-full px-[14px] my-0">
       <div className="orders-panel">
-        <div className="space-y-2 py-[5px] px-[22px] my-[17px]">
-          <h2 className="text-sm font-semibold text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
+        <div className="right-panel-container p-[5px]">
+          <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b px-[22px] my-[17px]">
             Orders on Hand
           </h2>
           
@@ -136,7 +141,8 @@ export const OrderDetails = ({
         </div>
       </div>
 
-      <style jsx>{`
+      <style>
+        {`
         .orders-panel {
           @apply flex-1 transition-all duration-200;
           background: linear-gradient(to bottom, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
@@ -166,6 +172,7 @@ export const OrderDetails = ({
         :global(.dark) .address-card {
           background: rgba(0, 0, 0, 0.2);
         }
-      `}</style>
+        `}
+      </style>
     </ScrollArea>;
 };
