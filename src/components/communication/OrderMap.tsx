@@ -206,7 +206,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-3xl h-[80vh]">
+        <DialogContent className="max-w-3xl h-[80vh] bg-[#242f3e] border-[#3a4c63] text-white">
           <DialogTitle className="sr-only">Map View</DialogTitle>
           <div className="relative w-full h-full rounded-md overflow-hidden">
             <div className="absolute top-4 right-4 flex gap-2 z-10">
@@ -214,7 +214,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
                 variant="secondary"
                 size="icon"
                 onClick={handleZoomIn}
-                className="h-8 w-8"
+                className="h-8 w-8 bg-[#3a4c63] hover:bg-[#4a5c73] text-white border-none"
               >
                 <ZoomIn className="h-4 w-4" />
               </Button>
@@ -222,7 +222,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
                 variant="secondary"
                 size="icon"
                 onClick={handleZoomOut}
-                className="h-8 w-8"
+                className="h-8 w-8 bg-[#3a4c63] hover:bg-[#4a5c73] text-white border-none"
               >
                 <ZoomOut className="h-4 w-4" />
               </Button>
