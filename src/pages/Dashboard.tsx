@@ -84,7 +84,7 @@ const Dashboard = () => {
                       <DollarSign className="h-5 w-5 text-green-500" />
                       <h3 className="text-2xl font-bold">{stats.profitability}%</h3>
                     </div>
-                    <div className="text-right text-xs text-muted-foreground">
+                    <div className="text-right text-xs text-red-500">
                       Target: 15%
                     </div>
                   </div>
