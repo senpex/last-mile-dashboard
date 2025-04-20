@@ -365,7 +365,7 @@ const DeliveryTable = ({
         />
         
         <div className="flex-1 transition-all duration-300 my-4 ml-2">
-          <div className="flex flex-col h-full w-[600px]">
+          <div className="flex flex-col h-full w-[1200px]">
             <div className="w-full flex-grow flex-shrink-0">
               <TableContainer 
                 stickyHeader 
@@ -436,3 +436,4 @@ const DeliveryTable = ({
 };
 
 export default DeliveryTable;
+
