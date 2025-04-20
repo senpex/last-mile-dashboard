@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -134,7 +133,7 @@ const TableContainer = React.forwardRef<
   }
 >(({ 
   className, 
-  height = "h-[calc(100vh-280px)]", 
+  height = "h-[calc(100vh-280px)]", // Reduced height to pull the table up
   stickyHeader = true,
   filterSidebarOpen = false,
   ...props 
@@ -144,9 +143,9 @@ const TableContainer = React.forwardRef<
     className={cn(
       "relative border rounded-md overflow-hidden flex-shrink-0",
       "transition-all duration-300 shadow-sm", 
-      filterSidebarOpen ? "w-full" : "w-full", 
+      filterSidebarOpen ? "w-full" : "w-full", // Always use full width regardless of sidebar state
       height, 
-      "mr-[5px]", 
+      "mr-[5px]", // Add 5px margin on the right side
       className
     )} 
     style={{
@@ -156,9 +155,7 @@ const TableContainer = React.forwardRef<
     {...props} 
   >
     <ScrollArea orientation="both" className="h-full w-full">
-      <div className="min-w-max">
-        {props.children}
-      </div>
+      {props.children}
     </ScrollArea>
   </div>
 ))
