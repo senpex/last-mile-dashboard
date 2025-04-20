@@ -1,7 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Eye, DollarSign } from "lucide-react";
+import { Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   Select,
@@ -81,7 +81,6 @@ const Dashboard = () => {
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     <div className="flex items-center justify-end gap-2">
-                      <DollarSign className="h-5 w-5 text-green-500" />
                       <h3 className="text-2xl font-bold">{stats.profitability}%</h3>
                     </div>
                     <div className="text-right text-xs text-red-500">
