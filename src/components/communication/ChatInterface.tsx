@@ -7,7 +7,9 @@ import { ChatInput } from './chat/ChatInput';
 import { ChatHistory } from './chat/ChatHistory';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { PenLine } from "lucide-react";
+import { PenLine, ChevronRight } from "lucide-react";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ChatInterfaceProps {
   chatId: string;
@@ -30,7 +32,7 @@ export type MessageType = {
   attachments?: Array<{
     id: string;
     name: string;
-    type: 'image' | 'document' | 'spreadsheet' | 'pdf' | 'voice';
+    type: 'image' | 'document' | 'spreadsheet' | 'pdf';
     url: string;
   }>;
 };
@@ -43,6 +45,8 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
     type: 'image' | 'document' | 'spreadsheet' | 'pdf';
   }>>([]);
   const [noteText, setNoteText] = useState("");
+  const [showOrderDetails, setShowOrderDetails] = useState(false);
+  const isMobile = useIsMobile();
 
   const messages: MessageType[] = [
     {
@@ -178,22 +182,42 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
   };
 
   return (
-    <div className="grid grid-cols-[1fr_320px] gap-4 h-full">
-      <div className="flex flex-col rounded-lg border bg-card shadow-sm overflow-hidden">
-        <ChatHeader 
-          user={user}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-        />
-        
-        <div className="flex-1 overflow-hidden flex flex-col">
-          {renderContent()}
+    <ResizablePanelGroup direction="horizontal" className="h-full">
+      <ResizablePanel defaultSize={70} minSize={50} maxSize={80}>
+        <div className="flex flex-col rounded-lg border bg-card shadow-sm overflow-hidden h-full">
+          <ChatHeader 
+            user={user}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            onToggleDetails={isMobile ? () => setShowOrderDetails(!showOrderDetails) : undefined}
+          />
+          
+          <div className="flex-1 overflow-hidden flex flex-col">
+            {renderContent()}
+          </div>
         </div>
-      </div>
+      </ResizablePanel>
 
-      <div className="rounded-lg border bg-card shadow-sm overflow-hidden">
-        <OrderDetails orderData={orderData} />
-      </div>
-    </div>
+      {(!isMobile || showOrderDetails) && (
+        <>
+          <ResizableHandle withHandle />
+          <ResizablePanel defaultSize={30} minSize={20} maxSize={40}>
+            <div className={`rounded-lg border bg-card shadow-sm overflow-hidden h-full ${isMobile ? 'absolute right-0 top-0 bottom-0 w-[320px] z-50' : ''}`}>
+              {isMobile && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-4 right-4"
+                  onClick={() => setShowOrderDetails(false)}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              )}
+              <OrderDetails orderData={orderData} />
+            </div>
+          </ResizablePanel>
+        </>
+      )}
+    </ResizablePanelGroup>
   );
 };
