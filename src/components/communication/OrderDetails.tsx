@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MapPin, ChevronUp, ChevronDown } from "lucide-react";
 import { OrderMap } from "./OrderMap";
+
 interface OrderDetailsProps {
   orderData: {
     id: string;
@@ -18,6 +19,7 @@ interface OrderDetailsProps {
     createdAt: string;
   };
 }
+
 const StatusBadge = ({
   status
 }: {
@@ -32,6 +34,7 @@ const StatusBadge = ({
       return <Badge className="bg-red-500">Cancelled</Badge>;
   }
 };
+
 export const OrderDetails = ({
   orderData
 }: OrderDetailsProps) => {
@@ -54,10 +57,11 @@ export const OrderDetails = ({
     "123 Pickup St, City": "123 Pickup St, San Francisco, CA 94103",
     "456 Delivery Ave, City": "456 Delivery Ave, San Francisco, CA 94107"
   };
+
   return <ScrollArea className="h-full" independentPanel={true}>
       <div className="orders-panel">
-        <div className="space-y-2 py-[5px] px-[22px] my-[17px]">
-          <h2 className="text-sm font-semibold text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
+        <div className="space-y-2 py-[5px] px-[5px] my-[17px]">
+          <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
             Orders on Hand
           </h2>
           
