@@ -77,6 +77,15 @@ export const OrderDetails = ({
     ]
   }];
 
+  const historyOrders = Array.from({ length: 12 }, (_, index) => ({
+    ...orderData,
+    id: `hist-${900000 + index}`,
+    status: "completed" as const,
+    pickupTime: `${new Date(Date.now() - (index + 1) * 24 * 60 * 60 * 1000).toLocaleDateString()} 14:00`,
+    dropoffTime: `${new Date(Date.now() - (index + 1) * 24 * 60 * 60 * 1000).toLocaleDateString()} 15:30`,
+    eta: "Completed"
+  }));
+
   const knownLocations = {
     "123 Pickup St, City": "123 Pickup St, San Francisco, CA 94103",
     "456 Delivery Ave, City": "456 Delivery Ave, San Francisco, CA 94107"
@@ -271,6 +280,97 @@ export const OrderDetails = ({
           <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
             History
           </h2>
+
+          {historyOrders.map((order, index) => {
+            const isExpanded = expandedOrderId === order.id;
+            return (
+              <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
+                <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
+                  <h3 className="font-medium text-xs text-foreground/90">Order #{order.id}</h3>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => setExpandedOrderId(isExpanded ? null : order.id)} 
+                    className="h-6 w-6 p-0"
+                  >
+                    {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+                  </Button>
+                </div>
+                
+                {isExpanded && (
+                  <div className="px-3 pt-1 pb-3 space-y-3">
+                    <div className="flex justify-start">
+                      <Badge variant="default" className="text-[10px] px-2 py-0.5">
+                        Completed
+                      </Badge>
+                    </div>
+                    
+                    <OrderMap 
+                      pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress}
+                      deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress}
+                      driverName={order.driverName}
+                    />
+                    
+                    <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
+                      <div className="grid grid-cols-3 gap-1.5 text-[11px]">
+                        <div className="text-muted-foreground">Pickup time:</div>
+                        <div className="col-span-2 font-medium">{order.pickupTime}</div>
+                        
+                        <div className="text-muted-foreground">Dropoff time:</div>
+                        <div className="col-span-2 font-medium">{order.dropoffTime}</div>
+
+                        <div className="text-muted-foreground">Status:</div>
+                        <div className="col-span-2 font-medium">Completed</div>
+                      </div>
+                    </div>
+                    
+                    <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
+                      <div className="flex items-start gap-2">
+                        <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                        <div>
+                          <div className="text-[11px] text-muted-foreground mb-0.5">Sender:</div>
+                          <div className="text-xs font-medium">{senderInfo.name}</div>
+                          <div className="text-xs text-muted-foreground">{senderInfo.phone}</div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex justify-center">
+                        <div className="h-3 border-l border-dashed border-border/50"></div>
+                      </div>
+                      
+                      <div className="flex items-start gap-2">
+                        <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                        <div>
+                          <div className="text-[11px] text-muted-foreground mb-0.5">Recipient:</div>
+                          <div className="text-xs font-medium">{recipientInfo.name}</div>
+                          <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <Sheet>
+                      <SheetTrigger asChild>
+                        <Button variant="outline" size="sm" className="w-full text-xs py-1">
+                          View Full Order
+                        </Button>
+                      </SheetTrigger>
+                      <SheetContent>
+                        <SheetHeader>
+                          <SheetTitle>Order Details</SheetTitle>
+                        </SheetHeader>
+                        <div className="py-2">
+                          <h3 className="text-sm font-medium mb-1">Order #{order.id}</h3>
+                          <p className="text-xs">Full order details would be displayed here.</p>
+                        </div>
+                      </SheetContent>
+                    </Sheet>
+                  </div>
+                )}
+                
+                {index !== historyOrders.length - 1 && <Separator className="my-1 opacity-50" />}
+              </div>
+            );
+          })}
         </div>
       </div>
 
