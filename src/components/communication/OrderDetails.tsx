@@ -83,6 +83,11 @@ export const OrderDetails = ({
     phone: "+1 (555) 987-6543"
   };
 
+  const driverInfo = {
+    name: orderData.driverName,
+    phone: "+1 (555) 234-5678"  // Added mock driver phone number
+  };
+
   return <ScrollArea independentPanel={true} className="h-full px-[14px] my-0">
       <div className="orders-panel">
         <div className="right-panel-container p-[5px]">
@@ -126,22 +131,9 @@ export const OrderDetails = ({
                       <div className="flex items-start gap-2">
                         <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                         <div>
-                          <div className="text-[11px] text-muted-foreground mb-0.5">Sender:</div>
-                          <div className="text-xs font-medium">{senderInfo.name}</div>
-                          <div className="text-xs text-muted-foreground">{senderInfo.phone}</div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex justify-center">
-                        <div className="h-3 border-l border-dashed border-border/50"></div>
-                      </div>
-                      
-                      <div className="flex items-start gap-2">
-                        <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
-                        <div>
-                          <div className="text-[11px] text-muted-foreground mb-0.5">Recipient:</div>
-                          <div className="text-xs font-medium">{recipientInfo.name}</div>
-                          <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
+                          <div className="text-[11px] text-muted-foreground mb-0.5">Driver:</div>
+                          <div className="text-xs font-medium">{driverInfo.name}</div>
+                          <div className="text-xs text-muted-foreground">{driverInfo.phone}</div>
                         </div>
                       </div>
                     </div>
