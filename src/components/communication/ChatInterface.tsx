@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { OrderDetails } from './OrderDetails';
@@ -21,7 +20,6 @@ interface ChatInterfaceProps {
   };
 }
 
-// Define MessageType to ensure consistency across components
 export type MessageType = {
   id: string;
   senderId: string;
@@ -113,7 +111,9 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
     driverName: user.role === 'driver' ? user.name : "Alex Driver",
     clientName: user.role === 'client' ? user.name : "Maria Client",
     eta: "15 minutes",
-    createdAt: "Today at 9:30 AM"
+    createdAt: "Today at 9:30 AM",
+    pickupTime: "10:00 AM",
+    dropoffTime: "11:30 AM"
   };
 
   const handleSendMessage = () => {
