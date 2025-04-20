@@ -170,7 +170,8 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>
+        {`
         .orders-panel {
           @apply flex-1 transition-all duration-200;
           background: linear-gradient(to bottom, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
@@ -200,7 +201,8 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
         :global(.dark) .address-card {
           background: rgba(0, 0, 0, 0.2);
         }
-      `}</style>
+        `}
+      </style>
     </ScrollArea>
   );
 };
