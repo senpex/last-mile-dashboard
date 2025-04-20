@@ -97,7 +97,8 @@ export const OrderDetails = ({
           
           {orders.map((order, index) => {
             const isExpanded = expandedOrderId === order.id;
-            return <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
+            return (
+              <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
                 <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
                   <h3 className="font-medium text-xs text-foreground/90">Order #{order.id}</h3>
                   <Button variant="ghost" size="sm" onClick={() => setExpandedOrderId(isExpanded ? null : order.id)} className="h-6 w-6 p-0">
@@ -131,9 +132,22 @@ export const OrderDetails = ({
                       <div className="flex items-start gap-2">
                         <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                         <div>
-                          <div className="text-[11px] text-muted-foreground mb-0.5">Driver:</div>
-                          <div className="text-xs font-medium">{driverInfo.name}</div>
-                          <div className="text-xs text-muted-foreground">{driverInfo.phone}</div>
+                          <div className="text-[11px] text-muted-foreground mb-0.5">Sender:</div>
+                          <div className="text-xs font-medium">{senderInfo.name}</div>
+                          <div className="text-xs text-muted-foreground">{senderInfo.phone}</div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex justify-center">
+                        <div className="h-3 border-l border-dashed border-border/50"></div>
+                      </div>
+                      
+                      <div className="flex items-start gap-2">
+                        <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                        <div>
+                          <div className="text-[11px] text-muted-foreground mb-0.5">Recipient:</div>
+                          <div className="text-xs font-medium">{recipientInfo.name}</div>
+                          <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
                         </div>
                       </div>
                     </div>
@@ -157,7 +171,8 @@ export const OrderDetails = ({
                   </div>}
                 
                 {index !== orders.length - 1 && <Separator className="my-1 opacity-50" />}
-              </div>;
+              </div>
+            );
           })}
 
           <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b mt-4">
