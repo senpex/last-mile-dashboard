@@ -18,6 +18,7 @@ const CustomerSupport = () => {
     {
       id: "client1",
       name: "Emma Johnson",
+      orderId: "ORD-9871",
       role: "client",
       status: "active",
       lastMessage: "Is my delivery on the way?",
@@ -28,6 +29,7 @@ const CustomerSupport = () => {
     }, {
       id: "client2",
       name: "Robert Davis",
+      orderId: "ORD-9872",
       role: "client",
       status: "active",
       lastMessage: "I need to change my delivery address",
@@ -38,6 +40,7 @@ const CustomerSupport = () => {
     }, {
       id: "client3",
       name: "Lisa Anderson",
+      orderId: "ORD-9873",
       role: "client",
       status: "active",
       lastMessage: "Can you expedite my delivery?",
@@ -950,7 +953,8 @@ const CustomerSupport = () => {
                         <div className="flex justify-between items-center">
                           <h3 className="font-medium truncate text-sm">
                             {chat.name}
-                            {chat.role === 'driver' && chat.status === 'working' && chat.orderId && (
+                            {(chat.role === 'driver' && chat.status === 'working' && chat.orderId || 
+                             chat.role === 'client' && chat.orderId) && (
                               <span className="ml-1 text-muted-foreground font-bold">({chat.orderId})</span>
                             )}
                           </h3>
