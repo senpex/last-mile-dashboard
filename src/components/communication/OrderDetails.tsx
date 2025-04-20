@@ -96,6 +96,7 @@ export const OrderDetails = ({
   };
 
   const isRepeatedOrder = (orderId: string) => repeatedOrders.some(order => order.id === orderId);
+  const isHistoryOrder = (orderId: string) => historyOrders.some(order => order.id === orderId);
 
   return <ScrollArea independentPanel={true} className="h-full px-[14px] my-0">
       <div className="orders-panel">
@@ -138,7 +139,7 @@ export const OrderDetails = ({
                     </div>
                     
                     <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
-                      {showDriverInfo ? (
+                      {(showDriverInfo || isHistoryOrder(order.id)) ? (
                         <div className="flex items-start gap-2">
                           <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                           <div>
@@ -329,27 +330,43 @@ export const OrderDetails = ({
                     </div>
                     
                     <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
-                      <div className="flex items-start gap-2">
-                        <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
-                        <div>
-                          <div className="text-[11px] text-muted-foreground mb-0.5">Sender:</div>
-                          <div className="text-xs font-medium">{senderInfo.name}</div>
-                          <div className="text-xs text-muted-foreground">{senderInfo.phone}</div>
+                      {(showDriverInfo || isHistoryOrder(order.id)) ? (
+                        <div className="flex items-start gap-2">
+                          <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                          <div>
+                            <div className="text-[11px] text-muted-foreground mb-0.5">Driver Details:</div>
+                            <div className="text-xs font-medium">{driverInfo.name}</div>
+                            <div className="text-xs text-muted-foreground">{driverInfo.phone}</div>
+                            <div className="text-xs text-muted-foreground">Vehicle: {driverInfo.vehicle}</div>
+                            <div className="text-xs text-muted-foreground">Rating: ⭐️ {driverInfo.rating}</div>
+                            <div className="text-xs text-muted-foreground">Deliveries: {driverInfo.totalDeliveries}</div>
+                          </div>
                         </div>
-                      </div>
-                      
-                      <div className="flex justify-center">
-                        <div className="h-3 border-l border-dashed border-border/50"></div>
-                      </div>
-                      
-                      <div className="flex items-start gap-2">
-                        <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
-                        <div>
-                          <div className="text-[11px] text-muted-foreground mb-0.5">Recipient:</div>
-                          <div className="text-xs font-medium">{recipientInfo.name}</div>
-                          <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
-                        </div>
-                      </div>
+                      ) : (
+                        <>
+                          <div className="flex items-start gap-2">
+                            <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                            <div>
+                              <div className="text-[11px] text-muted-foreground mb-0.5">Sender:</div>
+                              <div className="text-xs font-medium">{senderInfo.name}</div>
+                              <div className="text-xs text-muted-foreground">{senderInfo.phone}</div>
+                            </div>
+                          </div>
+                          
+                          <div className="flex justify-center">
+                            <div className="h-3 border-l border-dashed border-border/50"></div>
+                          </div>
+                          
+                          <div className="flex items-start gap-2">
+                            <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                            <div>
+                              <div className="text-[11px] text-muted-foreground mb-0.5">Recipient:</div>
+                              <div className="text-xs font-medium">{recipientInfo.name}</div>
+                              <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </div>
                     
                     <Sheet>
