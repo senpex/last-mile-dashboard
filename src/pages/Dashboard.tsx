@@ -1,3 +1,4 @@
+
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -103,7 +104,7 @@ const Dashboard = () => {
                       variant="outline" 
                       size="icon" 
                       className="h-8 w-8" 
-                      onClick={() => navigate('/?view=attention')}
+                      onClick={() => navigate('/?view=attention', { state: { activeView: 'attention' } })}
                     >
                       <Eye className="h-3 w-3" />
                     </Button>
