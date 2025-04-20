@@ -853,7 +853,7 @@ const CustomerSupport = () => {
       marginLeft: 'calc(240px - 240px)'
     }}>
         <div className="flex h-full gap-4">
-          <div className="w-[456px] flex-shrink-0 flex flex-col rounded-lg border bg-card shadow-sm mx-0 px-0">
+          <div className="w-[410px] flex-shrink-0 flex flex-col rounded-lg border bg-card shadow-sm mx-0 px-0">
             <div className="p-4 border-b">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
