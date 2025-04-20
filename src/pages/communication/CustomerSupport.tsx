@@ -242,6 +242,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver3",
       name: "Emily White",
+      orderId: "ORD-2343",
       role: "driver",
       status: "working",
       lastMessage: "Starting my delivery route now",
@@ -252,6 +253,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver4",
       name: "James Wilson",
+      orderId: "ORD-2344",
       role: "driver",
       status: "working",
       lastMessage: "Package delivered successfully",
@@ -262,6 +264,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver5",
       name: "Maria Garcia",
+      orderId: "ORD-2345",
       role: "driver",
       status: "working",
       lastMessage: "Vehicle maintenance required",
@@ -272,6 +275,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver6",
       name: "Alex Thompson",
+      orderId: "ORD-2346",
       role: "driver",
       status: "working",
       lastMessage: "Loading packages now",
@@ -282,6 +286,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver7",
       name: "Steven Lee",
+      orderId: "ORD-2347",
       role: "driver",
       status: "working",
       lastMessage: "Need route update",
@@ -292,6 +297,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver8",
       name: "Linda Martinez",
+      orderId: "ORD-2348",
       role: "driver",
       status: "working",
       lastMessage: "Fuel stop required",
@@ -302,6 +308,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver9",
       name: "Robert Johnson",
+      orderId: "ORD-2349",
       role: "driver",
       status: "working",
       lastMessage: "Customer not available",
@@ -312,6 +319,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver10",
       name: "Sarah Davis",
+      orderId: "ORD-2350",
       role: "driver",
       status: "working",
       lastMessage: "Package pickup completed",
@@ -322,6 +330,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver11",
       name: "Kevin Anderson",
+      orderId: "ORD-2351",
       role: "driver",
       status: "working",
       lastMessage: "Route optimization needed",
@@ -332,6 +341,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver12",
       name: "Jennifer Taylor",
+      orderId: "ORD-2352",
       role: "driver",
       status: "working",
       lastMessage: "Weather delay expected",
@@ -342,6 +352,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver13",
       name: "Michael Brown",
+      orderId: "ORD-2353",
       role: "driver",
       status: "working",
       lastMessage: "Last delivery completed",
@@ -352,6 +363,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver14",
       name: "Elizabeth Taylor",
+      orderId: "ORD-2354",
       role: "driver",
       status: "working",
       lastMessage: "Starting lunch break",
@@ -362,6 +374,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver15",
       name: "Daniel Wilson",
+      orderId: "ORD-2355",
       role: "driver",
       status: "working",
       lastMessage: "Package damaged during handling",
@@ -372,6 +385,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver16",
       name: "Amanda Clark",
+      orderId: "ORD-2356",
       role: "driver",
       status: "working",
       lastMessage: "Route completed early",
@@ -382,6 +396,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver17",
       name: "Thomas Wright",
+      orderId: "ORD-2357",
       role: "driver",
       status: "working",
       lastMessage: "Need additional packages",
@@ -392,6 +407,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver18",
       name: "Patricia Lee",
+      orderId: "ORD-2358",
       role: "driver",
       status: "working",
       lastMessage: "Vehicle issue resolved",
@@ -402,6 +418,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver19",
       name: "George Martinez",
+      orderId: "ORD-2359",
       role: "driver",
       status: "working",
       lastMessage: "Returning to depot",
@@ -412,6 +429,7 @@ const CustomerSupport = () => {
     }, {
       id: "driver20",
       name: "Sandra Kim",
+      orderId: "ORD-2360",
       role: "driver",
       status: "working",
       lastMessage: "Route adjustment needed",
