@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { OrderDetails } from './OrderDetails';
 import { ChatHeader } from './chat/ChatHeader';
@@ -145,7 +145,7 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
       case 'chat':
         return (
           <>
-            <ScrollArea className="flex-1 p-4">
+            <ScrollArea className="flex-1 p-4 overflow-y-auto">
               <ChatMessages messages={messages} />
             </ScrollArea>
             <ChatInput 
@@ -158,7 +158,11 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
           </>
         );
       case 'history':
-        return <ChatHistory userId={user.id} />;
+        return (
+          <ScrollArea className="flex-1 p-4 overflow-y-auto">
+            <ChatHistory userId={user.id} />
+          </ScrollArea>
+        );
       case 'notes':
         return (
           <div className="flex-1 p-4 space-y-4">
@@ -210,3 +214,5 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
     </div>
   );
 };
+
+export default ChatInterface;
