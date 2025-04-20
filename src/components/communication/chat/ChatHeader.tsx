@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,6 +12,7 @@ interface ChatHeaderProps {
     role: string;
     status: string;
     priority: string;
+    orderId?: string;
   };
   activeTab: string;
   setActiveTab: (tab: string) => void;
@@ -33,7 +35,12 @@ export const ChatHeader = ({ user, activeTab, setActiveTab }: ChatHeaderProps) =
             <UserRound className="h-6 w-6 text-muted-foreground" />
           </div>
           <div>
-            <h2 className="font-medium">{user.name}</h2>
+            <h2 className="font-medium">
+              {user.name}
+              {user.role === 'driver' && user.orderId && (
+                <span className="ml-1 text-muted-foreground">({user.orderId})</span>
+              )}
+            </h2>
             <div className="text-sm text-muted-foreground flex items-center gap-1">
               {user.role === 'driver' ? 'Driver' : 'Client'} • 
               <span className={`w-2 h-2 rounded-full ${user.status === 'online' ? 'bg-green-500' : 'bg-gray-500'}`}></span>
@@ -107,3 +114,4 @@ export const ChatHeader = ({ user, activeTab, setActiveTab }: ChatHeaderProps) =
     </div>
   );
 };
+
