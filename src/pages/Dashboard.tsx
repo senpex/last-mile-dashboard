@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -100,12 +99,7 @@ const Dashboard = () => {
                 <CardContent className="pt-6 space-y-4">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium text-muted-foreground">My AR Orders</p>
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
-                      className="h-8 w-8" 
-                      onClick={() => navigate('/?view=attention', { state: { activeView: 'attention' } })}
-                    >
+                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => navigate('/ar-orders')}>
                       <Eye className="h-3 w-3" />
                     </Button>
                   </div>

@@ -8,7 +8,6 @@ import DeliveryTable from "@/components/deliveries/DeliveryTable";
 import { DeliveryPagination } from "@/components/deliveries/DeliveryPagination";
 import { useDeliveriesTable } from "@/hooks/useDeliveriesTable";
 import { deliveriesData } from "@/data/deliveriesData";
-import { useLocation, useSearchParams } from "react-router-dom";
 
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -20,19 +19,6 @@ const Index = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedCourier, setSelectedCourier] = useState("");
   const [showMyDeliveriesOnly, setShowMyDeliveriesOnly] = useState(true);
-  
-  const location = useLocation();
-  const [searchParams] = useSearchParams();
-  const viewParam = searchParams.get("view");
-  
-  const initialView = location.state?.activeView || viewParam || "main";
-  const [activeView, setActiveView] = useState(initialView);
-
-  useEffect(() => {
-    if (viewParam) {
-      setActiveView(viewParam);
-    }
-  }, [viewParam]);
 
   const {
     pageSize,
@@ -47,7 +33,8 @@ const Index = () => {
     getPageNumbers,
     searchTerm,
     setSearchTerm,
-    setActiveView: setTableActiveView,
+    activeView,
+    setActiveView,
     availableColumns,
     visibleColumns,
     setVisibleColumns,
@@ -96,10 +83,6 @@ const Index = () => {
     deliveries: deliveriesData,
     showMyDeliveriesOnly 
   });
-
-  useEffect(() => {
-    setTableActiveView(activeView);
-  }, [activeView, setTableActiveView]);
 
   const hasAttentionRequiredOrders = deliveriesData.some(
     delivery => delivery.status === "Canceled By Customer" || delivery.status === "Cancelled By Admin"
