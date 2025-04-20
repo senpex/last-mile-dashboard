@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { GripVertical, ArrowUp, ArrowDown, MessageCircle, FileText, ChevronUp, ChevronDown } from "lucide-react";
@@ -327,7 +326,7 @@ const DeliveryTable = ({
   };
 
   return (
-    <div className="flex-1 overflow-hidden px-px">
+    <div className="flex-1 flex overflow-hidden px-px">
       <div className="flex h-full">
         <DeliverySidebar 
           open={isFilterSidebarOpen} 
@@ -365,69 +364,67 @@ const DeliveryTable = ({
         />
         
         <div className="flex-1 transition-all duration-300 my-4 ml-2">
-          <div className="flex flex-col h-full w-[1200px]">
-            <div className="w-full flex-grow flex-shrink-0">
-              <TableContainer 
-                stickyHeader 
-                className="w-full"
-                filterSidebarOpen={isFilterSidebarOpen}
-              >
-                <Table>
-                  <TableHeader className="bg-muted/50 sticky top-0 border-b-0">
-                    <TableRow>
-                      {sortedColumns.map(columnId => {
-                        const column = availableColumns.find(col => col.id === columnId);
-                        if (!column) return null;
-                        return (
-                          <TableHead 
-                            key={columnId} 
-                            className={`${getColumnWidth(columnId)} text-left whitespace-nowrap`}
-                            onClick={() => requestSort(columnId)}
-                          >
-                            <div className="flex items-center gap-1">
-                              <div 
-                                draggable={true} 
-                                onDragStart={e => handleDragStart(e, columnId)} 
-                                onDragOver={e => handleDragOver(e, columnId)} 
-                                onDragEnd={handleDragEnd} 
-                                onDrop={e => handleDrop(e, columnId)} 
-                                className="cursor-grab"
-                              >
-                                <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
-                              </div>
-                              <button 
-                                className="flex items-center cursor-pointer hover:text-primary transition-colors"
-                                type="button"
-                              >
-                                <span className="truncate">{column.label}</span>
-                                {renderSortIcon(columnId)}
-                              </button>
+          <div className="w-full flex-grow flex-shrink-0 pr-4">
+            <TableContainer 
+              stickyHeader 
+              className="w-full"
+              filterSidebarOpen={isFilterSidebarOpen}
+            >
+              <Table>
+                <TableHeader className="bg-muted/50 sticky top-0 border-b-0">
+                  <TableRow>
+                    {sortedColumns.map(columnId => {
+                      const column = availableColumns.find(col => col.id === columnId);
+                      if (!column) return null;
+                      return (
+                        <TableHead 
+                          key={columnId} 
+                          className={`${getColumnWidth(columnId)} text-left whitespace-nowrap`}
+                          onClick={() => requestSort(columnId)}
+                        >
+                          <div className="flex items-center gap-1">
+                            <div 
+                              draggable={true} 
+                              onDragStart={e => handleDragStart(e, columnId)} 
+                              onDragOver={e => handleDragOver(e, columnId)} 
+                              onDragEnd={handleDragEnd} 
+                              onDrop={e => handleDrop(e, columnId)} 
+                              className="cursor-grab"
+                            >
+                              <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
                             </div>
-                          </TableHead>
-                        );
-                      })}
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {items.length > 0 ? (
-                      items.map(delivery => (
-                        <TableRow key={delivery.id}>
-                          {sortedColumns.map(columnId => {
-                            return renderCellContent(delivery, columnId);
-                          })}
-                        </TableRow>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell colSpan={sortedColumns.length} className="h-24 text-center">
-                          No results found
-                        </TableCell>
+                            <button 
+                              className="flex items-center cursor-pointer hover:text-primary transition-colors"
+                              type="button"
+                            >
+                              <span className="truncate">{column.label}</span>
+                              {renderSortIcon(columnId)}
+                            </button>
+                          </div>
+                        </TableHead>
+                      );
+                    })}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {items.length > 0 ? (
+                    items.map(delivery => (
+                      <TableRow key={delivery.id}>
+                        {sortedColumns.map(columnId => {
+                          return renderCellContent(delivery, columnId);
+                        })}
                       </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </div>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={sortedColumns.length} className="h-24 text-center">
+                        No results found
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </div>
         </div>
       </div>
@@ -436,4 +433,3 @@ const DeliveryTable = ({
 };
 
 export default DeliveryTable;
-
