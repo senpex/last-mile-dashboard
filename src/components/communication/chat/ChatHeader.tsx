@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,9 +15,10 @@ interface ChatHeaderProps {
   };
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  onToggleDetails?: () => void; // Add the optional prop
 }
 
-export const ChatHeader = ({ user, activeTab, setActiveTab }: ChatHeaderProps) => {
+export const ChatHeader = ({ user, activeTab, setActiveTab, onToggleDetails }: ChatHeaderProps) => {
   const onlineUsers = [
     "John Smith",
     "Emma Johnson",
