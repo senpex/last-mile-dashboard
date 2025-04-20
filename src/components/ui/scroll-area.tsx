@@ -1,3 +1,4 @@
+
 import * as React from "react";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import { cn } from "@/lib/utils";
@@ -21,12 +22,8 @@ const ScrollArea = React.forwardRef<React.ElementRef<typeof ScrollAreaPrimitive.
   >
     <div 
       className={cn("isolate relative w-full h-full", independentPanel && "flex flex-col")}
-      style={{ 
-        padding: '8px', 
-        margin: '0px' 
-      }}
     >
-      <ScrollAreaPrimitive.Viewport className="">
+      <ScrollAreaPrimitive.Viewport className="w-full h-full">
         {children}
       </ScrollAreaPrimitive.Viewport>
     </div>
@@ -47,3 +44,4 @@ const ScrollBar = React.forwardRef<React.ElementRef<typeof ScrollAreaPrimitive.S
 ScrollBar.displayName = ScrollAreaPrimitive.ScrollAreaScrollbar.displayName;
 
 export { ScrollArea, ScrollBar };
+
