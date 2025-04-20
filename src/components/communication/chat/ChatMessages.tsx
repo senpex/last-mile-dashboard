@@ -1,7 +1,6 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { FileText, FileSpreadsheet, ImageIcon, Mic, Play, Stop } from "lucide-react";
+import { FileText, FileSpreadsheet, ImageIcon, Mic, Play, CircleStop } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MessageType } from '../ChatInterface';
 import { toast } from "sonner";
@@ -130,7 +129,7 @@ export const ChatMessages = ({ messages }: ChatMessagesProps) => {
                       >
                         {playingAudio === attachment.id ? (
                           <>
-                            <Stop className="h-4 w-4" />
+                            <CircleStop className="h-4 w-4" />
                             <span>Stop</span>
                           </>
                         ) : (
