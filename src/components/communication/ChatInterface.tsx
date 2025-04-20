@@ -45,8 +45,7 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
     type: 'image' | 'document' | 'spreadsheet' | 'pdf';
   }>>([]);
   const [noteText, setNoteText] = useState("");
-
-  const messages: MessageType[] = [
+  const [messages, setMessages] = useState<MessageType[]>([
     {
       id: '1',
       senderId: 'driver1',
@@ -103,7 +102,7 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
       content: 'Got it, thanks! I see the gate now.',
       timestamp: '10:23 AM'
     }
-  ];
+  ]);
 
   const orderData = user.orderId ? {
     id: user.orderId,
@@ -122,7 +121,23 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
 
   const handleSendMessage = () => {
     if (message.trim() === '' && attachedFiles.length === 0) return;
-    console.log("Sending message:", message, attachedFiles);
+    
+    const newMessage: MessageType = {
+      id: `msg-${Date.now()}`,
+      senderId: user.id,
+      senderName: user.name,
+      senderRole: user.role === 'driver' ? 'driver' : 'client',
+      content: message,
+      timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
+      attachments: attachedFiles.map(file => ({
+        id: `att-${Date.now()}-${file.file.name}`,
+        name: file.file.name,
+        type: file.type,
+        url: URL.createObjectURL(file.file)
+      }))
+    };
+
+    setMessages(prev => [...prev, newMessage]);
     setMessage('');
     setAttachedFiles([]);
   };
