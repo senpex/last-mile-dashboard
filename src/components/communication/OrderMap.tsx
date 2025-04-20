@@ -255,13 +255,13 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-[800px] h-[840px] p-0 bg-[#242f3e] border-[#3a4c63] text-white overflow-hidden">
+        <DialogContent className="max-w-[800px] h-[840px] p-0 bg-[#242f3e] border-[#3a4c63] text-white overflow-hidden flex flex-col">
           <DialogTitle className="sr-only">Map View</DialogTitle>
           <DialogDescription className="sr-only">
             Interactive map showing pickup, delivery, and driver locations
           </DialogDescription>
           
-          <div className="relative w-full h-full">
+          <div className="relative w-full flex-1 overflow-hidden">
             <div className="absolute top-2 right-2 flex gap-2 z-10">
               <Button
                 variant="secondary"
