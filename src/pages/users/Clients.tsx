@@ -484,7 +484,7 @@ const ClientsPage = () => {
           isFilterSidebarOpen={isFilterSidebarOpen}
         />
 
-        <div className="flex flex-1 overflow-hidden relative">
+        <div className="flex flex-1 w-full overflow-hidden relative">
           <ClientsSidebar
             open={isFilterSidebarOpen}
             onClose={() => setIsFilterSidebarOpen(false)}
@@ -505,7 +505,7 @@ const ClientsPage = () => {
             setSelectedCompanies={setSelectedCompanies}
           />
 
-          <div className={`flex-1 transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-[10px]"}`}>
+          <div className={`flex-1 w-full transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-[10px]"}`}>
             <ClientsTable
               currentItems={currentItems}
               sortedColumns={sortedColumns}
