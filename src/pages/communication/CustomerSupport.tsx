@@ -12,7 +12,7 @@ import { Users, UserRound, MessageSquare } from "lucide-react";
 const CustomerSupport = () => {
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("all");
-  const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [filterStatus, setFilterStatus] = useState<string>("working-drivers");
   const chats = [
     // Clients (20)
     {
