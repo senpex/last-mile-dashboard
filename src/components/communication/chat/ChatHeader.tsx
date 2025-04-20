@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -38,7 +37,7 @@ export const ChatHeader = ({ user, activeTab, setActiveTab }: ChatHeaderProps) =
             <h2 className="font-medium">
               {user.name}
               {user.role === 'driver' && user.orderId && (
-                <span className="ml-1 text-muted-foreground">({user.orderId})</span>
+                <span className="ml-1 text-muted-foreground font-bold">({user.orderId})</span>
               )}
             </h2>
             <div className="text-sm text-muted-foreground flex items-center gap-1">
@@ -49,57 +48,57 @@ export const ChatHeader = ({ user, activeTab, setActiveTab }: ChatHeaderProps) =
           </div>
         </div>
         
-      <div className="flex items-center gap-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="h-8">
-              <UserCheck className="h-4 w-4 mr-1" />
-              Assign Chat
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>Assign to</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <UserX className="h-4 w-4 mr-2" />
-              Not assigned
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <UserCheck className="h-4 w-4 mr-2" />
-              Assigned to me
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuLabel>Online Users</DropdownMenuLabel>
-            {onlineUsers.map((name, index) => (
-              <DropdownMenuItem key={index}>
-                <User className="h-4 w-4 mr-2" />
-                {name}
+        <div className="flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="h-8">
+                <UserCheck className="h-4 w-4 mr-1" />
+                Assign Chat
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>Assign to</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <UserX className="h-4 w-4 mr-2" />
+                Not assigned
               </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+              <DropdownMenuItem>
+                <UserCheck className="h-4 w-4 mr-2" />
+                Assigned to me
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuLabel>Online Users</DropdownMenuLabel>
+              {onlineUsers.map((name, index) => (
+                <DropdownMenuItem key={index}>
+                  <User className="h-4 w-4 mr-2" />
+                  {name}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
           
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <MoreVertical className="h-5 w-5" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <User className="h-4 w-4 mr-2" />
-              View Profile
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-600">
-              <X className="h-4 w-4 mr-2" />
-              Close Chat
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <MoreVertical className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <User className="h-4 w-4 mr-2" />
+                View Profile
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-red-600">
+                <X className="h-4 w-4 mr-2" />
+                Close Chat
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       
       <div className="mt-4">
@@ -114,4 +113,3 @@ export const ChatHeader = ({ user, activeTab, setActiveTab }: ChatHeaderProps) =
     </div>
   );
 };
-
