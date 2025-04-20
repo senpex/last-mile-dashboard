@@ -26,6 +26,8 @@ export const ChatHeader = ({ user, activeTab, setActiveTab }: ChatHeaderProps) =
     "Robert Taylor"
   ];
 
+  const profileType = user.role === 'driver' ? 'Driver' : 'Customer';
+
   return (
     <div className="p-4 border-b bg-card">
       <div className="flex justify-between items-center">
@@ -41,7 +43,7 @@ export const ChatHeader = ({ user, activeTab, setActiveTab }: ChatHeaderProps) =
               )}
             </h2>
             <div className="text-sm text-muted-foreground flex items-center gap-1">
-              {user.role === 'driver' ? 'Driver' : 'Client'} • 
+              {profileType} • 
               <span className={`w-2 h-2 rounded-full ${user.status === 'online' ? 'bg-green-500' : 'bg-gray-500'}`}></span>
               {user.status === 'online' ? 'Online' : 'Offline'}
             </div>
