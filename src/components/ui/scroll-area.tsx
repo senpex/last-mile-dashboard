@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import { cn } from "@/lib/utils";
@@ -21,7 +20,7 @@ const ScrollArea = React.forwardRef<React.ElementRef<typeof ScrollAreaPrimitive.
     {...props}
   >
     <div className={cn(
-      "isolate relative w-full h-full p-2", // Added p-2 for padding
+      "isolate relative w-full h-full px-2", // Changed p-2 to px-2 to reduce left and right margin
       independentPanel && "flex flex-col"
     )}>
       <ScrollAreaPrimitive.Viewport 
