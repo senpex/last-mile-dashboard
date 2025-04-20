@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { ChatInterface } from "@/components/communication/ChatInterface";
 import { Button } from "@/components/ui/button";
@@ -951,7 +951,7 @@ const CustomerSupport = () => {
                           <h3 className="font-medium truncate text-sm">
                             {chat.name}
                             {chat.role === 'driver' && chat.status === 'working' && chat.orderId && (
-                              <span className="ml-1 text-muted-foreground">({chat.orderId})</span>
+                              <span className="ml-1 text-muted-foreground font-bold">({chat.orderId})</span>
                             )}
                           </h3>
                           <span className="text-xs text-muted-foreground whitespace-nowrap ml-2">{chat.timestamp}</span>
