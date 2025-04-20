@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { OrderDetails } from './OrderDetails';
 import { ChatHeader } from './chat/ChatHeader';
@@ -117,8 +117,6 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
     dropoffTime: "11:30 AM"
   } : null;
 
-  const showDriverInfo = !(user.role === 'driver' && user.status === 'working');
-
   const handleSendMessage = () => {
     if (message.trim() === '' && attachedFiles.length === 0) return;
     console.log("Sending message:", message, attachedFiles);
@@ -196,7 +194,7 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
 
       {orderData && (
         <div className="rounded-lg border bg-card shadow-sm overflow-hidden">
-          <OrderDetails orderData={orderData} showDriverInfo={showDriverInfo} />
+          <OrderDetails orderData={orderData} />
         </div>
       )}
     </div>
