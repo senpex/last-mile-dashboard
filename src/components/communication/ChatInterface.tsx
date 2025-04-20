@@ -8,7 +8,6 @@ import { ChatHistory } from './chat/ChatHistory';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { PenLine } from "lucide-react";
-import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
 interface ChatInterfaceProps {
   chatId: string;
@@ -179,28 +178,22 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
   };
 
   return (
-    <ResizablePanelGroup direction="horizontal" className="h-full rounded-lg">
-      <ResizablePanel defaultSize={75} minSize={65} maxSize={85}>
-        <div className="flex flex-col rounded-lg border bg-card shadow-sm overflow-hidden h-full">
-          <ChatHeader 
-            user={user}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-          />
-          
-          <div className="flex-1 overflow-hidden flex flex-col">
-            {renderContent()}
-          </div>
+    <div className="grid grid-cols-[1fr_320px] gap-4 h-full">
+      <div className="flex flex-col rounded-lg border bg-card shadow-sm overflow-hidden">
+        <ChatHeader 
+          user={user}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        />
+        
+        <div className="flex-1 overflow-hidden flex flex-col">
+          {renderContent()}
         </div>
-      </ResizablePanel>
+      </div>
 
-      <ResizableHandle withHandle />
-
-      <ResizablePanel defaultSize={25} minSize={15} maxSize={35}>
-        <div className="rounded-lg border bg-card shadow-sm overflow-hidden h-full">
-          <OrderDetails orderData={orderData} />
-        </div>
-      </ResizablePanel>
-    </ResizablePanelGroup>
+      <div className="rounded-lg border bg-card shadow-sm overflow-hidden">
+        <OrderDetails orderData={orderData} />
+      </div>
+    </div>
   );
 };
