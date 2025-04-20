@@ -1,10 +1,11 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MapPin, ChevronUp, ChevronDown } from "lucide-react";
+import { MapPin, ChevronUp, ChevronDown, UserCircle2 as UserRound } from "lucide-react";
 import { OrderMap } from "./OrderMap";
 import { cn } from "@/lib/utils";
 
@@ -36,7 +37,7 @@ const StatusBadge = ({
   }
 };
 
-const OrderDetails = ({
+export const OrderDetails = ({
   orderData
 }: OrderDetailsProps) => {
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
