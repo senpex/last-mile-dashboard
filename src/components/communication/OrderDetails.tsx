@@ -85,7 +85,7 @@ export const OrderDetails = ({
 
   const driverInfo = {
     name: orderData.driverName,
-    phone: "+1 (555) 234-5678"  // Added mock driver phone number
+    phone: "+1 (555) 234-5678"
   };
 
   return <ScrollArea independentPanel={true} className="h-full px-[14px] my-0">
