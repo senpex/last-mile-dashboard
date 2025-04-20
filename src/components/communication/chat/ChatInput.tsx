@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -104,7 +105,7 @@ export const ChatInput = ({
               disabled={message.trim() === '' && attachedFiles.length === 0}
               title="Send message"
               variant={message.trim() !== '' || attachedFiles.length > 0 ? 'default' : 'outline'}
-              className="min-w-[80px] inline-flex items-center gap-1" 
+              className="min-w-[80px] inline-flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white" 
             >
               <Send className="h-4 w-4" /> 
               <span>Send</span>
