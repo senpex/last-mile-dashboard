@@ -21,7 +21,7 @@ const ScrollArea = React.forwardRef<React.ElementRef<typeof ScrollAreaPrimitive.
     {...props}
   >
     <div className={cn(
-      "isolate relative w-full h-full",
+      "isolate relative w-full h-full p-2", // Added p-2 for padding
       independentPanel && "flex flex-col"
     )}>
       <ScrollAreaPrimitive.Viewport 
