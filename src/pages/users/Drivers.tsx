@@ -691,7 +691,7 @@ const DriversPage = () => {
           isFilterSidebarOpen={isFilterSidebarOpen} 
         />
 
-        <div className="flex flex-1 overflow-hidden relative">
+        <div className="flex flex-1 w-full overflow-hidden relative">
           <DriversSidebar 
             open={isFilterSidebarOpen}
             onClose={() => setIsFilterSidebarOpen(false)}
@@ -710,7 +710,7 @@ const DriversPage = () => {
             onFiltersAdd={handleFiltersAdd}
           />
 
-          <div className={`flex-1 transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-2"}`}>
+          <div className={`flex-1 w-full transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-2"}`}>
             <DriversTable 
               currentItems={currentItems} 
               sortedColumns={sortedColumns} 
