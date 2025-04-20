@@ -141,11 +141,10 @@ const TableContainer = React.forwardRef<
   <div 
     ref={ref}
     className={cn(
-      "relative border rounded-md overflow-hidden flex-shrink-0",
+      "relative border rounded-md overflow-hidden flex-1",
       "transition-all duration-300 shadow-sm", 
-      filterSidebarOpen ? "w-full" : "w-full", 
-      height, 
-      "mr-[5px]", 
+      "w-full max-w-full", 
+      height,
       className
     )} 
     style={{
@@ -155,7 +154,7 @@ const TableContainer = React.forwardRef<
     {...props} 
   >
     <ScrollArea orientation="both" className="h-full w-full">
-      <div className="min-w-max">
+      <div className="min-w-[600px] w-full">
         {props.children}
       </div>
     </ScrollArea>
