@@ -369,9 +369,8 @@ export const OrderDetails = ({
                   </div>
                   
                   <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
-                    {(showDriverInfo && !isHistoryOrder(order.id)) || 
-                     (user?.role === 'client') || 
-                     (user?.role === 'driver' && user?.status !== 'working') ? (
+                    {((user?.role === 'client' && isHistoryOrder(order.id)) || 
+                      showDriverInfo && !isHistoryOrder(order.id)) ? (
                       <div className="flex items-start gap-2">
                         <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                         <div>
