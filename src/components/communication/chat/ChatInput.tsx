@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -90,21 +91,23 @@ export const ChatInput = ({
           className="min-h-[80px] resize-none"
           onKeyDown={handleKeyPress}
         />
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center justify-between">
           <Button variant="ghost" size="icon" onClick={handleFileAttachment} title="Attach files">
             <Paperclip className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon" title="Voice message">
-            <Mic className="h-5 w-5" />
-          </Button>
-          <Button 
-            size="icon" 
-            onClick={onSendMessage} 
-            disabled={message.trim() === '' && attachedFiles.length === 0}
-            title="Send message"
-          >
-            <Send className="h-5 w-5" />
-          </Button>
+          <div className="flex items-center space-x-2">
+            <Button variant="ghost" size="icon" title="Voice message">
+              <Mic className="h-5 w-5" />
+            </Button>
+            <Button 
+              size="icon" 
+              onClick={onSendMessage} 
+              disabled={message.trim() === '' && attachedFiles.length === 0}
+              title="Send message"
+            >
+              <Send className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
       </div>
     </div>
