@@ -65,7 +65,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
     >
       <div className="right-panel-container">
         <div className="orders-panel">
-          <div className="px-4 py-2 space-y-2">
+          <div className="px-1.25 py-2 space-y-2">
             <h2 className="text-sm font-semibold text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
               Orders on Hand
             </h2>
