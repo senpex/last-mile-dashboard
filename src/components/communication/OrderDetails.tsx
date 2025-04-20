@@ -42,10 +42,19 @@ export const OrderDetails = ({
   orderData
 }: OrderDetailsProps) => {
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
-
   const orders = [{
     ...orderData,
     id: "909090"
+  }, {
+    ...orderData,
+    id: "909091",
+    status: "active" as const,
+    eta: "15:45 PM"
+  }, {
+    ...orderData,
+    id: "909092",
+    status: "active" as const,
+    eta: "16:30 PM"
   }];
 
   const repeatedOrders = [{
@@ -57,9 +66,18 @@ export const OrderDetails = ({
       { day: "Wednesday", time: "15:30" },
       { day: "Friday", time: "16:00" }
     ]
+  }, {
+    ...orderData,
+    id: "909094",
+    status: "repeated" as const,
+    schedule: [
+      { day: "Monday", time: "10:00" },
+      { day: "Thursday", time: "11:30" },
+      { day: "Friday", time: "13:00" }
+    ]
   }];
 
-  const historyOrders = Array.from({ length: 5 }, (_, index) => ({
+  const historyOrders = Array.from({ length: 12 }, (_, index) => ({
     ...orderData,
     id: `hist-${900000 + index}`,
     status: "completed" as const,
@@ -83,22 +101,16 @@ export const OrderDetails = ({
     phone: "+1 (555) 987-6543"
   };
 
-  const driverInfo = {
-    name: orderData.driverName,
-    phone: "+1 (555) 234-5678"
-  };
-
   return <ScrollArea independentPanel={true} className="h-full px-[14px] my-0">
       <div className="orders-panel">
         <div className="right-panel-container p-[5px]">
           <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
-            Active Orders
+            Orders on Hand
           </h2>
           
           {orders.map((order, index) => {
-            const isExpanded = expandedOrderId === order.id;
-            return (
-              <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
+          const isExpanded = expandedOrderId === order.id;
+          return <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
                 <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
                   <h3 className="font-medium text-xs text-foreground/90">Order #{order.id}</h3>
                   <Button variant="ghost" size="sm" onClick={() => setExpandedOrderId(isExpanded ? null : order.id)} className="h-6 w-6 p-0">
@@ -171,12 +183,11 @@ export const OrderDetails = ({
                   </div>}
                 
                 {index !== orders.length - 1 && <Separator className="my-1 opacity-50" />}
-              </div>
-            );
-          })}
+              </div>;
+        })}
 
-          <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b mt-4">
-            Repeated Orders
+          <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
+            Accepted Repeated Orders
           </h2>
           
           {repeatedOrders.map((order, index) => {
@@ -266,7 +277,7 @@ export const OrderDetails = ({
             );
           })}
 
-          <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b mt-4">
+          <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
             History
           </h2>
 

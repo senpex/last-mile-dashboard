@@ -3,7 +3,7 @@ import { Layout } from "@/components/layout/Layout";
 import { TowerControl, Filter } from "lucide-react";
 import CommunicationPanel from "@/components/communication/CommunicationPanel";
 import { DriversSidebar } from "@/components/drivers/DriversSidebar";
-import { CustomerFiltersSidebar } from "@/components/communication/CustomerFiltersSidebar";
+import { ClientFiltersSidebar } from "@/components/communication/ClientFiltersSidebar";
 import { DispatcherFiltersSidebar } from "@/components/communication/DispatcherFiltersSidebar";
 import { useState } from "react";
 import { DeliveryStatus } from "@/types/delivery";
@@ -124,7 +124,7 @@ const CommunicationTower = () => {
                     onFiltersAdd={handleFiltersAdd}
                   />
                 ) : activeTab === "clients" ? (
-                  <CustomerFiltersSidebar
+                  <ClientFiltersSidebar
                     selectedCities={selectedClientCities}
                     setSelectedCities={setSelectedClientCities}
                     allCities={allCities}

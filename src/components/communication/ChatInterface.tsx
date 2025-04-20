@@ -17,7 +17,6 @@ interface ChatInterfaceProps {
     role: string;
     status: string;
     priority: string;
-    orderId?: string;
   };
 }
 
@@ -104,8 +103,8 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
     }
   ];
 
-  const orderData = user.orderId ? {
-    id: user.orderId,
+  const orderData = {
+    id: "ORD-1234",
     status: "active" as "active" | "completed" | "cancelled",
     pickupAddress: "123 Pickup St, City",
     deliveryAddress: "456 Delivery Ave, City",
@@ -115,7 +114,7 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
     createdAt: "Today at 9:30 AM",
     pickupTime: "10:00 AM",
     dropoffTime: "11:30 AM"
-  } : null;
+  };
 
   const handleSendMessage = () => {
     if (message.trim() === '' && attachedFiles.length === 0) return;
@@ -179,7 +178,7 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
   };
 
   return (
-    <div className={`grid ${orderData ? 'grid-cols-[1fr_320px]' : 'grid-cols-[1fr]'} gap-4 h-full`}>
+    <div className="grid grid-cols-[1fr_320px] gap-4 h-full">
       <div className="flex flex-col rounded-lg border bg-card shadow-sm overflow-hidden">
         <ChatHeader 
           user={user}
@@ -192,11 +191,9 @@ export const ChatInterface = ({ chatId, user }: ChatInterfaceProps) => {
         </div>
       </div>
 
-      {orderData && (
-        <div className="rounded-lg border bg-card shadow-sm overflow-hidden">
-          <OrderDetails orderData={orderData} />
-        </div>
-      )}
+      <div className="rounded-lg border bg-card shadow-sm overflow-hidden">
+        <OrderDetails orderData={orderData} />
+      </div>
     </div>
   );
 };
