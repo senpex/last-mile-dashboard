@@ -319,41 +319,63 @@ const ClientsPage = () => {
     toast.success("Client notes updated successfully");
   };
 
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
+  const handleDragStart = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
     setDraggedColumn(columnId);
     e.dataTransfer.setData('text/plain', columnId);
-    const dragImage = new Image();
-    dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-    e.dataTransfer.setDragImage(dragImage, 0, 0);
+    
+    e.dataTransfer.effectAllowed = 'move';
+    
+    if (e.currentTarget) {
+      e.currentTarget.classList.add('opacity-50');
+      
+      const element = e.currentTarget.cloneNode(true) as HTMLElement;
+      element.style.position = 'absolute';
+      element.style.top = '-1000px';
+      document.body.appendChild(element);
+      
+      e.dataTransfer.setDragImage(element, 20, 20);
+      
+      setTimeout(() => {
+        document.body.removeChild(element);
+      }, 0);
+    }
   };
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
+  const handleDragOver = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
     e.preventDefault();
     if (draggedColumn && draggedColumn !== columnId) {
       setDragOverColumn(columnId);
     }
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
+  const handleDrop = (e: React.DragEvent<HTMLTableCellElement>, targetColumnId: string) => {
     e.preventDefault();
     if (!draggedColumn || draggedColumn === targetColumnId) {
       setDraggedColumn(null);
       setDragOverColumn(null);
       return;
     }
+    
     const updatedOrder = [...columnOrder];
     const draggedIndex = updatedOrder.indexOf(draggedColumn);
     const targetIndex = updatedOrder.indexOf(targetColumnId);
+    
     if (draggedIndex !== -1 && targetIndex !== -1) {
       updatedOrder.splice(draggedIndex, 1);
       updatedOrder.splice(targetIndex, 0, draggedColumn);
       setColumnOrder(updatedOrder);
     }
+    
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
 
   const handleDragEnd = () => {
+    const headers = document.querySelectorAll('th');
+    headers.forEach(header => {
+      header.classList.remove('opacity-50');
+    });
+    
     setDraggedColumn(null);
     setDragOverColumn(null);
   };

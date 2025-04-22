@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { UsersTableContainer } from "@/components/ui/users-table-container";
@@ -13,9 +14,9 @@ interface ClientsTableProps {
   editingNotes: number | null;
   draggedColumn: string | null;
   dragOverColumn: string | null;
-  onDragStart: (e: React.DragEvent<HTMLDivElement>, columnId: string) => void;
-  onDragOver: (e: React.DragEvent<HTMLDivElement>, columnId: string) => void;
-  onDrop: (e: React.DragEvent<HTMLDivElement>, columnId: string) => void;
+  onDragStart: (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => void;
+  onDragOver: (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => void;
+  onDrop: (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => void;
   onDragEnd: () => void;
   renderStripeStatus: (status: 'verified' | 'unverified' | 'pending') => JSX.Element;
   handleNotesClick: (clientId: number) => void;
@@ -50,36 +51,6 @@ export function ClientsTable({
   requestSort,
   renderStatus
 }: ClientsTableProps) {
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
-    // Create a custom drag image
-    const dragPreview = document.createElement('div');
-    const column = availableColumns.find(col => col.id === columnId);
-    
-    dragPreview.textContent = column?.label || columnId;
-    dragPreview.style.padding = '8px 12px';
-    dragPreview.style.background = 'white';
-    dragPreview.style.border = '1px solid #ccc';
-    dragPreview.style.borderRadius = '4px';
-    dragPreview.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-    dragPreview.style.position = 'absolute';
-    dragPreview.style.top = '-1000px';
-    dragPreview.style.opacity = '0.9';
-    
-    document.body.appendChild(dragPreview);
-    
-    e.dataTransfer.setDragImage(dragPreview, 20, 20);
-    
-    // Clean up the temporary element after a delay
-    setTimeout(() => {
-      document.body.removeChild(dragPreview);
-    }, 0);
-    
-    onDragStart(e, columnId);
-    
-    // Make dragging more obvious
-    e.currentTarget.classList.add('opacity-50');
-  };
-  
   return (
     <UsersTableContainer className={className}>
       <Table>
@@ -94,12 +65,13 @@ export function ClientsTable({
                   key={columnId}
                   className={`whitespace-nowrap min-w-[100px] ${columnId === 'actions' ? 'w-[80px]' : ''}`}
                   draggable={columnId !== 'actions'}
-                  onDragStart={e => handleDragStart(e, columnId)}
-                  onDragOver={e => onDragOver(e, columnId)}
-                  onDrop={e => onDrop(e, columnId)}
+                  onDragStart={(e) => onDragStart(e, columnId)}
+                  onDragOver={(e) => onDragOver(e, columnId)}
+                  onDrop={(e) => onDrop(e, columnId)}
                   onDragEnd={onDragEnd}
                   dragOver={dragOverColumn === columnId}
                   dragging={draggedColumn === columnId}
+                  draggable={columnId !== 'actions'}
                   sortable={['id', 'name', 'email', 'status', 'company'].includes(columnId)}
                   sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
                   onSort={() => requestSort(columnId)}
