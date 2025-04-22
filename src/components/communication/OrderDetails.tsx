@@ -97,16 +97,10 @@ export const OrderDetails = ({
 
   const isRepeatedOrder = (orderId: string) => repeatedOrders.some(order => order.id === orderId);
 
-  // Helper function to determine what info to show based on user role, order type and status
   const shouldShowDriverInfo = (orderId: string) => {
-    // For client users viewing history orders - show driver info
-    
-    // For driver users with active orders - show recipient/sender info
     if (user?.role === 'driver' && user?.status === 'working') {
       return false;
     }
-    
-    // For all other cases, use the showDriverInfo prop
     return showDriverInfo;
   };
 
