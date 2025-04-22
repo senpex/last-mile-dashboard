@@ -84,13 +84,16 @@ const TableHead = React.forwardRef<
       "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
       dragOver && "border-t-2 border-primary",
       sortable && "cursor-pointer select-none",
-      dragging && "opacity-50 bg-accent/50",
+      dragging && "opacity-70 bg-accent shadow-md border border-primary",
       className
     )}
     onClick={sortable ? onSort : undefined}
     {...props}
   >
-    <div className="flex items-center gap-1">
+    <div className={cn(
+      "flex items-center gap-1",
+      dragging && "pointer-events-none"
+    )}>
       {children}
       {sortable && sortDirection === 'ascending' && (
         <ChevronUp className="h-4 w-4 text-red-500" />
