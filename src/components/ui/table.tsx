@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -167,7 +166,7 @@ const TableContainer = React.forwardRef<
     }}
     {...props} 
   >
-    <ScrollArea orientation="both" className="h-full w-full">
+    <ScrollArea orientation="vertical" className="h-full w-full">
       <div className="min-w-[600px] w-full p-5">
         {props.children}
       </div>
