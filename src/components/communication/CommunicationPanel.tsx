@@ -187,7 +187,7 @@ const CommunicationPanel = ({
     setMessage("");
   };
   const hasAnyFilters = selectedFilters && Object.values(selectedFilters).some(filterArray => filterArray && filterArray.length > 0);
-  return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 my-0 flex flex-col h-[calc(100vh-180px)] border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-300 light:border-2 light:border-gray-300 light:hover:border-gray-400 py-[11px] mx-0 px-[8px]">
+  return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 my-0 flex flex-col h-[calc(100vh-180px)] border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-300 light:border-2 light:border-gray-300 light:hover:border-gray-400 py-[11px] mx-0 px-[20px]">
       
       <div className="flex-none">
         <Tabs defaultValue={activeTab} value={activeTab} onValueChange={value => {
