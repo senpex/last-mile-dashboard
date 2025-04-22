@@ -330,7 +330,7 @@ const CommunicationPanel = ({
 
       <div className="flex-1 min-h-[20px]" />
 
-      <div className="flex-none mt-4 bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-3 my-0 py-[7px]">
+      <div className="flex-none mt-4 bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-3 my-0 py-[16px]">
         <CommunicationChannels channels={channels} onChannelToggle={setChannels} />
         <div className="space-y-3">
           <div className="flex items-center justify-between">
