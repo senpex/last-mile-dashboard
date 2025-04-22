@@ -71,7 +71,6 @@ export function ClientsTable({
                   onDragEnd={onDragEnd}
                   dragOver={dragOverColumn === columnId}
                   dragging={draggedColumn === columnId}
-                  draggable={columnId !== 'actions'}
                   sortable={['id', 'name', 'email', 'status', 'company'].includes(columnId)}
                   sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
                   onSort={() => requestSort(columnId)}
