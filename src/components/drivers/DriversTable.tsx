@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -167,33 +168,11 @@ export const DriversTable = ({
                   <div className="flex items-center gap-1 overflow-hidden">
                     <div 
                       draggable={true}
-                      onDragStart={e => {
-                        onDragStart(e, columnId);
-                        const dragPreview = document.createElement('div');
-                        dragPreview.className = 'px-2 py-1 bg-background border rounded shadow text-sm';
-                        dragPreview.textContent = column.label;
-                        document.body.appendChild(dragPreview);
-                        
-                        const updatePreviewPosition = (e: MouseEvent) => {
-                          dragPreview.style.position = 'fixed';
-                          dragPreview.style.left = e.clientX + 10 + 'px';
-                          dragPreview.style.top = e.clientY + 10 + 'px';
-                          dragPreview.style.pointerEvents = 'none';
-                        };
-                        
-                        const cleanup = () => {
-                          document.removeEventListener('mousemove', updatePreviewPosition);
-                          document.removeEventListener('dragend', cleanup);
-                          dragPreview.remove();
-                        };
-                        
-                        document.addEventListener('mousemove', updatePreviewPosition);
-                        document.addEventListener('dragend', cleanup);
-                      }}
+                      onDragStart={e => onDragStart(e, columnId)}
                       onDragOver={e => onDragOver(e, columnId)}
                       onDragEnd={onDragEnd}
                       onDrop={e => onDrop(e, columnId)}
-                      className={`cursor-grab transition-opacity duration-200 ${draggedColumn === columnId ? 'opacity-50' : ''}`}
+                      className="cursor-grab"
                     >
                       <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
                     </div>

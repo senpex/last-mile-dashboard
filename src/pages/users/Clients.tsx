@@ -322,29 +322,13 @@ const ClientsPage = () => {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     setDraggedColumn(columnId);
     e.dataTransfer.setData('text/plain', columnId);
-    e.dataTransfer.effectAllowed = 'move';
-    
-    const ghostElement = document.createElement('div');
-    ghostElement.textContent = columnId;
-    ghostElement.style.position = 'absolute';
-    ghostElement.style.top = '-1000px';
-    ghostElement.style.padding = '8px';
-    ghostElement.style.backgroundColor = 'white';
-    ghostElement.style.border = '1px solid #ccc';
-    ghostElement.style.borderRadius = '4px';
-    document.body.appendChild(ghostElement);
-    
-    e.dataTransfer.setDragImage(ghostElement, 20, 20);
-    
-    setTimeout(() => {
-      document.body.removeChild(ghostElement);
-    }, 0);
+    const dragImage = new Image();
+    dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+    e.dataTransfer.setDragImage(dragImage, 0, 0);
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    
     if (draggedColumn && draggedColumn !== columnId) {
       setDragOverColumn(columnId);
     }
@@ -352,34 +336,24 @@ const ClientsPage = () => {
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
     e.preventDefault();
-    
     if (!draggedColumn || draggedColumn === targetColumnId) {
       setDraggedColumn(null);
       setDragOverColumn(null);
       return;
     }
-    
     const updatedOrder = [...columnOrder];
     const draggedIndex = updatedOrder.indexOf(draggedColumn);
     const targetIndex = updatedOrder.indexOf(targetColumnId);
-    
     if (draggedIndex !== -1 && targetIndex !== -1) {
       updatedOrder.splice(draggedIndex, 1);
       updatedOrder.splice(targetIndex, 0, draggedColumn);
       setColumnOrder(updatedOrder);
-      toast.success(`Column order updated: ${draggedColumn} moved`);
     }
-    
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
 
   const handleDragEnd = () => {
-    const headers = document.querySelectorAll('th');
-    headers.forEach(header => {
-      header.classList.remove('opacity-50');
-    });
-    
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
