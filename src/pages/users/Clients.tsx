@@ -319,17 +319,11 @@ const ClientsPage = () => {
     toast.success("Client notes updated successfully");
   };
 
-  const handleDragStart = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     setDraggedColumn(columnId);
     e.dataTransfer.setData('text/plain', columnId);
     e.dataTransfer.effectAllowed = 'move';
     
-    if (e.currentTarget) {
-      setTimeout(() => {
-        e.currentTarget.classList.add('opacity-50');
-      }, 0);
-    }
-
     const ghostElement = document.createElement('div');
     ghostElement.textContent = columnId;
     ghostElement.style.position = 'absolute';
@@ -347,7 +341,7 @@ const ClientsPage = () => {
     }, 0);
   };
 
-  const handleDragOver = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
     
@@ -356,7 +350,7 @@ const ClientsPage = () => {
     }
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLTableCellElement>, targetColumnId: string) => {
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
     e.preventDefault();
     
     if (!draggedColumn || draggedColumn === targetColumnId) {

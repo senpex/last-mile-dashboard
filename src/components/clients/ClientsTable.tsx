@@ -4,7 +4,7 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@
 import { UsersTableContainer } from "@/components/ui/users-table-container";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
+import { Check, GripVertical } from "lucide-react";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 
 interface ClientsTableProps {
@@ -14,9 +14,9 @@ interface ClientsTableProps {
   editingNotes: number | null;
   draggedColumn: string | null;
   dragOverColumn: string | null;
-  onDragStart: (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => void;
-  onDragOver: (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => void;
-  onDrop: (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => void;
+  onDragStart: (e: React.DragEvent<HTMLDivElement>, columnId: string) => void;
+  onDragOver: (e: React.DragEvent<HTMLDivElement>, columnId: string) => void;
+  onDrop: (e: React.DragEvent<HTMLDivElement>, columnId: string) => void;
   onDragEnd: () => void;
   renderStripeStatus: (status: 'verified' | 'unverified' | 'pending') => JSX.Element;
   handleNotesClick: (clientId: number) => void;
@@ -60,22 +60,30 @@ export function ClientsTable({
               const column = availableColumns.find(col => col.id === columnId);
               if (!column) return null;
               
+              const sortable = ['id', 'name', 'email', 'status', 'company'].includes(columnId);
+              
               return (
                 <TableHead
                   key={columnId}
                   className={`whitespace-nowrap min-w-[100px] ${columnId === 'actions' ? 'w-[80px]' : ''}`}
-                  draggable={columnId !== 'actions'}
-                  onDragStart={(e) => onDragStart(e, columnId)}
-                  onDragOver={(e) => onDragOver(e, columnId)}
-                  onDrop={(e) => onDrop(e, columnId)}
-                  onDragEnd={onDragEnd}
                   dragOver={dragOverColumn === columnId}
-                  dragging={draggedColumn === columnId}
-                  sortable={['id', 'name', 'email', 'status', 'company'].includes(columnId)}
+                  sortable={sortable}
                   sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
                   onSort={() => requestSort(columnId)}
                 >
-                  {column.label}
+                  <div className="flex items-center gap-2">
+                    <div 
+                      draggable={columnId !== 'actions'}
+                      onDragStart={e => onDragStart(e, columnId)}
+                      onDragOver={e => onDragOver(e, columnId)}
+                      onDragEnd={onDragEnd}
+                      onDrop={e => onDrop(e, columnId)}
+                      className="cursor-grab"
+                    >
+                      <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
+                    </div>
+                    <span>{column.label}</span>
+                  </div>
                 </TableHead>
               );
             })}
