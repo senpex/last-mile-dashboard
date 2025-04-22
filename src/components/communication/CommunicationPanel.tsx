@@ -10,7 +10,6 @@ import { CommunicationChannels } from "./CommunicationChannels";
 import { MessageTemplates, messageTemplates } from "./MessageTemplates";
 import { Recipient, MessageData } from "./types";
 import { DeliveryStatus } from "@/types/delivery";
-
 interface CommunicationPanelProps {
   selectedFilters?: {
     statuses?: DeliveryStatus[] | string[];
@@ -26,7 +25,6 @@ interface CommunicationPanelProps {
   activeTab?: string;
   setActiveTab?: (tab: string) => void;
 }
-
 const generateRandomDrivers = (count: number, startId: number = 10000): any[] => {
   const firstNames = ["John", "Jane", "Michael", "Emma", "David"];
   const lastNames = ["Smith", "Johnson", "Williams", "Jones", "Brown"];
@@ -50,9 +48,7 @@ const generateRandomDrivers = (count: number, startId: number = 10000): any[] =>
     };
   });
 };
-
 const mockDrivers = generateRandomDrivers(20);
-
 const generateRandomClients = (count: number, startId: number = 20000): any[] => {
   const companyNames = ["ABC Corp", "XYZ Ltd", "123 Industries", "Tech Solutions", "Global Services"];
   const contacts = ["John Smith", "Jane Doe", "Michael Brown", "Emma Wilson", "David Miller"];
@@ -73,9 +69,7 @@ const generateRandomClients = (count: number, startId: number = 20000): any[] =>
     };
   });
 };
-
 const mockClients = generateRandomClients(20);
-
 const CommunicationPanel = ({
   activeTab,
   setActiveTab,
@@ -90,12 +84,10 @@ const CommunicationPanel = ({
   const [channels, setChannels] = useState<string[]>(["sms", "email", "inapp"]);
   const [showDropdown, setShowDropdown] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
-
   const [attachedFiles, setAttachedFiles] = useState<Array<{
     file: File;
     type: 'excel' | 'doc' | 'pdf' | 'image';
   }>>([]);
-
   const getFileType = (file: File): 'excel' | 'doc' | 'pdf' | 'image' => {
     const extension = file.name.split('.').pop()?.toLowerCase();
     if (['xls', 'xlsx'].includes(extension || '')) return 'excel';
@@ -104,7 +96,6 @@ const CommunicationPanel = ({
     if (['jpg', 'jpeg', 'png'].includes(extension || '')) return 'image';
     return 'doc'; // fallback
   };
-
   const handleFileAttachment = () => {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
@@ -122,12 +113,14 @@ const CommunicationPanel = ({
     };
     fileInput.click();
   };
-
   const removeFile = (index: number) => {
     setAttachedFiles(files => files.filter((_, i) => i !== index));
   };
-
-  const FileIcon = ({ type }: { type: 'excel' | 'doc' | 'pdf' | 'image' }) => {
+  const FileIcon = ({
+    type
+  }: {
+    type: 'excel' | 'doc' | 'pdf' | 'image';
+  }) => {
     switch (type) {
       case 'excel':
         return <FileSpreadsheet className="h-4 w-4 text-green-600" />;
@@ -139,7 +132,6 @@ const CommunicationPanel = ({
         return <FileImage className="h-4 w-4 text-purple-600" />;
     }
   };
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
@@ -149,7 +141,6 @@ const CommunicationPanel = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
   const filteredDrivers = searchQuery.length >= 3 ? mockDrivers.filter(driver => {
     const nameMatch = driver.name.toLowerCase().includes(searchQuery.toLowerCase());
     const emailMatch = driver.email.toLowerCase().includes(searchQuery.toLowerCase());
@@ -157,7 +148,6 @@ const CommunicationPanel = ({
     const idMatch = driver.id.toString().includes(searchQuery);
     return nameMatch || emailMatch || phoneMatch || idMatch;
   }) : [];
-
   const filteredClients = searchQuery.length >= 3 ? mockClients.filter(client => {
     const nameMatch = client.name.toLowerCase().includes(searchQuery.toLowerCase());
     const contactMatch = client.contactName.toLowerCase().includes(searchQuery.toLowerCase());
@@ -166,7 +156,6 @@ const CommunicationPanel = ({
     const idMatch = client.id.toString().includes(searchQuery);
     return nameMatch || contactMatch || emailMatch || phoneMatch || idMatch;
   }) : [];
-
   const handleSelectRecipient = (recipient: Recipient) => {
     const isAlreadySelected = selectedRecipients.some(r => r.id === recipient.id);
     if (isAlreadySelected) {
@@ -177,14 +166,12 @@ const CommunicationPanel = ({
     setShowDropdown(false);
     setSearchQuery("");
   };
-
   const handleSelectTemplate = (templateId: string) => {
     const template = messageTemplates.find(t => t.id === templateId);
     if (template) {
       setMessage(template.content);
     }
   };
-
   const handleSendMessage = () => {
     const messageData: MessageData = {
       message: message,
@@ -199,11 +186,8 @@ const CommunicationPanel = ({
     });
     setMessage("");
   };
-
   const hasAnyFilters = selectedFilters && Object.values(selectedFilters).some(filterArray => filterArray && filterArray.length > 0);
-
-  return (
-    <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 my-0 flex flex-col h-[calc(100vh-180px)]
+  return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 my-0 flex flex-col h-[calc(100vh-180px)]
       border border-gray-200 dark:border-gray-700 
       shadow-sm hover:shadow-md 
       transition-all duration-300 
@@ -212,10 +196,10 @@ const CommunicationPanel = ({
       
       <div className="flex-none">
         <Tabs defaultValue={activeTab} value={activeTab} onValueChange={value => {
-          if (setActiveTab) {
-            setActiveTab(value);
-          }
-        }}>
+        if (setActiveTab) {
+          setActiveTab(value);
+        }
+      }}>
           <TabsList className="w-full mb-4 h-14">
             <TabsTrigger value="drivers" className="flex-1 h-full">
               <User className="mr-2 h-4 w-4" />Drivers
@@ -235,15 +219,13 @@ const CommunicationPanel = ({
               </label>
               <div className="relative">
                 <Input id="contact-search" value={searchQuery} onChange={e => {
-                  setSearchQuery(e.target.value);
-                  setShowDropdown(e.target.value.length >= 3);
-                }} placeholder="Search drivers" className="w-full pl-8" />
+                setSearchQuery(e.target.value);
+                setShowDropdown(e.target.value.length >= 3);
+              }} placeholder="Search drivers" className="w-full pl-8" />
                 <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
                 
-                {showDropdown && searchQuery.length >= 3 && (
-                  <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 max-h-60 overflow-auto">
-                    {filteredDrivers.length > 0 ? filteredDrivers.map(driver => (
-                      <div key={driver.id} onClick={() => handleSelectRecipient(driver)} className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center justify-between">
+                {showDropdown && searchQuery.length >= 3 && <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 max-h-60 overflow-auto">
+                    {filteredDrivers.length > 0 ? filteredDrivers.map(driver => <div key={driver.id} onClick={() => handleSelectRecipient(driver)} className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center justify-between">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
                             <span className="text-xs text-gray-500">ID: {driver.id}</span>
@@ -253,14 +235,10 @@ const CommunicationPanel = ({
                           <div className="text-sm text-gray-500 dark:text-gray-400">{driver.phone}</div>
                         </div>
                         {selectedRecipients.some(r => r.id === driver.id) && <Check className="h-4 w-4 text-green-500" />}
-                      </div>
-                    )) : (
-                      <div className="px-4 py-2 text-gray-500 dark:text-gray-400">
+                      </div>) : <div className="px-4 py-2 text-gray-500 dark:text-gray-400">
                         No results found
-                      </div>
-                    )}
-                  </div>
-                )}
+                      </div>}
+                  </div>}
               </div>
             </div>
 
@@ -284,15 +262,13 @@ const CommunicationPanel = ({
               </label>
               <div className="relative">
                 <Input id="client-search" value={searchQuery} onChange={e => {
-                  setSearchQuery(e.target.value);
-                  setShowDropdown(e.target.value.length >= 3);
-                }} placeholder="Search clients" className="w-full pl-8" />
+                setSearchQuery(e.target.value);
+                setShowDropdown(e.target.value.length >= 3);
+              }} placeholder="Search clients" className="w-full pl-8" />
                 <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
 
-                {showDropdown && searchQuery.length >= 3 && (
-                  <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 max-h-60 overflow-auto">
-                    {filteredClients.length > 0 ? filteredClients.map(client => (
-                      <div key={client.id} onClick={() => handleSelectRecipient(client)} className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center justify-between">
+                {showDropdown && searchQuery.length >= 3 && <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 max-h-60 overflow-auto">
+                    {filteredClients.length > 0 ? filteredClients.map(client => <div key={client.id} onClick={() => handleSelectRecipient(client)} className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center justify-between">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
                             <span className="text-xs text-gray-500">ID: {client.id}</span>
@@ -303,14 +279,10 @@ const CommunicationPanel = ({
                           <div className="text-sm text-gray-500 dark:text-gray-400">{client.phone}</div>
                         </div>
                         {selectedRecipients.some(r => r.id === client.id) && <Check className="h-4 w-4 text-green-500" />}
-                      </div>
-                    )) : (
-                      <div className="px-4 py-2 text-gray-500 dark:text-gray-400">
+                      </div>) : <div className="px-4 py-2 text-gray-500 dark:text-gray-400">
                         No results found
-                      </div>
-                    )}
-                  </div>
-                )}
+                      </div>}
+                  </div>}
               </div>
             </div>
 
@@ -334,9 +306,9 @@ const CommunicationPanel = ({
               </label>
               <div className="relative">
                 <Input id="dispatcher-search" value={searchQuery} onChange={e => {
-                  setSearchQuery(e.target.value);
-                  setShowDropdown(e.target.value.length >= 3);
-                }} placeholder="Search dispatchers" className="w-full pl-8" />
+                setSearchQuery(e.target.value);
+                setShowDropdown(e.target.value.length >= 3);
+              }} placeholder="Search dispatchers" className="w-full pl-8" />
                 <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
               </div>
             </div>
@@ -358,7 +330,7 @@ const CommunicationPanel = ({
 
       <div className="flex-1 min-h-[20px]" />
 
-      <div className="flex-none mt-4 bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-3">
+      <div className="flex-none mt-4 bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-3 my-0 py-[7px]">
         <CommunicationChannels channels={channels} onChannelToggle={setChannels} />
         <div className="space-y-3">
           <div className="flex items-center justify-between">
@@ -368,41 +340,20 @@ const CommunicationPanel = ({
             <MessageTemplates onSelectTemplate={handleSelectTemplate} />
           </div>
           <div className="relative">
-            <Textarea 
-              value={message} 
-              onChange={e => setMessage(e.target.value)} 
-              placeholder="Type your message here..." 
-              className="min-h-[100px] resize-none dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300" 
-            />
-            {attachedFiles.length > 0 && (
-              <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-2 bg-background/80 p-2 rounded-md">
-                {attachedFiles.map((file, index) => (
-                  <div 
-                    key={index}
-                    className="flex items-center gap-1 bg-muted px-2 py-1 rounded-md text-xs"
-                  >
+            <Textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Type your message here..." className="min-h-[100px] resize-none dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300" />
+            {attachedFiles.length > 0 && <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-2 bg-background/80 p-2 rounded-md">
+                {attachedFiles.map((file, index) => <div key={index} className="flex items-center gap-1 bg-muted px-2 py-1 rounded-md text-xs">
                     <FileIcon type={file.type} />
                     <span className="max-w-[100px] truncate">{file.file.name}</span>
-                    <button
-                      onClick={() => removeFile(index)}
-                      className="ml-1 hover:text-destructive"
-                    >
+                    <button onClick={() => removeFile(index)} className="ml-1 hover:text-destructive">
                       <X className="h-3 w-3" />
                     </button>
-                  </div>
-                ))}
-              </div>
-            )}
+                  </div>)}
+              </div>}
           </div>
 
           <div className="flex justify-between items-center space-x-4 mt-3">
-            <Button 
-              variant="ghost" 
-              size="icon"
-              onClick={handleFileAttachment} 
-              title="Attach files"
-              className="hover:bg-accent"
-            >
+            <Button variant="ghost" size="icon" onClick={handleFileAttachment} title="Attach files" className="hover:bg-accent">
               <Paperclip className="h-4 w-4" />
             </Button>
             <div className="flex items-center space-x-4">
@@ -410,21 +361,7 @@ const CommunicationPanel = ({
                 <Clock className="h-4 w-4 dark:text-gray-300" />
                 Schedule
               </Button>
-              <Button 
-                onClick={handleSendMessage} 
-                className={`flex items-center gap-1 ${
-                  message.trim() !== "" && 
-                  (selectedRecipients.length > 0 || hasAnyFilters) && 
-                  channels.length > 0 
-                    ? "bg-green-600 text-white hover:bg-green-700" 
-                    : ""
-                }`} 
-                disabled={
-                  message.trim() === "" || 
-                  (!selectedRecipients.length && !hasAnyFilters) || 
-                  channels.length === 0
-                }
-              >
+              <Button onClick={handleSendMessage} className={`flex items-center gap-1 ${message.trim() !== "" && (selectedRecipients.length > 0 || hasAnyFilters) && channels.length > 0 ? "bg-green-600 text-white hover:bg-green-700" : ""}`} disabled={message.trim() === "" || !selectedRecipients.length && !hasAnyFilters || channels.length === 0}>
                 <Send className="h-4 w-4" />
                 Send Now
               </Button>
@@ -432,8 +369,6 @@ const CommunicationPanel = ({
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default CommunicationPanel;
