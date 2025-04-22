@@ -58,7 +58,8 @@ const generateRandomClients = (count: number, startId: number = 20000): any[] =>
       stripeStatus: stripeStatuses[Math.floor(Math.random() * stripeStatuses.length)],
       zipcode: getRandomZipcode(),
       notes: Math.random() > 0.7 ? `Notes for ${name}` : "",
-      totalOrders: Math.floor(Math.random() * 100)
+      totalOrders: Math.floor(Math.random() * 100),
+      lastOrderDate: new Date(Date.now() - Math.floor(Math.random() * 365 * 24 * 60 * 60 * 1000)).toISOString()
     };
   });
 };
@@ -81,7 +82,8 @@ const ClientsPage = () => {
       stripeStatus: 'verified' as StripeStatus,
       zipcode: "90210",
       notes: "High-value client",
-      totalOrders: 42
+      totalOrders: 42,
+      lastOrderDate: "2024-01-15T10:30:00Z"
     },
     {
       id: 20002,
@@ -94,7 +96,8 @@ const ClientsPage = () => {
       stripeStatus: 'unverified' as StripeStatus,
       zipcode: "90211",
       notes: "Potential client",
-      totalOrders: 15
+      totalOrders: 15,
+      lastOrderDate: "2024-02-20T14:45:00Z"
     },
     {
       id: 20003,
@@ -107,7 +110,8 @@ const ClientsPage = () => {
       stripeStatus: 'pending' as StripeStatus,
       zipcode: "90212",
       notes: "New client",
-      totalOrders: 7
+      totalOrders: 7,
+      lastOrderDate: "2024-03-10T09:15:00Z"
     }
   ]);
   
@@ -127,6 +131,7 @@ const ClientsPage = () => {
     { id: "status", label: "Status", default: true },
     { id: "stripeStatus", label: "Stripe Status", default: true },
     { id: "totalOrders", label: "Total Orders", default: true },
+    { id: "lastOrderDate", label: "Last Order Date", default: true },
     { id: "notes", label: "Notes", default: true },
     { id: "actions", label: "Actions", default: true }
   ];

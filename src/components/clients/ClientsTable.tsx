@@ -141,6 +141,11 @@ export function ClientsTable({
                         </Button>
                       </div>
                     )}
+                    {columnId === 'lastOrderDate' && (
+                      <span className="text-sm text-muted-foreground">
+                        {new Date(client.lastOrderDate).toLocaleDateString()}
+                      </span>
+                    )}
                   </TableCell>
                 );
               })}
