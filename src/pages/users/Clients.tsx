@@ -322,27 +322,35 @@ const ClientsPage = () => {
   const handleDragStart = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
     setDraggedColumn(columnId);
     e.dataTransfer.setData('text/plain', columnId);
-    
     e.dataTransfer.effectAllowed = 'move';
     
     if (e.currentTarget) {
-      e.currentTarget.classList.add('opacity-50');
-      
-      const element = e.currentTarget.cloneNode(true) as HTMLElement;
-      element.style.position = 'absolute';
-      element.style.top = '-1000px';
-      document.body.appendChild(element);
-      
-      e.dataTransfer.setDragImage(element, 20, 20);
-      
       setTimeout(() => {
-        document.body.removeChild(element);
+        e.currentTarget.classList.add('opacity-50');
       }, 0);
     }
+
+    const ghostElement = document.createElement('div');
+    ghostElement.textContent = columnId;
+    ghostElement.style.position = 'absolute';
+    ghostElement.style.top = '-1000px';
+    ghostElement.style.padding = '8px';
+    ghostElement.style.backgroundColor = 'white';
+    ghostElement.style.border = '1px solid #ccc';
+    ghostElement.style.borderRadius = '4px';
+    document.body.appendChild(ghostElement);
+    
+    e.dataTransfer.setDragImage(ghostElement, 20, 20);
+    
+    setTimeout(() => {
+      document.body.removeChild(ghostElement);
+    }, 0);
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLTableCellElement>, columnId: string) => {
     e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    
     if (draggedColumn && draggedColumn !== columnId) {
       setDragOverColumn(columnId);
     }
@@ -350,6 +358,7 @@ const ClientsPage = () => {
 
   const handleDrop = (e: React.DragEvent<HTMLTableCellElement>, targetColumnId: string) => {
     e.preventDefault();
+    
     if (!draggedColumn || draggedColumn === targetColumnId) {
       setDraggedColumn(null);
       setDragOverColumn(null);
@@ -364,6 +373,7 @@ const ClientsPage = () => {
       updatedOrder.splice(draggedIndex, 1);
       updatedOrder.splice(targetIndex, 0, draggedColumn);
       setColumnOrder(updatedOrder);
+      toast.success(`Column order updated: ${draggedColumn} moved`);
     }
     
     setDraggedColumn(null);

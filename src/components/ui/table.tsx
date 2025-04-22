@@ -68,16 +68,18 @@ const TableRow = React.forwardRef<
 ))
 TableRow.displayName = "TableRow"
 
+interface TableHeadProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
+  dragOver?: boolean;
+  sortable?: boolean;
+  sortDirection?: 'ascending' | 'descending' | null;
+  onSort?: () => void;
+  dragging?: boolean;
+  draggable?: boolean;
+}
+
 const TableHead = React.forwardRef<
   HTMLTableCellElement,
-  React.ThHTMLAttributes<HTMLTableCellElement> & { 
-    dragOver?: boolean;
-    sortable?: boolean;
-    sortDirection?: 'ascending' | 'descending' | null;
-    onSort?: () => void;
-    dragging?: boolean;
-    draggable?: boolean;
-  }
+  TableHeadProps
 >(({ className, dragOver, sortable, sortDirection, onSort, dragging, draggable, children, ...props }, ref) => (
   <th
     ref={ref}
@@ -96,7 +98,7 @@ const TableHead = React.forwardRef<
       dragging && "pointer-events-none"
     )}>
       {draggable && (
-        <span className="flex items-center cursor-grab opacity-50 hover:opacity-100">
+        <span className="flex items-center cursor-grab opacity-50 hover:opacity-100 touch-none">
           <GripVertical className="h-4 w-4" />
         </span>
       )}
