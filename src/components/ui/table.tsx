@@ -1,7 +1,8 @@
+
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { ChevronUp, ChevronDown } from "lucide-react"
+import { ChevronUp, ChevronDown, GripVertical } from "lucide-react"
 
 const Table = React.forwardRef<
   HTMLTableElement,
@@ -67,27 +68,40 @@ const TableRow = React.forwardRef<
 ))
 TableRow.displayName = "TableRow"
 
+interface TableHeadProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
+  dragOver?: boolean;
+  sortable?: boolean;
+  sortDirection?: 'ascending' | 'descending' | null;
+  onSort?: () => void;
+  dragging?: boolean;
+  draggable?: boolean;
+}
+
 const TableHead = React.forwardRef<
   HTMLTableCellElement,
-  React.ThHTMLAttributes<HTMLTableCellElement> & { 
-    dragOver?: boolean;
-    sortable?: boolean;
-    sortDirection?: 'ascending' | 'descending' | null;
-    onSort?: () => void;
-  }
->(({ className, dragOver, sortable, sortDirection, onSort, children, ...props }, ref) => (
+  TableHeadProps
+>(({ className, dragOver, sortable, sortDirection, onSort, dragging, draggable, children, ...props }, ref) => (
   <th
     ref={ref}
     className={cn(
       "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
       dragOver && "border-t-2 border-primary",
       sortable && "cursor-pointer select-none",
+      dragging && "opacity-70 bg-accent shadow-md border border-primary",
       className
     )}
     onClick={sortable ? onSort : undefined}
     {...props}
   >
-    <div className="flex items-center gap-1">
+    <div className={cn(
+      "flex items-center gap-2",
+      dragging && "pointer-events-none"
+    )}>
+      {draggable && (
+        <span className="flex items-center cursor-grab opacity-50 hover:opacity-100 touch-none">
+          <GripVertical className="h-4 w-4" />
+        </span>
+      )}
       {children}
       {sortable && sortDirection === 'ascending' && (
         <ChevronUp className="h-4 w-4 text-red-500" />
@@ -154,7 +168,7 @@ const TableContainer = React.forwardRef<
     {...props} 
   >
     <ScrollArea orientation="both" className="h-full w-full">
-      <div className="min-w-[600px] w-full">
+      <div className="min-w-[600px] w-full p-5">
         {props.children}
       </div>
     </ScrollArea>
