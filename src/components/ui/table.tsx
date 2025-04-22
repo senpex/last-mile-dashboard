@@ -2,7 +2,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { ChevronUp, ChevronDown } from "lucide-react"
+import { ChevronUp, ChevronDown, GripVertical } from "lucide-react"
 
 const Table = React.forwardRef<
   HTMLTableElement,
@@ -76,8 +76,9 @@ const TableHead = React.forwardRef<
     sortDirection?: 'ascending' | 'descending' | null;
     onSort?: () => void;
     dragging?: boolean;
+    draggable?: boolean;
   }
->(({ className, dragOver, sortable, sortDirection, onSort, dragging, children, ...props }, ref) => (
+>(({ className, dragOver, sortable, sortDirection, onSort, dragging, draggable, children, ...props }, ref) => (
   <th
     ref={ref}
     className={cn(
@@ -91,9 +92,14 @@ const TableHead = React.forwardRef<
     {...props}
   >
     <div className={cn(
-      "flex items-center gap-1",
+      "flex items-center gap-2",
       dragging && "pointer-events-none"
     )}>
+      {draggable && (
+        <span className="flex items-center cursor-grab opacity-50 hover:opacity-100">
+          <GripVertical className="h-4 w-4" />
+        </span>
+      )}
       {children}
       {sortable && sortDirection === 'ascending' && (
         <ChevronUp className="h-4 w-4 text-red-500" />
