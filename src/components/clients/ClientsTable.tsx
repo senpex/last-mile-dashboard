@@ -1,5 +1,4 @@
-
-import React, { useRef } from 'react';
+import React from 'react';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { UsersTableContainer } from "@/components/ui/users-table-container";
 import { Textarea } from "@/components/ui/textarea";
@@ -78,7 +77,7 @@ export function ClientsTable({
                       onDragOver={e => onDragOver(e, columnId)}
                       onDragEnd={onDragEnd}
                       onDrop={e => onDrop(e, columnId)}
-                      className="cursor-grab"
+                      className={`cursor-grab transition-opacity duration-200 ${draggedColumn === columnId ? 'opacity-50' : ''}`}
                     >
                       <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
                     </div>
