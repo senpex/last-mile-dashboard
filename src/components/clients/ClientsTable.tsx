@@ -103,6 +103,9 @@ export function ClientsTable({
                     {columnId === 'zipcode' && client.zipcode}
                     {columnId === 'status' && renderStatus(client.status)}
                     {columnId === 'stripeStatus' && renderStripeStatus(client.stripeStatus)}
+                    {columnId === 'totalOrders' && (
+                      <span className="font-medium">{client.totalOrders}</span>
+                    )}
                     {columnId === 'notes' && (
                       <>
                         {editingNotes === client.id ? (

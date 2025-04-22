@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from 'react';
 import Layout from "@/components/layout/Layout";
 import { DateRange } from "react-day-picker";
@@ -58,7 +57,8 @@ const generateRandomClients = (count: number, startId: number = 20000): any[] =>
       status: statuses[Math.floor(Math.random() * statuses.length)],
       stripeStatus: stripeStatuses[Math.floor(Math.random() * stripeStatuses.length)],
       zipcode: getRandomZipcode(),
-      notes: Math.random() > 0.7 ? `Notes for ${name}` : ""
+      notes: Math.random() > 0.7 ? `Notes for ${name}` : "",
+      totalOrders: Math.floor(Math.random() * 100)
     };
   });
 };
@@ -80,7 +80,8 @@ const ClientsPage = () => {
       status: "active",
       stripeStatus: 'verified' as StripeStatus,
       zipcode: "90210",
-      notes: "High-value client"
+      notes: "High-value client",
+      totalOrders: 42
     },
     {
       id: 20002,
@@ -92,7 +93,8 @@ const ClientsPage = () => {
       status: "inactive",
       stripeStatus: 'unverified' as StripeStatus,
       zipcode: "90211",
-      notes: "Potential client"
+      notes: "Potential client",
+      totalOrders: 15
     },
     {
       id: 20003,
@@ -104,11 +106,11 @@ const ClientsPage = () => {
       status: "pending",
       stripeStatus: 'pending' as StripeStatus,
       zipcode: "90212",
-      notes: "New client"
+      notes: "New client",
+      totalOrders: 7
     }
   ]);
   
-  // These declarations need to be moved up before they're used
   const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
@@ -124,6 +126,7 @@ const ClientsPage = () => {
     { id: "zipcode", label: "Zipcode", default: false },
     { id: "status", label: "Status", default: true },
     { id: "stripeStatus", label: "Stripe Status", default: true },
+    { id: "totalOrders", label: "Total Orders", default: true },
     { id: "notes", label: "Notes", default: true },
     { id: "actions", label: "Actions", default: true }
   ];
