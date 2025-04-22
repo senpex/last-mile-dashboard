@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -206,6 +207,10 @@ export const OrderDetails = ({
             </div>
           );
         })}
+
+        <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b mt-4">
+          Repeated Orders
+        </h2>
 
         {repeatedOrders.map((order, index) => {
           const isExpanded = expandedOrderId === order.id;
