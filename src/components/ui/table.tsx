@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -74,14 +75,16 @@ const TableHead = React.forwardRef<
     sortable?: boolean;
     sortDirection?: 'ascending' | 'descending' | null;
     onSort?: () => void;
+    dragging?: boolean;
   }
->(({ className, dragOver, sortable, sortDirection, onSort, children, ...props }, ref) => (
+>(({ className, dragOver, sortable, sortDirection, onSort, dragging, children, ...props }, ref) => (
   <th
     ref={ref}
     className={cn(
       "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
       dragOver && "border-t-2 border-primary",
       sortable && "cursor-pointer select-none",
+      dragging && "opacity-50 bg-accent/50",
       className
     )}
     onClick={sortable ? onSort : undefined}

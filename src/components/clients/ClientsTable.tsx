@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { UsersTableContainer } from "@/components/ui/users-table-container";
@@ -69,6 +70,7 @@ export function ClientsTable({
                   onDrop={e => onDrop(e, columnId)}
                   onDragEnd={onDragEnd}
                   dragOver={dragOverColumn === columnId}
+                  dragging={draggedColumn === columnId}
                   sortable={['id', 'name', 'email', 'status', 'company'].includes(columnId)}
                   sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
                   onSort={() => requestSort(columnId)}
