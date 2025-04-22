@@ -168,7 +168,7 @@ const TableContainer = React.forwardRef<
     {...props} 
   >
     <ScrollArea orientation="both" className="h-full w-full">
-      <div className="min-w-[600px] w-full">
+      <div className="min-w-[600px] w-full p-5">
         {props.children}
       </div>
     </ScrollArea>
