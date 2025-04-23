@@ -356,19 +356,20 @@ export const OrderDetails = ({
                 {chat.unread && (
                   <CircleDot
                     className="w-3 h-3 text-red-500 ml-2 animate-pulse"
-                    title="Unread messages"
                   />
                 )}
               </div>
-              <span className={cn(
-                "w-full text-left text-[11px] truncate",
-                chat.unread ? "font-semibold text-foreground" : "text-muted-foreground"
-              )}>
-                {chat.lastMessage}
-              </span>
-              <div className="flex items-center gap-1 mt-1">
-                <Clock className="w-3 h-3 text-muted-foreground" />
-                <span className="text-[10px] text-muted-foreground">{chat.sentAt}</span>
+              <div className="flex items-center w-full gap-2 text-[11px]">
+                <span className={cn(
+                  "flex-1 text-left truncate",
+                  chat.unread ? "font-semibold text-foreground" : "text-muted-foreground"
+                )}>
+                  {chat.lastMessage}
+                </span>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <Clock className="w-3 h-3 text-muted-foreground" />
+                  <span className="text-[10px] text-muted-foreground">{chat.sentAt}</span>
+                </div>
               </div>
             </button>
           ))}
