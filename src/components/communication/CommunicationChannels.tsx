@@ -13,7 +13,7 @@ export const CommunicationChannels: React.FC<CommunicationChannelsProps> = ({
   onChannelToggle
 }) => {
   return (
-    <div className="mb-5">
+    <div className="-mt-8 mb-0">
       <label className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2">
         Select Communication Channels:
       </label>
