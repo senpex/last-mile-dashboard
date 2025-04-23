@@ -1,11 +1,10 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MapPin, ChevronUp, ChevronDown, UserCircle2 as UserRound, Calendar } from "lucide-react";
+import { MapPin, ChevronUp, ChevronDown, UserCircle2 as UserRound, Calendar, MessageSquare, Clock, CircleDot } from "lucide-react";
 import { OrderMap } from "./OrderMap";
 import { cn } from "@/lib/utils";
 
@@ -105,9 +104,30 @@ export const OrderDetails = ({
     return showDriverInfo;
   };
 
+  const openedChats = [
+    {
+      orderId: "909090",
+      lastMessage: "I'm at the pickup location.",
+      sentAt: "10:28 AM",
+      unread: true,
+    },
+    {
+      orderId: "909093",
+      lastMessage: "Delivered the package. Please confirm!",
+      sentAt: "9:45 AM",
+      unread: false,
+    },
+    {
+      orderId: "909094",
+      lastMessage: "Running 5 min late due to traffic.",
+      sentAt: "8:59 AM",
+      unread: true,
+    },
+  ];
+
   return <ScrollArea independentPanel={true} className="h-full px-[14px] my-0">
-    <div className="orders-panel">
-      <div className="right-panel-container p-[5px]">
+    <div className="orders-panel flex flex-col h-full">
+      <div className="right-panel-container p-[5px] flex-1 overflow-y-auto">
         <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
           Active Orders
         </h2>
@@ -314,6 +334,45 @@ export const OrderDetails = ({
             </div>
           );
         })}
+      </div>
+      <div className="pt-1 pb-2 px-[5px] border-t border-border/50 bg-background/90 sticky bottom-0 z-20">
+        <h2 className="text-xs font-bold uppercase text-muted-foreground mb-2 pl-1">
+          Opened Chats
+        </h2>
+        <div className="flex flex-col gap-2">
+          {openedChats.map((chat) => (
+            <button
+              key={chat.orderId}
+              className={cn(
+                "flex flex-col items-start w-full rounded-lg px-3 py-2 transition-colors duration-150",
+                "bg-card/40 hover:bg-card/60 border border-border/40 shadow-sm",
+                "relative group"
+              )}
+              type="button"
+            >
+              <div className="flex items-center gap-1 mb-0.5">
+                <MessageSquare className="w-4 h-4 text-muted-foreground mr-1" />
+                <span className="text-xs font-semibold text-foreground">Order #{chat.orderId}</span>
+                {chat.unread && (
+                  <CircleDot
+                    className="w-3 h-3 text-red-500 ml-2 animate-pulse"
+                    title="Unread messages"
+                  />
+                )}
+              </div>
+              <span className={cn(
+                "w-full text-left text-[11px] truncate",
+                chat.unread ? "font-semibold text-foreground" : "text-muted-foreground"
+              )}>
+                {chat.lastMessage}
+              </span>
+              <div className="flex items-center gap-1 mt-1">
+                <Clock className="w-3 h-3 text-muted-foreground" />
+                <span className="text-[10px] text-muted-foreground">{chat.sentAt}</span>
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
 
