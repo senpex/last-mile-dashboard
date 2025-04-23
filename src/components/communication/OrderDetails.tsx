@@ -7,7 +7,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { MapPin, ChevronUp, ChevronDown, UserCircle2 as UserRound, Calendar, MessageSquare, Clock, CircleDot } from "lucide-react";
 import { OrderMap } from "./OrderMap";
 import { cn } from "@/lib/utils";
-
 interface OrderDetailsProps {
   orderData: {
     id: string;
@@ -31,7 +30,6 @@ interface OrderDetailsProps {
     orderId?: string;
   };
 }
-
 const StatusBadge = ({
   status
 }: {
@@ -46,47 +44,43 @@ const StatusBadge = ({
       return <Badge className="bg-red-500">Cancelled</Badge>;
   }
 };
-
 export const OrderDetails = ({
   orderData,
   showDriverInfo = true,
   user
 }: OrderDetailsProps) => {
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
-
   const orders = [{
     ...orderData,
     id: "909090"
   }];
-
-  const repeatedOrders = [
-    {
-      ...orderData,
-      id: "909093",
-      status: "repeated" as const,
-      schedule: [
-        { day: "Tuesday", time: "14:00" },
-        { day: "Wednesday", time: "15:30" },
-        { day: "Friday", time: "16:00" }
-      ]
-    }
-  ];
-
+  const repeatedOrders = [{
+    ...orderData,
+    id: "909093",
+    status: "repeated" as const,
+    schedule: [{
+      day: "Tuesday",
+      time: "14:00"
+    }, {
+      day: "Wednesday",
+      time: "15:30"
+    }, {
+      day: "Friday",
+      time: "16:00"
+    }]
+  }];
   const knownLocations = {
     "123 Pickup St, City": "123 Pickup St, San Francisco, CA 94103",
     "456 Delivery Ave, City": "456 Delivery Ave, San Francisco, CA 94107"
   };
-
   const senderInfo = {
     name: "John Smith",
     phone: "+1 (555) 123-4567"
   };
-
   const recipientInfo = {
     name: "Maria Rodriguez",
     phone: "+1 (555) 987-6543"
   };
-
   const driverInfo = {
     name: orderData.driverName,
     phone: "+1 (555) 234-5678",
@@ -94,37 +88,29 @@ export const OrderDetails = ({
     rating: "4.8",
     totalDeliveries: "1,234"
   };
-
   const isRepeatedOrder = (orderId: string) => repeatedOrders.some(order => order.id === orderId);
-
   const shouldShowDriverInfo = (orderId: string) => {
     if (user?.role === 'driver' && user?.status === 'working') {
       return false;
     }
     return showDriverInfo;
   };
-
-  const openedChats = [
-    {
-      orderId: "909090",
-      lastMessage: "I'm at the pickup location.",
-      sentAt: "10:28 AM",
-      unread: true,
-    },
-    {
-      orderId: "909093",
-      lastMessage: "Delivered the package. Please confirm!",
-      sentAt: "9:45 AM",
-      unread: false,
-    },
-    {
-      orderId: "909094",
-      lastMessage: "Running 5 min late due to traffic.",
-      sentAt: "8:59 AM",
-      unread: true,
-    },
-  ];
-
+  const openedChats = [{
+    orderId: "909090",
+    lastMessage: "I'm at the pickup location.",
+    sentAt: "10:28 AM",
+    unread: true
+  }, {
+    orderId: "909093",
+    lastMessage: "Delivered the package. Please confirm!",
+    sentAt: "9:45 AM",
+    unread: false
+  }, {
+    orderId: "909094",
+    lastMessage: "Running 5 min late due to traffic.",
+    sentAt: "8:59 AM",
+    unread: true
+  }];
   return <ScrollArea independentPanel={true} className="h-full px-[14px] my-0">
     <div className="orders-panel flex flex-col h-full">
       <div className="right-panel-container p-[5px] flex-1 overflow-y-auto">
@@ -134,8 +120,7 @@ export const OrderDetails = ({
         
         {orders.map((order, index) => {
           const isExpanded = expandedOrderId === order.id;
-          return (
-            <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
+          return <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
               <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
                 <h3 className="font-medium text-xs text-foreground/90">Order #{order.id}</h3>
                 <Button variant="ghost" size="sm" onClick={() => setExpandedOrderId(isExpanded ? null : order.id)} className="h-6 w-6 p-0">
@@ -166,8 +151,7 @@ export const OrderDetails = ({
                   </div>
                   
                   <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
-                    {shouldShowDriverInfo(order.id) ? (
-                      <div className="flex items-start gap-2">
+                    {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2">
                         <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                         <div>
                           <div className="text-[11px] text-muted-foreground mb-0.5">Driver Details:</div>
@@ -177,9 +161,7 @@ export const OrderDetails = ({
                           <div className="text-xs text-muted-foreground">Rating: ⭐️ {driverInfo.rating}</div>
                           <div className="text-xs text-muted-foreground">Deliveries: {driverInfo.totalDeliveries}</div>
                         </div>
-                      </div>
-                    ) : (
-                      <>
+                      </div> : <>
                         <div className="flex items-start gap-2">
                           <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                           <div>
@@ -201,8 +183,7 @@ export const OrderDetails = ({
                             <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
                           </div>
                         </div>
-                      </>
-                    )}
+                      </>}
                   </div>
                   
                   <Sheet>
@@ -224,8 +205,7 @@ export const OrderDetails = ({
                 </div>}
               
               {index !== orders.length - 1 && <Separator className="my-1 opacity-50" />}
-            </div>
-          );
+            </div>;
         })}
 
         <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b mt-4">
@@ -234,22 +214,15 @@ export const OrderDetails = ({
 
         {repeatedOrders.map((order, index) => {
           const isExpanded = expandedOrderId === order.id;
-          return (
-            <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
+          return <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
               <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
                 <h3 className="font-medium text-xs text-foreground/90">Order #{order.id}</h3>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => setExpandedOrderId(isExpanded ? null : order.id)} 
-                  className="h-6 w-6 p-0"
-                >
+                <Button variant="ghost" size="sm" onClick={() => setExpandedOrderId(isExpanded ? null : order.id)} className="h-6 w-6 p-0">
                   {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
                 </Button>
               </div>
               
-              {isExpanded && (
-                <div className="px-3 pt-1 pb-3 space-y-3">
+              {isExpanded && <div className="px-3 pt-1 pb-3 space-y-3">
                   <div className="flex justify-start">
                     <Badge variant="secondary" className="text-[10px] px-2 py-0.5">
                       Repeated Order
@@ -262,18 +235,15 @@ export const OrderDetails = ({
                       <span className="text-xs font-medium">Weekly Schedule</span>
                     </div>
                     <div className="grid gap-1.5">
-                      {order.schedule.map((slot, idx) => (
-                        <div key={idx} className="flex justify-between items-center text-[11px]">
+                      {order.schedule.map((slot, idx) => <div key={idx} className="flex justify-between items-center text-[11px]">
                           <span className="text-muted-foreground">{slot.day}:</span>
                           <span className="font-medium">{slot.time}</span>
-                        </div>
-                      ))}
+                        </div>)}
                     </div>
                   </div>
                   
                   <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
-                    {shouldShowDriverInfo(order.id) ? (
-                      <div className="flex items-start gap-2">
+                    {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2">
                         <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                         <div>
                           <div className="text-[11px] text-muted-foreground mb-0.5">Driver Details:</div>
@@ -283,9 +253,7 @@ export const OrderDetails = ({
                           <div className="text-xs text-muted-foreground">Rating: ⭐️ {driverInfo.rating}</div>
                           <div className="text-xs text-muted-foreground">Deliveries: {driverInfo.totalDeliveries}</div>
                         </div>
-                      </div>
-                    ) : (
-                      <>
+                      </div> : <>
                         <div className="flex items-start gap-2">
                           <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                           <div>
@@ -307,8 +275,7 @@ export const OrderDetails = ({
                             <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
                           </div>
                         </div>
-                      </>
-                    )}
+                      </>}
                   </div>
                   
                   <Sheet>
@@ -327,43 +294,25 @@ export const OrderDetails = ({
                       </div>
                     </SheetContent>
                   </Sheet>
-                </div>
-              )}
+                </div>}
               
               {index !== repeatedOrders.length - 1 && <Separator className="my-1 opacity-50" />}
-            </div>
-          );
+            </div>;
         })}
       </div>
-      <div className="pt-1 pb-2 px-[5px] border-t border-border/50 bg-background/90 sticky bottom-0 z-20">
+      <div className="pt-1 pb-2 px-[5px] border-t border-border/50 bg-background/90 sticky bottom-0 z-20 py-[11px] my-[240px]">
         <h2 className="text-xs font-bold uppercase text-muted-foreground mb-2 pl-1">
           Opened Chats
         </h2>
         <div className="flex flex-col gap-2">
-          {openedChats.map((chat) => (
-            <button
-              key={chat.orderId}
-              className={cn(
-                "flex flex-col items-start w-full rounded-lg px-3 py-2 transition-colors duration-150",
-                "bg-card/40 hover:bg-card/60 border border-border/40 shadow-sm",
-                "relative group"
-              )}
-              type="button"
-            >
+          {openedChats.map(chat => <button key={chat.orderId} className={cn("flex flex-col items-start w-full rounded-lg px-3 py-2 transition-colors duration-150", "bg-card/40 hover:bg-card/60 border border-border/40 shadow-sm", "relative group")} type="button">
               <div className="flex items-center gap-1 mb-0.5">
                 <MessageSquare className="w-4 h-4 text-muted-foreground mr-1" />
                 <span className="text-xs font-semibold text-foreground">Order #{chat.orderId}</span>
-                {chat.unread && (
-                  <CircleDot
-                    className="w-3 h-3 text-red-500 ml-2 animate-pulse"
-                  />
-                )}
+                {chat.unread && <CircleDot className="w-3 h-3 text-red-500 ml-2 animate-pulse" />}
               </div>
               <div className="flex items-center w-full gap-2 text-[11px]">
-                <span className={cn(
-                  "flex-1 text-left truncate",
-                  chat.unread ? "font-semibold text-foreground" : "text-muted-foreground"
-                )}>
+                <span className={cn("flex-1 text-left truncate", chat.unread ? "font-semibold text-foreground" : "text-muted-foreground")}>
                   {chat.lastMessage}
                 </span>
                 <div className="flex items-center gap-1 flex-shrink-0">
@@ -371,8 +320,7 @@ export const OrderDetails = ({
                   <span className="text-[10px] text-muted-foreground">{chat.sentAt}</span>
                 </div>
               </div>
-            </button>
-          ))}
+            </button>)}
         </div>
       </div>
     </div>
