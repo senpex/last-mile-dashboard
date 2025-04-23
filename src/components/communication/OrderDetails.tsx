@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -306,7 +305,7 @@ export const OrderDetails = ({
             })}
           </div>
         </ScrollArea>
-        <div className="opened-chats-footer border-t border-border/50 bg-background/90 sticky bottom-0 left-0 w-full z-20 py-3 px-[5px]">
+        <div className="opened-chats-footer border-t border-border/10 bg-transparent sticky bottom-0 left-0 w-full z-20 py-3 px-[5px]">
           <h2 className="text-xs font-bold uppercase text-muted-foreground mb-2 pl-1">
             Opened Chats
           </h2>
@@ -371,8 +370,8 @@ export const OrderDetails = ({
           border: 1px solid rgba(255, 255, 255, 0.05);
         }
         .opened-chats-footer {
-          /* Ensures the section stays visible at the very bottom */
-          box-shadow: 0 -2px 8px rgba(0,0,0,0.03);
+          background: transparent;
+          box-shadow: none;
         }
         :global(.dark) .orders-panel {
           background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.1));
@@ -386,6 +385,10 @@ export const OrderDetails = ({
         }
         :global(.dark) .weekly-schedule-card {
           background: rgba(0, 0, 0, 0.2);
+        }
+        :global(.dark) .opened-chats-footer {
+          background: transparent;
+          border-color: rgba(255,255,255,0.1);
         }
         `}
       </style>
