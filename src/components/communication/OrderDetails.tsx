@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { MapPin, ChevronUp, ChevronDown, UserCircle2 as UserRound, Calendar, MessageSquare, Clock, CircleDot } from "lucide-react";
 import { OrderMap } from "./OrderMap";
 import { cn } from "@/lib/utils";
+
 interface OrderDetailsProps {
   orderData: {
     id: string;
@@ -30,6 +31,7 @@ interface OrderDetailsProps {
     orderId?: string;
   };
 }
+
 const StatusBadge = ({
   status
 }: {
@@ -44,6 +46,7 @@ const StatusBadge = ({
       return <Badge className="bg-red-500">Cancelled</Badge>;
   }
 };
+
 export const OrderDetails = ({
   orderData,
   showDriverInfo = true,
@@ -111,6 +114,7 @@ export const OrderDetails = ({
     sentAt: "8:59 AM",
     unread: true
   }];
+
   return <ScrollArea independentPanel={true} className="h-full px-[14px] my-0">
     <div className="orders-panel flex flex-col h-full">
       <div className="right-panel-container p-[5px] flex-1 overflow-y-auto">
