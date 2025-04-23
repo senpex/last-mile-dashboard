@@ -10,7 +10,6 @@ import { CommunicationChannels } from "./CommunicationChannels";
 import { MessageTemplates, messageTemplates } from "./MessageTemplates";
 import { Recipient, MessageData } from "./types";
 import { DeliveryStatus } from "@/types/delivery";
-
 interface CommunicationPanelProps {
   selectedFilters?: {
     statuses?: DeliveryStatus[] | string[];
@@ -26,7 +25,6 @@ interface CommunicationPanelProps {
   activeTab?: string;
   setActiveTab?: (tab: string) => void;
 }
-
 const generateRandomDrivers = (count: number, startId: number = 10000): any[] => {
   const firstNames = ["John", "Jane", "Michael", "Emma", "David"];
   const lastNames = ["Smith", "Johnson", "Williams", "Jones", "Brown"];
@@ -50,9 +48,7 @@ const generateRandomDrivers = (count: number, startId: number = 10000): any[] =>
     };
   });
 };
-
 const mockDrivers = generateRandomDrivers(20);
-
 const generateRandomClients = (count: number, startId: number = 20000): any[] => {
   const companyNames = ["ABC Corp", "XYZ Ltd", "123 Industries", "Tech Solutions", "Global Services"];
   const contacts = ["John Smith", "Jane Doe", "Michael Brown", "Emma Wilson", "David Miller"];
@@ -73,9 +69,7 @@ const generateRandomClients = (count: number, startId: number = 20000): any[] =>
     };
   });
 };
-
 const mockClients = generateRandomClients(20);
-
 const CommunicationPanel = ({
   activeTab,
   setActiveTab,
@@ -94,7 +88,6 @@ const CommunicationPanel = ({
     file: File;
     type: 'excel' | 'doc' | 'pdf' | 'image';
   }>>([]);
-
   const getFileType = (file: File): 'excel' | 'doc' | 'pdf' | 'image' => {
     const extension = file.name.split('.').pop()?.toLowerCase();
     if (['xls', 'xlsx'].includes(extension || '')) return 'excel';
@@ -103,7 +96,6 @@ const CommunicationPanel = ({
     if (['jpg', 'jpeg', 'png'].includes(extension || '')) return 'image';
     return 'doc'; // fallback
   };
-
   const handleFileAttachment = () => {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
@@ -121,11 +113,9 @@ const CommunicationPanel = ({
     };
     fileInput.click();
   };
-
   const removeFile = (index: number) => {
     setAttachedFiles(files => files.filter((_, i) => i !== index));
   };
-
   const FileIcon = ({
     type
   }: {
@@ -142,7 +132,6 @@ const CommunicationPanel = ({
         return <FileImage className="h-4 w-4 text-purple-600" />;
     }
   };
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
@@ -152,7 +141,6 @@ const CommunicationPanel = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
   const filteredDrivers = searchQuery.length >= 3 ? mockDrivers.filter(driver => {
     const nameMatch = driver.name.toLowerCase().includes(searchQuery.toLowerCase());
     const emailMatch = driver.email.toLowerCase().includes(searchQuery.toLowerCase());
@@ -160,7 +148,6 @@ const CommunicationPanel = ({
     const idMatch = driver.id.toString().includes(searchQuery);
     return nameMatch || emailMatch || phoneMatch || idMatch;
   }) : [];
-
   const filteredClients = searchQuery.length >= 3 ? mockClients.filter(client => {
     const nameMatch = client.name.toLowerCase().includes(searchQuery.toLowerCase());
     const contactMatch = client.contactName.toLowerCase().includes(searchQuery.toLowerCase());
@@ -169,7 +156,6 @@ const CommunicationPanel = ({
     const idMatch = client.id.toString().includes(searchQuery);
     return nameMatch || contactMatch || emailMatch || phoneMatch || idMatch;
   }) : [];
-
   const handleSelectRecipient = (recipient: Recipient) => {
     const isAlreadySelected = selectedRecipients.some(r => r.id === recipient.id);
     if (isAlreadySelected) {
@@ -180,14 +166,12 @@ const CommunicationPanel = ({
     setShowDropdown(false);
     setSearchQuery("");
   };
-
   const handleSelectTemplate = (templateId: string) => {
     const template = messageTemplates.find(t => t.id === templateId);
     if (template) {
       setMessage(template.content);
     }
   };
-
   const handleSendMessage = () => {
     const messageData: MessageData = {
       message: message,
@@ -202,9 +186,7 @@ const CommunicationPanel = ({
     });
     setMessage("");
   };
-
   const hasAnyFilters = selectedFilters && Object.values(selectedFilters).some(filterArray => filterArray && filterArray.length > 0);
-
   return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 my-0 flex flex-col h-[calc(100vh-180px)] border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-300 light:border-2 light:border-gray-300 light:hover:border-gray-400 px-[20px]">
     <div className="flex-none">
       <Tabs defaultValue={activeTab} value={activeTab} onValueChange={value => {
@@ -254,7 +236,7 @@ const CommunicationPanel = ({
             </div>
           </div>
 
-          <div className="mb-4 h-[120px] overflow-y-auto">
+          <div className="mb-4 h-[120px] overflow-y-auto my-0 py-[5px]">
             <div className="flex justify-between items-center mb-2">
               <label className="block text-sm font-medium text-foreground dark:text-gray-300">
                 Selected Recipients
@@ -342,7 +324,7 @@ const CommunicationPanel = ({
 
     <div className="flex-1 min-h-[20px]" />
 
-    <div className="flex-none mt-4 bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-3 my-0 py-[16px] -mt-[50px]">
+    <div className="flex-none mt-4 bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-3 my-0 py-[16px]">
       <CommunicationChannels channels={channels} onChannelToggle={setChannels} />
       <div className="space-y-3">
         <div className="flex items-center justify-between">
@@ -383,5 +365,4 @@ const CommunicationPanel = ({
     </div>
   </div>;
 };
-
 export default CommunicationPanel;
