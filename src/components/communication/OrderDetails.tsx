@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -308,7 +307,6 @@ export const OrderDetails = ({
             </div>
           </ScrollArea>
         </div>
-        {/* Opened Chats anchored at the absolute bottom, outside the scroll */}
         <div className="opened-chats-footer border-t border-border/10 bg-transparent box-shadow-none sticky bottom-0 left-0 w-full z-20 py-3 px-[5px] flex-shrink-0">
           <h2 className="text-xs font-bold uppercase text-muted-foreground mb-2 pl-1">
             Opened Chats
