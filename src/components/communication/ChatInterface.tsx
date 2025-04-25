@@ -295,6 +295,7 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           onClose={handleClose}
+          openedChatsCount={openedChats.length}
         />
         
         <div className="flex-1 overflow-hidden flex flex-col">

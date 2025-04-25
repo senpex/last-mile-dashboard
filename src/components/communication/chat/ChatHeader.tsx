@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,9 +16,16 @@ interface ChatHeaderProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   onClose?: () => void;
+  openedChatsCount?: number;
 }
 
-export const ChatHeader = ({ user, activeTab, setActiveTab, onClose }: ChatHeaderProps) => {
+export const ChatHeader = ({ 
+  user, 
+  activeTab, 
+  setActiveTab, 
+  onClose, 
+  openedChatsCount = 0 
+}: ChatHeaderProps) => {
   const onlineUsers = [
     "John Smith",
     "Emma Johnson",
@@ -117,7 +123,14 @@ export const ChatHeader = ({ user, activeTab, setActiveTab, onClose }: ChatHeade
             <TabsTrigger value="chat" className="text-sm">Chat</TabsTrigger>
             <TabsTrigger value="notes" className="text-sm">Notes</TabsTrigger>
             <TabsTrigger value="history" className="text-sm">Chat History</TabsTrigger>
-            <TabsTrigger value="opened" className="text-sm">Opened Chats</TabsTrigger>
+            <TabsTrigger value="opened" className="text-sm flex items-center gap-1">
+              Opened Chats 
+              {openedChatsCount > 0 && (
+                <span className="bg-primary text-primary-foreground text-[10px] rounded-full px-1.5 py-0.5 ml-1">
+                  {openedChatsCount}
+                </span>
+              )}
+            </TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
