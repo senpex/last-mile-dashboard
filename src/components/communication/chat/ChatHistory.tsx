@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { UserRound, MessageSquare, Clock } from "lucide-react";
+import { MessageSquare, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ChatHistoryProps {
@@ -68,4 +67,3 @@ export const ChatHistory = ({ userId }: ChatHistoryProps) => {
     </ScrollArea>
   );
 };
-
