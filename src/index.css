@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -100,6 +101,20 @@
 }
 
 @layer components {
+  /* Chat history specific styles */
+  .chat-history-item-container {
+    margin-bottom: 0.5rem;
+  }
+  
+  .chat-history-btn {
+    width: 100%;
+    transition: background-color 0.15s ease;
+  }
+  
+  .chat-history-btn:hover {
+    background-color: hsl(var(--muted));
+  }
+  
   /* Make sure UI components scale with zoom level */
   .card, 
   .button, 
