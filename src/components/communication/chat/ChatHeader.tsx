@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -126,7 +127,7 @@ export const ChatHeader = ({
             <TabsTrigger value="opened" className="text-sm flex items-center gap-1">
               Opened Chats 
               {openedChatsCount > 0 && (
-                <span className="bg-primary text-primary-foreground text-[10px] rounded-full px-1.5 py-0.5 ml-1">
+                <span className="bg-primary text-primary-foreground text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center p-0 ml-1">
                   {openedChatsCount}
                 </span>
               )}
