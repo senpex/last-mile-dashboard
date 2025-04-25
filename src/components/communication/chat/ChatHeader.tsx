@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -110,8 +111,8 @@ export const ChatHeader = ({ user, activeTab, setActiveTab, onClose }: ChatHeade
         </div>
       </div>
       
-      <div className="mt-4 flex justify-end">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-auto">
+      <div className="mt-4">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="h-9">
             <TabsTrigger value="opened" className="text-sm">Opened Chats</TabsTrigger>
             <TabsTrigger value="chat" className="text-sm">Chat</TabsTrigger>
