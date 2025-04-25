@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { MapPin, ChevronUp, ChevronDown, UserCircle2 as UserRound, Calendar, MessageSquare, Clock, CircleDot } from "lucide-react";
 import { OrderMap } from "./OrderMap";
 import { cn } from "@/lib/utils";
+
 interface OrderDetailsProps {
   orderData: {
     id: string;
@@ -30,6 +31,7 @@ interface OrderDetailsProps {
     orderId?: string;
   };
 }
+
 const StatusBadge = ({
   status
 }: {
@@ -44,6 +46,7 @@ const StatusBadge = ({
       return <Badge className="bg-red-500">Cancelled</Badge>;
   }
 };
+
 export const OrderDetails = ({
   orderData,
   showDriverInfo = true,
@@ -111,6 +114,8 @@ export const OrderDetails = ({
     sentAt: "8:59 AM",
     unread: true
   }];
+  const isWorkingDriverWithOrder = (user?.role === 'driver' && user?.status === 'working' && user?.orderId);
+
   return <div className="orders-panel flex flex-col h-full relative px-[14px] my-0">
       <div className="flex-1 min-h-0 flex flex-col justify-between">
         <div className="flex-1 min-h-0 flex flex-col">
@@ -137,12 +142,24 @@ export const OrderDetails = ({
                         <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
                         <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
                           <div className="grid grid-cols-3 gap-1.5 text-[11px]">
-                            <div className="text-muted-foreground">Pickup time:</div>
-                            <div className="col-span-2 font-medium">{order.pickupTime || "Not scheduled"}</div>
-                            <div className="text-muted-foreground">Dropoff time:</div>
-                            <div className="col-span-2 font-medium">{order.dropoffTime || "Not scheduled"}</div>
-                            <div className="text-muted-foreground">ETA:</div>
-                            <div className="col-span-2 font-medium">{order.eta}</div>
+                            {isWorkingDriverWithOrder ? (
+                              <>
+                                <div className="col-span-3 text-muted-foreground">Notes:</div>
+                                <div className="col-span-3 font-medium">
+                                  Order # F9K-JMJ Item count:6. Pickup time exactly @3:53 PM from Tender Greens 5103560697. 
+                                  Delivery at 04:30 PM Delivery company: Oakland Housing Authority. Setup Required: No
+                                </div>
+                              </>
+                            ) : (
+                              <>
+                                <div className="text-muted-foreground">Pickup time:</div>
+                                <div className="col-span-2 font-medium">{order.pickupTime || "Not scheduled"}</div>
+                                <div className="text-muted-foreground">Dropoff time:</div>
+                                <div className="col-span-2 font-medium">{order.dropoffTime || "Not scheduled"}</div>
+                                <div className="text-muted-foreground">ETA:</div>
+                                <div className="col-span-2 font-medium">{order.eta}</div>
+                              </>
+                            )}
                           </div>
                         </div>
                         <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
@@ -284,7 +301,6 @@ export const OrderDetails = ({
             </div>
           </ScrollArea>
         </div>
-        
       </div>
       <style>
         {`
