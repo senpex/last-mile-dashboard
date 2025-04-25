@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -114,7 +115,7 @@ export const OrderDetails = ({
     sentAt: "8:59 AM",
     unread: true
   }];
-  const isWorkingDriverWithOrder = (user?.role === 'driver' && user?.status === 'working' && user?.orderId);
+  const isWorkingDriverWithOrder = user?.role === 'driver' && user?.status === 'working' && user?.orderId;
 
   return <div className="orders-panel flex flex-col h-full relative px-[14px] my-0">
       <div className="flex-1 min-h-0 flex flex-col justify-between">
@@ -215,6 +216,7 @@ export const OrderDetails = ({
                     {index !== orders.length - 1 && <Separator className="my-1 opacity-50" />}
                   </div>;
             })}
+              
               <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b mt-4">
                 Repeated Orders
               </h2>
