@@ -972,7 +972,7 @@ const CustomerSupport = () => {
                       </div>
                       
                       {chat.unread > 0 && <div className="flex-shrink-0">
-                          <Badge variant="default" className="rounded-full h-5 min-w-[20px]">
+                          <Badge variant="default" className="rounded-full h-4 w-4 min-w-[16px] flex items-center justify-center p-0 text-[10px] font-bold">
                             {chat.unread}
                           </Badge>
                         </div>}
