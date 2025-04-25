@@ -44,7 +44,11 @@ const StatusBadge = ({
       return <Badge className="bg-red-500">Cancelled</Badge>;
   }
 };
-export const OrderDetails = ({ orderData, showDriverInfo = true, user }: OrderDetailsProps) => {
+export const OrderDetails = ({
+  orderData,
+  showDriverInfo = true,
+  user
+}: OrderDetailsProps) => {
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   const orders = [{
     ...orderData,
@@ -133,28 +137,12 @@ export const OrderDetails = ({ orderData, showDriverInfo = true, user }: OrderDe
                         <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
                         <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
                           <div className="grid grid-cols-3 gap-1.5 text-[11px]">
-                            {user?.role === 'driver' && user?.status === 'working' ? (
-                              <>
-                                <div className="text-muted-foreground">Notes:</div>
-                                <div className="col-span-2 font-medium">
-                                  Order # {orderData.id}<br />
-                                  Item count: 6<br />
-                                  Pickup time exactly @{orderData.pickupTime} from Tender Greens 5103560697<br />
-                                  Delivery at {orderData.dropoffTime}<br />
-                                  Delivery company: Oakland Housing Authority<br />
-                                  Setup Required: No
-                                </div>
-                              </>
-                            ) : (
-                              <>
-                                <div className="text-muted-foreground">Pickup time:</div>
-                                <div className="col-span-2 font-medium">{orderData.pickupTime || "Not scheduled"}</div>
-                                <div className="text-muted-foreground">Dropoff time:</div>
-                                <div className="col-span-2 font-medium">{orderData.dropoffTime || "Not scheduled"}</div>
-                                <div className="text-muted-foreground">ETA:</div>
-                                <div className="col-span-2 font-medium">{orderData.eta}</div>
-                              </>
-                            )}
+                            <div className="text-muted-foreground">Pickup time:</div>
+                            <div className="col-span-2 font-medium">{order.pickupTime || "Not scheduled"}</div>
+                            <div className="text-muted-foreground">Dropoff time:</div>
+                            <div className="col-span-2 font-medium">{order.dropoffTime || "Not scheduled"}</div>
+                            <div className="text-muted-foreground">ETA:</div>
+                            <div className="col-span-2 font-medium">{order.eta}</div>
                           </div>
                         </div>
                         <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
