@@ -159,7 +159,7 @@ Contact recipient before delivery at provided number`;
                           </Badge>
                         </div>
                         <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
-                        {user?.role === 'client' ? (
+                        {user?.role === 'client' || user?.role !== 'driver' ? (
                           <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
                             <div className="grid grid-cols-3 gap-1.5 text-[11px]">
                               <div className="text-muted-foreground">Pickup time:</div>
