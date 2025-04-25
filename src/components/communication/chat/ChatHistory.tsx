@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MessageSquare, Clock } from "lucide-react";
@@ -39,10 +38,10 @@ export const ChatHistory = ({
                 bg-card/40 hover:bg-card/60 border border-border/40 shadow-sm
                 relative group" type="button">
               <div className="flex items-center gap-1 mb-0.5 w-full">
-                <MessageSquare className="w-4 h-4 text-muted-foreground mr-1" />
-                <span className="text-xs font-semibold text-foreground">
+                <span className="text-xs font-semibold text-foreground mr-1">
                   {chat.date}
                 </span>
+                <MessageSquare className="w-4 h-4 text-muted-foreground" />
                 <Badge variant="secondary" className="ml-auto text-[10px] px-1.5 py-0">
                   {chat.messages} msgs
                 </Badge>
@@ -61,4 +60,3 @@ export const ChatHistory = ({
       </div>
     </ScrollArea>;
 };
-
