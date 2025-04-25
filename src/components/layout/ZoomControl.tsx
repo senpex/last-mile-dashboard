@@ -29,9 +29,7 @@ const ZoomControl = ({
   return <div className="flex flex-col gap-2">
       
       
-      {!collapsed && <div className="text-xs text-center text-sidebar-foreground/70">
-          {Math.round(zoom * 100)}%
-        </div>}
+      {!collapsed}
     </div>;
 };
 export default ZoomControl;
