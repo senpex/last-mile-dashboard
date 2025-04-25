@@ -115,7 +115,7 @@ export const OrderDetails = ({
       <div className="flex-1 min-h-0 flex flex-col justify-between">
         <div className="flex-1 min-h-0 flex flex-col">
           <ScrollArea independentPanel={true} className="flex-1 min-h-0 overflow-auto pr-0">
-            <div className="right-panel-container p-[5px] pb-0 flex-1">
+            <div className="right-panel-container p-[5px] pb-0 flex-1 my-[6px]">
               <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
                 Active Orders
               </h2>
