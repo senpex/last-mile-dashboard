@@ -107,22 +107,26 @@ export const OrderDetails = ({
     return showDriverInfo;
   };
 
-  const openedChats = [{
-    orderId: "909090",
-    lastMessage: "I'm at the pickup location.",
-    sentAt: "10:28 AM",
-    unread: true
-  }, {
-    orderId: "909093",
-    lastMessage: "Delivered the package. Please confirm!",
-    sentAt: "9:45 AM",
-    unread: false
-  }, {
-    orderId: "909094",
-    lastMessage: "Running 5 min late due to traffic.",
-    sentAt: "8:59 AM",
-    unread: true
-  }];
+  const openedChats = [
+    {
+      orderId: "909090",
+      lastMessage: "I'm at the pickup location.",
+      sentAt: "10:28 AM",
+      unread: true
+    },
+    {
+      orderId: "909093",
+      lastMessage: "Delivered the package. Please confirm!",
+      sentAt: "9:45 AM",
+      unread: false
+    },
+    {
+      orderId: "909094",
+      lastMessage: "Running 5 min late due to traffic.",
+      sentAt: "8:59 AM",
+      unread: true
+    }
+  ];
 
   const getOrderNotes = (orderId: string) => {
     return `Order #${orderId}
@@ -157,7 +161,11 @@ Contact recipient before delivery at provided number`;
                         <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
                         {user?.role === 'driver' && user?.status === 'working' ? (
                           <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
-                            <div className="text-xs space-y-2 whitespace-pre-line text-muted-foreground">
+                            <div className="flex items-center gap-2 mb-1.5">
+                              <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
+                              <span className="text-xs font-medium">Order Notes:</span>
+                            </div>
+                            <div className="text-xs space-y-2 whitespace-pre-line text-muted-foreground border-l-2 border-muted pl-2">
                               {getOrderNotes(order.id)}
                             </div>
                           </div>
