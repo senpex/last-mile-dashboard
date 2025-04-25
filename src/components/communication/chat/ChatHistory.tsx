@@ -1,9 +1,11 @@
 import React from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MessageSquare, Clock } from "lucide-react";
+
 interface ChatHistoryProps {
   userId: string;
 }
+
 export const ChatHistory = ({
   userId
 }: ChatHistoryProps) => {
@@ -27,7 +29,8 @@ export const ChatHistory = ({
     summary: "Delivery time rescheduled",
     time: "4:15 PM"
   }];
-  return <ScrollArea className="flex-1 p-4 my-0 px-0 py-0">
+
+  return <ScrollArea className="flex-1 p-4 my-0 px-0 py-0 -mt-[10px]">
       <div className="space-y-2">
         {chatHistory.map(chat => <div key={chat.id} className="w-full chat-history-item-container">
             <button className="chat-history-btn flex flex-col items-start w-full rounded-lg px-3 py-2 transition-colors duration-150
