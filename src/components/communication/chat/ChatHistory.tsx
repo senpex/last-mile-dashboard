@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { UserRound, MessageSquare } from "lucide-react";
+import { UserRound, MessageSquare, Clock } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ChatHistoryProps {
   userId: string;
@@ -35,31 +36,36 @@ export const ChatHistory = ({ userId }: ChatHistoryProps) => {
 
   return (
     <ScrollArea className="flex-1 p-4">
-      <div className="space-y-4">
+      <div className="space-y-2">
         {chatHistory.map((chat) => (
-          <div 
+          <button
             key={chat.id}
-            className="p-4 border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors"
+            className={cn(
+              "flex flex-col items-start w-full rounded-lg px-3 py-2 transition-colors duration-150",
+              "bg-card/40 hover:bg-card/60 border border-border/40 shadow-sm",
+              "relative group"
+            )}
+            type="button"
           >
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                <MessageSquare className="h-5 w-5 text-muted-foreground" />
-              </div>
-              <div className="flex-1">
-                <div className="flex justify-between items-start">
-                  <span className="font-medium">{chat.date}</span>
-                  <span className="text-sm text-muted-foreground">{chat.time}</span>
-                </div>
-                <p className="text-sm text-muted-foreground mt-1">{chat.summary}</p>
-                <div className="flex items-center gap-1 mt-2">
-                  <MessageSquare className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">{chat.messages} messages</span>
-                </div>
+            <div className="flex items-center gap-1 mb-0.5">
+              <MessageSquare className="w-4 h-4 text-muted-foreground mr-1" />
+              <span className="text-xs font-semibold text-foreground">
+                {chat.date}
+              </span>
+            </div>
+            <div className="flex items-center w-full gap-2 text-[11px]">
+              <span className="flex-1 text-left truncate text-muted-foreground">
+                {chat.summary}
+              </span>
+              <div className="flex items-center gap-1 flex-shrink-0">
+                <Clock className="w-3 h-3 text-muted-foreground" />
+                <span className="text-[10px] text-muted-foreground">{chat.time}</span>
               </div>
             </div>
-          </div>
+          </button>
         ))}
       </div>
     </ScrollArea>
   );
 };
+
