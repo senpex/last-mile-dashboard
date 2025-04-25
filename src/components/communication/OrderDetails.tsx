@@ -135,105 +135,197 @@ Special instructions: Delivery must be made during business hours (9 AM - 5 PM)
 Contact recipient before delivery at provided number`;
   };
 
-  return <div className="orders-panel flex flex-col h-full relative px-[14px] my-0">
+  const renderActiveOrders = () => {
+    if (user?.role === 'driver' && user?.status === 'working') {
+      return (
+        <>
+          <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
+            Active Orders - Working Driver
+          </h2>
+          {orders.map((order, index) => (
+            <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
+              <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
+                <h3 className="font-medium text-xs text-foreground/90">Order #{order.id}</h3>
+                <Button variant="ghost" size="sm" onClick={() => setExpandedOrderId(expandedOrderId === order.id ? null : order.id)} className="h-6 w-6 p-0">
+                  {expandedOrderId === order.id ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+                </Button>
+              </div>
+              {expandedOrderId === order.id && (
+                <div className="px-3 pt-1 pb-3 space-y-3">
+                  <div className="flex justify-start">
+                    <StatusBadge status={order.status} />
+                  </div>
+                  <OrderMap 
+                    pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} 
+                    deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} 
+                    driverName={order.driverName} 
+                  />
+                  <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
+                      <span className="text-xs font-medium">Order Notes:</span>
+                    </div>
+                    <div className="text-xs whitespace-pre-line text-muted-foreground border-l-2 border-muted pl-2">
+                      {getOrderNotes(order.id)}
+                    </div>
+                  </div>
+                  <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
+                    {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2">
+                        <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                        <div>
+                          <div className="text-[11px] text-muted-foreground mb-0.5">Driver Details:</div>
+                          <div className="text-xs font-medium">{driverInfo.name}</div>
+                          <div className="text-xs text-muted-foreground">{driverInfo.phone}</div>
+                          <div className="text-xs text-muted-foreground">Vehicle: {driverInfo.vehicle}</div>
+                          <div className="text-xs text-muted-foreground">Rating: ⭐️ {driverInfo.rating}</div>
+                          <div className="text-xs text-muted-foreground">Deliveries: {driverInfo.totalDeliveries}</div>
+                        </div>
+                      </div> : <>
+                        <div className="flex items-start gap-2">
+                          <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                          <div>
+                            <div className="text-[11px] text-muted-foreground mb-0.5">Sender:</div>
+                            <div className="text-xs font-medium">{senderInfo.name}</div>
+                            <div className="text-xs text-muted-foreground">{senderInfo.phone}</div>
+                          </div>
+                        </div>
+                        <div className="flex justify-center">
+                          <div className="h-3 border-l border-dashed border-border/50"></div>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                          <div>
+                            <div className="text-[11px] text-muted-foreground mb-0.5">Recipient:</div>
+                            <div className="text-xs font-medium">{recipientInfo.name}</div>
+                            <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
+                          </div>
+                        </div>
+                      </>}
+                  </div>
+                  <Sheet>
+                    <SheetTrigger asChild>
+                      <Button variant="outline" size="sm" className="w-full text-xs py-1">
+                        View Full Order
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent>
+                      <SheetHeader>
+                        <SheetTitle>Order Details</SheetTitle>
+                      </SheetHeader>
+                      <div className="py-2">
+                        <h3 className="text-sm font-medium mb-1">Order #{order.id}</h3>
+                        <p className="text-xs">Full order details would be displayed here.</p>
+                      </div>
+                    </SheetContent>
+                  </Sheet>
+                </div>
+              )}
+              {index !== orders.length - 1 && <Separator className="my-1 opacity-50" />}
+            </div>
+          ))}
+        </>
+      );
+    } else {
+      return (
+        <>
+          <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
+            Active Orders - Customer
+          </h2>
+          {orders.map((order, index) => (
+            <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
+              <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
+                <h3 className="font-medium text-xs text-foreground/90">Order #{order.id}</h3>
+                <Button variant="ghost" size="sm" onClick={() => setExpandedOrderId(expandedOrderId === order.id ? null : order.id)} className="h-6 w-6 p-0">
+                  {expandedOrderId === order.id ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+                </Button>
+              </div>
+              {expandedOrderId === order.id && (
+                <div className="px-3 pt-1 pb-3 space-y-3">
+                  <div className="flex justify-start">
+                    <StatusBadge status={order.status} />
+                  </div>
+                  <OrderMap 
+                    pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} 
+                    deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} 
+                    driverName={order.driverName} 
+                  />
+                  <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
+                    <div className="grid grid-cols-3 gap-1.5 text-[11px]">
+                      <div className="text-muted-foreground">Pickup time:</div>
+                      <div className="col-span-2 font-medium">{order.pickupTime || "Not scheduled"}</div>
+                      <div className="text-muted-foreground">Dropoff time:</div>
+                      <div className="col-span-2 font-medium">{order.dropoffTime || "Not scheduled"}</div>
+                      <div className="text-muted-foreground">ETA:</div>
+                      <div className="col-span-2 font-medium">{order.eta}</div>
+                    </div>
+                  </div>
+                  <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
+                    {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2">
+                        <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                        <div>
+                          <div className="text-[11px] text-muted-foreground mb-0.5">Driver Details:</div>
+                          <div className="text-xs font-medium">{driverInfo.name}</div>
+                          <div className="text-xs text-muted-foreground">{driverInfo.phone}</div>
+                          <div className="text-xs text-muted-foreground">Vehicle: {driverInfo.vehicle}</div>
+                          <div className="text-xs text-muted-foreground">Rating: ⭐️ {driverInfo.rating}</div>
+                          <div className="text-xs text-muted-foreground">Deliveries: {driverInfo.totalDeliveries}</div>
+                        </div>
+                      </div> : <>
+                        <div className="flex items-start gap-2">
+                          <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                          <div>
+                            <div className="text-[11px] text-muted-foreground mb-0.5">Sender:</div>
+                            <div className="text-xs font-medium">{senderInfo.name}</div>
+                            <div className="text-xs text-muted-foreground">{senderInfo.phone}</div>
+                          </div>
+                        </div>
+                        <div className="flex justify-center">
+                          <div className="h-3 border-l border-dashed border-border/50"></div>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                          <div>
+                            <div className="text-[11px] text-muted-foreground mb-0.5">Recipient:</div>
+                            <div className="text-xs font-medium">{recipientInfo.name}</div>
+                            <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
+                          </div>
+                        </div>
+                      </>}
+                  </div>
+                  <Sheet>
+                    <SheetTrigger asChild>
+                      <Button variant="outline" size="sm" className="w-full text-xs py-1">
+                        View Full Order
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent>
+                      <SheetHeader>
+                        <SheetTitle>Order Details</SheetTitle>
+                      </SheetHeader>
+                      <div className="py-2">
+                        <h3 className="text-sm font-medium mb-1">Order #{order.id}</h3>
+                        <p className="text-xs">Full order details would be displayed here.</p>
+                      </div>
+                    </SheetContent>
+                  </Sheet>
+                </div>
+              )}
+              {index !== orders.length - 1 && <Separator className="my-1 opacity-50" />}
+            </div>
+          ))}
+        </>
+      );
+    }
+  };
+
+  return (
+    <div className="orders-panel flex flex-col h-full relative px-[14px] my-0">
       <div className="flex-1 min-h-0 flex flex-col justify-between">
         <div className="flex-1 min-h-0 flex flex-col">
           <ScrollArea independentPanel={true} className="flex-1 min-h-0 overflow-auto pr-0">
             <div className="right-panel-container p-[5px] pb-0 flex-1">
-              <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
-                Active Orders
-              </h2>
-              {orders.map((order, index) => {
-                const isExpanded = expandedOrderId === order.id;
-                return <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
-                    <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
-                      <h3 className="font-medium text-xs text-foreground/90">Order #{order.id}</h3>
-                      <Button variant="ghost" size="sm" onClick={() => setExpandedOrderId(isExpanded ? null : order.id)} className="h-6 w-6 p-0">
-                        {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
-                      </Button>
-                    </div>
-                    {isExpanded && <div className="px-3 pt-1 pb-3 space-y-3">
-                        <div className="flex justify-start">
-                          <Badge variant={order.status === 'active' ? 'success' : order.status === 'completed' ? 'default' : 'destructive'} className="text-[10px] px-2 py-0.5">
-                            {order.status === 'active' ? 'Active' : order.status === 'completed' ? 'Completed' : 'Cancelled'}
-                          </Badge>
-                        </div>
-                        <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
-                        {user?.role === 'client' || user?.role !== 'driver' ? (
-                          <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
-                            <div className="grid grid-cols-3 gap-1.5 text-[11px]">
-                              <div className="text-muted-foreground">Pickup time:</div>
-                              <div className="col-span-2 font-medium">{order.pickupTime || "Not scheduled"}</div>
-                              <div className="text-muted-foreground">Dropoff time:</div>
-                              <div className="col-span-2 font-medium">{order.dropoffTime || "Not scheduled"}</div>
-                              <div className="text-muted-foreground">ETA:</div>
-                              <div className="col-span-2 font-medium">{order.eta}</div>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
-                            <div className="flex items-center gap-2 mb-1.5">
-                              <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
-                              <span className="text-xs font-medium">Order Notes:</span>
-                            </div>
-                            <div className="text-xs whitespace-pre-line text-muted-foreground border-l-2 border-muted pl-2">
-                              {getOrderNotes(order.id)}
-                            </div>
-                          </div>
-                        )}
-                        <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
-                          {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2">
-                              <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
-                              <div>
-                                <div className="text-[11px] text-muted-foreground mb-0.5">Driver Details:</div>
-                                <div className="text-xs font-medium">{driverInfo.name}</div>
-                                <div className="text-xs text-muted-foreground">{driverInfo.phone}</div>
-                                <div className="text-xs text-muted-foreground">Vehicle: {driverInfo.vehicle}</div>
-                                <div className="text-xs text-muted-foreground">Rating: ⭐️ {driverInfo.rating}</div>
-                                <div className="text-xs text-muted-foreground">Deliveries: {driverInfo.totalDeliveries}</div>
-                              </div>
-                            </div> : <>
-                              <div className="flex items-start gap-2">
-                                <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
-                                <div>
-                                  <div className="text-[11px] text-muted-foreground mb-0.5">Sender:</div>
-                                  <div className="text-xs font-medium">{senderInfo.name}</div>
-                                  <div className="text-xs text-muted-foreground">{senderInfo.phone}</div>
-                                </div>
-                              </div>
-                              <div className="flex justify-center">
-                                <div className="h-3 border-l border-dashed border-border/50"></div>
-                              </div>
-                              <div className="flex items-start gap-2">
-                                <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
-                                <div>
-                                  <div className="text-[11px] text-muted-foreground mb-0.5">Recipient:</div>
-                                  <div className="text-xs font-medium">{recipientInfo.name}</div>
-                                  <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
-                                </div>
-                              </div>
-                            </>}
-                        </div>
-                        <Sheet>
-                          <SheetTrigger asChild>
-                            <Button variant="outline" size="sm" className="w-full text-xs py-1">
-                              View Full Order
-                            </Button>
-                          </SheetTrigger>
-                          <SheetContent>
-                            <SheetHeader>
-                              <SheetTitle>Order Details</SheetTitle>
-                            </SheetHeader>
-                            <div className="py-2">
-                              <h3 className="text-sm font-medium mb-1">Order #{order.id}</h3>
-                              <p className="text-xs">Full order details would be displayed here.</p>
-                            </div>
-                          </SheetContent>
-                        </Sheet>
-                      </div>}
-                    {index !== orders.length - 1 && <Separator className="my-1 opacity-50" />}
-                  </div>;
-              })}
+              {renderActiveOrders()}
+              
               <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b mt-4">
                 Repeated Orders
               </h2>
@@ -366,5 +458,6 @@ Contact recipient before delivery at provided number`;
         }
         `}
       </style>
-    </div>;
+    </div>
+  );
 };
