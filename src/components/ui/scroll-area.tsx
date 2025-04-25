@@ -20,7 +20,7 @@ const ScrollArea = React.forwardRef<React.ElementRef<typeof ScrollAreaPrimitive.
     className={cn("relative overflow-hidden", className)} 
     {...props}
   >
-    <ScrollAreaPrimitive.Viewport className="h-full w-full mt-[10px]">
+    <ScrollAreaPrimitive.Viewport className="h-full w-full mt-[10px] rounded-lg border border-border/40 bg-card/40 p-4 shadow-sm">
       {children}
     </ScrollAreaPrimitive.Viewport>
     {(orientation === "vertical" || orientation === "both") && <ScrollBar orientation="vertical" />}
