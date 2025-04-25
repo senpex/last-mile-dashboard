@@ -57,10 +57,13 @@ export const ChatHeader = ({
                 <span className="ml-1 text-muted-foreground font-bold">({user.orderId})</span>
               )}
             </h2>
-            <div className="text-sm text-muted-foreground flex items-center gap-1">
-              {profileType} • 
-              <span className={`w-2 h-2 rounded-full ${user.status === 'online' ? 'bg-green-500' : 'bg-gray-500'}`}></span>
-              {user.status === 'online' ? 'Online' : 'Offline'}
+            <div className="text-sm text-muted-foreground flex items-center gap-2">
+              {profileType} 
+              <span 
+                className={`w-2 h-2 rounded-full ${
+                  user.status === 'online' ? 'bg-green-500' : 'bg-red-500'
+                }`}
+              />
             </div>
           </div>
         </div>
