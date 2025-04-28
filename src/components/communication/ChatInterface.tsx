@@ -49,6 +49,7 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
   const [noteText, setNoteText] = useState("");
   const [historyMessages, setHistoryMessages] = useState<MessageType[] | null>(null);
   const [openedChatMessages, setOpenedChatMessages] = useState<MessageType[] | null>(null);
+  const [messages, setMessages] = useState<MessageType[]>([]);
 
   const orderData = user.orderId ? {
     id: user.orderId,
@@ -167,7 +168,7 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
       id: `msg-${Date.now()}`,
       senderId: user.id,
       senderName: user.name,
-      senderRole: user.role === 'driver' ? 'driver' : 'client',
+      senderRole: user.role === 'driver' ? 'driver' : user.role === 'client' ? 'client' : 'dispatcher',
       content: message,
       timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
       attachments: attachedFiles.map(file => ({
@@ -195,7 +196,7 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
       id: `msg-${Date.now()}`,
       senderId: user.id,
       senderName: user.name,
-      senderRole: user.role === 'driver' ? 'driver' : 'client',
+      senderRole: user.role === 'driver' ? 'driver' : user.role === 'client' ? 'client' : 'dispatcher',
       content: '',
       timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
       attachments: [{
