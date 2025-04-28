@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { OrderDetails } from './OrderDetails';
@@ -22,6 +23,7 @@ interface ChatInterfaceProps {
     orderId?: string;
   };
   onClose?: () => void;
+  isHistoricalView?: boolean;
 }
 
 export type MessageType = {
@@ -39,7 +41,7 @@ export type MessageType = {
   }>;
 };
 
-export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => {
+export const ChatInterface = ({ chatId, user, onClose, isHistoricalView = false }: ChatInterfaceProps) => {
   const [message, setMessage] = useState("");
   const [activeTab, setActiveTab] = useState("chat");
   const [attachedFiles, setAttachedFiles] = useState<Array<{
@@ -201,14 +203,16 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
             <ScrollArea className="flex-1 p-4 overflow-y-auto">
               <ChatMessages messages={messages} />
             </ScrollArea>
-            <ChatInput 
-              onSendMessage={handleSendMessage}
-              message={message}
-              setMessage={setMessage}
-              attachedFiles={attachedFiles}
-              setAttachedFiles={setAttachedFiles}
-              onSendVoiceMessage={handleSendVoiceMessage}
-            />
+            {!isHistoricalView && (
+              <ChatInput 
+                onSendMessage={handleSendMessage}
+                message={message}
+                setMessage={setMessage}
+                attachedFiles={attachedFiles}
+                setAttachedFiles={setAttachedFiles}
+                onSendVoiceMessage={handleSendVoiceMessage}
+              />
+            )}
           </>
         );
       case 'history':

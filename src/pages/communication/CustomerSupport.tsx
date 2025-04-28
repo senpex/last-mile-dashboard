@@ -11,8 +11,10 @@ import { Users, UserRound, MessageSquare } from "lucide-react";
 
 const CustomerSupport = () => {
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
+  const [isHistoricalView, setIsHistoricalView] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
   const [filterStatus, setFilterStatus] = useState<string>("working-drivers");
+  
   const chats = [
     // Clients (20)
     {
@@ -845,6 +847,7 @@ const CustomerSupport = () => {
       priority: "medium",
       assignedTo: "dispatcher2"
     }];
+  
   const filteredChats = chats.filter(chat => {
     if (activeTab === "assigned" && chat.assignedTo !== "dispatcher1") return false;
     if (activeTab === "unassigned" && chat.assignedTo !== null) return false;
@@ -854,6 +857,7 @@ const CustomerSupport = () => {
     if (filterStatus === "unapproved-drivers" && !(chat.role === "driver" && chat.status === "unapproved")) return false;
     return true;
   });
+
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "high":
@@ -866,9 +870,17 @@ const CustomerSupport = () => {
         return "bg-gray-400";
     }
   };
+
   const onlineUsers = ["John Smith", "Emma Johnson", "Mike Wilson", "Sarah Davis", "Robert Taylor"];
+
+  const handleChatSelect = (chatId: string, isHistorical: boolean = false) => {
+    setSelectedChat(chatId);
+    setIsHistoricalView(isHistorical);
+  };
+
   const handleCloseChat = () => {
     setSelectedChat(null);
+    setIsHistoricalView(false);
   };
 
   return (
@@ -945,7 +957,11 @@ const CustomerSupport = () => {
 
             <div className="flex-1 overflow-auto">
               <div className="divide-y">
-                {filteredChats.map(chat => <div key={chat.id} onClick={() => setSelectedChat(chat.id)} className={`p-3 hover:bg-muted/50 cursor-pointer transition-colors ${selectedChat === chat.id ? 'bg-muted' : ''}`}>
+                {filteredChats.map(chat => <div 
+                    key={chat.id} 
+                    onClick={() => handleChatSelect(chat.id, false)} 
+                    className={`p-3 hover:bg-muted/50 cursor-pointer transition-colors ${selectedChat === chat.id ? 'bg-muted' : ''}`}
+                  >
                     <div className="flex items-start gap-3">
                       <div className="relative flex-shrink-0">
                         <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
@@ -988,6 +1004,7 @@ const CustomerSupport = () => {
                 chatId={selectedChat} 
                 user={chats.find(chat => chat.id === selectedChat)!}
                 onClose={handleCloseChat}
+                isHistoricalView={isHistoricalView}
               />
             ) : (
               <div className="h-full flex items-center justify-center">

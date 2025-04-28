@@ -20,6 +20,7 @@ const AgentAI = () => {
       content: "Hi there! I'm your delivery assistant. How can I help you today?"
     }
   ]);
+  const [isHistoricalView, setIsHistoricalView] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,17 +86,19 @@ const AgentAI = () => {
               </div>
             </ScrollArea>
             
-            <form onSubmit={handleSubmit} className="flex gap-2">
-              <Input 
-                placeholder="Type your message..." 
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                className="flex-1"
-              />
-              <Button type="submit" size="icon">
-                <Send className="h-4 w-4" />
-              </Button>
-            </form>
+            {!isHistoricalView && (
+              <form onSubmit={handleSubmit} className="flex gap-2">
+                <Input 
+                  placeholder="Type your message..." 
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  className="flex-1"
+                />
+                <Button type="submit" size="icon">
+                  <Send className="h-4 w-4" />
+                </Button>
+              </form>
+            )}
           </CardContent>
         </Card>
       </div>
