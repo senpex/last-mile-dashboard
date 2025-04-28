@@ -149,47 +149,28 @@ Contact recipient before delivery at provided number`;
                     <StatusBadge status={order.status} />
                   </div>
                   <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
-                  <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
-                      <span className="text-xs font-medium">Order Notes:</span>
-                    </div>
-                    <div className="text-xs whitespace-pre-line text-muted-foreground border-l-2 border-muted pl-2">
-                      {getOrderNotes(order.id)}
-                    </div>
-                  </div>
                   <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
-                    {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2">
+                    <>
+                      <div className="flex items-start gap-2">
                         <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                         <div>
-                          <div className="text-[11px] text-muted-foreground mb-0.5">Driver Details:</div>
-                          <div className="text-xs font-medium">{driverInfo.name}</div>
-                          <div className="text-xs text-muted-foreground">{driverInfo.phone}</div>
-                          <div className="text-xs text-muted-foreground">Vehicle: {driverInfo.vehicle}</div>
-                          <div className="text-xs text-muted-foreground">Rating: ⭐️ {driverInfo.rating}</div>
-                          <div className="text-xs text-muted-foreground">Deliveries: {driverInfo.totalDeliveries}</div>
+                          <div className="text-[11px] text-muted-foreground mb-0.5">Sender:</div>
+                          <div className="text-xs font-medium">{senderInfo.name}</div>
+                          <div className="text-xs text-muted-foreground">{senderInfo.phone}</div>
                         </div>
-                      </div> : <>
-                        <div className="flex items-start gap-2">
-                          <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
-                          <div>
-                            <div className="text-[11px] text-muted-foreground mb-0.5">Sender:</div>
-                            <div className="text-xs font-medium">{senderInfo.name}</div>
-                            <div className="text-xs text-muted-foreground">{senderInfo.phone}</div>
-                          </div>
+                      </div>
+                      <div className="flex justify-center">
+                        <div className="h-3 border-l border-dashed border-border/50"></div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                        <div>
+                          <div className="text-[11px] text-muted-foreground mb-0.5">Recipient:</div>
+                          <div className="text-xs font-medium">{recipientInfo.name}</div>
+                          <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
                         </div>
-                        <div className="flex justify-center">
-                          <div className="h-3 border-l border-dashed border-border/50"></div>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
-                          <div>
-                            <div className="text-[11px] text-muted-foreground mb-0.5">Recipient:</div>
-                            <div className="text-xs font-medium">{recipientInfo.name}</div>
-                            <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
-                          </div>
-                        </div>
-                      </>}
+                      </div>
+                    </>
                   </div>
                   <Sheet>
                     <SheetTrigger asChild>
@@ -226,18 +207,8 @@ Contact recipient before delivery at provided number`;
                     <StatusBadge status={order.status} />
                   </div>
                   <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
-                  <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
-                    {user?.role === 'driver' && user?.status === 'working' ? (
-                      <>
-                        <div className="flex items-center gap-2 mb-1.5">
-                          <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
-                          <span className="text-xs font-medium">Order Notes:</span>
-                        </div>
-                        <div className="text-xs whitespace-pre-line text-muted-foreground border-l-2 border-muted pl-2">
-                          {getOrderNotes(order.id)}
-                        </div>
-                      </>
-                    ) : (
+                  {user?.role !== 'driver' || user?.status !== 'working' ? (
+                    <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
                       <div className="grid grid-cols-3 gap-1.5 text-[11px]">
                         <div className="text-muted-foreground">Pickup time:</div>
                         <div className="col-span-2 font-medium">{order.pickupTime || "Not scheduled"}</div>
@@ -246,8 +217,8 @@ Contact recipient before delivery at provided number`;
                         <div className="text-muted-foreground">ETA:</div>
                         <div className="col-span-2 font-medium">{order.eta}</div>
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  ) : null}
                   <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
                     {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2">
                         <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
