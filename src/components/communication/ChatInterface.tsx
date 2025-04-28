@@ -47,9 +47,64 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
     type: 'image' | 'document' | 'spreadsheet' | 'pdf';
   }>>([]);
   const [noteText, setNoteText] = useState("");
-  const [historyMessages, setHistoryMessages] = useState<MessageType[] | null>(null);
-  const [openedChatMessages, setOpenedChatMessages] = useState<MessageType[] | null>(null);
-  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [messages, setMessages] = useState<MessageType[]>([
+    {
+      id: '1',
+      senderId: 'driver1',
+      senderName: user.name,
+      senderRole: user.role === 'driver' ? 'driver' : 'client',
+      content: 'Hello, I have a question about my delivery.',
+      timestamp: '10:15 AM'
+    },
+    {
+      id: '2',
+      senderId: 'dispatcher1',
+      senderName: 'Jane Dispatcher',
+      senderRole: 'dispatcher',
+      content: 'Hi there! How can I help you today?',
+      timestamp: '10:16 AM'
+    },
+    {
+      id: '3',
+      senderId: 'driver1',
+      senderName: user.name,
+      senderRole: user.role === 'driver' ? 'driver' : 'client',
+      content: "I'm not sure where exactly to deliver this package. The address is a bit confusing.",
+      timestamp: '10:18 AM'
+    },
+    {
+      id: '4',
+      senderId: 'dispatcher1',
+      senderName: 'Jane Dispatcher',
+      senderRole: 'dispatcher',
+      content: 'Let me check the delivery instructions for you.',
+      timestamp: '10:19 AM'
+    },
+    {
+      id: '5',
+      senderId: 'dispatcher1',
+      senderName: 'Jane Dispatcher',
+      senderRole: 'dispatcher',
+      content: 'The customer has specified to leave the package at the back door. There should be a gate with a keypad. The code is 4532.',
+      timestamp: '10:21 AM',
+      attachments: [
+        {
+          id: 'att1',
+          name: 'delivery_instructions.jpg',
+          type: 'image',
+          url: '#'
+        }
+      ]
+    },
+    {
+      id: '6',
+      senderId: 'driver1',
+      senderName: user.name,
+      senderRole: user.role === 'driver' ? 'driver' : 'client',
+      content: 'Got it, thanks! I see the gate now.',
+      timestamp: '10:23 AM'
+    }
+  ]);
 
   const orderData = user.orderId ? {
     id: user.orderId,
@@ -70,95 +125,17 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
     orderId: "909090",
     lastMessage: "I'm at the pickup location.",
     sentAt: "10:28 AM",
-    unread: true,
-    messages: [
-      {
-        id: '901',
-        senderId: 'driver5',
-        senderName: 'Maria Garcia',
-        senderRole: 'driver' as 'client' | 'dispatcher' | 'driver',
-        content: "I've arrived at the pickup location.",
-        timestamp: '10:25 AM'
-      },
-      {
-        id: '902',
-        senderId: 'dispatcher1',
-        senderName: 'Jane Dispatcher',
-        senderRole: 'dispatcher' as 'client' | 'dispatcher' | 'driver',
-        content: "Great. Does everything look correct with the package?",
-        timestamp: '10:26 AM'
-      },
-      {
-        id: '903',
-        senderId: 'driver5',
-        senderName: 'Maria Garcia',
-        senderRole: 'driver' as 'client' | 'dispatcher' | 'driver',
-        content: "I'm at the pickup location.",
-        timestamp: '10:28 AM'
-      }
-    ]
+    unread: true
   }, {
     orderId: "909093",
     lastMessage: "Delivered the package. Please confirm!",
     sentAt: "9:45 AM",
-    unread: false,
-    messages: [
-      {
-        id: '701',
-        senderId: 'driver2',
-        senderName: 'David Martinez',
-        senderRole: 'driver' as 'client' | 'dispatcher' | 'driver',
-        content: "Package has been delivered.",
-        timestamp: '9:40 AM'
-      },
-      {
-        id: '702',
-        senderId: 'dispatcher1',
-        senderName: 'Jane Dispatcher',
-        senderRole: 'dispatcher' as 'client' | 'dispatcher' | 'driver',
-        content: "Did the customer sign for it?",
-        timestamp: '9:42 AM'
-      },
-      {
-        id: '703',
-        senderId: 'driver2',
-        senderName: 'David Martinez',
-        senderRole: 'driver' as 'client' | 'dispatcher' | 'driver',
-        content: "Delivered the package. Please confirm!",
-        timestamp: '9:45 AM'
-      }
-    ]
+    unread: false
   }, {
     orderId: "909094",
     lastMessage: "Running 5 min late due to traffic.",
     sentAt: "8:59 AM",
-    unread: true,
-    messages: [
-      {
-        id: '801',
-        senderId: 'driver3',
-        senderName: 'Emily White',
-        senderRole: 'driver' as 'client' | 'dispatcher' | 'driver',
-        content: "There's heavy traffic on Main St.",
-        timestamp: '8:55 AM'
-      },
-      {
-        id: '802',
-        senderId: 'dispatcher1',
-        senderName: 'Jane Dispatcher',
-        senderRole: 'dispatcher' as 'client' | 'dispatcher' | 'driver',
-        content: "Thanks for letting me know. How late do you think you'll be?",
-        timestamp: '8:57 AM'
-      },
-      {
-        id: '803',
-        senderId: 'driver3',
-        senderName: 'Emily White',
-        senderRole: 'driver' as 'client' | 'dispatcher' | 'driver',
-        content: "Running 5 min late due to traffic.",
-        timestamp: '8:59 AM'
-      }
-    ]
+    unread: true
   }];
 
   const handleSendMessage = () => {
@@ -168,7 +145,7 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
       id: `msg-${Date.now()}`,
       senderId: user.id,
       senderName: user.name,
-      senderRole: user.role === 'driver' ? 'driver' : user.role === 'client' ? 'client' : 'dispatcher',
+      senderRole: user.role === 'driver' ? 'driver' : 'client',
       content: message,
       timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
       attachments: attachedFiles.map(file => ({
@@ -196,7 +173,7 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
       id: `msg-${Date.now()}`,
       senderId: user.id,
       senderName: user.name,
-      senderRole: user.role === 'driver' ? 'driver' : user.role === 'client' ? 'client' : 'dispatcher',
+      senderRole: user.role === 'driver' ? 'driver' : 'client',
       content: '',
       timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
       attachments: [{
@@ -216,63 +193,7 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
     }
   };
 
-  const handleSelectHistoryChat = (chatMessages: MessageType[]) => {
-    setHistoryMessages(chatMessages);
-    setOpenedChatMessages(null);
-  };
-
-  const handleSelectOpenedChat = (orderId: string) => {
-    const chat = openedChats.find(c => c.orderId === orderId);
-    if (chat) {
-      setOpenedChatMessages(chat.messages);
-      setHistoryMessages(null);
-    }
-  };
-
-  const handleBackToTab = () => {
-    setHistoryMessages(null);
-    setOpenedChatMessages(null);
-  };
-
   const renderContent = () => {
-    if (historyMessages) {
-      return (
-        <div className="flex flex-col h-full">
-          <div className="flex items-center justify-between p-3 border-b">
-            <button 
-              onClick={handleBackToTab}
-              className="text-sm text-muted-foreground hover:text-foreground"
-            >
-              ← Back to history
-            </button>
-            <span className="text-sm font-medium">Chat History</span>
-          </div>
-          <ScrollArea className="flex-1 p-4">
-            <ChatMessages messages={historyMessages} />
-          </ScrollArea>
-        </div>
-      );
-    }
-
-    if (openedChatMessages) {
-      return (
-        <div className="flex flex-col h-full">
-          <div className="flex items-center justify-between p-3 border-b">
-            <button 
-              onClick={handleBackToTab}
-              className="text-sm text-muted-foreground hover:text-foreground"
-            >
-              ← Back to opened chats
-            </button>
-            <span className="text-sm font-medium">Open Chat</span>
-          </div>
-          <ScrollArea className="flex-1 p-4">
-            <ChatMessages messages={openedChatMessages} />
-          </ScrollArea>
-        </div>
-      );
-    }
-
     switch (activeTab) {
       case 'chat':
         return (
@@ -293,7 +214,7 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
       case 'history':
         return (
           <ScrollArea className="flex-1 p-4 overflow-y-auto">
-            <ChatHistory userId={user.id} onSelectHistoryChat={handleSelectHistoryChat} />
+            <ChatHistory userId={user.id} />
           </ScrollArea>
         );
       case 'notes':
@@ -332,7 +253,6 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
                     "relative group"
                   )}
                   type="button"
-                  onClick={() => handleSelectOpenedChat(chat.orderId)}
                 >
                   <div className="flex items-center gap-1 mb-0.5">
                     <MessageSquare className="w-4 h-4 text-muted-foreground mr-1" />
