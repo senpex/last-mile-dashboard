@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -163,7 +164,7 @@ Contact recipient before delivery at provided number`;
                   <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
                     <div className="flex items-center gap-2 mb-1.5">
                       <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
-                      <span className="text-xs font-medium">Order Notes:</span>
+                      <span className="text-xs font-medium">Notes:</span>
                     </div>
                     <div className="text-xs whitespace-pre-line text-muted-foreground border-l-2 border-muted pl-2">
                       {getOrderNotes(order.id)}
