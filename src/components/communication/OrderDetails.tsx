@@ -207,7 +207,7 @@ Contact recipient before delivery at provided number`;
                     <StatusBadge status={order.status} />
                   </div>
                   <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
-                  {user?.role !== 'driver' || user?.status !== 'working' ? (
+                  {!(user?.role === 'driver' && user?.status === 'working') && (
                     <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
                       <div className="grid grid-cols-3 gap-1.5 text-[11px]">
                         <div className="text-muted-foreground">Pickup time:</div>
@@ -218,7 +218,7 @@ Contact recipient before delivery at provided number`;
                         <div className="col-span-2 font-medium">{order.eta}</div>
                       </div>
                     </div>
-                  ) : null}
+                  )}
                   <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
                     {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2">
                         <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
