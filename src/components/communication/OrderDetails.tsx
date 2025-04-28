@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -216,7 +217,16 @@ Contact recipient before delivery at provided number`;
                     <StatusBadge status={order.status} />
                   </div>
                   <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
-                  {!(user?.role === 'driver' && user?.status === 'working')}
+                  {/* Adding Notes section here as well for consistency */}
+                  <div className="notes-card rounded-md bg-muted/50 p-2.5 shadow-sm">
+                    <div className="flex items-start gap-2">
+                      <FileText className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <div>
+                        <div className="text-[11px] text-muted-foreground mb-0.5">Notes:</div>
+                        <div className="text-xs whitespace-pre-line">{getOrderNotes(order.id)}</div>
+                      </div>
+                    </div>
+                  </div>
                   <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
                     {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2">
                         <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
