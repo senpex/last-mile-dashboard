@@ -7,7 +7,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { MapPin, ChevronUp, ChevronDown, UserCircle2 as UserRound, Calendar, MessageSquare, Clock, CircleDot } from "lucide-react";
 import { OrderMap } from "./OrderMap";
 import { cn } from "@/lib/utils";
-
 interface OrderDetailsProps {
   orderData: {
     id: string;
@@ -31,7 +30,6 @@ interface OrderDetailsProps {
     orderId?: string;
   };
 }
-
 const StatusBadge = ({
   status
 }: {
@@ -46,19 +44,16 @@ const StatusBadge = ({
       return <Badge className="bg-red-500">Cancelled</Badge>;
   }
 };
-
 export const OrderDetails = ({
   orderData,
   showDriverInfo = true,
   user
 }: OrderDetailsProps) => {
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
-
   const orders = [{
     ...orderData,
     id: "909090"
   }];
-
   const repeatedOrders = [{
     ...orderData,
     id: "909093",
@@ -74,22 +69,18 @@ export const OrderDetails = ({
       time: "16:00"
     }]
   }];
-
   const knownLocations = {
     "123 Pickup St, City": "123 Pickup St, San Francisco, CA 94103",
     "456 Delivery Ave, City": "456 Delivery Ave, San Francisco, CA 94107"
   };
-
   const senderInfo = {
     name: "John Smith",
     phone: "+1 (555) 123-4567"
   };
-
   const recipientInfo = {
     name: "Maria Rodriguez",
     phone: "+1 (555) 987-6543"
   };
-
   const driverInfo = {
     name: orderData.driverName,
     phone: "+1 (555) 234-5678",
@@ -97,69 +88,53 @@ export const OrderDetails = ({
     rating: "4.8",
     totalDeliveries: "1,234"
   };
-
   const isRepeatedOrder = (orderId: string) => repeatedOrders.some(order => order.id === orderId);
-
   const shouldShowDriverInfo = (orderId: string) => {
     if (user?.role === 'driver' && user?.status === 'working') {
       return false;
     }
     return showDriverInfo;
   };
-
-  const openedChats = [
-    {
-      orderId: "909090",
-      lastMessage: "I'm at the pickup location.",
-      sentAt: "10:28 AM",
-      unread: true
-    },
-    {
-      orderId: "909093",
-      lastMessage: "Delivered the package. Please confirm!",
-      sentAt: "9:45 AM",
-      unread: false
-    },
-    {
-      orderId: "909094",
-      lastMessage: "Running 5 min late due to traffic.",
-      sentAt: "8:59 AM",
-      unread: true
-    }
-  ];
-
+  const openedChats = [{
+    orderId: "909090",
+    lastMessage: "I'm at the pickup location.",
+    sentAt: "10:28 AM",
+    unread: true
+  }, {
+    orderId: "909093",
+    lastMessage: "Delivered the package. Please confirm!",
+    sentAt: "9:45 AM",
+    unread: false
+  }, {
+    orderId: "909094",
+    lastMessage: "Running 5 min late due to traffic.",
+    sentAt: "8:59 AM",
+    unread: true
+  }];
   const getOrderNotes = (orderId: string) => {
     return `Order #${orderId}
 Package contents: 2 boxes of office supplies
 Special instructions: Delivery must be made during business hours (9 AM - 5 PM)
 Contact recipient before delivery at provided number`;
   };
-
   const renderActiveOrders = () => {
     if (user?.role === 'driver' && user?.status === 'working') {
-      return (
-        <>
+      return <>
           <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
             Active Orders - Working Driver
           </h2>
-          {orders.map((order, index) => (
-            <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
+          {orders.map((order, index) => <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
               <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
                 <h3 className="font-medium text-xs text-foreground/90">Order #{order.id}</h3>
                 <Button variant="ghost" size="sm" onClick={() => setExpandedOrderId(expandedOrderId === order.id ? null : order.id)} className="h-6 w-6 p-0">
                   {expandedOrderId === order.id ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
                 </Button>
               </div>
-              {expandedOrderId === order.id && (
-                <div className="px-3 pt-1 pb-3 space-y-3">
+              {expandedOrderId === order.id && <div className="px-3 pt-1 pb-3 space-y-3">
                   <div className="flex justify-start">
                     <StatusBadge status={order.status} />
                   </div>
-                  <OrderMap 
-                    pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} 
-                    deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} 
-                    driverName={order.driverName} 
-                  />
+                  <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
                   <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
                     <div className="flex items-center gap-2 mb-1.5">
                       <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
@@ -218,37 +193,25 @@ Contact recipient before delivery at provided number`;
                       </div>
                     </SheetContent>
                   </Sheet>
-                </div>
-              )}
+                </div>}
               {index !== orders.length - 1 && <Separator className="my-1 opacity-50" />}
-            </div>
-          ))}
-        </>
-      );
+            </div>)}
+        </>;
     } else {
-      return (
-        <>
-          <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
-            Active Orders - Customer
-          </h2>
-          {orders.map((order, index) => (
-            <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
+      return <>
+          <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">Active Orders</h2>
+          {orders.map((order, index) => <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
               <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
                 <h3 className="font-medium text-xs text-foreground/90">Order #{order.id}</h3>
                 <Button variant="ghost" size="sm" onClick={() => setExpandedOrderId(expandedOrderId === order.id ? null : order.id)} className="h-6 w-6 p-0">
                   {expandedOrderId === order.id ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
                 </Button>
               </div>
-              {expandedOrderId === order.id && (
-                <div className="px-3 pt-1 pb-3 space-y-3">
+              {expandedOrderId === order.id && <div className="px-3 pt-1 pb-3 space-y-3">
                   <div className="flex justify-start">
                     <StatusBadge status={order.status} />
                   </div>
-                  <OrderMap 
-                    pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} 
-                    deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} 
-                    driverName={order.driverName} 
-                  />
+                  <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
                   <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
                     <div className="grid grid-cols-3 gap-1.5 text-[11px]">
                       <div className="text-muted-foreground">Pickup time:</div>
@@ -308,18 +271,13 @@ Contact recipient before delivery at provided number`;
                       </div>
                     </SheetContent>
                   </Sheet>
-                </div>
-              )}
+                </div>}
               {index !== orders.length - 1 && <Separator className="my-1 opacity-50" />}
-            </div>
-          ))}
-        </>
-      );
+            </div>)}
+        </>;
     }
   };
-
-  return (
-    <div className="orders-panel flex flex-col h-full relative px-[14px] my-0">
+  return <div className="orders-panel flex flex-col h-full relative px-[14px] my-0">
       <div className="flex-1 min-h-0 flex flex-col justify-between">
         <div className="flex-1 min-h-0 flex flex-col">
           <ScrollArea independentPanel={true} className="flex-1 min-h-0 overflow-auto pr-0">
@@ -330,8 +288,8 @@ Contact recipient before delivery at provided number`;
                 Repeated Orders
               </h2>
               {repeatedOrders.map((order, index) => {
-                const isExpanded = expandedOrderId === order.id;
-                return <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
+              const isExpanded = expandedOrderId === order.id;
+              return <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
                     <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
                       <h3 className="font-medium text-xs text-foreground/90">Order #{order.id}</h3>
                       <Button variant="ghost" size="sm" onClick={() => setExpandedOrderId(isExpanded ? null : order.id)} className="h-6 w-6 p-0">
@@ -408,7 +366,7 @@ Contact recipient before delivery at provided number`;
                       </div>}
                     {index !== repeatedOrders.length - 1 && <Separator className="my-1 opacity-50" />}
                   </div>;
-              })}
+            })}
             </div>
           </ScrollArea>
         </div>
@@ -458,6 +416,5 @@ Contact recipient before delivery at provided number`;
         }
         `}
       </style>
-    </div>
-  );
+    </div>;
 };
