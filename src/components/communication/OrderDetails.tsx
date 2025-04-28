@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -228,7 +227,7 @@ Contact recipient before delivery at provided number`;
                   </div>
                   <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
                   <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
-                    {user?.role === 'driver' && user?.status === 'working' && user?.orderId ? (
+                    {user?.role === 'driver' && user?.status === 'working' ? (
                       <>
                         <div className="flex items-center gap-2 mb-1.5">
                           <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
