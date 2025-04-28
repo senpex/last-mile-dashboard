@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -217,16 +216,47 @@ Contact recipient before delivery at provided number`;
                     <StatusBadge status={order.status} />
                   </div>
                   <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
-                  {/* Adding Notes section here as well for consistency */}
-                  <div className="notes-card rounded-md bg-muted/50 p-2.5 shadow-sm">
-                    <div className="flex items-start gap-2">
-                      <FileText className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
-                      <div>
-                        <div className="text-[11px] text-muted-foreground mb-0.5">Notes:</div>
-                        <div className="text-xs whitespace-pre-line">{getOrderNotes(order.id)}</div>
+                  
+                  {user?.role !== 'client' && (
+                    <div className="notes-card rounded-md bg-muted/50 p-2.5 shadow-sm">
+                      <div className="flex items-start gap-2">
+                        <FileText className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                        <div>
+                          <div className="text-[11px] text-muted-foreground mb-0.5">Notes:</div>
+                          <div className="text-xs whitespace-pre-line">{getOrderNotes(order.id)}</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
+                  
+                  {user?.role === 'client' && (
+                    <div className="order-times-card rounded-md bg-muted/50 p-2.5 shadow-sm">
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center gap-1.5">
+                            <Clock className="h-3 w-3 text-muted-foreground" />
+                            <span className="text-xs text-muted-foreground">Pickup:</span>
+                          </div>
+                          <span className="text-xs font-medium">{order.pickupTime}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center gap-1.5">
+                            <Clock className="h-3 w-3 text-muted-foreground" />
+                            <span className="text-xs text-muted-foreground">Dropoff:</span>
+                          </div>
+                          <span className="text-xs font-medium">{order.dropoffTime}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center gap-1.5">
+                            <Clock className="h-3 w-3 text-muted-foreground" />
+                            <span className="text-xs text-muted-foreground">ETA:</span>
+                          </div>
+                          <span className="text-xs font-medium">{order.eta}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
                   <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
                     {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2">
                         <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
@@ -388,12 +418,14 @@ Contact recipient before delivery at provided number`;
           border: 1px solid rgba(255, 255, 255, 0.05);
         }
         .order-info-card,
-        .address-card {
+        .address-card,
+        .order-times-card {
           @apply backdrop-blur-sm;
           background: rgba(255, 255, 255, 0.02);
           border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .weekly-schedule-card {
+        .weekly-schedule-card,
+        .notes-card {
           @apply backdrop-blur-sm;
           background: rgba(255, 255, 255, 0.02);
           border: 1px solid rgba(255, 255, 255, 0.05);
@@ -409,10 +441,12 @@ Contact recipient before delivery at provided number`;
           @apply bg-gray-900/30 hover:bg-gray-900/40;
         }
         :global(.dark) .order-info-card,
-        :global(.dark) .address-card {
+        :global(.dark) .address-card,
+        :global(.dark) .order-times-card {
           background: rgba(0, 0, 0, 0.2);
         }
-        :global(.dark) .weekly-schedule-card {
+        :global(.dark) .weekly-schedule-card,
+        :global(.dark) .notes-card {
           background: rgba(0, 0, 0, 0.2);
         }
         :global(.dark) .opened-chats-footer {
