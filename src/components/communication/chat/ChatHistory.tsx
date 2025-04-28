@@ -29,7 +29,7 @@ export const ChatHistory = ({
         id: '101',
         senderId: 'client1',
         senderName: 'Emma Johnson',
-        senderRole: 'client',
+        senderRole: 'client' as 'client' | 'dispatcher' | 'driver',
         content: "Hi, I think my delivery address is incorrect.",
         timestamp: '2:15 PM'
       },
@@ -37,7 +37,7 @@ export const ChatHistory = ({
         id: '102',
         senderId: 'dispatcher1',
         senderName: 'Jane Dispatcher',
-        senderRole: 'dispatcher',
+        senderRole: 'dispatcher' as 'client' | 'dispatcher' | 'driver',
         content: "Let me check that for you. What is the correct address?",
         timestamp: '2:16 PM'
       },
@@ -45,7 +45,7 @@ export const ChatHistory = ({
         id: '103',
         senderId: 'client1',
         senderName: 'Emma Johnson',
-        senderRole: 'client',
+        senderRole: 'client' as 'client' | 'dispatcher' | 'driver',
         content: "It should be 742 Evergreen Terrace, not 724.",
         timestamp: '2:18 PM'
       },
@@ -53,7 +53,7 @@ export const ChatHistory = ({
         id: '104',
         senderId: 'dispatcher1',
         senderName: 'Jane Dispatcher',
-        senderRole: 'dispatcher',
+        senderRole: 'dispatcher' as 'client' | 'dispatcher' | 'driver',
         content: "I've updated it in our system. The driver will be notified of the change.",
         timestamp: '2:20 PM'
       },
@@ -61,7 +61,7 @@ export const ChatHistory = ({
         id: '105',
         senderId: 'client1',
         senderName: 'Emma Johnson',
-        senderRole: 'client',
+        senderRole: 'client' as 'client' | 'dispatcher' | 'driver',
         content: "Thank you so much!",
         timestamp: '2:21 PM'
       },
@@ -69,7 +69,7 @@ export const ChatHistory = ({
         id: '106',
         senderId: 'dispatcher1',
         senderName: 'Jane Dispatcher',
-        senderRole: 'dispatcher',
+        senderRole: 'dispatcher' as 'client' | 'dispatcher' | 'driver',
         content: "You're welcome. Your delivery is still on track for today.",
         timestamp: '2:22 PM'
       }
@@ -85,7 +85,7 @@ export const ChatHistory = ({
         id: '201',
         senderId: 'client2',
         senderName: 'Robert Davis',
-        senderRole: 'client',
+        senderRole: 'client' as 'client' | 'dispatcher' | 'driver',
         content: "I need to change where my package is being picked up from.",
         timestamp: '11:05 AM'
       },
@@ -93,7 +93,7 @@ export const ChatHistory = ({
         id: '202',
         senderId: 'dispatcher1',
         senderName: 'Jane Dispatcher',
-        senderRole: 'dispatcher',
+        senderRole: 'dispatcher' as 'client' | 'dispatcher' | 'driver',
         content: "I can help with that. What's the new pickup location?",
         timestamp: '11:07 AM'
       },
@@ -101,7 +101,7 @@ export const ChatHistory = ({
         id: '203',
         senderId: 'client2',
         senderName: 'Robert Davis',
-        senderRole: 'client',
+        senderRole: 'client' as 'client' | 'dispatcher' | 'driver',
         content: "My office instead of my home. 555 Business Ave, Suite 200.",
         timestamp: '11:09 AM'
       },
@@ -109,7 +109,7 @@ export const ChatHistory = ({
         id: '204',
         senderId: 'dispatcher1',
         senderName: 'Jane Dispatcher',
-        senderRole: 'dispatcher',
+        senderRole: 'dispatcher' as 'client' | 'dispatcher' | 'driver',
         content: "Got it. I'll update that right away. Is there a specific entrance to use?",
         timestamp: '11:11 AM'
       }
@@ -125,7 +125,7 @@ export const ChatHistory = ({
         id: '301',
         senderId: 'client3',
         senderName: 'Lisa Anderson',
-        senderRole: 'client',
+        senderRole: 'client' as 'client' | 'dispatcher' | 'driver',
         content: "Is it possible to reschedule my delivery for tomorrow?",
         timestamp: '4:00 PM'
       },
@@ -133,7 +133,7 @@ export const ChatHistory = ({
         id: '302',
         senderId: 'dispatcher1',
         senderName: 'Jane Dispatcher',
-        senderRole: 'dispatcher',
+        senderRole: 'dispatcher' as 'client' | 'dispatcher' | 'driver',
         content: "Let me check our schedule. What time would work for you tomorrow?",
         timestamp: '4:02 PM'
       },
@@ -141,7 +141,7 @@ export const ChatHistory = ({
         id: '303',
         senderId: 'client3',
         senderName: 'Lisa Anderson',
-        senderRole: 'client',
+        senderRole: 'client' as 'client' | 'dispatcher' | 'driver',
         content: "Anytime after 2 PM would be great.",
         timestamp: '4:05 PM'
       },
@@ -149,7 +149,7 @@ export const ChatHistory = ({
         id: '304',
         senderId: 'dispatcher1',
         senderName: 'Jane Dispatcher',
-        senderRole: 'dispatcher',
+        senderRole: 'dispatcher' as 'client' | 'dispatcher' | 'driver',
         content: "I can schedule it for 3:30 PM tomorrow. Would that work?",
         timestamp: '4:07 PM'
       },
@@ -157,7 +157,7 @@ export const ChatHistory = ({
         id: '305',
         senderId: 'client3',
         senderName: 'Lisa Anderson',
-        senderRole: 'client',
+        senderRole: 'client' as 'client' | 'dispatcher' | 'driver',
         content: "That's perfect, thank you!",
         timestamp: '4:08 PM'
       }
