@@ -227,14 +227,26 @@ Contact recipient before delivery at provided number`;
                   </div>
                   <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
                   <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
-                    <div className="grid grid-cols-3 gap-1.5 text-[11px]">
-                      <div className="text-muted-foreground">Pickup time:</div>
-                      <div className="col-span-2 font-medium">{order.pickupTime || "Not scheduled"}</div>
-                      <div className="text-muted-foreground">Dropoff time:</div>
-                      <div className="col-span-2 font-medium">{order.dropoffTime || "Not scheduled"}</div>
-                      <div className="text-muted-foreground">ETA:</div>
-                      <div className="col-span-2 font-medium">{order.eta}</div>
-                    </div>
+                    {user?.role === 'driver' && user?.orderId ? (
+                      <>
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
+                          <span className="text-xs font-medium">Order Notes:</span>
+                        </div>
+                        <div className="text-xs whitespace-pre-line text-muted-foreground border-l-2 border-muted pl-2">
+                          {getOrderNotes(order.id)}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="grid grid-cols-3 gap-1.5 text-[11px]">
+                        <div className="text-muted-foreground">Pickup time:</div>
+                        <div className="col-span-2 font-medium">{order.pickupTime || "Not scheduled"}</div>
+                        <div className="text-muted-foreground">Dropoff time:</div>
+                        <div className="col-span-2 font-medium">{order.dropoffTime || "Not scheduled"}</div>
+                        <div className="text-muted-foreground">ETA:</div>
+                        <div className="col-span-2 font-medium">{order.eta}</div>
+                      </div>
+                    )}
                   </div>
                   <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
                     {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2">
