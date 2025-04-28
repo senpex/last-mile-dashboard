@@ -7,7 +7,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { MapPin, ChevronUp, ChevronDown, UserCircle2 as UserRound, Calendar, MessageSquare, Clock, CircleDot } from "lucide-react";
 import { OrderMap } from "./OrderMap";
 import { cn } from "@/lib/utils";
-
 interface OrderDetailsProps {
   orderData: {
     id: string;
@@ -31,7 +30,6 @@ interface OrderDetailsProps {
     orderId?: string;
   };
 }
-
 const StatusBadge = ({
   status
 }: {
@@ -46,19 +44,16 @@ const StatusBadge = ({
       return <Badge className="bg-red-500">Cancelled</Badge>;
   }
 };
-
 export const OrderDetails = ({
   orderData,
   showDriverInfo = true,
   user
 }: OrderDetailsProps) => {
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
-
   const orders = [{
     ...orderData,
     id: "909090"
   }];
-
   const repeatedOrders = [{
     ...orderData,
     id: "909093",
@@ -74,22 +69,18 @@ export const OrderDetails = ({
       time: "16:00"
     }]
   }];
-
   const knownLocations = {
     "123 Pickup St, City": "123 Pickup St, San Francisco, CA 94103",
     "456 Delivery Ave, City": "456 Delivery Ave, San Francisco, CA 94107"
   };
-
   const senderInfo = {
     name: "John Smith",
     phone: "+1 (555) 123-4567"
   };
-
   const recipientInfo = {
     name: "Maria Rodriguez",
     phone: "+1 (555) 987-6543"
   };
-
   const driverInfo = {
     name: orderData.driverName,
     phone: "+1 (555) 234-5678",
@@ -97,16 +88,13 @@ export const OrderDetails = ({
     rating: "4.8",
     totalDeliveries: "1,234"
   };
-
   const isRepeatedOrder = (orderId: string) => repeatedOrders.some(order => order.id === orderId);
-
   const shouldShowDriverInfo = (orderId: string) => {
     if (user?.role === 'driver' && user?.status === 'working') {
       return false;
     }
     return showDriverInfo;
   };
-
   const openedChats = [{
     orderId: "909090",
     lastMessage: "I'm at the pickup location.",
@@ -123,14 +111,12 @@ export const OrderDetails = ({
     sentAt: "8:59 AM",
     unread: true
   }];
-
   const getOrderNotes = (orderId: string) => {
     return `Order #${orderId}
 Package contents: 2 boxes of office supplies
 Special instructions: Delivery must be made during business hours (9 AM - 5 PM)
 Contact recipient before delivery at provided number`;
   };
-
   const renderActiveOrders = () => {
     if (user?.role === 'driver' && user?.status === 'working') {
       return <>
@@ -207,18 +193,7 @@ Contact recipient before delivery at provided number`;
                     <StatusBadge status={order.status} />
                   </div>
                   <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
-                  {!(user?.role === 'driver' && user?.status === 'working') && (
-                    <div className="order-info-card rounded-md bg-muted/50 p-2.5 shadow-sm">
-                      <div className="grid grid-cols-3 gap-1.5 text-[11px]">
-                        <div className="text-muted-foreground">Pickup time:</div>
-                        <div className="col-span-2 font-medium">{order.pickupTime || "Not scheduled"}</div>
-                        <div className="text-muted-foreground">Dropoff time:</div>
-                        <div className="col-span-2 font-medium">{order.dropoffTime || "Not scheduled"}</div>
-                        <div className="text-muted-foreground">ETA:</div>
-                        <div className="col-span-2 font-medium">{order.eta}</div>
-                      </div>
-                    </div>
-                  )}
+                  {!(user?.role === 'driver' && user?.status === 'working')}
                   <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
                     {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2">
                         <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
@@ -274,7 +249,6 @@ Contact recipient before delivery at provided number`;
         </>;
     }
   };
-
   return <div className="orders-panel flex flex-col h-full relative px-[14px] my-0">
       <div className="flex-1 min-h-0 flex flex-col justify-between">
         <div className="flex-1 min-h-0 flex flex-col">
