@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { UsersTableContainer } from "@/components/ui/users-table-container";
 import { Card } from "@/components/ui/card";
 import { Package, GripVertical, ChevronUp, ChevronDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -304,45 +305,35 @@ const EZcaterOrders = () => {
             </div>
           </div>
 
-          <div className="rounded-md border overflow-x-auto">
+          <UsersTableContainer>
             <Table>
-              <TableHeader className="bg-muted/50 border-b-0">
-                <TableRow>
+              <TableHeader className="bg-muted/50 border-b-0 m-0 p-0">
+                <TableRow className="border-b-0">
                   {columnOrder.map(columnId => {
                     const column = columns[columnId as keyof typeof columns];
                     const isSortable = ['id', 'customer', 'dateTime', 'location', 'value', 'items'].includes(columnId);
                     
                     return (
-                      <TableHead 
+                      <TableHead
                         key={columnId}
-                        className={`whitespace-nowrap ${draggedColumn === columnId ? 'opacity-50 bg-accent' : ''} ${dragOverColumn === columnId ? 'border-t-2 border-primary' : ''}`}
+                        className={`whitespace-nowrap min-w-[100px] ${columnId === 'actions' ? 'w-[80px]' : ''}`}
+                        dragOver={dragOverColumn === columnId}
                         sortable={isSortable}
                         sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
                         onSort={() => isSortable && requestSort(columnId)}
-                        dragOver={dragOverColumn === columnId}
-                        dragging={draggedColumn === columnId}
                       >
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-2">
                           <div 
-                            draggable={true}
-                            onDragStart={(e) => handleDragStart(e, columnId)}
-                            onDragOver={(e) => handleDragOver(e, columnId)}
+                            draggable={columnId !== 'actions'}
+                            onDragStart={e => handleDragStart(e, columnId)}
+                            onDragOver={e => handleDragOver(e, columnId)}
                             onDragEnd={handleDragEnd}
-                            onDrop={(e) => handleDrop(e, columnId)}
-                            className={`cursor-grab transition-all duration-200 ${
-                              draggedColumn === columnId ? 'opacity-50' : ''
-                            }`}
+                            onDrop={e => handleDrop(e, columnId)}
+                            className={`cursor-grab transition-opacity duration-200 ${draggedColumn === columnId ? 'opacity-50' : ''}`}
                           >
-                            <GripVertical className="h-4 w-4 text-muted-foreground shrink-0 hover:text-foreground" />
+                            <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
                           </div>
-                          <button 
-                            className="flex items-center cursor-pointer hover:text-primary transition-colors"
-                            type="button"
-                            onClick={() => isSortable && requestSort(columnId)}
-                          >
-                            <span>{column.label}</span>
-                            {renderSortIcon(columnId)}
-                          </button>
+                          <span>{column.label}</span>
                         </div>
                       </TableHead>
                     );
@@ -395,7 +386,7 @@ const EZcaterOrders = () => {
                   </TableRow>}
               </TableBody>
             </Table>
-          </div>
+          </UsersTableContainer>
         </Card>
       </div>
     </Layout>;
