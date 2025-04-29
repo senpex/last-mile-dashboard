@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
-import { Package } from "lucide-react";
+import { Package, GripVertical, ChevronUp, ChevronDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const EZcaterOrders = () => {
@@ -15,6 +15,15 @@ const EZcaterOrders = () => {
   } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+  const [sortConfig, setSortConfig] = useState<{ key: string | null; direction: 'ascending' | 'descending' | null }>({
+    key: null,
+    direction: null
+  });
+  const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
+  const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
+  const [columnOrder, setColumnOrder] = useState([
+    "id", "customer", "dateTime", "status", "location", "value", "items", "actions"
+  ]);
 
   // Sample data for eZcater orders
   const orders = [{
@@ -94,7 +103,119 @@ const EZcaterOrders = () => {
     return matchesSearch && matchesStatus;
   });
 
+  const sortedOrders = React.useMemo(() => {
+    let sortableOrders = [...filteredOrders];
+    if (sortConfig.key && sortConfig.direction) {
+      sortableOrders.sort((a, b) => {
+        let aValue, bValue;
+        
+        if (sortConfig.key === 'dateTime') {
+          // Special handling for date+time sorting
+          aValue = `${a.date} ${a.time}`;
+          bValue = `${b.date} ${b.time}`;
+        } else if (sortConfig.key === 'id' || sortConfig.key === 'customer' || sortConfig.key === 'location') {
+          aValue = a[sortConfig.key];
+          bValue = b[sortConfig.key];
+        } else if (sortConfig.key === 'value') {
+          // Remove $ and convert to number
+          aValue = parseFloat(a.value.replace('$', ''));
+          bValue = parseFloat(b.value.replace('$', ''));
+        } else if (sortConfig.key === 'items') {
+          aValue = a.items;
+          bValue = b.items;
+        } else {
+          return 0;
+        }
+
+        if (aValue < bValue) {
+          return sortConfig.direction === 'ascending' ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortableOrders;
+  }, [filteredOrders, sortConfig]);
+
+  const requestSort = (key: string) => {
+    let direction: 'ascending' | 'descending' | null = 'ascending';
+    
+    if (sortConfig.key === key) {
+      if (sortConfig.direction === 'ascending') {
+        direction = 'descending';
+      } else if (sortConfig.direction === 'descending') {
+        direction = null;
+      }
+    }
+    
+    setSortConfig({ key, direction });
+  };
+  
   const statusOptions = ["pending", "confirmed", "in-transit", "delivered", "cancelled"];
+
+  // Column dragging handlers
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
+    setDraggedColumn(columnId);
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
+    e.preventDefault();
+    setDragOverColumn(columnId);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedColumn(null);
+    setDragOverColumn(null);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
+    e.preventDefault();
+    
+    if (draggedColumn && draggedColumn !== targetColumnId) {
+      const newColumnOrder = [...columnOrder];
+      const draggedIndex = newColumnOrder.findIndex(col => col === draggedColumn);
+      const targetIndex = newColumnOrder.findIndex(col => col === targetColumnId);
+      
+      if (draggedIndex !== -1 && targetIndex !== -1) {
+        // Remove the dragged column
+        newColumnOrder.splice(draggedIndex, 1);
+        
+        // Insert it at the new position
+        const insertAtIndex = targetIndex > draggedIndex ? targetIndex - 1 : targetIndex;
+        newColumnOrder.splice(insertAtIndex, 0, draggedColumn);
+        
+        setColumnOrder(newColumnOrder);
+      }
+    }
+    
+    setDraggedColumn(null);
+    setDragOverColumn(null);
+  };
+
+  // Column definitions
+  const columns = {
+    id: { label: "Order ID" },
+    customer: { label: "Customer" },
+    dateTime: { label: "Date & Time" },
+    status: { label: "Status" },
+    location: { label: "Location" },
+    value: { label: "Value" },
+    items: { label: "Items" },
+    actions: { label: "Actions" }
+  };
+
+  // Render sort icon
+  const renderSortIcon = (columnId: string) => {
+    if (sortConfig.key !== columnId) {
+      return null;
+    }
+    
+    return sortConfig.direction === 'ascending' 
+      ? <ChevronUp className="h-4 w-4 ml-1 text-destructive" /> 
+      : <ChevronDown className="h-4 w-4 ml-1 text-destructive" />;
+  };
 
   return <Layout>
       <div className="px-4 py-6 w-full overflow-x-hidden">
@@ -125,20 +246,49 @@ const EZcaterOrders = () => {
 
           <div className="rounded-md border overflow-x-auto">
             <Table>
-              <TableHeader>
+              <TableHeader className="bg-muted/50 border-b-0">
                 <TableRow>
-                  <TableHead>Order ID</TableHead>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Date & Time</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead>Value</TableHead>
-                  <TableHead>Items</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  {columnOrder.map(columnId => {
+                    const column = columns[columnId as keyof typeof columns];
+                    const isSortable = ['id', 'customer', 'dateTime', 'location', 'value', 'items'].includes(columnId);
+                    
+                    return (
+                      <TableHead 
+                        key={columnId}
+                        className="whitespace-nowrap" 
+                        sortable={isSortable}
+                        sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
+                        onSort={() => isSortable && requestSort(columnId)}
+                        dragOver={dragOverColumn === columnId}
+                        dragging={draggedColumn === columnId}
+                      >
+                        <div className="flex items-center gap-1">
+                          <div 
+                            draggable={true}
+                            onDragStart={e => handleDragStart(e, columnId)} 
+                            onDragOver={e => handleDragOver(e, columnId)} 
+                            onDragEnd={handleDragEnd}
+                            onDrop={e => handleDrop(e, columnId)}
+                            className="cursor-grab"
+                          >
+                            <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
+                          </div>
+                          <button 
+                            className="flex items-center cursor-pointer hover:text-primary transition-colors"
+                            type="button"
+                            onClick={() => isSortable && requestSort(columnId)}
+                          >
+                            <span>{column.label}</span>
+                            {renderSortIcon(columnId)}
+                          </button>
+                        </div>
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredOrders.map(order => <TableRow key={order.id}>
+                {sortedOrders.map(order => <TableRow key={order.id}>
                     <TableCell className="font-medium">{order.id}</TableCell>
                     <TableCell>{order.customer}</TableCell>
                     <TableCell>{`${order.date} ${order.time}`}</TableCell>
@@ -156,7 +306,7 @@ const EZcaterOrders = () => {
                       </Button>
                     </TableCell>
                   </TableRow>)}
-                {filteredOrders.length === 0 && <TableRow>
+                {sortedOrders.length === 0 && <TableRow>
                     <TableCell colSpan={8} className="text-center py-6">
                       No orders found matching your filters.
                     </TableCell>
