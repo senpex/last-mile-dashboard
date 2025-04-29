@@ -1,8 +1,9 @@
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import { Clock, UserRound, ChevronUp, ChevronDown } from "lucide-react";
+import { Clock, UserRound, ChevronUp, ChevronDown, MapPin } from "lucide-react";
 import { OrderMap } from "../OrderMap";
 interface CustomerOrderViewProps {
   order: {
@@ -72,14 +73,14 @@ export const CustomerOrderView = ({
               </div>
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-1.5">
-                  
+                  <Clock className="h-3 w-3 text-muted-foreground" />
                   <span className="text-xs text-muted-foreground">Dropoff:</span>
                 </div>
                 <span className="text-xs font-medium">{order.dropoffTime}</span>
               </div>
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-1.5">
-                  
+                  <Clock className="h-3 w-3 text-muted-foreground" />
                   <span className="text-xs text-muted-foreground">ETA:</span>
                 </div>
                 <span className="text-xs font-medium">{order.eta}</span>
@@ -87,38 +88,69 @@ export const CustomerOrderView = ({
             </div>
           </div>
           
-          <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
-            {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2">
-                <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
-                <div>
-                  <div className="text-[11px] text-muted-foreground mb-0.5">Driver Details:</div>
-                  <div className="text-xs font-medium">{driverInfo.name}</div>
-                  <div className="text-xs text-muted-foreground">{driverInfo.phone}</div>
-                  <div className="text-xs text-muted-foreground">Vehicle: {driverInfo.vehicle}</div>
-                  <div className="text-xs text-muted-foreground">Rating: ⭐️ {driverInfo.rating}</div>
-                  <div className="text-xs text-muted-foreground">Deliveries: {driverInfo.totalDeliveries}</div>
-                </div>
-              </div> : <>
-                <div className="flex items-start gap-2">
-                  <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
-                  <div>
-                    <div className="text-[11px] text-muted-foreground mb-0.5">Sender:</div>
-                    <div className="text-xs font-medium">{senderInfo.name}</div>
-                    <div className="text-xs text-muted-foreground">{senderInfo.phone}</div>
+          <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm">
+            <div className="space-y-3">
+              {shouldShowDriverInfo(order.id) ? (
+                <div className="flex items-start gap-3 p-1.5 bg-background/70 rounded-md">
+                  <div className="flex-shrink-0 mt-1 bg-primary/10 p-1.5 rounded-full">
+                    <UserRound className="h-4 w-4 text-primary/70" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-xs font-medium mb-1">Driver Details</div>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                      <div className="text-xs text-muted-foreground">Name:</div>
+                      <div className="text-xs font-medium">{driverInfo.name}</div>
+                      <div className="text-xs text-muted-foreground">Phone:</div>
+                      <div className="text-xs">{driverInfo.phone}</div>
+                      <div className="text-xs text-muted-foreground">Vehicle:</div>
+                      <div className="text-xs">{driverInfo.vehicle}</div>
+                      <div className="text-xs text-muted-foreground">Rating:</div>
+                      <div className="text-xs">⭐️ {driverInfo.rating}</div>
+                      <div className="text-xs text-muted-foreground">Deliveries:</div>
+                      <div className="text-xs">{driverInfo.totalDeliveries}</div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex justify-center">
-                  <div className="h-3 border-l border-dashed border-border/50"></div>
-                </div>
-                <div className="flex items-start gap-2">
-                  <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
-                  <div>
-                    <div className="text-[11px] text-muted-foreground mb-0.5">Recipient:</div>
-                    <div className="text-xs font-medium">{recipientInfo.name}</div>
-                    <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
+              ) : (
+                <>
+                  <div className="flex items-start gap-3 p-1.5 bg-background/70 rounded-md">
+                    <div className="flex-shrink-0 mt-1 bg-primary/10 p-1.5 rounded-full">
+                      <MapPin className="h-4 w-4 text-primary/70" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-xs font-medium mb-1">Sender</div>
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                        <div className="text-xs text-muted-foreground">Name:</div>
+                        <div className="text-xs font-medium">{senderInfo.name}</div>
+                        <div className="text-xs text-muted-foreground">Phone:</div>
+                        <div className="text-xs">{senderInfo.phone}</div>
+                        <div className="text-xs text-muted-foreground">Address:</div>
+                        <div className="text-xs">{knownLocations[order.pickupAddress] || order.pickupAddress}</div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </>}
+                  
+                  <Separator className="my-1 bg-border/30" />
+                  
+                  <div className="flex items-start gap-3 p-1.5 bg-background/70 rounded-md">
+                    <div className="flex-shrink-0 mt-1 bg-primary/10 p-1.5 rounded-full">
+                      <MapPin className="h-4 w-4 text-primary/70" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-xs font-medium mb-1">Recipient</div>
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                        <div className="text-xs text-muted-foreground">Name:</div>
+                        <div className="text-xs font-medium">{recipientInfo.name}</div>
+                        <div className="text-xs text-muted-foreground">Phone:</div>
+                        <div className="text-xs">{recipientInfo.phone}</div>
+                        <div className="text-xs text-muted-foreground">Address:</div>
+                        <div className="text-xs">{knownLocations[order.deliveryAddress] || order.deliveryAddress}</div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
           
           <Sheet>
