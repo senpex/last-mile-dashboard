@@ -1,4 +1,3 @@
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -96,7 +95,7 @@ export const CustomerOrderView = ({
               {shouldShowDriverInfo(order.id) ? (
                 <div className="flex items-start gap-2 p-1 bg-background/70 rounded-md">
                   <div className="flex-shrink-0 mt-0.5 bg-primary/10 p-1 rounded-full">
-                    <UserRound className="h-3 w-3 text-primary/70" />
+                    <UserRound className="h-3 w-3 text-muted-foreground" />
                   </div>
                   <div className="flex-1">
                     <div className="text-[10px] font-medium mb-0.5">Driver Details</div>
@@ -175,4 +174,3 @@ export const CustomerOrderView = ({
         </div>}
     </div>;
 };
-
