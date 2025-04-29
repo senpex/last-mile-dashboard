@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { UsersTableContainer } from "@/components/ui/users-table-container";
 import { Card } from "@/components/ui/card";
-import { Package, GripVertical, ChevronUp, ChevronDown, Filter, Search, Plus, History as HistoryIcon, MoreVertical } from "lucide-react";
+import { Package, GripVertical, ChevronUp, ChevronDown, Filter, Search, History as HistoryIcon, MoreVertical } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { EZcaterFiltersLayout } from "@/components/ezcater/EZcaterFiltersLayout";
 import { SearchInput } from "@/components/ui/search-input";
@@ -503,7 +503,6 @@ const EZcaterOrders = () => {
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
                                 <DropdownMenuItem onClick={() => handleCreateOrder(order.requestNumber)}>
-                                  <Plus className="h-4 w-4 mr-2" />
                                   Create order
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => handleCancelRequest(order.requestNumber)}>
