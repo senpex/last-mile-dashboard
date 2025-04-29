@@ -66,26 +66,23 @@ export const CustomerOrderView = ({
           
           <div className="order-times-card rounded-md bg-muted/50 p-2.5 shadow-sm">
             <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-1.5">
-                  <Clock className="h-3 w-3 text-muted-foreground" />
+              <div className="flex items-center gap-1.5 mb-1">
+                <Clock className="h-3 w-3 text-muted-foreground" />
+                <span className="text-xs font-medium text-muted-foreground">Time Details</span>
+              </div>
+              <div className="pl-4">
+                <div className="flex justify-between items-center">
                   <span className="text-xs text-muted-foreground">Pickup:</span>
+                  <span className="text-xs font-medium">{order.pickupTime}</span>
                 </div>
-                <span className="text-xs font-medium">{order.pickupTime}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-1.5">
-                  <Clock className="h-3 w-3 text-muted-foreground" />
+                <div className="flex justify-between items-center">
                   <span className="text-xs text-muted-foreground">Dropoff:</span>
+                  <span className="text-xs font-medium">{order.dropoffTime}</span>
                 </div>
-                <span className="text-xs font-medium">{order.dropoffTime}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-1.5">
-                  <Clock className="h-3 w-3 text-muted-foreground" />
+                <div className="flex justify-between items-center">
                   <span className="text-xs text-muted-foreground">ETA:</span>
+                  <span className="text-xs font-medium">{order.eta}</span>
                 </div>
-                <span className="text-xs font-medium">{order.eta}</span>
               </div>
             </div>
           </div>
