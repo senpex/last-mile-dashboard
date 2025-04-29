@@ -13,7 +13,6 @@ import { SearchInput } from "@/components/ui/search-input";
 import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
 import { EZcaterPagination } from "@/components/ezcater/EZcaterPagination";
-
 const EZcaterOrders = () => {
   const {
     toast
@@ -145,9 +144,7 @@ const EZcaterOrders = () => {
     });
   };
   const filteredOrders = orders.filter(order => {
-    const matchesSearch = order.id.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         order.customer.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         order.location.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = order.id.toLowerCase().includes(searchQuery.toLowerCase()) || order.customer.toLowerCase().includes(searchQuery.toLowerCase()) || order.location.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = !selectedStatus || order.status === selectedStatus;
     return matchesSearch && matchesStatus;
   });
@@ -304,7 +301,6 @@ const EZcaterOrders = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
   const handlePageSizeChange = (size: number) => {
     setPageSize(size);
     setCurrentPage(1);
@@ -354,21 +350,11 @@ const EZcaterOrders = () => {
   const timezoneInfo = `All times in EST (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
 
   // Filter controls - Fixed to return React elements for each status option
-  const filterControls = (
-    <div className="flex flex-wrap gap-2">
-      {statusOptions.map(status => (
-        <Button
-          key={status}
-          size="sm"
-          variant={selectedStatus === status ? "default" : "outline"}
-          onClick={() => setSelectedStatus(selectedStatus === status ? null : status)}
-          className="capitalize"
-        >
+  const filterControls = <div className="flex flex-wrap gap-2">
+      {statusOptions.map(status => <Button key={status} size="sm" variant={selectedStatus === status ? "default" : "outline"} onClick={() => setSelectedStatus(selectedStatus === status ? null : status)} className="capitalize">
           {status.replace('-', ' ')}
-        </Button>
-      ))}
-    </div>
-  );
+        </Button>)}
+    </div>;
 
   // Search controls with the components from the selected element
   const searchControls = <div className="flex items-center space-x-2">
@@ -376,20 +362,19 @@ const EZcaterOrders = () => {
       <TimezonePicker selectedTimezone={timezone} onTimezoneChange={setTimezone} />
       <ColumnSelector columns={availableColumns} visibleColumns={visibleColumns} setVisibleColumns={setVisibleColumns} size="icon" />
     </div>;
-
   return <Layout>
       <div className="w-full overflow-x-hidden">
         <EZcaterFiltersLayout title="eZcater Orders" timezoneInfo={timezoneInfo} filterControls={filterControls} searchControls={searchControls} className="border-0" />
 
-        <div className="py-4 px-[27px] mx-0">
+        <div className="mx-0 px-[8px] py-[14px]">
           <UsersTableContainer>
             <Table>
               <TableHeader className="bg-muted/50 border-b-0 m-0 p-0">
                 <TableRow className="border-b-0">
                   {columnOrder.filter(id => visibleColumns.includes(id)).map(columnId => {
-                    const column = columns[columnId as keyof typeof columns];
-                    const isSortable = ['id', 'customer', 'dateTime', 'location', 'value', 'items'].includes(columnId);
-                    return <TableHead key={columnId} className={`whitespace-nowrap min-w-[100px] ${columnId === 'actions' ? 'w-[80px]' : ''}`} dragOver={dragOverColumn === columnId} sortable={isSortable} sortDirection={sortConfig.key === columnId ? sortConfig.direction : null} onSort={() => isSortable && requestSort(columnId)}>
+                  const column = columns[columnId as keyof typeof columns];
+                  const isSortable = ['id', 'customer', 'dateTime', 'location', 'value', 'items'].includes(columnId);
+                  return <TableHead key={columnId} className={`whitespace-nowrap min-w-[100px] ${columnId === 'actions' ? 'w-[80px]' : ''}`} dragOver={dragOverColumn === columnId} sortable={isSortable} sortDirection={sortConfig.key === columnId ? sortConfig.direction : null} onSort={() => isSortable && requestSort(columnId)}>
                       <div className="flex items-center gap-2">
                         <div draggable={columnId !== 'actions'} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className={`cursor-grab transition-opacity duration-200 ${draggedColumn === columnId ? 'opacity-50' : ''}`}>
                           <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
@@ -397,41 +382,41 @@ const EZcaterOrders = () => {
                         <span>{column.label}</span>
                       </div>
                     </TableHead>;
-                  })}
+                })}
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {currentPageItems.map(order => <TableRow key={order.id}>
                     {columnOrder.filter(id => visibleColumns.includes(id)).map(columnId => {
-                      switch (columnId) {
-                        case "id":
-                          return <TableCell key={columnId} className="font-medium">{order.id}</TableCell>;
-                        case "customer":
-                          return <TableCell key={columnId}>{order.customer}</TableCell>;
-                        case "dateTime":
-                          return <TableCell key={columnId}>{`${order.date} ${order.time}`}</TableCell>;
-                        case "status":
-                          return <TableCell key={columnId}>
+                  switch (columnId) {
+                    case "id":
+                      return <TableCell key={columnId} className="font-medium">{order.id}</TableCell>;
+                    case "customer":
+                      return <TableCell key={columnId}>{order.customer}</TableCell>;
+                    case "dateTime":
+                      return <TableCell key={columnId}>{`${order.date} ${order.time}`}</TableCell>;
+                    case "status":
+                      return <TableCell key={columnId}>
                                     <Badge variant={getStatusBadgeVariant(order.status)} className="capitalize">
                                       {order.status.replace('-', ' ')}
                                     </Badge>
                                   </TableCell>;
-                        case "location":
-                          return <TableCell key={columnId}>{order.location}</TableCell>;
-                        case "value":
-                          return <TableCell key={columnId}>{order.value}</TableCell>;
-                        case "items":
-                          return <TableCell key={columnId}>{order.items}</TableCell>;
-                        case "actions":
-                          return <TableCell key={columnId} className="text-right">
+                    case "location":
+                      return <TableCell key={columnId}>{order.location}</TableCell>;
+                    case "value":
+                      return <TableCell key={columnId}>{order.value}</TableCell>;
+                    case "items":
+                      return <TableCell key={columnId}>{order.items}</TableCell>;
+                    case "actions":
+                      return <TableCell key={columnId} className="text-right">
                                     <Button size="sm" variant="outline" onClick={() => handleViewOrder(order.id)}>
                                       View
                                     </Button>
                                   </TableCell>;
-                        default:
-                          return <TableCell key={columnId}></TableCell>;
-                      }
-                    })}
+                    default:
+                      return <TableCell key={columnId}></TableCell>;
+                  }
+                })}
                   </TableRow>)}
                 {currentPageItems.length === 0 && <TableRow>
                     <TableCell colSpan={8} className="text-center py-6">
@@ -443,17 +428,8 @@ const EZcaterOrders = () => {
           </UsersTableContainer>
         </div>
         
-        <EZcaterPagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          totalItems={totalItems}
-          pageSize={pageSize}
-          pageSizeOptions={pageSizeOptions}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-        />
+        <EZcaterPagination currentPage={currentPage} totalPages={totalPages} totalItems={totalItems} pageSize={pageSize} pageSizeOptions={pageSizeOptions} onPageChange={handlePageChange} onPageSizeChange={handlePageSizeChange} />
       </div>
     </Layout>;
 };
-
 export default EZcaterOrders;
