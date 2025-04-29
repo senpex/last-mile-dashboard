@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useTheme } from "./ThemeProvider";
 import ThemeToggle from "./ThemeToggle";
@@ -21,19 +22,29 @@ const Sidebar = ({
   const [mounting, setMounting] = useState(true);
   const [usersMenuOpen, setUsersMenuOpen] = useState(false);
   const [communicationMenuOpen, setCommunicationMenuOpen] = useState(false);
+  const [deliveriesMenuOpen, setDeliveriesMenuOpen] = useState(false);
+  
   useEffect(() => {
     const timer = setTimeout(() => setMounting(false), 300);
     return () => clearTimeout(timer);
   }, []);
+  
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
   };
+  
   const toggleUsersMenu = () => {
     setUsersMenuOpen(!usersMenuOpen);
   };
+  
   const toggleCommunicationMenu = () => {
     setCommunicationMenuOpen(!communicationMenuOpen);
   };
+  
+  const toggleDeliveriesMenu = () => {
+    setDeliveriesMenuOpen(!deliveriesMenuOpen);
+  };
+  
   return <aside className={cn("fixed left-0 top-0 h-screen flex flex-col transition-all-300 z-10 bg-sidebar shadow-lg", "border-r border-sidebar-border", collapsed ? "w-[70px]" : "w-[240px]", mounting ? "animate-slide-in-left" : "")}>
       <div className="h-16 border-b border-sidebar-border flex items-center justify-between px-4">
         <h1 className={cn("font-semibold text-sidebar-foreground transition-opacity-300", collapsed ? "opacity-0 w-0" : "opacity-100")}>
@@ -55,13 +66,27 @@ const Sidebar = ({
                 </span>
               </Link>
             </li>
+
             <li>
-              <Link to="/" className={cn("sidebar-item", location.pathname === "/" ? "active" : "")}>
+              <button onClick={toggleDeliveriesMenu} className={cn("sidebar-item w-full text-left", location.pathname === "/" || location.pathname === "/ezcater-orders" ? "active" : "")}>
                 <Package className="sidebar-icon" />
                 <span className={cn("menu-item-text", collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100")}>
                   Deliveries
                 </span>
-              </Link>
+                {!collapsed && <ChevronRight className={cn("ml-auto w-4 h-4 transition-transform", deliveriesMenuOpen ? "rotate-90" : "")} />}
+              </button>
+              {!collapsed && deliveriesMenuOpen && <ul className="mt-1 ml-6 space-y-1">
+                <li>
+                  <Link to="/" className={cn("sidebar-item text-sm", location.pathname === "/" ? "active" : "")}>
+                    <span>All Deliveries</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/ezcater-orders" className={cn("sidebar-item text-sm", location.pathname === "/ezcater-orders" ? "active" : "")}>
+                    <span>eZcater Orders</span>
+                  </Link>
+                </li>
+              </ul>}
             </li>
             
             <li>

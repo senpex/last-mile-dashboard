@@ -15,6 +15,7 @@ import DriversPage from "./pages/users/Drivers";
 import ClientsPage from "./pages/users/Clients";
 import PushCommunication from "./pages/communication/PushCommunication";
 import CustomerSupport from "./pages/communication/CustomerSupport";
+import EZcaterOrders from "./pages/EZcaterOrders";
 import NotFound from "./pages/NotFound";
 
 // Create a client outside the component to avoid re-initialization on re-renders
@@ -45,6 +46,7 @@ const App = () => {
               <Route path="/users/clients" element={<ClientsPage />} />
               <Route path="/communication/push" element={<PushCommunication />} />
               <Route path="/communication/support" element={<CustomerSupport />} />
+              <Route path="/ezcater-orders" element={<EZcaterOrders />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
