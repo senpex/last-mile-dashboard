@@ -3,9 +3,10 @@ import { useTheme } from "./ThemeProvider";
 import ThemeToggle from "./ThemeToggle";
 import ZoomControl from "./ZoomControl";
 import LogoutButton from "./LogoutButton";
-import { ChevronLeft, ChevronRight, Package, BookOpen, Bot, LayoutDashboard, UserRound, Users, TowerControl } from "lucide-react";
+import { ChevronLeft, ChevronRight, Package, BookOpen, Bot, LayoutDashboard, UserRound, Users, TowerControl, Utensils } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
+
 interface SidebarProps {
   collapsed: boolean;
   setCollapsed: (collapsed: boolean) => void;
@@ -60,6 +61,14 @@ const Sidebar = ({
                 <Package className="sidebar-icon" />
                 <span className={cn("menu-item-text", collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100")}>
                   Deliveries
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/ezcater-orders" className={cn("sidebar-item", location.pathname === "/ezcater-orders" ? "active" : "")}>
+                <Utensils className="sidebar-icon" />
+                <span className={cn("menu-item-text", collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100")}>
+                  eZcater Orders
                 </span>
               </Link>
             </li>
