@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -155,14 +154,22 @@ const EZcaterOrders = () => {
   
   const statusOptions = ["pending", "confirmed", "in-transit", "delivered", "cancelled"];
 
-  // Column dragging handlers
+  // Fixed column dragging handlers
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     setDraggedColumn(columnId);
+    e.dataTransfer.setData('text/plain', columnId);
+    
+    // Create a custom drag image
+    const dragImage = new Image();
+    dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+    e.dataTransfer.setDragImage(dragImage, 0, 0);
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     e.preventDefault();
-    setDragOverColumn(columnId);
+    if (draggedColumn && draggedColumn !== columnId) {
+      setDragOverColumn(columnId);
+    }
   };
 
   const handleDragEnd = () => {
@@ -173,21 +180,25 @@ const EZcaterOrders = () => {
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
     e.preventDefault();
     
-    if (draggedColumn && draggedColumn !== targetColumnId) {
-      const newColumnOrder = [...columnOrder];
-      const draggedIndex = newColumnOrder.findIndex(col => col === draggedColumn);
-      const targetIndex = newColumnOrder.findIndex(col => col === targetColumnId);
+    if (!draggedColumn || draggedColumn === targetColumnId) {
+      setDraggedColumn(null);
+      setDragOverColumn(null);
+      return;
+    }
+    
+    const newColumnOrder = [...columnOrder];
+    const draggedIndex = newColumnOrder.findIndex(col => col === draggedColumn);
+    const targetIndex = newColumnOrder.findIndex(col => col === targetColumnId);
+    
+    if (draggedIndex !== -1 && targetIndex !== -1) {
+      // Remove the dragged column
+      newColumnOrder.splice(draggedIndex, 1);
       
-      if (draggedIndex !== -1 && targetIndex !== -1) {
-        // Remove the dragged column
-        newColumnOrder.splice(draggedIndex, 1);
-        
-        // Insert it at the new position
-        const insertAtIndex = targetIndex > draggedIndex ? targetIndex - 1 : targetIndex;
-        newColumnOrder.splice(insertAtIndex, 0, draggedColumn);
-        
-        setColumnOrder(newColumnOrder);
-      }
+      // Insert it at the new position
+      const insertAtIndex = targetIndex > draggedIndex ? targetIndex - 1 : targetIndex;
+      newColumnOrder.splice(insertAtIndex, 0, draggedColumn);
+      
+      setColumnOrder(newColumnOrder);
     }
     
     setDraggedColumn(null);
@@ -265,10 +276,10 @@ const EZcaterOrders = () => {
                         <div className="flex items-center gap-1">
                           <div 
                             draggable={true}
-                            onDragStart={e => handleDragStart(e, columnId)} 
-                            onDragOver={e => handleDragOver(e, columnId)} 
+                            onDragStart={(e) => handleDragStart(e, columnId)}
+                            onDragOver={(e) => handleDragOver(e, columnId)}
                             onDragEnd={handleDragEnd}
-                            onDrop={e => handleDrop(e, columnId)}
+                            onDrop={(e) => handleDrop(e, columnId)}
                             className="cursor-grab"
                           >
                             <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
