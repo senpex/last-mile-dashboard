@@ -13,6 +13,7 @@ import { SearchInput } from "@/components/ui/search-input";
 import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
 import { EZcaterPagination } from "@/components/ezcater/EZcaterPagination";
+
 const EZcaterOrders = () => {
   const {
     toast
@@ -145,8 +146,17 @@ const EZcaterOrders = () => {
   };
   const filteredOrders = orders.filter(order => {
     const matchesSearch = order.id.toLowerCase().includes(searchQuery.toLowerCase()) || order.customer.toLowerCase().includes(searchQuery.toLowerCase()) || order.location.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = !selectedStatus || order.status === selectedStatus;
-    return matchesSearch && matchesStatus;
+    
+    // Update status filter logic to handle the new filter options
+    if (!selectedStatus) {
+      return matchesSearch; // "All" is selected (no filter)
+    } else if (selectedStatus === "orders") {
+      return matchesSearch && (order.status === "pending" || order.status === "confirmed" || order.status === "in-transit" || order.status === "delivered");
+    } else if (selectedStatus === "modifications") {
+      return matchesSearch && order.status === "cancelled";
+    }
+    
+    return matchesSearch;
   });
   const sortedOrders = React.useMemo(() => {
     let sortableOrders = [...filteredOrders];
@@ -195,7 +205,7 @@ const EZcaterOrders = () => {
       direction
     });
   };
-  const statusOptions = ["pending", "confirmed", "in-transit", "delivered", "cancelled"];
+  const filterOptions = ["all", "orders", "modifications"];
 
   // Log current column order for debugging
   useEffect(() => {
@@ -349,12 +359,38 @@ const EZcaterOrders = () => {
   });
   const timezoneInfo = `All times in EST (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
 
-  // Filter controls - Fixed to return React elements for each status option
-  const filterControls = <div className="flex flex-wrap gap-2">
-      {statusOptions.map(status => <Button key={status} size="sm" variant={selectedStatus === status ? "default" : "outline"} onClick={() => setSelectedStatus(selectedStatus === status ? null : status)} className="capitalize">
-          {status.replace('-', ' ')}
-        </Button>)}
-    </div>;
+  // Updated filter controls to show only the three requested buttons
+  const filterControls = (
+    <div className="flex flex-wrap gap-2">
+      <Button 
+        key="all" 
+        size="sm" 
+        variant={selectedStatus === null ? "default" : "outline"} 
+        onClick={() => setSelectedStatus(null)} 
+        className="capitalize"
+      >
+        All
+      </Button>
+      <Button 
+        key="orders" 
+        size="sm" 
+        variant={selectedStatus === "orders" ? "default" : "outline"} 
+        onClick={() => setSelectedStatus("orders")} 
+        className="capitalize"
+      >
+        Orders
+      </Button>
+      <Button 
+        key="modifications" 
+        size="sm" 
+        variant={selectedStatus === "modifications" ? "default" : "outline"} 
+        onClick={() => setSelectedStatus("modifications")} 
+        className="capitalize"
+      >
+        Modifications
+      </Button>
+    </div>
+  );
 
   // Search controls with the components from the selected element
   const searchControls = <div className="flex items-center space-x-2">
