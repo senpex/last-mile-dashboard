@@ -8,6 +8,7 @@ import { UsersTableContainer } from "@/components/ui/users-table-container";
 import { Card } from "@/components/ui/card";
 import { Package, GripVertical, ChevronUp, ChevronDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+
 const EZcaterOrders = () => {
   const {
     toast
@@ -291,15 +292,17 @@ const EZcaterOrders = () => {
           </Button>
         </div>
 
-        <Card className="p-4 mt-6 overflow-hidden mx-0 px-[28px]">
-          <div className="flex flex-col md:flex-row gap-4 mb-6">
-            <div className="flex-1">
-              <Input placeholder="Search orders by ID, customer, or location..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full" />
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {statusOptions.map(status => <Badge key={status} variant={selectedStatus === status ? getStatusBadgeVariant(status) : "outline"} className="cursor-pointer capitalize" onClick={() => setSelectedStatus(selectedStatus === status ? null : status)}>
-                  {status.replace('-', ' ')}
-                </Badge>)}
+        <Card className="mt-6 overflow-hidden">
+          <div className="p-6 space-y-6">
+            <div className="flex flex-col md:flex-row gap-6 items-start">
+              <div className="flex-1">
+                <Input placeholder="Search orders by ID, customer, or location..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full" />
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {statusOptions.map(status => <Badge key={status} variant={selectedStatus === status ? getStatusBadgeVariant(status) : "outline"} className="cursor-pointer capitalize" onClick={() => setSelectedStatus(selectedStatus === status ? null : status)}>
+                    {status.replace('-', ' ')}
+                  </Badge>)}
+              </div>
             </div>
           </div>
 
@@ -366,4 +369,5 @@ const EZcaterOrders = () => {
       </div>
     </Layout>;
 };
+
 export default EZcaterOrders;
