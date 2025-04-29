@@ -12,6 +12,7 @@ import { EZcaterFiltersLayout } from "@/components/ezcater/EZcaterFiltersLayout"
 import { SearchInput } from "@/components/ui/search-input";
 import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
+
 const EZcaterOrders = () => {
   const {
     toast
@@ -329,10 +330,22 @@ const EZcaterOrders = () => {
   });
   const timezoneInfo = `All times in EST (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
 
-  // Filter controls
-  const filterControls = <div className="flex flex-wrap gap-2">
-      {statusOptions.map(status => {})}
-    </div>;
+  // Filter controls - Fixed to return React elements for each status option
+  const filterControls = (
+    <div className="flex flex-wrap gap-2">
+      {statusOptions.map(status => (
+        <Button
+          key={status}
+          size="sm"
+          variant={selectedStatus === status ? "default" : "outline"}
+          onClick={() => setSelectedStatus(selectedStatus === status ? null : status)}
+          className="capitalize"
+        >
+          {status.replace('-', ' ')}
+        </Button>
+      ))}
+    </div>
+  );
 
   // Search controls with the components from the selected element
   const searchControls = <div className="flex items-center space-x-2">
@@ -408,4 +421,5 @@ const EZcaterOrders = () => {
       </div>
     </Layout>;
 };
+
 export default EZcaterOrders;
