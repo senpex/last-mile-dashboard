@@ -10,43 +10,37 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button";
 import { Check, X, Clock, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
-
 type StripeStatus = 'verified' | 'unverified' | 'pending';
-
 const getRandomPhone = (): string => {
   const areaCode = Math.floor(Math.random() * 900) + 100;
   const prefix = Math.floor(Math.random() * 900) + 100;
   const lineNumber = Math.floor(Math.random() * 9000) + 1000;
   return `(${areaCode}) ${prefix}-${lineNumber}`;
 };
-
 const getRandomZipcode = (): string => {
   return String(Math.floor(Math.random() * 90000) + 10000);
 };
-
 const getRandomAddress = (): string => {
   const streetNumbers = [123, 456, 789, 1010, 555, 777, 888, 999, 321, 654];
   const streetNames = ["Main St", "Oak Ave", "Pine Rd", "Maple Dr", "Cedar Ln", "Elm Blvd", "Park Ave", "River Rd", "Lake Dr", "Forest Way"];
   const cities = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"];
   const states = ["NY", "CA", "IL", "TX", "AZ", "PA", "TX", "CA", "TX", "CA"];
-  
   const randomIndex = Math.floor(Math.random() * 10);
   return `${streetNumbers[randomIndex]} ${streetNames[randomIndex]}, ${cities[randomIndex]}, ${states[randomIndex]}`;
 };
-
 const generateRandomClients = (count: number, startId: number = 20000): any[] => {
   const firstNames = ["Alice", "Bob", "Charlie", "David", "Eve", "Mallory", "Trent", "Wendy", "Walter", "Peggy"];
   const lastNames = ["Smith", "Jones", "Williams", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor", "Anderson"];
   const companyNames = ["Acme Corp", "Globex Industries", "Soylent Corp", "Initech", "Wayne Enterprises", "Stark Industries", "Oscorp", "Cyberdyne Systems", "Umbrella Corp", "Tyrell Corp"];
   const statuses = ["active", "inactive", "pending"];
   const stripeStatuses: StripeStatus[] = ['verified', 'unverified', 'pending'];
-
-  return Array.from({ length: count }, (_, i) => {
+  return Array.from({
+    length: count
+  }, (_, i) => {
     const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
     const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
     const name = `${firstName} ${lastName}`;
     const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${companyNames[i % companyNames.length].toLowerCase().replace(/\s+/g, '')}.com`;
-
     return {
       id: startId + i,
       name,
@@ -63,81 +57,110 @@ const generateRandomClients = (count: number, startId: number = 20000): any[] =>
     };
   });
 };
-
 const ClientsPage = () => {
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
   const [timezone, setTimezone] = useState<string>("America/New_York");
   const [activeView, setActiveView] = useState("main");
-  const [clients, setClients] = useState([
-    {
-      id: 20001,
-      name: "Alice Smith",
-      email: "alice.smith@acmecorp.com",
-      phone: "(123) 456-7890",
-      company: "Acme Corp",
-      address: "123 Main St, Anytown, CA",
-      status: "active",
-      stripeStatus: 'verified' as StripeStatus,
-      zipcode: "90210",
-      notes: "High-value client",
-      totalOrders: 42,
-      lastOrderDate: "2024-01-15T10:30:00Z"
-    },
-    {
-      id: 20002,
-      name: "Bob Jones",
-      email: "bob.jones@globexindustries.com",
-      phone: "(123) 456-7891",
-      company: "Globex Industries",
-      address: "456 Oak Ave, Anytown, CA",
-      status: "inactive",
-      stripeStatus: 'unverified' as StripeStatus,
-      zipcode: "90211",
-      notes: "Potential client",
-      totalOrders: 15,
-      lastOrderDate: "2024-02-20T14:45:00Z"
-    },
-    {
-      id: 20003,
-      name: "Charlie Williams",
-      email: "charlie.williams@soylentcorp.com",
-      phone: "(123) 456-7892",
-      company: "Soylent Corp",
-      address: "789 Pine Ln, Anytown, CA",
-      status: "pending",
-      stripeStatus: 'pending' as StripeStatus,
-      zipcode: "90212",
-      notes: "New client",
-      totalOrders: 7,
-      lastOrderDate: "2024-03-10T09:15:00Z"
-    }
-  ]);
-  
+  const [clients, setClients] = useState([{
+    id: 20001,
+    name: "Alice Smith",
+    email: "alice.smith@acmecorp.com",
+    phone: "(123) 456-7890",
+    company: "Acme Corp",
+    address: "123 Main St, Anytown, CA",
+    status: "active",
+    stripeStatus: 'verified' as StripeStatus,
+    zipcode: "90210",
+    notes: "High-value client",
+    totalOrders: 42,
+    lastOrderDate: "2024-01-15T10:30:00Z"
+  }, {
+    id: 20002,
+    name: "Bob Jones",
+    email: "bob.jones@globexindustries.com",
+    phone: "(123) 456-7891",
+    company: "Globex Industries",
+    address: "456 Oak Ave, Anytown, CA",
+    status: "inactive",
+    stripeStatus: 'unverified' as StripeStatus,
+    zipcode: "90211",
+    notes: "Potential client",
+    totalOrders: 15,
+    lastOrderDate: "2024-02-20T14:45:00Z"
+  }, {
+    id: 20003,
+    name: "Charlie Williams",
+    email: "charlie.williams@soylentcorp.com",
+    phone: "(123) 456-7892",
+    company: "Soylent Corp",
+    address: "789 Pine Ln, Anytown, CA",
+    status: "pending",
+    stripeStatus: 'pending' as StripeStatus,
+    zipcode: "90212",
+    notes: "New client",
+    totalOrders: 7,
+    lastOrderDate: "2024-03-10T09:15:00Z"
+  }]);
   const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
-  
-  const availableColumns: ColumnOption[] = [
-    { id: "id", label: "ID", default: true },
-    { id: "name", label: "Name", default: true },
-    { id: "email", label: "Email", default: true },
-    { id: "phone", label: "Phone", default: true },
-    { id: "company", label: "Company", default: true },
-    { id: "address", label: "Address", default: true },
-    { id: "zipcode", label: "Zipcode", default: false },
-    { id: "status", label: "Status", default: true },
-    { id: "stripeStatus", label: "Stripe Status", default: true },
-    { id: "totalOrders", label: "Total Orders", default: true },
-    { id: "lastOrderDate", label: "Last Order Date", default: true },
-    { id: "notes", label: "Notes", default: true },
-    { id: "actions", label: "Actions", default: true }
-  ];
-  const [visibleColumns, setVisibleColumns] = useState<string[]>(
-    availableColumns.filter(col => col.default).map(col => col.id)
-  );
+  const availableColumns: ColumnOption[] = [{
+    id: "id",
+    label: "ID",
+    default: true
+  }, {
+    id: "name",
+    label: "Name",
+    default: true
+  }, {
+    id: "email",
+    label: "Email",
+    default: true
+  }, {
+    id: "phone",
+    label: "Phone",
+    default: true
+  }, {
+    id: "company",
+    label: "Company",
+    default: true
+  }, {
+    id: "address",
+    label: "Address",
+    default: true
+  }, {
+    id: "zipcode",
+    label: "Zipcode",
+    default: false
+  }, {
+    id: "status",
+    label: "Status",
+    default: true
+  }, {
+    id: "stripeStatus",
+    label: "Stripe Status",
+    default: true
+  }, {
+    id: "totalOrders",
+    label: "Total Orders",
+    default: true
+  }, {
+    id: "lastOrderDate",
+    label: "Last Order Date",
+    default: true
+  }, {
+    id: "notes",
+    label: "Notes",
+    default: true
+  }, {
+    id: "actions",
+    label: "Actions",
+    default: true
+  }];
+  const [visibleColumns, setVisibleColumns] = useState<string[]>(availableColumns.filter(col => col.default).map(col => col.id));
   const [columnOrder, setColumnOrder] = useState<string[]>(availableColumns.filter(col => col.default).map(col => col.id));
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -159,47 +182,36 @@ const ClientsPage = () => {
   });
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
-
   useEffect(() => {
     setFilteredClients(clients);
   }, [clients]);
-
   useEffect(() => {
     let filtered = clients;
-    
     if (searchTerm.length >= 3) {
-      filtered = filtered.filter(client =>
-        client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        client.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        client.phone.includes(searchTerm) ||
-        client.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        client.id.toString().includes(searchTerm)
-      );
+      filtered = filtered.filter(client => client.name.toLowerCase().includes(searchTerm.toLowerCase()) || client.email.toLowerCase().includes(searchTerm.toLowerCase()) || client.phone.includes(searchTerm) || client.company.toLowerCase().includes(searchTerm.toLowerCase()) || client.id.toString().includes(searchTerm));
     }
-    
     if (selectedCompanies.length > 0) {
       filtered = filtered.filter(client => selectedCompanies.includes(client.company));
     }
-    
     if (selectedZipcodes.length > 0) {
       filtered = filtered.filter(client => selectedZipcodes.includes(client.zipcode));
     }
-    
     if (selectedCities.length > 0) {
       filtered = filtered.filter(client => selectedCities.includes(`City ${client.id % 10}`));
     }
-    
     if (selectedStates.length > 0) {
-      const addressStateMap: { [key: string]: string } = {
-        "NY": "NY", 
-        "CA": "CA", 
-        "IL": "IL", 
-        "TX": "TX", 
-        "AZ": "AZ", 
-        "PA": "PA", 
-        "WA": "WA", 
-        "FL": "FL", 
-        "CO": "CO", 
+      const addressStateMap: {
+        [key: string]: string;
+      } = {
+        "NY": "NY",
+        "CA": "CA",
+        "IL": "IL",
+        "TX": "TX",
+        "AZ": "AZ",
+        "PA": "PA",
+        "WA": "WA",
+        "FL": "FL",
+        "CO": "CO",
         "GA": "GA"
       };
       filtered = filtered.filter(client => {
@@ -207,10 +219,8 @@ const ClientsPage = () => {
         return selectedStates.includes(state);
       });
     }
-    
     setFilteredClients(filtered);
   }, [searchTerm, selectedCompanies, selectedZipcodes, selectedCities, selectedStates, clients]);
-
   useEffect(() => {
     setColumnOrder(prevOrder => {
       const newOrder = [...prevOrder];
@@ -222,7 +232,6 @@ const ClientsPage = () => {
       return newOrder.filter(column => visibleColumns.includes(column));
     });
   }, [visibleColumns]);
-
   useEffect(() => {
     setClients(prevClients => {
       const highestId = Math.max(...prevClients.map(c => c.id));
@@ -230,17 +239,14 @@ const ClientsPage = () => {
       return [...prevClients, ...newClients];
     });
   }, []);
-
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
   };
-
   const handlePageSizeChange = (size: number) => {
     setPageSize(size);
     setCurrentPage(1);
   };
-
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -271,11 +277,9 @@ const ClientsPage = () => {
     }
     return pages;
   };
-
   const handleToggleFilterSidebar = () => {
     setIsFilterSidebarOpen(prev => !prev);
   };
-
   const renderStripeStatus = (status: 'verified' | 'unverified' | 'pending') => {
     let bgColor = '';
     let icon = null;
@@ -302,28 +306,23 @@ const ClientsPage = () => {
         {text}
       </div>;
   };
-
   const handleNotesClick = (clientId: number) => {
     setEditingNotes(clientId);
   };
-
   const handleNotesChange = (clientId: number, notes: string) => {
     setClients(prevClients => prevClients.map(client => client.id === clientId ? {
       ...client,
       notes
     } : client));
   };
-
   const saveNotes = (clientId: number) => {
     setEditingNotes(null);
     toast.success("Client notes updated successfully");
   };
-
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     setDraggedColumn(columnId);
     e.dataTransfer.setData('text/plain', columnId);
     e.dataTransfer.effectAllowed = 'move';
-    
     const ghostElement = document.createElement('div');
     ghostElement.textContent = columnId;
     ghostElement.style.position = 'absolute';
@@ -333,66 +332,51 @@ const ClientsPage = () => {
     ghostElement.style.border = '1px solid #ccc';
     ghostElement.style.borderRadius = '4px';
     document.body.appendChild(ghostElement);
-    
     e.dataTransfer.setDragImage(ghostElement, 20, 20);
-    
     setTimeout(() => {
       document.body.removeChild(ghostElement);
     }, 0);
   };
-
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
-    
     if (draggedColumn && draggedColumn !== columnId) {
       setDragOverColumn(columnId);
     }
   };
-
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
     e.preventDefault();
-    
     if (!draggedColumn || draggedColumn === targetColumnId) {
       setDraggedColumn(null);
       setDragOverColumn(null);
       return;
     }
-    
     const updatedOrder = [...columnOrder];
     const draggedIndex = updatedOrder.indexOf(draggedColumn);
     const targetIndex = updatedOrder.indexOf(targetColumnId);
-    
     if (draggedIndex !== -1 && targetIndex !== -1) {
       updatedOrder.splice(draggedIndex, 1);
       updatedOrder.splice(targetIndex, 0, draggedColumn);
       setColumnOrder(updatedOrder);
       toast.success(`Column order updated: ${draggedColumn} moved`);
     }
-    
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
-
   const handleDragEnd = () => {
     const headers = document.querySelectorAll('th');
     headers.forEach(header => {
       header.classList.remove('opacity-50');
     });
-    
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
-
   const getSortedVisibleColumns = () => {
     return visibleColumns.filter(column => columnOrder.includes(column)).sort((a, b) => columnOrder.indexOf(a) - columnOrder.indexOf(b));
   };
-
   const sortedColumns = getSortedVisibleColumns();
-
   const requestSort = (key: string) => {
     let direction: 'ascending' | 'descending' | null = 'ascending';
-    
     if (sortConfig.key === key) {
       if (sortConfig.direction === 'ascending') {
         direction = 'descending';
@@ -400,41 +384,30 @@ const ClientsPage = () => {
         direction = null;
       }
     }
-    
-    setSortConfig({ key, direction });
-    
+    setSortConfig({
+      key,
+      direction
+    });
     if (direction) {
       const sortedClients = [...filteredClients].sort((a, b) => {
         if (a[key] === undefined || b[key] === undefined) return 0;
-        
         if (typeof a[key] === 'string' && typeof b[key] === 'string') {
-          return direction === 'ascending'
-            ? a[key].localeCompare(b[key])
-            : b[key].localeCompare(a[key]);
+          return direction === 'ascending' ? a[key].localeCompare(b[key]) : b[key].localeCompare(a[key]);
         }
-        
         if (a[key] < b[key]) return direction === 'ascending' ? -1 : 1;
         if (a[key] > b[key]) return direction === 'ascending' ? 1 : -1;
         return 0;
       });
-      
       setFilteredClients(sortedClients);
     } else {
       if (searchTerm.length >= 3) {
-        const filtered = clients.filter(client => 
-          client.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-          client.email.toLowerCase().includes(searchTerm.toLowerCase()) || 
-          client.phone.includes(searchTerm) ||
-          client.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          client.id.toString().includes(searchTerm)
-        );
+        const filtered = clients.filter(client => client.name.toLowerCase().includes(searchTerm.toLowerCase()) || client.email.toLowerCase().includes(searchTerm.toLowerCase()) || client.phone.includes(searchTerm) || client.company.toLowerCase().includes(searchTerm.toLowerCase()) || client.id.toString().includes(searchTerm));
         setFilteredClients(filtered);
       } else {
         setFilteredClients(clients);
       }
     }
   };
-
   const renderStatus = (status: string) => {
     let bgColor = '';
     let text = '';
@@ -460,7 +433,6 @@ const ClientsPage = () => {
         {text}
       </div>;
   };
-
   const allZipcodes = useMemo(() => {
     const uniqueZipcodes = new Set<string>();
     clients.forEach(client => {
@@ -470,7 +442,6 @@ const ClientsPage = () => {
     });
     return Array.from(uniqueZipcodes).sort();
   }, [clients]);
-
   const allCities = useMemo(() => {
     const cities = new Set<string>();
     clients.forEach(client => {
@@ -479,12 +450,10 @@ const ClientsPage = () => {
     });
     return Array.from(cities).sort();
   }, [clients]);
-
   const allStates = useMemo(() => {
     const states = new Set<string>(["CA", "NY", "TX", "FL", "IL", "WA", "AZ", "CO", "GA", "NC"]);
     return Array.from(states).sort();
   }, []);
-
   const allCompanies = useMemo(() => {
     const companies = new Set<string>();
     clients.forEach(client => {
@@ -494,87 +463,23 @@ const ClientsPage = () => {
     });
     return Array.from(companies).sort();
   }, [clients]);
-
   const selectedStatuses: string[] = [];
   const setSelectedStatuses = () => {};
   const allClientStatuses = ["active", "inactive", "pending"];
-
-  return (
-    <Layout showFooter={false}>
+  return <Layout showFooter={false}>
       <div className="flex flex-col h-screen">
-        <ClientsFilters
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          dateRange={dateRange}
-          onDateRangeChange={setDateRange}
-          timezone={timezone}
-          onTimezoneChange={setTimezone}
-          availableColumns={availableColumns}
-          visibleColumns={visibleColumns}
-          onVisibleColumnsChange={setVisibleColumns}
-          activeView={activeView}
-          onActiveViewChange={setActiveView}
-          onToggleFilterSidebar={handleToggleFilterSidebar}
-          isFilterSidebarOpen={isFilterSidebarOpen}
-        />
+        <ClientsFilters searchTerm={searchTerm} onSearchChange={setSearchTerm} dateRange={dateRange} onDateRangeChange={setDateRange} timezone={timezone} onTimezoneChange={setTimezone} availableColumns={availableColumns} visibleColumns={visibleColumns} onVisibleColumnsChange={setVisibleColumns} activeView={activeView} onActiveViewChange={setActiveView} onToggleFilterSidebar={handleToggleFilterSidebar} isFilterSidebarOpen={isFilterSidebarOpen} />
 
-        <div className="flex flex-1 w-full overflow-hidden relative">
-          <ClientsSidebar
-            open={isFilterSidebarOpen}
-            onClose={() => setIsFilterSidebarOpen(false)}
-            selectedStatuses={selectedStatuses}
-            setSelectedStatuses={setSelectedStatuses}
-            allClientStatuses={allClientStatuses}
-            allZipcodes={allZipcodes}
-            selectedZipcodes={selectedZipcodes}
-            setSelectedZipcodes={setSelectedZipcodes}
-            allCities={allCities}
-            selectedCities={selectedCities}
-            setSelectedCities={setSelectedCities}
-            allStates={allStates}
-            selectedStates={selectedStates}
-            setSelectedStates={setSelectedStates}
-            allCompanies={allCompanies}
-            selectedCompanies={selectedCompanies}
-            setSelectedCompanies={setSelectedCompanies}
-          />
+        <div className="flex flex-1 w-full overflow-hidden relative mx-0 px-[20px]">
+          <ClientsSidebar open={isFilterSidebarOpen} onClose={() => setIsFilterSidebarOpen(false)} selectedStatuses={selectedStatuses} setSelectedStatuses={setSelectedStatuses} allClientStatuses={allClientStatuses} allZipcodes={allZipcodes} selectedZipcodes={selectedZipcodes} setSelectedZipcodes={setSelectedZipcodes} allCities={allCities} selectedCities={selectedCities} setSelectedCities={setSelectedCities} allStates={allStates} selectedStates={selectedStates} setSelectedStates={setSelectedStates} allCompanies={allCompanies} selectedCompanies={selectedCompanies} setSelectedCompanies={setSelectedCompanies} />
 
           <div className={`flex-1 w-full transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-[10px]"}`}>
-            <ClientsTable
-              currentItems={currentItems}
-              sortedColumns={sortedColumns}
-              availableColumns={availableColumns}
-              editingNotes={editingNotes}
-              draggedColumn={draggedColumn}
-              dragOverColumn={dragOverColumn}
-              onDragStart={handleDragStart}
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-              onDragEnd={handleDragEnd}
-              renderStripeStatus={renderStripeStatus}
-              handleNotesClick={handleNotesClick}
-              handleNotesChange={handleNotesChange}
-              saveNotes={saveNotes}
-              className="mt-[10px]"
-              sortConfig={sortConfig}
-              requestSort={requestSort}
-              renderStatus={renderStatus}
-            />
+            <ClientsTable currentItems={currentItems} sortedColumns={sortedColumns} availableColumns={availableColumns} editingNotes={editingNotes} draggedColumn={draggedColumn} dragOverColumn={dragOverColumn} onDragStart={handleDragStart} onDragOver={handleDragOver} onDrop={handleDrop} onDragEnd={handleDragEnd} renderStripeStatus={renderStripeStatus} handleNotesClick={handleNotesClick} handleNotesChange={handleNotesChange} saveNotes={saveNotes} className="mt-[10px]" sortConfig={sortConfig} requestSort={requestSort} renderStatus={renderStatus} />
           </div>
         </div>
 
-        <ClientsPagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          totalItems={totalItems}
-          pageSize={pageSize}
-          pageSizeOptions={pageSizeOptions}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-        />
+        <ClientsPagination currentPage={currentPage} totalPages={totalPages} totalItems={totalItems} pageSize={pageSize} pageSizeOptions={pageSizeOptions} onPageChange={handlePageChange} onPageSizeChange={handlePageSizeChange} />
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default ClientsPage;
