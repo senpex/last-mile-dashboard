@@ -91,7 +91,7 @@ const EZcaterOrders = () => {
   });
   const statusOptions = ["pending", "confirmed", "in-transit", "delivered", "cancelled"];
   return <Layout>
-      <div className="px-4 py-6 md:px-6 max-w-7xl mx-auto space-y-6 lg:px-[10px] -mx-[30px]">
+      <div className="px-4 py-6 md:px-6 max-w-7xl mx-auto space-y-6 lg:px-[10px] -mx-[30px] ml-5">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">eZcater Orders</h1>
