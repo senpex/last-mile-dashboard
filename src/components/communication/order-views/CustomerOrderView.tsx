@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import { Clock, UserRound, ChevronUp, ChevronDown, MapPin } from "lucide-react";
+import { Clock, UserRound, ChevronUp, ChevronDown } from "lucide-react";
 import { OrderMap } from "../OrderMap";
 import { StatusBadge } from "./StatusBadge";
 
@@ -114,7 +114,7 @@ export const CustomerOrderView = ({
               ) : (
                 <>
                   <div className="flex items-center gap-1.5 mb-1">
-                    <MapPin className="h-3 w-3 text-muted-foreground" />
+                    <UserRound className="h-3 w-3 text-muted-foreground" />
                     <span className="text-xs font-medium text-muted-foreground">Location Details</span>
                   </div>
                   <div className="pl-4">
