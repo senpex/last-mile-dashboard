@@ -83,7 +83,7 @@ const EZcaterOrders = () => {
     switch (status) {
       case "new": return "default";
       case "processing": return "secondary";
-      case "ready": return "blue";
+      case "ready": return "warning"; // Changed from "blue" to "warning"
       case "delivered": return "success";
       case "cancelled": return "destructive";
       default: return "outline";
