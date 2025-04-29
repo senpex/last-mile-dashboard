@@ -845,15 +845,30 @@ const CustomerSupport = () => {
       priority: "medium",
       assignedTo: "dispatcher2"
     }];
-  const filteredChats = chats.filter(chat => {
-    if (activeTab === "assigned" && chat.assignedTo !== "dispatcher1") return false;
-    if (activeTab === "unassigned" && chat.assignedTo !== null) return false;
-    if (filterStatus === "client" && chat.role !== "client") return false;
-    if (filterStatus === "drivers-general" && chat.role !== "driver") return false;
-    if (filterStatus === "working-drivers" && !(chat.role === "driver" && chat.status === "working")) return false;
-    if (filterStatus === "unapproved-drivers" && !(chat.role === "driver" && chat.status === "unapproved")) return false;
-    return true;
-  });
+  
+  const getFilteredChats = () => {
+    let filtered = chats.filter(chat => {
+      if (activeTab === "assigned" && chat.assignedTo !== "dispatcher1") return false;
+      if (activeTab === "unassigned" && chat.assignedTo !== null) return false;
+      return true;
+    });
+
+    switch(filterStatus) {
+      case "client":
+        return filtered.filter(chat => chat.role === "client");
+      case "working-drivers":
+        return filtered.filter(chat => chat.role === "driver" && chat.status === "working");
+      case "unapproved-drivers":
+        return filtered.filter(chat => chat.role === "driver" && chat.status === "unapproved");
+      case "drivers-general":
+        return filtered.filter(chat => chat.role === "driver" && chat.status === "approved");
+      default:
+        return filtered;
+    }
+  };
+  
+  const filteredChats = getFilteredChats();
+
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "high":
@@ -866,6 +881,7 @@ const CustomerSupport = () => {
         return "bg-gray-400";
     }
   };
+
   const onlineUsers = ["John Smith", "Emma Johnson", "Mike Wilson", "Sarah Davis", "Robert Taylor"];
   const handleCloseChat = () => {
     setSelectedChat(null);
@@ -886,6 +902,9 @@ const CustomerSupport = () => {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <h2 className="text-lg font-medium">Messages</h2>
+                  <Badge variant="outline" className="ml-2">
+                    {filteredChats.length} chats
+                  </Badge>
                 </div>
 
                 <HoverCard>
@@ -928,24 +947,53 @@ const CustomerSupport = () => {
               </Tabs>
 
               <div className="flex gap-2 overflow-x-auto py-2 scrollbar-none">
-                <Button variant={filterStatus === "working-drivers" ? "default" : "outline"} size="sm" onClick={() => setFilterStatus("working-drivers")} className="h-8">
+                <Button 
+                  variant={filterStatus === "working-drivers" ? "default" : "outline"} 
+                  size="sm" 
+                  onClick={() => setFilterStatus("working-drivers")} 
+                  className="h-8"
+                  data-category="working-drivers"
+                >
                   Working Drivers
                 </Button>
-                <Button variant={filterStatus === "client" ? "default" : "outline"} size="sm" onClick={() => setFilterStatus("client")} className="h-8">
+                <Button 
+                  variant={filterStatus === "client" ? "default" : "outline"} 
+                  size="sm" 
+                  onClick={() => setFilterStatus("client")} 
+                  className="h-8"
+                  data-category="client"
+                >
                   Customers
                 </Button>
-                <Button variant={filterStatus === "unapproved-drivers" ? "default" : "outline"} size="sm" onClick={() => setFilterStatus("unapproved-drivers")} className="h-8">
+                <Button 
+                  variant={filterStatus === "unapproved-drivers" ? "default" : "outline"} 
+                  size="sm" 
+                  onClick={() => setFilterStatus("unapproved-drivers")} 
+                  className="h-8"
+                  data-category="unapproved-drivers"
+                >
                   Unapproved Drivers
                 </Button>
-                <Button variant={filterStatus === "drivers-general" ? "default" : "outline"} size="sm" onClick={() => setFilterStatus("drivers-general")} className="h-8">
+                <Button 
+                  variant={filterStatus === "drivers-general" ? "default" : "outline"} 
+                  size="sm" 
+                  onClick={() => setFilterStatus("drivers-general")} 
+                  className="h-8"
+                  data-category="drivers-general"
+                >
                   Drivers General
                 </Button>
               </div>
             </div>
 
             <div className="flex-1 overflow-auto">
-              <div className="divide-y">
-                {filteredChats.map(chat => <div key={chat.id} onClick={() => setSelectedChat(chat.id)} className={`p-3 hover:bg-muted/50 cursor-pointer transition-colors ${selectedChat === chat.id ? 'bg-muted' : ''}`}>
+              <div className="divide-y" data-filter-group={filterStatus}>
+                {filteredChats.map(chat => <div 
+                  key={chat.id} 
+                  onClick={() => setSelectedChat(chat.id)} 
+                  className={`p-3 hover:bg-muted/50 cursor-pointer transition-colors ${selectedChat === chat.id ? 'bg-muted' : ''}`}
+                  data-chat-category={chat.role === "driver" ? chat.status : chat.role}
+                >
                     <div className="flex items-start gap-3">
                       <div className="relative flex-shrink-0">
                         <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">

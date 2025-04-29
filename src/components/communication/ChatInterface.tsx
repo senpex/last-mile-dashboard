@@ -119,6 +119,16 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
     dropoffTime: "11:30 AM"
   } : null;
 
+  // Define the user type more explicitly for the OrderDetails component
+  const userForOrderDetails = {
+    id: user.id,
+    name: user.name,
+    role: user.role,
+    status: user.status,
+    priority: user.priority,
+    orderId: user.orderId
+  };
+
   const showDriverInfo = !(user.role === 'driver' && user.status === 'working');
 
   const openedChats = [{
@@ -305,7 +315,11 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
 
       {orderData && (
         <div className="rounded-lg border bg-card shadow-sm overflow-hidden">
-          <OrderDetails orderData={orderData} showDriverInfo={showDriverInfo} />
+          <OrderDetails 
+            orderData={orderData} 
+            showDriverInfo={!(user.role === 'driver' && user.status === 'working')}
+            user={userForOrderDetails}
+          />
         </div>
       )}
     </div>
