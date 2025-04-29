@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -7,13 +6,19 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { UsersTableContainer } from "@/components/ui/users-table-container";
 import { Card } from "@/components/ui/card";
-import { Package, GripVertical, ChevronUp, ChevronDown, Filter, Search, Plus, History as HistoryIcon } from "lucide-react";
+import { Package, GripVertical, ChevronUp, ChevronDown, Filter, Search, Plus, History as HistoryIcon, MoreVertical } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { EZcaterFiltersLayout } from "@/components/ezcater/EZcaterFiltersLayout";
 import { SearchInput } from "@/components/ui/search-input";
 import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
 import { EZcaterPagination } from "@/components/ezcater/EZcaterPagination";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const EZcaterOrders = () => {
   const {
@@ -490,16 +495,23 @@ const EZcaterOrders = () => {
                                   </TableCell>;
                         case "actions":
                           return <TableCell key={columnId}>
-                                    <div className="flex items-center gap-2">
-                                      <Button size="sm" variant="outline" onClick={() => handleCreateOrder(order.requestNumber)}>
-                                        <Plus className="h-3.5 w-3.5 mr-1" />
-                                        Create
-                                      </Button>
-                                      <Button size="sm" variant="outline" onClick={() => handleCancelRequest(order.requestNumber)}>
-                                        Cancel
-                                      </Button>
-                                    </div>
-                                  </TableCell>;
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="outline" size="sm">
+                                  <MoreVertical className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={() => handleCreateOrder(order.requestNumber)}>
+                                  <Plus className="h-4 w-4 mr-2" />
+                                  Create order
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleCancelRequest(order.requestNumber)}>
+                                  Cancel request
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </TableCell>;
                         case "history":
                           return <TableCell key={columnId} className="text-center">
                                     <Button size="sm" variant="ghost" onClick={() => handleViewHistory(order.requestNumber)}>
