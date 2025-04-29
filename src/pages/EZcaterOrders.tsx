@@ -8,22 +8,22 @@ import { UsersTableContainer } from "@/components/ui/users-table-container";
 import { Card } from "@/components/ui/card";
 import { Package, GripVertical, ChevronUp, ChevronDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
 const EZcaterOrders = () => {
   const {
     toast
   } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-  const [sortConfig, setSortConfig] = useState<{ key: string | null; direction: 'ascending' | 'descending' | null }>({
+  const [sortConfig, setSortConfig] = useState<{
+    key: string | null;
+    direction: 'ascending' | 'descending' | null;
+  }>({
     key: null,
     direction: null
   });
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
-  const [columnOrder, setColumnOrder] = useState([
-    "id", "customer", "dateTime", "status", "location", "value", "items", "actions"
-  ]);
+  const [columnOrder, setColumnOrder] = useState(["id", "customer", "dateTime", "status", "location", "value", "items", "actions"]);
 
   // Sample data for eZcater orders
   const orders = [{
@@ -72,7 +72,6 @@ const EZcaterOrders = () => {
     value: "$175.00",
     items: 10
   }];
-
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
       case "pending":
@@ -89,26 +88,22 @@ const EZcaterOrders = () => {
         return "outline";
     }
   };
-
   const handleViewOrder = (id: string) => {
     toast({
       title: "Order Details",
       description: `Viewing details for order ${id}`
     });
   };
-
   const filteredOrders = orders.filter(order => {
     const matchesSearch = order.id.toLowerCase().includes(searchQuery.toLowerCase()) || order.customer.toLowerCase().includes(searchQuery.toLowerCase()) || order.location.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = !selectedStatus || order.status === selectedStatus;
     return matchesSearch && matchesStatus;
   });
-
   const sortedOrders = React.useMemo(() => {
     let sortableOrders = [...filteredOrders];
     if (sortConfig.key && sortConfig.direction) {
       sortableOrders.sort((a, b) => {
         let aValue, bValue;
-        
         if (sortConfig.key === 'dateTime') {
           // Special handling for date+time sorting
           aValue = `${a.date} ${a.time}`;
@@ -126,7 +121,6 @@ const EZcaterOrders = () => {
         } else {
           return 0;
         }
-
         if (aValue < bValue) {
           return sortConfig.direction === 'ascending' ? -1 : 1;
         }
@@ -138,10 +132,8 @@ const EZcaterOrders = () => {
     }
     return sortableOrders;
   }, [filteredOrders, sortConfig]);
-
   const requestSort = (key: string) => {
     let direction: 'ascending' | 'descending' | null = 'ascending';
-    
     if (sortConfig.key === key) {
       if (sortConfig.direction === 'ascending') {
         direction = 'descending';
@@ -149,10 +141,11 @@ const EZcaterOrders = () => {
         direction = null;
       }
     }
-    
-    setSortConfig({ key, direction });
+    setSortConfig({
+      key,
+      direction
+    });
   };
-  
   const statusOptions = ["pending", "confirmed", "in-transit", "delivered", "cancelled"];
 
   // Log current column order for debugging
@@ -166,15 +159,15 @@ const EZcaterOrders = () => {
     setDraggedColumn(columnId);
     e.dataTransfer.setData('text/plain', columnId);
     e.dataTransfer.effectAllowed = 'move';
-    
+
     // Use a transparent image as drag ghost
     const dragImage = new Image();
     dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     e.dataTransfer.setDragImage(dragImage, 0, 0);
-    
+
     // Add a class to the document body to indicate dragging state
     document.body.classList.add('column-dragging');
-    
+
     // Create a visual preview element
     const dragPreview = document.createElement('div');
     dragPreview.className = 'px-2 py-1 bg-background border rounded shadow text-sm fixed pointer-events-none';
@@ -184,23 +177,19 @@ const EZcaterOrders = () => {
     dragPreview.style.top = `${e.clientY + 10}px`;
     dragPreview.style.zIndex = '9999';
     document.body.appendChild(dragPreview);
-    
     const updatePreviewPosition = (e: MouseEvent) => {
       dragPreview.style.left = `${e.clientX + 10}px`;
       dragPreview.style.top = `${e.clientY + 10}px`;
     };
-    
     const cleanup = () => {
       document.removeEventListener('mousemove', updatePreviewPosition);
       document.removeEventListener('dragend', cleanup);
       document.body.classList.remove('column-dragging');
       dragPreview.remove();
     };
-    
     document.addEventListener('mousemove', updatePreviewPosition);
     document.addEventListener('dragend', cleanup);
   };
-
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
@@ -208,63 +197,76 @@ const EZcaterOrders = () => {
       setDragOverColumn(columnId);
     }
   };
-
   const handleDragEnd = () => {
     console.log("Drag ended");
     setDraggedColumn(null);
     setDragOverColumn(null);
     document.body.classList.remove('column-dragging');
   };
-
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    console.log("Drop event:", { draggedColumn, targetColumnId });
-    
+    console.log("Drop event:", {
+      draggedColumn,
+      targetColumnId
+    });
     if (!draggedColumn || draggedColumn === targetColumnId) {
       setDraggedColumn(null);
       setDragOverColumn(null);
       return;
     }
-    
     const newColumnOrder = [...columnOrder];
     const draggedIndex = newColumnOrder.indexOf(draggedColumn);
     const targetIndex = newColumnOrder.indexOf(targetColumnId);
-    
-    console.log("Indexes:", { draggedIndex, targetIndex });
-    
+    console.log("Indexes:", {
+      draggedIndex,
+      targetIndex
+    });
     if (draggedIndex !== -1 && targetIndex !== -1) {
       // Remove the dragged column
       newColumnOrder.splice(draggedIndex, 1);
-      
+
       // Insert it at the new position
       newColumnOrder.splice(targetIndex, 0, draggedColumn);
-      
       console.log("New column order:", newColumnOrder);
       setColumnOrder(newColumnOrder);
-      
+
       // Show toast notification for user feedback
       toast({
         title: "Column order updated",
         description: `Moved ${columns[draggedColumn as keyof typeof columns].label} column`
       });
     }
-    
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
 
   // Column definitions
   const columns = {
-    id: { label: "Order ID" },
-    customer: { label: "Customer" },
-    dateTime: { label: "Date & Time" },
-    status: { label: "Status" },
-    location: { label: "Location" },
-    value: { label: "Value" },
-    items: { label: "Items" },
-    actions: { label: "Actions" }
+    id: {
+      label: "Order ID"
+    },
+    customer: {
+      label: "Customer"
+    },
+    dateTime: {
+      label: "Date & Time"
+    },
+    status: {
+      label: "Status"
+    },
+    location: {
+      label: "Location"
+    },
+    value: {
+      label: "Value"
+    },
+    items: {
+      label: "Items"
+    },
+    actions: {
+      label: "Actions"
+    }
   };
 
   // Render sort icon
@@ -272,12 +274,8 @@ const EZcaterOrders = () => {
     if (sortConfig.key !== columnId) {
       return null;
     }
-    
-    return sortConfig.direction === 'ascending' 
-      ? <ChevronUp className="h-4 w-4 ml-1 text-destructive" /> 
-      : <ChevronDown className="h-4 w-4 ml-1 text-destructive" />;
+    return sortConfig.direction === 'ascending' ? <ChevronUp className="h-4 w-4 ml-1 text-destructive" /> : <ChevronDown className="h-4 w-4 ml-1 text-destructive" />;
   };
-
   return <Layout>
       <div className="px-4 py-6 w-full overflow-x-hidden">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -293,7 +291,7 @@ const EZcaterOrders = () => {
           </Button>
         </div>
 
-        <Card className="p-4 mt-6 overflow-hidden">
+        <Card className="p-4 mt-6 overflow-hidden mx-0 px-[28px]">
           <div className="flex flex-col md:flex-row gap-4 mb-6">
             <div className="flex-1">
               <Input placeholder="Search orders by ID, customer, or location..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full" />
@@ -310,75 +308,52 @@ const EZcaterOrders = () => {
               <TableHeader className="bg-muted/50 border-b-0 m-0 p-0">
                 <TableRow className="border-b-0">
                   {columnOrder.map(columnId => {
-                    const column = columns[columnId as keyof typeof columns];
-                    const isSortable = ['id', 'customer', 'dateTime', 'location', 'value', 'items'].includes(columnId);
-                    
-                    return (
-                      <TableHead
-                        key={columnId}
-                        className={`whitespace-nowrap min-w-[100px] ${columnId === 'actions' ? 'w-[80px]' : ''}`}
-                        dragOver={dragOverColumn === columnId}
-                        sortable={isSortable}
-                        sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
-                        onSort={() => isSortable && requestSort(columnId)}
-                      >
+                  const column = columns[columnId as keyof typeof columns];
+                  const isSortable = ['id', 'customer', 'dateTime', 'location', 'value', 'items'].includes(columnId);
+                  return <TableHead key={columnId} className={`whitespace-nowrap min-w-[100px] ${columnId === 'actions' ? 'w-[80px]' : ''}`} dragOver={dragOverColumn === columnId} sortable={isSortable} sortDirection={sortConfig.key === columnId ? sortConfig.direction : null} onSort={() => isSortable && requestSort(columnId)}>
                         <div className="flex items-center gap-2">
-                          <div 
-                            draggable={columnId !== 'actions'}
-                            onDragStart={e => handleDragStart(e, columnId)}
-                            onDragOver={e => handleDragOver(e, columnId)}
-                            onDragEnd={handleDragEnd}
-                            onDrop={e => handleDrop(e, columnId)}
-                            className={`cursor-grab transition-opacity duration-200 ${draggedColumn === columnId ? 'opacity-50' : ''}`}
-                          >
+                          <div draggable={columnId !== 'actions'} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className={`cursor-grab transition-opacity duration-200 ${draggedColumn === columnId ? 'opacity-50' : ''}`}>
                             <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
                           </div>
                           <span>{column.label}</span>
                         </div>
-                      </TableHead>
-                    );
-                  })}
+                      </TableHead>;
+                })}
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sortedOrders.map(order => (
-                  <TableRow key={order.id}>
+                {sortedOrders.map(order => <TableRow key={order.id}>
                     {columnOrder.map(columnId => {
-                      switch(columnId) {
-                        case "id":
-                          return <TableCell key={columnId} className="font-medium">{order.id}</TableCell>;
-                        case "customer":
-                          return <TableCell key={columnId}>{order.customer}</TableCell>;
-                        case "dateTime":
-                          return <TableCell key={columnId}>{`${order.date} ${order.time}`}</TableCell>;
-                        case "status":
-                          return (
-                            <TableCell key={columnId}>
+                  switch (columnId) {
+                    case "id":
+                      return <TableCell key={columnId} className="font-medium">{order.id}</TableCell>;
+                    case "customer":
+                      return <TableCell key={columnId}>{order.customer}</TableCell>;
+                    case "dateTime":
+                      return <TableCell key={columnId}>{`${order.date} ${order.time}`}</TableCell>;
+                    case "status":
+                      return <TableCell key={columnId}>
                               <Badge variant={getStatusBadgeVariant(order.status)} className="capitalize">
                                 {order.status.replace('-', ' ')}
                               </Badge>
-                            </TableCell>
-                          );
-                        case "location":
-                          return <TableCell key={columnId}>{order.location}</TableCell>;
-                        case "value":
-                          return <TableCell key={columnId}>{order.value}</TableCell>;
-                        case "items":
-                          return <TableCell key={columnId}>{order.items}</TableCell>;
-                        case "actions":
-                          return (
-                            <TableCell key={columnId} className="text-right">
+                            </TableCell>;
+                    case "location":
+                      return <TableCell key={columnId}>{order.location}</TableCell>;
+                    case "value":
+                      return <TableCell key={columnId}>{order.value}</TableCell>;
+                    case "items":
+                      return <TableCell key={columnId}>{order.items}</TableCell>;
+                    case "actions":
+                      return <TableCell key={columnId} className="text-right">
                               <Button size="sm" variant="outline" onClick={() => handleViewOrder(order.id)}>
                                 View
                               </Button>
-                            </TableCell>
-                          );
-                        default:
-                          return <TableCell key={columnId}></TableCell>;
-                      }
-                    })}
-                  </TableRow>
-                ))}
+                            </TableCell>;
+                    default:
+                      return <TableCell key={columnId}></TableCell>;
+                  }
+                })}
+                  </TableRow>)}
                 {sortedOrders.length === 0 && <TableRow>
                     <TableCell colSpan={8} className="text-center py-6">
                       No orders found matching your filters.
@@ -391,5 +366,4 @@ const EZcaterOrders = () => {
       </div>
     </Layout>;
 };
-
 export default EZcaterOrders;
