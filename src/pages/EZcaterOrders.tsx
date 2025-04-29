@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card } from "@/components/ui/card";
 import { Package } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+
 const EZcaterOrders = () => {
   const {
     toast
@@ -91,7 +92,7 @@ const EZcaterOrders = () => {
   });
   const statusOptions = ["pending", "confirmed", "in-transit", "delivered", "cancelled"];
   return <Layout>
-      <div className="px-4 py-6 md:px-6 max-w-7xl ml-5 w-full overflow-x-hidden mx-0">
+      <div className="px-4 py-6 md:px-6 max-w-7xl ml-5 w-full overflow-x-hidden">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">eZcater Orders</h1>
@@ -168,4 +169,5 @@ const EZcaterOrders = () => {
       </div>
     </Layout>;
 };
+
 export default EZcaterOrders;
