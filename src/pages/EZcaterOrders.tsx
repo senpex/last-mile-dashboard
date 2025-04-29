@@ -8,6 +8,7 @@ import { UsersTableContainer } from "@/components/ui/users-table-container";
 import { Card } from "@/components/ui/card";
 import { Package, GripVertical, ChevronUp, ChevronDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { EZcaterFiltersLayout } from "@/components/ezcater/EZcaterFiltersLayout";
 
 const EZcaterOrders = () => {
   const {
@@ -277,33 +278,62 @@ const EZcaterOrders = () => {
     }
     return sortConfig.direction === 'ascending' ? <ChevronUp className="h-4 w-4 ml-1 text-destructive" /> : <ChevronDown className="h-4 w-4 ml-1 text-destructive" />;
   };
-  return <Layout>
-      <div className="px-4 py-6 w-full overflow-x-hidden">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">eZcater Orders</h1>
+
+  const currentDate = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  const timezoneInfo = `All times in EST (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
+
+  // Filter controls
+  const filterControls = (
+    <div className="flex flex-wrap gap-2">
+      {statusOptions.map(status => 
+        <Badge 
+          key={status} 
+          variant={selectedStatus === status ? getStatusBadgeVariant(status) : "outline"} 
+          className="cursor-pointer capitalize" 
+          onClick={() => setSelectedStatus(selectedStatus === status ? null : status)}
+        >
+          {status.replace('-', ' ')}
+        </Badge>
+      )}
+    </div>
+  );
+
+  // Search controls
+  const searchControls = (
+    <Input 
+      placeholder="Search orders by ID, customer, or location..." 
+      value={searchQuery} 
+      onChange={e => setSearchQuery(e.target.value)} 
+      className="w-full md:w-80" 
+    />
+  );
+
+  return (
+    <Layout>
+      <div className="w-full overflow-x-hidden">
+        <EZcaterFiltersLayout
+          title="eZcater Orders"
+          timezoneInfo={timezoneInfo}
+          filterControls={filterControls}
+          searchControls={searchControls}
+          className="border-0"
+        />
+
+        <div className="px-4 py-4">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
             <p className="text-muted-foreground">
               Manage and track all eZcater platform delivery orders
             </p>
-          </div>
-          <Button>
-            <Package className="mr-2 h-4 w-4" />
-            New Order
-          </Button>
-        </div>
-
-        <Card className="mt-6 overflow-hidden">
-          <div className="p-6 space-y-6">
-            <div className="flex flex-col md:flex-row gap-6 items-start">
-              <div className="flex-1">
-                <Input placeholder="Search orders by ID, customer, or location..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full" />
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {statusOptions.map(status => <Badge key={status} variant={selectedStatus === status ? getStatusBadgeVariant(status) : "outline"} className="cursor-pointer capitalize" onClick={() => setSelectedStatus(selectedStatus === status ? null : status)}>
-                    {status.replace('-', ' ')}
-                  </Badge>)}
-              </div>
-            </div>
+            <Button>
+              <Package className="mr-2 h-4 w-4" />
+              New Order
+            </Button>
           </div>
 
           <UsersTableContainer>
@@ -311,63 +341,82 @@ const EZcaterOrders = () => {
               <TableHeader className="bg-muted/50 border-b-0 m-0 p-0">
                 <TableRow className="border-b-0">
                   {columnOrder.map(columnId => {
-                  const column = columns[columnId as keyof typeof columns];
-                  const isSortable = ['id', 'customer', 'dateTime', 'location', 'value', 'items'].includes(columnId);
-                  return <TableHead key={columnId} className={`whitespace-nowrap min-w-[100px] ${columnId === 'actions' ? 'w-[80px]' : ''}`} dragOver={dragOverColumn === columnId} sortable={isSortable} sortDirection={sortConfig.key === columnId ? sortConfig.direction : null} onSort={() => isSortable && requestSort(columnId)}>
-                        <div className="flex items-center gap-2">
-                          <div draggable={columnId !== 'actions'} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className={`cursor-grab transition-opacity duration-200 ${draggedColumn === columnId ? 'opacity-50' : ''}`}>
-                            <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
-                          </div>
-                          <span>{column.label}</span>
+                    const column = columns[columnId as keyof typeof columns];
+                    const isSortable = ['id', 'customer', 'dateTime', 'location', 'value', 'items'].includes(columnId);
+                    return <TableHead 
+                      key={columnId} 
+                      className={`whitespace-nowrap min-w-[100px] ${columnId === 'actions' ? 'w-[80px]' : ''}`} 
+                      dragOver={dragOverColumn === columnId} 
+                      sortable={isSortable} 
+                      sortDirection={sortConfig.key === columnId ? sortConfig.direction : null} 
+                      onSort={() => isSortable && requestSort(columnId)}
+                    >
+                      <div className="flex items-center gap-2">
+                        <div 
+                          draggable={columnId !== 'actions'} 
+                          onDragStart={e => handleDragStart(e, columnId)} 
+                          onDragOver={e => handleDragOver(e, columnId)} 
+                          onDragEnd={handleDragEnd} 
+                          onDrop={e => handleDrop(e, columnId)} 
+                          className={`cursor-grab transition-opacity duration-200 ${draggedColumn === columnId ? 'opacity-50' : ''}`}
+                        >
+                          <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
                         </div>
-                      </TableHead>;
-                })}
+                        <span>{column.label}</span>
+                      </div>
+                    </TableHead>;
+                  })}
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sortedOrders.map(order => <TableRow key={order.id}>
+                {sortedOrders.map(order => (
+                  <TableRow key={order.id}>
                     {columnOrder.map(columnId => {
-                  switch (columnId) {
-                    case "id":
-                      return <TableCell key={columnId} className="font-medium">{order.id}</TableCell>;
-                    case "customer":
-                      return <TableCell key={columnId}>{order.customer}</TableCell>;
-                    case "dateTime":
-                      return <TableCell key={columnId}>{`${order.date} ${order.time}`}</TableCell>;
-                    case "status":
-                      return <TableCell key={columnId}>
-                              <Badge variant={getStatusBadgeVariant(order.status)} className="capitalize">
-                                {order.status.replace('-', ' ')}
-                              </Badge>
-                            </TableCell>;
-                    case "location":
-                      return <TableCell key={columnId}>{order.location}</TableCell>;
-                    case "value":
-                      return <TableCell key={columnId}>{order.value}</TableCell>;
-                    case "items":
-                      return <TableCell key={columnId}>{order.items}</TableCell>;
-                    case "actions":
-                      return <TableCell key={columnId} className="text-right">
-                              <Button size="sm" variant="outline" onClick={() => handleViewOrder(order.id)}>
-                                View
-                              </Button>
-                            </TableCell>;
-                    default:
-                      return <TableCell key={columnId}></TableCell>;
-                  }
-                })}
-                  </TableRow>)}
-                {sortedOrders.length === 0 && <TableRow>
+                      switch (columnId) {
+                        case "id":
+                          return <TableCell key={columnId} className="font-medium">{order.id}</TableCell>;
+                        case "customer":
+                          return <TableCell key={columnId}>{order.customer}</TableCell>;
+                        case "dateTime":
+                          return <TableCell key={columnId}>{`${order.date} ${order.time}`}</TableCell>;
+                        case "status":
+                          return <TableCell key={columnId}>
+                                  <Badge variant={getStatusBadgeVariant(order.status)} className="capitalize">
+                                    {order.status.replace('-', ' ')}
+                                  </Badge>
+                                </TableCell>;
+                        case "location":
+                          return <TableCell key={columnId}>{order.location}</TableCell>;
+                        case "value":
+                          return <TableCell key={columnId}>{order.value}</TableCell>;
+                        case "items":
+                          return <TableCell key={columnId}>{order.items}</TableCell>;
+                        case "actions":
+                          return <TableCell key={columnId} className="text-right">
+                                  <Button size="sm" variant="outline" onClick={() => handleViewOrder(order.id)}>
+                                    View
+                                  </Button>
+                                </TableCell>;
+                        default:
+                          return <TableCell key={columnId}></TableCell>;
+                      }
+                    })}
+                  </TableRow>
+                ))}
+                {sortedOrders.length === 0 && (
+                  <TableRow>
                     <TableCell colSpan={8} className="text-center py-6">
                       No orders found matching your filters.
                     </TableCell>
-                  </TableRow>}
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </UsersTableContainer>
-        </Card>
+        </div>
       </div>
-    </Layout>;
+    </Layout>
+  );
 };
 
 export default EZcaterOrders;
