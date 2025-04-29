@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -327,7 +328,7 @@ const DeliveryTable = ({
 
   return (
     <div className="flex-1 overflow-hidden px-px">
-      <div className="flex h-full">
+      <div className="flex h-full" style={{ marginRight: "-10px" }}>
         <DeliverySidebar 
           open={isFilterSidebarOpen} 
           onClose={toggleFilterSidebar} 
