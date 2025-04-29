@@ -344,7 +344,7 @@ const EZcaterOrders = () => {
       <div className="w-full overflow-x-hidden">
         <EZcaterFiltersLayout title="eZcater Orders" timezoneInfo={timezoneInfo} filterControls={filterControls} searchControls={searchControls} className="border-0" />
 
-        <div className="px-4 py-4">
+        <div className="py-4 px-[27px] mx-0">
           <UsersTableContainer>
             <Table>
               <TableHeader className="bg-muted/50 border-b-0 m-0 p-0">
