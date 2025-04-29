@@ -26,7 +26,10 @@ const Layout = ({ children, showFooter = true }: LayoutProps) => {
           className="zoom-content w-full h-full flex flex-col gap-[10px]"
           style={{
             transformOrigin: "top left",
-            transform: `scale(var(--zoom-level, 1))`
+            transform: `scale(var(--zoom-level, 1))`,
+            marginLeft: "-20px",
+            marginRight: "-20px",
+            width: "calc(100% + 40px)"
           }}
         >
           {children}
