@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card } from "@/components/ui/card";
 import { Package } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+
 const EZcaterOrders = () => {
   const {
     toast
@@ -91,7 +92,7 @@ const EZcaterOrders = () => {
   });
   const statusOptions = ["pending", "confirmed", "in-transit", "delivered", "cancelled"];
   return <Layout>
-      <div className="px-4 py-6 md:px-6 max-w-7xl space-y-6 ml-5 mx-[33px]">
+      <div className="px-4 py-6 md:px-6 max-w-7xl ml-5 w-full overflow-x-hidden">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">eZcater Orders</h1>
@@ -105,7 +106,7 @@ const EZcaterOrders = () => {
           </Button>
         </div>
 
-        <Card className="p-4">
+        <Card className="p-4 mt-6 overflow-hidden">
           <div className="flex flex-col md:flex-row gap-4 mb-6">
             <div className="flex-1">
               <Input placeholder="Search orders by ID, customer, or location..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full" />
@@ -117,7 +118,7 @@ const EZcaterOrders = () => {
             </div>
           </div>
 
-          <div className="rounded-md border">
+          <div className="rounded-md border overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -168,4 +169,5 @@ const EZcaterOrders = () => {
       </div>
     </Layout>;
 };
+
 export default EZcaterOrders;

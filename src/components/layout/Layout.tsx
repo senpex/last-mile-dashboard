@@ -27,9 +27,9 @@ const Layout = ({ children, showFooter = true }: LayoutProps) => {
           style={{
             transformOrigin: "top left",
             transform: `scale(var(--zoom-level, 1))`,
-            marginLeft: "-30px",
-            marginRight: "-30px",
-            width: "calc(100% + 60px)"
+            width: "100%",
+            maxWidth: "100%",
+            overflow: "hidden"
           }}
         >
           {children}
