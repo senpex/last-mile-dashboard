@@ -9,6 +9,7 @@ import { DeliverySidebar } from "@/components/deliveries/DeliverySidebar";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+
 interface DeliveryTableProps {
   items: Delivery[];
   sortedColumns: string[];
@@ -271,11 +272,11 @@ const DeliveryTable = ({
         return <TableCell key={columnId} className={`${getColumnWidth(columnId)} text-left`}></TableCell>;
     }
   };
-  return <div className="flex-1 overflow-hidden px-px">
-      <div className="flex h-full mx-0 px-[16px]">
+  return <div className="flex-1 overflow-hidden px-0">
+      <div className="flex h-full mx-0">
         <DeliverySidebar open={isFilterSidebarOpen} onClose={toggleFilterSidebar} deliveryStatuses={allDeliveryStatuses} selectedStatuses={selectedStatuses} onStatusChange={setSelectedStatuses} organizations={allOrganizations} selectedOrganizations={selectedOrganizations} onOrganizationChange={setSelectedOrganizations} couriers={allCouriers} selectedCouriers={selectedCouriers} onCourierChange={setSelectedCouriers} zipcodes={allZipcodes} selectedZipcodes={selectedZipcodes} onZipcodeChange={setSelectedZipcodes} cities={allCities} selectedCities={selectedCities} onCityChange={setSelectedCities} states={allStates} selectedStates={selectedStates} onStateChange={setSelectedStates} pickupAddresses={allPickupAddresses} selectedPickupAddresses={selectedPickupAddresses} onPickupAddressChange={setSelectedPickupAddresses} dropoffAddresses={allDropoffAddresses} selectedDropoffAddresses={selectedDropoffAddresses} onDropoffAddressChange={setSelectedDropoffAddresses} senderNames={allSenderNames} selectedSenderNames={selectedSenderNames} onSenderNameChange={setSelectedSenderNames} recipientNames={allRecipientNames} selectedRecipientNames={selectedRecipientNames} onRecipientNameChange={setSelectedRecipientNames} />
         
-        <div className="flex-1 transition-all duration-300 my-4 ml-2 w-full">
+        <div className="flex-1 transition-all duration-300 my-4 ml-0 w-full">
           <div className="flex flex-col h-full w-full">
             <TableContainer stickyHeader={false} className="w-full" filterSidebarOpen={isFilterSidebarOpen}>
               <Table>
