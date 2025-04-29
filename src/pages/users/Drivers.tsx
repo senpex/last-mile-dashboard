@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layout/Layout";
 import { DriversTable } from '@/components/drivers/DriversTable';
@@ -16,33 +15,17 @@ import CourierChat from '@/components/chat/CourierChat';
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { DeliveryStatus } from "@/types/delivery";
 import { Dispatch, SetStateAction } from 'react';
-
 type StripeStatus = 'verified' | 'unverified' | 'pending';
-
-const allDriverStatuses: DeliveryStatus[] = [
-  "Online",
-  "Offline",
-  "Busy",
-  "Picking Up",
-  "In Transit",
-  "Arrived For Pickup",
-  "Dropoff Complete",
-  "Scheduled Order",
-  "Canceled By Customer",
-  "Cancelled By Admin"
-];
-
+const allDriverStatuses: DeliveryStatus[] = ["Online", "Offline", "Busy", "Picking Up", "In Transit", "Arrived For Pickup", "Dropoff Complete", "Scheduled Order", "Canceled By Customer", "Cancelled By Admin"];
 const getRandomPhone = (): string => {
   const areaCode = Math.floor(Math.random() * 900) + 100;
   const prefix = Math.floor(Math.random() * 900) + 100;
   const lineNumber = Math.floor(Math.random() * 9000) + 1000;
   return `(${areaCode}) ${prefix}-${lineNumber}`;
 };
-
 const getRandomZipcode = (): string => {
   return String(Math.floor(Math.random() * 90000) + 10000);
 };
-
 const generateRandomTransports = (): string[] => {
   const transportIds = ['1', '2', '3', '4', '5', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
   const count = Math.floor(Math.random() * 3) + 1;
@@ -56,69 +39,50 @@ const generateRandomTransports = (): string[] => {
   }
   return result;
 };
-
 const generateRandomRating = (): number => {
   return Number((Math.random() * 2 + 3).toFixed(1));
 };
-
 const generateRandomHireStatus = (): string => {
   const hireStatuses = ['hired', 'left_vm', 'contact_again', 'not_interested', 'blacklist', 'out_of_service'];
   const randomIndex = Math.floor(Math.random() * hireStatuses.length);
   return hireStatuses[randomIndex];
 };
-
 const generateRandomStripeStatus = (): StripeStatus => {
   const statuses: StripeStatus[] = ['verified', 'unverified', 'pending'];
   const randomIndex = Math.floor(Math.random() * 3);
   return statuses[randomIndex];
 };
-
 const generateRandomProfileTypes = (): string[] => {
   const types = ['Driver', 'Mover', 'Helper'];
   const numTypes = Math.floor(Math.random() * 3) + 1;
   const selectedTypes = [];
   const shuffled = [...types].sort(() => 0.5 - Math.random());
-  
   for (let i = 0; i < numTypes; i++) {
     selectedTypes.push(shuffled[i]);
   }
-  
   return selectedTypes;
 };
-
 const getRandomAddress = (): string => {
   const streetNumbers = [123, 456, 789, 1010, 555, 777, 888, 999, 321, 654];
   const streetNames = ["Main St", "Oak Ave", "Pine Rd", "Maple Dr", "Cedar Ln", "Elm Blvd", "Park Ave", "River Rd", "Lake Dr", "Forest Way"];
   const cities = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"];
   const states = ["NY", "CA", "IL", "TX", "AZ", "PA", "TX", "CA", "TX", "CA"];
-  
   const randomIndex = Math.floor(Math.random() * 10);
   return `${streetNumbers[randomIndex]} ${streetNames[randomIndex]}, ${cities[randomIndex]}, ${states[randomIndex]}`;
 };
-
 const generateRandomDrivers = (count: number, startId: number = 10000): any[] => {
-  const firstNames = ["John", "Jane", "Michael", "Emma", "David", "Sarah", "Robert", "Jennifer", "William", "Elizabeth", 
-                     "Richard", "Linda", "Joseph", "Barbara", "Thomas", "Susan", "Charles", "Jessica", "Daniel", "Mary",
-                     "Matthew", "Patricia", "Anthony", "Margaret", "Mark", "Sandra", "Donald", "Ashley", "Steven", "Emily",
-                     "Paul", "Donna", "Andrew", "Michelle", "Joshua", "Dorothy", "Kenneth", "Carol", "Kevin", "Amanda",
-                     "Brian", "Melissa", "George", "Deborah", "Timothy", "Stephanie", "Ronald", "Rebecca", "Edward", "Sharon"];
-  
-  const lastNames = ["Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor",
-                    "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Martinez", "Robinson",
-                    "Clark", "Rodriguez", "Lewis", "Lee", "Walker", "Hall", "Allen", "Young", "Hernandez", "King",
-                    "Wright", "Lopez", "Hill", "Scott", "Green", "Adams", "Baker", "Gonzalez", "Nelson", "Carter",
-                    "Mitchell", "Perez", "Roberts", "Turner", "Phillips", "Campbell", "Parker", "Evans", "Edwards", "Collins"];
-  
+  const firstNames = ["John", "Jane", "Michael", "Emma", "David", "Sarah", "Robert", "Jennifer", "William", "Elizabeth", "Richard", "Linda", "Joseph", "Barbara", "Thomas", "Susan", "Charles", "Jessica", "Daniel", "Mary", "Matthew", "Patricia", "Anthony", "Margaret", "Mark", "Sandra", "Donald", "Ashley", "Steven", "Emily", "Paul", "Donna", "Andrew", "Michelle", "Joshua", "Dorothy", "Kenneth", "Carol", "Kevin", "Amanda", "Brian", "Melissa", "George", "Deborah", "Timothy", "Stephanie", "Ronald", "Rebecca", "Edward", "Sharon"];
+  const lastNames = ["Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor", "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Martinez", "Robinson", "Clark", "Rodriguez", "Lewis", "Lee", "Walker", "Hall", "Allen", "Young", "Hernandez", "King", "Wright", "Lopez", "Hill", "Scott", "Green", "Adams", "Baker", "Gonzalez", "Nelson", "Carter", "Mitchell", "Perez", "Roberts", "Turner", "Phillips", "Campbell", "Parker", "Evans", "Edwards", "Collins"];
   const statuses = ["online", "offline", "busy"];
   const hireStatuses = ['hired', 'left_vm', 'contact_again', 'not_interested', 'blacklist', 'out_of_service'];
   const stripeStatuses: StripeStatus[] = ['verified', 'unverified', 'pending'];
-  
-  return Array.from({ length: count }, (_, i) => {
+  return Array.from({
+    length: count
+  }, (_, i) => {
     const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
     const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
     const name = `${firstName} ${lastName}`;
     const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@example.com`;
-    
     return {
       id: startId + i,
       name,
@@ -136,7 +100,6 @@ const generateRandomDrivers = (count: number, startId: number = 10000): any[] =>
     };
   });
 };
-
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{
     [key: string]: string;
@@ -161,68 +124,105 @@ const DriversPage = () => {
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filteredDrivers, setFilteredDrivers] = useState<any[]>([]);
-  const [drivers, setDrivers] = useState([
-    {
-      id: 5432,
-      name: "John Doe",
-      email: "john.doe@example.com",
-      phone: "(123) 456-7890",
-      status: "online",
-      hireStatus: "hired",
-      transports: ["1", "3", "pickup_truck", "9ft_cargo_van"],
-      rating: 4.8,
-      stripeStatus: 'verified' as StripeStatus,
-      zipcode: "94105",
-      address: "123 Main St, San Francisco, CA",
-      notes: "Excellent driver, always on time.",
-      profileTypes: ["Driver", "Mover"]
-    },
-    {
-      id: 6543,
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      phone: "(123) 456-7891",
-      status: "offline",
-      hireStatus: "contact_again",
-      transports: ["2"],
-      rating: 3.5,
-      stripeStatus: 'unverified' as StripeStatus,
-      zipcode: "90210",
-      address: "456 Oak Ave, Beverly Hills, CA",
-      notes: "Prefers weekend shifts.",
-      profileTypes: ["Helper"]
-    },
-    {
-      id: 7654,
-      name: "Mike Johnson",
-      email: "mike.johnson@example.com",
-      phone: "(123) 456-7892",
-      status: "busy",
-      hireStatus: "blacklist",
-      transports: ["4", "5"],
-      rating: 5.0,
-      stripeStatus: 'pending' as StripeStatus,
-      zipcode: "10001",
-      address: "789 Pine Rd, New York, NY",
-      notes: "Not available on Mondays."
-    }
-  ]);
-  const availableColumns: ColumnOption[] = [
-    { id: "id", label: "ID", default: true },
-    { id: "name", label: "Name", default: true },
-    { id: "email", label: "Email", default: true },
-    { id: "phone", label: "Phone", default: true },
-    { id: "zipcode", label: "Zipcode", default: false },
-    { id: "address", label: "Address", default: true },
-    { id: "transport", label: "Transport", default: true },
-    { id: "rating", label: "Rating", default: true },
-    { id: "status", label: "Status", default: true },
-    { id: "profileType", label: "Profile Type", default: true },
-    { id: "hireStatus", label: "Hire Status", default: true },
-    { id: "stripeStatus", label: "Stripe Status", default: true },
-    { id: "notes", label: "Notes", default: true },
-    { id: "actions", label: "Actions", default: true }
-  ];
+  const [drivers, setDrivers] = useState([{
+    id: 5432,
+    name: "John Doe",
+    email: "john.doe@example.com",
+    phone: "(123) 456-7890",
+    status: "online",
+    hireStatus: "hired",
+    transports: ["1", "3", "pickup_truck", "9ft_cargo_van"],
+    rating: 4.8,
+    stripeStatus: 'verified' as StripeStatus,
+    zipcode: "94105",
+    address: "123 Main St, San Francisco, CA",
+    notes: "Excellent driver, always on time.",
+    profileTypes: ["Driver", "Mover"]
+  }, {
+    id: 6543,
+    name: "Jane Smith",
+    email: "jane.smith@example.com",
+    phone: "(123) 456-7891",
+    status: "offline",
+    hireStatus: "contact_again",
+    transports: ["2"],
+    rating: 3.5,
+    stripeStatus: 'unverified' as StripeStatus,
+    zipcode: "90210",
+    address: "456 Oak Ave, Beverly Hills, CA",
+    notes: "Prefers weekend shifts.",
+    profileTypes: ["Helper"]
+  }, {
+    id: 7654,
+    name: "Mike Johnson",
+    email: "mike.johnson@example.com",
+    phone: "(123) 456-7892",
+    status: "busy",
+    hireStatus: "blacklist",
+    transports: ["4", "5"],
+    rating: 5.0,
+    stripeStatus: 'pending' as StripeStatus,
+    zipcode: "10001",
+    address: "789 Pine Rd, New York, NY",
+    notes: "Not available on Mondays."
+  }]);
+  const availableColumns: ColumnOption[] = [{
+    id: "id",
+    label: "ID",
+    default: true
+  }, {
+    id: "name",
+    label: "Name",
+    default: true
+  }, {
+    id: "email",
+    label: "Email",
+    default: true
+  }, {
+    id: "phone",
+    label: "Phone",
+    default: true
+  }, {
+    id: "zipcode",
+    label: "Zipcode",
+    default: false
+  }, {
+    id: "address",
+    label: "Address",
+    default: true
+  }, {
+    id: "transport",
+    label: "Transport",
+    default: true
+  }, {
+    id: "rating",
+    label: "Rating",
+    default: true
+  }, {
+    id: "status",
+    label: "Status",
+    default: true
+  }, {
+    id: "profileType",
+    label: "Profile Type",
+    default: true
+  }, {
+    id: "hireStatus",
+    label: "Hire Status",
+    default: true
+  }, {
+    id: "stripeStatus",
+    label: "Stripe Status",
+    default: true
+  }, {
+    id: "notes",
+    label: "Notes",
+    default: true
+  }, {
+    id: "actions",
+    label: "Actions",
+    default: true
+  }];
   const [visibleColumns, setVisibleColumns] = useState<string[]>(availableColumns.filter(col => col.default).map(col => col.id));
   const [columnOrder, setColumnOrder] = useState<string[]>(availableColumns.filter(col => col.default).map(col => col.id));
   const [currentPage, setCurrentPage] = useState(1);
@@ -253,7 +253,6 @@ const DriversPage = () => {
   const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
-
   const updateDriverHireStatus = (driverId: number, newStatus: string) => {
     setDrivers(prevDrivers => prevDrivers.map(driver => driver.id === driverId ? {
       ...driver,
@@ -262,13 +261,11 @@ const DriversPage = () => {
     const statusLabel = hireStatusDictionary[newStatus] || newStatus;
     toast.success(`Driver status updated to ${statusLabel}`);
   };
-
   useEffect(() => {
     loadTransportDictionary();
     loadStatusDictionary();
     loadHireStatusDictionary();
   }, []);
-
   useEffect(() => {
     setColumnOrder(prevOrder => {
       const newOrder = [...prevOrder];
@@ -280,7 +277,6 @@ const DriversPage = () => {
       return newOrder.filter(column => visibleColumns.includes(column));
     });
   }, [visibleColumns]);
-
   useEffect(() => {
     if (searchTerm.length >= 3) {
       const filtered = drivers.filter(driver => driver.name.toLowerCase().includes(searchTerm.toLowerCase()) || driver.email.toLowerCase().includes(searchTerm.toLowerCase()) || driver.phone.includes(searchTerm) || driver.id.toString().includes(searchTerm));
@@ -289,16 +285,13 @@ const DriversPage = () => {
       setFilteredDrivers(drivers);
     }
   }, [searchTerm, drivers]);
-
   useEffect(() => {
     setFilteredDrivers(drivers);
   }, [drivers]);
-
   useEffect(() => {
     const randomDrivers = drivers.filter(() => Math.random() < 0.3).map(driver => driver.id);
     setDriversWithMessages(randomDrivers);
   }, [drivers]);
-
   useEffect(() => {
     setDrivers(prevDrivers => prevDrivers.map(driver => ({
       ...driver,
@@ -306,7 +299,6 @@ const DriversPage = () => {
       address: driver.address || getRandomAddress()
     })));
   }, []);
-
   useEffect(() => {
     setDrivers(prevDrivers => {
       const highestId = Math.max(...prevDrivers.map(d => d.id));
@@ -314,17 +306,14 @@ const DriversPage = () => {
       return [...prevDrivers, ...newDrivers];
     });
   }, []);
-
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
   };
-
   const handlePageSizeChange = (size: number) => {
     setPageSize(size);
     setCurrentPage(1);
   };
-
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -355,37 +344,30 @@ const DriversPage = () => {
     }
     return pages;
   };
-
   const handleCourierClick = (name: string) => {
     setSelectedCourier(name);
     setChatOpen(true);
   };
-
   const handleChatClose = () => {
     setChatOpen(false);
     setSelectedCourier(null);
   };
-
   const handleNotesClick = (driverId: number) => {
     setEditingNotes(driverId);
   };
-
   const handleNotesChange = (driverId: number, notes: string) => {
     setDrivers(prevDrivers => prevDrivers.map(driver => driver.id === driverId ? {
       ...driver,
       notes
     } : driver));
   };
-
   const saveNotes = (driverId: number) => {
     setEditingNotes(null);
     toast.success("Driver notes updated successfully");
   };
-
   const handleToggleFilterSidebar = () => {
     setIsFilterSidebarOpen(prev => !prev);
   };
-
   const loadTransportDictionary = () => {
     const transportDict = getDictionary("2");
     if (transportDict && transportDict.items.length > 0) {
@@ -409,7 +391,6 @@ const DriversPage = () => {
     }
     setIsLoading(false);
   };
-
   const loadStatusDictionary = () => {
     const statusDict = getDictionary("6");
     if (statusDict && statusDict.items.length > 0) {
@@ -439,7 +420,6 @@ const DriversPage = () => {
       console.log("Status dictionary not found or empty for ID: 6");
     }
   };
-
   const loadHireStatusDictionary = () => {
     const hireStatusDict = getDictionary("1455");
     if (hireStatusDict && hireStatusDict.items.length > 0) {
@@ -473,7 +453,6 @@ const DriversPage = () => {
       console.log("Hire status dictionary not found or empty for ID: 1455");
     }
   };
-
   const getRandomTransportIcon = () => {
     const transportTypes: TransportType[] = ['helper', 'car', 'suv', 'pickup_truck', '9ft_cargo_van', '10ft_box_truck', '15ft_box_truck', '17ft_box_truck', 'refrigerated_van'];
     const randomIndex = Math.floor(Math.random() * transportTypes.length);
@@ -482,7 +461,6 @@ const DriversPage = () => {
         <TransportIcon transportType={randomType} size={14} className="h-[14px] w-[14px]" />
       </div>;
   };
-
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     setDraggedColumn(columnId);
     e.dataTransfer.setData('text/plain', columnId);
@@ -490,14 +468,12 @@ const DriversPage = () => {
     dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     e.dataTransfer.setDragImage(dragImage, 0, 0);
   };
-
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     e.preventDefault();
     if (draggedColumn && draggedColumn !== columnId) {
       setDragOverColumn(columnId);
     }
   };
-
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
     e.preventDefault();
     if (!draggedColumn || draggedColumn === targetColumnId) {
@@ -516,21 +492,16 @@ const DriversPage = () => {
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
-
   const handleDragEnd = () => {
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
-
   const getSortedVisibleColumns = () => {
     return visibleColumns.filter(column => columnOrder.includes(column)).sort((a, b) => columnOrder.indexOf(a) - columnOrder.indexOf(b));
   };
-
   const sortedColumns = getSortedVisibleColumns();
-
   const requestSort = (key: string) => {
     let direction: 'ascending' | 'descending' | null = 'ascending';
-    
     if (sortConfig.key === key) {
       if (sortConfig.direction === 'ascending') {
         direction = 'descending';
@@ -538,52 +509,38 @@ const DriversPage = () => {
         direction = null;
       }
     }
-    
-    setSortConfig({ key, direction });
-    
+    setSortConfig({
+      key,
+      direction
+    });
     if (direction) {
       const sortedDrivers = [...filteredDrivers].sort((a, b) => {
         if (a[key] === undefined || b[key] === undefined) return 0;
-        
         if (key === 'rating') {
-          return direction === 'ascending' 
-            ? a[key] - b[key]
-            : b[key] - a[key];
+          return direction === 'ascending' ? a[key] - b[key] : b[key] - a[key];
         }
-        
         if (typeof a[key] === 'string' && typeof b[key] === 'string') {
-          return direction === 'ascending'
-            ? a[key].localeCompare(b[key])
-            : b[key].localeCompare(a[key]);
+          return direction === 'ascending' ? a[key].localeCompare(b[key]) : b[key].localeCompare(a[key]);
         }
-        
         if (a[key] < b[key]) return direction === 'ascending' ? -1 : 1;
         if (a[key] > b[key]) return direction === 'ascending' ? 1 : -1;
         return 0;
       });
-      
       setFilteredDrivers(sortedDrivers);
     } else {
       if (searchTerm.length >= 3) {
-        const filtered = drivers.filter(driver => 
-          driver.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-          driver.email.toLowerCase().includes(searchTerm.toLowerCase()) || 
-          driver.phone.includes(searchTerm) || 
-          driver.id.toString().includes(searchTerm)
-        );
+        const filtered = drivers.filter(driver => driver.name.toLowerCase().includes(searchTerm.toLowerCase()) || driver.email.toLowerCase().includes(searchTerm.toLowerCase()) || driver.phone.includes(searchTerm) || driver.id.toString().includes(searchTerm));
         setFilteredDrivers(filtered);
       } else {
         setFilteredDrivers(drivers);
       }
     }
   };
-
   const renderRating = (rating: number) => {
     return <div className="flex items-center">
         <span className="font-medium">{rating.toFixed(1)}</span>
       </div>;
   };
-
   const renderStatus = (statusId: string) => {
     const statusText = statusDictionary[statusId] || `Unknown (${statusId})`;
     const statusColorClass = statusColors[statusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
@@ -591,7 +548,6 @@ const DriversPage = () => {
         {statusText}
       </div>;
   };
-
   const renderHireStatus = (hireStatusId: string, driverId: number) => {
     const hireStatusText = hireStatusDictionary[hireStatusId] || `Unknown (${hireStatusId})`;
     return <DropdownMenu>
@@ -608,7 +564,6 @@ const DriversPage = () => {
         </DropdownMenuContent>
       </DropdownMenu>;
   };
-
   const renderStripeStatus = (status: 'verified' | 'unverified' | 'pending') => {
     let bgColor = '';
     let icon = null;
@@ -635,7 +590,6 @@ const DriversPage = () => {
         {text}
       </div>;
   };
-
   const allCities = React.useMemo(() => {
     const cities = new Set<string>();
     drivers.forEach(driver => {
@@ -644,12 +598,10 @@ const DriversPage = () => {
     });
     return Array.from(cities).sort();
   }, [drivers]);
-
   const allStates = React.useMemo(() => {
     const states = new Set<string>(["CA", "NY", "TX", "FL", "IL", "WA", "AZ", "CO", "GA", "NC"]);
     return Array.from(states).sort();
   }, []);
-
   const allZipcodes = React.useMemo(() => {
     const uniqueZipcodes = new Set<string>();
     drivers.forEach(driver => {
@@ -659,7 +611,6 @@ const DriversPage = () => {
     });
     return Array.from(uniqueZipcodes).sort();
   }, [drivers]);
-
   const handleFiltersAdd = (filters: {
     statuses: DeliveryStatus[];
     zipcodes: string[];
@@ -671,95 +622,22 @@ const DriversPage = () => {
     setSelectedCities(filters.cities);
     setSelectedStates(filters.states);
   };
-
-  return (
-    <Layout showFooter={false}>
+  return <Layout showFooter={false}>
       <div className="flex flex-col h-screen">
-        <DriversFilters 
-          searchTerm={searchTerm} 
-          onSearchChange={setSearchTerm} 
-          dateRange={dateRange} 
-          onDateRangeChange={setDateRange} 
-          timezone={timezone} 
-          onTimezoneChange={setTimezone} 
-          availableColumns={availableColumns} 
-          visibleColumns={visibleColumns} 
-          onVisibleColumnsChange={setVisibleColumns} 
-          activeView={activeView} 
-          onActiveViewChange={setActiveView} 
-          onToggleFilterSidebar={handleToggleFilterSidebar} 
-          isFilterSidebarOpen={isFilterSidebarOpen} 
-        />
+        <DriversFilters searchTerm={searchTerm} onSearchChange={setSearchTerm} dateRange={dateRange} onDateRangeChange={setDateRange} timezone={timezone} onTimezoneChange={setTimezone} availableColumns={availableColumns} visibleColumns={visibleColumns} onVisibleColumnsChange={setVisibleColumns} activeView={activeView} onActiveViewChange={setActiveView} onToggleFilterSidebar={handleToggleFilterSidebar} isFilterSidebarOpen={isFilterSidebarOpen} />
 
-        <div className="flex flex-1 w-full overflow-hidden relative">
-          <DriversSidebar 
-            open={isFilterSidebarOpen}
-            onClose={() => setIsFilterSidebarOpen(false)}
-            selectedStatuses={selectedStatuses}
-            setSelectedStatuses={setSelectedStatuses}
-            allDeliveryStatuses={allDriverStatuses}
-            allZipcodes={allZipcodes}
-            selectedZipcodes={selectedZipcodes}
-            setSelectedZipcodes={setSelectedZipcodes}
-            allCities={allCities}
-            selectedCities={selectedCities}
-            setSelectedCities={setSelectedCities}
-            allStates={allStates}
-            selectedStates={selectedStates}
-            setSelectedStates={setSelectedStates}
-            onFiltersAdd={handleFiltersAdd}
-          />
+        <div className="flex flex-1 w-full overflow-hidden relative px-[10px] mx-[10px]">
+          <DriversSidebar open={isFilterSidebarOpen} onClose={() => setIsFilterSidebarOpen(false)} selectedStatuses={selectedStatuses} setSelectedStatuses={setSelectedStatuses} allDeliveryStatuses={allDriverStatuses} allZipcodes={allZipcodes} selectedZipcodes={selectedZipcodes} setSelectedZipcodes={setSelectedZipcodes} allCities={allCities} selectedCities={selectedCities} setSelectedCities={setSelectedCities} allStates={allStates} selectedStates={selectedStates} setSelectedStates={setSelectedStates} onFiltersAdd={handleFiltersAdd} />
 
           <div className={`flex-1 w-full transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-2"}`}>
-            <DriversTable 
-              currentItems={currentItems} 
-              sortedColumns={sortedColumns} 
-              availableColumns={availableColumns} 
-              transportTypes={transportTypes} 
-              statusDictionary={statusDictionary} 
-              statusColors={statusColors} 
-              editingNotes={editingNotes} 
-              draggedColumn={draggedColumn} 
-              dragOverColumn={dragOverColumn} 
-              onDragStart={handleDragStart} 
-              onDragOver={handleDragOver} 
-              onDrop={handleDrop} 
-              onDragEnd={handleDragEnd} 
-              renderRating={renderRating} 
-              renderStatus={renderStatus} 
-              renderHireStatus={renderHireStatus} 
-              renderStripeStatus={renderStripeStatus} 
-              handleNotesClick={handleNotesClick} 
-              handleNotesChange={handleNotesChange} 
-              saveNotes={saveNotes} 
-              className="mt-[10px]"
-              sortConfig={sortConfig}
-              requestSort={requestSort}
-            />
+            <DriversTable currentItems={currentItems} sortedColumns={sortedColumns} availableColumns={availableColumns} transportTypes={transportTypes} statusDictionary={statusDictionary} statusColors={statusColors} editingNotes={editingNotes} draggedColumn={draggedColumn} dragOverColumn={dragOverColumn} onDragStart={handleDragStart} onDragOver={handleDragOver} onDrop={handleDrop} onDragEnd={handleDragEnd} renderRating={renderRating} renderStatus={renderStatus} renderHireStatus={renderHireStatus} renderStripeStatus={renderStripeStatus} handleNotesClick={handleNotesClick} handleNotesChange={handleNotesChange} saveNotes={saveNotes} className="mt-[10px]" sortConfig={sortConfig} requestSort={requestSort} />
           </div>
         </div>
 
-        <DriversPagination 
-          currentPage={currentPage} 
-          totalPages={totalPages} 
-          totalItems={totalItems} 
-          pageSize={pageSize} 
-          pageSizeOptions={pageSizeOptions} 
-          onPageChange={handlePageChange} 
-          onPageSizeChange={handlePageSizeChange} 
-        />
+        <DriversPagination currentPage={currentPage} totalPages={totalPages} totalItems={totalItems} pageSize={pageSize} pageSizeOptions={pageSizeOptions} onPageChange={handlePageChange} onPageSizeChange={handlePageSizeChange} />
         
-        {chatOpen && selectedCourier && (
-          <CourierChat 
-            open={chatOpen} 
-            courierName={selectedCourier} 
-            onClose={handleChatClose} 
-            hasUnreadMessages={false} 
-          />
-        )}
+        {chatOpen && selectedCourier && <CourierChat open={chatOpen} courierName={selectedCourier} onClose={handleChatClose} hasUnreadMessages={false} />}
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default DriversPage;
