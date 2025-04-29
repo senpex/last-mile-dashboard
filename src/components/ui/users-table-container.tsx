@@ -20,7 +20,7 @@ const UsersTableContainer = React.forwardRef<
     className={cn(
       "relative border rounded-md overflow-hidden flex-1",
       "transition-all duration-300 shadow-sm", 
-      "px-0 mt-0 mb-[5px]",
+      "px-0 mt-0 mb-[5px] mr-[20px]",
       "w-full",
       height, 
       className
