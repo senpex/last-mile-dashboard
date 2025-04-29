@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { Clock, UserRound, ChevronUp, ChevronDown } from "lucide-react";
 import { OrderMap } from "../OrderMap";
 import { StatusBadge } from "./StatusBadge";
+
 interface CustomerOrderViewProps {
   order: {
     id: string;
@@ -36,6 +37,7 @@ interface CustomerOrderViewProps {
   };
   shouldShowDriverInfo: (orderId: string) => boolean;
 }
+
 export const CustomerOrderView = ({
   order,
   expandedOrderId,
@@ -47,6 +49,7 @@ export const CustomerOrderView = ({
   shouldShowDriverInfo
 }: CustomerOrderViewProps) => {
   const isExpanded = expandedOrderId === order.id;
+  
   return <div className="order-card rounded-lg transition-all duration-200 ease-in-out">
       <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
         <h3 className="font-medium text-xs text-foreground/90">Order #{order.id}</h3>
@@ -55,92 +58,88 @@ export const CustomerOrderView = ({
         </Button>
       </div>
       
-      {isExpanded && <div className="px-3 pt-1 pb-3 space-y-3">
+      {isExpanded && <div className="px-3 pt-1 pb-3 space-y-4">
           <div className="flex justify-start">
             <Badge className="bg-green-500">Active</Badge>
           </div>
           
           <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
           
-          <div className="order-times-card rounded-md bg-muted/50 p-2.5 shadow-sm">
-            <div className="space-y-2">
-              <div className="flex items-center gap-1.5 mb-1">
+          <div className="rounded-md bg-muted/50 p-3 shadow-sm">
+            <div>
+              <div className="flex items-center gap-1.5 mb-2">
                 <Clock className="h-3 w-3 text-muted-foreground" />
                 <span className="text-xs font-medium text-muted-foreground">Time Details</span>
               </div>
-              <div className="pl-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-xs text-muted-foreground">Pickup:</span>
-                  <span className="text-xs font-medium">{order.pickupTime}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-xs text-muted-foreground">Dropoff:</span>
-                  <span className="text-xs font-medium">{order.dropoffTime}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-xs text-muted-foreground">ETA:</span>
-                  <span className="text-xs font-medium">{order.eta}</span>
-                </div>
+              <div className="grid grid-cols-2 gap-y-1 pl-4">
+                <span className="text-xs text-muted-foreground">Pickup:</span>
+                <span className="text-xs font-medium">{order.pickupTime}</span>
+                <span className="text-xs text-muted-foreground">Dropoff:</span>
+                <span className="text-xs font-medium">{order.dropoffTime}</span>
+                <span className="text-xs text-muted-foreground">ETA:</span>
+                <span className="text-xs font-medium">{order.eta}</span>
               </div>
             </div>
           </div>
           
-          <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm">
-            <div className="space-y-2">
-              {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2 p-1 bg-background/70 rounded-md px-0 py-0">
-                  <div className="flex-shrink-0 mt-0.5 p-1 rounded-full bg-white px-0 py-0 my-[3px] mx-0">
+          <div className="rounded-md bg-muted/50 p-3 shadow-sm">
+            <div>
+              {shouldShowDriverInfo(order.id) ? (
+                <div className="flex items-start gap-2 p-2 bg-background/70 rounded-md">
+                  <div className="flex-shrink-0 mt-0.5 p-1 rounded-full bg-white">
                     <UserRound className="h-3 w-3 text-muted-foreground" />
                   </div>
                   <div className="flex-1">
-                    <div className="text-xs font-medium mb-0.5">Driver Details</div>
-                    <div className="grid grid-cols-2 gap-x-3 gap-y-0.5">
-                      <div className="text-xs text-muted-foreground">Name:</div>
-                      <div className="text-xs font-medium">{driverInfo.name}</div>
-                      <div className="text-xs text-muted-foreground">Phone:</div>
-                      <div className="text-xs">{driverInfo.phone}</div>
-                      <div className="text-xs text-muted-foreground">Vehicle:</div>
-                      <div className="text-xs">{driverInfo.vehicle}</div>
-                      <div className="text-xs text-muted-foreground">Rating:</div>
-                      <div className="text-xs">⭐️ {driverInfo.rating}</div>
-                      <div className="text-xs text-muted-foreground">Deliveries:</div>
-                      <div className="text-xs">{driverInfo.totalDeliveries}</div>
+                    <div className="text-xs font-medium mb-1">Driver Details</div>
+                    <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+                      <span className="text-xs text-muted-foreground">Name:</span>
+                      <span className="text-xs font-medium">{driverInfo.name}</span>
+                      <span className="text-xs text-muted-foreground">Phone:</span>
+                      <span className="text-xs">{driverInfo.phone}</span>
+                      <span className="text-xs text-muted-foreground">Vehicle:</span>
+                      <span className="text-xs">{driverInfo.vehicle}</span>
+                      <span className="text-xs text-muted-foreground">Rating:</span>
+                      <span className="text-xs">⭐️ {driverInfo.rating}</span>
+                      <span className="text-xs text-muted-foreground">Deliveries:</span>
+                      <span className="text-xs">{driverInfo.totalDeliveries}</span>
                     </div>
                   </div>
-                </div> : <>
-                  <div className="flex items-center gap-1.5 mb-1">
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-center gap-1.5 mb-2">
                     <UserRound className="h-3 w-3 text-muted-foreground" />
                     <span className="text-xs font-medium text-muted-foreground">Location Details</span>
                   </div>
                   <div className="pl-4">
-                    <div className="flex flex-col space-y-2">
-                      <div>
-                        <div className="text-xs font-medium mb-0.5">Sender</div>
-                        <div className="grid grid-cols-2 gap-x-3 gap-y-0.5">
-                          <div className="text-xs text-muted-foreground">Name:</div>
-                          <div className="text-xs font-medium">{senderInfo.name}</div>
-                          <div className="text-xs text-muted-foreground">Phone:</div>
-                          <div className="text-xs">{senderInfo.phone}</div>
-                          <div className="text-xs text-muted-foreground">Address:</div>
-                          <div className="text-xs">{knownLocations[order.pickupAddress] || order.pickupAddress}</div>
-                        </div>
+                    <div className="mb-2">
+                      <div className="text-xs font-medium mb-1">Sender</div>
+                      <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+                        <span className="text-xs text-muted-foreground">Name:</span>
+                        <span className="text-xs font-medium">{senderInfo.name}</span>
+                        <span className="text-xs text-muted-foreground">Phone:</span>
+                        <span className="text-xs">{senderInfo.phone}</span>
+                        <span className="text-xs text-muted-foreground">Address:</span>
+                        <span className="text-xs">{knownLocations[order.pickupAddress] || order.pickupAddress}</span>
                       </div>
-                      
-                      <Separator className="my-1 bg-border/30" />
-                      
-                      <div>
-                        <div className="text-xs font-medium mb-0.5">Recipient</div>
-                        <div className="grid grid-cols-2 gap-x-3 gap-y-0.5">
-                          <div className="text-xs text-muted-foreground">Name:</div>
-                          <div className="text-xs font-medium">{recipientInfo.name}</div>
-                          <div className="text-xs text-muted-foreground">Phone:</div>
-                          <div className="text-xs">{recipientInfo.phone}</div>
-                          <div className="text-xs text-muted-foreground">Address:</div>
-                          <div className="text-xs">{knownLocations[order.deliveryAddress] || order.deliveryAddress}</div>
-                        </div>
+                    </div>
+                    
+                    <Separator className="my-2 bg-border/30" />
+                    
+                    <div>
+                      <div className="text-xs font-medium mb-1">Recipient</div>
+                      <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+                        <span className="text-xs text-muted-foreground">Name:</span>
+                        <span className="text-xs font-medium">{recipientInfo.name}</span>
+                        <span className="text-xs text-muted-foreground">Phone:</span>
+                        <span className="text-xs">{recipientInfo.phone}</span>
+                        <span className="text-xs text-muted-foreground">Address:</span>
+                        <span className="text-xs">{knownLocations[order.deliveryAddress] || order.deliveryAddress}</span>
                       </div>
                     </div>
                   </div>
-                </>}
+                </>
+              )}
             </div>
           </div>
           
