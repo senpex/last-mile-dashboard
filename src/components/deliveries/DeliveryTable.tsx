@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -366,12 +367,12 @@ const DeliveryTable = ({
         <div className="flex-1 transition-all duration-300 my-4 ml-2 w-full">
           <div className="flex flex-col h-full w-full">
             <TableContainer 
-              stickyHeader 
+              stickyHeader={false} 
               className="w-full"
               filterSidebarOpen={isFilterSidebarOpen}
             >
               <Table>
-                <TableHeader className="bg-muted/50 sticky top-0 border-b-0">
+                <TableHeader className="bg-muted/50 border-b-0">
                   <TableRow>
                     {sortedColumns.map(columnId => {
                       const column = availableColumns.find(col => col.id === columnId);
