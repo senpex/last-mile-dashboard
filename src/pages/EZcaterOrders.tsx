@@ -1,13 +1,14 @@
+
 import React, { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Card } from "@/components/ui/card";
 import { Package } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+
 const EZcaterOrders = () => {
   const {
     toast
@@ -62,6 +63,7 @@ const EZcaterOrders = () => {
     value: "$175.00",
     items: 10
   }];
+
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
       case "pending":
@@ -78,18 +80,22 @@ const EZcaterOrders = () => {
         return "outline";
     }
   };
+
   const handleViewOrder = (id: string) => {
     toast({
       title: "Order Details",
       description: `Viewing details for order ${id}`
     });
   };
+
   const filteredOrders = orders.filter(order => {
     const matchesSearch = order.id.toLowerCase().includes(searchQuery.toLowerCase()) || order.customer.toLowerCase().includes(searchQuery.toLowerCase()) || order.location.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = !selectedStatus || order.status === selectedStatus;
     return matchesSearch && matchesStatus;
   });
+
   const statusOptions = ["pending", "confirmed", "in-transit", "delivered", "cancelled"];
+
   return <Layout>
       <div className="px-4 py-6 w-full overflow-x-hidden">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -121,9 +127,6 @@ const EZcaterOrders = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-12">
-                    <Checkbox />
-                  </TableHead>
                   <TableHead>Order ID</TableHead>
                   <TableHead>Customer</TableHead>
                   <TableHead>Date & Time</TableHead>
@@ -136,9 +139,6 @@ const EZcaterOrders = () => {
               </TableHeader>
               <TableBody>
                 {filteredOrders.map(order => <TableRow key={order.id}>
-                    <TableCell>
-                      <Checkbox />
-                    </TableCell>
                     <TableCell className="font-medium">{order.id}</TableCell>
                     <TableCell>{order.customer}</TableCell>
                     <TableCell>{`${order.date} ${order.time}`}</TableCell>
@@ -157,7 +157,7 @@ const EZcaterOrders = () => {
                     </TableCell>
                   </TableRow>)}
                 {filteredOrders.length === 0 && <TableRow>
-                    <TableCell colSpan={9} className="text-center py-6">
+                    <TableCell colSpan={8} className="text-center py-6">
                       No orders found matching your filters.
                     </TableCell>
                   </TableRow>}
@@ -168,4 +168,5 @@ const EZcaterOrders = () => {
       </div>
     </Layout>;
 };
+
 export default EZcaterOrders;
