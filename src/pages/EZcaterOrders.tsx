@@ -300,9 +300,7 @@ const EZcaterOrders = () => {
 
         <div className="px-4 py-4">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-            <p className="text-muted-foreground">
-              Manage and track all eZcater platform delivery orders
-            </p>
+            
             
           </div>
 
