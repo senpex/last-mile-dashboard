@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { UsersTableContainer } from "@/components/ui/users-table-container";
@@ -53,7 +54,7 @@ export function ClientsTable({
   return (
     <UsersTableContainer className={className}>
       <Table>
-        <TableHeader className="bg-muted/50 sticky top-0 border-b-0 m-0 p-0">
+        <TableHeader className="bg-muted/50 border-b-0 m-0 p-0">
           <TableRow className="border-b-0">
             {sortedColumns.map(columnId => {
               const column = availableColumns.find(col => col.id === columnId);
