@@ -87,7 +87,7 @@ export const CustomerOrderView = ({
           
           <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm">
             <div className="space-y-2">
-              {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2 p-1 bg-background/70 rounded-md">
+              {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2 p-1 bg-background/70 rounded-md px-0 py-0">
                   <div className="flex-shrink-0 mt-0.5 p-1 rounded-full bg-white px-0 py-0 my-[3px] mx-0">
                     <UserRound className="h-3 w-3 text-muted-foreground" />
                   </div>
