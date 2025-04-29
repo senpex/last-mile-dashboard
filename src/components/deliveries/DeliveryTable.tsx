@@ -9,7 +9,6 @@ import { DeliverySidebar } from "@/components/deliveries/DeliverySidebar";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-
 interface DeliveryTableProps {
   items: Delivery[];
   sortedColumns: string[];
@@ -59,7 +58,6 @@ interface DeliveryTableProps {
   };
   requestSort?: (key: string) => void;
 }
-
 const getColumnWidth = (columnId: string): string => {
   switch (columnId) {
     case "status":
@@ -96,7 +94,6 @@ const getColumnWidth = (columnId: string): string => {
       return "w-[120px] min-w-[120px]";
   }
 };
-
 const doesCustomerNeedAttention = (customerId: string | number): boolean => {
   let idAsNumber: number;
   if (typeof customerId === 'string') {
@@ -106,11 +103,9 @@ const doesCustomerNeedAttention = (customerId: string | number): boolean => {
   }
   return idAsNumber % 10 < 3;
 };
-
 const doesCourierNeedAttention = (deliveryId: number): boolean => {
   return deliveryId % 10 < 3;
 };
-
 const DeliveryTable = ({
   items,
   sortedColumns,
@@ -164,7 +159,6 @@ const DeliveryTable = ({
   const [notesText, setNotesText] = useState<{
     [key: number]: string;
   }>({});
-  
   const updateDeliveryNotes = (deliveryId: number, notes: string) => {
     console.log(`Updating notes for delivery ${deliveryId}:`, notes);
     setNotesText(prev => ({
@@ -173,14 +167,12 @@ const DeliveryTable = ({
     }));
     setEditingNotes(null);
   };
-  
   const renderSortIcon = (columnId: string) => {
     if (sortConfig.key !== columnId) {
       return null;
     }
     return sortConfig.direction === 'ascending' ? <ChevronUp className="h-4 w-4 ml-1 text-destructive" /> : <ChevronDown className="h-4 w-4 ml-1 text-destructive" />;
   };
-  
   const renderCellContent = (delivery: Delivery, columnId: string) => {
     switch (columnId) {
       case "status":
@@ -279,9 +271,8 @@ const DeliveryTable = ({
         return <TableCell key={columnId} className={`${getColumnWidth(columnId)} text-left`}></TableCell>;
     }
   };
-  
   return <div className="flex-1 overflow-hidden px-px">
-      <div className="flex h-full mx-0 px-0">
+      <div className="flex h-full mx-0 px-[16px]">
         <DeliverySidebar open={isFilterSidebarOpen} onClose={toggleFilterSidebar} deliveryStatuses={allDeliveryStatuses} selectedStatuses={selectedStatuses} onStatusChange={setSelectedStatuses} organizations={allOrganizations} selectedOrganizations={selectedOrganizations} onOrganizationChange={setSelectedOrganizations} couriers={allCouriers} selectedCouriers={selectedCouriers} onCourierChange={setSelectedCouriers} zipcodes={allZipcodes} selectedZipcodes={selectedZipcodes} onZipcodeChange={setSelectedZipcodes} cities={allCities} selectedCities={selectedCities} onCityChange={setSelectedCities} states={allStates} selectedStates={selectedStates} onStateChange={setSelectedStates} pickupAddresses={allPickupAddresses} selectedPickupAddresses={selectedPickupAddresses} onPickupAddressChange={setSelectedPickupAddresses} dropoffAddresses={allDropoffAddresses} selectedDropoffAddresses={selectedDropoffAddresses} onDropoffAddressChange={setSelectedDropoffAddresses} senderNames={allSenderNames} selectedSenderNames={selectedSenderNames} onSenderNameChange={setSelectedSenderNames} recipientNames={allRecipientNames} selectedRecipientNames={selectedRecipientNames} onRecipientNameChange={setSelectedRecipientNames} />
         
         <div className="flex-1 transition-all duration-300 my-4 ml-2 w-full">
@@ -325,5 +316,4 @@ const DeliveryTable = ({
       </div>
     </div>;
 };
-
 export default DeliveryTable;
