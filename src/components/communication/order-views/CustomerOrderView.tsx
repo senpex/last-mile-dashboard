@@ -1,4 +1,3 @@
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -6,7 +5,6 @@ import { Separator } from "@/components/ui/separator";
 import { Clock, UserRound, ChevronUp, ChevronDown } from "lucide-react";
 import { OrderMap } from "../OrderMap";
 import { StatusBadge } from "./StatusBadge";
-
 interface CustomerOrderViewProps {
   order: {
     id: string;
@@ -38,7 +36,6 @@ interface CustomerOrderViewProps {
   };
   shouldShowDriverInfo: (orderId: string) => boolean;
 }
-
 export const CustomerOrderView = ({
   order,
   expandedOrderId,
@@ -90,11 +87,8 @@ export const CustomerOrderView = ({
           
           <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm">
             <div className="space-y-2">
-              {shouldShowDriverInfo(order.id) ? (
-                <div className="flex items-start gap-2 p-1 bg-background/70 rounded-md">
-                  <div className="flex-shrink-0 mt-0.5 bg-primary/10 p-1 rounded-full">
-                    <UserRound className="h-3 w-3 text-muted-foreground" />
-                  </div>
+              {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2 p-1 bg-background/70 rounded-md">
+                  
                   <div className="flex-1">
                     <div className="text-xs font-medium mb-0.5">Driver Details</div>
                     <div className="grid grid-cols-2 gap-x-3 gap-y-0.5">
@@ -110,9 +104,7 @@ export const CustomerOrderView = ({
                       <div className="text-xs">{driverInfo.totalDeliveries}</div>
                     </div>
                   </div>
-                </div>
-              ) : (
-                <>
+                </div> : <>
                   <div className="flex items-center gap-1.5 mb-1">
                     <UserRound className="h-3 w-3 text-muted-foreground" />
                     <span className="text-xs font-medium text-muted-foreground">Location Details</span>
@@ -146,8 +138,7 @@ export const CustomerOrderView = ({
                       </div>
                     </div>
                   </div>
-                </>
-              )}
+                </>}
             </div>
           </div>
           
