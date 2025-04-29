@@ -6,9 +6,13 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { UsersTableContainer } from "@/components/ui/users-table-container";
 import { Card } from "@/components/ui/card";
-import { Package, GripVertical, ChevronUp, ChevronDown } from "lucide-react";
+import { Package, GripVertical, ChevronUp, ChevronDown, Filter, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { EZcaterFiltersLayout } from "@/components/ezcater/EZcaterFiltersLayout";
+import { SearchInput } from "@/components/ui/search-input";
+import { TimezonePicker } from "@/components/TimezonePicker";
+import ColumnSelector from "@/components/table/ColumnSelector";
+
 const EZcaterOrders = () => {
   const {
     toast
@@ -25,6 +29,20 @@ const EZcaterOrders = () => {
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
   const [columnOrder, setColumnOrder] = useState(["id", "customer", "dateTime", "status", "location", "value", "items", "actions"]);
+  const [timezone, setTimezone] = useState<string>("America/New_York");
+  const [visibleColumns, setVisibleColumns] = useState<string[]>(["id", "customer", "dateTime", "status", "location", "value", "items", "actions"]);
+
+  // Available column definitions for the column selector
+  const availableColumns: {id: string, label: string, default: boolean}[] = [
+    { id: "id", label: "Order ID", default: true },
+    { id: "customer", label: "Customer", default: true },
+    { id: "dateTime", label: "Date & Time", default: true },
+    { id: "status", label: "Status", default: true },
+    { id: "location", label: "Location", default: true },
+    { id: "value", label: "Value", default: true },
+    { id: "items", label: "Items", default: true },
+    { id: "actions", label: "Actions", default: true },
+  ];
 
   // Sample data for eZcater orders
   const orders = [{
@@ -286,30 +304,62 @@ const EZcaterOrders = () => {
   const timezoneInfo = `All times in EST (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
 
   // Filter controls
-  const filterControls = <div className="flex flex-wrap gap-2">
-      {statusOptions.map(status => {})}
-    </div>;
+  const filterControls = (
+    <div className="flex flex-wrap gap-2">
+      {statusOptions.map(status => (
+        <Badge 
+          key={status}
+          variant={selectedStatus === status ? "default" : "outline"}
+          className="cursor-pointer capitalize"
+          onClick={() => setSelectedStatus(selectedStatus === status ? null : status)}
+        >
+          {status.replace('-', ' ')}
+        </Badge>
+      ))}
+    </div>
+  );
 
-  // Search controls
-  const searchControls = <Input placeholder="Search orders by ID, customer, or location..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full md:w-80" />;
+  // Search controls with the components from the selected element
+  const searchControls = (
+    <div className="flex items-center space-x-2">
+      <SearchInput 
+        placeholder="Search orders by ID, customer, or location..." 
+        value={searchQuery} 
+        onChange={e => setSearchQuery(e.target.value)} 
+        className="w-full md:w-80" 
+      />
+      <TimezonePicker
+        selectedTimezone={timezone}
+        onTimezoneChange={setTimezone}
+      />
+      <ColumnSelector
+        columns={availableColumns}
+        visibleColumns={visibleColumns}
+        setVisibleColumns={setVisibleColumns}
+        size="icon"
+      />
+    </div>
+  );
+
   return <Layout>
       <div className="w-full overflow-x-hidden">
-        <EZcaterFiltersLayout title="eZcater Orders" timezoneInfo={timezoneInfo} filterControls={filterControls} searchControls={searchControls} className="border-0" />
+        <EZcaterFiltersLayout 
+          title="eZcater Orders" 
+          timezoneInfo={timezoneInfo} 
+          filterControls={filterControls} 
+          searchControls={searchControls} 
+          className="border-0" 
+        />
 
         <div className="px-4 py-4">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-            
-            
-          </div>
-
           <UsersTableContainer>
             <Table>
               <TableHeader className="bg-muted/50 border-b-0 m-0 p-0">
                 <TableRow className="border-b-0">
-                  {columnOrder.map(columnId => {
-                  const column = columns[columnId as keyof typeof columns];
-                  const isSortable = ['id', 'customer', 'dateTime', 'location', 'value', 'items'].includes(columnId);
-                  return <TableHead key={columnId} className={`whitespace-nowrap min-w-[100px] ${columnId === 'actions' ? 'w-[80px]' : ''}`} dragOver={dragOverColumn === columnId} sortable={isSortable} sortDirection={sortConfig.key === columnId ? sortConfig.direction : null} onSort={() => isSortable && requestSort(columnId)}>
+                  {columnOrder.filter(id => visibleColumns.includes(id)).map(columnId => {
+                    const column = columns[columnId as keyof typeof columns];
+                    const isSortable = ['id', 'customer', 'dateTime', 'location', 'value', 'items'].includes(columnId);
+                    return <TableHead key={columnId} className={`whitespace-nowrap min-w-[100px] ${columnId === 'actions' ? 'w-[80px]' : ''}`} dragOver={dragOverColumn === columnId} sortable={isSortable} sortDirection={sortConfig.key === columnId ? sortConfig.direction : null} onSort={() => isSortable && requestSort(columnId)}>
                       <div className="flex items-center gap-2">
                         <div draggable={columnId !== 'actions'} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className={`cursor-grab transition-opacity duration-200 ${draggedColumn === columnId ? 'opacity-50' : ''}`}>
                           <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
@@ -317,41 +367,41 @@ const EZcaterOrders = () => {
                         <span>{column.label}</span>
                       </div>
                     </TableHead>;
-                })}
+                  })}
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {sortedOrders.map(order => <TableRow key={order.id}>
-                    {columnOrder.map(columnId => {
-                  switch (columnId) {
-                    case "id":
-                      return <TableCell key={columnId} className="font-medium">{order.id}</TableCell>;
-                    case "customer":
-                      return <TableCell key={columnId}>{order.customer}</TableCell>;
-                    case "dateTime":
-                      return <TableCell key={columnId}>{`${order.date} ${order.time}`}</TableCell>;
-                    case "status":
-                      return <TableCell key={columnId}>
-                                  <Badge variant={getStatusBadgeVariant(order.status)} className="capitalize">
-                                    {order.status.replace('-', ' ')}
-                                  </Badge>
-                                </TableCell>;
-                    case "location":
-                      return <TableCell key={columnId}>{order.location}</TableCell>;
-                    case "value":
-                      return <TableCell key={columnId}>{order.value}</TableCell>;
-                    case "items":
-                      return <TableCell key={columnId}>{order.items}</TableCell>;
-                    case "actions":
-                      return <TableCell key={columnId} className="text-right">
-                                  <Button size="sm" variant="outline" onClick={() => handleViewOrder(order.id)}>
-                                    View
-                                  </Button>
-                                </TableCell>;
-                    default:
-                      return <TableCell key={columnId}></TableCell>;
-                  }
-                })}
+                    {columnOrder.filter(id => visibleColumns.includes(id)).map(columnId => {
+                      switch (columnId) {
+                        case "id":
+                          return <TableCell key={columnId} className="font-medium">{order.id}</TableCell>;
+                        case "customer":
+                          return <TableCell key={columnId}>{order.customer}</TableCell>;
+                        case "dateTime":
+                          return <TableCell key={columnId}>{`${order.date} ${order.time}`}</TableCell>;
+                        case "status":
+                          return <TableCell key={columnId}>
+                                    <Badge variant={getStatusBadgeVariant(order.status)} className="capitalize">
+                                      {order.status.replace('-', ' ')}
+                                    </Badge>
+                                  </TableCell>;
+                        case "location":
+                          return <TableCell key={columnId}>{order.location}</TableCell>;
+                        case "value":
+                          return <TableCell key={columnId}>{order.value}</TableCell>;
+                        case "items":
+                          return <TableCell key={columnId}>{order.items}</TableCell>;
+                        case "actions":
+                          return <TableCell key={columnId} className="text-right">
+                                    <Button size="sm" variant="outline" onClick={() => handleViewOrder(order.id)}>
+                                      View
+                                    </Button>
+                                  </TableCell>;
+                        default:
+                          return <TableCell key={columnId}></TableCell>;
+                      }
+                    })}
                   </TableRow>)}
                 {sortedOrders.length === 0 && <TableRow>
                     <TableCell colSpan={8} className="text-center py-6">
@@ -365,4 +415,5 @@ const EZcaterOrders = () => {
       </div>
     </Layout>;
 };
+
 export default EZcaterOrders;
