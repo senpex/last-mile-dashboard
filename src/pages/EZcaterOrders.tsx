@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -154,7 +155,7 @@ const EZcaterOrders = () => {
   
   const statusOptions = ["pending", "confirmed", "in-transit", "delivered", "cancelled"];
 
-  // Fixed column dragging handlers
+  // Column dragging handlers
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     setDraggedColumn(columnId);
     e.dataTransfer.setData('text/plain', columnId);
@@ -163,6 +164,34 @@ const EZcaterOrders = () => {
     const dragImage = new Image();
     dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     e.dataTransfer.setDragImage(dragImage, 0, 0);
+    
+    // Add a class to the document body to indicate dragging state
+    document.body.classList.add('column-dragging');
+    
+    // Create a visual preview element
+    const dragPreview = document.createElement('div');
+    dragPreview.className = 'px-2 py-1 bg-background border rounded shadow text-sm fixed pointer-events-none';
+    dragPreview.textContent = columns[columnId as keyof typeof columns].label;
+    dragPreview.style.position = 'fixed';
+    dragPreview.style.left = `${e.clientX + 10}px`;
+    dragPreview.style.top = `${e.clientY + 10}px`;
+    dragPreview.style.zIndex = '9999';
+    document.body.appendChild(dragPreview);
+    
+    const updatePreviewPosition = (e: MouseEvent) => {
+      dragPreview.style.left = `${e.clientX + 10}px`;
+      dragPreview.style.top = `${e.clientY + 10}px`;
+    };
+    
+    const cleanup = () => {
+      document.removeEventListener('mousemove', updatePreviewPosition);
+      document.removeEventListener('dragend', cleanup);
+      document.body.classList.remove('column-dragging');
+      dragPreview.remove();
+    };
+    
+    document.addEventListener('mousemove', updatePreviewPosition);
+    document.addEventListener('dragend', cleanup);
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
@@ -175,6 +204,7 @@ const EZcaterOrders = () => {
   const handleDragEnd = () => {
     setDraggedColumn(null);
     setDragOverColumn(null);
+    document.body.classList.remove('column-dragging');
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
@@ -266,7 +296,7 @@ const EZcaterOrders = () => {
                     return (
                       <TableHead 
                         key={columnId}
-                        className="whitespace-nowrap" 
+                        className={`whitespace-nowrap ${draggedColumn === columnId ? 'opacity-50 bg-accent' : ''}`}
                         sortable={isSortable}
                         sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
                         onSort={() => isSortable && requestSort(columnId)}
@@ -280,7 +310,9 @@ const EZcaterOrders = () => {
                             onDragOver={(e) => handleDragOver(e, columnId)}
                             onDragEnd={handleDragEnd}
                             onDrop={(e) => handleDrop(e, columnId)}
-                            className="cursor-grab"
+                            className={`cursor-grab transition-all duration-200 ${
+                              draggedColumn === columnId ? 'opacity-50' : ''
+                            }`}
                           >
                             <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
                           </div>
