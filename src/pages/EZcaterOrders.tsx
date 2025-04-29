@@ -287,9 +287,7 @@ const EZcaterOrders = () => {
 
   // Filter controls
   const filterControls = <div className="flex flex-wrap gap-2">
-      {statusOptions.map(status => <Badge key={status} variant={selectedStatus === status ? getStatusBadgeVariant(status) : "outline"} className="cursor-pointer capitalize" onClick={() => setSelectedStatus(selectedStatus === status ? null : status)}>
-          {status.replace('-', ' ')}
-        </Badge>)}
+      {statusOptions.map(status => {})}
     </div>;
 
   // Search controls
