@@ -5,8 +5,6 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Separator } from "@/components/ui/separator";
 import { Clock, UserRound, ChevronUp, ChevronDown, MapPin } from "lucide-react";
 import { OrderMap } from "../OrderMap";
-import { Card, CardContent } from "@/components/ui/card";
-
 interface CustomerOrderViewProps {
   order: {
     id: string;
@@ -64,25 +62,31 @@ export const CustomerOrderView = ({
           
           <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
           
-          <Card className="order-times-card shadow-sm">
-            <CardContent className="p-2.5">
-              <div className="flex items-start gap-2">
-                <div className="flex-shrink-0 mt-1 bg-primary/10 p-1.5 rounded-full">
-                  <Clock className="h-4 w-4 text-primary/70" />
+          <div className="order-times-card rounded-md bg-muted/50 p-2.5 shadow-sm">
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-1.5">
+                  <Clock className="h-3 w-3 text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground">Pickup:</span>
                 </div>
-                <div className="flex-1 space-y-2">
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-                    <div className="text-xs text-muted-foreground">Pickup:</div>
-                    <div className="text-xs font-medium">{order.pickupTime}</div>
-                    <div className="text-xs text-muted-foreground">Dropoff:</div>
-                    <div className="text-xs font-medium">{order.dropoffTime}</div>
-                    <div className="text-xs text-muted-foreground">ETA:</div>
-                    <div className="text-xs font-medium">{order.eta}</div>
-                  </div>
-                </div>
+                <span className="text-xs font-medium">{order.pickupTime}</span>
               </div>
-            </CardContent>
-          </Card>
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-1.5">
+                  <Clock className="h-3 w-3 text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground">Dropoff:</span>
+                </div>
+                <span className="text-xs font-medium">{order.dropoffTime}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-1.5">
+                  <Clock className="h-3 w-3 text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground">ETA:</span>
+                </div>
+                <span className="text-xs font-medium">{order.eta}</span>
+              </div>
+            </div>
+          </div>
           
           <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm">
             <div className="space-y-3">
