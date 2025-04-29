@@ -1,3 +1,4 @@
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -85,7 +86,7 @@ export const CustomerOrderView = ({
           <div className="rounded-md bg-muted/50 p-3 shadow-sm">
             <div>
               {shouldShowDriverInfo(order.id) ? (
-                <div className="flex items-start gap-2 p-2 bg-background/70 rounded-md">
+                <>
                   <div className="flex-shrink-0 mt-0.5 p-1 rounded-full bg-white">
                     <UserRound className="h-3 w-3 text-muted-foreground" />
                   </div>
@@ -104,7 +105,7 @@ export const CustomerOrderView = ({
                       <span className="text-xs">{driverInfo.totalDeliveries}</span>
                     </div>
                   </div>
-                </div>
+                </>
               ) : (
                 <>
                   <div className="flex items-center gap-1.5 mb-2">
