@@ -1,11 +1,9 @@
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { Clock, UserRound, ChevronUp, ChevronDown } from "lucide-react";
 import { OrderMap } from "../OrderMap";
-
 interface CustomerOrderViewProps {
   order: {
     id: string;
@@ -37,7 +35,6 @@ interface CustomerOrderViewProps {
   };
   shouldShowDriverInfo: (orderId: string) => boolean;
 }
-
 export const CustomerOrderView = ({
   order,
   expandedOrderId,
@@ -49,32 +46,20 @@ export const CustomerOrderView = ({
   shouldShowDriverInfo
 }: CustomerOrderViewProps) => {
   const isExpanded = expandedOrderId === order.id;
-
-  return (
-    <div className="order-card rounded-lg transition-all duration-200 ease-in-out">
+  return <div className="order-card rounded-lg transition-all duration-200 ease-in-out">
       <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
         <h3 className="font-medium text-xs text-foreground/90">Order #{order.id}</h3>
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          onClick={() => setExpandedOrderId(isExpanded ? null : order.id)} 
-          className="h-6 w-6 p-0"
-        >
+        <Button variant="ghost" size="sm" onClick={() => setExpandedOrderId(isExpanded ? null : order.id)} className="h-6 w-6 p-0">
           {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
         </Button>
       </div>
       
-      {isExpanded && (
-        <div className="px-3 pt-1 pb-3 space-y-3">
+      {isExpanded && <div className="px-3 pt-1 pb-3 space-y-3">
           <div className="flex justify-start">
             <Badge className="bg-green-500">Active</Badge>
           </div>
           
-          <OrderMap 
-            pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} 
-            deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress}
-            driverName={order.driverName}
-          />
+          <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
           
           <div className="order-times-card rounded-md bg-muted/50 p-2.5 shadow-sm">
             <div className="space-y-2">
@@ -87,14 +72,14 @@ export const CustomerOrderView = ({
               </div>
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-1.5">
-                  <Clock className="h-3 w-3 text-muted-foreground" />
+                  
                   <span className="text-xs text-muted-foreground">Dropoff:</span>
                 </div>
                 <span className="text-xs font-medium">{order.dropoffTime}</span>
               </div>
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-1.5">
-                  <Clock className="h-3 w-3 text-muted-foreground" />
+                  
                   <span className="text-xs text-muted-foreground">ETA:</span>
                 </div>
                 <span className="text-xs font-medium">{order.eta}</span>
@@ -103,8 +88,7 @@ export const CustomerOrderView = ({
           </div>
           
           <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
-            {shouldShowDriverInfo(order.id) ? (
-              <div className="flex items-start gap-2">
+            {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2">
                 <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                 <div>
                   <div className="text-[11px] text-muted-foreground mb-0.5">Driver Details:</div>
@@ -114,9 +98,7 @@ export const CustomerOrderView = ({
                   <div className="text-xs text-muted-foreground">Rating: ⭐️ {driverInfo.rating}</div>
                   <div className="text-xs text-muted-foreground">Deliveries: {driverInfo.totalDeliveries}</div>
                 </div>
-              </div>
-            ) : (
-              <>
+              </div> : <>
                 <div className="flex items-start gap-2">
                   <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                   <div>
@@ -136,8 +118,7 @@ export const CustomerOrderView = ({
                     <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
                   </div>
                 </div>
-              </>
-            )}
+              </>}
           </div>
           
           <Sheet>
@@ -156,8 +137,6 @@ export const CustomerOrderView = ({
               </div>
             </SheetContent>
           </Sheet>
-        </div>
-      )}
-    </div>
-  );
+        </div>}
+    </div>;
 };
