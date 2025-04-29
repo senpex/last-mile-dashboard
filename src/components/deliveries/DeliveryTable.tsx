@@ -328,7 +328,7 @@ const DeliveryTable = ({
 
   return (
     <div className="flex-1 overflow-hidden px-px">
-      <div className="flex h-full pr-[-10px]">
+      <div className="flex h-full">
         <DeliverySidebar 
           open={isFilterSidebarOpen} 
           onClose={toggleFilterSidebar} 
