@@ -67,81 +67,75 @@ export const CustomerOrderView = ({
           <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
           
           <div className="rounded-md bg-muted/50 p-3 shadow-sm">
-            <div>
-              <div className="flex items-center gap-1.5 mb-2">
-                <Clock className="h-3 w-3 text-muted-foreground" />
-                <span className="text-xs font-medium text-muted-foreground">Time Details</span>
-              </div>
-              <div className="grid grid-cols-2 gap-y-1 pl-4">
-                <span className="text-xs text-muted-foreground">Pickup:</span>
-                <span className="text-xs font-medium">{order.pickupTime}</span>
-                <span className="text-xs text-muted-foreground">Dropoff:</span>
-                <span className="text-xs font-medium">{order.dropoffTime}</span>
-                <span className="text-xs text-muted-foreground">ETA:</span>
-                <span className="text-xs font-medium">{order.eta}</span>
-              </div>
+            <div className="flex items-center gap-1.5 mb-2">
+              <Clock className="h-3 w-3 text-muted-foreground" />
+              <span className="text-xs font-medium text-muted-foreground">Time Details</span>
+            </div>
+            <div className="grid grid-cols-2 gap-y-1 pl-4">
+              <span className="text-xs text-muted-foreground">Pickup:</span>
+              <span className="text-xs font-medium">{order.pickupTime}</span>
+              <span className="text-xs text-muted-foreground">Dropoff:</span>
+              <span className="text-xs font-medium">{order.dropoffTime}</span>
+              <span className="text-xs text-muted-foreground">ETA:</span>
+              <span className="text-xs font-medium">{order.eta}</span>
             </div>
           </div>
           
           <div className="rounded-md bg-muted/50 p-3 shadow-sm">
-            <div>
-              {shouldShowDriverInfo(order.id) ? (
-                <>
-                  <div className="flex-shrink-0 mt-0.5 p-1 rounded-full bg-white">
-                    <UserRound className="h-3 w-3 text-muted-foreground" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-xs font-medium mb-1">Driver Details</div>
+            {shouldShowDriverInfo(order.id) ? (
+              <div>
+                <div className="flex items-center gap-1.5 mb-2">
+                  <UserRound className="h-3 w-3 text-muted-foreground" />
+                  <span className="text-xs font-medium text-muted-foreground">Driver Details</span>
+                </div>
+                <div className="grid grid-cols-2 gap-y-1 pl-4">
+                  <span className="text-xs text-muted-foreground">Name:</span>
+                  <span className="text-xs font-medium">{driverInfo.name}</span>
+                  <span className="text-xs text-muted-foreground">Phone:</span>
+                  <span className="text-xs">{driverInfo.phone}</span>
+                  <span className="text-xs text-muted-foreground">Vehicle:</span>
+                  <span className="text-xs">{driverInfo.vehicle}</span>
+                  <span className="text-xs text-muted-foreground">Rating:</span>
+                  <span className="text-xs">⭐️ {driverInfo.rating}</span>
+                  <span className="text-xs text-muted-foreground">Deliveries:</span>
+                  <span className="text-xs">{driverInfo.totalDeliveries}</span>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <div className="flex items-center gap-1.5 mb-2">
+                  <UserRound className="h-3 w-3 text-muted-foreground" />
+                  <span className="text-xs font-medium text-muted-foreground">Location Details</span>
+                </div>
+                <div className="pl-4">
+                  <div className="mb-2">
+                    <div className="text-xs font-medium mb-1">Sender</div>
                     <div className="grid grid-cols-2 gap-x-3 gap-y-1">
                       <span className="text-xs text-muted-foreground">Name:</span>
-                      <span className="text-xs font-medium">{driverInfo.name}</span>
+                      <span className="text-xs font-medium">{senderInfo.name}</span>
                       <span className="text-xs text-muted-foreground">Phone:</span>
-                      <span className="text-xs">{driverInfo.phone}</span>
-                      <span className="text-xs text-muted-foreground">Vehicle:</span>
-                      <span className="text-xs">{driverInfo.vehicle}</span>
-                      <span className="text-xs text-muted-foreground">Rating:</span>
-                      <span className="text-xs">⭐️ {driverInfo.rating}</span>
-                      <span className="text-xs text-muted-foreground">Deliveries:</span>
-                      <span className="text-xs">{driverInfo.totalDeliveries}</span>
+                      <span className="text-xs">{senderInfo.phone}</span>
+                      <span className="text-xs text-muted-foreground">Address:</span>
+                      <span className="text-xs">{knownLocations[order.pickupAddress] || order.pickupAddress}</span>
                     </div>
                   </div>
-                </>
-              ) : (
-                <>
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <UserRound className="h-3 w-3 text-muted-foreground" />
-                    <span className="text-xs font-medium text-muted-foreground">Location Details</span>
-                  </div>
-                  <div className="pl-4">
-                    <div className="mb-2">
-                      <div className="text-xs font-medium mb-1">Sender</div>
-                      <div className="grid grid-cols-2 gap-x-3 gap-y-1">
-                        <span className="text-xs text-muted-foreground">Name:</span>
-                        <span className="text-xs font-medium">{senderInfo.name}</span>
-                        <span className="text-xs text-muted-foreground">Phone:</span>
-                        <span className="text-xs">{senderInfo.phone}</span>
-                        <span className="text-xs text-muted-foreground">Address:</span>
-                        <span className="text-xs">{knownLocations[order.pickupAddress] || order.pickupAddress}</span>
-                      </div>
-                    </div>
-                    
-                    <Separator className="my-2 bg-border/30" />
-                    
-                    <div>
-                      <div className="text-xs font-medium mb-1">Recipient</div>
-                      <div className="grid grid-cols-2 gap-x-3 gap-y-1">
-                        <span className="text-xs text-muted-foreground">Name:</span>
-                        <span className="text-xs font-medium">{recipientInfo.name}</span>
-                        <span className="text-xs text-muted-foreground">Phone:</span>
-                        <span className="text-xs">{recipientInfo.phone}</span>
-                        <span className="text-xs text-muted-foreground">Address:</span>
-                        <span className="text-xs">{knownLocations[order.deliveryAddress] || order.deliveryAddress}</span>
-                      </div>
+                  
+                  <Separator className="my-2 bg-border/30" />
+                  
+                  <div>
+                    <div className="text-xs font-medium mb-1">Recipient</div>
+                    <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+                      <span className="text-xs text-muted-foreground">Name:</span>
+                      <span className="text-xs font-medium">{recipientInfo.name}</span>
+                      <span className="text-xs text-muted-foreground">Phone:</span>
+                      <span className="text-xs">{recipientInfo.phone}</span>
+                      <span className="text-xs text-muted-foreground">Address:</span>
+                      <span className="text-xs">{knownLocations[order.deliveryAddress] || order.deliveryAddress}</span>
                     </div>
                   </div>
-                </>
-              )}
-            </div>
+                </div>
+              </div>
+            )}
           </div>
           
           <Sheet>
