@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Separator } from "@/components/ui/separator";
+
 const formSchema = z.object({
   pickupAddress: z.string(),
   pickupLat: z.string(),
@@ -36,9 +37,11 @@ const formSchema = z.object({
   deliveryTime: z.string(),
   bagRequirement: z.string().optional()
 });
+
 interface CreateOrderSheetProps {
   onClose: () => void;
 }
+
 export function CreateOrderSheet({
   onClose
 }: CreateOrderSheetProps) {
@@ -101,8 +104,7 @@ export function CreateOrderSheet({
               </div>
               <div className="space-y-2">
                 <Label htmlFor="pickupDescription">Pickup Description</Label>
-                <Textarea id="pickupDescription" {...form.register("pickupDescription")} className="min-h-[24px] h-[38px] py-2" // Reduced to match single line input height
-              />
+                <Textarea id="pickupDescription" {...form.register("pickupDescription")} className="min-h-[24px] h-[38px] py-2" />
               </div>
             </div>
 
@@ -127,8 +129,7 @@ export function CreateOrderSheet({
               </div>
               <div className="space-y-2">
                 <Label htmlFor="dropoffDescription">Dropoff Description</Label>
-                <Textarea id="dropoffDescription" {...form.register("dropoffDescription")} className="min-h-[24px] h-[38px] py-2" // Reduced to match single line input height
-              />
+                <Textarea id="dropoffDescription" {...form.register("dropoffDescription")} className="min-h-[24px] h-[38px] py-2" />
               </div>
             </div>
 
@@ -156,6 +157,10 @@ export function CreateOrderSheet({
               <h3 className="text-md font-medium">Delivery Details</h3>
               <div className="flex gap-4">
                 <div className="space-y-2 flex-1">
+                  <Label htmlFor="senderId">Sender ID</Label>
+                  <Input id="senderId" {...form.register("senderId")} />
+                </div>
+                <div className="space-y-2 flex-1">
                   <Label htmlFor="distance">Distance (miles)</Label>
                   <Input id="distance" {...form.register("distance")} />
                 </div>
@@ -170,8 +175,7 @@ export function CreateOrderSheet({
               </div>
               <div className="space-y-2">
                 <Label htmlFor="courierNotes">Courier Notes</Label>
-                <Textarea id="courierNotes" {...form.register("courierNotes")} className="min-h-[24px] h-[38px] py-2" // Reduced to match single line input height
-              />
+                <Textarea id="courierNotes" {...form.register("courierNotes")} className="min-h-[24px] h-[38px] py-2" />
               </div>
             </div>
 
@@ -200,10 +204,6 @@ export function CreateOrderSheet({
                 <div className="space-y-2">
                   <Label htmlFor="totalTip">Total Tip</Label>
                   <Input id="totalTip" {...form.register("totalTip")} />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="senderId">Sender ID</Label>
-                  <Input id="senderId" {...form.register("senderId")} />
                 </div>
               </div>
             </div>
