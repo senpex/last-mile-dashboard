@@ -82,10 +82,11 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
 
   return (
     <div className="h-full overflow-auto">
-      <div className="p-6">
+      <div className="p-6 max-w-5xl mx-auto">
         <h2 className="text-lg font-semibold mb-6">Create Order</h2>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            
             {/* Pickup Address Section */}
             <div className="space-y-4">
               <h3 className="text-md font-medium">Pickup Information</h3>
@@ -181,7 +182,7 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
             {/* Financial Information */}
             <div className="space-y-4">
               <h3 className="text-md font-medium">Financial Information</h3>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="orderFee">Order Fee</Label>
                   <Input id="orderFee" {...form.register("orderFee")} />

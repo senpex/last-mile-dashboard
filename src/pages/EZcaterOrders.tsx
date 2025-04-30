@@ -520,7 +520,7 @@ const EZcaterOrders = () => {
                                       Create order
                                     </DropdownMenuItem>
                                   </SheetTrigger>
-                                  <SheetContent side="right" className="w-full sm:max-w-md md:max-w-lg">
+                                  <SheetContent side="right" className="w-full sm:max-w-xl md:max-w-4xl lg:max-w-6xl">
                                     <CreateOrderSheet onClose={() => setIsCreateOrderSheetOpen(false)} />
                                   </SheetContent>
                                 </Sheet>
