@@ -5,6 +5,16 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/compone
 import { Button } from "@/components/ui/button";
 import { ZoomIn, ZoomOut, Navigation, Car } from "lucide-react";
 
+// Create a singleton loader instance
+const loaderInstance = new Loader({
+  apiKey: "AIzaSyD--I0r1HmH90XbB_l-KzBEx-Y3I1uGtOE",
+  version: "weekly",
+  libraries: ["geometry", "places"],
+});
+
+// Global reference to the loaded Google Maps API
+let googleMapsPromise: Promise<typeof google> | null = null;
+
 interface OrderMapProps {
   pickupAddress: string;
   deliveryAddress: string;
@@ -90,18 +100,20 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
     animationRef.current = window.requestAnimationFrame(tick);
   };
 
+  // Load Google Maps API once
+  const getGoogleMaps = () => {
+    if (!googleMapsPromise) {
+      googleMapsPromise = loaderInstance.load();
+    }
+    return googleMapsPromise;
+  };
+
   const initMap = async (container: HTMLDivElement, setMapInstance: (map: google.maps.Map) => void) => {
     setMapError(null);
     console.log("Initializing map in container:", container);
     
-    const loader = new Loader({
-      apiKey: "AIzaSyD--I0r1HmH90XbB_l-KzBEx-Y3I1uGtOE",
-      version: "weekly",
-      libraries: ["geometry", "places"],
-    });
-
     try {
-      const google = await loader.load();
+      const google = await getGoogleMaps();
       console.log("Google Maps API loaded");
       
       const mapInstance = new google.maps.Map(container, {
@@ -500,4 +512,3 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
     </>
   );
 };
-
