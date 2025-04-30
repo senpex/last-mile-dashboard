@@ -146,7 +146,8 @@ const EZcaterOrders = () => {
     }
   };
 
-  const handleViewOrder = (id: string) => {
+  const handleViewOrder = (id: number, e: React.MouseEvent) => {
+    e.stopPropagation();
     toast({
       title: "Order Details",
       description: `Viewing details for order ${id}`
@@ -156,18 +157,21 @@ const EZcaterOrders = () => {
   // Add state for managing sheet open/close
   const [isCreateOrderSheetOpen, setIsCreateOrderSheetOpen] = useState(false);
 
-  const handleCreateOrder = () => {
+  const handleCreateOrder = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setIsCreateOrderSheetOpen(true);
   };
 
-  const handleCancelRequest = (requestNumber: string) => {
+  const handleCancelRequest = (requestNumber: string, e: React.MouseEvent) => {
+    e.stopPropagation();
     toast({
       title: "Cancel Request",
       description: `Cancelling request ${requestNumber}`
     });
   };
 
-  const handleViewHistory = (requestNumber: string) => {
+  const handleViewHistory = (requestNumber: string, e: React.MouseEvent) => {
+    e.stopPropagation();
     toast({
       title: "View History",
       description: `Viewing history for request ${requestNumber}`
@@ -478,69 +482,65 @@ const EZcaterOrders = () => {
                     {columnOrder.filter(id => visibleColumns.includes(id)).map(columnId => {
                       switch (columnId) {
                         case "webhook":
-                          return <TableCell key={columnId}>{order.webhook}</TableCell>;
+                          return <TableCell key={`${order.id}-${columnId}`}>{order.webhook}</TableCell>;
                         case "package":
-                          return <TableCell key={columnId} className="font-medium">
+                          return <TableCell key={`${order.id}-${columnId}`} className="font-medium">
                             <div className="flex items-center gap-2">
                               <Package className="h-4 w-4 text-muted-foreground" />
                               {order.package}
                             </div>
                           </TableCell>;
                         case "requestNumber":
-                          return <TableCell key={columnId}>{order.requestNumber}</TableCell>;
+                          return <TableCell key={`${order.id}-${columnId}`}>{order.requestNumber}</TableCell>;
                         case "eventDate":
-                          return <TableCell key={columnId}>{order.eventDate}</TableCell>;
+                          return <TableCell key={`${order.id}-${columnId}`}>{order.eventDate}</TableCell>;
                         case "insertedDate":
-                          return <TableCell key={columnId}>{order.insertedDate}</TableCell>;
+                          return <TableCell key={`${order.id}-${columnId}`}>{order.insertedDate}</TableCell>;
                         case "pickupAddress":
-                          return <TableCell key={columnId}>{order.pickupAddress}</TableCell>;
+                          return <TableCell key={`${order.id}-${columnId}`}>{order.pickupAddress}</TableCell>;
                         case "dropoffAddress":
-                          return <TableCell key={columnId}>{order.dropoffAddress}</TableCell>;
+                          return <TableCell key={`${order.id}-${columnId}`}>{order.dropoffAddress}</TableCell>;
                         case "eventName":
-                          return <TableCell key={columnId}>{order.eventName}</TableCell>;
+                          return <TableCell key={`${order.id}-${columnId}`}>{order.eventName}</TableCell>;
                         case "status":
-                          return <TableCell key={columnId}>
+                          return <TableCell key={`${order.id}-${columnId}`}>
                                     <Badge variant={getStatusBadgeVariant(order.status)} className="capitalize">
                                       {order.status.replace('-', ' ')}
                                     </Badge>
                                   </TableCell>;
                         case "actions":
-                          return <TableCell key={columnId}>
+                          return <TableCell key={`${order.id}-${columnId}`} className="relative">
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
-                                <Button variant="outline" size="sm">
+                                <Button variant="outline" size="sm" className="z-10">
                                   <MoreVertical className="h-4 w-4" />
                                 </Button>
                               </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <Sheet open={isCreateOrderSheetOpen} onOpenChange={setIsCreateOrderSheetOpen}>
-                                  <SheetTrigger asChild>
-                                    <DropdownMenuItem onSelect={(e) => {
-                                      // Prevent the dropdown from closing when clicking the menu item
-                                      e.preventDefault();
-                                      handleCreateOrder();
-                                    }}>
-                                      Create order
-                                    </DropdownMenuItem>
-                                  </SheetTrigger>
-                                  <SheetContent side="right" className="w-full sm:max-w-xl md:max-w-4xl lg:max-w-6xl">
-                                    <CreateOrderSheet onClose={() => setIsCreateOrderSheetOpen(false)} />
-                                  </SheetContent>
-                                </Sheet>
-                                <DropdownMenuItem onClick={() => handleCancelRequest(order.requestNumber)}>
+                              <DropdownMenuContent align="end" className="z-50">
+                                <DropdownMenuItem onClick={(e) => {
+                                  e.stopPropagation();
+                                  setIsCreateOrderSheetOpen(true);
+                                }}>
+                                  Create order
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={(e) => handleCancelRequest(order.requestNumber, e)}>
                                   Cancel request
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
                           </TableCell>;
                         case "history":
-                          return <TableCell key={columnId} className="text-center">
-                                    <Button size="sm" variant="ghost" onClick={() => handleViewHistory(order.requestNumber)}>
+                          return <TableCell key={`${order.id}-${columnId}`} className="text-center">
+                                    <Button 
+                                      size="sm" 
+                                      variant="ghost" 
+                                      onClick={(e) => handleViewHistory(order.requestNumber, e)}
+                                    >
                                       <HistoryIcon className="h-4 w-4" />
                                     </Button>
                                   </TableCell>;
                         default:
-                          return <TableCell key={columnId}></TableCell>;
+                          return <TableCell key={`${order.id}-${columnId}`}></TableCell>;
                       }
                     })}
                   </TableRow>
@@ -567,6 +567,13 @@ const EZcaterOrders = () => {
           onPageSizeChange={handlePageSizeChange} 
         />
       </div>
+
+      {/* Create Order Sheet outside the dropdown */}
+      <Sheet open={isCreateOrderSheetOpen} onOpenChange={setIsCreateOrderSheetOpen}>
+        <SheetContent side="right" className="w-full sm:max-w-xl md:max-w-4xl lg:max-w-6xl">
+          <CreateOrderSheet onClose={() => setIsCreateOrderSheetOpen(false)} />
+        </SheetContent>
+      </Sheet>
     </Layout>;
 };
 
