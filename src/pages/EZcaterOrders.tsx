@@ -63,12 +63,12 @@ const EZcaterOrders = () => {
     { id: "actions", label: "Actions", default: true },
   ];
 
-  // Sample data for eZcater orders
+  // Sample data for eZcater orders with updated values
   const orders = [
     {
-      webhook: "ez-webhook-001",
-      package: "Package A",
-      requestNumber: "REQ-2023-001",
+      webhook: "20000",
+      package: "700000",
+      requestNumber: "FGH-87F",
       eventDate: "2023-04-30 12:30 PM",
       insertedDate: "2023-04-28 09:15 AM",
       pickupAddress: "123 Main St, Boston, MA",
@@ -77,9 +77,9 @@ const EZcaterOrders = () => {
       status: "pending"
     },
     {
-      webhook: "ez-webhook-002",
-      package: "Package B",
-      requestNumber: "REQ-2023-002",
+      webhook: "20000",
+      package: "700000",
+      requestNumber: "FGH-87F",
       eventDate: "2023-04-30 1:45 PM",
       insertedDate: "2023-04-28 10:30 AM",
       pickupAddress: "789 Market St, Cambridge, MA",
@@ -88,9 +88,9 @@ const EZcaterOrders = () => {
       status: "confirmed"
     },
     {
-      webhook: "ez-webhook-003",
-      package: "Package C",
-      requestNumber: "REQ-2023-003",
+      webhook: "20000",
+      package: "700000",
+      requestNumber: "FGH-87F",
       eventDate: "2023-05-01 11:15 AM",
       insertedDate: "2023-04-28 11:45 AM",
       pickupAddress: "222 Food Ave, Boston, MA",
@@ -99,9 +99,9 @@ const EZcaterOrders = () => {
       status: "in-transit"
     },
     {
-      webhook: "ez-webhook-004",
-      package: "Package D",
-      requestNumber: "REQ-2023-004",
+      webhook: "20000",
+      package: "700000",
+      requestNumber: "FGH-87F",
       eventDate: "2023-05-01 12:00 PM",
       insertedDate: "2023-04-28 02:00 PM",
       pickupAddress: "444 Restaurant Row, Worcester, MA",
@@ -110,9 +110,9 @@ const EZcaterOrders = () => {
       status: "delivered"
     },
     {
-      webhook: "ez-webhook-005",
-      package: "Package E",
-      requestNumber: "REQ-2023-005",
+      webhook: "20000",
+      package: "700000",
+      requestNumber: "FGH-87F",
       eventDate: "2023-05-02 2:30 PM",
       insertedDate: "2023-04-29 08:45 AM",
       pickupAddress: "666 University Ave, Cambridge, MA",
