@@ -188,25 +188,9 @@ export const ChatInterface = ({ chatId, user, onClose, onOpenChat }: ChatInterfa
     setAttachedFiles([]);
   };
 
-  const handleAddNote = (noteText: string) => {
-    if (noteText.trim()) {
-      const newNote: MessageType = {
-        id: `note-${Date.now()}`,
-        senderId: user.id,
-        senderName: user.name,
-        senderRole: user.role === 'driver' ? 'driver' : 'client',
-        content: noteText,
-        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
-        isNote: true
-      };
-
-      setMessages(prev => [...prev, newNote]);
-      toast.success("Note added");
-    } else {
-      toast.error("Please write a note before sending");
-    }
-  };
-
+  // We'll remove this function since we removed the notes button
+  // This resolves the type error where it was being passed to ChatInput
+  
   const handleSendVoiceMessage = (audioBlob: Blob) => {
     const newMessage: MessageType = {
       id: `msg-${Date.now()}`,
@@ -253,7 +237,7 @@ export const ChatInterface = ({ chatId, user, onClose, onOpenChat }: ChatInterfa
               attachedFiles={attachedFiles}
               setAttachedFiles={setAttachedFiles}
               onSendVoiceMessage={handleSendVoiceMessage}
-              onAddNote={handleAddNote}
+              // Remove the onAddNote prop since we removed the notes button
             />
           </>
         );
