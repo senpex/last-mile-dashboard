@@ -136,19 +136,20 @@ export const ChatInterface = ({ chatId, user, onClose, onOpenChat }: ChatInterfa
 
   const showDriverInfo = !(user.role === 'driver' && user.status === 'working');
 
+  // Updated opened chats with order numbers that match the working drivers' order IDs
   const openedChats = [
     {
-      orderId: "909090",
+      orderId: "ORD-2341",
       lastMessage: "I'm at the pickup location.",
       sentAt: "10:28 AM",
       unread: true
     }, {
-      orderId: "909093",
+      orderId: "ORD-2342",
       lastMessage: "Delivered the package. Please confirm!",
       sentAt: "9:45 AM",
       unread: false
     }, {
-      orderId: "909094",
+      orderId: "ORD-2343",
       lastMessage: "Running 5 min late due to traffic.",
       sentAt: "8:59 AM",
       unread: true
