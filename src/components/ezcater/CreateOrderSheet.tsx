@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -250,10 +249,10 @@ export function CreateOrderSheet({
                       <SelectValue placeholder="Select time zone" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="America/New_York">GMT-5: Eastern Time (ET)</SelectItem>
-                      <SelectItem value="America/Chicago">GMT-6: Central Time (CT)</SelectItem>
-                      <SelectItem value="America/Denver">GMT-7: Mountain Time (MT)</SelectItem>
-                      <SelectItem value="America/Los_Angeles">GMT-8: Pacific Time (PT)</SelectItem>
+                      <SelectItem value="America/New_York">GMT-300: Eastern Time (ET)</SelectItem>
+                      <SelectItem value="America/Chicago">GMT-360: Central Time (CT)</SelectItem>
+                      <SelectItem value="America/Denver">GMT-420: Mountain Time (MT)</SelectItem>
+                      <SelectItem value="America/Los_Angeles">GMT-480: Pacific Time (PT)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
