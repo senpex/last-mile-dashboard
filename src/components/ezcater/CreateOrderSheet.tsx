@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Separator } from "@/components/ui/separator";
+
 const formSchema = z.object({
   pickupAddress: z.string(),
   pickupLat: z.string(),
@@ -271,7 +272,7 @@ export function CreateOrderSheet({
               </Select>
             </div>
 
-            <div className="pt-4 flex justify-end">
+            <div className="pt-4 flex justify-start">
               <Button type="submit" className="text-center">Create Order</Button>
             </div>
           </form>
