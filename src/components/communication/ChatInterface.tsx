@@ -158,7 +158,14 @@ export const ChatInterface = ({ chatId, user, onClose, onOpenChat }: ChatInterfa
 
   const handleOpenChat = (orderId: string) => {
     if (onOpenChat) {
+      // Call the parent component's onOpenChat function to handle opening the chat
       onOpenChat(orderId);
+      
+      // After calling onOpenChat, switch back to the chat tab to show the messages
+      setActiveTab("chat");
+      
+      // Display a toast notification confirming which order was opened
+      toast.success(`Opened order #${orderId}`);
     }
   };
 

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { ChatInterface } from "@/components/communication/ChatInterface";
@@ -891,10 +892,11 @@ const CustomerSupport = () => {
   };
 
   const handleOpenChat = (orderId: string) => {
-    // Find chat with the matching orderId
+    // Find a chat with the matching orderId
     const chatWithOrderId = chats.find(chat => chat.orderId === orderId);
     
     if (chatWithOrderId) {
+      // If found, select that chat
       setSelectedChat(chatWithOrderId.id);
       toast.success(`Opened order #${orderId}`);
     } else {
