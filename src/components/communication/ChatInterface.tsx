@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { OrderDetails } from './OrderDetails';
@@ -7,9 +6,7 @@ import { ChatMessages } from './chat/ChatMessages';
 import { ChatInput } from './chat/ChatInput';
 import { ChatHistory } from './chat/ChatHistory';
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { PenLine } from "lucide-react";
-import { Clock, CircleDot, MessageSquare } from "lucide-react";
+import { MessageSquare, Clock, CircleDot } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -50,7 +47,6 @@ export const ChatInterface = ({ chatId, user, onClose, onOpenChat }: ChatInterfa
     file: File;
     type: 'image' | 'document' | 'spreadsheet' | 'pdf';
   }>>([]);
-  const [noteText, setNoteText] = useState("");
   const [selectedHistoryChat, setSelectedHistoryChat] = useState<any>(null);
   const [messages, setMessages] = useState<MessageType[]>([
     {
@@ -192,7 +188,7 @@ export const ChatInterface = ({ chatId, user, onClose, onOpenChat }: ChatInterfa
     setAttachedFiles([]);
   };
 
-  const handleAddNote = () => {
+  const handleAddNote = (noteText: string) => {
     if (noteText.trim()) {
       const newNote: MessageType = {
         id: `note-${Date.now()}`,
@@ -205,21 +201,6 @@ export const ChatInterface = ({ chatId, user, onClose, onOpenChat }: ChatInterfa
       };
 
       setMessages(prev => [...prev, newNote]);
-      setNoteText("");
-      toast.success("Note added");
-    } else if (message.trim() !== '') {
-      const newNote: MessageType = {
-        id: `note-${Date.now()}`,
-        senderId: user.id,
-        senderName: user.name,
-        senderRole: user.role === 'driver' ? 'driver' : 'client',
-        content: message,
-        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
-        isNote: true
-      };
-
-      setMessages(prev => [...prev, newNote]);
-      setMessage("");
       toast.success("Note added");
     } else {
       toast.error("Please write a note before sending");
@@ -319,29 +300,6 @@ export const ChatInterface = ({ chatId, user, onClose, onOpenChat }: ChatInterfa
               </div>
             )}
           </ScrollArea>
-        );
-      case 'notes':
-        return (
-          <div className="flex-1 p-4 space-y-4">
-            <div className="space-y-4">
-              <Textarea
-                placeholder="Write your note here..."
-                value={noteText}
-                onChange={(e) => setNoteText(e.target.value)}
-                className="min-h-[120px] resize-none"
-              />
-              <Button
-                onClick={handleAddNote}
-                className="w-full"
-              >
-                <PenLine className="mr-2 h-4 w-4" />
-                Add Note
-              </Button>
-            </div>
-            <div className="mt-6">
-              <p className="text-muted-foreground">No notes available.</p>
-            </div>
-          </div>
         );
       case 'opened':
         return (
