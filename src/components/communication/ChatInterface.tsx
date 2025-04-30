@@ -32,6 +32,7 @@ export type MessageType = {
   senderRole: 'dispatcher' | 'driver' | 'client';
   content: string;
   timestamp: string;
+  isNote?: boolean;
   attachments?: Array<{
     id: string;
     name: string;
@@ -177,9 +178,35 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
 
   const handleAddNote = () => {
     if (noteText.trim()) {
-      console.log("Adding note:", noteText);
+      const newNote: MessageType = {
+        id: `note-${Date.now()}`,
+        senderId: user.id,
+        senderName: user.name,
+        senderRole: user.role === 'driver' ? 'driver' : 'client',
+        content: noteText,
+        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
+        isNote: true
+      };
+
+      setMessages(prev => [...prev, newNote]);
       setNoteText("");
-      setActiveTab("notes");
+      toast.success("Note added");
+    } else if (message.trim() !== '') {
+      const newNote: MessageType = {
+        id: `note-${Date.now()}`,
+        senderId: user.id,
+        senderName: user.name,
+        senderRole: user.role === 'driver' ? 'driver' : 'client',
+        content: message,
+        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
+        isNote: true
+      };
+
+      setMessages(prev => [...prev, newNote]);
+      setMessage("");
+      toast.success("Note added");
+    } else {
+      toast.error("Please write a note before sending");
     }
   };
 
