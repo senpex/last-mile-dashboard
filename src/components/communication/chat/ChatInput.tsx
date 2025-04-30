@@ -2,7 +2,7 @@
 import React, { useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, Paperclip, Mic, X, MicOff } from "lucide-react";
+import { Send, Paperclip, Mic, X, MicOff, FileText } from "lucide-react";
 import { useVoiceRecorder } from '@/hooks/useVoiceRecorder';
 import { toast } from "sonner";
 
@@ -19,6 +19,7 @@ interface ChatInputProps {
     type: 'image' | 'document' | 'spreadsheet' | 'pdf';
   }>>>;
   onSendVoiceMessage?: (audioBlob: Blob) => void;
+  onAddNote?: () => void;
 }
 
 export const ChatInput = ({ 
@@ -27,7 +28,8 @@ export const ChatInput = ({
   setMessage, 
   attachedFiles, 
   setAttachedFiles,
-  onSendVoiceMessage 
+  onSendVoiceMessage,
+  onAddNote
 }: ChatInputProps) => {
   const { startRecording, stopRecording, isRecording } = useVoiceRecorder();
   const recordingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -106,6 +108,12 @@ export const ChatInput = ({
     }
   };
 
+  const handleAddNote = () => {
+    if (onAddNote) {
+      onAddNote();
+    }
+  };
+
   return (
     <div className="p-4 border-t bg-background">
       {attachedFiles.length > 0 && (
@@ -150,6 +158,17 @@ export const ChatInput = ({
             >
               {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
             </Button>
+            
+            <Button 
+              variant="outline"
+              size="icon"
+              onClick={handleAddNote}
+              title="Add note"
+              className="bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
+            >
+              <FileText className="h-5 w-5" />
+            </Button>
+            
             <Button 
               size="icon" 
               onClick={onSendMessage} 

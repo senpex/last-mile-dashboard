@@ -178,6 +178,7 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
     if (noteText.trim()) {
       console.log("Adding note:", noteText);
       setNoteText("");
+      setActiveTab("notes");
     }
   };
 
@@ -227,6 +228,7 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
               attachedFiles={attachedFiles}
               setAttachedFiles={setAttachedFiles}
               onSendVoiceMessage={handleSendVoiceMessage}
+              onAddNote={handleAddNote}
             />
           </>
         );
