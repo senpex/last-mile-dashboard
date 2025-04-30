@@ -184,24 +184,24 @@ export function CreateOrderSheet({
             {/* Financial Information */}
             <div className="space-y-4">
               <h3 className="text-md font-medium">Financial Information</h3>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="space-y-2">
+              <div className="flex gap-4">
+                <div className="space-y-2 flex-1">
                   <Label htmlFor="orderFee">Order Fee</Label>
                   <Input id="orderFee" {...form.register("orderFee")} />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 flex-1">
                   <Label htmlFor="courierEarnings">Courier Earnings</Label>
                   <Input id="courierEarnings" {...form.register("courierEarnings")} />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 flex-1">
                   <Label htmlFor="courierTip">Courier Tip</Label>
                   <Input id="courierTip" {...form.register("courierTip")} />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 flex-1">
                   <Label htmlFor="itemValue">Item Value</Label>
                   <Input id="itemValue" {...form.register("itemValue")} />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 flex-1">
                   <Label htmlFor="totalTip">Total Tip</Label>
                   <Input id="totalTip" {...form.register("totalTip")} />
                 </div>
