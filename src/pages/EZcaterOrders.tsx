@@ -35,9 +35,11 @@ const EZcaterOrders = () => {
   });
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
-  const [columnOrder, setColumnOrder] = useState(["webhook", "package", "requestNumber", "eventDate", "insertedDate", "pickupAddress", "dropoffAddress", "eventName", "status", "actions", "history"]);
+  // Updated column order to put actions at the end (swapped positions of actions and history)
+  const [columnOrder, setColumnOrder] = useState(["webhook", "package", "requestNumber", "eventDate", "insertedDate", "pickupAddress", "dropoffAddress", "eventName", "status", "history", "actions"]);
   const [timezone, setTimezone] = useState<string>("America/New_York");
-  const [visibleColumns, setVisibleColumns] = useState<string[]>(["webhook", "package", "requestNumber", "eventDate", "insertedDate", "pickupAddress", "dropoffAddress", "eventName", "status", "actions", "history"]);
+  // Also update the default visibleColumns array to match the new order
+  const [visibleColumns, setVisibleColumns] = useState<string[]>(["webhook", "package", "requestNumber", "eventDate", "insertedDate", "pickupAddress", "dropoffAddress", "eventName", "status", "history", "actions"]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const pageSizeOptions = [5, 10, 20, 50];
@@ -57,8 +59,8 @@ const EZcaterOrders = () => {
     { id: "dropoffAddress", label: "Dropoff Address", default: true },
     { id: "eventName", label: "Event Name", default: true },
     { id: "status", label: "Status", default: true },
-    { id: "actions", label: "Actions", default: true },
     { id: "history", label: "History", default: true },
+    { id: "actions", label: "Actions", default: true },
   ];
 
   // Sample data for eZcater orders
