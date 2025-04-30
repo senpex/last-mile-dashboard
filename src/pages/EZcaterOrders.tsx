@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -66,13 +65,12 @@ const EZcaterOrders = () => {
     { id: "actions", label: "Actions", default: true },
   ];
 
-  // Sample data for eZcater orders with updated values and UNIQUE IDs
+  // Sample data for eZcater orders with updated values
   const orders = [
     {
-      id: 1,
       webhook: "20000",
       package: "700000",
-      requestNumber: "FGH-87F-1",
+      requestNumber: "FGH-87F",
       eventDate: "2023-04-30 12:30 PM",
       insertedDate: "2023-04-28 09:15 AM",
       pickupAddress: "123 Main St, Boston, MA",
@@ -81,10 +79,9 @@ const EZcaterOrders = () => {
       status: "pending"
     },
     {
-      id: 2,
       webhook: "20000",
       package: "700000",
-      requestNumber: "FGH-87F-2",
+      requestNumber: "FGH-87F",
       eventDate: "2023-04-30 1:45 PM",
       insertedDate: "2023-04-28 10:30 AM",
       pickupAddress: "789 Market St, Cambridge, MA",
@@ -93,10 +90,9 @@ const EZcaterOrders = () => {
       status: "confirmed"
     },
     {
-      id: 3,
       webhook: "20000",
       package: "700000",
-      requestNumber: "FGH-87F-3",
+      requestNumber: "FGH-87F",
       eventDate: "2023-05-01 11:15 AM",
       insertedDate: "2023-04-28 11:45 AM",
       pickupAddress: "222 Food Ave, Boston, MA",
@@ -105,10 +101,9 @@ const EZcaterOrders = () => {
       status: "in-transit"
     },
     {
-      id: 4,
       webhook: "20000",
       package: "700000",
-      requestNumber: "FGH-87F-4",
+      requestNumber: "FGH-87F",
       eventDate: "2023-05-01 12:00 PM",
       insertedDate: "2023-04-28 02:00 PM",
       pickupAddress: "444 Restaurant Row, Worcester, MA",
@@ -117,10 +112,9 @@ const EZcaterOrders = () => {
       status: "delivered"
     },
     {
-      id: 5,
       webhook: "20000",
       package: "700000",
-      requestNumber: "FGH-87F-5",
+      requestNumber: "FGH-87F",
       eventDate: "2023-05-02 2:30 PM",
       insertedDate: "2023-04-29 08:45 AM",
       pickupAddress: "666 University Ave, Cambridge, MA",
@@ -147,8 +141,7 @@ const EZcaterOrders = () => {
     }
   };
 
-  const handleViewOrder = (id: number, e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleViewOrder = (id: string) => {
     toast({
       title: "Order Details",
       description: `Viewing details for order ${id}`
@@ -158,21 +151,18 @@ const EZcaterOrders = () => {
   // Add state for managing sheet open/close
   const [isCreateOrderSheetOpen, setIsCreateOrderSheetOpen] = useState(false);
 
-  const handleCreateOrder = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleCreateOrder = (requestNumber: string) => {
     setIsCreateOrderSheetOpen(true);
   };
 
-  const handleCancelRequest = (requestNumber: string, e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleCancelRequest = (requestNumber: string) => {
     toast({
       title: "Cancel Request",
       description: `Cancelling request ${requestNumber}`
     });
   };
 
-  const handleViewHistory = (requestNumber: string, e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleViewHistory = (requestNumber: string) => {
     toast({
       title: "View History",
       description: `Viewing history for request ${requestNumber}`
@@ -250,42 +240,46 @@ const EZcaterOrders = () => {
     console.log("Column order updated:", columnOrder);
   }, [columnOrder]);
 
-  // Improved drag and drop handlers
+  // Column dragging handlers
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     console.log("Drag started:", columnId);
     setDraggedColumn(columnId);
-    
-    // Required for HTML5 drag and drop to work properly
-    e.dataTransfer.setData("text/plain", columnId);
+    e.dataTransfer.setData('text/plain', columnId);
     e.dataTransfer.effectAllowed = 'move';
-    
+
     // Use a transparent image as drag ghost
     const dragImage = new Image();
     dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     e.dataTransfer.setDragImage(dragImage, 0, 0);
-    
+
+    // Add a class to the document body to indicate dragging state
     document.body.classList.add('column-dragging');
+
+    // Create a visual preview element
+    const ghostElement = document.createElement('div');
+    ghostElement.textContent = columnId;
+    ghostElement.style.position = 'absolute';
+    ghostElement.style.top = '-1000px';
+    ghostElement.style.padding = '8px';
+    ghostElement.style.backgroundColor = 'white';
+    ghostElement.style.border = '1px solid #ccc';
+    ghostElement.style.borderRadius = '4px';
+    document.body.appendChild(ghostElement);
+    e.dataTransfer.setDragImage(ghostElement, 20, 20);
+    setTimeout(() => {
+      document.body.removeChild(ghostElement);
+    }, 0);
   };
   
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     e.preventDefault();
-    e.stopPropagation();
-    
+    e.dataTransfer.dropEffect = 'move';
     if (draggedColumn && draggedColumn !== columnId) {
       setDragOverColumn(columnId);
     }
   };
   
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragOverColumn(null);
-  };
-  
-  const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
+  const handleDragEnd = () => {
     console.log("Drag ended");
     setDraggedColumn(null);
     setDragOverColumn(null);
@@ -295,42 +289,39 @@ const EZcaterOrders = () => {
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    const droppedColumnId = e.dataTransfer.getData('text/plain');
-    
-    console.log("Drop event:", { draggedColumn: droppedColumnId, targetColumnId });
-    
-    if (!droppedColumnId || droppedColumnId === targetColumnId) {
+    console.log("Drop event:", {
+      draggedColumn,
+      targetColumnId
+    });
+    if (!draggedColumn || draggedColumn === targetColumnId) {
       setDraggedColumn(null);
       setDragOverColumn(null);
       return;
     }
-    
     const newColumnOrder = [...columnOrder];
-    const draggedIndex = newColumnOrder.indexOf(droppedColumnId);
+    const draggedIndex = newColumnOrder.indexOf(draggedColumn);
     const targetIndex = newColumnOrder.indexOf(targetColumnId);
-    
-    console.log("Indexes:", { draggedIndex, targetIndex });
-    
+    console.log("Indexes:", {
+      draggedIndex,
+      targetIndex
+    });
     if (draggedIndex !== -1 && targetIndex !== -1) {
       // Remove the dragged column
       newColumnOrder.splice(draggedIndex, 1);
+
       // Insert it at the new position
-      newColumnOrder.splice(targetIndex, 0, droppedColumnId);
-      
+      newColumnOrder.splice(targetIndex, 0, draggedColumn);
       console.log("New column order:", newColumnOrder);
       setColumnOrder(newColumnOrder);
-      
-      // Show toast notification
+
+      // Show toast notification for user feedback
       toast({
         title: "Column order updated",
-        description: `Moved ${columns[droppedColumnId as keyof typeof columns].label} column`
+        description: `Moved ${columns[draggedColumn as keyof typeof columns].label} column`
       });
     }
-    
     setDraggedColumn(null);
     setDragOverColumn(null);
-    document.body.classList.remove('column-dragging');
   };
 
   // Calculate pagination metrics
@@ -437,13 +428,11 @@ const EZcaterOrders = () => {
   );
 
   // Search controls with the components from the selected element
-  const searchControls = (
-    <div className="flex items-center space-x-2">
+  const searchControls = <div className="flex items-center space-x-2">
       <SearchInput placeholder="Search by webhook, package, request #, event name, or address..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full md:w-80" />
       <TimezonePicker selectedTimezone={timezone} onTimezoneChange={setTimezone} />
       <ColumnSelector columns={availableColumns} visibleColumns={visibleColumns} setVisibleColumns={setVisibleColumns} size="icon" />
-    </div>
-  );
+    </div>;
     
   return <Layout>
       <div className="w-full overflow-x-hidden">
@@ -461,7 +450,7 @@ const EZcaterOrders = () => {
                     return (
                       <TableHead
                         key={columnId}
-                        className={`whitespace-nowrap min-w-[100px] ${columnId === 'actions' ? 'w-[80px]' : ''} relative`}
+                        className={`whitespace-nowrap min-w-[100px] ${columnId === 'actions' ? 'w-[80px]' : ''}`}
                         dragOver={dragOverColumn === columnId}
                         sortable={isSortable}
                         sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
@@ -470,12 +459,10 @@ const EZcaterOrders = () => {
                         <div className="flex items-center gap-2">
                           <div 
                             draggable={columnId !== 'actions'}
-                            onDragStart={(e) => handleDragStart(e, columnId)}
-                            onDragOver={(e) => handleDragOver(e, columnId)}
-                            onDragLeave={handleDragLeave}
+                            onDragStart={e => handleDragStart(e, columnId)}
+                            onDragOver={e => handleDragOver(e, columnId)}
                             onDragEnd={handleDragEnd}
-                            onDrop={(e) => handleDrop(e, columnId)}
-                            data-column-id={columnId}
+                            onDrop={e => handleDrop(e, columnId)}
                             className={`cursor-grab transition-opacity duration-200 ${draggedColumn === columnId ? 'opacity-50' : ''}`}
                           >
                             <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
@@ -490,69 +477,73 @@ const EZcaterOrders = () => {
               </TableHeader>
               <TableBody>
                 {currentPageItems.map(order => (
-                  <TableRow key={`row-${order.id}`}>
+                  <TableRow key={order.requestNumber}>
                     {columnOrder.filter(id => visibleColumns.includes(id)).map(columnId => {
                       switch (columnId) {
                         case "webhook":
-                          return <TableCell key={`${order.id}-${columnId}`}>{order.webhook}</TableCell>;
+                          return <TableCell key={columnId}>{order.webhook}</TableCell>;
                         case "package":
-                          return <TableCell key={`${order.id}-${columnId}`} className="font-medium">
+                          return <TableCell key={columnId} className="font-medium">
                             <div className="flex items-center gap-2">
                               <Package className="h-4 w-4 text-muted-foreground" />
                               {order.package}
                             </div>
                           </TableCell>;
                         case "requestNumber":
-                          return <TableCell key={`${order.id}-${columnId}`}>{order.requestNumber}</TableCell>;
+                          return <TableCell key={columnId}>{order.requestNumber}</TableCell>;
                         case "eventDate":
-                          return <TableCell key={`${order.id}-${columnId}`}>{order.eventDate}</TableCell>;
+                          return <TableCell key={columnId}>{order.eventDate}</TableCell>;
                         case "insertedDate":
-                          return <TableCell key={`${order.id}-${columnId}`}>{order.insertedDate}</TableCell>;
+                          return <TableCell key={columnId}>{order.insertedDate}</TableCell>;
                         case "pickupAddress":
-                          return <TableCell key={`${order.id}-${columnId}`}>{order.pickupAddress}</TableCell>;
+                          return <TableCell key={columnId}>{order.pickupAddress}</TableCell>;
                         case "dropoffAddress":
-                          return <TableCell key={`${order.id}-${columnId}`}>{order.dropoffAddress}</TableCell>;
+                          return <TableCell key={columnId}>{order.dropoffAddress}</TableCell>;
                         case "eventName":
-                          return <TableCell key={`${order.id}-${columnId}`}>{order.eventName}</TableCell>;
+                          return <TableCell key={columnId}>{order.eventName}</TableCell>;
                         case "status":
-                          return <TableCell key={`${order.id}-${columnId}`}>
+                          return <TableCell key={columnId}>
                                     <Badge variant={getStatusBadgeVariant(order.status)} className="capitalize">
                                       {order.status.replace('-', ' ')}
                                     </Badge>
                                   </TableCell>;
                         case "actions":
-                          return <TableCell key={`${order.id}-${columnId}`} className="relative z-10">
+                          return <TableCell key={columnId}>
                             <DropdownMenu>
-                              <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                                <Button variant="outline" size="sm" className="z-10">
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="outline" size="sm">
                                   <MoreVertical className="h-4 w-4" />
                                 </Button>
                               </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end" className="z-50">
-                                <DropdownMenuItem onClick={(e) => {
-                                  e.stopPropagation();
-                                  setIsCreateOrderSheetOpen(true);
-                                }}>
-                                  Create order
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={(e) => handleCancelRequest(order.requestNumber, e)}>
+                              <DropdownMenuContent align="end">
+                                <Sheet open={isCreateOrderSheetOpen} onOpenChange={setIsCreateOrderSheetOpen}>
+                                  <SheetTrigger asChild>
+                                    <DropdownMenuItem onSelect={(e) => {
+                                      // Prevent the dropdown from closing when clicking the menu item
+                                      e.preventDefault();
+                                      handleCreateOrder(order.requestNumber);
+                                    }}>
+                                      Create order
+                                    </DropdownMenuItem>
+                                  </SheetTrigger>
+                                  <SheetContent side="right" className="w-full sm:max-w-xl md:max-w-4xl lg:max-w-6xl">
+                                    <CreateOrderSheet onClose={() => setIsCreateOrderSheetOpen(false)} />
+                                  </SheetContent>
+                                </Sheet>
+                                <DropdownMenuItem onClick={() => handleCancelRequest(order.requestNumber)}>
                                   Cancel request
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
                           </TableCell>;
                         case "history":
-                          return <TableCell key={`${order.id}-${columnId}`} className="text-center">
-                                    <Button 
-                                      size="sm" 
-                                      variant="ghost" 
-                                      onClick={(e) => handleViewHistory(order.requestNumber, e)}
-                                    >
+                          return <TableCell key={columnId} className="text-center">
+                                    <Button size="sm" variant="ghost" onClick={() => handleViewHistory(order.requestNumber)}>
                                       <HistoryIcon className="h-4 w-4" />
                                     </Button>
                                   </TableCell>;
                         default:
-                          return <TableCell key={`${order.id}-${columnId}`}></TableCell>;
+                          return <TableCell key={columnId}></TableCell>;
                       }
                     })}
                   </TableRow>
@@ -579,13 +570,6 @@ const EZcaterOrders = () => {
           onPageSizeChange={handlePageSizeChange} 
         />
       </div>
-
-      {/* Create Order Sheet outside the dropdown */}
-      <Sheet open={isCreateOrderSheetOpen} onOpenChange={setIsCreateOrderSheetOpen}>
-        <SheetContent side="right" className="w-full sm:max-w-xl md:max-w-4xl lg:max-w-6xl">
-          <CreateOrderSheet onClose={() => setIsCreateOrderSheetOpen(false)} />
-        </SheetContent>
-      </Sheet>
     </Layout>;
 };
 

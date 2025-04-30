@@ -85,7 +85,7 @@ const TableHead = React.forwardRef<
     ref={ref}
     className={cn(
       "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
-      dragOver && "border-t-2 border-primary bg-muted", // Added bg-muted for better visibility
+      dragOver && "border-t-2 border-primary",
       sortable && "cursor-pointer select-none",
       dragging && "opacity-70 bg-accent shadow-md border border-primary",
       className
