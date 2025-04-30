@@ -440,33 +440,9 @@ const EZcaterOrders = () => {
       <ColumnSelector columns={availableColumns} visibleColumns={visibleColumns} setVisibleColumns={setVisibleColumns} size="icon" />
     </div>;
     
-  // Create new viewControls element with the Create Order button
-  const viewControls = (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button 
-          onClick={() => setIsCreateOrderSheetOpen(true)}
-          className="mr-auto"
-        >
-          Create Order
-        </Button>
-      </SheetTrigger>
-      <SheetContent side="right" className="w-full sm:max-w-xl md:max-w-4xl lg:max-w-6xl">
-        <CreateOrderSheet onClose={() => setIsCreateOrderSheetOpen(false)} />
-      </SheetContent>
-    </Sheet>
-  );
-  
   return <Layout>
       <div className="w-full overflow-x-hidden">
-        <EZcaterFiltersLayout 
-          title="eZcater Orders" 
-          timezoneInfo={timezoneInfo} 
-          filterControls={filterControls} 
-          searchControls={searchControls}
-          viewControls={viewControls} // Add the viewControls to include Create Order button
-          className="border-0" 
-        />
+        <EZcaterFiltersLayout title="eZcater Orders" timezoneInfo={timezoneInfo} filterControls={filterControls} searchControls={searchControls} className="border-0" />
 
         <div className="mx-0 px-[8px] py-[14px]">
           <UsersTableContainer>
@@ -522,9 +498,16 @@ const EZcaterOrders = () => {
                                   </TableCell>;
                         case "actions":
                           return <TableCell key={columnId} className="flex space-x-2">
-                            <Button size="sm" variant="outline" onClick={() => handleViewOrder(order.requestNumber)}>
-                              View
-                            </Button>
+                            <Sheet>
+                              <SheetTrigger asChild>
+                                <Button size="sm" variant="outline" onClick={() => handleCreateOrder(order.requestNumber)}>
+                                  Create
+                                </Button>
+                              </SheetTrigger>
+                              <SheetContent side="right" className="w-full sm:max-w-xl md:max-w-4xl lg:max-w-6xl">
+                                <CreateOrderSheet onClose={() => setIsCreateOrderSheetOpen(false)} />
+                              </SheetContent>
+                            </Sheet>
                             <Button size="sm" variant="outline" onClick={() => handleCancelRequest(order.requestNumber)}>
                               Cancel
                             </Button>
