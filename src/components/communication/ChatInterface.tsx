@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { OrderDetails } from './OrderDetails';
@@ -23,6 +24,7 @@ interface ChatInterfaceProps {
     orderId?: string;
   };
   onClose?: () => void;
+  onOpenChat?: (orderId: string) => void;
 }
 
 export type MessageType = {
@@ -41,7 +43,7 @@ export type MessageType = {
   }>;
 };
 
-export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => {
+export const ChatInterface = ({ chatId, user, onClose, onOpenChat }: ChatInterfaceProps) => {
   const [message, setMessage] = useState("");
   const [activeTab, setActiveTab] = useState("chat");
   const [attachedFiles, setAttachedFiles] = useState<Array<{
@@ -152,6 +154,12 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
       unread: true
     }
   ];
+
+  const handleOpenChat = (orderId: string) => {
+    if (onOpenChat) {
+      onOpenChat(orderId);
+    }
+  };
 
   const handleSendMessage = () => {
     if (message.trim() === '' && attachedFiles.length === 0) return;
@@ -340,6 +348,7 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
                     "relative group"
                   )}
                   type="button"
+                  onClick={() => handleOpenChat(chat.orderId)}
                 >
                   <div className="flex items-center gap-1 mb-0.5">
                     <MessageSquare className="w-4 h-4 text-muted-foreground mr-1" />

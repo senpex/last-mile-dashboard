@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Users, UserRound, MessageSquare } from "lucide-react";
+import { toast } from "sonner";
 
 const CustomerSupport = () => {
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
@@ -883,8 +884,21 @@ const CustomerSupport = () => {
   };
 
   const onlineUsers = ["John Smith", "Emma Johnson", "Mike Wilson", "Sarah Davis", "Robert Taylor"];
+  
   const handleCloseChat = () => {
     setSelectedChat(null);
+  };
+
+  const handleOpenChat = (orderId: string) => {
+    // Find chat with the matching orderId
+    const chatWithOrderId = chats.find(chat => chat.orderId === orderId);
+    
+    if (chatWithOrderId) {
+      setSelectedChat(chatWithOrderId.id);
+      toast.success(`Opened order #${orderId}`);
+    } else {
+      toast.error(`Could not find order #${orderId}`);
+    }
   };
 
   return (
@@ -1036,6 +1050,7 @@ const CustomerSupport = () => {
                 chatId={selectedChat} 
                 user={chats.find(chat => chat.id === selectedChat)!}
                 onClose={handleCloseChat}
+                onOpenChat={handleOpenChat}
               />
             ) : (
               <div className="h-full flex items-center justify-center">
