@@ -19,6 +19,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { CreateOrderSheet } from "@/components/ezcater/CreateOrderSheet";
 
 const EZcaterOrders = () => {
   const {
@@ -146,7 +148,11 @@ const EZcaterOrders = () => {
     });
   };
 
+  // Add state for managing sheet open/close
+  const [isCreateOrderSheetOpen, setIsCreateOrderSheetOpen] = useState(false);
+
   const handleCreateOrder = (requestNumber: string) => {
+    setIsCreateOrderSheetOpen(true);
     toast({
       title: "Create Order",
       description: `Creating order for request ${requestNumber}`
@@ -504,9 +510,20 @@ const EZcaterOrders = () => {
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={() => handleCreateOrder(order.requestNumber)}>
-                                  Create order
-                                </DropdownMenuItem>
+                                <Sheet open={isCreateOrderSheetOpen} onOpenChange={setIsCreateOrderSheetOpen}>
+                                  <SheetTrigger asChild>
+                                    <DropdownMenuItem onSelect={(e) => {
+                                      // Prevent the dropdown from closing when clicking the menu item
+                                      e.preventDefault();
+                                      handleCreateOrder(order.requestNumber);
+                                    }}>
+                                      Create order
+                                    </DropdownMenuItem>
+                                  </SheetTrigger>
+                                  <SheetContent side="right" className="w-full sm:max-w-md md:max-w-lg">
+                                    <CreateOrderSheet onClose={() => setIsCreateOrderSheetOpen(false)} />
+                                  </SheetContent>
+                                </Sheet>
                                 <DropdownMenuItem onClick={() => handleCancelRequest(order.requestNumber)}>
                                   Cancel request
                                 </DropdownMenuItem>
