@@ -109,8 +109,10 @@ export const ChatInput = ({
   };
 
   const handleAddNote = () => {
-    if (onAddNote) {
+    if (onAddNote && message.trim() !== '') {
       onAddNote();
+    } else if (message.trim() === '') {
+      toast.error("Please write a note before sending");
     }
   };
 

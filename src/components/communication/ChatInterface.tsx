@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { PenLine } from "lucide-react";
 import { Clock, CircleDot, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 interface ChatInterfaceProps {
   chatId: string;
