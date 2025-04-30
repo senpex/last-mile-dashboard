@@ -256,26 +256,19 @@ const EZcaterOrders = () => {
     document.body.classList.add('column-dragging');
 
     // Create a visual preview element
-    const dragPreview = document.createElement('div');
-    dragPreview.className = 'px-2 py-1 bg-background border rounded shadow text-sm fixed pointer-events-none';
-    dragPreview.textContent = columns[columnId as keyof typeof columns].label;
-    dragPreview.style.position = 'fixed';
-    dragPreview.style.left = `${e.clientX + 10}px`;
-    dragPreview.style.top = `${e.clientY + 10}px`;
-    dragPreview.style.zIndex = '9999';
-    document.body.appendChild(dragPreview);
-    const updatePreviewPosition = (e: MouseEvent) => {
-      dragPreview.style.left = `${e.clientX + 10}px`;
-      dragPreview.style.top = `${e.clientY + 10}px`;
-    };
-    const cleanup = () => {
-      document.removeEventListener('mousemove', updatePreviewPosition);
-      document.removeEventListener('dragend', cleanup);
-      document.body.classList.remove('column-dragging');
-      dragPreview.remove();
-    };
-    document.addEventListener('mousemove', updatePreviewPosition);
-    document.addEventListener('dragend', cleanup);
+    const ghostElement = document.createElement('div');
+    ghostElement.textContent = columnId;
+    ghostElement.style.position = 'absolute';
+    ghostElement.style.top = '-1000px';
+    ghostElement.style.padding = '8px';
+    ghostElement.style.backgroundColor = 'white';
+    ghostElement.style.border = '1px solid #ccc';
+    ghostElement.style.borderRadius = '4px';
+    document.body.appendChild(ghostElement);
+    e.dataTransfer.setDragImage(ghostElement, 20, 20);
+    setTimeout(() => {
+      document.body.removeChild(ghostElement);
+    }, 0);
   };
   
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
@@ -332,7 +325,7 @@ const EZcaterOrders = () => {
   };
 
   // Calculate pagination metrics
-  const totalItems = sortedOrders.length;
+  const totalItems = filteredOrders.length;
   const totalPages = Math.ceil(totalItems / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = Math.min(startIndex + pageSize, totalItems);
@@ -451,18 +444,35 @@ const EZcaterOrders = () => {
               <TableHeader className="bg-muted/50 border-b-0 m-0 p-0">
                 <TableRow className="border-b-0">
                   {columnOrder.filter(id => visibleColumns.includes(id)).map(columnId => {
-                  const column = columns[columnId as keyof typeof columns];
-                  const isSortable = ['webhook', 'package', 'requestNumber', 'eventDate', 'insertedDate', 'eventName'].includes(columnId);
-                  return <TableHead key={columnId} className={`whitespace-nowrap min-w-[100px] ${columnId === 'actions' || columnId === 'history' ? 'w-[120px]' : ''} ${columnId === 'pickupAddress' || columnId === 'dropoffAddress' ? 'min-w-[200px]' : ''}`} dragOver={dragOverColumn === columnId} sortable={isSortable} sortDirection={sortConfig.key === columnId ? sortConfig.direction : null} onSort={() => isSortable && requestSort(columnId)}>
-                      <div className="flex items-center gap-2">
-                        <div draggable={columnId !== 'actions' && columnId !== 'history'} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className={`cursor-grab transition-opacity duration-200 ${draggedColumn === columnId ? 'opacity-50' : ''}`}>
-                          <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
+                    const column = columns[columnId as keyof typeof columns];
+                    const isSortable = ['webhook', 'package', 'requestNumber', 'eventDate', 'insertedDate', 'eventName'].includes(columnId);
+                    
+                    return (
+                      <TableHead
+                        key={columnId}
+                        className={`whitespace-nowrap min-w-[100px] ${columnId === 'actions' ? 'w-[80px]' : ''}`}
+                        dragOver={dragOverColumn === columnId}
+                        sortable={isSortable}
+                        sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
+                        onSort={() => isSortable && requestSort(columnId)}
+                      >
+                        <div className="flex items-center gap-2">
+                          <div 
+                            draggable={columnId !== 'actions'}
+                            onDragStart={e => handleDragStart(e, columnId)}
+                            onDragOver={e => handleDragOver(e, columnId)}
+                            onDragEnd={handleDragEnd}
+                            onDrop={e => handleDrop(e, columnId)}
+                            className={`cursor-grab transition-opacity duration-200 ${draggedColumn === columnId ? 'opacity-50' : ''}`}
+                          >
+                            <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
+                          </div>
+                          <span>{column.label}</span>
+                          {isSortable && renderSortIcon(columnId)}
                         </div>
-                        <span>{column.label}</span>
-                        {isSortable && renderSortIcon(columnId)}
-                      </div>
-                    </TableHead>;
-                })}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
               </TableHeader>
               <TableBody>
