@@ -250,10 +250,10 @@ export function CreateOrderSheet({
                       <SelectValue placeholder="Select time zone" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="America/New_York">-100: Eastern Time (ET)</SelectItem>
-                      <SelectItem value="America/Chicago">-200: Central Time (CT)</SelectItem>
-                      <SelectItem value="America/Denver">-300: Mountain Time (MT)</SelectItem>
-                      <SelectItem value="America/Los_Angeles">-400: Pacific Time (PT)</SelectItem>
+                      <SelectItem value="America/New_York">GMT-5: Eastern Time (ET)</SelectItem>
+                      <SelectItem value="America/Chicago">GMT-6: Central Time (CT)</SelectItem>
+                      <SelectItem value="America/Denver">GMT-7: Mountain Time (MT)</SelectItem>
+                      <SelectItem value="America/Los_Angeles">GMT-8: Pacific Time (PT)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
