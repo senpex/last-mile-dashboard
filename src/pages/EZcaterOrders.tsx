@@ -45,6 +45,8 @@ const EZcaterOrders = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const pageSizeOptions = [5, 10, 20, 50];
+  // Add state for managing sheet open/close
+  const [isCreateOrderSheetOpen, setIsCreateOrderSheetOpen] = useState(false);
 
   // Available column definitions for the column selector
   const availableColumns: {
@@ -147,9 +149,6 @@ const EZcaterOrders = () => {
       description: `Viewing details for order ${id}`
     });
   };
-
-  // Add state for managing sheet open/close
-  const [isCreateOrderSheetOpen, setIsCreateOrderSheetOpen] = useState(false);
 
   const handleCreateOrder = (requestNumber: string) => {
     setIsCreateOrderSheetOpen(true);
@@ -498,33 +497,20 @@ const EZcaterOrders = () => {
                                     </Badge>
                                   </TableCell>;
                         case "actions":
-                          return <TableCell key={columnId}>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="outline" size="sm">
-                                  <MoreVertical className="h-4 w-4" />
+                          return <TableCell key={columnId} className="flex space-x-2">
+                            <Sheet>
+                              <SheetTrigger asChild>
+                                <Button size="sm" variant="outline" onClick={() => handleCreateOrder(order.requestNumber)}>
+                                  Create
                                 </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <Sheet open={isCreateOrderSheetOpen} onOpenChange={setIsCreateOrderSheetOpen}>
-                                  <SheetTrigger asChild>
-                                    <DropdownMenuItem onSelect={(e) => {
-                                      // Prevent the dropdown from closing when clicking the menu item
-                                      e.preventDefault();
-                                      handleCreateOrder(order.requestNumber);
-                                    }}>
-                                      Create order
-                                    </DropdownMenuItem>
-                                  </SheetTrigger>
-                                  <SheetContent side="right" className="w-full sm:max-w-xl md:max-w-4xl lg:max-w-6xl">
-                                    <CreateOrderSheet onClose={() => setIsCreateOrderSheetOpen(false)} />
-                                  </SheetContent>
-                                </Sheet>
-                                <DropdownMenuItem onClick={() => handleCancelRequest(order.requestNumber)}>
-                                  Cancel request
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                              </SheetTrigger>
+                              <SheetContent side="right" className="w-full sm:max-w-xl md:max-w-4xl lg:max-w-6xl">
+                                <CreateOrderSheet onClose={() => setIsCreateOrderSheetOpen(false)} />
+                              </SheetContent>
+                            </Sheet>
+                            <Button size="sm" variant="outline" onClick={() => handleCancelRequest(order.requestNumber)}>
+                              Cancel
+                            </Button>
                           </TableCell>;
                         case "history":
                           return <TableCell key={columnId} className="text-center">
