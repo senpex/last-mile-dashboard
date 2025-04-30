@@ -1,8 +1,9 @@
+
 import { useRef, useEffect, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ZoomIn, ZoomOut } from "lucide-react";
+import { ZoomIn, ZoomOut, Navigation, Car } from "lucide-react";
 
 interface OrderMapProps {
   pickupAddress: string;
@@ -17,6 +18,77 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [dialogMap, setDialogMap] = useState<google.maps.Map | null>(null);
+  const [route, setRoute] = useState<google.maps.DirectionsResult | null>(null);
+  const [carMarker, setCarMarker] = useState<google.maps.Marker | null>(null);
+  const [animationInProgress, setAnimationInProgress] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const animationRef = useRef<number | null>(null);
+  const [pickupLocation, setPickupLocation] = useState<google.maps.LatLng | null>(null);
+  const [deliveryLocation, setDeliveryLocation] = useState<google.maps.LatLng | null>(null);
+
+  // Function to animate car along the route
+  const animateCarAlongRoute = (
+    routePath: google.maps.LatLng[], 
+    marker: google.maps.Marker, 
+    map: google.maps.Map,
+    duration = 10000
+  ) => {
+    if (animationRef.current) {
+      window.cancelAnimationFrame(animationRef.current);
+    }
+    
+    setAnimationInProgress(true);
+    const startTime = performance.now();
+    const totalPoints = routePath.length;
+    
+    const tick = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      setProgress(progress);
+      
+      // Calculate current position
+      const pointIndex = Math.min(
+        Math.floor(progress * totalPoints),
+        totalPoints - 1
+      );
+      
+      if (pointIndex > 0) {
+        const currentPosition = routePath[pointIndex];
+        const prevPosition = routePath[pointIndex - 1];
+        
+        // Update marker position
+        marker.setPosition(currentPosition);
+        
+        // Calculate heading for car rotation
+        const heading = google.maps.geometry.spherical.computeHeading(
+          prevPosition,
+          currentPosition
+        );
+        
+        // Set car icon rotation
+        const icon = marker.getIcon() as google.maps.Symbol;
+        if (icon) {
+          icon.rotation = heading;
+          marker.setIcon(icon);
+        }
+      }
+      
+      // Continue animation if not complete
+      if (progress < 1) {
+        animationRef.current = window.requestAnimationFrame(tick);
+      } else {
+        setAnimationInProgress(false);
+        // Reset to beginning after a pause
+        setTimeout(() => {
+          if (!isDialogOpen) { // Only loop if not in dialog view
+            animateCarAlongRoute(routePath, marker, map, duration);
+          }
+        }, 2000);
+      }
+    };
+    
+    animationRef.current = window.requestAnimationFrame(tick);
+  };
 
   const initMap = async (container: HTMLDivElement, setMapInstance: (map: google.maps.Map) => void) => {
     setMapError(null);
@@ -25,6 +97,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
     const loader = new Loader({
       apiKey: "AIzaSyD--I0r1HmH90XbB_l-KzBEx-Y3I1uGtOE",
       version: "weekly",
+      libraries: ["geometry", "places"],
     });
 
     try {
@@ -106,11 +179,13 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
           return;
         }
 
-        const pickupLocation = pickupResults[0].geometry.location;
-        console.log("Pickup location found:", pickupLocation.toString());
+        const pickup = pickupResults[0].geometry.location;
+        setPickupLocation(pickup);
+        console.log("Pickup location found:", pickup.toString());
         
+        // Create nice looking pickup marker
         new google.maps.Marker({
-          position: pickupLocation,
+          position: pickup,
           map: mapInstance,
           title: "Pickup",
           icon: {
@@ -121,6 +196,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
             strokeColor: "#fff",
             strokeWeight: 2,
           },
+          animation: google.maps.Animation.DROP,
         });
 
         console.log("Geocoding delivery:", enhancedDeliveryAddress);
@@ -132,11 +208,13 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
             return;
           }
 
-          const deliveryLocation = deliveryResults[0].geometry.location;
-          console.log("Delivery location found:", deliveryLocation.toString());
+          const delivery = deliveryResults[0].geometry.location;
+          setDeliveryLocation(delivery);
+          console.log("Delivery location found:", delivery.toString());
           
+          // Create nice looking delivery marker
           new google.maps.Marker({
-            position: deliveryLocation,
+            position: delivery,
             map: mapInstance,
             title: "Delivery",
             icon: {
@@ -147,45 +225,86 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
               strokeColor: "#fff",
               strokeWeight: 2,
             },
+            animation: google.maps.Animation.DROP,
           });
 
           const bounds = new google.maps.LatLngBounds();
-          bounds.extend(pickupLocation);
-          bounds.extend(deliveryLocation);
+          bounds.extend(pickup);
+          bounds.extend(delivery);
           mapInstance.fitBounds(bounds);
-          
           mapInstance.setZoom(mapInstance.getZoom() - 0.5);
 
-          const driverLocation = new google.maps.LatLng(
-            (pickupLocation.lat() + deliveryLocation.lat()) / 2,
-            (pickupLocation.lng() + deliveryLocation.lng()) / 2
-          );
-
-          new google.maps.Marker({
-            position: driverLocation,
+          // Calculate route between points using Directions API
+          const directionsService = new google.maps.DirectionsService();
+          const directionsRenderer = new google.maps.DirectionsRenderer({
             map: mapInstance,
-            title: `Driver: ${driverName}`,
-            icon: {
-              path: google.maps.SymbolPath.CIRCLE,
-              scale: 8,
-              fillColor: "#4CAF50",
-              fillOpacity: 1,
-              strokeColor: "#fff",
-              strokeWeight: 2,
-            },
+            suppressMarkers: true,
+            polylineOptions: {
+              strokeColor: "#4CAF50",
+              strokeOpacity: 0.8,
+              strokeWeight: 5,
+            }
           });
 
-          new google.maps.Polyline({
-            path: [pickupLocation, deliveryLocation],
-            geodesic: true,
-            strokeColor: "#FFFFFF",
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            map: mapInstance,
+          directionsService.route({
+            origin: pickup,
+            destination: delivery,
+            travelMode: google.maps.TravelMode.DRIVING,
+          }, (result, status) => {
+            if (status === google.maps.DirectionsStatus.OK) {
+              setRoute(result);
+              directionsRenderer.setDirections(result);
+              
+              // Extract route path for animation
+              const routePath = result.routes[0].overview_path;
+              
+              // Create car marker
+              const carMarker = new google.maps.Marker({
+                position: pickup,
+                map: mapInstance,
+                title: `Driver: ${driverName}`,
+                icon: {
+                  path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                  scale: 6,
+                  fillColor: "#4CAF50",
+                  fillOpacity: 1,
+                  strokeColor: "#fff",
+                  strokeWeight: 2,
+                  rotation: 0, // Will be updated during animation
+                },
+                zIndex: 999,
+              });
+              
+              setCarMarker(carMarker);
+              
+              // Add info window for driver
+              const infoWindow = new google.maps.InfoWindow({
+                content: `<div class="p-2"><strong>${driverName}</strong><br>En route</div>`,
+              });
+              
+              carMarker.addListener("click", () => {
+                infoWindow.open(mapInstance, carMarker);
+              });
+              
+              // Start the animation
+              animateCarAlongRoute(routePath, carMarker, mapInstance);
+            } else {
+              console.error("Directions request failed:", status);
+              setMapError("Could not calculate route between locations");
+              
+              // Fall back to simple polyline if directions fail
+              new google.maps.Polyline({
+                path: [pickup, delivery],
+                geodesic: true,
+                strokeColor: "#FFFFFF",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                map: mapInstance,
+              });
+            }
           });
         });
       });
-
     } catch (error: any) {
       console.error("Error loading Google Maps:", error);
       setMapError(`Map error: ${error?.message || "Unknown error"}`);
@@ -196,6 +315,13 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
     if (mapRef.current) {
       initMap(mapRef.current, setMap);
     }
+    
+    return () => {
+      // Clean up animation when component unmounts
+      if (animationRef.current) {
+        window.cancelAnimationFrame(animationRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -219,25 +345,33 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
   }, [isDialogOpen]);
 
   const handleZoomIn = () => {
-    if (isDialogOpen && dialogMap) {
-      dialogMap.setZoom((dialogMap.getZoom() || 12) + 1);
-    } else if (map) {
-      map.setZoom((map.getZoom() || 12) + 1);
+    const activeMap = isDialogOpen && dialogMap ? dialogMap : map;
+    if (activeMap) {
+      activeMap.setZoom((activeMap.getZoom() || 12) + 1);
     }
   };
 
   const handleZoomOut = () => {
-    if (isDialogOpen && dialogMap) {
-      dialogMap.setZoom((dialogMap.getZoom() || 12) - 1);
-    } else if (map) {
-      map.setZoom((map.getZoom() || 12) - 1);
+    const activeMap = isDialogOpen && dialogMap ? dialogMap : map;
+    if (activeMap) {
+      activeMap.setZoom((activeMap.getZoom() || 12) - 1);
+    }
+  };
+
+  const handleCenterOnRoute = () => {
+    const activeMap = isDialogOpen && dialogMap ? dialogMap : map;
+    if (activeMap && pickupLocation && deliveryLocation) {
+      const bounds = new google.maps.LatLngBounds();
+      bounds.extend(pickupLocation);
+      bounds.extend(deliveryLocation);
+      activeMap.fitBounds(bounds);
     }
   };
 
   return (
     <>
       <div 
-        className="relative w-full h-[140px] rounded-md overflow-hidden shadow-sm cursor-pointer"
+        className="relative w-full h-[140px] rounded-md overflow-hidden shadow-sm cursor-pointer group"
         onClick={() => setIsDialogOpen(true)}
       >
         <div 
@@ -248,6 +382,55 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
           <div className="absolute inset-0 flex items-center justify-center bg-black/50">
             <div className="text-white text-sm p-2 text-center">
               {mapError}
+            </div>
+          </div>
+        )}
+        
+        <div className="absolute top-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="flex flex-col gap-1">
+            <Button
+              variant="secondary"
+              size="icon"
+              className="h-6 w-6 bg-[#3a4c63] hover:bg-[#4a5c73] text-white border-none shadow-lg"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleZoomIn();
+              }}
+            >
+              <ZoomIn className="h-3 w-3" />
+            </Button>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="h-6 w-6 bg-[#3a4c63] hover:bg-[#4a5c73] text-white border-none shadow-lg"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleZoomOut();
+              }}
+            >
+              <ZoomOut className="h-3 w-3" />
+            </Button>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="h-6 w-6 bg-[#3a4c63] hover:bg-[#4a5c73] text-white border-none shadow-lg"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCenterOnRoute();
+              }}
+            >
+              <Navigation className="h-3 w-3" />
+            </Button>
+          </div>
+        </div>
+        
+        {animationInProgress && (
+          <div className="absolute bottom-1 left-1 right-1">
+            <div className="bg-black/50 h-1 rounded-full overflow-hidden">
+              <div 
+                className="bg-green-500 h-full transition-all duration-300 ease-linear" 
+                style={{ width: `${progress * 100}%` }}
+              />
             </div>
           </div>
         )}
@@ -266,17 +449,25 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
                 variant="secondary"
                 size="icon"
                 onClick={handleZoomIn}
-                className="h-6 w-6 bg-[#3a4c63] hover:bg-[#4a5c73] text-white border-none"
+                className="h-8 w-8 bg-[#3a4c63] hover:bg-[#4a5c73] text-white border-none"
               >
-                <ZoomIn className="h-3 w-3" />
+                <ZoomIn className="h-4 w-4" />
               </Button>
               <Button
                 variant="secondary"
                 size="icon"
                 onClick={handleZoomOut}
-                className="h-6 w-6 bg-[#3a4c63] hover:bg-[#4a5c73] text-white border-none"
+                className="h-8 w-8 bg-[#3a4c63] hover:bg-[#4a5c73] text-white border-none"
               >
-                <ZoomOut className="h-3 w-3" />
+                <ZoomOut className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="secondary"
+                size="icon"
+                onClick={handleCenterOnRoute}
+                className="h-8 w-8 bg-[#3a4c63] hover:bg-[#4a5c73] text-white border-none"
+              >
+                <Navigation className="h-4 w-4" />
               </Button>
             </div>
             <div 
@@ -284,9 +475,29 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
               ref={dialogMapRef}
               className="flex-1 w-full bg-[#242f3e]"
             />
+            {animationInProgress && (
+              <div className="absolute bottom-4 left-4 right-4 z-10">
+                <div className="bg-black/50 h-2 rounded-full overflow-hidden p-0.5">
+                  <div 
+                    className="bg-green-500 h-full rounded-full transition-all duration-300 ease-linear" 
+                    style={{ width: `${progress * 100}%` }}
+                  />
+                </div>
+                <div className="flex justify-between mt-1 text-xs text-white/70">
+                  <div className="flex items-center gap-1">
+                    <Car className="h-3 w-3" />
+                    <span>{driverName}</span>
+                  </div>
+                  <div>
+                    ETA: {Math.floor((1 - progress) * 10)} min
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </DialogContent>
       </Dialog>
     </>
   );
 };
+

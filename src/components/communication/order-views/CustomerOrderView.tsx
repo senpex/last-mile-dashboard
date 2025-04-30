@@ -51,20 +51,33 @@ export const CustomerOrderView = ({
 }: CustomerOrderViewProps) => {
   const isExpanded = expandedOrderId === order.id;
   
-  return <div className="order-card rounded-lg transition-all duration-200 ease-in-out">
+  return (
+    <div className="order-card rounded-lg transition-all duration-200 ease-in-out">
       <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
         <h3 className="font-medium text-xs text-foreground/90">Order #{order.id}</h3>
-        <Button variant="ghost" size="sm" onClick={() => setExpandedOrderId(isExpanded ? null : order.id)} className="h-6 w-6 p-0">
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          onClick={() => setExpandedOrderId(isExpanded ? null : order.id)} 
+          className="h-6 w-6 p-0"
+        >
           {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
         </Button>
       </div>
       
-      {isExpanded && <div className="px-3 pt-1 pb-3 space-y-4">
+      {isExpanded && (
+        <div className="px-3 pt-1 pb-3 space-y-4">
           <div className="flex justify-start">
             <Badge className="bg-green-500">Active</Badge>
           </div>
           
-          <OrderMap pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} driverName={order.driverName} />
+          <div className="relative overflow-hidden rounded-lg">
+            <OrderMap 
+              pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} 
+              deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} 
+              driverName={order.driverName} 
+            />
+          </div>
           
           <div className="rounded-md bg-muted/50 p-3 shadow-sm">
             <div className="flex items-center gap-1.5 mb-2">
@@ -154,6 +167,8 @@ export const CustomerOrderView = ({
               </div>
             </SheetContent>
           </Sheet>
-        </div>}
-    </div>;
+        </div>
+      )}
+    </div>
+  );
 };

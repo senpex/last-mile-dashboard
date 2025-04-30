@@ -59,11 +59,13 @@ export const WorkingDriverOrderView = ({
             <Badge className="bg-green-500">Active</Badge>
           </div>
           
-          <OrderMap 
-            pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} 
-            deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} 
-            driverName={order.driverName}
-          />
+          <div className="relative overflow-hidden rounded-lg">
+            <OrderMap 
+              pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} 
+              deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} 
+              driverName={order.driverName}
+            />
+          </div>
           
           <div className="notes-card rounded-md bg-muted/50 p-2.5 shadow-sm">
             <div className="flex items-start gap-2">
