@@ -1,9 +1,9 @@
-
 import { useRef, useEffect, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ZoomIn, ZoomOut, Navigation, Car } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 // Create a singleton loader instance
 const loaderInstance = new Loader({
@@ -50,17 +50,23 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
     setAnimationInProgress(true);
     const startTime = performance.now();
     const totalPoints = routePath.length;
+    let lastPointIndex = 0;
     
     const tick = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      setProgress(progress);
       
-      // Calculate current position
+      // Calculate current position - use exact same calculation for both car and progress bar
       const pointIndex = Math.min(
         Math.floor(progress * totalPoints),
         totalPoints - 1
       );
+      
+      // Only update progress when point index changes, ensuring smooth visual updates
+      if (pointIndex !== lastPointIndex) {
+        lastPointIndex = pointIndex;
+        setProgress(progress);
+      }
       
       if (pointIndex > 0) {
         const currentPosition = routePath[pointIndex];
@@ -440,7 +446,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
           <div className="absolute bottom-1 left-1 right-1">
             <div className="bg-black/50 h-1 rounded-full overflow-hidden">
               <div 
-                className="bg-green-500 h-full transition-all duration-300 ease-linear" 
+                className="bg-green-500 h-full transition-none" 
                 style={{ width: `${progress * 100}%` }}
               />
             </div>
@@ -491,7 +497,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
               <div className="absolute bottom-4 left-4 right-4 z-10">
                 <div className="bg-black/50 h-2 rounded-full overflow-hidden p-0.5">
                   <div 
-                    className="bg-green-500 h-full rounded-full transition-all duration-300 ease-linear" 
+                    className="bg-green-500 h-full rounded-full transition-none" 
                     style={{ width: `${progress * 100}%` }}
                   />
                 </div>
