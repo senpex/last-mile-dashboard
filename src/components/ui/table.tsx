@@ -1,7 +1,8 @@
+
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ChevronUp, ChevronDown, GripVertical } from "lucide-react";
+import { ChevronDown, GripVertical } from "lucide-react";
 const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(({
   className,
   ...props
@@ -53,7 +54,6 @@ const TableHead = React.forwardRef<HTMLTableCellElement, TableHeadProps>(({
           <GripVertical className="h-4 w-4" />
         </span>}
       {children}
-      {sortable && sortDirection === 'ascending'}
       {sortable && sortDirection === 'descending' && <ChevronDown className="h-4 w-4 text-primary" />}
     </div>
   </th>);
