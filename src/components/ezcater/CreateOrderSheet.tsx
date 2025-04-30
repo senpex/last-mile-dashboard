@@ -49,31 +49,31 @@ export function CreateOrderSheet({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      pickupAddress: "",
-      pickupLat: "",
-      pickupLng: "",
-      pickupDescription: "",
-      dropoffAddress: "",
-      dropoffLat: "",
-      dropoffLng: "",
-      dropoffDescription: "",
-      receiverName: "",
-      receiverPhone: "",
-      distance: "",
-      completionTime: "",
-      orderName: "",
-      courierNotes: "",
-      orderFee: "",
-      courierEarnings: "",
-      courierTip: "",
-      itemValue: "",
-      totalTip: "",
-      senderId: "",
-      pickupTime: "",
+      pickupAddress: "120 Tremont St, Boston, MA 02108",
+      pickupLat: "42.3573",
+      pickupLng: "-71.0613",
+      pickupDescription: "Restaurant entrance is on the side of the building. Ask for order #3245.",
+      dropoffAddress: "1 Financial Center, Boston, MA 02111",
+      dropoffLat: "42.3552",
+      dropoffLng: "-71.0559",
+      dropoffDescription: "Deliver to reception desk on the 22nd floor. Check in with security first.",
+      receiverName: "Sarah Johnson",
+      receiverPhone: "(617) 555-0182",
+      distance: "0.8",
+      completionTime: "45",
+      orderName: "Financial District Office Lunch",
+      courierNotes: "Large catering order. Bring large delivery bag and cart if available.",
+      orderFee: "89.50",
+      courierEarnings: "25.00",
+      courierTip: "18.00",
+      itemValue: "350.00",
+      totalTip: "52.50",
+      senderId: "EZ-12345",
+      pickupTime: "2025-05-01T11:30",
       paddingTime: "15",
       pickupTimeZone: "America/New_York",
-      deliveryTime: "",
-      bagRequirement: ""
+      deliveryTime: "2025-05-01T12:15",
+      bagRequirement: "catering"
     }
   });
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -265,7 +265,10 @@ export function CreateOrderSheet({
             {/* Bag Requirements */}
             <div className="space-y-2">
               <Label htmlFor="bagRequirement">Bag Requirement</Label>
-              <Select onValueChange={value => form.setValue("bagRequirement", value)}>
+              <Select 
+                defaultValue={form.getValues("bagRequirement")}
+                onValueChange={value => form.setValue("bagRequirement", value)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Add bag requirement" />
                 </SelectTrigger>
