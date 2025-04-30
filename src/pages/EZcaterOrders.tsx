@@ -249,13 +249,18 @@ const EZcaterOrders = () => {
     console.log("Column order updated:", columnOrder);
   }, [columnOrder]);
 
-  // Fixed Column dragging handlers
+  // Improved drag and drop handlers
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
+    e.preventDefault();
     e.stopPropagation();
+    
     console.log("Drag started:", columnId);
     setDraggedColumn(columnId);
     
-    // Use a transparent image as drag ghost to control how it appears
+    // Required for HTML5 drag and drop to work properly
+    e.dataTransfer.setData("text/plain", columnId);
+    
+    // Use a transparent image as drag ghost
     const dragImage = new Image();
     dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     e.dataTransfer.setDragImage(dragImage, 0, 0);
@@ -272,8 +277,16 @@ const EZcaterOrders = () => {
     }
   };
   
-  const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
     e.stopPropagation();
+    setDragOverColumn(null);
+  };
+  
+  const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     console.log("Drag ended");
     setDraggedColumn(null);
     setDragOverColumn(null);
@@ -284,10 +297,7 @@ const EZcaterOrders = () => {
     e.preventDefault();
     e.stopPropagation();
     
-    console.log("Drop event:", {
-      draggedColumn,
-      targetColumnId
-    });
+    console.log("Drop event:", { draggedColumn, targetColumnId });
     
     if (!draggedColumn || draggedColumn === targetColumnId) {
       setDraggedColumn(null);
@@ -299,21 +309,18 @@ const EZcaterOrders = () => {
     const draggedIndex = newColumnOrder.indexOf(draggedColumn);
     const targetIndex = newColumnOrder.indexOf(targetColumnId);
     
-    console.log("Indexes:", {
-      draggedIndex,
-      targetIndex
-    });
+    console.log("Indexes:", { draggedIndex, targetIndex });
     
     if (draggedIndex !== -1 && targetIndex !== -1) {
       // Remove the dragged column
       newColumnOrder.splice(draggedIndex, 1);
-
       // Insert it at the new position
       newColumnOrder.splice(targetIndex, 0, draggedColumn);
+      
       console.log("New column order:", newColumnOrder);
       setColumnOrder(newColumnOrder);
-
-      // Show toast notification for user feedback
+      
+      // Show toast notification
       toast({
         title: "Column order updated",
         description: `Moved ${columns[draggedColumn as keyof typeof columns].label} column`
@@ -429,11 +436,13 @@ const EZcaterOrders = () => {
   );
 
   // Search controls with the components from the selected element
-  const searchControls = <div className="flex items-center space-x-2">
+  const searchControls = (
+    <div className="flex items-center space-x-2">
       <SearchInput placeholder="Search by webhook, package, request #, event name, or address..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full md:w-80" />
       <TimezonePicker selectedTimezone={timezone} onTimezoneChange={setTimezone} />
       <ColumnSelector columns={availableColumns} visibleColumns={visibleColumns} setVisibleColumns={setVisibleColumns} size="icon" />
-    </div>;
+    </div>
+  );
     
   return <Layout>
       <div className="w-full overflow-x-hidden">
@@ -451,7 +460,7 @@ const EZcaterOrders = () => {
                     return (
                       <TableHead
                         key={columnId}
-                        className={`whitespace-nowrap min-w-[100px] ${columnId === 'actions' ? 'w-[80px]' : ''}`}
+                        className={`whitespace-nowrap min-w-[100px] ${columnId === 'actions' ? 'w-[80px]' : ''} relative`}
                         dragOver={dragOverColumn === columnId}
                         sortable={isSortable}
                         sortDirection={sortConfig.key === columnId ? sortConfig.direction : null}
@@ -462,8 +471,10 @@ const EZcaterOrders = () => {
                             draggable={columnId !== 'actions'}
                             onDragStart={(e) => handleDragStart(e, columnId)}
                             onDragOver={(e) => handleDragOver(e, columnId)}
+                            onDragLeave={handleDragLeave}
                             onDragEnd={handleDragEnd}
                             onDrop={(e) => handleDrop(e, columnId)}
+                            data-column-id={columnId}
                             className={`cursor-grab transition-opacity duration-200 ${draggedColumn === columnId ? 'opacity-50' : ''}`}
                           >
                             <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
@@ -478,7 +489,7 @@ const EZcaterOrders = () => {
               </TableHeader>
               <TableBody>
                 {currentPageItems.map(order => (
-                  <TableRow key={order.id}>
+                  <TableRow key={`row-${order.id}`}>
                     {columnOrder.filter(id => visibleColumns.includes(id)).map(columnId => {
                       switch (columnId) {
                         case "webhook":
@@ -509,10 +520,10 @@ const EZcaterOrders = () => {
                                     </Badge>
                                   </TableCell>;
                         case "actions":
-                          return <TableCell key={`${order.id}-${columnId}`} className="relative">
+                          return <TableCell key={`${order.id}-${columnId}`} className="relative z-10">
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
-                                <Button variant="outline" size="sm" className="z-10">
+                                <Button variant="outline" size="sm" className="z-10" onClick={(e) => e.stopPropagation()}>
                                   <MoreVertical className="h-4 w-4" />
                                 </Button>
                               </DropdownMenuTrigger>
