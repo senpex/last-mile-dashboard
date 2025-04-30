@@ -9,7 +9,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Separator } from "@/components/ui/separator";
-
 const formSchema = z.object({
   pickupAddress: z.string(),
   pickupLat: z.string(),
@@ -37,11 +36,9 @@ const formSchema = z.object({
   deliveryTime: z.string(),
   bagRequirement: z.string().optional()
 });
-
 interface CreateOrderSheetProps {
   onClose: () => void;
 }
-
 export function CreateOrderSheet({
   onClose
 }: CreateOrderSheetProps) {
@@ -79,10 +76,11 @@ export function CreateOrderSheet({
     console.log(values);
     onClose();
   }
-  
-  // Generate padding time options from 15 to 120 with 5 minute increments
-  const paddingTimeOptions = Array.from({ length: 22 }, (_, i) => (15 + i * 5).toString());
 
+  // Generate padding time options from 15 to 120 with 5 minute increments
+  const paddingTimeOptions = Array.from({
+    length: 22
+  }, (_, i) => (15 + i * 5).toString());
   return <div className="h-full overflow-auto">
       <div className="p-6 max-w-5xl mx-auto">
         
@@ -228,17 +226,12 @@ export function CreateOrderSheet({
                 </div>
                 <div className="space-y-2 flex-1">
                   <Label htmlFor="paddingTime">Padding Time (mins)</Label>
-                  <Select 
-                    defaultValue={form.getValues("paddingTime")} 
-                    onValueChange={value => form.setValue("paddingTime", value)}
-                  >
+                  <Select defaultValue={form.getValues("paddingTime")} onValueChange={value => form.setValue("paddingTime", value)}>
                     <SelectTrigger id="paddingTime">
                       <SelectValue placeholder="Select padding time" />
                     </SelectTrigger>
                     <SelectContent>
-                      {paddingTimeOptions.map((time) => (
-                        <SelectItem key={time} value={time}>{time}</SelectItem>
-                      ))}
+                      {paddingTimeOptions.map(time => <SelectItem key={time} value={time}>{time}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
@@ -264,10 +257,7 @@ export function CreateOrderSheet({
             {/* Bag Requirements */}
             <div className="space-y-2">
               <Label htmlFor="bagRequirement">Bag Requirement</Label>
-              <Select 
-                defaultValue={form.getValues("bagRequirement")}
-                onValueChange={value => form.setValue("bagRequirement", value)}
-              >
+              <Select defaultValue={form.getValues("bagRequirement")} onValueChange={value => form.setValue("bagRequirement", value)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Add bag requirement" />
                 </SelectTrigger>
@@ -282,7 +272,7 @@ export function CreateOrderSheet({
             </div>
 
             <div className="pt-4 flex justify-end">
-              <Button type="submit">Create Order</Button>
+              <Button type="submit" className="text-center">Create Order</Button>
             </div>
           </form>
         </Form>
