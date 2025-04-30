@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -249,10 +250,10 @@ export function CreateOrderSheet({
                       <SelectValue placeholder="Select time zone" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="America/New_York">Eastern Time (ET)</SelectItem>
-                      <SelectItem value="America/Chicago">Central Time (CT)</SelectItem>
-                      <SelectItem value="America/Denver">Mountain Time (MT)</SelectItem>
-                      <SelectItem value="America/Los_Angeles">Pacific Time (PT)</SelectItem>
+                      <SelectItem value="America/New_York">-100: Eastern Time (ET)</SelectItem>
+                      <SelectItem value="America/Chicago">-200: Central Time (CT)</SelectItem>
+                      <SelectItem value="America/Denver">-300: Mountain Time (MT)</SelectItem>
+                      <SelectItem value="America/Los_Angeles">-400: Pacific Time (PT)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -272,11 +273,11 @@ export function CreateOrderSheet({
                   <SelectValue placeholder="Add bag requirement" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="none">-100: None</SelectItem>
-                  <SelectItem value="insulated">-200: Insulated Bag</SelectItem>
-                  <SelectItem value="cooler">-300: Cooler</SelectItem>
-                  <SelectItem value="pizza">-400: Pizza Bag</SelectItem>
-                  <SelectItem value="catering">-500: Catering Equipment</SelectItem>
+                  <SelectItem value="none">None</SelectItem>
+                  <SelectItem value="insulated">Insulated Bag</SelectItem>
+                  <SelectItem value="cooler">Cooler</SelectItem>
+                  <SelectItem value="pizza">Pizza Bag</SelectItem>
+                  <SelectItem value="catering">Catering Equipment</SelectItem>
                 </SelectContent>
               </Select>
             </div>
