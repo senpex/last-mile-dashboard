@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -210,23 +211,23 @@ export function CreateOrderSheet({
 
             <Separator className="my-4" />
 
-            {/* Time Information */}
+            {/* Time Information - Modified to put all fields on one line */}
             <div className="space-y-4">
               <h3 className="text-md font-medium">Time Information</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
+              <div className="flex gap-4">
+                <div className="space-y-2 flex-1">
                   <Label htmlFor="pickupTime">Pickup Time</Label>
                   <Input id="pickupTime" type="datetime-local" {...form.register("pickupTime")} />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 flex-1">
                   <Label htmlFor="deliveryTime">Delivery Time</Label>
                   <Input id="deliveryTime" type="datetime-local" {...form.register("deliveryTime")} />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 flex-1">
                   <Label htmlFor="paddingTime">Padding Time</Label>
                   <Input id="paddingTime" {...form.register("paddingTime")} />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 flex-1">
                   <Label htmlFor="pickupTimeZone">Pickup Time Zone</Label>
                   <Select defaultValue={form.getValues("pickupTimeZone")} onValueChange={value => form.setValue("pickupTimeZone", value)}>
                     <SelectTrigger>
