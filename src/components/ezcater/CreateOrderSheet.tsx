@@ -9,6 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { Separator } from "@/components/ui/separator";
 
 const formSchema = z.object({
   pickupAddress: z.string(),
@@ -108,6 +109,8 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
               </div>
             </div>
 
+            <Separator className="my-4" />
+
             {/* Dropoff Address Section */}
             <div className="space-y-4">
               <h3 className="text-md font-medium">Dropoff Information</h3>
@@ -131,6 +134,8 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
               </div>
             </div>
 
+            <Separator className="my-4" />
+
             {/* Receiver Information */}
             <div className="space-y-4">
               <h3 className="text-md font-medium">Receiver Information</h3>
@@ -145,6 +150,8 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
                 </div>
               </div>
             </div>
+
+            <Separator className="my-4" />
 
             {/* Delivery Details */}
             <div className="space-y-4">
@@ -168,6 +175,8 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
                 <Textarea id="courierNotes" {...form.register("courierNotes")} />
               </div>
             </div>
+
+            <Separator className="my-4" />
 
             {/* Financial Information */}
             <div className="space-y-4">
@@ -199,6 +208,8 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
                 </div>
               </div>
             </div>
+
+            <Separator className="my-4" />
 
             {/* Time Information */}
             <div className="space-y-4">
@@ -235,6 +246,8 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
                 </div>
               </div>
             </div>
+
+            <Separator className="my-4" />
 
             {/* Bag Requirements */}
             <div className="space-y-2">
