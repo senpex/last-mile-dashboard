@@ -153,10 +153,6 @@ const EZcaterOrders = () => {
 
   const handleCreateOrder = (requestNumber: string) => {
     setIsCreateOrderSheetOpen(true);
-    toast({
-      title: "Create Order",
-      description: `Creating order for request ${requestNumber}`
-    });
   };
 
   const handleCancelRequest = (requestNumber: string) => {
