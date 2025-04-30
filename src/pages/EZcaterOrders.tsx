@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -251,14 +252,12 @@ const EZcaterOrders = () => {
 
   // Improved drag and drop handlers
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
     console.log("Drag started:", columnId);
     setDraggedColumn(columnId);
     
     // Required for HTML5 drag and drop to work properly
     e.dataTransfer.setData("text/plain", columnId);
+    e.dataTransfer.effectAllowed = 'move';
     
     // Use a transparent image as drag ghost
     const dragImage = new Image();
@@ -297,16 +296,18 @@ const EZcaterOrders = () => {
     e.preventDefault();
     e.stopPropagation();
     
-    console.log("Drop event:", { draggedColumn, targetColumnId });
+    const droppedColumnId = e.dataTransfer.getData('text/plain');
     
-    if (!draggedColumn || draggedColumn === targetColumnId) {
+    console.log("Drop event:", { draggedColumn: droppedColumnId, targetColumnId });
+    
+    if (!droppedColumnId || droppedColumnId === targetColumnId) {
       setDraggedColumn(null);
       setDragOverColumn(null);
       return;
     }
     
     const newColumnOrder = [...columnOrder];
-    const draggedIndex = newColumnOrder.indexOf(draggedColumn);
+    const draggedIndex = newColumnOrder.indexOf(droppedColumnId);
     const targetIndex = newColumnOrder.indexOf(targetColumnId);
     
     console.log("Indexes:", { draggedIndex, targetIndex });
@@ -315,7 +316,7 @@ const EZcaterOrders = () => {
       // Remove the dragged column
       newColumnOrder.splice(draggedIndex, 1);
       // Insert it at the new position
-      newColumnOrder.splice(targetIndex, 0, draggedColumn);
+      newColumnOrder.splice(targetIndex, 0, droppedColumnId);
       
       console.log("New column order:", newColumnOrder);
       setColumnOrder(newColumnOrder);
@@ -323,7 +324,7 @@ const EZcaterOrders = () => {
       // Show toast notification
       toast({
         title: "Column order updated",
-        description: `Moved ${columns[draggedColumn as keyof typeof columns].label} column`
+        description: `Moved ${columns[droppedColumnId as keyof typeof columns].label} column`
       });
     }
     
@@ -522,8 +523,8 @@ const EZcaterOrders = () => {
                         case "actions":
                           return <TableCell key={`${order.id}-${columnId}`} className="relative z-10">
                             <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="outline" size="sm" className="z-10" onClick={(e) => e.stopPropagation()}>
+                              <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                                <Button variant="outline" size="sm" className="z-10">
                                   <MoreVertical className="h-4 w-4" />
                                 </Button>
                               </DropdownMenuTrigger>
