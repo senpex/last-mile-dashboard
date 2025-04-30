@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -106,7 +105,11 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="pickupDescription">Pickup Description</Label>
-                <Textarea id="pickupDescription" {...form.register("pickupDescription")} />
+                <Textarea 
+                  id="pickupDescription" 
+                  {...form.register("pickupDescription")} 
+                  className="min-h-[40px]" // Reduced height by half (from default 80px to 40px)
+                />
               </div>
             </div>
 
@@ -131,7 +134,11 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="dropoffDescription">Dropoff Description</Label>
-                <Textarea id="dropoffDescription" {...form.register("dropoffDescription")} />
+                <Textarea 
+                  id="dropoffDescription" 
+                  {...form.register("dropoffDescription")} 
+                  className="min-h-[40px]" // Reduced height by half (from default 80px to 40px)
+                />
               </div>
             </div>
 
@@ -173,7 +180,11 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="courierNotes">Courier Notes</Label>
-                <Textarea id="courierNotes" {...form.register("courierNotes")} />
+                <Textarea 
+                  id="courierNotes" 
+                  {...form.register("courierNotes")} 
+                  className="min-h-[40px]" // Reduced height by half (from default 80px to 40px)
+                />
               </div>
             </div>
 
