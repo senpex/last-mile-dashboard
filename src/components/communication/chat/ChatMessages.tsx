@@ -61,7 +61,7 @@ export const ChatMessages = ({ messages }: ChatMessagesProps) => {
               <div className="max-w-[85%] bg-yellow-100 border border-yellow-200 p-4 rounded-lg shadow-sm">
                 <div className="flex items-center gap-2 mb-2">
                   <FileText className="h-4 w-4 text-yellow-600" />
-                  <span className="text-sm font-medium text-yellow-800">Note from {message.senderName}</span>
+                  <span className="text-sm font-medium text-yellow-800">Note from Dispatcher</span>
                 </div>
                 <div className="text-sm text-yellow-900">{message.content}</div>
                 <div className="text-right text-xs text-yellow-600 mt-2">{message.timestamp}</div>
