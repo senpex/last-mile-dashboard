@@ -70,7 +70,7 @@ export function CreateOrderSheet({
       totalTip: "",
       senderId: "",
       pickupTime: "",
-      paddingTime: "",
+      paddingTime: "15",
       pickupTimeZone: "America/New_York",
       deliveryTime: "",
       bagRequirement: ""
@@ -80,6 +80,10 @@ export function CreateOrderSheet({
     console.log(values);
     onClose();
   }
+  
+  // Generate padding time options from 15 to 120 with 5 minute increments
+  const paddingTimeOptions = Array.from({ length: 22 }, (_, i) => (15 + i * 5).toString());
+
   return <div className="h-full overflow-auto">
       <div className="p-6 max-w-5xl mx-auto">
         
@@ -224,8 +228,20 @@ export function CreateOrderSheet({
                   <Input id="deliveryTime" type="datetime-local" {...form.register("deliveryTime")} />
                 </div>
                 <div className="space-y-2 flex-1">
-                  <Label htmlFor="paddingTime">Padding Time</Label>
-                  <Input id="paddingTime" {...form.register("paddingTime")} />
+                  <Label htmlFor="paddingTime">Padding Time (mins)</Label>
+                  <Select 
+                    defaultValue={form.getValues("paddingTime")} 
+                    onValueChange={value => form.setValue("paddingTime", value)}
+                  >
+                    <SelectTrigger id="paddingTime">
+                      <SelectValue placeholder="Select padding time" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {paddingTimeOptions.map((time) => (
+                        <SelectItem key={time} value={time}>{time}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="space-y-2 flex-1">
                   <Label htmlFor="pickupTimeZone">Pickup Time Zone</Label>
