@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -108,7 +109,7 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
                 <Textarea 
                   id="pickupDescription" 
                   {...form.register("pickupDescription")} 
-                  className="min-h-[40px]" // Reduced height by half (from default 80px to 40px)
+                  className="min-h-[24px] h-[38px] py-2" // Reduced to match single line input height
                 />
               </div>
             </div>
@@ -137,7 +138,7 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
                 <Textarea 
                   id="dropoffDescription" 
                   {...form.register("dropoffDescription")} 
-                  className="min-h-[40px]" // Reduced height by half (from default 80px to 40px)
+                  className="min-h-[24px] h-[38px] py-2" // Reduced to match single line input height
                 />
               </div>
             </div>
@@ -183,7 +184,7 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
                 <Textarea 
                   id="courierNotes" 
                   {...form.register("courierNotes")} 
-                  className="min-h-[40px]" // Reduced height by half (from default 80px to 40px)
+                  className="min-h-[24px] h-[38px] py-2" // Reduced to match single line input height
                 />
               </div>
             </div>
