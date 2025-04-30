@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,7 +10,6 @@ import { cn } from "@/lib/utils";
 import { WorkingDriverOrderView } from "./order-views/WorkingDriverOrderView";
 import { CustomerOrderView } from "./order-views/CustomerOrderView";
 import { StatusBadge } from "./order-views/StatusBadge";
-
 interface OrderDetailsProps {
   orderData: {
     id: string;
@@ -35,19 +33,16 @@ interface OrderDetailsProps {
     orderId?: string;
   };
 }
-
 export const OrderDetails = ({
   orderData,
   showDriverInfo = true,
   user
 }: OrderDetailsProps) => {
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
-
   const orders = [{
     ...orderData,
     id: "909090"
   }];
-
   const repeatedOrders = [{
     ...orderData,
     id: "909093",
@@ -63,22 +58,18 @@ export const OrderDetails = ({
       time: "16:00"
     }]
   }];
-
   const knownLocations = {
     "123 Pickup St, City": "123 Pickup St, San Francisco, CA 94103",
     "456 Delivery Ave, City": "456 Delivery Ave, San Francisco, CA 94107"
   };
-
   const senderInfo = {
     name: "John Smith",
     phone: "+1 (555) 123-4567"
   };
-
   const recipientInfo = {
     name: "Maria Rodriguez",
     phone: "+1 (555) 987-6543"
   };
-
   const driverInfo = {
     name: orderData.driverName,
     phone: "+1 (555) 234-5678",
@@ -86,16 +77,13 @@ export const OrderDetails = ({
     rating: "4.8",
     totalDeliveries: "1,234"
   };
-
   const isRepeatedOrder = (orderId: string) => repeatedOrders.some(order => order.id === orderId);
-
   const shouldShowDriverInfo = (orderId: string) => {
     if (user?.role === 'driver' && user?.status === 'working') {
       return false;
     }
     return showDriverInfo;
   };
-
   const openedChats = [{
     orderId: "909090",
     lastMessage: "I'm at the pickup location.",
@@ -112,88 +100,50 @@ export const OrderDetails = ({
     sentAt: "8:59 AM",
     unread: true
   }];
-
   const getOrderNotes = (orderId: string) => {
     return `Order #${orderId}
 Package contents: 2 boxes of office supplies
 Special instructions: Delivery must be made during business hours (9 AM - 5 PM)
 Contact recipient before delivery at provided number`;
   };
-
   const renderActiveOrders = () => {
     if (user?.role === 'driver' && user?.status === 'working') {
-      return (
-        <>
+      return <>
           <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
             Active Orders - Working Driver
           </h2>
-          {orders.map((order, index) => (
-            <WorkingDriverOrderView
-              key={order.id}
-              order={order}
-              expandedOrderId={expandedOrderId}
-              setExpandedOrderId={setExpandedOrderId}
-              knownLocations={knownLocations}
-              senderInfo={senderInfo}
-              recipientInfo={recipientInfo}
-              getOrderNotes={getOrderNotes}
-            />
-          ))}
-        </>
-      );
+          {orders.map((order, index) => <WorkingDriverOrderView key={order.id} order={order} expandedOrderId={expandedOrderId} setExpandedOrderId={setExpandedOrderId} knownLocations={knownLocations} senderInfo={senderInfo} recipientInfo={recipientInfo} getOrderNotes={getOrderNotes} />)}
+        </>;
     } else {
-      return (
-        <>
+      return <>
           <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
             Active Orders
           </h2>
-          {orders.map((order, index) => (
-            <CustomerOrderView
-              key={order.id}
-              order={order}
-              expandedOrderId={expandedOrderId}
-              setExpandedOrderId={setExpandedOrderId}
-              knownLocations={knownLocations}
-              senderInfo={senderInfo}
-              recipientInfo={recipientInfo}
-              driverInfo={driverInfo}
-              shouldShowDriverInfo={shouldShowDriverInfo}
-            />
-          ))}
-        </>
-      );
+          {orders.map((order, index) => <CustomerOrderView key={order.id} order={order} expandedOrderId={expandedOrderId} setExpandedOrderId={setExpandedOrderId} knownLocations={knownLocations} senderInfo={senderInfo} recipientInfo={recipientInfo} driverInfo={driverInfo} shouldShowDriverInfo={shouldShowDriverInfo} />)}
+        </>;
     }
   };
-
-  return (
-    <div className="orders-panel flex flex-col h-full relative px-[14px] my-0">
+  return <div className="orders-panel flex flex-col h-full relative px-[14px] my-0">
       <div className="flex-1 min-h-0 flex flex-col justify-between">
         <div className="flex-1 min-h-0 flex flex-col">
           <ScrollArea independentPanel={true} className="flex-1 min-h-0 overflow-auto pr-0">
-            <div className="right-panel-container p-[5px] pb-0 flex-1">
+            <div className="right-panel-container p-[5px] pb-0 flex-1 my-[8px]">
               {renderActiveOrders()}
               
               <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b mt-4">
                 Repeated Orders
               </h2>
               {repeatedOrders.map((order, index) => {
-                const isExpanded = expandedOrderId === order.id;
-                return (
-                  <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
+              const isExpanded = expandedOrderId === order.id;
+              return <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
                     <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
                       <h3 className="font-medium text-xs text-foreground/90">Order #{order.id}</h3>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setExpandedOrderId(isExpanded ? null : order.id)}
-                        className="h-6 w-6 p-0"
-                      >
+                      <Button variant="ghost" size="sm" onClick={() => setExpandedOrderId(isExpanded ? null : order.id)} className="h-6 w-6 p-0">
                         {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
                       </Button>
                     </div>
                     
-                    {isExpanded && (
-                      <div className="px-3 pt-1 pb-3 space-y-3">
+                    {isExpanded && <div className="px-3 pt-1 pb-3 space-y-3">
                         <div className="flex justify-start">
                           <Badge variant="secondary" className="text-[10px] px-2 py-0.5">
                             Repeated Order
@@ -206,18 +156,15 @@ Contact recipient before delivery at provided number`;
                             <span className="text-xs font-medium">Weekly Schedule</span>
                           </div>
                           <div className="grid gap-1.5">
-                            {order.schedule.map((slot, idx) => (
-                              <div key={idx} className="flex justify-between items-center text-[11px]">
+                            {order.schedule.map((slot, idx) => <div key={idx} className="flex justify-between items-center text-[11px]">
                                 <span className="text-muted-foreground">{slot.day}:</span>
                                 <span className="font-medium">{slot.time}</span>
-                              </div>
-                            ))}
+                              </div>)}
                           </div>
                         </div>
                         
                         <div className="address-card rounded-md bg-muted/50 p-2.5 shadow-sm space-y-2">
-                          {shouldShowDriverInfo(order.id) ? (
-                            <div className="flex items-start gap-2">
+                          {shouldShowDriverInfo(order.id) ? <div className="flex items-start gap-2">
                               <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                               <div>
                                 <div className="text-[11px] text-muted-foreground mb-0.5">Driver Details:</div>
@@ -227,9 +174,7 @@ Contact recipient before delivery at provided number`;
                                 <div className="text-xs text-muted-foreground">Rating: ⭐️ {driverInfo.rating}</div>
                                 <div className="text-xs text-muted-foreground">Deliveries: {driverInfo.totalDeliveries}</div>
                               </div>
-                            </div>
-                          ) : (
-                            <>
+                            </div> : <>
                               <div className="flex items-start gap-2">
                                 <UserRound className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                                 <div>
@@ -249,8 +194,7 @@ Contact recipient before delivery at provided number`;
                                   <div className="text-xs text-muted-foreground">{recipientInfo.phone}</div>
                                 </div>
                               </div>
-                            </>
-                          )}
+                            </>}
                         </div>
                         
                         <Sheet>
@@ -269,13 +213,11 @@ Contact recipient before delivery at provided number`;
                             </div>
                           </SheetContent>
                         </Sheet>
-                      </div>
-                    )}
+                      </div>}
                     
                     {index !== repeatedOrders.length - 1 && <Separator className="my-1 opacity-50" />}
-                  </div>
-                );
-              })}
+                  </div>;
+            })}
             </div>
           </ScrollArea>
         </div>
@@ -330,6 +272,5 @@ Contact recipient before delivery at provided number`;
         }
         `}
       </style>
-    </div>
-  );
+    </div>;
 };
