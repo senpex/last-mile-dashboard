@@ -198,12 +198,12 @@ export function CreateOrderSheet({
                   <Input id="courierTip" {...form.register("courierTip")} />
                 </div>
                 <div className="space-y-2 flex-1">
-                  <Label htmlFor="itemValue">Item Value</Label>
-                  <Input id="itemValue" {...form.register("itemValue")} />
-                </div>
-                <div className="space-y-2 flex-1">
                   <Label htmlFor="totalTip">Total Tip</Label>
                   <Input id="totalTip" {...form.register("totalTip")} />
+                </div>
+                <div className="space-y-2 flex-1">
+                  <Label htmlFor="itemValue">Item Value</Label>
+                  <Input id="itemValue" {...form.register("itemValue")} />
                 </div>
               </div>
             </div>
