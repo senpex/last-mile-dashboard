@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -104,10 +103,10 @@ const TableHead = React.forwardRef<
       )}
       {children}
       {sortable && sortDirection === 'ascending' && (
-        <ChevronUp className="h-4 w-4 text-red-500" />
+        <ChevronUp className="h-4 w-4 text-primary" />
       )}
       {sortable && sortDirection === 'descending' && (
-        <ChevronDown className="h-4 w-4 text-red-500" />
+        <ChevronDown className="h-4 w-4 text-primary" />
       )}
     </div>
   </th>
