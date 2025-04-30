@@ -87,19 +87,19 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             
-            {/* Pickup Address Section */}
+            {/* Pickup Address Section - Modified to put address, lat, lng on one line */}
             <div className="space-y-4">
               <h3 className="text-md font-medium">Pickup Information</h3>
-              <div className="space-y-2">
-                <Label htmlFor="pickupAddress">Pickup Address</Label>
-                <Input id="pickupAddress" {...form.register("pickupAddress")} />
-              </div>
-              <div className="flex gap-4">
-                <div className="space-y-2 flex-1">
+              <div className="grid grid-cols-12 gap-4">
+                <div className="col-span-6 space-y-2">
+                  <Label htmlFor="pickupAddress">Pickup Address</Label>
+                  <Input id="pickupAddress" {...form.register("pickupAddress")} />
+                </div>
+                <div className="col-span-3 space-y-2">
                   <Label htmlFor="pickupLat">Latitude</Label>
                   <Input id="pickupLat" {...form.register("pickupLat")} />
                 </div>
-                <div className="space-y-2 flex-1">
+                <div className="col-span-3 space-y-2">
                   <Label htmlFor="pickupLng">Longitude</Label>
                   <Input id="pickupLng" {...form.register("pickupLng")} />
                 </div>
@@ -115,16 +115,16 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
             {/* Dropoff Address Section */}
             <div className="space-y-4">
               <h3 className="text-md font-medium">Dropoff Information</h3>
-              <div className="space-y-2">
-                <Label htmlFor="dropoffAddress">Dropoff Address</Label>
-                <Input id="dropoffAddress" {...form.register("dropoffAddress")} />
-              </div>
-              <div className="flex gap-4">
-                <div className="space-y-2 flex-1">
+              <div className="grid grid-cols-12 gap-4">
+                <div className="col-span-6 space-y-2">
+                  <Label htmlFor="dropoffAddress">Dropoff Address</Label>
+                  <Input id="dropoffAddress" {...form.register("dropoffAddress")} />
+                </div>
+                <div className="col-span-3 space-y-2">
                   <Label htmlFor="dropoffLat">Latitude</Label>
                   <Input id="dropoffLat" {...form.register("dropoffLat")} />
                 </div>
-                <div className="space-y-2 flex-1">
+                <div className="col-span-3 space-y-2">
                   <Label htmlFor="dropoffLng">Longitude</Label>
                   <Input id="dropoffLng" {...form.register("dropoffLng")} />
                 </div>
