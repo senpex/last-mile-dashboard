@@ -279,9 +279,6 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
                       <span>{selectedHistoryChat.messages} messages</span>
                     </div>
                   </div>
-                  <Button variant="outline" size="sm" onClick={() => setActiveTab('history')}>
-                    Back to History
-                  </Button>
                 </div>
                 
                 <div className="space-y-4">
