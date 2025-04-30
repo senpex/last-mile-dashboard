@@ -3,17 +3,16 @@ import React, { useState } from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MessageSquare, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface ChatHistoryProps {
   userId: string;
+  onChatSelected?: (chatData: any) => void;
 }
 
 export const ChatHistory = ({
-  userId
+  userId,
+  onChatSelected
 }: ChatHistoryProps) => {
-  const [selectedChat, setSelectedChat] = useState<number | null>(null);
-  
   // Mock data for chat history
   const chatHistory = [{
     id: 1,
@@ -56,11 +55,11 @@ export const ChatHistory = ({
     ]
   }];
 
-  const handleChatClick = (chatId: number) => {
-    setSelectedChat(chatId);
+  const handleChatClick = (chatData: any) => {
+    if (onChatSelected) {
+      onChatSelected(chatData);
+    }
   };
-
-  const selectedChatData = selectedChat !== null ? chatHistory.find(chat => chat.id === selectedChat) : null;
 
   return (
     <>
@@ -73,7 +72,7 @@ export const ChatHistory = ({
                   bg-card/40 hover:bg-card/60 border border-border/40 shadow-sm
                   relative group" 
                 type="button"
-                onClick={() => handleChatClick(chat.id)}
+                onClick={() => handleChatClick(chat)}
               >
                 <div className="flex items-center gap-1 mb-0.5 w-full">
                   <span className="text-xs font-semibold text-foreground mr-1">
@@ -98,35 +97,6 @@ export const ChatHistory = ({
           ))}
         </div>
       </ScrollArea>
-
-      <Dialog open={selectedChat !== null} onOpenChange={(open) => !open && setSelectedChat(null)}>
-        <DialogContent className="max-w-md sm:max-w-lg md:max-w-xl">
-          <DialogHeader>
-            <DialogTitle className="text-lg">
-              {selectedChatData?.date} - {selectedChatData?.summary}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="max-h-[60vh] overflow-y-auto mt-2">
-            {selectedChatData?.conversation.map((message, index) => (
-              <div 
-                key={index}
-                className={`mb-3 flex ${message.sender === 'client' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div 
-                  className={`max-w-[80%] p-3 rounded-lg ${
-                    message.sender === 'client' 
-                      ? 'bg-primary text-primary-foreground' 
-                      : 'bg-muted'
-                  }`}
-                >
-                  <div className="text-sm">{message.message}</div>
-                  <div className="text-[10px] mt-1 opacity-70 text-right">{message.time}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </DialogContent>
-      </Dialog>
     </>
   );
 };

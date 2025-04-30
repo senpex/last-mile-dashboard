@@ -47,6 +47,7 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
     type: 'image' | 'document' | 'spreadsheet' | 'pdf';
   }>>([]);
   const [noteText, setNoteText] = useState("");
+  const [selectedHistoryChat, setSelectedHistoryChat] = useState<any>(null);
   const [messages, setMessages] = useState<MessageType[]>([
     {
       id: '1',
@@ -131,22 +132,24 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
 
   const showDriverInfo = !(user.role === 'driver' && user.status === 'working');
 
-  const openedChats = [{
-    orderId: "909090",
-    lastMessage: "I'm at the pickup location.",
-    sentAt: "10:28 AM",
-    unread: true
-  }, {
-    orderId: "909093",
-    lastMessage: "Delivered the package. Please confirm!",
-    sentAt: "9:45 AM",
-    unread: false
-  }, {
-    orderId: "909094",
-    lastMessage: "Running 5 min late due to traffic.",
-    sentAt: "8:59 AM",
-    unread: true
-  }];
+  const openedChats = [
+    {
+      orderId: "909090",
+      lastMessage: "I'm at the pickup location.",
+      sentAt: "10:28 AM",
+      unread: true
+    }, {
+      orderId: "909093",
+      lastMessage: "Delivered the package. Please confirm!",
+      sentAt: "9:45 AM",
+      unread: false
+    }, {
+      orderId: "909094",
+      lastMessage: "Running 5 min late due to traffic.",
+      sentAt: "8:59 AM",
+      unread: true
+    }
+  ];
 
   const handleSendMessage = () => {
     if (message.trim() === '' && attachedFiles.length === 0) return;
@@ -203,6 +206,12 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
     }
   };
 
+  const handleHistoryChatSelected = (chatData: any) => {
+    setSelectedHistoryChat(chatData);
+    // Switch to history-detail tab if it doesn't exist already
+    setActiveTab("history-detail");
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case 'chat':
@@ -224,7 +233,48 @@ export const ChatInterface = ({ chatId, user, onClose }: ChatInterfaceProps) => 
       case 'history':
         return (
           <ScrollArea className="flex-1 p-4 overflow-y-auto">
-            <ChatHistory userId={user.id} />
+            <ChatHistory userId={user.id} onChatSelected={handleHistoryChatSelected} />
+          </ScrollArea>
+        );
+      case 'history-detail':
+        return (
+          <ScrollArea className="flex-1 p-4 overflow-y-auto">
+            {selectedHistoryChat && (
+              <div className="space-y-4">
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <h3 className="text-lg font-medium">{selectedHistoryChat.date} - {selectedHistoryChat.summary}</h3>
+                    <div className="flex items-center mt-1 text-sm text-muted-foreground">
+                      <MessageSquare className="w-4 h-4 mr-1" />
+                      <span>{selectedHistoryChat.messages} messages</span>
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm" onClick={() => setActiveTab('history')}>
+                    Back to History
+                  </Button>
+                </div>
+                
+                <div className="space-y-4">
+                  {selectedHistoryChat.conversation.map((message: any, index: number) => (
+                    <div 
+                      key={index}
+                      className={`mb-3 flex ${message.sender === 'client' ? 'justify-end' : 'justify-start'}`}
+                    >
+                      <div 
+                        className={`max-w-[80%] p-3 rounded-lg ${
+                          message.sender === 'client' 
+                            ? 'bg-primary text-primary-foreground' 
+                            : 'bg-muted'
+                        }`}
+                      >
+                        <div className="text-sm">{message.message}</div>
+                        <div className="text-[10px] mt-1 opacity-70 text-right">{message.time}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </ScrollArea>
         );
       case 'notes':
