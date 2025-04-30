@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,7 +9,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Separator } from "@/components/ui/separator";
-
 const formSchema = z.object({
   pickupAddress: z.string(),
   pickupLat: z.string(),
@@ -36,14 +34,14 @@ const formSchema = z.object({
   paddingTime: z.string(),
   pickupTimeZone: z.string(),
   deliveryTime: z.string(),
-  bagRequirement: z.string().optional(),
+  bagRequirement: z.string().optional()
 });
-
 interface CreateOrderSheetProps {
   onClose: () => void;
 }
-
-export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
+export function CreateOrderSheet({
+  onClose
+}: CreateOrderSheetProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -71,19 +69,16 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
       paddingTime: "",
       pickupTimeZone: "America/New_York",
       deliveryTime: "",
-      bagRequirement: "",
-    },
+      bagRequirement: ""
+    }
   });
-
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     onClose();
   }
-
-  return (
-    <div className="h-full overflow-auto">
+  return <div className="h-full overflow-auto">
       <div className="p-6 max-w-5xl mx-auto">
-        <h2 className="text-lg font-semibold mb-6">Create Order</h2>
+        
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             
@@ -106,11 +101,8 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="pickupDescription">Pickup Description</Label>
-                <Textarea 
-                  id="pickupDescription" 
-                  {...form.register("pickupDescription")} 
-                  className="min-h-[24px] h-[38px] py-2" // Reduced to match single line input height
-                />
+                <Textarea id="pickupDescription" {...form.register("pickupDescription")} className="min-h-[24px] h-[38px] py-2" // Reduced to match single line input height
+              />
               </div>
             </div>
 
@@ -135,11 +127,8 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="dropoffDescription">Dropoff Description</Label>
-                <Textarea 
-                  id="dropoffDescription" 
-                  {...form.register("dropoffDescription")} 
-                  className="min-h-[24px] h-[38px] py-2" // Reduced to match single line input height
-                />
+                <Textarea id="dropoffDescription" {...form.register("dropoffDescription")} className="min-h-[24px] h-[38px] py-2" // Reduced to match single line input height
+              />
               </div>
             </div>
 
@@ -181,11 +170,8 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="courierNotes">Courier Notes</Label>
-                <Textarea 
-                  id="courierNotes" 
-                  {...form.register("courierNotes")} 
-                  className="min-h-[24px] h-[38px] py-2" // Reduced to match single line input height
-                />
+                <Textarea id="courierNotes" {...form.register("courierNotes")} className="min-h-[24px] h-[38px] py-2" // Reduced to match single line input height
+              />
               </div>
             </div>
 
@@ -242,10 +228,7 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="pickupTimeZone">Pickup Time Zone</Label>
-                  <Select
-                    defaultValue={form.getValues("pickupTimeZone")}
-                    onValueChange={(value) => form.setValue("pickupTimeZone", value)}
-                  >
+                  <Select defaultValue={form.getValues("pickupTimeZone")} onValueChange={value => form.setValue("pickupTimeZone", value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select time zone" />
                     </SelectTrigger>
@@ -265,9 +248,7 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
             {/* Bag Requirements */}
             <div className="space-y-2">
               <Label htmlFor="bagRequirement">Bag Requirement</Label>
-              <Select 
-                onValueChange={(value) => form.setValue("bagRequirement", value)}
-              >
+              <Select onValueChange={value => form.setValue("bagRequirement", value)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Add bag requirement" />
                 </SelectTrigger>
@@ -287,6 +268,5 @@ export function CreateOrderSheet({ onClose }: CreateOrderSheetProps) {
           </form>
         </Form>
       </div>
-    </div>
-  );
+    </div>;
 }
