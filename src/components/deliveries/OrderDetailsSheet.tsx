@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -8,41 +7,21 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { FileText, MapPin, User, Phone, Clock, Truck, DollarSign, CalendarClock, MessageSquare, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
-
 interface OrderDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
   delivery: Delivery | null;
 }
-
-export const OrderDetailsSheet = ({ isOpen, onClose, delivery }: OrderDetailsSheetProps) => {
+export const OrderDetailsSheet = ({
+  isOpen,
+  onClose,
+  delivery
+}: OrderDetailsSheetProps) => {
   if (!delivery) return null;
-  
   const [status, setStatus] = useState<string>(delivery.status);
-
-  const statuses: DeliveryStatus[] = [
-    "Dropoff Complete",
-    "Canceled By Customer",
-    "Cancelled By Admin",
-    "In Transit",
-    "Picking Up",
-    "Arrived For Pickup",
-    "Scheduled Order",
-    "Online",
-    "Offline",
-    "Busy",
-    "Not approved",
-    "Available",
-    "On Break"
-  ];
-
+  const statuses: DeliveryStatus[] = ["Dropoff Complete", "Canceled By Customer", "Cancelled By Admin", "In Transit", "Picking Up", "Arrived For Pickup", "Scheduled Order", "Online", "Offline", "Busy", "Not approved", "Available", "On Break"];
   const getStatusBadgeVariant = (status: string): string => {
     switch (status) {
       case "Dropoff Complete":
@@ -61,16 +40,13 @@ export const OrderDetailsSheet = ({ isOpen, onClose, delivery }: OrderDetailsShe
         return "outline";
     }
   };
-
   const handleStatusChange = (newStatus: DeliveryStatus) => {
     setStatus(newStatus);
     toast.success(`Order status updated to ${newStatus}`);
   };
-
-  return (
-    <Sheet open={isOpen} onOpenChange={(open) => {
-      if (!open) onClose();
-    }}>
+  return <Sheet open={isOpen} onOpenChange={open => {
+    if (!open) onClose();
+  }}>
       <SheetContent className="sm:max-w-md md:max-w-lg w-full overflow-hidden p-0">
         <SheetHeader className="p-6 pb-2">
           <div className="flex items-center justify-between">
@@ -78,31 +54,21 @@ export const OrderDetailsSheet = ({ isOpen, onClose, delivery }: OrderDetailsShe
               <SheetTitle className="text-left text-lg">Order #{delivery.packageId}</SheetTitle>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-7 px-2 gap-1">
-                    <Badge variant={getStatusBadgeVariant(status) as any} className={cn(
-                      status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
-                      "rounded-md" // Changed from default rounded-full to rounded-md for rectangular shape
-                    )}>
+                  <Button variant="outline" size="sm" className="h-7 gap-1 px-0">
+                    <Badge variant={getStatusBadgeVariant(status) as any} className={cn(status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "", "rounded-md" // Changed from default rounded-full to rounded-md for rectangular shape
+                  )}>
                       {status}
                     </Badge>
                     <ChevronDown className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-[200px]">
-                  {statuses.map((statusOption) => (
-                    <DropdownMenuItem 
-                      key={statusOption}
-                      onClick={() => handleStatusChange(statusOption)}
-                      className="cursor-pointer"
-                    >
-                      <Badge variant={getStatusBadgeVariant(statusOption) as any} className={cn(
-                        statusOption === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
-                        "w-full justify-center rounded-md" // Changed from default rounded-full to rounded-md for rectangular shape
-                      )}>
+                  {statuses.map(statusOption => <DropdownMenuItem key={statusOption} onClick={() => handleStatusChange(statusOption)} className="cursor-pointer">
+                      <Badge variant={getStatusBadgeVariant(statusOption) as any} className={cn(statusOption === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "", "w-full justify-center rounded-md" // Changed from default rounded-full to rounded-md for rectangular shape
+                  )}>
                         {statusOption}
                       </Badge>
-                    </DropdownMenuItem>
-                  ))}
+                    </DropdownMenuItem>)}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -169,8 +135,7 @@ export const OrderDetailsSheet = ({ isOpen, onClose, delivery }: OrderDetailsShe
               </div>
             </div>
             
-            {delivery.courier && (
-              <div>
+            {delivery.courier && <div>
                 <h3 className="text-sm font-medium mb-3 flex items-center">
                   <Truck className="w-4 h-4 mr-2" />
                   Courier
@@ -182,8 +147,7 @@ export const OrderDetailsSheet = ({ isOpen, onClose, delivery }: OrderDetailsShe
                     Contact Courier
                   </Button>
                 </div>
-              </div>
-            )}
+              </div>}
             
             <div>
               <h3 className="text-sm font-medium mb-3 flex items-center">
@@ -199,12 +163,10 @@ export const OrderDetailsSheet = ({ isOpen, onClose, delivery }: OrderDetailsShe
                   <p className="text-sm">Tip</p>
                   <p className="text-sm font-medium">{delivery.tip}</p>
                 </div>
-                {delivery.couriersEarnings && (
-                  <div className="flex justify-between">
+                {delivery.couriersEarnings && <div className="flex justify-between">
                     <p className="text-sm">Courier's Earnings</p>
                     <p className="text-sm font-medium">{delivery.couriersEarnings}</p>
-                  </div>
-                )}
+                  </div>}
               </div>
             </div>
             
@@ -239,6 +201,5 @@ export const OrderDetailsSheet = ({ isOpen, onClose, delivery }: OrderDetailsShe
           </div>
         </ScrollArea>
       </SheetContent>
-    </Sheet>
-  );
+    </Sheet>;
 };
