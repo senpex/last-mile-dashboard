@@ -470,7 +470,7 @@ const ClientsPage = () => {
       <div className="flex flex-col h-screen">
         <ClientsFilters searchTerm={searchTerm} onSearchChange={setSearchTerm} dateRange={dateRange} onDateRangeChange={setDateRange} timezone={timezone} onTimezoneChange={setTimezone} availableColumns={availableColumns} visibleColumns={visibleColumns} onVisibleColumnsChange={setVisibleColumns} activeView={activeView} onActiveViewChange={setActiveView} onToggleFilterSidebar={handleToggleFilterSidebar} isFilterSidebarOpen={isFilterSidebarOpen} />
 
-        <div className="flex flex-1 w-full overflow-hidden relative mx-0 px-[10px]">
+        <div className="flex flex-1 w-full overflow-hidden relative mx-0 px-[5px]">
           <ClientsSidebar open={isFilterSidebarOpen} onClose={() => setIsFilterSidebarOpen(false)} selectedStatuses={selectedStatuses} setSelectedStatuses={setSelectedStatuses} allClientStatuses={allClientStatuses} allZipcodes={allZipcodes} selectedZipcodes={selectedZipcodes} setSelectedZipcodes={setSelectedZipcodes} allCities={allCities} selectedCities={selectedCities} setSelectedCities={setSelectedCities} allStates={allStates} selectedStates={selectedStates} setSelectedStates={setSelectedStates} allCompanies={allCompanies} selectedCompanies={selectedCompanies} setSelectedCompanies={setSelectedCompanies} />
 
           <div className={`flex-1 w-full transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-[10px]"}`}>
