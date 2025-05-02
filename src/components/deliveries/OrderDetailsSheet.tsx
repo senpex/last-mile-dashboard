@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -24,7 +25,7 @@ export const OrderDetailsSheet = ({
   if (!delivery) return null;
   
   const [status, setStatus] = useState<string>(delivery.status);
-  const [dropdownOpen, setDropdownOpen] = useState(true);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   
   const statuses: DeliveryStatus[] = ["Dropoff Complete", "Canceled By Customer", "Cancelled By Admin", "In Transit", "Picking Up", "Arrived For Pickup", "Scheduled Order", "Online", "Offline", "Busy", "Not approved", "Available", "On Break"];
   
@@ -53,11 +54,9 @@ export const OrderDetailsSheet = ({
     setDropdownOpen(false);
   };
   
-  useEffect(() => {
-    if (isOpen) {
-      setDropdownOpen(true);
-    }
-  }, [isOpen]);
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
   
   return <Sheet open={isOpen} onOpenChange={open => {
     if (!open) onClose();
@@ -68,7 +67,7 @@ export const OrderDetailsSheet = ({
             <div className="flex items-center gap-2">
               <SheetTitle className="text-left text-lg">Order #{delivery.packageId}</SheetTitle>
               <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
-                <DropdownMenuTrigger asChild>
+                <DropdownMenuTrigger asChild onClick={toggleDropdown}>
                   <Badge variant={getStatusBadgeVariant(status) as any} className={cn(
                     status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
                     "rounded-md flex items-center gap-1 py-1 px-3 cursor-pointer h-7"
@@ -77,7 +76,7 @@ export const OrderDetailsSheet = ({
                     <ChevronDown className="h-3 w-3 ml-1" />
                   </Badge>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-[200px]">
+                <DropdownMenuContent align="end" className="w-[200px] bg-popover">
                   {statuses.map(statusOption => <DropdownMenuItem key={statusOption} onClick={() => handleStatusChange(statusOption)} className="cursor-pointer">
                       <Badge variant={getStatusBadgeVariant(statusOption) as any} className={cn(
                         statusOption === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
@@ -220,3 +219,4 @@ export const OrderDetailsSheet = ({
       </SheetContent>
     </Sheet>;
 };
+
