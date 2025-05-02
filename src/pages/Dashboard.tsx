@@ -3,15 +3,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
-
 const Dashboard = () => {
   const stats = {
     orders: 12,
@@ -22,20 +15,20 @@ const Dashboard = () => {
     ezCaterModifications: 2,
     profitability: 16
   };
-
-  const companies = [
-    { name: "Acme Corp", count: 5 },
-    { name: "TechStart Inc", count: 3 },
-    { name: "Global Logistics", count: 7 }
-  ];
-
+  const companies = [{
+    name: "Acme Corp",
+    count: 5
+  }, {
+    name: "TechStart Inc",
+    count: 3
+  }, {
+    name: "Global Logistics",
+    count: 7
+  }];
   const [ordersPeriod, setOrdersPeriod] = useState("lifetime");
   const [profitabilityPeriod, setProfitabilityPeriod] = useState("lifetime");
-
   const navigate = useNavigate();
-
-  return (
-    <Layout>
+  return <Layout>
       <div className="container mx-auto p-6">
         <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
         
@@ -155,24 +148,20 @@ const Dashboard = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold mb-4">Batching</h2>
+            <h2 className="text-lg font-semibold mb-4">Batching Orders</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <Card>
                 <CardContent className="pt-6 space-y-4">
-                  {companies.map((company, index) => (
-                    <div key={index} className="flex items-center justify-between">
+                  {companies.map((company, index) => <div key={index} className="flex items-center justify-between">
                       <p className="text-sm font-medium">{company.name}</p>
                       <span className="text-sm font-bold">{company.count}</span>
-                    </div>
-                  ))}
+                    </div>)}
                 </CardContent>
               </Card>
             </div>
           </div>
         </div>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Dashboard;
