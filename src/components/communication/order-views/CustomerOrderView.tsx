@@ -1,11 +1,13 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { Clock, UserRound, ChevronUp, ChevronDown } from "lucide-react";
 import { OrderMap } from "../OrderMap";
 import { StatusBadge } from "./StatusBadge";
+import { useState } from "react";
+import { OrderDetailsSheet } from "@/components/deliveries/OrderDetailsSheet";
+import { Delivery } from "@/types/delivery";
 
 interface CustomerOrderViewProps {
   order: {
@@ -50,6 +52,32 @@ export const CustomerOrderView = ({
   shouldShowDriverInfo
 }: CustomerOrderViewProps) => {
   const isExpanded = expandedOrderId === order.id;
+  const [isOrderDetailsOpen, setIsOrderDetailsOpen] = useState(false);
+  
+  // Convert order to Delivery type for the OrderDetailsSheet
+  const deliveryOrder: Delivery = {
+    id: parseInt(order.id),
+    packageId: order.id,
+    orderName: `Order #${order.id}`,
+    status: order.status === 'active' ? 'En Route' : order.status === 'completed' ? 'Dropoff Complete' : 'Canceled By Customer',
+    pickupTime: order.pickupTime,
+    pickupLocation: {
+      name: senderInfo.name,
+      address: knownLocations[order.pickupAddress] || order.pickupAddress
+    },
+    dropoffTime: order.dropoffTime,
+    dropoffLocation: {
+      name: recipientInfo.name,
+      address: knownLocations[order.deliveryAddress] || order.deliveryAddress
+    },
+    customerName: senderInfo.name,
+    price: "$29.99",
+    tip: "$5.00",
+    courier: order.driverName,
+    organization: "Delivery Inc.",
+    distance: "2.8 miles",
+    notes: `Order #${order.id} - Special delivery instructions may apply.`
+  };
   
   return (
     <div className="order-card rounded-lg transition-all duration-200 ease-in-out">
@@ -151,24 +179,22 @@ export const CustomerOrderView = ({
             )}
           </div>
           
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="sm" className="w-full text-xs py-1">
-                View Full Order
-              </Button>
-            </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>Order Details</SheetTitle>
-              </SheetHeader>
-              <div className="py-2">
-                <h3 className="text-sm font-medium mb-1">Order #{order.id}</h3>
-                <p className="text-xs">Full order details would be displayed here.</p>
-              </div>
-            </SheetContent>
-          </Sheet>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full text-xs py-1"
+            onClick={() => setIsOrderDetailsOpen(true)}
+          >
+            View Full Order
+          </Button>
         </div>
       )}
+      
+      <OrderDetailsSheet
+        isOpen={isOrderDetailsOpen}
+        onClose={() => setIsOrderDetailsOpen(false)}
+        delivery={deliveryOrder}
+      />
     </div>
   );
 };
