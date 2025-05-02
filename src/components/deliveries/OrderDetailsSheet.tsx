@@ -54,7 +54,7 @@ export const OrderDetailsSheet = ({
               <SheetTitle className="text-left text-lg">Order #{delivery.packageId}</SheetTitle>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-7 gap-1 px-0">
+                  <Button variant="outline" size="sm" className="h-7 gap-1 px-[3px] py-0">
                     <Badge variant={getStatusBadgeVariant(status) as any} className={cn(status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "", "rounded-md" // Changed from default rounded-full to rounded-md for rectangular shape
                   )}>
                       {status}
