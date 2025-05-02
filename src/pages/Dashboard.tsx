@@ -148,7 +148,7 @@ const Dashboard = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold mb-4">Batching Orders</h2>
+            <h2 className="text-lg font-semibold mb-4">Batching]\</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <Card>
                 <CardContent className="pt-6 space-y-4">
