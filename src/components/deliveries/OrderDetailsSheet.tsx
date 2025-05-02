@@ -1,6 +1,5 @@
-
-import React, { useState, useEffect } from 'react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from "@/components/ui/sheet";
+import React, { useState } from 'react';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -8,8 +7,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { FileText, MapPin, User, Phone, Clock, Truck, DollarSign, CalendarClock, MessageSquare, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface OrderDetailsSheetProps {
   isOpen: boolean;
@@ -25,7 +30,6 @@ export const OrderDetailsSheet = ({
   if (!delivery) return null;
   
   const [status, setStatus] = useState<string>(delivery.status);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   
   const statuses: DeliveryStatus[] = ["Dropoff Complete", "Canceled By Customer", "Cancelled By Admin", "In Transit", "Picking Up", "Arrived For Pickup", "Scheduled Order", "Online", "Offline", "Busy", "Not approved", "Available", "On Break"];
   
@@ -51,11 +55,6 @@ export const OrderDetailsSheet = ({
   const handleStatusChange = (newStatus: DeliveryStatus) => {
     setStatus(newStatus);
     toast.success(`Order status updated to ${newStatus}`);
-    setDropdownOpen(false);
-  };
-  
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
   };
   
   return <Sheet open={isOpen} onOpenChange={open => {
@@ -66,27 +65,39 @@ export const OrderDetailsSheet = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <SheetTitle className="text-left text-lg">Order #{delivery.packageId}</SheetTitle>
-              <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
-                <DropdownMenuTrigger asChild onClick={toggleDropdown}>
-                  <Badge variant={getStatusBadgeVariant(status) as any} className={cn(
-                    status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
-                    "rounded-md flex items-center gap-1 py-1 px-3 cursor-pointer h-7"
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="ghost" className={cn(
+                    status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-200" : "",
+                    getStatusBadgeVariant(status) === "destructive" ? "bg-red-100 text-red-800 hover:bg-red-200" : "",
+                    getStatusBadgeVariant(status) === "warning" ? "bg-amber-100 text-amber-800 hover:bg-amber-200" : "",
+                    getStatusBadgeVariant(status) === "default" ? "bg-blue-100 text-blue-800 hover:bg-blue-200" : "",
+                    getStatusBadgeVariant(status) === "outline" ? "bg-gray-100 text-gray-800 hover:bg-gray-200" : "",
+                    "rounded-md flex items-center gap-1 py-1 px-3 h-7 justify-between font-medium"
                   )}>
                     {status}
                     <ChevronDown className="h-3 w-3 ml-1" />
-                  </Badge>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-[200px] bg-popover">
-                  {statuses.map(statusOption => <DropdownMenuItem key={statusOption} onClick={() => handleStatusChange(statusOption)} className="cursor-pointer">
-                      <Badge variant={getStatusBadgeVariant(statusOption) as any} className={cn(
-                        statusOption === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
-                        "w-full justify-center rounded-md px-2"
-                      )}>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-1">
+                  <div className="grid gap-1">
+                    {statuses.map(statusOption => (
+                      <Button 
+                        key={statusOption} 
+                        variant="ghost" 
+                        size="sm"
+                        className={cn(
+                          "justify-start text-left font-normal", 
+                          statusOption === status ? "bg-accent text-accent-foreground" : ""
+                        )}
+                        onClick={() => handleStatusChange(statusOption)}
+                      >
                         {statusOption}
-                      </Badge>
-                    </DropdownMenuItem>)}
-                </DropdownMenuContent>
-              </DropdownMenu>
+                      </Button>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
           <SheetDescription className="text-left text-sm">
@@ -219,4 +230,3 @@ export const OrderDetailsSheet = ({
       </SheetContent>
     </Sheet>;
 };
-
