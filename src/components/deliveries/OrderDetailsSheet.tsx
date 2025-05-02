@@ -81,7 +81,7 @@ export const OrderDetailsSheet = ({ isOpen, onClose, delivery }: OrderDetailsShe
                   <Button variant="outline" size="sm" className="h-7 px-2 gap-1">
                     <Badge variant={getStatusBadgeVariant(status) as any} className={cn(
                       status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
-                      "rounded-md py-1 px-2 text-xs" // Improved padding and sizing for the badge
+                      "rounded-md" // Changed from default rounded-full to rounded-md for rectangular shape
                     )}>
                       {status}
                     </Badge>
@@ -93,11 +93,11 @@ export const OrderDetailsSheet = ({ isOpen, onClose, delivery }: OrderDetailsShe
                     <DropdownMenuItem 
                       key={statusOption}
                       onClick={() => handleStatusChange(statusOption)}
-                      className="cursor-pointer p-0 focus:bg-transparent hover:bg-transparent"
+                      className="cursor-pointer"
                     >
                       <Badge variant={getStatusBadgeVariant(statusOption) as any} className={cn(
                         statusOption === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
-                        "w-full justify-center rounded-md py-1 text-xs my-1" // Improved padding and spacing
+                        "w-full justify-center rounded-md" // Changed from default rounded-full to rounded-md for rectangular shape
                       )}>
                         {statusOption}
                       </Badge>
