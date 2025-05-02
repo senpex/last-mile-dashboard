@@ -626,7 +626,7 @@ const DriversPage = () => {
       <div className="flex flex-col h-screen">
         <DriversFilters searchTerm={searchTerm} onSearchChange={setSearchTerm} dateRange={dateRange} onDateRangeChange={setDateRange} timezone={timezone} onTimezoneChange={setTimezone} availableColumns={availableColumns} visibleColumns={visibleColumns} onVisibleColumnsChange={setVisibleColumns} activeView={activeView} onActiveViewChange={setActiveView} onToggleFilterSidebar={handleToggleFilterSidebar} isFilterSidebarOpen={isFilterSidebarOpen} />
 
-        <div className="flex flex-1 w-full overflow-hidden relative px-[10px] mx-[10px]">
+        <div className="flex flex-1 w-full overflow-hidden relative mx-0 px-[5px]">
           <DriversSidebar open={isFilterSidebarOpen} onClose={() => setIsFilterSidebarOpen(false)} selectedStatuses={selectedStatuses} setSelectedStatuses={setSelectedStatuses} allDeliveryStatuses={allDriverStatuses} allZipcodes={allZipcodes} selectedZipcodes={selectedZipcodes} setSelectedZipcodes={setSelectedZipcodes} allCities={allCities} selectedCities={selectedCities} setSelectedCities={setSelectedCities} allStates={allStates} selectedStates={selectedStates} setSelectedStates={setSelectedStates} onFiltersAdd={handleFiltersAdd} />
 
           <div className={`flex-1 w-full transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-2"}`}>
