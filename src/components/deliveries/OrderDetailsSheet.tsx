@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -80,6 +81,7 @@ export const OrderDetailsSheet = ({ isOpen, onClose, delivery }: OrderDetailsShe
                   <Button variant="outline" size="sm" className="h-7 px-2 gap-1">
                     <Badge variant={getStatusBadgeVariant(status) as any} className={cn(
                       status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
+                      "rounded-md" // Changed from default rounded-full to rounded-md for rectangular shape
                     )}>
                       {status}
                     </Badge>
@@ -95,7 +97,7 @@ export const OrderDetailsSheet = ({ isOpen, onClose, delivery }: OrderDetailsShe
                     >
                       <Badge variant={getStatusBadgeVariant(statusOption) as any} className={cn(
                         statusOption === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
-                        "w-full justify-center"
+                        "w-full justify-center rounded-md" // Changed from default rounded-full to rounded-md for rectangular shape
                       )}>
                         {statusOption}
                       </Badge>
