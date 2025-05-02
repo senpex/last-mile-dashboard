@@ -109,9 +109,7 @@ Contact recipient before delivery at provided number`;
   const renderActiveOrders = () => {
     if (user?.role === 'driver' && user?.status === 'working') {
       return <>
-          <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">
-            Active Orders - Working Driver
-          </h2>
+          <h2 className="text-lg font-medium text-foreground sticky top-0 bg-background/95 backdrop-blur-sm py-1 z-10 border-b">Active Orders</h2>
           {orders.map((order, index) => <WorkingDriverOrderView key={order.id} order={order} expandedOrderId={expandedOrderId} setExpandedOrderId={setExpandedOrderId} knownLocations={knownLocations} senderInfo={senderInfo} recipientInfo={recipientInfo} getOrderNotes={getOrderNotes} />)}
         </>;
     } else {
