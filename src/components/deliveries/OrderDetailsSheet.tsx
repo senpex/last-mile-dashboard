@@ -1,13 +1,19 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from "@/components/ui/sheet";
-import { Delivery } from "@/types/delivery";
+import { Delivery, DeliveryStatus } from "@/types/delivery";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { FileText, MapPin, User, Phone, Clock, Truck, DollarSign, CalendarClock, MessageSquare } from "lucide-react";
+import { FileText, MapPin, User, Phone, Clock, Truck, DollarSign, CalendarClock, MessageSquare, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 
 interface OrderDetailsSheetProps {
   isOpen: boolean;
@@ -17,6 +23,24 @@ interface OrderDetailsSheetProps {
 
 export const OrderDetailsSheet = ({ isOpen, onClose, delivery }: OrderDetailsSheetProps) => {
   if (!delivery) return null;
+  
+  const [status, setStatus] = useState<string>(delivery.status);
+
+  const statuses: DeliveryStatus[] = [
+    "Dropoff Complete",
+    "Canceled By Customer",
+    "Cancelled By Admin",
+    "In Transit",
+    "Picking Up",
+    "Arrived For Pickup",
+    "Scheduled Order",
+    "Online",
+    "Offline",
+    "Busy",
+    "Not approved",
+    "Available",
+    "On Break"
+  ];
 
   const getStatusBadgeVariant = (status: string): string => {
     switch (status) {
@@ -37,6 +61,11 @@ export const OrderDetailsSheet = ({ isOpen, onClose, delivery }: OrderDetailsShe
     }
   };
 
+  const handleStatusChange = (newStatus: DeliveryStatus) => {
+    setStatus(newStatus);
+    toast.success(`Order status updated to ${newStatus}`);
+  };
+
   return (
     <Sheet open={isOpen} onOpenChange={(open) => {
       if (!open) onClose();
@@ -46,11 +75,34 @@ export const OrderDetailsSheet = ({ isOpen, onClose, delivery }: OrderDetailsShe
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <SheetTitle className="text-left text-lg">Order #{delivery.packageId}</SheetTitle>
-              <Badge variant={getStatusBadgeVariant(delivery.status) as any} className={cn(
-                delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
-              )}>
-                {delivery.status}
-              </Badge>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-7 px-2 gap-1">
+                    <Badge variant={getStatusBadgeVariant(status) as any} className={cn(
+                      status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
+                    )}>
+                      {status}
+                    </Badge>
+                    <ChevronDown className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-[200px]">
+                  {statuses.map((statusOption) => (
+                    <DropdownMenuItem 
+                      key={statusOption}
+                      onClick={() => handleStatusChange(statusOption)}
+                      className="cursor-pointer"
+                    >
+                      <Badge variant={getStatusBadgeVariant(statusOption) as any} className={cn(
+                        statusOption === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
+                        "w-full justify-center"
+                      )}>
+                        {statusOption}
+                      </Badge>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
           <SheetDescription className="text-left text-sm">
