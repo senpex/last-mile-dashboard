@@ -44,13 +44,14 @@ export const OrderDetailsSheet = ({ isOpen, onClose, delivery }: OrderDetailsShe
       <SheetContent className="sm:max-w-md md:max-w-lg w-full overflow-hidden p-0">
         <SheetHeader className="p-6 pb-2">
           <div className="flex items-center justify-between">
-            <SheetTitle className="text-left text-lg">Order #{delivery.packageId}</SheetTitle>
-            <Badge variant={getStatusBadgeVariant(delivery.status) as any} className={cn(
-              delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
-              "ml-auto"
-            )}>
-              {delivery.status}
-            </Badge>
+            <div className="flex items-center gap-2">
+              <SheetTitle className="text-left text-lg">Order #{delivery.packageId}</SheetTitle>
+              <Badge variant={getStatusBadgeVariant(delivery.status) as any} className={cn(
+                delivery.status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
+              )}>
+                {delivery.status}
+              </Badge>
+            </div>
           </div>
           <SheetDescription className="text-left text-sm">
             {delivery.orderName}
