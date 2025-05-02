@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -54,9 +55,11 @@ export const OrderDetailsSheet = ({
               <SheetTitle className="text-left text-lg">Order #{delivery.packageId}</SheetTitle>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-7 gap-1 px-[3px] py-0">
-                    <Badge variant={getStatusBadgeVariant(status) as any} className={cn(status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "", "rounded-md" // Changed from default rounded-full to rounded-md for rectangular shape
-                  )}>
+                  <Button variant="outline" size="sm" className="h-7 gap-1 px-2 py-0">
+                    <Badge variant={getStatusBadgeVariant(status) as any} className={cn(
+                      status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
+                      "rounded-md mx-1"  // Added mx-1 for equal horizontal margins
+                    )}>
                       {status}
                     </Badge>
                     <ChevronDown className="h-4 w-4" />
@@ -64,8 +67,10 @@ export const OrderDetailsSheet = ({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-[200px]">
                   {statuses.map(statusOption => <DropdownMenuItem key={statusOption} onClick={() => handleStatusChange(statusOption)} className="cursor-pointer">
-                      <Badge variant={getStatusBadgeVariant(statusOption) as any} className={cn(statusOption === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "", "w-full justify-center rounded-md" // Changed from default rounded-full to rounded-md for rectangular shape
-                  )}>
+                      <Badge variant={getStatusBadgeVariant(statusOption) as any} className={cn(
+                        statusOption === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
+                        "w-full justify-center rounded-md px-2"  // Added px-2 for consistent padding
+                      )}>
                         {statusOption}
                       </Badge>
                     </DropdownMenuItem>)}
