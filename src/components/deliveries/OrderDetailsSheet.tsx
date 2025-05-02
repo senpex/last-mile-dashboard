@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
 import { Badge } from "@/components/ui/badge";
@@ -9,19 +9,25 @@ import { FileText, MapPin, User, Phone, Clock, Truck, DollarSign, CalendarClock,
 import { cn } from "@/lib/utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+
 interface OrderDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
   delivery: Delivery | null;
 }
+
 export const OrderDetailsSheet = ({
   isOpen,
   onClose,
   delivery
 }: OrderDetailsSheetProps) => {
   if (!delivery) return null;
+  
   const [status, setStatus] = useState<string>(delivery.status);
+  const [dropdownOpen, setDropdownOpen] = useState(true);
+  
   const statuses: DeliveryStatus[] = ["Dropoff Complete", "Canceled By Customer", "Cancelled By Admin", "In Transit", "Picking Up", "Arrived For Pickup", "Scheduled Order", "Online", "Offline", "Busy", "Not approved", "Available", "On Break"];
+  
   const getStatusBadgeVariant = (status: string): string => {
     switch (status) {
       case "Dropoff Complete":
@@ -40,10 +46,19 @@ export const OrderDetailsSheet = ({
         return "outline";
     }
   };
+  
   const handleStatusChange = (newStatus: DeliveryStatus) => {
     setStatus(newStatus);
     toast.success(`Order status updated to ${newStatus}`);
+    setDropdownOpen(false);
   };
+  
+  useEffect(() => {
+    if (isOpen) {
+      setDropdownOpen(true);
+    }
+  }, [isOpen]);
+  
   return <Sheet open={isOpen} onOpenChange={open => {
     if (!open) onClose();
   }}>
@@ -52,7 +67,7 @@ export const OrderDetailsSheet = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <SheetTitle className="text-left text-lg">Order #{delivery.packageId}</SheetTitle>
-              <DropdownMenu>
+              <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
                 <DropdownMenuTrigger asChild>
                   <Badge variant={getStatusBadgeVariant(status) as any} className={cn(
                     status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-100" : "",
