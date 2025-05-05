@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -53,35 +52,6 @@ export const OrderDetailsSheet = ({
     }
   };
   
-  // Get color for each status
-  const getStatusColor = (statusOption: string): string => {
-    switch (statusOption) {
-      case "Dropoff Complete":
-        return "bg-green-100 text-green-800 hover:bg-green-200";
-      case "In Transit":
-      case "Picking Up":
-      case "Arrived For Pickup":
-        return "bg-blue-100 text-blue-800 hover:bg-blue-200";
-      case "Canceled By Customer":
-      case "Cancelled By Admin":
-        return "bg-red-100 text-red-800 hover:bg-red-200";
-      case "Scheduled Order":
-        return "bg-purple-100 text-purple-800 hover:bg-purple-200";
-      case "Online":
-      case "Available":
-        return "bg-emerald-100 text-emerald-800 hover:bg-emerald-200";
-      case "Offline":
-      case "On Break":
-        return "bg-amber-100 text-amber-800 hover:bg-amber-200";
-      case "Busy":
-        return "bg-orange-100 text-orange-800 hover:bg-orange-200";
-      case "Not approved":
-        return "bg-gray-100 text-gray-800 hover:bg-gray-200";
-      default:
-        return "bg-gray-100 text-gray-800 hover:bg-gray-200";
-    }
-  };
-  
   const handleStatusChange = (newStatus: DeliveryStatus) => {
     setStatus(newStatus);
     toast.success(`Order status updated to ${newStatus}`);
@@ -118,8 +88,7 @@ export const OrderDetailsSheet = ({
                         size="sm"
                         className={cn(
                           "justify-start text-left font-normal", 
-                          statusOption === status ? "bg-accent text-accent-foreground" : "",
-                          getStatusColor(statusOption)
+                          statusOption === status ? "bg-accent text-accent-foreground" : ""
                         )}
                         onClick={() => handleStatusChange(statusOption)}
                       >
