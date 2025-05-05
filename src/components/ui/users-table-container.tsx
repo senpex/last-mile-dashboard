@@ -7,13 +7,11 @@ const UsersTableContainer = React.forwardRef<HTMLDivElement, React.HTMLAttribute
   height?: string;
   stickyHeader?: boolean;
   independent?: boolean;
-  filterSidebarOpen?: boolean;
 }>(({
   className,
   height = "h-[calc(100vh-220px)]",
   stickyHeader = true,
   independent = false,
-  filterSidebarOpen,
   ...props
 }, ref) => (
   <div 
@@ -22,7 +20,7 @@ const UsersTableContainer = React.forwardRef<HTMLDivElement, React.HTMLAttribute
       "relative border rounded-md overflow-hidden flex-1", 
       "transition-all duration-300 shadow-sm", 
       "px-0 mt-0 mb-[5px]", 
-      independent ? "mx-0" : "-ml-[10px]", 
+      independent ? "" : "-ml-[10px]", 
       "w-full", 
       height, 
       className
@@ -32,9 +30,8 @@ const UsersTableContainer = React.forwardRef<HTMLDivElement, React.HTMLAttribute
       orientation="both" 
       className={cn(
         "h-full w-full", 
-        independent ? "mx-0" : "mx-0"
+        independent ? "mx-auto" : "mx-0"
       )}
-      independentPanel={false}
     >
       <div className="w-full">
         {props.children}
