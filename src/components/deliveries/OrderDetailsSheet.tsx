@@ -146,7 +146,7 @@ export const OrderDetailsSheet = ({
             </div>
           </div>
           <SheetDescription className="text-left text-sm">
-            {delivery.orderName}
+            May 6-Food pickup@11:18 AM Delivery time 11:45 AM [5K1-6U4] NORMAL
           </SheetDescription>
         </SheetHeader>
         
