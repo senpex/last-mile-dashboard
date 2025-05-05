@@ -185,7 +185,7 @@ export const OrderDetailsSheet = ({
                     <Clock className="w-4 h-4 mr-2" />
                     Schedule
                   </h3>
-                  <div className="rounded-md border bg-card/50 p-4 mt-[-30px] space-y-3">
+                  <div className="rounded-md border bg-card/50 p-4 space-y-3">
                     <div className="flex justify-between">
                       <div>
                         <h4 className="text-xs text-muted-foreground mb-1">Pickup Time</h4>
@@ -285,7 +285,7 @@ export const OrderDetailsSheet = ({
               <div className="p-6 pt-0">
                 <Tabs defaultValue="payment-transactions" value={activeLogTab} onValueChange={setActiveLogTab}>
                   <div className="sticky top-0 z-10 bg-background pt-2 pb-4">
-                    <TabsList className="flex flex-wrap bg-transparent p-0 gap-2 justify-start w-full overflow-x-auto mb-4">
+                    <TabsList className="flex flex-wrap bg-transparent p-0 gap-1 justify-start w-full overflow-x-auto">
                       <TabsTrigger 
                         value="payment-transactions" 
                         className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
@@ -337,7 +337,7 @@ export const OrderDetailsSheet = ({
                     </TabsList>
                   </div>
                   
-                  <div className="mt-6">
+                  <div className="mt-2">
                     <TabsContent value="payment-transactions" className="space-y-4">
                       <div className="rounded-md border bg-card/50 p-4">
                         <div className="space-y-2">
