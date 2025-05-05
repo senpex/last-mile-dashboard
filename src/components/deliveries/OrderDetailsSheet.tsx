@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -285,58 +284,60 @@ export const OrderDetailsSheet = ({
             <ScrollArea className="h-[calc(100vh-200px)]">
               <div className="p-6 pt-0">
                 <Tabs defaultValue="payment-transactions" value={activeLogTab} onValueChange={setActiveLogTab}>
-                  <TabsList className="flex flex-wrap mb-4 bg-transparent p-0 gap-1 justify-start w-full overflow-x-auto pb-2 sticky top-0 z-10">
-                    <TabsTrigger 
-                      value="payment-transactions" 
-                      className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
-                    >
-                      <CreditCard className="w-4 h-4" /> 
-                      <span className="hidden sm:inline">Payment Transactions</span>
-                      <span className="sm:hidden">Payments</span>
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="package-history" 
-                      className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
-                    >
-                      <Package className="w-4 h-4" /> 
-                      <span className="hidden sm:inline">Package History</span>
-                      <span className="sm:hidden">Package</span>
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="driver-control" 
-                      className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
-                    >
-                      <Truck className="w-4 h-4" /> 
-                      <span className="hidden sm:inline">Driver Control</span>
-                      <span className="sm:hidden">Driver</span>
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="mailing-history" 
-                      className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
-                    >
-                      <Mail className="w-4 h-4" /> 
-                      <span className="hidden sm:inline">Mailing History</span>
-                      <span className="sm:hidden">Mail</span>
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="chat-history" 
-                      className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
-                    >
-                      <MessageSquare className="w-4 h-4" /> 
-                      <span className="hidden sm:inline">Chat History</span>
-                      <span className="sm:hidden">Chat</span>
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="status-change-log" 
-                      className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
-                    >
-                      <Activity className="w-4 h-4" /> 
-                      <span className="hidden sm:inline">Status Change Log</span>
-                      <span className="sm:hidden">Status</span>
-                    </TabsTrigger>
-                  </TabsList>
+                  <div className="sticky top-0 z-10 bg-background pt-2 pb-4">
+                    <TabsList className="flex flex-wrap bg-transparent p-0 gap-1 justify-start w-full overflow-x-auto">
+                      <TabsTrigger 
+                        value="payment-transactions" 
+                        className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
+                      >
+                        <CreditCard className="w-4 h-4" /> 
+                        <span className="hidden sm:inline">Payment Transactions</span>
+                        <span className="sm:hidden">Payments</span>
+                      </TabsTrigger>
+                      <TabsTrigger 
+                        value="package-history" 
+                        className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
+                      >
+                        <Package className="w-4 h-4" /> 
+                        <span className="hidden sm:inline">Package History</span>
+                        <span className="sm:hidden">Package</span>
+                      </TabsTrigger>
+                      <TabsTrigger 
+                        value="driver-control" 
+                        className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
+                      >
+                        <Truck className="w-4 h-4" /> 
+                        <span className="hidden sm:inline">Driver Control</span>
+                        <span className="sm:hidden">Driver</span>
+                      </TabsTrigger>
+                      <TabsTrigger 
+                        value="mailing-history" 
+                        className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
+                      >
+                        <Mail className="w-4 h-4" /> 
+                        <span className="hidden sm:inline">Mailing History</span>
+                        <span className="sm:hidden">Mail</span>
+                      </TabsTrigger>
+                      <TabsTrigger 
+                        value="chat-history" 
+                        className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
+                      >
+                        <MessageSquare className="w-4 h-4" /> 
+                        <span className="hidden sm:inline">Chat History</span>
+                        <span className="sm:hidden">Chat</span>
+                      </TabsTrigger>
+                      <TabsTrigger 
+                        value="status-change-log" 
+                        className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
+                      >
+                        <Activity className="w-4 h-4" /> 
+                        <span className="hidden sm:inline">Status Change Log</span>
+                        <span className="sm:hidden">Status</span>
+                      </TabsTrigger>
+                    </TabsList>
+                  </div>
                   
-                  <div className="mt-4">
+                  <div className="mt-2">
                     <TabsContent value="payment-transactions" className="space-y-4">
                       <div className="rounded-md border bg-card/50 p-4">
                         <div className="space-y-2">
