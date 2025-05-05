@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { OrderDetailsSheet } from "@/components/deliveries/OrderDetailsSheet";
-
 interface DeliveryTableProps {
   items: Delivery[];
   sortedColumns: string[];
@@ -163,7 +162,6 @@ const DeliveryTable = ({
   }>({});
   const [selectedDelivery, setSelectedDelivery] = useState<Delivery | null>(null);
   const [isOrderDetailsOpen, setIsOrderDetailsOpen] = useState(false);
-  
   const updateDeliveryNotes = (deliveryId: number, notes: string) => {
     console.log(`Updating notes for delivery ${deliveryId}:`, notes);
     setNotesText(prev => ({
@@ -172,19 +170,16 @@ const DeliveryTable = ({
     }));
     setEditingNotes(null);
   };
-  
   const handleOpenOrderDetails = (delivery: Delivery) => {
     setSelectedDelivery(delivery);
     setIsOrderDetailsOpen(true);
   };
-  
   const renderSortIcon = (columnId: string) => {
     if (sortConfig.key !== columnId) {
       return null;
     }
     return sortConfig.direction === 'ascending' ? <ChevronUp className="h-4 w-4 ml-1 text-destructive" /> : <ChevronDown className="h-4 w-4 ml-1 text-destructive" />;
   };
-  
   const renderCellContent = (delivery: Delivery, columnId: string) => {
     switch (columnId) {
       case "status":
@@ -198,11 +193,7 @@ const DeliveryTable = ({
           </TableCell>;
       case "packageId":
         return <TableCell key={columnId} className={`${getColumnWidth(columnId)} text-left`}>
-            <Button 
-              variant="link" 
-              className="p-0 h-auto font-sans text-sm font-normal text-primary hover:text-primary/80 hover:underline"
-              onClick={() => handleOpenOrderDetails(delivery)}
-            >
+            <Button variant="link" onClick={() => handleOpenOrderDetails(delivery)} className="p-0 h-auto font-sans text-sm font-normal hover:underline text-blue-500">
               {delivery.packageId}
             </Button>
           </TableCell>;
@@ -289,43 +280,9 @@ const DeliveryTable = ({
         return <TableCell key={columnId} className={`${getColumnWidth(columnId)} text-left`}></TableCell>;
     }
   };
-  
   return <div className="flex-1 overflow-hidden px-0">
       <div className="flex h-full mx-0">
-        <DeliverySidebar 
-          open={isFilterSidebarOpen} 
-          onClose={toggleFilterSidebar} 
-          deliveryStatuses={allDeliveryStatuses}
-          selectedStatuses={selectedStatuses}
-          onStatusChange={setSelectedStatuses}
-          organizations={allOrganizations}
-          selectedOrganizations={selectedOrganizations}
-          onOrganizationChange={setSelectedOrganizations}
-          couriers={allCouriers}
-          selectedCouriers={selectedCouriers}
-          onCourierChange={setSelectedCouriers}
-          zipcodes={allZipcodes}
-          selectedZipcodes={selectedZipcodes}
-          onZipcodeChange={setSelectedZipcodes}
-          cities={allCities}
-          selectedCities={selectedCities}
-          onCityChange={setSelectedCities}
-          states={allStates}
-          selectedStates={selectedStates}
-          onStateChange={setSelectedStates}
-          pickupAddresses={allPickupAddresses}
-          selectedPickupAddresses={selectedPickupAddresses}
-          onPickupAddressChange={setSelectedPickupAddresses}
-          dropoffAddresses={allDropoffAddresses}
-          selectedDropoffAddresses={selectedDropoffAddresses}
-          onDropoffAddressChange={setSelectedDropoffAddresses}
-          senderNames={allSenderNames}
-          selectedSenderNames={selectedSenderNames}
-          onSenderNameChange={setSelectedSenderNames}
-          recipientNames={allRecipientNames}
-          selectedRecipientNames={selectedRecipientNames}
-          onRecipientNameChange={setSelectedRecipientNames}
-        />
+        <DeliverySidebar open={isFilterSidebarOpen} onClose={toggleFilterSidebar} deliveryStatuses={allDeliveryStatuses} selectedStatuses={selectedStatuses} onStatusChange={setSelectedStatuses} organizations={allOrganizations} selectedOrganizations={selectedOrganizations} onOrganizationChange={setSelectedOrganizations} couriers={allCouriers} selectedCouriers={selectedCouriers} onCourierChange={setSelectedCouriers} zipcodes={allZipcodes} selectedZipcodes={selectedZipcodes} onZipcodeChange={setSelectedZipcodes} cities={allCities} selectedCities={selectedCities} onCityChange={setSelectedCities} states={allStates} selectedStates={selectedStates} onStateChange={setSelectedStates} pickupAddresses={allPickupAddresses} selectedPickupAddresses={selectedPickupAddresses} onPickupAddressChange={setSelectedPickupAddresses} dropoffAddresses={allDropoffAddresses} selectedDropoffAddresses={selectedDropoffAddresses} onDropoffAddressChange={setSelectedDropoffAddresses} senderNames={allSenderNames} selectedSenderNames={selectedSenderNames} onSenderNameChange={setSelectedSenderNames} recipientNames={allRecipientNames} selectedRecipientNames={selectedRecipientNames} onRecipientNameChange={setSelectedRecipientNames} />
         
         <div className="flex-1 transition-all duration-300 my-4 ml-0 w-full">
           <div className="flex flex-col h-full w-full px-[7px]">
@@ -367,11 +324,7 @@ const DeliveryTable = ({
         </div>
       </div>
       
-      <OrderDetailsSheet
-        isOpen={isOrderDetailsOpen}
-        onClose={() => setIsOrderDetailsOpen(false)}
-        delivery={selectedDelivery}
-      />
+      <OrderDetailsSheet isOpen={isOrderDetailsOpen} onClose={() => setIsOrderDetailsOpen(false)} delivery={selectedDelivery} />
     </div>;
 };
 export default DeliveryTable;
