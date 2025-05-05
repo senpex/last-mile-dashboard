@@ -34,7 +34,7 @@ const UsersTableContainer = React.forwardRef<HTMLDivElement, React.HTMLAttribute
         "h-full w-full", 
         independent ? "mx-0" : "mx-0"
       )}
-      independentPanel={true}
+      independentPanel={false}
     >
       <div className="w-full">
         {props.children}
