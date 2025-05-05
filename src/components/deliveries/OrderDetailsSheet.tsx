@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -11,13 +10,11 @@ import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 interface OrderDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
   delivery: Delivery | null;
 }
-
 export const OrderDetailsSheet = ({
   isOpen,
   onClose,
@@ -28,7 +25,7 @@ export const OrderDetailsSheet = ({
   const [activeTab, setActiveTab] = useState<string>("order-info");
   const [activeLogTab, setActiveLogTab] = useState<string>("payment-transactions");
   const statuses: DeliveryStatus[] = ["Dropoff Complete", "Canceled By Customer", "Cancelled By Admin", "In Transit", "Picking Up", "Arrived For Pickup", "Scheduled Order", "Online", "Offline", "Busy", "Not approved", "Available", "On Break"];
-  
+
   // Add back the missing function
   const getStatusBadgeVariant = (status: string): string => {
     switch (status) {
@@ -48,7 +45,7 @@ export const OrderDetailsSheet = ({
         return "outline";
     }
   };
-  
+
   // Get color for each status
   const getStatusColor = (statusOption: string): string => {
     switch (statusOption) {
@@ -77,7 +74,6 @@ export const OrderDetailsSheet = ({
         return "bg-gray-100 text-gray-800 hover:bg-gray-200";
     }
   };
-  
   const handleStatusChange = (newStatus: DeliveryStatus) => {
     setStatus(newStatus);
     toast.success(`Order status updated to ${newStatus}`);
@@ -245,7 +241,7 @@ export const OrderDetailsSheet = ({
           
           <TabsContent value="order-logs" className="m-0">
             <ScrollArea className="h-[calc(100vh-200px)]">
-              <div className="p-6 pt-3">
+              <div className="p-6 pt-3 px-[23px] py-0 my-0">
                 <Tabs defaultValue="payment-transactions" value={activeLogTab} onValueChange={setActiveLogTab}>
                   <div className="sticky top-0 z-10 bg-background pt-1 pb-4">
                     <TabsList className="flex flex-wrap bg-transparent p-0 gap-1 justify-start w-full overflow-x-auto my-0 py-[77px]">
