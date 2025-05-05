@@ -5,47 +5,26 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { 
-  FileText, 
-  MapPin, 
-  User, 
-  Phone, 
-  Clock, 
-  Truck, 
-  DollarSign, 
-  CalendarClock, 
-  MessageSquare, 
-  ChevronDown, 
-  CreditCard, 
-  Package, 
-  Mail, 
-  Activity, 
-  ListOrdered 
-} from "lucide-react";
+import { FileText, MapPin, User, Phone, Clock, Truck, DollarSign, CalendarClock, MessageSquare, ChevronDown, CreditCard, Package, Mail, Activity, ListOrdered } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 interface OrderDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
   delivery: Delivery | null;
 }
-
 export const OrderDetailsSheet = ({
   isOpen,
   onClose,
   delivery
 }: OrderDetailsSheetProps) => {
   if (!delivery) return null;
-  
   const [status, setStatus] = useState<string>(delivery.status);
   const [activeTab, setActiveTab] = useState<string>("order-info");
   const [activeLogTab, setActiveLogTab] = useState<string>("payment-transactions");
-  
   const statuses: DeliveryStatus[] = ["Dropoff Complete", "Canceled By Customer", "Cancelled By Admin", "In Transit", "Picking Up", "Arrived For Pickup", "Scheduled Order", "Online", "Offline", "Busy", "Not approved", "Available", "On Break"];
-  
   const getStatusBadgeVariant = (status: string): string => {
     switch (status) {
       case "Dropoff Complete":
@@ -64,7 +43,7 @@ export const OrderDetailsSheet = ({
         return "outline";
     }
   };
-  
+
   // Get color for each status
   const getStatusColor = (statusOption: string): string => {
     switch (statusOption) {
@@ -93,16 +72,13 @@ export const OrderDetailsSheet = ({
         return "bg-gray-100 text-gray-800 hover:bg-gray-200";
     }
   };
-  
   const handleStatusChange = (newStatus: DeliveryStatus) => {
     setStatus(newStatus);
     toast.success(`Order status updated to ${newStatus}`);
   };
-  
-  return (
-    <Sheet open={isOpen} onOpenChange={open => {
-      if (!open) onClose();
-    }}>
+  return <Sheet open={isOpen} onOpenChange={open => {
+    if (!open) onClose();
+  }}>
       <SheetContent className="sm:max-w-md md:max-w-lg w-full overflow-hidden p-0">
         <SheetHeader className="p-6 pb-2">
           <div className="flex items-center justify-between">
@@ -110,35 +86,16 @@ export const OrderDetailsSheet = ({
               <SheetTitle className="text-left text-lg">Order #{delivery.packageId}</SheetTitle>
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant="ghost" className={cn(
-                    status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-200" : "",
-                    getStatusBadgeVariant(status) === "destructive" ? "bg-red-100 text-red-800 hover:bg-red-200" : "",
-                    getStatusBadgeVariant(status) === "warning" ? "bg-amber-100 text-amber-800 hover:bg-amber-200" : "",
-                    getStatusBadgeVariant(status) === "default" ? "bg-blue-100 text-blue-800 hover:bg-blue-200" : "",
-                    getStatusBadgeVariant(status) === "outline" ? "bg-gray-100 text-gray-800 hover:bg-gray-200" : "",
-                    "rounded-md flex items-center gap-1 py-1 px-3 h-7 justify-between font-medium"
-                  )}>
+                  <Button variant="ghost" className={cn(status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-200" : "", getStatusBadgeVariant(status) === "destructive" ? "bg-red-100 text-red-800 hover:bg-red-200" : "", getStatusBadgeVariant(status) === "warning" ? "bg-amber-100 text-amber-800 hover:bg-amber-200" : "", getStatusBadgeVariant(status) === "default" ? "bg-blue-100 text-blue-800 hover:bg-blue-200" : "", getStatusBadgeVariant(status) === "outline" ? "bg-gray-100 text-gray-800 hover:bg-gray-200" : "", "rounded-md flex items-center gap-1 py-1 px-3 h-7 justify-between font-medium")}>
                     {status}
                     <ChevronDown className="h-3 w-3 ml-1" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-1 bg-popover">
                   <div className="grid gap-1">
-                    {statuses.map(statusOption => (
-                      <Button 
-                        key={statusOption} 
-                        variant="ghost" 
-                        size="sm"
-                        className={cn(
-                          "justify-start text-left font-normal", 
-                          statusOption === status ? "bg-accent text-accent-foreground" : "",
-                          getStatusColor(statusOption)
-                        )}
-                        onClick={() => handleStatusChange(statusOption)}
-                      >
+                    {statuses.map(statusOption => <Button key={statusOption} variant="ghost" size="sm" className={cn("justify-start text-left font-normal", statusOption === status ? "bg-accent text-accent-foreground" : "", getStatusColor(statusOption))} onClick={() => handleStatusChange(statusOption)}>
                         {statusOption}
-                      </Button>
-                    ))}
+                      </Button>)}
                   </div>
                 </PopoverContent>
               </Popover>
@@ -285,51 +242,33 @@ export const OrderDetailsSheet = ({
               <div className="p-6 pt-0">
                 <Tabs defaultValue="payment-transactions" value={activeLogTab} onValueChange={setActiveLogTab}>
                   <div className="sticky top-0 z-10 bg-background pt-2 pb-4">
-                    <TabsList className="flex flex-wrap bg-transparent p-0 gap-1 justify-start w-full overflow-x-auto">
-                      <TabsTrigger 
-                        value="payment-transactions" 
-                        className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
-                      >
+                    <TabsList className="flex flex-wrap bg-transparent p-0 gap-1 justify-start w-full overflow-x-auto my-0 py-[82px]">
+                      <TabsTrigger value="payment-transactions" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
                         <CreditCard className="w-4 h-4" /> 
                         <span className="hidden sm:inline">Payment Transactions</span>
                         <span className="sm:hidden">Payments</span>
                       </TabsTrigger>
-                      <TabsTrigger 
-                        value="package-history" 
-                        className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
-                      >
+                      <TabsTrigger value="package-history" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
                         <Package className="w-4 h-4" /> 
                         <span className="hidden sm:inline">Package History</span>
                         <span className="sm:hidden">Package</span>
                       </TabsTrigger>
-                      <TabsTrigger 
-                        value="driver-control" 
-                        className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
-                      >
+                      <TabsTrigger value="driver-control" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
                         <Truck className="w-4 h-4" /> 
                         <span className="hidden sm:inline">Driver Control</span>
                         <span className="sm:hidden">Driver</span>
                       </TabsTrigger>
-                      <TabsTrigger 
-                        value="mailing-history" 
-                        className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
-                      >
+                      <TabsTrigger value="mailing-history" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
                         <Mail className="w-4 h-4" /> 
                         <span className="hidden sm:inline">Mailing History</span>
                         <span className="sm:hidden">Mail</span>
                       </TabsTrigger>
-                      <TabsTrigger 
-                        value="chat-history" 
-                        className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
-                      >
+                      <TabsTrigger value="chat-history" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
                         <MessageSquare className="w-4 h-4" /> 
                         <span className="hidden sm:inline">Chat History</span>
                         <span className="sm:hidden">Chat</span>
                       </TabsTrigger>
-                      <TabsTrigger 
-                        value="status-change-log" 
-                        className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
-                      >
+                      <TabsTrigger value="status-change-log" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
                         <Activity className="w-4 h-4" /> 
                         <span className="hidden sm:inline">Status Change Log</span>
                         <span className="sm:hidden">Status</span>
@@ -524,6 +463,5 @@ export const OrderDetailsSheet = ({
           </TabsContent>
         </Tabs>
       </SheetContent>
-    </Sheet>
-  );
+    </Sheet>;
 };
