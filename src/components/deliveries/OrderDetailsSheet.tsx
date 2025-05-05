@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -150,13 +149,13 @@ export const OrderDetailsSheet = ({
         </SheetHeader>
         
         <Tabs defaultValue="order-info" className="w-full" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-2 m-6 mb-0">
+          <TabsList className="grid grid-cols-2 mx-6 mb-4 mt-2 sticky top-0 z-10 bg-background">
             <TabsTrigger value="order-info">Order Info</TabsTrigger>
             <TabsTrigger value="order-logs">Order Logs</TabsTrigger>
           </TabsList>
           
           <TabsContent value="order-info" className="m-0">
-            <ScrollArea className="h-[calc(100vh-170px)]">
+            <ScrollArea className="h-[calc(100vh-200px)]">
               <div className="p-6 space-y-6">
                 <div>
                   <h3 className="text-sm font-medium mb-3 flex items-center">
@@ -281,10 +280,10 @@ export const OrderDetailsSheet = ({
           </TabsContent>
           
           <TabsContent value="order-logs" className="m-0">
-            <ScrollArea className="h-[calc(100vh-170px)]">
-              <div className="p-6">
+            <ScrollArea className="h-[calc(100vh-200px)]">
+              <div className="p-6 pt-0">
                 <Tabs defaultValue="payment-transactions" value={activeLogTab} onValueChange={setActiveLogTab}>
-                  <TabsList className="flex flex-wrap mb-4 bg-transparent p-0 gap-1 justify-start w-full">
+                  <TabsList className="flex flex-wrap mb-4 bg-transparent p-0 gap-1 justify-start w-full overflow-x-auto pb-2 sticky top-0 z-10">
                     <TabsTrigger 
                       value="payment-transactions" 
                       className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
@@ -335,185 +334,187 @@ export const OrderDetailsSheet = ({
                     </TabsTrigger>
                   </TabsList>
                   
-                  <TabsContent value="payment-transactions" className="space-y-4">
-                    <div className="rounded-md border bg-card/50 p-4">
-                      <div className="space-y-2">
-                        <div className="border-b pb-2">
+                  <div className="mt-4">
+                    <TabsContent value="payment-transactions" className="space-y-4">
+                      <div className="rounded-md border bg-card/50 p-4">
+                        <div className="space-y-2">
+                          <div className="border-b pb-2">
+                            <div className="flex justify-between">
+                              <span className="text-sm font-medium">Payment received</span>
+                              <span className="text-sm text-green-600">${delivery.price}</span>
+                            </div>
+                            <div className="flex justify-between mt-1">
+                              <span className="text-xs text-muted-foreground">Credit Card</span>
+                              <span className="text-xs text-muted-foreground">Today, 10:45 AM</span>
+                            </div>
+                          </div>
+                          <div className="border-b pb-2">
+                            <div className="flex justify-between">
+                              <span className="text-sm font-medium">Tip added</span>
+                              <span className="text-sm text-green-600">${delivery.tip}</span>
+                            </div>
+                            <div className="flex justify-between mt-1">
+                              <span className="text-xs text-muted-foreground">Credit Card</span>
+                              <span className="text-xs text-muted-foreground">Today, 10:50 AM</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <TabsContent value="package-history" className="space-y-4">
+                      <div className="rounded-md border bg-card/50 p-4">
+                        <div className="space-y-3">
+                          <div className="flex items-start">
+                            <div className="flex-shrink-0 bg-blue-100 rounded-full w-6 h-6 flex items-center justify-center mr-2">
+                              <span className="text-xs font-medium text-blue-700">1</span>
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium">Package received at pickup location</p>
+                              <p className="text-xs text-muted-foreground">Today, 10:15 AM</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start">
+                            <div className="flex-shrink-0 bg-green-100 rounded-full w-6 h-6 flex items-center justify-center mr-2">
+                              <span className="text-xs font-medium text-green-700">2</span>
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium">Package in transit</p>
+                              <p className="text-xs text-muted-foreground">Today, 10:30 AM</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start">
+                            <div className="flex-shrink-0 bg-green-100 rounded-full w-6 h-6 flex items-center justify-center mr-2">
+                              <span className="text-xs font-medium text-green-700">3</span>
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium">Package delivered to recipient</p>
+                              <p className="text-xs text-muted-foreground">Today, 11:05 AM</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="driver-control" className="space-y-4">
+                      <div className="rounded-md border bg-card/50 p-4">
+                        <div className="space-y-2">
                           <div className="flex justify-between">
-                            <span className="text-sm font-medium">Payment received</span>
-                            <span className="text-sm text-green-600">${delivery.price}</span>
+                            <span className="text-sm">Driver assigned</span>
+                            <span className="text-xs text-muted-foreground">Today, 10:05 AM</span>
                           </div>
-                          <div className="flex justify-between mt-1">
-                            <span className="text-xs text-muted-foreground">Credit Card</span>
-                            <span className="text-xs text-muted-foreground">Today, 10:45 AM</span>
-                          </div>
-                        </div>
-                        <div className="border-b pb-2">
                           <div className="flex justify-between">
-                            <span className="text-sm font-medium">Tip added</span>
-                            <span className="text-sm text-green-600">${delivery.tip}</span>
+                            <span className="text-sm">Driver arrived at pickup</span>
+                            <span className="text-xs text-muted-foreground">Today, 10:15 AM</span>
                           </div>
-                          <div className="flex justify-between mt-1">
-                            <span className="text-xs text-muted-foreground">Credit Card</span>
-                            <span className="text-xs text-muted-foreground">Today, 10:50 AM</span>
+                          <div className="flex justify-between">
+                            <span className="text-sm">Driver in transit</span>
+                            <span className="text-xs text-muted-foreground">Today, 10:30 AM</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm">Driver arrived at dropoff</span>
+                            <span className="text-xs text-muted-foreground">Today, 11:00 AM</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm">Delivery confirmed</span>
+                            <span className="text-xs text-muted-foreground">Today, 11:05 AM</span>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="package-history" className="space-y-4">
-                    <div className="rounded-md border bg-card/50 p-4">
-                      <div className="space-y-3">
-                        <div className="flex items-start">
-                          <div className="flex-shrink-0 bg-blue-100 rounded-full w-6 h-6 flex items-center justify-center mr-2">
-                            <span className="text-xs font-medium text-blue-700">1</span>
+                    </TabsContent>
+                    
+                    <TabsContent value="mailing-history" className="space-y-4">
+                      <div className="rounded-md border bg-card/50 p-4">
+                        <div className="space-y-2">
+                          <div className="border-b pb-2">
+                            <p className="text-sm font-medium">Order confirmation email</p>
+                            <p className="text-xs text-muted-foreground">Sent to customer - Today, 10:00 AM</p>
+                          </div>
+                          <div className="border-b pb-2">
+                            <p className="text-sm font-medium">Pickup notification</p>
+                            <p className="text-xs text-muted-foreground">Sent to customer - Today, 10:15 AM</p>
                           </div>
                           <div>
-                            <p className="text-sm font-medium">Package received at pickup location</p>
-                            <p className="text-xs text-muted-foreground">Today, 10:15 AM</p>
-                          </div>
-                        </div>
-                        <div className="flex items-start">
-                          <div className="flex-shrink-0 bg-green-100 rounded-full w-6 h-6 flex items-center justify-center mr-2">
-                            <span className="text-xs font-medium text-green-700">2</span>
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium">Package in transit</p>
-                            <p className="text-xs text-muted-foreground">Today, 10:30 AM</p>
-                          </div>
-                        </div>
-                        <div className="flex items-start">
-                          <div className="flex-shrink-0 bg-green-100 rounded-full w-6 h-6 flex items-center justify-center mr-2">
-                            <span className="text-xs font-medium text-green-700">3</span>
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium">Package delivered to recipient</p>
-                            <p className="text-xs text-muted-foreground">Today, 11:05 AM</p>
+                            <p className="text-sm font-medium">Delivery confirmation</p>
+                            <p className="text-xs text-muted-foreground">Sent to customer - Today, 11:05 AM</p>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="driver-control" className="space-y-4">
-                    <div className="rounded-md border bg-card/50 p-4">
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <span className="text-sm">Driver assigned</span>
-                          <span className="text-xs text-muted-foreground">Today, 10:05 AM</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm">Driver arrived at pickup</span>
-                          <span className="text-xs text-muted-foreground">Today, 10:15 AM</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm">Driver in transit</span>
-                          <span className="text-xs text-muted-foreground">Today, 10:30 AM</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm">Driver arrived at dropoff</span>
-                          <span className="text-xs text-muted-foreground">Today, 11:00 AM</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm">Delivery confirmed</span>
-                          <span className="text-xs text-muted-foreground">Today, 11:05 AM</span>
+                    </TabsContent>
+                    
+                    <TabsContent value="chat-history" className="space-y-4">
+                      <div className="rounded-md border bg-card/50 p-4">
+                        <div className="space-y-3">
+                          <div className="bg-muted rounded-lg p-2">
+                            <div className="flex justify-between mb-1">
+                              <span className="text-xs font-medium">Driver</span>
+                              <span className="text-xs text-muted-foreground">10:20 AM</span>
+                            </div>
+                            <p className="text-sm">I've arrived at the pickup location.</p>
+                          </div>
+                          
+                          <div className="bg-primary/10 rounded-lg p-2 ml-4">
+                            <div className="flex justify-between mb-1">
+                              <span className="text-xs font-medium">Customer</span>
+                              <span className="text-xs text-muted-foreground">10:22 AM</span>
+                            </div>
+                            <p className="text-sm">Great! I'll be down in 2 minutes.</p>
+                          </div>
+                          
+                          <div className="bg-muted rounded-lg p-2">
+                            <div className="flex justify-between mb-1">
+                              <span className="text-xs font-medium">Driver</span>
+                              <span className="text-xs text-muted-foreground">10:55 AM</span>
+                            </div>
+                            <p className="text-sm">I'm at the dropoff location now.</p>
+                          </div>
+                          
+                          <div className="bg-primary/10 rounded-lg p-2 ml-4">
+                            <div className="flex justify-between mb-1">
+                              <span className="text-xs font-medium">Customer</span>
+                              <span className="text-xs text-muted-foreground">10:56 AM</span>
+                            </div>
+                            <p className="text-sm">Perfect timing! I'll meet you at the lobby.</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="mailing-history" className="space-y-4">
-                    <div className="rounded-md border bg-card/50 p-4">
-                      <div className="space-y-2">
-                        <div className="border-b pb-2">
-                          <p className="text-sm font-medium">Order confirmation email</p>
-                          <p className="text-xs text-muted-foreground">Sent to customer - Today, 10:00 AM</p>
-                        </div>
-                        <div className="border-b pb-2">
-                          <p className="text-sm font-medium">Pickup notification</p>
-                          <p className="text-xs text-muted-foreground">Sent to customer - Today, 10:15 AM</p>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium">Delivery confirmation</p>
-                          <p className="text-xs text-muted-foreground">Sent to customer - Today, 11:05 AM</p>
+                    </TabsContent>
+                    
+                    <TabsContent value="status-change-log" className="space-y-4">
+                      <div className="rounded-md border bg-card/50 p-4">
+                        <div className="space-y-2">
+                          <div className="flex justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm">Created</span>
+                              <Badge variant="outline" className="text-xs">New Order</Badge>
+                            </div>
+                            <span className="text-xs text-muted-foreground">10:00 AM</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm">Updated</span>
+                              <Badge variant="outline" className="bg-blue-100 text-blue-800 text-xs">Picking Up</Badge>
+                            </div>
+                            <span className="text-xs text-muted-foreground">10:15 AM</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm">Updated</span>
+                              <Badge variant="outline" className="bg-blue-100 text-blue-800 text-xs">In Transit</Badge>
+                            </div>
+                            <span className="text-xs text-muted-foreground">10:30 AM</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm">Updated</span>
+                              <Badge variant="outline" className="bg-green-100 text-green-800 text-xs">Dropoff Complete</Badge>
+                            </div>
+                            <span className="text-xs text-muted-foreground">11:05 AM</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="chat-history" className="space-y-4">
-                    <div className="rounded-md border bg-card/50 p-4">
-                      <div className="space-y-3">
-                        <div className="bg-muted rounded-lg p-2">
-                          <div className="flex justify-between mb-1">
-                            <span className="text-xs font-medium">Driver</span>
-                            <span className="text-xs text-muted-foreground">10:20 AM</span>
-                          </div>
-                          <p className="text-sm">I've arrived at the pickup location.</p>
-                        </div>
-                        
-                        <div className="bg-primary/10 rounded-lg p-2 ml-4">
-                          <div className="flex justify-between mb-1">
-                            <span className="text-xs font-medium">Customer</span>
-                            <span className="text-xs text-muted-foreground">10:22 AM</span>
-                          </div>
-                          <p className="text-sm">Great! I'll be down in 2 minutes.</p>
-                        </div>
-                        
-                        <div className="bg-muted rounded-lg p-2">
-                          <div className="flex justify-between mb-1">
-                            <span className="text-xs font-medium">Driver</span>
-                            <span className="text-xs text-muted-foreground">10:55 AM</span>
-                          </div>
-                          <p className="text-sm">I'm at the dropoff location now.</p>
-                        </div>
-                        
-                        <div className="bg-primary/10 rounded-lg p-2 ml-4">
-                          <div className="flex justify-between mb-1">
-                            <span className="text-xs font-medium">Customer</span>
-                            <span className="text-xs text-muted-foreground">10:56 AM</span>
-                          </div>
-                          <p className="text-sm">Perfect timing! I'll meet you at the lobby.</p>
-                        </div>
-                      </div>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="status-change-log" className="space-y-4">
-                    <div className="rounded-md border bg-card/50 p-4">
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm">Created</span>
-                            <Badge variant="outline" className="text-xs">New Order</Badge>
-                          </div>
-                          <span className="text-xs text-muted-foreground">10:00 AM</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm">Updated</span>
-                            <Badge variant="outline" className="bg-blue-100 text-blue-800 text-xs">Picking Up</Badge>
-                          </div>
-                          <span className="text-xs text-muted-foreground">10:15 AM</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm">Updated</span>
-                            <Badge variant="outline" className="bg-blue-100 text-blue-800 text-xs">In Transit</Badge>
-                          </div>
-                          <span className="text-xs text-muted-foreground">10:30 AM</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm">Updated</span>
-                            <Badge variant="outline" className="bg-green-100 text-green-800 text-xs">Dropoff Complete</Badge>
-                          </div>
-                          <span className="text-xs text-muted-foreground">11:05 AM</span>
-                        </div>
-                      </div>
-                    </div>
-                  </TabsContent>
+                    </TabsContent>
+                  </div>
                 </Tabs>
               </div>
             </ScrollArea>
