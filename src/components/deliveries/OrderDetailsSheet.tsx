@@ -243,8 +243,8 @@ export const OrderDetailsSheet = ({
             <ScrollArea className="h-[calc(100vh-200px)]">
               <div className="p-6 px-[23px] pt-0">
                 <Tabs defaultValue="payment-transactions" value={activeLogTab} onValueChange={setActiveLogTab}>
-                  <div className="sticky top-0 z-10 bg-background pt-1 pb-2">
-                    <TabsList className="flex flex-wrap bg-transparent p-0 py-2.5 gap-1 justify-start w-full overflow-x-auto my-0">
+                  <div className="sticky top-0 z-10 bg-background pt-1 pb-2 min-h-[90px]">
+                    <TabsList className="flex flex-wrap bg-transparent p-0 py-3 gap-1 justify-start w-full overflow-visible my-0">
                       <TabsTrigger value="payment-transactions" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
                         <CreditCard className="w-4 h-4" /> 
                         <span className="hidden sm:inline">Payment Transactions</span>
