@@ -25,25 +25,7 @@ export const OrderDetailsSheet = ({
   const [activeTab, setActiveTab] = useState<string>("order-info");
   const [activeLogTab, setActiveLogTab] = useState<string>("payment-transactions");
   const statuses: DeliveryStatus[] = ["Dropoff Complete", "Canceled By Customer", "Cancelled By Admin", "In Transit", "Picking Up", "Arrived For Pickup", "Scheduled Order", "Online", "Offline", "Busy", "Not approved", "Available", "On Break"];
-  const getStatusBadgeVariant = (status: string): string => {
-    switch (status) {
-      case "Dropoff Complete":
-        return "success";
-      case "En Route":
-      case "At Dropoff":
-      case "At Pickup":
-        return "default";
-      case "Canceled By Customer":
-      case "Cancelled By Admin":
-        return "destructive";
-      case "Looking For Driver":
-      case "Waiting For Driver Approval":
-        return "warning";
-      default:
-        return "outline";
-    }
-  };
-
+  
   // Get color for each status
   const getStatusColor = (statusOption: string): string => {
     switch (statusOption) {
@@ -72,6 +54,7 @@ export const OrderDetailsSheet = ({
         return "bg-gray-100 text-gray-800 hover:bg-gray-200";
     }
   };
+  
   const handleStatusChange = (newStatus: DeliveryStatus) => {
     setStatus(newStatus);
     toast.success(`Order status updated to ${newStatus}`);
@@ -79,7 +62,7 @@ export const OrderDetailsSheet = ({
   return <Sheet open={isOpen} onOpenChange={open => {
     if (!open) onClose();
   }}>
-      <SheetContent className="sm:max-w-md md:max-w-lg w-full overflow-hidden p-0">
+      <SheetContent className="sm:max-w-md md:max-w-lg w-full overflow-hidden p-0 pr-0 mr-0">
         <SheetHeader className="p-6 pb-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
