@@ -292,11 +292,44 @@ const DeliveryTable = ({
   
   return <div className="flex-1 overflow-hidden px-0">
       <div className="flex h-full mx-0">
-        <DeliverySidebar open={isFilterSidebarOpen} onClose={toggleFilterSidebar} deliveryStatuses={allDeliveryStatuses} selectedStatuses={selectedStatuses} onStatusChange={setSelectedStatuses} organizations={allOrganizations} selectedOrganizations={selectedOrganizations} onOrganizationChange={setSelectedOrganizations} couriers={allCouriers} selectedCouriers={selectedCouriers} onCourierChange={setSelectedCouriers} zipcodes={allZipcodes} selectedZipcodes={selectedZipcodes} onZipcodeChange={setSelectedZipcodes} cities={allCities} selectedCities={selectedCities} onCityChange={setSelectedCities} states={allStates} selectedStates={selectedStates} onStateChange={setSelectedStates} pickupAddresses={allPickupAddresses} selectedPickupAddresses={selectedPickupAddresses} onPickupAddressChange={setSelectedPickupAddresses} dropoffAddresses={allDropoffAddresses} selectedDropoffAddresses={selectedDropoffAddresses} onDropoffAddressChange={setSelectedDropoffAddresses} senderNames={allSenderNames} selectedSenderNames={selectedSenderNames} onSenderNameChange={setSelectedSenderNames} recipientNames={allRecipientNames} selectedRecipientNames={selectedRecipientNames} onRecipientNameChange={setSelectedRecipientNames} />
+        <DeliverySidebar 
+          open={isFilterSidebarOpen} 
+          onClose={toggleFilterSidebar} 
+          deliveryStatuses={allDeliveryStatuses}
+          selectedStatuses={selectedStatuses}
+          onStatusChange={setSelectedStatuses}
+          organizations={allOrganizations}
+          selectedOrganizations={selectedOrganizations}
+          onOrganizationChange={setSelectedOrganizations}
+          couriers={allCouriers}
+          selectedCouriers={selectedCouriers}
+          onCourierChange={setSelectedCouriers}
+          zipcodes={allZipcodes}
+          selectedZipcodes={selectedZipcodes}
+          onZipcodeChange={setSelectedZipcodes}
+          cities={allCities}
+          selectedCities={selectedCities}
+          onCityChange={setSelectedCities}
+          states={allStates}
+          selectedStates={selectedStates}
+          onStateChange={setSelectedStates}
+          pickupAddresses={allPickupAddresses}
+          selectedPickupAddresses={selectedPickupAddresses}
+          onPickupAddressChange={setSelectedPickupAddresses}
+          dropoffAddresses={allDropoffAddresses}
+          selectedDropoffAddresses={selectedDropoffAddresses}
+          onDropoffAddressChange={setSelectedDropoffAddresses}
+          senderNames={allSenderNames}
+          selectedSenderNames={selectedSenderNames}
+          onSenderNameChange={setSelectedSenderNames}
+          recipientNames={allRecipientNames}
+          selectedRecipientNames={selectedRecipientNames}
+          onRecipientNameChange={setSelectedRecipientNames}
+        />
         
         <div className="flex-1 transition-all duration-300 my-4 ml-0 w-full">
           <div className="flex flex-col h-full w-full px-[7px]">
-            <TableContainer stickyHeader={false} className="w-full" filterSidebarOpen={isFilterSidebarOpen}>
+            <TableContainer stickyHeader={false} className="w-full" filterSidebarOpen={isFilterSidebarOpen} independent={true}>
               <Table>
                 <TableHeader className="bg-muted/50 border-b-0">
                   <TableRow>

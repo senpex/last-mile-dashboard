@@ -29,6 +29,7 @@ interface ClientsTableProps {
   };
   requestSort: (key: string) => void;
   renderStatus: (status: string) => JSX.Element;
+  independent?: boolean;
 }
 
 export function ClientsTable({
@@ -49,10 +50,11 @@ export function ClientsTable({
   className = '',
   sortConfig,
   requestSort,
-  renderStatus
+  renderStatus,
+  independent = false
 }: ClientsTableProps) {
   return (
-    <UsersTableContainer className={className}>
+    <UsersTableContainer className={className} independent={independent}>
       <Table>
         <TableHeader className="bg-muted/50 border-b-0 m-0 p-0">
           <TableRow className="border-b-0">
