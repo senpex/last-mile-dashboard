@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -286,7 +285,7 @@ export const OrderDetailsSheet = ({
               <div className="p-6 pt-0">
                 <Tabs defaultValue="payment-transactions" value={activeLogTab} onValueChange={setActiveLogTab}>
                   <div className="sticky top-0 z-10 bg-background pt-2 pb-4">
-                    <TabsList className="flex flex-wrap bg-transparent p-0 gap-1 justify-start w-full overflow-x-auto">
+                    <TabsList className="flex flex-wrap bg-transparent p-0 gap-2 justify-start w-full overflow-x-auto mb-4">
                       <TabsTrigger 
                         value="payment-transactions" 
                         className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white"
@@ -338,7 +337,7 @@ export const OrderDetailsSheet = ({
                     </TabsList>
                   </div>
                   
-                  <div className="mt-2">
+                  <div className="mt-6">
                     <TabsContent value="payment-transactions" className="space-y-4">
                       <div className="rounded-md border bg-card/50 p-4">
                         <div className="space-y-2">
