@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -185,7 +186,7 @@ export const OrderDetailsSheet = ({
                     <Clock className="w-4 h-4 mr-2" />
                     Schedule
                   </h3>
-                  <div className="rounded-md border bg-card/50 p-4 space-y-3">
+                  <div className="rounded-md border bg-card/50 p-4 mt-[-30px] space-y-3">
                     <div className="flex justify-between">
                       <div>
                         <h4 className="text-xs text-muted-foreground mb-1">Pickup Time</h4>
