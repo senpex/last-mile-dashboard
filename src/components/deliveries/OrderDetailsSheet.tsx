@@ -109,7 +109,7 @@ export const OrderDetailsSheet = ({
         </SheetHeader>
         
         <Tabs defaultValue="order-info" className="w-full" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-2 mx-6 mb-4 mt-2 sticky top-0 z-10 bg-background">
+          <TabsList className="grid grid-cols-2 mx-6 mb-2 mt-2 sticky top-0 z-10 bg-background">
             <TabsTrigger value="order-info">Order Info</TabsTrigger>
             <TabsTrigger value="order-logs">Order Logs</TabsTrigger>
           </TabsList>
@@ -241,10 +241,10 @@ export const OrderDetailsSheet = ({
           
           <TabsContent value="order-logs" className="m-0">
             <ScrollArea className="h-[calc(100vh-200px)]">
-              <div className="p-6 pt-3 px-[23px] py-0 my-0 mt-[-30px]">
+              <div className="p-6 px-[23px] pt-0">
                 <Tabs defaultValue="payment-transactions" value={activeLogTab} onValueChange={setActiveLogTab}>
-                  <div className="sticky top-0 z-10 bg-background pt-1 pb-4">
-                    <TabsList className="flex flex-wrap bg-transparent p-0 gap-1 justify-start w-full overflow-x-auto my-0 py-[77px]">
+                  <div className="sticky top-0 z-10 bg-background pt-1 pb-2">
+                    <TabsList className="flex flex-wrap bg-transparent p-0 gap-1 justify-start w-full overflow-x-auto my-0">
                       <TabsTrigger value="payment-transactions" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
                         <CreditCard className="w-4 h-4" /> 
                         <span className="hidden sm:inline">Payment Transactions</span>
