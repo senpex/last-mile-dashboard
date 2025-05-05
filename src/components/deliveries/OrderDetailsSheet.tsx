@@ -241,7 +241,7 @@ export const OrderDetailsSheet = ({
           
           <TabsContent value="order-logs" className="m-0">
             <ScrollArea className="h-[calc(100vh-200px)]">
-              <div className="p-6 pt-3 px-[23px] py-0 my-0">
+              <div className="p-6 pt-3 px-[23px] py-0 my-0 mt-[-30px]">
                 <Tabs defaultValue="payment-transactions" value={activeLogTab} onValueChange={setActiveLogTab}>
                   <div className="sticky top-0 z-10 bg-background pt-1 pb-4">
                     <TabsList className="flex flex-wrap bg-transparent p-0 gap-1 justify-start w-full overflow-x-auto my-0 py-[77px]">
