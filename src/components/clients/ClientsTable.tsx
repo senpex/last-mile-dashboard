@@ -56,7 +56,7 @@ export function ClientsTable({
   return (
     <UsersTableContainer className={className} independent={independent}>
       <Table>
-        <TableHeader className="bg-muted/50 border-b-0 m-0 p-0">
+        <TableHeader className="bg-muted/50 border-b-0 m-0 p-0 sticky top-0 z-10">
           <TableRow className="border-b-0">
             {sortedColumns.map(columnId => {
               const column = availableColumns.find(col => col.id === columnId);

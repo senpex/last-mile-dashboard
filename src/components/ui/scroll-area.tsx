@@ -22,8 +22,8 @@ const ScrollArea = React.forwardRef<React.ElementRef<typeof ScrollAreaPrimitive.
   >
     <ScrollAreaPrimitive.Viewport 
       className={cn(
-        "h-full w-full", 
-        independentPanel ? "mx-0 my-0" : "my-0 -ml-[10px] mx-0"
+        "h-full w-full",
+        independentPanel ? "mx-0 my-0" : "my-0 -mx-[0px]"
       )}
     >
       {children}
