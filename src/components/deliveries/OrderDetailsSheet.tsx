@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -10,11 +11,13 @@ import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 interface OrderDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
   delivery: Delivery | null;
 }
+
 export const OrderDetailsSheet = ({
   isOpen,
   onClose,
@@ -25,6 +28,26 @@ export const OrderDetailsSheet = ({
   const [activeTab, setActiveTab] = useState<string>("order-info");
   const [activeLogTab, setActiveLogTab] = useState<string>("payment-transactions");
   const statuses: DeliveryStatus[] = ["Dropoff Complete", "Canceled By Customer", "Cancelled By Admin", "In Transit", "Picking Up", "Arrived For Pickup", "Scheduled Order", "Online", "Offline", "Busy", "Not approved", "Available", "On Break"];
+  
+  // Add back the missing function
+  const getStatusBadgeVariant = (status: string): string => {
+    switch (status) {
+      case "Dropoff Complete":
+        return "success";
+      case "In Transit":
+      case "Picking Up":
+      case "Arrived For Pickup":
+        return "default";
+      case "Canceled By Customer":
+      case "Cancelled By Admin":
+        return "destructive";
+      case "Scheduled Order":
+      case "Not approved":
+        return "warning";
+      default:
+        return "outline";
+    }
+  };
   
   // Get color for each status
   const getStatusColor = (statusOption: string): string => {
