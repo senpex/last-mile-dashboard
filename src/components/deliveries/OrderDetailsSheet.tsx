@@ -278,7 +278,7 @@ export const OrderDetailsSheet = ({
                     </TabsList>
                   </div>
                   
-                  <div className="mt-2">
+                  <div className="mt-6">
                     <TabsContent value="payment-transactions" className="space-y-4">
                       <div className="rounded-md border bg-card/50 p-4">
                         <div className="space-y-2">
