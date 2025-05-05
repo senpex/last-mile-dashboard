@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -11,7 +10,6 @@ import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 interface OrderDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -27,7 +25,6 @@ export const OrderDetailsSheet = ({
   const [activeTab, setActiveTab] = useState<string>("order-info");
   const [activeLogTab, setActiveLogTab] = useState<string>("payment-transactions");
   const statuses: DeliveryStatus[] = ["Dropoff Complete", "Canceled By Customer", "Cancelled By Admin", "In Transit", "Picking Up", "Arrived For Pickup", "Scheduled Order", "Online", "Offline", "Busy", "Not approved", "Available", "On Break"];
-  
   const getStatusBadgeVariant = (status: string): string => {
     switch (status) {
       case "Dropoff Complete":
@@ -245,7 +242,7 @@ export const OrderDetailsSheet = ({
               <div className="p-6 pt-3">
                 <Tabs defaultValue="payment-transactions" value={activeLogTab} onValueChange={setActiveLogTab}>
                   <div className="sticky top-0 z-10 bg-background pt-1 pb-4">
-                    <TabsList className="flex flex-wrap bg-transparent p-0 gap-1 justify-start w-full overflow-x-auto my-0 py-2">
+                    <TabsList className="flex flex-wrap bg-transparent p-0 gap-1 justify-start w-full overflow-x-auto my-0 py-[77px]">
                       <TabsTrigger value="payment-transactions" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
                         <CreditCard className="w-4 h-4" /> 
                         <span className="hidden sm:inline">Payment Transactions</span>
