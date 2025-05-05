@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { GripVertical, ArrowUp, ArrowDown, MessageCircle, FileText, ChevronUp, ChevronDown } from "lucide-react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableContainer } from "@/components/ui/table";
+import { GripVertical, MessageCircle, FileText } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
 import { ColumnOption } from "@/components/table/ColumnSelector";
 import { DeliverySidebar } from "@/components/deliveries/DeliverySidebar";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { OrderDetailsSheet } from "@/components/deliveries/OrderDetailsSheet";
+import { UsersTableContainer } from "@/components/ui/users-table-container";
 
 interface DeliveryTableProps {
   items: Delivery[];
@@ -329,14 +329,14 @@ const DeliveryTable = ({
         
         <div className="flex-1 transition-all duration-300 my-4 ml-0 w-full">
           <div className="flex flex-col h-full w-full px-[7px]">
-            <TableContainer stickyHeader={false} className="w-full" filterSidebarOpen={isFilterSidebarOpen} independent={true}>
+            <UsersTableContainer stickyHeader={false} independent={true} height="h-[calc(100vh-300px)]">
               <Table>
-                <TableHeader className="bg-muted/50 border-b-0">
+                <TableHeader className="bg-muted/50 border-b-0 sticky top-0 z-10">
                   <TableRow>
                     {sortedColumns.map(columnId => {
-                    const column = availableColumns.find(col => col.id === columnId);
-                    if (!column) return null;
-                    return <TableHead key={columnId} className={`${getColumnWidth(columnId)} text-left whitespace-nowrap`} onClick={() => requestSort(columnId)}>
+                      const column = availableColumns.find(col => col.id === columnId);
+                      if (!column) return null;
+                      return <TableHead key={columnId} className={`${getColumnWidth(columnId)} text-left whitespace-nowrap`} onClick={() => requestSort(columnId)}>
                           <div className="flex items-center gap-1">
                             <div draggable={true} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className="cursor-grab">
                               <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
@@ -351,18 +351,20 @@ const DeliveryTable = ({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {items.length > 0 ? items.map(delivery => <TableRow key={delivery.id}>
-                        {sortedColumns.map(columnId => {
-                    return renderCellContent(delivery, columnId);
-                  })}
-                      </TableRow>) : <TableRow>
+                  {items.length > 0 ? items.map(delivery => (
+                    <TableRow key={delivery.id}>
+                      {sortedColumns.map(columnId => renderCellContent(delivery, columnId))}
+                    </TableRow>
+                  )) : (
+                    <TableRow>
                       <TableCell colSpan={sortedColumns.length} className="h-24 text-center">
                         No results found
                       </TableCell>
-                    </TableRow>}
+                    </TableRow>
+                  )}
                 </TableBody>
               </Table>
-            </TableContainer>
+            </UsersTableContainer>
           </div>
         </div>
       </div>

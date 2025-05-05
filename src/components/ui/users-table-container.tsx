@@ -28,12 +28,9 @@ const UsersTableContainer = React.forwardRef<HTMLDivElement, React.HTMLAttribute
   >
     <ScrollArea 
       orientation="both" 
-      className={cn(
-        "h-full w-full", 
-        independent ? "mx-auto" : "mx-0"
-      )}
+      className="h-full w-full"
     >
-      <div className="w-full">
+      <div className="w-full min-w-max">
         {props.children}
       </div>
     </ScrollArea>
