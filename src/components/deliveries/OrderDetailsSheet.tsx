@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -10,17 +11,20 @@ import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 interface OrderDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
   delivery: Delivery | null;
 }
+
 export const OrderDetailsSheet = ({
   isOpen,
   onClose,
   delivery
 }: OrderDetailsSheetProps) => {
   if (!delivery) return null;
+  
   const [status, setStatus] = useState<string>(delivery.status);
   const [activeTab, setActiveTab] = useState<string>("order-info");
   const [activeLogTab, setActiveLogTab] = useState<string>("payment-transactions");
@@ -74,10 +78,57 @@ export const OrderDetailsSheet = ({
         return "bg-gray-100 text-gray-800 hover:bg-gray-200";
     }
   };
+  
   const handleStatusChange = (newStatus: DeliveryStatus) => {
     setStatus(newStatus);
     toast.success(`Order status updated to ${newStatus}`);
   };
+  
+  // Generate additional locations based on delivery ID
+  const getAdditionalLocations = () => {
+    // Use delivery ID to deterministically generate locations
+    const locationSeed = delivery.id % 3; // 0, 1, or 2
+    
+    const additionalLocations = [
+      {
+        name: "Warehouse Storage",
+        address: "1250 Industrial Blvd, Warehouse District, SF 94107"
+      },
+      {
+        name: "Processing Center",
+        address: "582 Tech Park Way, Innovation District, SF 94158"
+      },
+      {
+        name: "Distribution Hub",
+        address: "975 Logistics Avenue, Commerce Park, SF 94124"
+      },
+      {
+        name: "Temporary Holding",
+        address: "342 Transit Road, Gateway Center, SF 94103"
+      },
+      {
+        name: "Dispatch Center",
+        address: "127 Fleet Street, Transport Zone, SF 94110"
+      }
+    ];
+    
+    // Show different number of additional locations based on delivery ID
+    if (locationSeed === 0) {
+      return []; // No additional locations
+    } else if (locationSeed === 1) {
+      return [additionalLocations[delivery.id % additionalLocations.length]]; // One additional location
+    } else {
+      // Two additional locations
+      return [
+        additionalLocations[delivery.id % additionalLocations.length],
+        additionalLocations[(delivery.id + 2) % additionalLocations.length]
+      ];
+    }
+  };
+  
+  const additionalLocations = getAdditionalLocations();
+  const hasAdditionalLocations = additionalLocations.length > 0;
+  
   return <Sheet open={isOpen} onOpenChange={open => {
     if (!open) onClose();
   }}>
@@ -128,6 +179,20 @@ export const OrderDetailsSheet = ({
                       <p className="text-sm font-medium">{delivery.pickupLocation.name}</p>
                       <p className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</p>
                     </div>
+                    
+                    {hasAdditionalLocations && additionalLocations.map((location, index) => (
+                      <React.Fragment key={index}>
+                        <div className="flex justify-center">
+                          <div className="h-3 border-l border-dashed border-border"></div>
+                        </div>
+                        <div>
+                          <h4 className="text-xs text-muted-foreground mb-1">Transit Point {index + 1}</h4>
+                          <p className="text-sm font-medium">{location.name}</p>
+                          <p className="text-xs text-muted-foreground">{location.address}</p>
+                        </div>
+                      </React.Fragment>
+                    ))}
+                    
                     <div className="flex justify-center">
                       <div className="h-3 border-l border-dashed border-border"></div>
                     </div>
