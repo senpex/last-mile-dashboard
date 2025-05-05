@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -99,9 +100,10 @@ export const OrderDetailsSheet = ({
     toast.success(`Order status updated to ${newStatus}`);
   };
   
-  return <Sheet open={isOpen} onOpenChange={open => {
-    if (!open) onClose();
-  }}>
+  return (
+    <Sheet open={isOpen} onOpenChange={open => {
+      if (!open) onClose();
+    }}>
       <SheetContent className="sm:max-w-md md:max-w-lg w-full overflow-hidden p-0">
         <SheetHeader className="p-6 pb-2">
           <div className="flex items-center justify-between">
@@ -360,7 +362,7 @@ export const OrderDetailsSheet = ({
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </TabsContent>
                     
                     <TabsContent value="package-history" className="space-y-4">
                       <div className="rounded-md border bg-card/50 p-4">
@@ -521,5 +523,6 @@ export const OrderDetailsSheet = ({
           </TabsContent>
         </Tabs>
       </SheetContent>
-    </Sheet>;
+    </Sheet>
+  );
 };
