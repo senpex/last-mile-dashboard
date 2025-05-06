@@ -5,12 +5,14 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { FileText, MapPin, User, Phone, Clock, Truck, DollarSign, CalendarClock, MessageSquare, ChevronDown, CreditCard, Package, Mail, Activity, ListOrdered, Edit, Trash2 } from "lucide-react";
+import { FileText, MapPin, User, Phone, Clock, Truck, DollarSign, CalendarClock, MessageSquare, ChevronDown, CreditCard, Package, Mail, Activity, ListOrdered, Edit, Trash2, Map } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { OrderMap } from "@/components/communication/OrderMap";
 
 interface OrderDetailsSheetProps {
   isOpen: boolean;
@@ -27,6 +29,7 @@ export const OrderDetailsSheet = ({
   const [status, setStatus] = useState<string>(delivery.status);
   const [activeTab, setActiveTab] = useState<string>("order-info");
   const [activeLogTab, setActiveLogTab] = useState<string>("payment-transactions");
+  const [isMapDialogOpen, setIsMapDialogOpen] = useState(false);
   const statuses: DeliveryStatus[] = ["Dropoff Complete", "Canceled By Customer", "Cancelled By Admin", "In Transit", "Picking Up", "Arrived For Pickup", "Scheduled Order", "Online", "Offline", "Busy", "Not approved", "Available", "On Break"];
 
   // Add back the missing function
@@ -204,10 +207,21 @@ export const OrderDetailsSheet = ({
                 </div>
                 
                 <div>
-                  <h3 className="text-sm font-medium mb-3 flex items-center">
-                    <MapPin className="w-4 h-4 mr-2" /> 
-                    Route
-                  </h3>
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-medium flex items-center">
+                      <MapPin className="w-4 h-4 mr-2" /> 
+                      Route
+                    </h3>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="flex items-center gap-1.5 h-8"
+                      onClick={() => setIsMapDialogOpen(true)}
+                    >
+                      <Map className="h-4 w-4" />
+                      View Map
+                    </Button>
+                  </div>
                   <div className="rounded-md border bg-card/50 p-0">
                     <Table>
                       <TableHeader className="bg-muted/50">
@@ -696,6 +710,24 @@ export const OrderDetailsSheet = ({
           </TabsContent>
         </Tabs>
       </SheetContent>
+
+      {/* Map Dialog */}
+      <Dialog open={isMapDialogOpen} onOpenChange={setIsMapDialogOpen}>
+        <DialogContent className="sm:max-w-[90vw] max-h-[90vh] p-0 bg-background">
+          <div className="p-4 h-full flex flex-col">
+            <h2 className="text-xl font-semibold mb-2">Delivery Route</h2>
+            <div className="flex-1 min-h-[500px] rounded-md overflow-hidden">
+              {delivery.pickupLocation?.address && delivery.dropoffLocation?.address && (
+                <OrderMap
+                  pickupAddress={delivery.pickupLocation.address}
+                  deliveryAddress={delivery.dropoffLocation.address}
+                  driverName={delivery.courier || "Driver"}
+                />
+              )}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Sheet>
   );
 };
