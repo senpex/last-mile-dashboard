@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -12,13 +11,11 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-
 interface OrderDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
   delivery: Delivery | null;
 }
-
 export const OrderDetailsSheet = ({
   isOpen,
   onClose,
@@ -78,7 +75,6 @@ export const OrderDetailsSheet = ({
         return "bg-gray-100 text-gray-800 hover:bg-gray-200";
     }
   };
-  
   const handleStatusChange = (newStatus: DeliveryStatus) => {
     setStatus(newStatus);
     toast.success(`Order status updated to ${newStatus}`);
@@ -136,14 +132,11 @@ export const OrderDetailsSheet = ({
       return [additionalLocations[delivery.id % additionalLocations.length], additionalLocations[(delivery.id + 2) % additionalLocations.length]];
     }
   };
-  
   const additionalLocations = getAdditionalLocations();
   const hasAdditionalLocations = additionalLocations.length > 0;
-  
-  return (
-    <Sheet open={isOpen} onOpenChange={open => {
-      if (!open) onClose();
-    }}>
+  return <Sheet open={isOpen} onOpenChange={open => {
+    if (!open) onClose();
+  }}>
       <SheetContent className="sm:max-w-xl md:max-w-4xl lg:max-w-6xl w-full overflow-hidden p-0 pr-0 mr-0">
         <SheetHeader className="p-6 pb-2">
           <div className="flex items-center justify-between">
@@ -158,21 +151,9 @@ export const OrderDetailsSheet = ({
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-1 bg-popover">
                   <div className="grid gap-1">
-                    {statuses.map(statusOption => (
-                      <Button 
-                        key={statusOption} 
-                        variant="ghost" 
-                        size="sm" 
-                        className={cn(
-                          "justify-start text-left font-normal", 
-                          statusOption === status ? "bg-accent text-accent-foreground" : "", 
-                          getStatusColor(statusOption)
-                        )} 
-                        onClick={() => handleStatusChange(statusOption)}
-                      >
+                    {statuses.map(statusOption => <Button key={statusOption} variant="ghost" size="sm" className={cn("justify-start text-left font-normal", statusOption === status ? "bg-accent text-accent-foreground" : "", getStatusColor(statusOption))} onClick={() => handleStatusChange(statusOption)}>
                         {statusOption}
-                      </Button>
-                    ))}
+                      </Button>)}
                   </div>
                 </PopoverContent>
               </Popover>
@@ -264,8 +245,7 @@ export const OrderDetailsSheet = ({
                           </TableCell>
                         </TableRow>
                         
-                        {hasAdditionalLocations && additionalLocations.map((location, index) => (
-                          <TableRow key={index}>
+                        {hasAdditionalLocations && additionalLocations.map((location, index) => <TableRow key={index}>
                             <TableCell>
                               <p className="text-sm font-medium">{location.name}</p>
                               <p className="text-xs text-muted-foreground">{location.address}</p>
@@ -302,8 +282,7 @@ export const OrderDetailsSheet = ({
                                 Delete
                               </Button>
                             </TableCell>
-                          </TableRow>
-                        ))}
+                          </TableRow>)}
                         
                         <TableRow>
                           <TableCell>
@@ -365,9 +344,9 @@ export const OrderDetailsSheet = ({
                           <span className="font-medium ml-4">End:</span> 
                           {/* Simulate end time 30 minutes after pickup time */}
                           {delivery.pickupTime.replace(/:(\d\d)/, (match, minutes) => {
-                            const mins = parseInt(minutes) + 30;
-                            return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
-                          })}
+                          const mins = parseInt(minutes) + 30;
+                          return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
+                        })}
                         </div>
                       </div>
                       
@@ -378,9 +357,9 @@ export const OrderDetailsSheet = ({
                           <span className="font-medium ml-4">End:</span>
                           {/* Simulate end time 30 minutes after dropoff time */}
                           {delivery.dropoffTime.replace(/:(\d\d)/, (match, minutes) => {
-                            const mins = parseInt(minutes) + 30;
-                            return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
-                          })}
+                          const mins = parseInt(minutes) + 30;
+                          return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
+                        })}
                         </div>
                       </div>
                     </div>
@@ -407,8 +386,7 @@ export const OrderDetailsSheet = ({
                   </div>
                 </div>
                 
-                {delivery.courier && (
-                  <div>
+                {delivery.courier && <div>
                     <h3 className="text-sm font-medium mb-3 flex items-center">
                       <Truck className="w-4 h-4 mr-2" />
                       Courier info
@@ -420,8 +398,7 @@ export const OrderDetailsSheet = ({
                         Contact Courier
                       </Button>
                     </div>
-                  </div>
-                )}
+                  </div>}
                 
                 <div>
                   <h3 className="text-sm font-medium mb-3 flex items-center">
@@ -664,39 +641,4 @@ export const OrderDetailsSheet = ({
                       </div>
                     </TabsContent>
                     
-                    <TabsContent value="status-change-log" className="space-y-4">
-                      <div className="rounded-md border bg-card/50 p-4">
-                        <div className="space-y-2">
-                          <div className="flex justify-between">
-                            <span className="text-sm">Order created</span>
-                            <span className="text-xs text-muted-foreground">Today, 9:30 AM</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-sm">Status updated to "Scheduled Order"</span>
-                            <span className="text-xs text-muted-foreground">Today, 9:35 AM</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-sm">Status updated to "Picking Up"</span>
-                            <span className="text-xs text-muted-foreground">Today, 10:15 AM</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-sm">Status updated to "In Transit"</span>
-                            <span className="text-xs text-muted-foreground">Today, 10:30 AM</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-sm">Status updated to "Dropoff Complete"</span>
-                            <span className="text-xs text-muted-foreground">Today, 11:05 AM</span>
-                          </div>
-                        </div>
-                      </div>
-                    </TabsContent>
-                  </div>
-                </Tabs>
-              </div>
-            </ScrollArea>
-          </TabsContent>
-        </Tabs>
-      </SheetContent>
-    </Sheet>
-  );
-};
+                    <TabsContent value="status
