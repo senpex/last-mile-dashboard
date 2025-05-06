@@ -420,7 +420,7 @@ const EZcaterOrders = () => {
       <div className="w-full overflow-x-hidden">
         <EZcaterFiltersLayout title="eZcater Orders" timezoneInfo={timezoneInfo} filterControls={filterControls} searchControls={searchControls} className="border-0" />
 
-        <div className="mx-0 py-[14px] px-[25px]">
+        <div className="mx-0 py-[14px] px-[14px]">
           <UsersTableContainer>
             <Table>
               <TableHeader className="bg-muted/50 border-b-0 m-0 p-0">
