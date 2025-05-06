@@ -11,7 +11,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-
 interface OrderDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -314,22 +313,22 @@ export const OrderDetailsSheet = ({
                           <span className="font-medium ml-4">End:</span> 
                           {/* Simulate end time 30 minutes after pickup time */}
                           {delivery.pickupTime.replace(/:(\d\d)/, (match, minutes) => {
-                            const mins = parseInt(minutes) + 30;
-                            return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
-                          })}
+                          const mins = parseInt(minutes) + 30;
+                          return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
+                        })}
                         </div>
                       </div>
                       
-                      <div>
+                      <div className="mx-[123px] px-px">
                         <h4 className="text-xs text-muted-foreground mb-2">Dropoff Window</h4>
                         <div className="flex items-center gap-2 text-sm">
                           <span className="font-medium">Start:</span> {delivery.dropoffTime}
                           <span className="font-medium ml-4">End:</span>
                           {/* Simulate end time 30 minutes after dropoff time */}
                           {delivery.dropoffTime.replace(/:(\d\d)/, (match, minutes) => {
-                            const mins = parseInt(minutes) + 30;
-                            return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
-                          })}
+                          const mins = parseInt(minutes) + 30;
+                          return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
+                        })}
                         </div>
                       </div>
                     </div>
