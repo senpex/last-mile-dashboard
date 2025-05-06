@@ -191,7 +191,7 @@ export const OrderDetailsSheet = ({
                 <div>
                   <h3 className="text-sm font-medium mb-3 flex items-center">
                     <MapPin className="w-4 h-4 mr-2" /> 
-                    Locations
+                    Route
                   </h3>
                   <div className="rounded-md border bg-card/50 p-0">
                     <Table>
