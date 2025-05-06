@@ -368,6 +368,10 @@ export const OrderDetailsSheet = ({
                         Message Customer
                       </Button>
                     </div>
+                    <div className="mt-2">
+                      <span className="text-sm text-muted-foreground">Company: </span>
+                      <span className="text-sm">{delivery.organization || "Not specified"}</span>
+                    </div>
                   </div>
                 </div>
                 
