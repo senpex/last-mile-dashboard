@@ -184,6 +184,7 @@ export const OrderDetailsSheet = ({
                       <TableHeader className="bg-muted/50">
                         <TableRow>
                           <TableHead className="w-[180px]">Locations</TableHead>
+                          <TableHead className="w-[180px]">Contact</TableHead>
                           <TableHead className="w-[220px]">Description</TableHead>
                           <TableHead className="w-[100px]">Distance</TableHead>
                           <TableHead className="w-[100px]">Status</TableHead>
@@ -200,6 +201,12 @@ export const OrderDetailsSheet = ({
                               <p className="text-sm font-medium">{delivery.pickupLocation.name}</p>
                               <p className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</p>
                             </div>
+                          </TableCell>
+                          <TableCell>
+                            <p className="text-sm font-medium">John Smith</p>
+                            <p className="text-xs text-muted-foreground flex items-center">
+                              <Phone className="h-3 w-3 mr-1" /> (415) 555-1234
+                            </p>
                           </TableCell>
                           <TableCell>
                             <p className="text-sm">Pickup location for order items</p>
@@ -231,6 +238,12 @@ export const OrderDetailsSheet = ({
                             <TableCell>
                               <p className="text-sm font-medium">{location.name}</p>
                               <p className="text-xs text-muted-foreground">{location.address}</p>
+                            </TableCell>
+                            <TableCell>
+                              <p className="text-sm font-medium">Staff Member {index + 1}</p>
+                              <p className="text-xs text-muted-foreground flex items-center">
+                                <Phone className="h-3 w-3 mr-1" /> (415) 555-{5000 + index}
+                              </p>
                             </TableCell>
                             <TableCell>
                               <p className="text-sm">{location.description}</p>
@@ -267,6 +280,12 @@ export const OrderDetailsSheet = ({
                               <p className="text-sm font-medium">{delivery.dropoffLocation.name}</p>
                               <p className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</p>
                             </div>
+                          </TableCell>
+                          <TableCell>
+                            <p className="text-sm font-medium">{delivery.customerName}</p>
+                            <p className="text-xs text-muted-foreground flex items-center">
+                              <Phone className="h-3 w-3 mr-1" /> (415) 555-9876
+                            </p>
                           </TableCell>
                           <TableCell>
                             <p className="text-sm">Final destination for delivery</p>
