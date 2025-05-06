@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -197,7 +198,7 @@ export const OrderDetailsSheet = ({
                     <Table>
                       <TableHeader className="bg-muted/50">
                         <TableRow>
-                          <TableHead className="w-[180px]">Route</TableHead>
+                          <TableHead className="w-[180px]">Locations</TableHead>
                           <TableHead className="w-[220px]">Description</TableHead>
                           <TableHead className="w-[100px]">Distance</TableHead>
                           <TableHead className="w-[100px]">Status</TableHead>
