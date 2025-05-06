@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -356,9 +355,9 @@ export const OrderDetailsSheet = ({
                     <Clock className="w-4 h-4 mr-2" />
                     Schedule
                   </h3>
-                  <div className="rounded-md border bg-card/50 p-4 space-y-4">
-                    <div className="flex flex-wrap gap-6">
-                      <div>
+                  <div className="rounded-md border bg-card/50 p-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                      <div className="w-full">
                         <h4 className="text-xs text-muted-foreground mb-2">Pickup Window</h4>
                         <div className="flex items-center gap-2 text-sm">
                           <span className="font-medium">Start:</span> {delivery.pickupTime}
@@ -371,7 +370,7 @@ export const OrderDetailsSheet = ({
                         </div>
                       </div>
                       
-                      <div>
+                      <div className="w-full">
                         <h4 className="text-xs text-muted-foreground mb-2">Dropoff Window</h4>
                         <div className="flex items-center gap-2 text-sm">
                           <span className="font-medium">Start:</span> {delivery.dropoffTime}
