@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { FileText, MapPin, User, Phone, Clock, Truck, DollarSign, CalendarClock, MessageSquare, ChevronDown, CreditCard, Package, Mail, Activity, ListOrdered } from "lucide-react";
+import { FileText, MapPin, User, Phone, Clock, Truck, DollarSign, CalendarClock, MessageSquare, ChevronDown, CreditCard, Package, Mail, Activity, ListOrdered, Edit, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
@@ -187,8 +187,8 @@ export const OrderDetailsSheet = ({
                           <TableHead className="w-[100px]">Distance</TableHead>
                           <TableHead className="w-[100px]">Status</TableHead>
                           <TableHead className="w-[120px]">Delivered At</TableHead>
-                          <TableHead className="w-[80px]">Action 1</TableHead>
-                          <TableHead className="w-[80px]">Action 2</TableHead>
+                          <TableHead className="w-[100px]">Action 1</TableHead>
+                          <TableHead className="w-[100px]">Action 2</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -210,13 +210,15 @@ export const OrderDetailsSheet = ({
                             <p className="text-sm">{delivery.pickupTime}</p>
                           </TableCell>
                           <TableCell>
-                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                              <MapPin className="h-4 w-4" />
+                            <Button variant="outline" size="sm" className="flex items-center gap-1">
+                              <Edit className="h-4 w-4" />
+                              Edit
                             </Button>
                           </TableCell>
                           <TableCell>
-                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                              <Phone className="h-4 w-4" />
+                            <Button variant="outline" size="sm" className="flex items-center gap-1 text-destructive">
+                              <Trash2 className="h-4 w-4" />
+                              Delete
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -241,13 +243,15 @@ export const OrderDetailsSheet = ({
                               <p className="text-sm">{location.deliveredAt}</p>
                             </TableCell>
                             <TableCell>
-                              <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                <MapPin className="h-4 w-4" />
+                              <Button variant="outline" size="sm" className="flex items-center gap-1">
+                                <Edit className="h-4 w-4" />
+                                Edit
                               </Button>
                             </TableCell>
                             <TableCell>
-                              <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                <Phone className="h-4 w-4" />
+                              <Button variant="outline" size="sm" className="flex items-center gap-1 text-destructive">
+                                <Trash2 className="h-4 w-4" />
+                                Delete
                               </Button>
                             </TableCell>
                           </TableRow>)}
@@ -272,13 +276,15 @@ export const OrderDetailsSheet = ({
                             <p className="text-sm">{delivery.dropoffTime}</p>
                           </TableCell>
                           <TableCell>
-                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                              <MapPin className="h-4 w-4" />
+                            <Button variant="outline" size="sm" className="flex items-center gap-1">
+                              <Edit className="h-4 w-4" />
+                              Edit
                             </Button>
                           </TableCell>
                           <TableCell>
-                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                              <Phone className="h-4 w-4" />
+                            <Button variant="outline" size="sm" className="flex items-center gap-1 text-destructive">
+                              <Trash2 className="h-4 w-4" />
+                              Delete
                             </Button>
                           </TableCell>
                         </TableRow>
