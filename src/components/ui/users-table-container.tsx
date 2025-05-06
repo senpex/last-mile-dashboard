@@ -20,7 +20,7 @@ const UsersTableContainer = React.forwardRef<HTMLDivElement, React.HTMLAttribute
       "relative border rounded-md overflow-hidden flex-1", 
       "transition-all duration-300 shadow-sm", 
       "px-0 mt-0 mb-[5px]", 
-      independent ? "ml-[15px] mr-[-10px]" : "-ml-[10px]", 
+      independent ? "ml-[15px] mr-[-10px]" : "-ml-[10px] mr-[-10px]", 
       "w-full", 
       height, 
       className
