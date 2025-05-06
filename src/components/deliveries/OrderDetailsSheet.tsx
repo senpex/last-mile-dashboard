@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -11,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 interface OrderDetailsSheetProps {
   isOpen: boolean;
@@ -92,23 +92,43 @@ export const OrderDetailsSheet = ({
     const additionalLocations = [
       {
         name: "Warehouse Storage",
-        address: "1250 Industrial Blvd, Warehouse District, SF 94107"
+        address: "1250 Industrial Blvd, Warehouse District, SF 94107",
+        description: "Primary storage facility for dry goods",
+        distance: "2.5 miles",
+        status: "Completed",
+        deliveredAt: "10:30 AM"
       },
       {
         name: "Processing Center",
-        address: "582 Tech Park Way, Innovation District, SF 94158"
+        address: "582 Tech Park Way, Innovation District, SF 94158",
+        description: "Order verification and processing hub",
+        distance: "1.8 miles",
+        status: "In Progress",
+        deliveredAt: "11:05 AM"
       },
       {
         name: "Distribution Hub",
-        address: "975 Logistics Avenue, Commerce Park, SF 94124"
+        address: "975 Logistics Avenue, Commerce Park, SF 94124",
+        description: "Regional distribution center for all deliveries",
+        distance: "3.2 miles",
+        status: "Pending",
+        deliveredAt: "11:30 AM"
       },
       {
         name: "Temporary Holding",
-        address: "342 Transit Road, Gateway Center, SF 94103"
+        address: "342 Transit Road, Gateway Center, SF 94103",
+        description: "Short-term storage for time-sensitive packages",
+        distance: "1.5 miles",
+        status: "Completed",
+        deliveredAt: "10:45 AM"
       },
       {
         name: "Dispatch Center",
-        address: "127 Fleet Street, Transport Zone, SF 94110"
+        address: "127 Fleet Street, Transport Zone, SF 94110",
+        description: "Main dispatch point for courier assignments",
+        distance: "2.7 miles",
+        status: "Pending",
+        deliveredAt: "12:15 PM"
       }
     ];
     
@@ -174,33 +194,121 @@ export const OrderDetailsSheet = ({
                     Locations
                   </h3>
                   <div className="rounded-md border bg-card/50 p-4 space-y-3">
-                    <div>
-                      <h4 className="text-xs text-muted-foreground mb-1">Pickup Location</h4>
-                      <p className="text-sm font-medium">{delivery.pickupLocation.name}</p>
-                      <p className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</p>
-                    </div>
-                    
-                    {hasAdditionalLocations && additionalLocations.map((location, index) => (
-                      <React.Fragment key={index}>
-                        <div className="flex justify-center">
-                          <div className="h-3 border-l border-dashed border-border"></div>
-                        </div>
-                        <div>
-                          <h4 className="text-xs text-muted-foreground mb-1">Transit Point {index + 1}</h4>
-                          <p className="text-sm font-medium">{location.name}</p>
-                          <p className="text-xs text-muted-foreground">{location.address}</p>
-                        </div>
-                      </React.Fragment>
-                    ))}
-                    
-                    <div className="flex justify-center">
-                      <div className="h-3 border-l border-dashed border-border"></div>
-                    </div>
-                    <div>
-                      <h4 className="text-xs text-muted-foreground mb-1">Dropoff Location</h4>
-                      <p className="text-sm font-medium">{delivery.dropoffLocation.name}</p>
-                      <p className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</p>
-                    </div>
+                    <Table>
+                      <TableHeader className="bg-muted/50">
+                        <TableRow>
+                          <TableHead className="w-[180px]">Route</TableHead>
+                          <TableHead className="w-[220px]">Description</TableHead>
+                          <TableHead className="w-[100px]">Distance</TableHead>
+                          <TableHead className="w-[100px]">Status</TableHead>
+                          <TableHead className="w-[120px]">Delivered At</TableHead>
+                          <TableHead className="w-[80px]">Action 1</TableHead>
+                          <TableHead className="w-[80px]">Action 2</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell>
+                            <p className="text-sm font-medium">{delivery.pickupLocation.name}</p>
+                            <p className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</p>
+                          </TableCell>
+                          <TableCell>
+                            <p className="text-sm">Pickup location for order items</p>
+                          </TableCell>
+                          <TableCell>
+                            <p className="text-sm">0.0 miles</p>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className="bg-green-100 text-green-800">Completed</Badge>
+                          </TableCell>
+                          <TableCell>
+                            <p className="text-sm">{delivery.pickupTime}</p>
+                          </TableCell>
+                          <TableCell>
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <MapPin className="h-4 w-4" />
+                            </Button>
+                          </TableCell>
+                          <TableCell>
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Phone className="h-4 w-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                        
+                        {hasAdditionalLocations && additionalLocations.map((location, index) => (
+                          <TableRow key={index}>
+                            <TableCell>
+                              <p className="text-sm font-medium">{location.name}</p>
+                              <p className="text-xs text-muted-foreground">{location.address}</p>
+                            </TableCell>
+                            <TableCell>
+                              <p className="text-sm">{location.description}</p>
+                            </TableCell>
+                            <TableCell>
+                              <p className="text-sm">{location.distance}</p>
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant="outline" className={
+                                location.status === "Completed" ? "bg-green-100 text-green-800" : 
+                                location.status === "In Progress" ? "bg-blue-100 text-blue-800" : 
+                                "bg-amber-100 text-amber-800"
+                              }>
+                                {location.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              <p className="text-sm">{location.deliveredAt}</p>
+                            </TableCell>
+                            <TableCell>
+                              <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                                <MapPin className="h-4 w-4" />
+                              </Button>
+                            </TableCell>
+                            <TableCell>
+                              <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                                <Phone className="h-4 w-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                        
+                        <TableRow>
+                          <TableCell>
+                            <p className="text-sm font-medium">{delivery.dropoffLocation.name}</p>
+                            <p className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</p>
+                          </TableCell>
+                          <TableCell>
+                            <p className="text-sm">Final destination for delivery</p>
+                          </TableCell>
+                          <TableCell>
+                            <p className="text-sm">{delivery.distance}</p>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className={
+                              status === "Dropoff Complete" ? "bg-green-100 text-green-800" : 
+                              status === "In Transit" ? "bg-blue-100 text-blue-800" : 
+                              "bg-amber-100 text-amber-800"
+                            }>
+                              {status === "Dropoff Complete" ? "Completed" : status === "In Transit" ? "In Progress" : "Pending"}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <p className="text-sm">{delivery.dropoffTime}</p>
+                          </TableCell>
+                          <TableCell>
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <MapPin className="h-4 w-4" />
+                            </Button>
+                          </TableCell>
+                          <TableCell>
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Phone className="h-4 w-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
                   </div>
                 </div>
                 
