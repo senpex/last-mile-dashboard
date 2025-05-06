@@ -689,7 +689,7 @@ export const OrderDetailsSheet = ({
         <DialogContent className="sm:max-w-[90vw] w-full max-h-[90vh] p-0 bg-background">
           <div className="p-4 h-full flex flex-col">
             <h2 className="text-xl font-semibold mb-2">Delivery Route</h2>
-            <div className="flex-1 min-h-[500px] h-[calc(90vh-80px)] rounded-md overflow-hidden py-[131px] my-[41px]">
+            <div className="flex-1 min-h-[500px] h-[calc(90vh-80px)] rounded-md overflow-hidden">
               {delivery.pickupLocation?.address && delivery.dropoffLocation?.address && <OrderMap pickupAddress={delivery.pickupLocation.address} deliveryAddress={delivery.dropoffLocation.address} driverName={delivery.courier || "Driver"} />}
             </div>
           </div>
