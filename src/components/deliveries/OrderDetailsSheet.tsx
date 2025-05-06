@@ -305,21 +305,31 @@ export const OrderDetailsSheet = ({
                     <Clock className="w-4 h-4 mr-2" />
                     Schedule
                   </h3>
-                  <div className="rounded-md border bg-card/50 p-4">
-                    <div className="flex items-center gap-4 text-sm">
-                      <span className="font-medium">Pickup:</span> 
-                      {delivery.pickupTime} - 
-                      {delivery.pickupTime.replace(/:(\d\d)/, (match, minutes) => {
-                        const mins = parseInt(minutes) + 30;
-                        return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
-                      })}
-                      
-                      <span className="font-medium ml-4">Dropoff:</span>
-                      {delivery.dropoffTime} - 
-                      {delivery.dropoffTime.replace(/:(\d\d)/, (match, minutes) => {
-                        const mins = parseInt(minutes) + 30;
-                        return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
-                      })}
+                  <div className="rounded-md border bg-card/50 p-4 space-y-4">
+                    <div>
+                      <h4 className="text-xs text-muted-foreground mb-2">Pickup Window</h4>
+                      <div className="flex items-center gap-2 text-sm">
+                        <span className="font-medium">Start:</span> {delivery.pickupTime}
+                        <span className="font-medium ml-4">End:</span> 
+                        {/* Simulate end time 30 minutes after pickup time */}
+                        {delivery.pickupTime.replace(/:(\d\d)/, (match, minutes) => {
+                          const mins = parseInt(minutes) + 30;
+                          return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
+                        })}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-xs text-muted-foreground mb-2">Dropoff Window</h4>
+                      <div className="flex items-center gap-2 text-sm">
+                        <span className="font-medium">Start:</span> {delivery.dropoffTime}
+                        <span className="font-medium ml-4">End:</span>
+                        {/* Simulate end time 30 minutes after dropoff time */}
+                        {delivery.dropoffTime.replace(/:(\d\d)/, (match, minutes) => {
+                          const mins = parseInt(minutes) + 30;
+                          return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
+                        })}
+                      </div>
                     </div>
                   </div>
                 </div>
