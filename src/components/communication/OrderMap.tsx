@@ -351,7 +351,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
         console.log("Timeout finished, dialog ref exists:", !!dialogMapRef.current);
         if (dialogMapRef.current) {
           dialogMapRef.current.style.display = 'block';
-          dialogMapRef.current.style.height = '500px';
+          dialogMapRef.current.style.height = '100%';
           dialogMapRef.current.style.width = '100%';
           
           initMap(dialogMapRef.current, setDialogMap);
@@ -389,7 +389,7 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
   return (
     <>
       <div 
-        className="relative w-full h-[140px] rounded-md overflow-hidden shadow-sm cursor-pointer group"
+        className="relative w-full h-full rounded-md overflow-hidden shadow-sm cursor-pointer group"
         onClick={() => setIsDialogOpen(true)}
       >
         <div 
