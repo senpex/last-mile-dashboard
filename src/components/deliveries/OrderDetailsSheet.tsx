@@ -176,6 +176,18 @@ export const OrderDetailsSheet = ({
               <div className="p-6 space-y-6">
                 <div>
                   <h3 className="text-sm font-medium mb-3 flex items-center">
+                    <FileText className="w-4 h-4 mr-2" />
+                    Notes
+                  </h3>
+                  <div className="rounded-md border bg-card/50 p-4">
+                    <p className="text-sm">
+                      {delivery.notes || "No notes available for this order."}
+                    </p>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="text-sm font-medium mb-3 flex items-center">
                     <MapPin className="w-4 h-4 mr-2" /> 
                     Route
                   </h3>
@@ -407,18 +419,6 @@ export const OrderDetailsSheet = ({
                         <p className="text-sm">Courier's Earnings</p>
                         <p className="text-sm font-medium">{delivery.couriersEarnings}</p>
                       </div>}
-                  </div>
-                </div>
-                
-                <div>
-                  <h3 className="text-sm font-medium mb-3 flex items-center">
-                    <FileText className="w-4 h-4 mr-2" />
-                    Notes
-                  </h3>
-                  <div className="rounded-md border bg-card/50 p-4">
-                    <p className="text-sm">
-                      {delivery.notes || "No notes available for this order."}
-                    </p>
                   </div>
                 </div>
                 
