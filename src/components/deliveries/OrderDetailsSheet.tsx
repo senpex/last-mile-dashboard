@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -193,7 +194,7 @@ export const OrderDetailsSheet = ({
                     <MapPin className="w-4 h-4 mr-2" /> 
                     Locations
                   </h3>
-                  <div className="rounded-md border bg-card/50 p-4 space-y-3">
+                  <div className="rounded-md border bg-card/50 p-0">
                     <Table>
                       <TableHeader className="bg-muted/50">
                         <TableRow>
