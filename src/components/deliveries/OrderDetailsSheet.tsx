@@ -194,8 +194,11 @@ export const OrderDetailsSheet = ({
                       <TableBody>
                         <TableRow>
                           <TableCell>
-                            <p className="text-sm font-medium">{delivery.pickupLocation.name}</p>
-                            <p className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</p>
+                            <div className="flex flex-col">
+                              <Badge variant="outline" className="mb-1 w-fit bg-blue-100 text-blue-800 border-blue-200">Pickup point</Badge>
+                              <p className="text-sm font-medium">{delivery.pickupLocation.name}</p>
+                              <p className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</p>
+                            </div>
                           </TableCell>
                           <TableCell>
                             <p className="text-sm">Pickup location for order items</p>
@@ -258,8 +261,11 @@ export const OrderDetailsSheet = ({
                         
                         <TableRow>
                           <TableCell>
-                            <p className="text-sm font-medium">{delivery.dropoffLocation.name}</p>
-                            <p className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</p>
+                            <div className="flex flex-col">
+                              <Badge variant="outline" className="mb-1 w-fit bg-green-100 text-green-800 border-green-200">Dropoff point</Badge>
+                              <p className="text-sm font-medium">{delivery.dropoffLocation.name}</p>
+                              <p className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</p>
+                            </div>
                           </TableCell>
                           <TableCell>
                             <p className="text-sm">Final destination for delivery</p>
