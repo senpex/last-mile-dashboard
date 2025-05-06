@@ -11,6 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+
 interface OrderDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -304,15 +305,44 @@ export const OrderDetailsSheet = ({
                     <Clock className="w-4 h-4 mr-2" />
                     Schedule
                   </h3>
-                  <div className="rounded-md border bg-card/50 p-4 space-y-3">
-                    <div className="flex justify-between">
-                      <div>
-                        <h4 className="text-xs text-muted-foreground mb-1">Pickup Time</h4>
-                        <p className="text-sm font-medium">{delivery.pickupTime}</p>
+                  <div className="rounded-md border bg-card/50 p-4 space-y-4">
+                    <div>
+                      <h4 className="text-xs text-muted-foreground mb-2">Pickup Window</h4>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <h5 className="text-xs text-muted-foreground">Window Start</h5>
+                          <p className="text-sm font-medium">{delivery.pickupTime}</p>
+                        </div>
+                        <div>
+                          <h5 className="text-xs text-muted-foreground">Window End</h5>
+                          <p className="text-sm font-medium">
+                            {/* Simulate end time 30 minutes after pickup time */}
+                            {delivery.pickupTime.replace(/:(\d\d)/, (match, minutes) => {
+                              const mins = parseInt(minutes) + 30;
+                              return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
+                            })}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <h4 className="text-xs text-muted-foreground mb-1">Dropoff Time</h4>
-                        <p className="text-sm font-medium">{delivery.dropoffTime}</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-xs text-muted-foreground mb-2">Dropoff Window</h4>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <h5 className="text-xs text-muted-foreground">Window Start</h5>
+                          <p className="text-sm font-medium">{delivery.dropoffTime}</p>
+                        </div>
+                        <div>
+                          <h5 className="text-xs text-muted-foreground">Window End</h5>
+                          <p className="text-sm font-medium">
+                            {/* Simulate end time 30 minutes after dropoff time */}
+                            {delivery.dropoffTime.replace(/:(\d\d)/, (match, minutes) => {
+                              const mins = parseInt(minutes) + 30;
+                              return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
+                            })}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
