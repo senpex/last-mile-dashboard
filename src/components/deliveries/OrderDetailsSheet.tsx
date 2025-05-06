@@ -713,10 +713,10 @@ export const OrderDetailsSheet = ({
 
       {/* Map Dialog */}
       <Dialog open={isMapDialogOpen} onOpenChange={setIsMapDialogOpen}>
-        <DialogContent className="sm:max-w-[90vw] max-h-[90vh] p-0 bg-background">
+        <DialogContent className="sm:max-w-[90vw] w-full max-h-[90vh] p-0 bg-background">
           <div className="p-4 h-full flex flex-col">
             <h2 className="text-xl font-semibold mb-2">Delivery Route</h2>
-            <div className="flex-1 min-h-[500px] rounded-md overflow-hidden">
+            <div className="flex-1 min-h-[500px] h-[calc(90vh-80px)] rounded-md overflow-hidden">
               {delivery.pickupLocation?.address && delivery.dropoffLocation?.address && (
                 <OrderMap
                   pickupAddress={delivery.pickupLocation.address}
