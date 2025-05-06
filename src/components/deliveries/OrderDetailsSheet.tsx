@@ -878,7 +878,7 @@ export const OrderDetailsSheet = ({
                 </Button>
                 
                 <Button size="sm" variant="outline" className="flex items-center gap-1">
-                  <Print className="h-4 w-4" /> Print
+                  <Printer className="h-4 w-4" /> Print
                 </Button>
                 
                 <Button size="sm" variant="outline" className="flex items-center gap-1">
