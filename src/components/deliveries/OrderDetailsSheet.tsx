@@ -361,11 +361,13 @@ export const OrderDetailsSheet = ({
                     Customer
                   </h3>
                   <div className="rounded-md border bg-card/50 p-4">
-                    <p className="text-sm font-medium">{delivery.customerName}</p>
-                    <Button variant="outline" size="sm" className="mt-2 text-xs h-8">
-                      <MessageSquare className="w-3 h-3 mr-2" />
-                      Message Customer
-                    </Button>
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-medium">{delivery.customerName}</p>
+                      <Button variant="outline" size="sm" className="text-xs h-8">
+                        <MessageSquare className="w-3 h-3 mr-2" />
+                        Message Customer
+                      </Button>
+                    </div>
                   </div>
                 </div>
                 
