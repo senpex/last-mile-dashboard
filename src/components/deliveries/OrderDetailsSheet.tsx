@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -153,7 +152,7 @@ export const OrderDetailsSheet = ({
   return <Sheet open={isOpen} onOpenChange={open => {
     if (!open) onClose();
   }}>
-      <SheetContent className="sm:max-w-md md:max-w-lg w-full overflow-hidden p-0 pr-0 mr-0">
+      <SheetContent className="sm:max-w-xl md:max-w-2xl lg:max-w-4xl w-full overflow-hidden p-0 pr-0 mr-0">
         <SheetHeader className="p-6 pb-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
