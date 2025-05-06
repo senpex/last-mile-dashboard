@@ -308,42 +308,26 @@ export const OrderDetailsSheet = ({
                   <div className="rounded-md border bg-card/50 p-4 space-y-4">
                     <div>
                       <h4 className="text-xs text-muted-foreground mb-2">Pickup Window</h4>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <h5 className="text-xs text-muted-foreground">Window Start</h5>
-                          <p className="text-sm font-medium">{delivery.pickupTime}</p>
-                        </div>
-                        <div>
-                          <h5 className="text-xs text-muted-foreground">Window End</h5>
-                          <p className="text-sm font-medium">
-                            {/* Simulate end time 30 minutes after pickup time */}
-                            {delivery.pickupTime.replace(/:(\d\d)/, (match, minutes) => {
-                              const mins = parseInt(minutes) + 30;
-                              return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
-                            })}
-                          </p>
-                        </div>
-                      </div>
+                      <p className="text-sm">
+                        <span className="font-medium">{delivery.pickupTime}</span> - <span className="font-medium">
+                          {delivery.pickupTime.replace(/:(\d\d)/, (match, minutes) => {
+                            const mins = parseInt(minutes) + 30;
+                            return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
+                          })}
+                        </span>
+                      </p>
                     </div>
                     
                     <div>
                       <h4 className="text-xs text-muted-foreground mb-2">Dropoff Window</h4>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <h5 className="text-xs text-muted-foreground">Window Start</h5>
-                          <p className="text-sm font-medium">{delivery.dropoffTime}</p>
-                        </div>
-                        <div>
-                          <h5 className="text-xs text-muted-foreground">Window End</h5>
-                          <p className="text-sm font-medium">
-                            {/* Simulate end time 30 minutes after dropoff time */}
-                            {delivery.dropoffTime.replace(/:(\d\d)/, (match, minutes) => {
-                              const mins = parseInt(minutes) + 30;
-                              return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
-                            })}
-                          </p>
-                        </div>
-                      </div>
+                      <p className="text-sm">
+                        <span className="font-medium">{delivery.dropoffTime}</span> - <span className="font-medium">
+                          {delivery.dropoffTime.replace(/:(\d\d)/, (match, minutes) => {
+                            const mins = parseInt(minutes) + 30;
+                            return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
+                          })}
+                        </span>
+                      </p>
                     </div>
                   </div>
                 </div>
