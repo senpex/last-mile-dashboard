@@ -365,7 +365,7 @@ export const OrderDetailsSheet = ({
                       <p className="text-sm font-medium">{delivery.customerName}</p>
                       <Button variant="outline" size="sm" className="text-xs h-8">
                         <MessageSquare className="w-3 h-3 mr-2" />
-                        Message Customer
+                        Send message
                       </Button>
                       <div className="flex items-center">
                         <span className="text-sm text-muted-foreground">Company: </span>
