@@ -405,19 +405,34 @@ export const OrderDetailsSheet = ({
                     <DollarSign className="w-4 h-4 mr-2" />
                     Financial
                   </h3>
-                  <div className="rounded-md border bg-card/50 p-4 space-y-2">
-                    <div className="flex justify-between">
-                      <p className="text-sm">Base Price</p>
-                      <p className="text-sm font-medium">{delivery.price}</p>
-                    </div>
-                    <div className="flex justify-between">
-                      <p className="text-sm">Tip</p>
-                      <p className="text-sm font-medium">{delivery.tip}</p>
-                    </div>
-                    {delivery.couriersEarnings && <div className="flex justify-between">
-                        <p className="text-sm">Courier's Earnings</p>
-                        <p className="text-sm font-medium">{delivery.couriersEarnings}</p>
-                      </div>}
+                  <div className="rounded-md border bg-card/50 p-0">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Earnings</TableHead>
+                          <TableHead>Delivery Fee</TableHead>
+                          <TableHead>Extra Service Fee</TableHead>
+                          <TableHead>Tip</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell>Customer Payment</TableCell>
+                          <TableCell>{delivery.price}</TableCell>
+                          <TableCell>{delivery.price}</TableCell>
+                          <TableCell>$0.00</TableCell>
+                          <TableCell>{delivery.tip}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Driver Payout</TableCell>
+                          <TableCell>{delivery.couriersEarnings || "$10.00"}</TableCell>
+                          <TableCell>$8.00</TableCell>
+                          <TableCell>$0.00</TableCell>
+                          <TableCell>{delivery.tip}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
                   </div>
                 </div>
                 
@@ -626,46 +641,4 @@ export const OrderDetailsSheet = ({
                       </div>
                     </TabsContent>
                     
-                    <TabsContent value="status-change-log" className="space-y-4">
-                      <div className="rounded-md border bg-card/50 p-4">
-                        <div className="space-y-2">
-                          <div className="flex justify-between">
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm">Created</span>
-                              <Badge variant="outline" className="text-xs">New Order</Badge>
-                            </div>
-                            <span className="text-xs text-muted-foreground">10:00 AM</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm">Updated</span>
-                              <Badge variant="outline" className="bg-blue-100 text-blue-800 text-xs">Picking Up</Badge>
-                            </div>
-                            <span className="text-xs text-muted-foreground">10:15 AM</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm">Updated</span>
-                              <Badge variant="outline" className="bg-blue-100 text-blue-800 text-xs">In Transit</Badge>
-                            </div>
-                            <span className="text-xs text-muted-foreground">10:30 AM</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm">Updated</span>
-                              <Badge variant="outline" className="bg-green-100 text-green-800 text-xs">Dropoff Complete</Badge>
-                            </div>
-                            <span className="text-xs text-muted-foreground">11:05 AM</span>
-                          </div>
-                        </div>
-                      </div>
-                    </TabsContent>
-                  </div>
-                </Tabs>
-              </div>
-            </ScrollArea>
-          </TabsContent>
-        </Tabs>
-      </SheetContent>
-    </Sheet>;
-};
+                    <TabsContent value="status
