@@ -13,9 +13,15 @@ import { SearchInput } from "@/components/ui/search-input";
 import { TimezonePicker } from "@/components/TimezonePicker";
 import ColumnSelector from "@/components/table/ColumnSelector";
 import { EZcaterPagination } from "@/components/ezcater/EZcaterPagination";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { CreateOrderSheet } from "@/components/ezcater/CreateOrderSheet";
+
 const EZcaterOrders = () => {
   const {
     toast
@@ -47,104 +53,79 @@ const EZcaterOrders = () => {
     id: string;
     label: string;
     default: boolean;
-  }[] = [{
-    id: "webhook",
-    label: "Webhook",
-    default: true
-  }, {
-    id: "package",
-    label: "Package",
-    default: true
-  }, {
-    id: "requestNumber",
-    label: "Request #",
-    default: true
-  }, {
-    id: "eventDate",
-    label: "Event Date",
-    default: true
-  }, {
-    id: "insertedDate",
-    label: "Inserted Date",
-    default: true
-  }, {
-    id: "pickupAddress",
-    label: "Pickup Address",
-    default: true
-  }, {
-    id: "dropoffAddress",
-    label: "Dropoff Address",
-    default: true
-  }, {
-    id: "eventName",
-    label: "Event Name",
-    default: true
-  }, {
-    id: "status",
-    label: "Status",
-    default: true
-  }, {
-    id: "history",
-    label: "History",
-    default: true
-  }, {
-    id: "actions",
-    label: "Actions",
-    default: true
-  }];
+  }[] = [
+    { id: "webhook", label: "Webhook", default: true },
+    { id: "package", label: "Package", default: true },
+    { id: "requestNumber", label: "Request #", default: true },
+    { id: "eventDate", label: "Event Date", default: true },
+    { id: "insertedDate", label: "Inserted Date", default: true },
+    { id: "pickupAddress", label: "Pickup Address", default: true },
+    { id: "dropoffAddress", label: "Dropoff Address", default: true },
+    { id: "eventName", label: "Event Name", default: true },
+    { id: "status", label: "Status", default: true },
+    { id: "history", label: "History", default: true },
+    { id: "actions", label: "Actions", default: true },
+  ];
 
   // Sample data for eZcater orders with updated values
-  const orders = [{
-    webhook: "20000",
-    package: "700000",
-    requestNumber: "FGH-87F",
-    eventDate: "2023-04-30 12:30 PM",
-    insertedDate: "2023-04-28 09:15 AM",
-    pickupAddress: "123 Main St, Boston, MA",
-    dropoffAddress: "456 Corporate Dr, Boston, MA",
-    eventName: "Executive Lunch",
-    status: "pending"
-  }, {
-    webhook: "20000",
-    package: "700000",
-    requestNumber: "FGH-87F",
-    eventDate: "2023-04-30 1:45 PM",
-    insertedDate: "2023-04-28 10:30 AM",
-    pickupAddress: "789 Market St, Cambridge, MA",
-    dropoffAddress: "101 Tech Blvd, Cambridge, MA",
-    eventName: "Team Meeting",
-    status: "confirmed"
-  }, {
-    webhook: "20000",
-    package: "700000",
-    requestNumber: "FGH-87F",
-    eventDate: "2023-05-01 11:15 AM",
-    insertedDate: "2023-04-28 11:45 AM",
-    pickupAddress: "222 Food Ave, Boston, MA",
-    dropoffAddress: "333 Law Firm Plaza, Boston, MA",
-    eventName: "Legal Department Lunch",
-    status: "in-transit"
-  }, {
-    webhook: "20000",
-    package: "700000",
-    requestNumber: "FGH-87F",
-    eventDate: "2023-05-01 12:00 PM",
-    insertedDate: "2023-04-28 02:00 PM",
-    pickupAddress: "444 Restaurant Row, Worcester, MA",
-    dropoffAddress: "555 Medical Center Dr, Worcester, MA",
-    eventName: "Medical Conference",
-    status: "delivered"
-  }, {
-    webhook: "20000",
-    package: "700000",
-    requestNumber: "FGH-87F",
-    eventDate: "2023-05-02 2:30 PM",
-    insertedDate: "2023-04-29 08:45 AM",
-    pickupAddress: "666 University Ave, Cambridge, MA",
-    dropoffAddress: "777 Campus Center, Cambridge, MA",
-    eventName: "Department Meeting",
-    status: "cancelled"
-  }];
+  const orders = [
+    {
+      webhook: "20000",
+      package: "700000",
+      requestNumber: "FGH-87F",
+      eventDate: "2023-04-30 12:30 PM",
+      insertedDate: "2023-04-28 09:15 AM",
+      pickupAddress: "123 Main St, Boston, MA",
+      dropoffAddress: "456 Corporate Dr, Boston, MA",
+      eventName: "Executive Lunch",
+      status: "pending"
+    },
+    {
+      webhook: "20000",
+      package: "700000",
+      requestNumber: "FGH-87F",
+      eventDate: "2023-04-30 1:45 PM",
+      insertedDate: "2023-04-28 10:30 AM",
+      pickupAddress: "789 Market St, Cambridge, MA",
+      dropoffAddress: "101 Tech Blvd, Cambridge, MA",
+      eventName: "Team Meeting",
+      status: "confirmed"
+    },
+    {
+      webhook: "20000",
+      package: "700000",
+      requestNumber: "FGH-87F",
+      eventDate: "2023-05-01 11:15 AM",
+      insertedDate: "2023-04-28 11:45 AM",
+      pickupAddress: "222 Food Ave, Boston, MA",
+      dropoffAddress: "333 Law Firm Plaza, Boston, MA",
+      eventName: "Legal Department Lunch",
+      status: "in-transit"
+    },
+    {
+      webhook: "20000",
+      package: "700000",
+      requestNumber: "FGH-87F",
+      eventDate: "2023-05-01 12:00 PM",
+      insertedDate: "2023-04-28 02:00 PM",
+      pickupAddress: "444 Restaurant Row, Worcester, MA",
+      dropoffAddress: "555 Medical Center Dr, Worcester, MA",
+      eventName: "Medical Conference",
+      status: "delivered"
+    },
+    {
+      webhook: "20000",
+      package: "700000",
+      requestNumber: "FGH-87F",
+      eventDate: "2023-05-02 2:30 PM",
+      insertedDate: "2023-04-29 08:45 AM",
+      pickupAddress: "666 University Ave, Cambridge, MA",
+      dropoffAddress: "777 Campus Center, Cambridge, MA",
+      eventName: "Department Meeting",
+      status: "cancelled"
+    }
+  ];
+
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
       case "pending":
@@ -161,30 +142,41 @@ const EZcaterOrders = () => {
         return "outline";
     }
   };
+
   const handleViewOrder = (id: string) => {
     toast({
       title: "Order Details",
       description: `Viewing details for order ${id}`
     });
   };
+
   const handleCreateOrder = (requestNumber: string) => {
     setIsCreateOrderSheetOpen(true);
   };
+
   const handleCancelRequest = (requestNumber: string) => {
     toast({
       title: "Cancel Request",
       description: `Cancelling request ${requestNumber}`
     });
   };
+
   const handleViewHistory = (requestNumber: string) => {
     toast({
       title: "View History",
       description: `Viewing history for request ${requestNumber}`
     });
   };
-  const filteredOrders = orders.filter(order => {
-    const matchesSearch = order.webhook.toLowerCase().includes(searchQuery.toLowerCase()) || order.package.toLowerCase().includes(searchQuery.toLowerCase()) || order.requestNumber.toLowerCase().includes(searchQuery.toLowerCase()) || order.eventName.toLowerCase().includes(searchQuery.toLowerCase()) || order.pickupAddress.toLowerCase().includes(searchQuery.toLowerCase()) || order.dropoffAddress.toLowerCase().includes(searchQuery.toLowerCase());
 
+  const filteredOrders = orders.filter(order => {
+    const matchesSearch = 
+      order.webhook.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      order.package.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      order.requestNumber.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      order.eventName.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      order.pickupAddress.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      order.dropoffAddress.toLowerCase().includes(searchQuery.toLowerCase());
+    
     // Update status filter logic to handle the new filter options
     if (!selectedStatus) {
       return matchesSearch; // "All" is selected (no filter)
@@ -193,13 +185,16 @@ const EZcaterOrders = () => {
     } else if (selectedStatus === "modifications") {
       return matchesSearch && order.status === "cancelled";
     }
+    
     return matchesSearch;
   });
+
   const sortedOrders = React.useMemo(() => {
     let sortableOrders = [...filteredOrders];
     if (sortConfig.key && sortConfig.direction) {
       sortableOrders.sort((a, b) => {
         let aValue, bValue;
+        
         if (sortConfig.key === 'eventDate' || sortConfig.key === 'insertedDate') {
           // Convert dates for proper comparison
           aValue = new Date(a[sortConfig.key]).getTime();
@@ -209,6 +204,7 @@ const EZcaterOrders = () => {
           aValue = a[sortConfig.key as keyof typeof a];
           bValue = b[sortConfig.key as keyof typeof b];
         }
+        
         if (aValue < bValue) {
           return sortConfig.direction === 'ascending' ? -1 : 1;
         }
@@ -220,6 +216,7 @@ const EZcaterOrders = () => {
     }
     return sortableOrders;
   }, [filteredOrders, sortConfig]);
+
   const requestSort = (key: string) => {
     let direction: 'ascending' | 'descending' | null = 'ascending';
     if (sortConfig.key === key) {
@@ -234,6 +231,7 @@ const EZcaterOrders = () => {
       direction
     });
   };
+  
   const filterOptions = ["all", "orders", "modifications"];
 
   // Log current column order for debugging
@@ -278,6 +276,7 @@ const EZcaterOrders = () => {
     document.addEventListener('mousemove', updatePreviewPosition);
     document.addEventListener('dragend', cleanup);
   };
+  
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
@@ -285,12 +284,14 @@ const EZcaterOrders = () => {
       setDragOverColumn(columnId);
     }
   };
+  
   const handleDragEnd = () => {
     console.log("Drag ended");
     setDraggedColumn(null);
     setDragOverColumn(null);
     document.body.classList.remove('column-dragging');
   };
+  
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
     e.preventDefault();
     e.stopPropagation();
@@ -389,26 +390,48 @@ const EZcaterOrders = () => {
     }
     return sortConfig.direction === 'ascending' ? <ChevronUp className="h-4 w-4 ml-1 text-destructive" /> : <ChevronDown className="h-4 w-4 ml-1 text-destructive" />;
   };
+  
   const currentDate = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric'
   });
+  
   const timezoneInfo = `All times in EST (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
 
   // Updated filter controls to show only the three requested buttons
-  const filterControls = <div className="flex flex-wrap gap-2">
-      <Button key="all" size="sm" variant={selectedStatus === null ? "default" : "outline"} onClick={() => setSelectedStatus(null)} className="capitalize">
+  const filterControls = (
+    <div className="flex flex-wrap gap-2">
+      <Button 
+        key="all" 
+        size="sm" 
+        variant={selectedStatus === null ? "default" : "outline"} 
+        onClick={() => setSelectedStatus(null)} 
+        className="capitalize"
+      >
         All
       </Button>
-      <Button key="orders" size="sm" variant={selectedStatus === "orders" ? "default" : "outline"} onClick={() => setSelectedStatus("orders")} className="capitalize">
+      <Button 
+        key="orders" 
+        size="sm" 
+        variant={selectedStatus === "orders" ? "default" : "outline"} 
+        onClick={() => setSelectedStatus("orders")} 
+        className="capitalize"
+      >
         Orders
       </Button>
-      <Button key="modifications" size="sm" variant={selectedStatus === "modifications" ? "default" : "outline"} onClick={() => setSelectedStatus("modifications")} className="capitalize">
+      <Button 
+        key="modifications" 
+        size="sm" 
+        variant={selectedStatus === "modifications" ? "default" : "outline"} 
+        onClick={() => setSelectedStatus("modifications")} 
+        className="capitalize"
+      >
         Modifications
       </Button>
-    </div>;
+    </div>
+  );
 
   // Search controls with the components from the selected element
   const searchControls = <div className="flex items-center space-x-2">
@@ -416,11 +439,12 @@ const EZcaterOrders = () => {
       <TimezonePicker selectedTimezone={timezone} onTimezoneChange={setTimezone} />
       <ColumnSelector columns={availableColumns} visibleColumns={visibleColumns} setVisibleColumns={setVisibleColumns} size="icon" />
     </div>;
+    
   return <Layout>
       <div className="w-full overflow-x-hidden">
         <EZcaterFiltersLayout title="eZcater Orders" timezoneInfo={timezoneInfo} filterControls={filterControls} searchControls={searchControls} className="border-0" />
 
-        <div className="mx-0 py-[14px] px-[14px]">
+        <div className="mx-0 px-[8px] py-[14px]">
           <UsersTableContainer>
             <Table>
               <TableHeader className="bg-muted/50 border-b-0 m-0 p-0">
@@ -441,38 +465,39 @@ const EZcaterOrders = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {currentPageItems.map(order => <TableRow key={order.requestNumber}>
+                {currentPageItems.map(order => (
+                  <TableRow key={order.requestNumber}>
                     {columnOrder.filter(id => visibleColumns.includes(id)).map(columnId => {
-                  switch (columnId) {
-                    case "webhook":
-                      return <TableCell key={columnId}>{order.webhook}</TableCell>;
-                    case "package":
-                      return <TableCell key={columnId} className="font-medium">
+                      switch (columnId) {
+                        case "webhook":
+                          return <TableCell key={columnId}>{order.webhook}</TableCell>;
+                        case "package":
+                          return <TableCell key={columnId} className="font-medium">
                             <div className="flex items-center gap-2">
                               <Package className="h-4 w-4 text-muted-foreground" />
                               {order.package}
                             </div>
                           </TableCell>;
-                    case "requestNumber":
-                      return <TableCell key={columnId}>{order.requestNumber}</TableCell>;
-                    case "eventDate":
-                      return <TableCell key={columnId}>{order.eventDate}</TableCell>;
-                    case "insertedDate":
-                      return <TableCell key={columnId}>{order.insertedDate}</TableCell>;
-                    case "pickupAddress":
-                      return <TableCell key={columnId}>{order.pickupAddress}</TableCell>;
-                    case "dropoffAddress":
-                      return <TableCell key={columnId}>{order.dropoffAddress}</TableCell>;
-                    case "eventName":
-                      return <TableCell key={columnId}>{order.eventName}</TableCell>;
-                    case "status":
-                      return <TableCell key={columnId}>
+                        case "requestNumber":
+                          return <TableCell key={columnId}>{order.requestNumber}</TableCell>;
+                        case "eventDate":
+                          return <TableCell key={columnId}>{order.eventDate}</TableCell>;
+                        case "insertedDate":
+                          return <TableCell key={columnId}>{order.insertedDate}</TableCell>;
+                        case "pickupAddress":
+                          return <TableCell key={columnId}>{order.pickupAddress}</TableCell>;
+                        case "dropoffAddress":
+                          return <TableCell key={columnId}>{order.dropoffAddress}</TableCell>;
+                        case "eventName":
+                          return <TableCell key={columnId}>{order.eventName}</TableCell>;
+                        case "status":
+                          return <TableCell key={columnId}>
                                     <Badge variant={getStatusBadgeVariant(order.status)} className="capitalize">
                                       {order.status.replace('-', ' ')}
                                     </Badge>
                                   </TableCell>;
-                    case "actions":
-                      return <TableCell key={columnId} className="flex space-x-2">
+                        case "actions":
+                          return <TableCell key={columnId} className="flex space-x-2">
                             <Sheet>
                               <SheetTrigger asChild>
                                 <Button size="sm" variant="outline" onClick={() => handleCreateOrder(order.requestNumber)}>
@@ -487,29 +512,41 @@ const EZcaterOrders = () => {
                               Cancel
                             </Button>
                           </TableCell>;
-                    case "history":
-                      return <TableCell key={columnId} className="text-center">
+                        case "history":
+                          return <TableCell key={columnId} className="text-center">
                                     <Button size="sm" variant="ghost" onClick={() => handleViewHistory(order.requestNumber)}>
                                       <HistoryIcon className="h-4 w-4" />
                                     </Button>
                                   </TableCell>;
-                    default:
-                      return <TableCell key={columnId}></TableCell>;
-                  }
-                })}
-                  </TableRow>)}
-                {currentPageItems.length === 0 && <TableRow>
+                        default:
+                          return <TableCell key={columnId}></TableCell>;
+                      }
+                    })}
+                  </TableRow>
+                ))}
+                {currentPageItems.length === 0 && (
+                  <TableRow>
                     <TableCell colSpan={visibleColumns.length} className="text-center py-6">
                       No orders found matching your filters.
                     </TableCell>
-                  </TableRow>}
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </UsersTableContainer>
         </div>
         
-        <EZcaterPagination currentPage={currentPage} totalPages={totalPages} totalItems={totalItems} pageSize={pageSize} pageSizeOptions={pageSizeOptions} onPageChange={handlePageChange} onPageSizeChange={handlePageSizeChange} />
+        <EZcaterPagination 
+          currentPage={currentPage} 
+          totalPages={totalPages} 
+          totalItems={totalItems} 
+          pageSize={pageSize} 
+          pageSizeOptions={pageSizeOptions} 
+          onPageChange={handlePageChange} 
+          onPageSizeChange={handlePageSizeChange} 
+        />
       </div>
     </Layout>;
 };
+
 export default EZcaterOrders;
