@@ -11,7 +11,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-
 interface OrderDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -345,9 +344,9 @@ export const OrderDetailsSheet = ({
                           <span className="font-medium ml-4">End:</span> 
                           {/* Simulate end time 30 minutes after pickup time */}
                           {delivery.pickupTime.replace(/:(\d\d)/, (match, minutes) => {
-                            const mins = parseInt(minutes) + 30;
-                            return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
-                          })}
+                          const mins = parseInt(minutes) + 30;
+                          return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
+                        })}
                         </div>
                       </div>
                       
@@ -358,9 +357,9 @@ export const OrderDetailsSheet = ({
                           <span className="font-medium ml-4">End:</span>
                           {/* Simulate end time 30 minutes after dropoff time */}
                           {delivery.dropoffTime.replace(/:(\d\d)/, (match, minutes) => {
-                            const mins = parseInt(minutes) + 30;
-                            return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
-                          })}
+                          const mins = parseInt(minutes) + 30;
+                          return `:${mins >= 60 ? (mins - 60).toString().padStart(2, '0') : mins.toString().padStart(2, '0')}`;
+                        })}
                         </div>
                       </div>
                     </div>
@@ -380,7 +379,7 @@ export const OrderDetailsSheet = ({
                         Send message
                       </Button>
                       <div className="flex items-center">
-                        <span className="text-sm text-muted-foreground">Company: </span>
+                        <span className="text-sm font-semibold text-gray-700">Company: </span>
                         <span className="text-sm ml-1">{delivery.organization || "Not specified"}</span>
                       </div>
                     </div>
