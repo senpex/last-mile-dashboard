@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { CalendarClock, FileCheck, CheckCircle2, BadgeCheck, AlertTriangle } from "lucide-react";
+import { CalendarClock, FileCheck, CheckCircle2, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 
@@ -50,9 +50,9 @@ export const OrderDetailsSection = ({ organization, distance }: OrderDetailsSect
             {orderRequirements.map((req) => (
               <div 
                 key={req.id} 
-                className={`flex items-center p-2 rounded-md transition-colors ${
-                  req.active ? 'bg-secondary/50 border-l-2 border-primary' : 'bg-muted/20'
-                }`}
+                className={`flex items-center p-2 rounded-md border ${
+                  req.active ? 'bg-secondary/30 border-primary' : 'bg-muted/10 border-muted/30'
+                } transition-colors`}
               >
                 {req.active ? (
                   <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mr-2" />
