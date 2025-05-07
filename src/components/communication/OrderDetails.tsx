@@ -201,7 +201,7 @@ Contact recipient before delivery at provided number`;
                                         {driverStatus}
                                       </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent>
+                                    <DropdownMenuContent className="z-50 bg-white">
                                       <DropdownMenuItem onClick={() => handleStatusChange("Available")}>Available</DropdownMenuItem>
                                       <DropdownMenuItem onClick={() => handleStatusChange("Busy")}>Busy</DropdownMenuItem>
                                       <DropdownMenuItem onClick={() => handleStatusChange("On Break")}>On Break</DropdownMenuItem>
