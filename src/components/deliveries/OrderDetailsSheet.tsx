@@ -31,7 +31,9 @@ export const OrderDetailsSheet = ({
   const [activeTab, setActiveTab] = useState<string>("order-info");
   const [activeLogTab, setActiveLogTab] = useState<string>("payment-transactions");
   const [isMapDialogOpen, setIsMapDialogOpen] = useState(false);
+  const [driverStatus, setDriverStatus] = useState<string>("Available");
   const statuses: DeliveryStatus[] = ["Dropoff Complete", "Canceled By Customer", "Cancelled By Admin", "In Transit", "Picking Up", "Arrived For Pickup", "Scheduled Order", "Online", "Offline", "Busy", "Not approved", "Available", "On Break"];
+  const driverStatuses: string[] = ["Available", "Busy", "On Break", "Offline", "Online"];
 
   // Add back the missing function
   const getStatusBadgeVariant = (status: string): string => {
@@ -84,6 +86,11 @@ export const OrderDetailsSheet = ({
   const handleStatusChange = (newStatus: DeliveryStatus) => {
     setStatus(newStatus);
     toast.success(`Order status updated to ${newStatus}`);
+  };
+
+  const handleDriverStatusChange = (newStatus: string) => {
+    setDriverStatus(newStatus);
+    toast.success(`Driver status updated to ${newStatus}`);
   };
 
   // Generate additional locations based on delivery ID
@@ -422,6 +429,49 @@ export const OrderDetailsSheet = ({
                         Driver info
                       </h3>
                       <div className="rounded-md border bg-card/50 p-0">
+                        <div className="p-4 flex items-center justify-between border-b">
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium text-sm">Status:</span>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button variant="ghost" size="sm" className={cn(
+                                  driverStatus === "Available" ? "bg-green-100 text-green-800 hover:bg-green-200" : 
+                                  driverStatus === "Busy" ? "bg-orange-100 text-orange-800 hover:bg-orange-200" :
+                                  driverStatus === "On Break" ? "bg-amber-100 text-amber-800 hover:bg-amber-200" :
+                                  driverStatus === "Offline" ? "bg-gray-100 text-gray-800 hover:bg-gray-200" :
+                                  "bg-blue-100 text-blue-800 hover:bg-blue-200",
+                                  "rounded-md py-1 px-3 h-7 text-xs flex items-center gap-1"
+                                )}>
+                                {driverStatus}
+                                <ChevronDown className="h-3 w-3 ml-1" />
+                              </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-[150px] p-1">
+                                <div className="grid gap-1">
+                                  {driverStatuses.map(statusOption => (
+                                    <Button 
+                                      key={statusOption} 
+                                      variant="ghost" 
+                                      size="sm" 
+                                      className={cn(
+                                        "justify-start text-left font-normal", 
+                                        statusOption === driverStatus ? "bg-accent text-accent-foreground" : "",
+                                        statusOption === "Available" ? "text-green-800" : 
+                                        statusOption === "Busy" ? "text-orange-800" :
+                                        statusOption === "On Break" ? "text-amber-800" :
+                                        statusOption === "Offline" ? "text-gray-800" :
+                                        "text-blue-800"
+                                      )}
+                                      onClick={() => handleDriverStatusChange(statusOption)}
+                                    >
+                                      {statusOption}
+                                    </Button>
+                                  ))}
+                                </div>
+                              </PopoverContent>
+                            </Popover>
+                          </div>
+                        </div>
                         <Table>
                           <TableHeader>
                             <TableRow>
