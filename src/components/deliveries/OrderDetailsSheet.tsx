@@ -11,7 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { OrderMap } from "@/components/communication/OrderMap";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
@@ -180,8 +180,8 @@ export const OrderDetailsSheet = ({
             
             <div className="flex-1 overflow-hidden">
               <TabsContent value="order-info" className="m-0 h-full">
-                <ScrollArea className="h-[calc(100vh-220px)]">
-                  <div className="p-6 space-y-6 pb-36">
+                <ScrollArea className="h-[calc(100vh-170px)]">
+                  <div className="p-6 space-y-6">
                     <div>
                       <h3 className="text-sm font-medium mb-3 flex items-center">
                         <FileText className="w-4 h-4 mr-2" />
@@ -472,8 +472,8 @@ export const OrderDetailsSheet = ({
               </TabsContent>
               
               <TabsContent value="order-logs" className="m-0 h-full">
-                <ScrollArea className="h-[calc(100vh-220px)]">
-                  <div className="p-6 px-[23px] pt-0 pb-36">
+                <ScrollArea className="h-[calc(100vh-170px)]">
+                  <div className="p-6 px-[23px] pt-0">
                     <Tabs defaultValue="payment-transactions" value={activeLogTab} onValueChange={setActiveLogTab}>
                       <div className="sticky top-0 z-10 bg-background pt-1 pb-2 min-h-[90px]">
                         <TabsList className="flex flex-wrap bg-transparent p-0 py-3 gap-1 justify-start w-full overflow-visible my-0">
@@ -938,7 +938,6 @@ export const OrderDetailsSheet = ({
       {/* Map Dialog */}
       <Dialog open={isMapDialogOpen} onOpenChange={setIsMapDialogOpen}>
         <DialogContent className="sm:max-w-[90vw] w-full max-h-[90vh] p-0 bg-background">
-          <DialogTitle className="sr-only">Delivery Route Map</DialogTitle>
           <div className="p-4 h-full flex flex-col">
             <h2 className="text-xl font-semibold mb-2">Delivery Route</h2>
             <div className="flex-1 min-h-[500px] h-[calc(90vh-80px)] rounded-md overflow-hidden">
