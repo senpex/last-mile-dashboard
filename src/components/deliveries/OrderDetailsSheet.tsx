@@ -15,6 +15,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { OrderMap } from "@/components/communication/OrderMap";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
+import { Dictionary, DictionaryItem } from "@/types/dictionary";
 
 interface OrderDetailsSheetProps {
   isOpen: boolean;
@@ -32,7 +33,22 @@ export const OrderDetailsSheet = ({
   const [activeLogTab, setActiveLogTab] = useState<string>("payment-transactions");
   const [isMapDialogOpen, setIsMapDialogOpen] = useState(false);
   const [driverStatus, setDriverStatus] = useState<string>("Available");
+  const [emmaStatus, setEmmaStatus] = useState<string>("Online");
   const statuses: DeliveryStatus[] = ["Dropoff Complete", "Canceled By Customer", "Cancelled By Admin", "In Transit", "Picking Up", "Arrived For Pickup", "Scheduled Order", "Online", "Offline", "Busy", "Not approved", "Available", "On Break"];
+
+  // Create Order statuses dictionary
+  const orderStatusesDictionary: Dictionary = {
+    id: "order-statuses",
+    dic_name: "Order Statuses",
+    items: [
+      { id: "1", value: "Available", description: "Driver is available for new orders" },
+      { id: "2", value: "Busy", description: "Driver is currently handling orders" },
+      { id: "3", value: "On Break", description: "Driver is on a scheduled break" },
+      { id: "4", value: "Online", description: "Driver is actively connected to the system" },
+      { id: "5", value: "Offline", description: "Driver is not currently connected to the system" },
+      { id: "6", value: "Not approved", description: "Driver account is pending approval" }
+    ]
+  };
 
   // Add back the missing function
   const getStatusBadgeVariant = (status: string): string => {
@@ -91,6 +107,12 @@ export const OrderDetailsSheet = ({
   const handleDriverStatusChange = (newStatus: string) => {
     setDriverStatus(newStatus);
     toast.success(`Driver status updated to ${newStatus}`);
+  };
+
+  // Add function to handle Emma's status change
+  const handleEmmaStatusChange = (newStatus: string) => {
+    setEmmaStatus(newStatus);
+    toast.success(`Emma's status updated to ${newStatus}`);
   };
 
   // Generate additional locations based on delivery ID
@@ -474,6 +496,34 @@ export const OrderDetailsSheet = ({
                                     <DropdownMenuItem onClick={() => handleDriverStatusChange("On Break")}>On Break</DropdownMenuItem>
                                     <DropdownMenuItem onClick={() => handleDriverStatusChange("Offline")}>Offline</DropdownMenuItem>
                                     <DropdownMenuItem onClick={() => handleDriverStatusChange("Online")}>Online</DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell>Emma Patel</TableCell>
+                              <TableCell>$12.50</TableCell>
+                              <TableCell>$9.00</TableCell>
+                              <TableCell>$0.00</TableCell>
+                              <TableCell>$3.50</TableCell>
+                              <TableCell>
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button variant="outline" size="sm" className="h-6 text-xs px-2 flex items-center">
+                                      {emmaStatus}
+                                      <ChevronDown className="h-3 w-3 ml-1" />
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent className="z-50 bg-white">
+                                    {orderStatusesDictionary.items.map((item) => (
+                                      <DropdownMenuItem 
+                                        key={item.id} 
+                                        onClick={() => handleEmmaStatusChange(item.value)}
+                                        title={item.description}
+                                      >
+                                        {item.value}
+                                      </DropdownMenuItem>
+                                    ))}
                                   </DropdownMenuContent>
                                 </DropdownMenu>
                               </TableCell>
