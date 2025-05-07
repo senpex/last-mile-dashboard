@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { WorkingDriverOrderView } from "./order-views/WorkingDriverOrderView";
 import { CustomerOrderView } from "./order-views/CustomerOrderView";
 import { StatusBadge } from "./order-views/StatusBadge";
+
 interface OrderDetailsProps {
   orderData: {
     id: string;
@@ -133,7 +134,7 @@ Contact recipient before delivery at provided number`;
               </h2>
               {repeatedOrders.map((order, index) => {
               const isExpanded = expandedOrderId === order.id;
-              return <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out">
+              return <div key={order.id} className="order-card rounded-lg transition-all duration-200 ease-in-out mb-2">
                     <div className="flex justify-between items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
                       <h3 className="font-medium text-xs text-foreground/90">Order #{order.id}</h3>
                       <Button variant="ghost" size="sm" onClick={() => setExpandedOrderId(isExpanded ? null : order.id)} className="h-6 w-6 p-0">
