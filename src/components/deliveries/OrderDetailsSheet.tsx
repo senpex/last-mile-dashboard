@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -181,7 +182,8 @@ export const OrderDetailsSheet = ({
             <div className="flex-1 overflow-hidden">
               <TabsContent value="order-info" className="m-0 h-full">
                 <ScrollArea className="h-[calc(100vh-220px)]">
-                  <div className="p-6 space-y-6 pb-36">
+                  <div className="p-6 space-y-6 pb-24">
+                    {/* Adjusted padding-bottom to accommodate the control panel */}
                     <div>
                       <h3 className="text-sm font-medium mb-3 flex items-center">
                         <FileText className="w-4 h-4 mr-2" />
@@ -473,7 +475,8 @@ export const OrderDetailsSheet = ({
               
               <TabsContent value="order-logs" className="m-0 h-full">
                 <ScrollArea className="h-[calc(100vh-220px)]">
-                  <div className="p-6 px-[23px] pt-0 pb-36">
+                  <div className="p-6 px-[23px] pt-0 pb-24">
+                    {/* Adjusted padding-bottom to accommodate the control panel */}
                     <Tabs defaultValue="payment-transactions" value={activeLogTab} onValueChange={setActiveLogTab}>
                       <div className="sticky top-0 z-10 bg-background pt-1 pb-2 min-h-[90px]">
                         <TabsList className="flex flex-wrap bg-transparent p-0 py-3 gap-1 justify-start w-full overflow-visible my-0">
@@ -693,7 +696,7 @@ export const OrderDetailsSheet = ({
         
         {/* Control Panel Section - Fixed at bottom */}
         <div className="border-t bg-gray-50 p-4 mt-auto">
-          <div className="mb-3">
+          <div className="mb-0">
             <h3 className="text-sm font-medium mb-2">Control Panel</h3>
             <Separator className="mb-3" />
             
@@ -938,10 +941,9 @@ export const OrderDetailsSheet = ({
       {/* Map Dialog */}
       <Dialog open={isMapDialogOpen} onOpenChange={setIsMapDialogOpen}>
         <DialogContent className="sm:max-w-[90vw] w-full max-h-[90vh] p-0 bg-background">
-          <DialogTitle className="sr-only">Delivery Route Map</DialogTitle>
+          <DialogTitle className="p-4 border-b">Delivery Route Map</DialogTitle>
           <div className="p-4 h-full flex flex-col">
-            <h2 className="text-xl font-semibold mb-2">Delivery Route</h2>
-            <div className="flex-1 min-h-[500px] h-[calc(90vh-80px)] rounded-md overflow-hidden">
+            <div className="flex-1 min-h-[500px] h-[calc(90vh-120px)] rounded-md overflow-hidden">
               {delivery.pickupLocation?.address && delivery.dropoffLocation?.address && <OrderMap pickupAddress={delivery.pickupLocation.address} deliveryAddress={delivery.dropoffLocation.address} driverName={delivery.courier || "Driver"} />}
             </div>
           </div>
