@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Truck, ChevronDown } from "lucide-react";
+import { Truck, ChevronDown, Edit, Trash2 } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
@@ -45,6 +45,14 @@ export const DriverInfoTable = ({
     setCurrentDriverStatus(newStatus);
     toast.success(`Driver status updated to ${newStatus}`);
   };
+  
+  const handleEditDriver = (driverName: string) => {
+    toast.info(`Editing driver: ${driverName}`);
+  };
+  
+  const handleDeleteDriver = (driverName: string) => {
+    toast.warning(`Deleting driver: ${driverName}`);
+  };
 
   return (
     <div>
@@ -62,6 +70,7 @@ export const DriverInfoTable = ({
               <TableHead>Extra Service Fee</TableHead>
               <TableHead>Tip</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -100,6 +109,26 @@ export const DriverInfoTable = ({
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
+              <TableCell>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="h-6 text-xs px-2 flex items-center">
+                      Action
+                      <ChevronDown className="h-3 w-3 ml-1" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="z-50 bg-white">
+                    <DropdownMenuItem onClick={() => handleEditDriver(driverName)} className="flex items-center gap-2">
+                      <Edit className="h-3.5 w-3.5" />
+                      Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleDeleteDriver(driverName)} className="flex items-center gap-2 text-red-500">
+                      <Trash2 className="h-3.5 w-3.5" />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Sarah Davis</TableCell>
@@ -133,6 +162,26 @@ export const DriverInfoTable = ({
                         {item.value}
                       </DropdownMenuItem>
                     ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </TableCell>
+              <TableCell>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="h-6 text-xs px-2 flex items-center">
+                      Action
+                      <ChevronDown className="h-3 w-3 ml-1" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="z-50 bg-white">
+                    <DropdownMenuItem onClick={() => handleEditDriver("Sarah Davis")} className="flex items-center gap-2">
+                      <Edit className="h-3.5 w-3.5" />
+                      Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleDeleteDriver("Sarah Davis")} className="flex items-center gap-2 text-red-500">
+                      <Trash2 className="h-3.5 w-3.5" />
+                      Delete
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
