@@ -1,11 +1,12 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Truck, ChevronDown } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import { Dictionary } from "@/types/dictionary";
+import { getDictionary } from "@/lib/storage";
 
 interface DriverInfoTableProps {
   customerName: string;
@@ -26,6 +27,19 @@ export const DriverInfoTable = ({
   driverStatus,
   orderStatusesDictionary
 }: DriverInfoTableProps) => {
+  const [pickupStatusesDictionary, setPickupStatusesDictionary] = useState<Dictionary | null>(null);
+
+  useEffect(() => {
+    // Load the dictionary 1401 for pickup statuses
+    const dictionary = getDictionary("1401");
+    if (dictionary) {
+      setPickupStatusesDictionary(dictionary);
+      console.log("Loaded pickup status dictionary:", dictionary);
+    } else {
+      console.warn("Dictionary with ID 1401 not found");
+    }
+  }, []);
+
   const handleDriverStatusChange = (newStatus: string) => {
     toast.success(`Driver status updated to ${newStatus}`);
   };
@@ -64,7 +78,15 @@ export const DriverInfoTable = ({
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="z-50 bg-white">
-                    {orderStatusesDictionary.items.map((item) => (
+                    {pickupStatusesDictionary?.items.map((item) => (
+                      <DropdownMenuItem 
+                        key={item.id} 
+                        onClick={() => handleDriverStatusChange(item.value)}
+                        title={item.description}
+                      >
+                        {item.value}
+                      </DropdownMenuItem>
+                    )) || orderStatusesDictionary.items.map((item) => (
                       <DropdownMenuItem 
                         key={item.id} 
                         onClick={() => handleDriverStatusChange(item.value)}
@@ -92,7 +114,15 @@ export const DriverInfoTable = ({
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="z-50 bg-white">
-                    {orderStatusesDictionary.items.map((item) => (
+                    {pickupStatusesDictionary?.items.map((item) => (
+                      <DropdownMenuItem 
+                        key={item.id} 
+                        onClick={() => handleDriverStatusChange(item.value)}
+                        title={item.description}
+                      >
+                        {item.value}
+                      </DropdownMenuItem>
+                    )) || orderStatusesDictionary.items.map((item) => (
                       <DropdownMenuItem 
                         key={item.id} 
                         onClick={() => handleDriverStatusChange(item.value)}
