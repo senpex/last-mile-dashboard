@@ -141,11 +141,9 @@ export const OrderDetailsSheet = ({
   };
   const additionalLocations = getAdditionalLocations();
   const hasAdditionalLocations = additionalLocations.length > 0;
-  
-  return (
-    <Sheet open={isOpen} onOpenChange={open => {
-      if (!open) onClose();
-    }}>
+  return <Sheet open={isOpen} onOpenChange={open => {
+    if (!open) onClose();
+  }}>
       <SheetContent className="sm:max-w-xl md:max-w-4xl lg:max-w-6xl w-full overflow-hidden p-0 pr-0 mr-0 flex flex-col">
         {/* Main Content with Flex Structure - ReOrdered to show content first, then fixed controls */}
         <div className="flex-1 overflow-hidden flex flex-col">
@@ -162,17 +160,9 @@ export const OrderDetailsSheet = ({
                   </PopoverTrigger>
                   <PopoverContent className="w-[200px] p-1 bg-popover">
                     <div className="grid gap-1">
-                      {statuses.map(statusOption => (
-                        <Button 
-                          key={statusOption} 
-                          variant="ghost" 
-                          size="sm" 
-                          className={cn("justify-start text-left font-normal", statusOption === status ? "bg-accent text-accent-foreground" : "", getStatusColor(statusOption))} 
-                          onClick={() => handleStatusChange(statusOption)}
-                        >
+                      {statuses.map(statusOption => <Button key={statusOption} variant="ghost" size="sm" className={cn("justify-start text-left font-normal", statusOption === status ? "bg-accent text-accent-foreground" : "", getStatusColor(statusOption))} onClick={() => handleStatusChange(statusOption)}>
                           {statusOption}
-                        </Button>
-                      ))}
+                        </Button>)}
                     </div>
                   </PopoverContent>
                 </Popover>
@@ -192,7 +182,7 @@ export const OrderDetailsSheet = ({
             <div className="flex-1 overflow-hidden">
               <TabsContent value="order-info" className="m-0 h-full">
                 <ScrollArea className="h-[calc(100vh-170px)]">
-                  <div className="p-6 space-y-6 pb-24">
+                  <div className="p-6 space-y-6">
                     <div>
                       <h3 className="text-sm font-medium mb-3 flex items-center">
                         <FileText className="w-4 h-4 mr-2" />
@@ -271,8 +261,7 @@ export const OrderDetailsSheet = ({
                               </TableCell>
                             </TableRow>
                             
-                            {hasAdditionalLocations && additionalLocations.map((location, index) => (
-                              <TableRow key={index}>
+                            {hasAdditionalLocations && additionalLocations.map((location, index) => <TableRow key={index}>
                                 <TableCell>
                                   <p className="text-sm font-medium">{location.name}</p>
                                   <p className="text-xs text-muted-foreground">{location.address}</p>
@@ -309,8 +298,7 @@ export const OrderDetailsSheet = ({
                                     Delete
                                   </Button>
                                 </TableCell>
-                              </TableRow>
-                            ))}
+                              </TableRow>)}
                             
                             <TableRow>
                               <TableCell>
@@ -414,8 +402,7 @@ export const OrderDetailsSheet = ({
                       </div>
                     </div>
                     
-                    {delivery.courier && (
-                      <div>
+                    {delivery.courier && <div>
                         <h3 className="text-sm font-medium mb-3 flex items-center">
                           <Truck className="w-4 h-4 mr-2" />
                           Courier info
@@ -427,8 +414,7 @@ export const OrderDetailsSheet = ({
                             Contact Courier
                           </Button>
                         </div>
-                      </div>
-                    )}
+                      </div>}
                     
                     <div>
                       <h3 className="text-sm font-medium mb-3 flex items-center">
@@ -488,7 +474,7 @@ export const OrderDetailsSheet = ({
               
               <TabsContent value="order-logs" className="m-0 h-full">
                 <ScrollArea className="h-[calc(100vh-170px)]">
-                  <div className="p-6 px-[23px] pt-0 pb-24">
+                  <div className="p-6 px-[23px] pt-0">
                     <Tabs defaultValue="payment-transactions" value={activeLogTab} onValueChange={setActiveLogTab}>
                       <div className="sticky top-0 z-10 bg-background pt-1 pb-2 min-h-[90px]">
                         <TabsList className="flex flex-wrap bg-transparent p-0 py-3 gap-1 justify-start w-full overflow-visible my-0">
@@ -638,24 +624,34 @@ export const OrderDetailsSheet = ({
                             <div className="space-y-3">
                               <div className="bg-muted rounded-lg p-2">
                                 <div className="flex justify-between mb-1">
-                                  <span className="text-sm font-medium">Courier</span>
-                                  <span className="text-xs text-muted-foreground">10:25 AM</span>
+                                  <span className="text-xs font-medium">Driver</span>
+                                  <span className="text-xs text-muted-foreground">10:20 AM</span>
                                 </div>
-                                <p className="text-xs">Hi, I'm at the pickup location now.</p>
+                                <p className="text-sm">I've arrived at the pickup location.</p>
                               </div>
-                              <div className="bg-primary/10 rounded-lg p-2 ml-8">
+                              
+                              <div className="bg-primary/10 rounded-lg p-2 ml-4">
                                 <div className="flex justify-between mb-1">
-                                  <span className="text-sm font-medium">Customer</span>
-                                  <span className="text-xs text-muted-foreground">10:26 AM</span>
+                                  <span className="text-xs font-medium">Customer</span>
+                                  <span className="text-xs text-muted-foreground">10:22 AM</span>
                                 </div>
-                                <p className="text-xs">Great! They're expecting you.</p>
+                                <p className="text-sm">Great! I'll be down in 2 minutes.</p>
                               </div>
+                              
                               <div className="bg-muted rounded-lg p-2">
                                 <div className="flex justify-between mb-1">
-                                  <span className="text-sm font-medium">Courier</span>
-                                  <span className="text-xs text-muted-foreground">10:45 AM</span>
+                                  <span className="text-xs font-medium">Driver</span>
+                                  <span className="text-xs text-muted-foreground">10:55 AM</span>
                                 </div>
-                                <p className="text-xs">Package picked up, on my way to deliver it.</p>
+                                <p className="text-sm">I'm at the dropoff location now.</p>
+                              </div>
+                              
+                              <div className="bg-primary/10 rounded-lg p-2 ml-4">
+                                <div className="flex justify-between mb-1">
+                                  <span className="text-xs font-medium">Customer</span>
+                                  <span className="text-xs text-muted-foreground">10:56 AM</span>
+                                </div>
+                                <p className="text-sm">Perfect timing! I'll meet you at the lobby.</p>
                               </div>
                             </div>
                           </div>
@@ -664,33 +660,25 @@ export const OrderDetailsSheet = ({
                         <TabsContent value="status-change-log" className="space-y-4">
                           <div className="rounded-md border bg-card/50 p-4">
                             <div className="space-y-2">
-                              <div className="flex justify-between items-center border-b pb-2">
-                                <div>
-                                  <p className="text-sm font-medium">Status changed to "Scheduled Order"</p>
-                                  <p className="text-xs text-muted-foreground">By System</p>
-                                </div>
-                                <p className="text-xs text-muted-foreground">Today, 9:30 AM</p>
+                              <div className="flex justify-between">
+                                <span className="text-sm">Order created</span>
+                                <span className="text-xs text-muted-foreground">Today, 9:30 AM</span>
                               </div>
-                              <div className="flex justify-between items-center border-b pb-2">
-                                <div>
-                                  <p className="text-sm font-medium">Status changed to "Arrived For Pickup"</p>
-                                  <p className="text-xs text-muted-foreground">By Driver</p>
-                                </div>
-                                <p className="text-xs text-muted-foreground">Today, 10:15 AM</p>
+                              <div className="flex justify-between">
+                                <span className="text-sm">Status updated to "Scheduled Order"</span>
+                                <span className="text-xs text-muted-foreground">Today, 9:35 AM</span>
                               </div>
-                              <div className="flex justify-between items-center border-b pb-2">
-                                <div>
-                                  <p className="text-sm font-medium">Status changed to "In Transit"</p>
-                                  <p className="text-xs text-muted-foreground">By Driver</p>
-                                </div>
-                                <p className="text-xs text-muted-foreground">Today, 10:30 AM</p>
+                              <div className="flex justify-between">
+                                <span className="text-sm">Status updated to "Picking Up"</span>
+                                <span className="text-xs text-muted-foreground">Today, 10:15 AM</span>
                               </div>
-                              <div className="flex justify-between items-center">
-                                <div>
-                                  <p className="text-sm font-medium">Status changed to "Dropoff Complete"</p>
-                                  <p className="text-xs text-muted-foreground">By Driver</p>
-                                </div>
-                                <p className="text-xs text-muted-foreground">Today, 11:05 AM</p>
+                              <div className="flex justify-between">
+                                <span className="text-sm">Status updated to "In Transit"</span>
+                                <span className="text-xs text-muted-foreground">Today, 10:30 AM</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-sm">Status updated to "Dropoff Complete"</span>
+                                <span className="text-xs text-muted-foreground">Today, 11:05 AM</span>
                               </div>
                             </div>
                           </div>
@@ -702,78 +690,263 @@ export const OrderDetailsSheet = ({
               </TabsContent>
             </div>
           </Tabs>
-          
-          {/* Fixed action bar at bottom */}
-          <div className="fixed bottom-0 left-0 right-0 bg-background border-t shadow-md p-4 z-20 flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="h-9" onClick={onClose}>
-                Close
-              </Button>
-              <Button variant="outline" size="sm" className="h-9">
-                <MessageSquare className="w-4 h-4 mr-2" />
-                Message
-              </Button>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="h-9">
-                <Edit className="w-4 h-4 mr-2" />
-                Edit Order
-              </Button>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-9">
-                    <Settings className="w-4 h-4 mr-2" />
-                    More Actions
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem>
-                    <RefreshCw className="w-4 h-4 mr-2" />
-                    Reassign Driver
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Timer className="w-4 h-4 mr-2" />
-                    Reschedule
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Bell className="w-4 h-4 mr-2" />
-                    Send Notification
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-destructive">
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Cancel Order
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <Button size="sm" className="h-9">
-                <Save className="w-4 h-4 mr-2" />
-                Save Changes
-              </Button>
+        </div>
+        
+        {/* Control Panel Section - Fixed at bottom */}
+        <div className="border-t bg-gray-50 p-4 mt-auto">
+          <div className="mb-3">
+            <h3 className="text-sm font-medium mb-2">Control Panel</h3>
+            <Separator className="mb-3" />
+            
+            <div className="grid grid-cols-1 gap-3">
+              {/* Dropdowns Section */}
+              <div className="grid grid-cols-11 gap-2 mb-3">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Status <ChevronDown className="h-3 w-3 ml-1" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-48">
+                    <DropdownMenuLabel>Change Status</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    {statuses.map(statusOption => (
+                      <DropdownMenuItem key={statusOption} onClick={() => handleStatusChange(statusOption)}>
+                        {statusOption}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Driver <ChevronDown className="h-3 w-3 ml-1" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-48">
+                    <DropdownMenuLabel>Assign Driver</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>John Smith</DropdownMenuItem>
+                    <DropdownMenuItem>Mary Johnson</DropdownMenuItem>
+                    <DropdownMenuItem>Robert Lee</DropdownMenuItem>
+                    <DropdownMenuItem>Susan Williams</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Priority <ChevronDown className="h-3 w-3 ml-1" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-48">
+                    <DropdownMenuItem>High</DropdownMenuItem>
+                    <DropdownMenuItem>Medium</DropdownMenuItem>
+                    <DropdownMenuItem>Low</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Vehicle <ChevronDown className="h-3 w-3 ml-1" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-48">
+                    <DropdownMenuItem>Car</DropdownMenuItem>
+                    <DropdownMenuItem>Van</DropdownMenuItem>
+                    <DropdownMenuItem>Bike</DropdownMenuItem>
+                    <DropdownMenuItem>Truck</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Payment <ChevronDown className="h-3 w-3 ml-1" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-48">
+                    <DropdownMenuItem>Process Payment</DropdownMenuItem>
+                    <DropdownMenuItem>Issue Refund</DropdownMenuItem>
+                    <DropdownMenuItem>Add Charge</DropdownMenuItem>
+                    <DropdownMenuItem>Apply Discount</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Template <ChevronDown className="h-3 w-3 ml-1" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-48">
+                    <DropdownMenuItem>Email Template</DropdownMenuItem>
+                    <DropdownMenuItem>SMS Template</DropdownMenuItem>
+                    <DropdownMenuItem>Invoice Template</DropdownMenuItem>
+                    <DropdownMenuItem>Label Template</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Labels <ChevronDown className="h-3 w-3 ml-1" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-48">
+                    <DropdownMenuItem>Fragile</DropdownMenuItem>
+                    <DropdownMenuItem>VIP</DropdownMenuItem>
+                    <DropdownMenuItem>Urgent</DropdownMenuItem>
+                    <DropdownMenuItem>Express</DropdownMenuItem>
+                    <DropdownMenuItem>Custom Label</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Route <ChevronDown className="h-3 w-3 ml-1" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-48">
+                    <DropdownMenuItem>Optimize Route</DropdownMenuItem>
+                    <DropdownMenuItem>Add Waypoint</DropdownMenuItem>
+                    <DropdownMenuItem>Edit Route</DropdownMenuItem>
+                    <DropdownMenuItem>View Alternatives</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Contact <ChevronDown className="h-3 w-3 ml-1" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-48">
+                    <DropdownMenuItem>Email Customer</DropdownMenuItem>
+                    <DropdownMenuItem>Call Customer</DropdownMenuItem>
+                    <DropdownMenuItem>Text Driver</DropdownMenuItem>
+                    <DropdownMenuItem>Call Driver</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Documents <ChevronDown className="h-3 w-3 ml-1" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-48">
+                    <DropdownMenuItem>Generate Invoice</DropdownMenuItem>
+                    <DropdownMenuItem>Create Receipt</DropdownMenuItem>
+                    <DropdownMenuItem>Print Waybill</DropdownMenuItem>
+                    <DropdownMenuItem>Print Package Labels</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Reports <ChevronDown className="h-3 w-3 ml-1" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-48">
+                    <DropdownMenuItem>Order Summary</DropdownMenuItem>
+                    <DropdownMenuItem>Financial Report</DropdownMenuItem>
+                    <DropdownMenuItem>Timeline Report</DropdownMenuItem>
+                    <DropdownMenuItem>Performance Stats</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              
+              {/* Button Section */}
+              <div className="grid grid-cols-8 sm:grid-cols-9 gap-2">
+                <Button size="sm" className="flex items-center gap-1">
+                  <Save className="h-4 w-4" /> Save
+                </Button>
+                
+                <Button size="sm" variant="destructive" className="flex items-center gap-1">
+                  <Trash2 className="h-4 w-4" /> Delete
+                </Button>
+                
+                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                  <Edit className="h-4 w-4" /> Edit
+                </Button>
+                
+                <Button size="sm" variant="secondary" className="flex items-center gap-1">
+                  <Send className="h-4 w-4" /> Send
+                </Button>
+                
+                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                  <Printer className="h-4 w-4" /> Print
+                </Button>
+                
+                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                  <Timer className="h-4 w-4" /> Reschedule
+                </Button>
+                
+                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                  <Bell className="h-4 w-4" /> Notify
+                </Button>
+                
+                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                  <RefreshCw className="h-4 w-4" /> Refresh
+                </Button>
+                
+                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                  <Plus className="h-4 w-4" /> New Task
+                </Button>
+                
+                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                  <Flag className="h-4 w-4" /> Flag
+                </Button>
+                
+                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                  <Share className="h-4 w-4" /> Share
+                </Button>
+                
+                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                  <Download className="h-4 w-4" /> Export
+                </Button>
+                
+                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                  <CheckCircle className="h-4 w-4" /> Approve
+                </Button>
+                
+                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                  <Filter className="h-4 w-4" /> Filter
+                </Button>
+                
+                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                  <Settings className="h-4 w-4" /> Settings
+                </Button>
+                
+                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                  <Search className="h-4 w-4" /> Search
+                </Button>
+                
+                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                  <BarChart className="h-4 w-4" /> Analytics
+                </Button>
+              </div>
             </div>
           </div>
         </div>
-        
-        {/* Map Dialog */}
-        <Dialog open={isMapDialogOpen} onOpenChange={setIsMapDialogOpen}>
-          <DialogContent className="sm:max-w-[800px] h-[600px] p-0">
-            <OrderMap 
-              pickupLocation={{
-                name: delivery.pickupLocation.name,
-                address: delivery.pickupLocation.address,
-                lat: 37.7749,
-                lng: -122.4194
-              }}
-              dropoffLocation={{
-                name: delivery.dropoffLocation.name,
-                address: delivery.dropoffLocation.address,
-                lat: 37.7849,
-                lng: -122.4294
-              }}
-            />
-          </DialogContent>
-        </Dialog>
       </SheetContent>
-    </Sheet>
-  );
+
+      {/* Map Dialog */}
+      <Dialog open={isMapDialogOpen} onOpenChange={setIsMapDialogOpen}>
+        <DialogContent className="sm:max-w-[90vw] w-full max-h-[90vh] p-0 bg-background">
+          <div className="p-4 h-full flex flex-col">
+            <h2 className="text-xl font-semibold mb-2">Delivery Route</h2>
+            <div className="flex-1 min-h-[500px] h-[calc(90vh-80px)] rounded-md overflow-hidden">
+              {delivery.pickupLocation?.address && delivery.dropoffLocation?.address && <OrderMap pickupAddress={delivery.pickupLocation.address} deliveryAddress={delivery.dropoffLocation.address} driverName={delivery.courier || "Driver"} />}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </Sheet>;
 };
+
