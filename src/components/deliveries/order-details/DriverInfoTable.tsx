@@ -24,10 +24,11 @@ export const DriverInfoTable = ({
   price,
   tip,
   couriersEarnings,
-  driverStatus,
+  driverStatus: initialDriverStatus,
   orderStatusesDictionary
 }: DriverInfoTableProps) => {
   const [pickupStatusesDictionary, setPickupStatusesDictionary] = useState<Dictionary | null>(null);
+  const [currentDriverStatus, setCurrentDriverStatus] = useState("Courier selected");
 
   useEffect(() => {
     // Load the dictionary 1401 for pickup statuses
@@ -41,6 +42,7 @@ export const DriverInfoTable = ({
   }, []);
 
   const handleDriverStatusChange = (newStatus: string) => {
+    setCurrentDriverStatus(newStatus);
     toast.success(`Driver status updated to ${newStatus}`);
   };
 
@@ -73,7 +75,7 @@ export const DriverInfoTable = ({
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="sm" className="h-6 text-xs px-2 flex items-center">
-                      {driverStatus}
+                      {currentDriverStatus}
                       <ChevronDown className="h-3 w-3 ml-1" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -109,7 +111,7 @@ export const DriverInfoTable = ({
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="sm" className="h-6 text-xs px-2 flex items-center">
-                      Online
+                      {currentDriverStatus}
                       <ChevronDown className="h-3 w-3 ml-1" />
                     </Button>
                   </DropdownMenuTrigger>
