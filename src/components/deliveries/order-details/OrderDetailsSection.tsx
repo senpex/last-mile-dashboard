@@ -13,11 +13,11 @@ export const OrderDetailsSection = ({ organization, distance }: OrderDetailsSect
   // Example requirements - in a real app, these would come from props
   const orderRequirements = [
     { id: 1, name: "Alcohol delivery license", active: true },
-    { id: 2, name: "Hazmat delivery license", active: false },
+    { id: 2, name: "Hazmat delivery license", active: true },
     { id: 3, name: "Pharmacy delivery license", active: true },
     { id: 4, name: "Recipient verification code", active: true },
     { id: 5, name: "Proof of delivery", active: true },
-    { id: 6, name: "Signature from recipient", active: false },
+    { id: 6, name: "Signature from recipient", active: true },
     { id: 7, name: "Items to be scanned at the pick-up and drop-offs", active: true }
   ];
 
@@ -50,16 +50,10 @@ export const OrderDetailsSection = ({ organization, distance }: OrderDetailsSect
             {orderRequirements.map((req) => (
               <div 
                 key={req.id} 
-                className={`flex items-center p-2 rounded-md border ${
-                  req.active ? 'bg-secondary/30 border-primary' : 'bg-muted/10 border-muted/30'
-                } transition-colors`}
+                className={`flex items-center p-2 rounded-md border bg-secondary/30 border-primary transition-colors`}
               >
-                {req.active ? (
-                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mr-2" />
-                ) : (
-                  <AlertTriangle className="h-4 w-4 text-muted-foreground shrink-0 mr-2" />
-                )}
-                <span className={`text-xs ${req.active ? 'font-medium' : 'text-muted-foreground'}`}>
+                <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mr-2" />
+                <span className="text-xs font-medium">
                   {req.name}
                 </span>
               </div>
