@@ -1,12 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
-import { Truck, ChevronDown, Edit, Trash2, Plus } from "lucide-react";
+import { Truck, ChevronDown, Edit, Trash2, Plus, Save } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import { Dictionary } from "@/types/dictionary";
 import { getDictionary } from "@/lib/storage";
+import { Input } from "@/components/ui/input";
 
 interface DriverInfoTableProps {
   customerName: string;
@@ -38,6 +39,7 @@ export const DriverInfoTable = ({
 }: DriverInfoTableProps) => {
   const [pickupStatusesDictionary, setPickupStatusesDictionary] = useState<Dictionary | null>(null);
   const [currentDriverStatus, setCurrentDriverStatus] = useState("Courier selected");
+  const [editingDriverIndex, setEditingDriverIndex] = useState<number | null>(null);
   const [drivers, setDrivers] = useState<DriverInfo[]>([
     {
       name: driverName,
@@ -56,6 +58,9 @@ export const DriverInfoTable = ({
       status: "Courier selected"
     }
   ]);
+
+  // Create a temporary state for edited values
+  const [editedDriver, setEditedDriver] = useState<DriverInfo | null>(null);
 
   useEffect(() => {
     // Load the dictionary 1401 for pickup statuses
@@ -76,8 +81,21 @@ export const DriverInfoTable = ({
     toast.success(`Driver status updated to ${newStatus}`);
   };
   
-  const handleEditDriver = (driverName: string) => {
+  const handleEditDriver = (driverName: string, index: number) => {
+    setEditingDriverIndex(index);
+    setEditedDriver({...drivers[index]});
     toast.info(`Editing driver: ${driverName}`);
+  };
+
+  const handleSaveDriver = (index: number) => {
+    if (editedDriver) {
+      const updatedDrivers = [...drivers];
+      updatedDrivers[index] = editedDriver;
+      setDrivers(updatedDrivers);
+      setEditingDriverIndex(null);
+      setEditedDriver(null);
+      toast.success(`Driver ${editedDriver.name} information saved`);
+    }
   };
   
   const handleDeleteDriver = (driverName: string, index: number) => {
@@ -99,6 +117,15 @@ export const DriverInfoTable = ({
     
     setDrivers([...drivers, newHelper]);
     toast.success("Adding new helper driver");
+  };
+
+  const handleInputChange = (field: keyof DriverInfo, value: string) => {
+    if (editedDriver) {
+      setEditedDriver({
+        ...editedDriver,
+        [field]: value
+      });
+    }
   };
 
   return (
@@ -135,10 +162,50 @@ export const DriverInfoTable = ({
             {drivers.map((driver, index) => (
               <TableRow key={index}>
                 <TableCell>{driver.name}</TableCell>
-                <TableCell>{driver.earnings}</TableCell>
-                <TableCell>{driver.deliveryFee}</TableCell>
-                <TableCell>{driver.extraServiceFee}</TableCell>
-                <TableCell>{driver.tip}</TableCell>
+                <TableCell>
+                  {editingDriverIndex === index ? (
+                    <Input 
+                      value={editedDriver?.earnings || ""} 
+                      onChange={(e) => handleInputChange('earnings', e.target.value)}
+                      className="h-8 w-20"
+                    />
+                  ) : (
+                    driver.earnings
+                  )}
+                </TableCell>
+                <TableCell>
+                  {editingDriverIndex === index ? (
+                    <Input 
+                      value={editedDriver?.deliveryFee || ""} 
+                      onChange={(e) => handleInputChange('deliveryFee', e.target.value)}
+                      className="h-8 w-20"
+                    />
+                  ) : (
+                    driver.deliveryFee
+                  )}
+                </TableCell>
+                <TableCell>
+                  {editingDriverIndex === index ? (
+                    <Input 
+                      value={editedDriver?.extraServiceFee || ""} 
+                      onChange={(e) => handleInputChange('extraServiceFee', e.target.value)}
+                      className="h-8 w-20"
+                    />
+                  ) : (
+                    driver.extraServiceFee
+                  )}
+                </TableCell>
+                <TableCell>
+                  {editingDriverIndex === index ? (
+                    <Input 
+                      value={editedDriver?.tip || ""} 
+                      onChange={(e) => handleInputChange('tip', e.target.value)}
+                      className="h-8 w-20"
+                    />
+                  ) : (
+                    driver.tip
+                  )}
+                </TableCell>
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -169,24 +236,36 @@ export const DriverInfoTable = ({
                   </DropdownMenu>
                 </TableCell>
                 <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="sm" className="h-6 text-xs px-2 flex items-center">
-                        Action
-                        <ChevronDown className="h-3 w-3 ml-1" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="z-50 bg-white">
-                      <DropdownMenuItem onClick={() => handleEditDriver(driver.name)} className="flex items-center gap-2">
-                        <Edit className="h-3.5 w-3.5" />
-                        Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleDeleteDriver(driver.name, index)} className="flex items-center gap-2 text-red-500">
-                        <Trash2 className="h-3.5 w-3.5" />
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  {editingDriverIndex === index ? (
+                    <Button 
+                      variant="destructive" 
+                      size="sm" 
+                      className="h-6 text-xs px-2 flex items-center"
+                      onClick={() => handleSaveDriver(index)}
+                    >
+                      <Save className="h-3.5 w-3.5 mr-1" />
+                      Save
+                    </Button>
+                  ) : (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="sm" className="h-6 text-xs px-2 flex items-center">
+                          Action
+                          <ChevronDown className="h-3 w-3 ml-1" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="z-50 bg-white">
+                        <DropdownMenuItem onClick={() => handleEditDriver(driver.name, index)} className="flex items-center gap-2">
+                          <Edit className="h-3.5 w-3.5" />
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDeleteDriver(driver.name, index)} className="flex items-center gap-2 text-red-500">
+                          <Trash2 className="h-3.5 w-3.5" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
