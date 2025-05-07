@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -144,33 +145,34 @@ export const OrderDetailsSheet = ({
     if (!open) onClose();
   }}>
       <SheetContent className="sm:max-w-xl md:max-w-4xl lg:max-w-6xl w-full overflow-hidden p-0 pr-0 mr-0 flex flex-col">
-        <SheetHeader className="p-6 pb-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <SheetTitle className="text-left text-lg">Order #{delivery.packageId}</SheetTitle>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="ghost" className={cn(status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-200" : "", getStatusBadgeVariant(status) === "destructive" ? "bg-red-100 text-red-800 hover:bg-red-200" : "", getStatusBadgeVariant(status) === "warning" ? "bg-amber-100 text-amber-800 hover:bg-amber-200" : "", getStatusBadgeVariant(status) === "default" ? "bg-blue-100 text-blue-800 hover:bg-blue-200" : "", getStatusBadgeVariant(status) === "outline" ? "bg-gray-100 text-gray-800 hover:bg-gray-200" : "", "rounded-md flex items-center gap-1 py-1 px-3 h-7 justify-between font-medium")}>
-                    {status}
-                    <ChevronDown className="h-3 w-3 ml-1" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-1 bg-popover">
-                  <div className="grid gap-1">
-                    {statuses.map(statusOption => <Button key={statusOption} variant="ghost" size="sm" className={cn("justify-start text-left font-normal", statusOption === status ? "bg-accent text-accent-foreground" : "", getStatusColor(statusOption))} onClick={() => handleStatusChange(statusOption)}>
-                        {statusOption}
-                      </Button>)}
-                  </div>
-                </PopoverContent>
-              </Popover>
-            </div>
-          </div>
-          <SheetDescription className="text-left text-sm">
-            May 6-Food pickup@11:18 AM Delivery time 11:45 AM [5K1-6U4] NORMAL
-          </SheetDescription>
-        </SheetHeader>
-        
+        {/* Main Content with Flex Structure - ReOrdered to show content first, then fixed controls */}
         <div className="flex-1 overflow-hidden flex flex-col">
+          <SheetHeader className="p-6 pb-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <SheetTitle className="text-left text-lg">Order #{delivery.packageId}</SheetTitle>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="ghost" className={cn(status === "Dropoff Complete" ? "bg-green-100 text-green-800 hover:bg-green-200" : "", getStatusBadgeVariant(status) === "destructive" ? "bg-red-100 text-red-800 hover:bg-red-200" : "", getStatusBadgeVariant(status) === "warning" ? "bg-amber-100 text-amber-800 hover:bg-amber-200" : "", getStatusBadgeVariant(status) === "default" ? "bg-blue-100 text-blue-800 hover:bg-blue-200" : "", getStatusBadgeVariant(status) === "outline" ? "bg-gray-100 text-gray-800 hover:bg-gray-200" : "", "rounded-md flex items-center gap-1 py-1 px-3 h-7 justify-between font-medium")}>
+                      {status}
+                      <ChevronDown className="h-3 w-3 ml-1" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-1 bg-popover">
+                    <div className="grid gap-1">
+                      {statuses.map(statusOption => <Button key={statusOption} variant="ghost" size="sm" className={cn("justify-start text-left font-normal", statusOption === status ? "bg-accent text-accent-foreground" : "", getStatusColor(statusOption))} onClick={() => handleStatusChange(statusOption)}>
+                          {statusOption}
+                        </Button>)}
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </div>
+            </div>
+            <SheetDescription className="text-left text-sm">
+              May 6-Food pickup@11:18 AM Delivery time 11:45 AM [5K1-6U4] NORMAL
+            </SheetDescription>
+          </SheetHeader>
+          
           <Tabs defaultValue="order-info" className="w-full" value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid grid-cols-2 mx-6 mb-2 mt-2 sticky top-0 z-10 bg-background">
               <TabsTrigger value="order-info">Order Info</TabsTrigger>
@@ -179,7 +181,7 @@ export const OrderDetailsSheet = ({
             
             <div className="flex-1 overflow-hidden">
               <TabsContent value="order-info" className="m-0 h-full">
-                <ScrollArea className="h-[calc(100vh-340px)]">
+                <ScrollArea className="h-[calc(100vh-170px)]">
                   <div className="p-6 space-y-6">
                     <div>
                       <h3 className="text-sm font-medium mb-3 flex items-center">
@@ -471,7 +473,7 @@ export const OrderDetailsSheet = ({
               </TabsContent>
               
               <TabsContent value="order-logs" className="m-0 h-full">
-                <ScrollArea className="h-[calc(100vh-340px)]">
+                <ScrollArea className="h-[calc(100vh-170px)]">
                   <div className="p-6 px-[23px] pt-0">
                     <Tabs defaultValue="payment-transactions" value={activeLogTab} onValueChange={setActiveLogTab}>
                       <div className="sticky top-0 z-10 bg-background pt-1 pb-2 min-h-[90px]">
@@ -690,8 +692,8 @@ export const OrderDetailsSheet = ({
           </Tabs>
         </div>
         
-        {/* Control Panel Section */}
-        <div className="border-t bg-gray-50 p-4">
+        {/* Control Panel Section - Fixed at bottom */}
+        <div className="border-t bg-gray-50 p-4 mt-auto">
           <div className="mb-3">
             <h3 className="text-sm font-medium mb-2">Control Panel</h3>
             <Separator className="mb-3" />
@@ -947,3 +949,4 @@ export const OrderDetailsSheet = ({
       </Dialog>
     </Sheet>;
 };
+
