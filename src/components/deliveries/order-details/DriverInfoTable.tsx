@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Truck, ChevronDown, Edit, Trash2 } from "lucide-react";
+import { Truck, ChevronDown, Edit, Trash2, Plus } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
@@ -54,11 +54,26 @@ export const DriverInfoTable = ({
     toast.warning(`Deleting driver: ${driverName}`);
   };
 
+  const handleAddHelper = () => {
+    toast.success("Adding new helper driver");
+  };
+
   return (
     <div>
-      <h3 className="text-sm font-medium mb-3 flex items-center">
-        <Truck className="w-4 h-4 mr-2" />
-        Driver info
+      <h3 className="text-sm font-medium mb-3 flex items-center justify-between">
+        <div className="flex items-center">
+          <Truck className="w-4 h-4 mr-2" />
+          Driver info
+        </div>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="h-7 text-xs flex items-center"
+          onClick={handleAddHelper}
+        >
+          <Plus className="mr-1 h-3.5 w-3.5" />
+          Add helper
+        </Button>
       </h3>
       <div className="rounded-md border bg-card/50 p-0">
         <Table>
