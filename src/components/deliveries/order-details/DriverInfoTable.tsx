@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Truck, ChevronDown, Edit, Trash2, Plus, Save } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -240,11 +239,11 @@ export const DriverInfoTable = ({
                     <Button 
                       variant="destructive" 
                       size="sm" 
-                      className="h-6 text-xs px-2 flex items-center"
+                      className="h-6 text-xs px-3 flex items-center justify-center gap-1.5"
                       onClick={() => handleSaveDriver(index)}
                     >
-                      <Save className="h-3.5 w-3.5 mr-1" />
-                      Save
+                      <Save className="h-3.5 w-3.5" />
+                      <span>Save</span>
                     </Button>
                   ) : (
                     <DropdownMenu>
