@@ -10,6 +10,13 @@ import { cn } from "@/lib/utils";
 import { WorkingDriverOrderView } from "./order-views/WorkingDriverOrderView";
 import { CustomerOrderView } from "./order-views/CustomerOrderView";
 import { StatusBadge } from "./order-views/StatusBadge";
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import { useToast } from "@/hooks/use-toast";
 
 interface OrderDetailsProps {
   orderData: {
@@ -40,6 +47,9 @@ export const OrderDetails = ({
   user
 }: OrderDetailsProps) => {
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
+  const { toast } = useToast();
+  const [driverStatus, setDriverStatus] = useState<string>("Available");
+  
   const orders = [{
     ...orderData,
     id: "909090"
@@ -76,7 +86,8 @@ export const OrderDetails = ({
     phone: "+1 (555) 234-5678",
     vehicle: "Cargo Van",
     rating: "4.8",
-    totalDeliveries: "1,234"
+    totalDeliveries: "1,234",
+    status: driverStatus
   };
   const isRepeatedOrder = (orderId: string) => repeatedOrders.some(order => order.id === orderId);
   const shouldShowDriverInfo = (orderId: string) => {
@@ -107,6 +118,15 @@ Package contents: 2 boxes of office supplies
 Special instructions: Delivery must be made during business hours (9 AM - 5 PM)
 Contact recipient before delivery at provided number`;
   };
+  
+  const handleStatusChange = (status: string) => {
+    setDriverStatus(status);
+    toast({
+      title: "Driver Status Updated",
+      description: `Status changed to ${status}`,
+    });
+  };
+
   const renderActiveOrders = () => {
     if (user?.role === 'driver' && user?.status === 'working') {
       return <>
@@ -122,6 +142,7 @@ Contact recipient before delivery at provided number`;
         </>;
     }
   };
+  
   return <div className="orders-panel flex flex-col h-full relative px-[14px] my-0">
       <div className="flex-1 min-h-0 flex flex-col justify-between">
         <div className="flex-1 min-h-0 flex flex-col">
@@ -172,6 +193,23 @@ Contact recipient before delivery at provided number`;
                                 <div className="text-xs text-muted-foreground">Vehicle: {driverInfo.vehicle}</div>
                                 <div className="text-xs text-muted-foreground">Rating: ⭐️ {driverInfo.rating}</div>
                                 <div className="text-xs text-muted-foreground">Deliveries: {driverInfo.totalDeliveries}</div>
+                                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                  Status: 
+                                  <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                      <Button variant="outline" size="sm" className="h-6 text-xs px-2">
+                                        {driverStatus}
+                                      </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent>
+                                      <DropdownMenuItem onClick={() => handleStatusChange("Available")}>Available</DropdownMenuItem>
+                                      <DropdownMenuItem onClick={() => handleStatusChange("Busy")}>Busy</DropdownMenuItem>
+                                      <DropdownMenuItem onClick={() => handleStatusChange("On Break")}>On Break</DropdownMenuItem>
+                                      <DropdownMenuItem onClick={() => handleStatusChange("Offline")}>Offline</DropdownMenuItem>
+                                      <DropdownMenuItem onClick={() => handleStatusChange("Online")}>Online</DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                  </DropdownMenu>
+                                </div>
                               </div>
                             </div> : <>
                               <div className="flex items-start gap-2">
