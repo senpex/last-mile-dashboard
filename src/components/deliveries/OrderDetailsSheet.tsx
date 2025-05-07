@@ -148,9 +148,9 @@ export const OrderDetailsSheet = ({
   const additionalLocations = getAdditionalLocations();
   const hasAdditionalLocations = additionalLocations.length > 0;
   
-  // Add names for the driver information table
+  // Driver names with professional courier names instead of "Bentonville Public Library"
   const customerName = delivery.customerName || "Jane Smith";
-  const driverName = delivery.courier || "Alex Rodriguez";
+  const driverName = delivery.courier || "Michael Torres";
   
   return <Sheet open={isOpen} onOpenChange={open => {
     if (!open) onClose();
