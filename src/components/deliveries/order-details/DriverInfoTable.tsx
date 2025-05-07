@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Dictionary } from "@/types/dictionary";
 import { getDictionary } from "@/lib/storage";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface DriverInfoTableProps {
   customerName: string;
@@ -40,6 +41,7 @@ export const DriverInfoTable = ({
   const [pickupStatusesDictionary, setPickupStatusesDictionary] = useState<Dictionary | null>(null);
   const [currentDriverStatus, setCurrentDriverStatus] = useState("Courier selected");
   const [editingDriverIndex, setEditingDriverIndex] = useState<number | null>(null);
+  const [selectedDrivers, setSelectedDrivers] = useState<number[]>([]);
   const [drivers, setDrivers] = useState<DriverInfo[]>([
     {
       name: driverName,
@@ -128,6 +130,16 @@ export const DriverInfoTable = ({
     }
   };
 
+  const handleCheckboxChange = (index: number) => {
+    setSelectedDrivers(prevSelected => {
+      if (prevSelected.includes(index)) {
+        return prevSelected.filter(id => id !== index);
+      } else {
+        return [...prevSelected, index];
+      }
+    });
+  };
+
   return (
     <div>
       <h3 className="text-sm font-medium mb-3 flex items-center justify-between">
@@ -149,6 +161,9 @@ export const DriverInfoTable = ({
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead className="w-10">
+                <span className="sr-only">Select</span>
+              </TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Earnings</TableHead>
               <TableHead>Delivery Fee</TableHead>
@@ -161,6 +176,12 @@ export const DriverInfoTable = ({
           <TableBody>
             {drivers.map((driver, index) => (
               <TableRow key={index}>
+                <TableCell className="p-2 pl-4">
+                  <Checkbox
+                    checked={selectedDrivers.includes(index)}
+                    onCheckedChange={() => handleCheckboxChange(index)}
+                  />
+                </TableCell>
                 <TableCell>{driver.name}</TableCell>
                 <TableCell>
                   {editingDriverIndex === index ? (
