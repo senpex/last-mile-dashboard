@@ -1,7 +1,8 @@
 
 import React from 'react';
-import { CalendarClock, FileCheck, CheckCircle2, BadgeCheck } from "lucide-react";
+import { CalendarClock, FileCheck, CheckCircle2, BadgeCheck, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 
 interface OrderDetailsSectionProps {
   organization: string | undefined;
@@ -36,23 +37,38 @@ export const OrderDetailsSection = ({ organization, distance }: OrderDetailsSect
           <p className="text-sm font-medium">{distance}</p>
         </div>
         
-        <div className="pt-2 border-t border-border/40">
-          <div className="flex items-center mb-2">
-            <FileCheck className="w-4 h-4 mr-2 text-muted-foreground" />
-            <p className="text-sm font-medium">Order Requirements</p>
+        <div className="pt-3 border-t border-border/40">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center">
+              <FileCheck className="w-4 h-4 mr-2 text-primary" />
+              <p className="text-sm font-medium">Order Requirements</p>
+            </div>
+            <Badge variant="secondary" className="text-xs">Client Selected</Badge>
           </div>
-          <div className="flex flex-wrap gap-2">
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {orderRequirements.map((req) => (
-              <Badge 
+              <div 
                 key={req.id} 
-                variant={req.active ? "default" : "outline"}
-                className="flex items-center gap-1 text-xs py-1"
+                className={`flex items-center p-2 rounded-md transition-colors ${
+                  req.active ? 'bg-secondary/50 border-l-2 border-primary' : 'bg-muted/20'
+                }`}
               >
-                {req.active && <CheckCircle2 className="h-3 w-3" />}
-                {req.name}
-              </Badge>
+                {req.active ? (
+                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mr-2" />
+                ) : (
+                  <AlertTriangle className="h-4 w-4 text-muted-foreground shrink-0 mr-2" />
+                )}
+                <span className={`text-xs ${req.active ? 'font-medium' : 'text-muted-foreground'}`}>
+                  {req.name}
+                </span>
+              </div>
             ))}
           </div>
+          
+          <p className="text-xs text-muted-foreground mt-3 italic">
+            Requirements are specified by the client and may be combined in various ways
+          </p>
         </div>
       </div>
     </div>
