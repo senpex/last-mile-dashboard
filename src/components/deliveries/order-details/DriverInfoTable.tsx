@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Truck, ChevronDown, Edit, Trash2, Plus, Save } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -166,7 +167,7 @@ export const DriverInfoTable = ({
                     <Input 
                       value={editedDriver?.earnings || ""} 
                       onChange={(e) => handleInputChange('earnings', e.target.value)}
-                      className="h-8 w-20"
+                      className="h-6 w-20"
                     />
                   ) : (
                     driver.earnings
@@ -177,7 +178,7 @@ export const DriverInfoTable = ({
                     <Input 
                       value={editedDriver?.deliveryFee || ""} 
                       onChange={(e) => handleInputChange('deliveryFee', e.target.value)}
-                      className="h-8 w-20"
+                      className="h-6 w-20"
                     />
                   ) : (
                     driver.deliveryFee
@@ -188,7 +189,7 @@ export const DriverInfoTable = ({
                     <Input 
                       value={editedDriver?.extraServiceFee || ""} 
                       onChange={(e) => handleInputChange('extraServiceFee', e.target.value)}
-                      className="h-8 w-20"
+                      className="h-6 w-20"
                     />
                   ) : (
                     driver.extraServiceFee
@@ -199,7 +200,7 @@ export const DriverInfoTable = ({
                     <Input 
                       value={editedDriver?.tip || ""} 
                       onChange={(e) => handleInputChange('tip', e.target.value)}
-                      className="h-8 w-20"
+                      className="h-6 w-20"
                     />
                   ) : (
                     driver.tip
