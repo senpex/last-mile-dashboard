@@ -50,7 +50,7 @@ export const OrderDetailsSection = ({ organization, distance }: OrderDetailsSect
             {orderRequirements.map((req) => (
               <div 
                 key={req.id} 
-                className={`flex items-center p-2 rounded-md border bg-secondary/30 border-primary transition-colors`}
+                className="flex items-center p-2 transition-colors"
               >
                 <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mr-2" />
                 <span className="text-xs font-medium">
