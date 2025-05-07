@@ -77,6 +77,34 @@ export const DriverInfoTable = ({
                 </DropdownMenu>
               </TableCell>
             </TableRow>
+            <TableRow>
+              <TableCell>Sarah Davis</TableCell>
+              <TableCell>$12.50</TableCell>
+              <TableCell>$9.50</TableCell>
+              <TableCell>$2.00</TableCell>
+              <TableCell>$3.00</TableCell>
+              <TableCell>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="h-6 text-xs px-2 flex items-center">
+                      Online
+                      <ChevronDown className="h-3 w-3 ml-1" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="z-50 bg-white">
+                    {orderStatusesDictionary.items.map((item) => (
+                      <DropdownMenuItem 
+                        key={item.id} 
+                        onClick={() => handleDriverStatusChange(item.value)}
+                        title={item.description}
+                      >
+                        {item.value}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </div>
