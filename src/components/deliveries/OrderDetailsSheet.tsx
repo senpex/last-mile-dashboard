@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -182,8 +181,8 @@ export const OrderDetailsSheet = ({
             <div className="flex-1 overflow-hidden">
               <TabsContent value="order-info" className="m-0 h-full">
                 <ScrollArea className="h-[calc(100vh-220px)]">
-                  <div className="p-6 space-y-6 pb-24">
-                    {/* Adjusted padding-bottom to accommodate the control panel */}
+                  <div className="p-6 space-y-6 pb-54">
+                    {/* Adjusted padding-bottom to provide more space above the control panel (increased from 24 to 54) */}
                     <div>
                       <h3 className="text-sm font-medium mb-3 flex items-center">
                         <FileText className="w-4 h-4 mr-2" />
@@ -475,8 +474,8 @@ export const OrderDetailsSheet = ({
               
               <TabsContent value="order-logs" className="m-0 h-full">
                 <ScrollArea className="h-[calc(100vh-220px)]">
-                  <div className="p-6 px-[23px] pt-0 pb-24">
-                    {/* Adjusted padding-bottom to accommodate the control panel */}
+                  <div className="p-6 px-[23px] pt-0 pb-54">
+                    {/* Adjusted padding-bottom to provide more space above the control panel (increased from 24 to 54) */}
                     <Tabs defaultValue="payment-transactions" value={activeLogTab} onValueChange={setActiveLogTab}>
                       <div className="sticky top-0 z-10 bg-background pt-1 pb-2 min-h-[90px]">
                         <TabsList className="flex flex-wrap bg-transparent p-0 py-3 gap-1 justify-start w-full overflow-visible my-0">
