@@ -84,7 +84,7 @@ export const DriverInfoTable = ({
     const updatedDrivers = [...drivers];
     updatedDrivers.splice(index, 1);
     setDrivers(updatedDrivers);
-    toast.warning(`Deleting driver: ${driverName}`);
+    toast.warning(`Driver ${driverName} has been removed`);
   };
 
   const handleAddHelper = () => {
