@@ -147,6 +147,11 @@ export const OrderDetailsSheet = ({
   };
   const additionalLocations = getAdditionalLocations();
   const hasAdditionalLocations = additionalLocations.length > 0;
+  
+  // Add names for the driver information table
+  const customerName = delivery.customerName || "Jane Smith";
+  const driverName = delivery.courier || "Alex Rodriguez";
+  
   return <Sheet open={isOpen} onOpenChange={open => {
     if (!open) onClose();
   }}>
@@ -442,7 +447,7 @@ export const OrderDetailsSheet = ({
                           </TableHeader>
                           <TableBody>
                             <TableRow>
-                              <TableCell>Customer Payment</TableCell>
+                              <TableCell>{customerName}</TableCell>
                               <TableCell>{delivery.price}</TableCell>
                               <TableCell>{delivery.price}</TableCell>
                               <TableCell>$0.00</TableCell>
@@ -450,7 +455,7 @@ export const OrderDetailsSheet = ({
                               <TableCell>-</TableCell>
                             </TableRow>
                             <TableRow>
-                              <TableCell>Driver Payout</TableCell>
+                              <TableCell>{driverName}</TableCell>
                               <TableCell>{delivery.couriersEarnings || "$10.00"}</TableCell>
                               <TableCell>$8.00</TableCell>
                               <TableCell>$0.00</TableCell>
