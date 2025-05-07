@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { CalendarClock, FileCheck, ShieldCheck, Signature, Scan } from "lucide-react";
+import { CalendarClock, FileCheck, CheckCircle2, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 
@@ -12,13 +12,13 @@ interface OrderDetailsSectionProps {
 export const OrderDetailsSection = ({ organization, distance }: OrderDetailsSectionProps) => {
   // Example requirements - in a real app, these would come from props
   const orderRequirements = [
-    { id: 1, name: "Alcohol delivery license", active: true, icon: ShieldCheck },
-    { id: 2, name: "Hazmat delivery license", active: false, icon: ShieldCheck },
-    { id: 3, name: "Pharmacy delivery license", active: true, icon: ShieldCheck },
-    { id: 4, name: "Recipient verification code", active: true, icon: FileCheck },
-    { id: 5, name: "Proof of delivery", active: true, icon: FileCheck },
-    { id: 6, name: "Signature from recipient", active: false, icon: Signature },
-    { id: 7, name: "Items to be scanned at the pick-up and drop-offs", active: true, icon: Scan }
+    { id: 1, name: "Alcohol delivery license", active: true },
+    { id: 2, name: "Hazmat delivery license", active: false },
+    { id: 3, name: "Pharmacy delivery license", active: true },
+    { id: 4, name: "Recipient verification code", active: true },
+    { id: 5, name: "Proof of delivery", active: true },
+    { id: 6, name: "Signature from recipient", active: false },
+    { id: 7, name: "Items to be scanned at the pick-up and drop-offs", active: true }
   ];
 
   return (
@@ -47,22 +47,23 @@ export const OrderDetailsSection = ({ organization, distance }: OrderDetailsSect
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {orderRequirements.map((req) => {
-              const IconComponent = req.icon;
-              return (
-                <div 
-                  key={req.id} 
-                  className={`flex items-center p-2 rounded-md border ${
-                    req.active ? 'bg-secondary/30 border-primary' : 'bg-muted/10 border-muted/30'
-                  } transition-colors`}
-                >
-                  <IconComponent className={`h-4 w-4 shrink-0 mr-2 ${req.active ? 'text-primary' : 'text-muted-foreground'}`} />
-                  <span className={`text-xs ${req.active ? 'font-medium' : 'text-muted-foreground'}`}>
-                    {req.name}
-                  </span>
-                </div>
-              );
-            })}
+            {orderRequirements.map((req) => (
+              <div 
+                key={req.id} 
+                className={`flex items-center p-2 rounded-md border ${
+                  req.active ? 'bg-secondary/30 border-primary' : 'bg-muted/10 border-muted/30'
+                } transition-colors`}
+              >
+                {req.active ? (
+                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mr-2" />
+                ) : (
+                  <AlertTriangle className="h-4 w-4 text-muted-foreground shrink-0 mr-2" />
+                )}
+                <span className={`text-xs ${req.active ? 'font-medium' : 'text-muted-foreground'}`}>
+                  {req.name}
+                </span>
+              </div>
+            ))}
           </div>
           
           <p className="text-xs text-muted-foreground mt-3 italic">
