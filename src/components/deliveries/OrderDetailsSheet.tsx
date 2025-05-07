@@ -31,6 +31,7 @@ export const OrderDetailsSheet = ({
   const [activeTab, setActiveTab] = useState<string>("order-info");
   const [activeLogTab, setActiveLogTab] = useState<string>("payment-transactions");
   const [isMapDialogOpen, setIsMapDialogOpen] = useState(false);
+  const [driverStatus, setDriverStatus] = useState<string>("Available");
   const statuses: DeliveryStatus[] = ["Dropoff Complete", "Canceled By Customer", "Cancelled By Admin", "In Transit", "Picking Up", "Arrived For Pickup", "Scheduled Order", "Online", "Offline", "Busy", "Not approved", "Available", "On Break"];
 
   // Add back the missing function
@@ -84,6 +85,12 @@ export const OrderDetailsSheet = ({
   const handleStatusChange = (newStatus: DeliveryStatus) => {
     setStatus(newStatus);
     toast.success(`Order status updated to ${newStatus}`);
+  };
+  
+  // Add new function to handle driver status change
+  const handleDriverStatusChange = (newStatus: string) => {
+    setDriverStatus(newStatus);
+    toast.success(`Driver status updated to ${newStatus}`);
   };
 
   // Generate additional locations based on delivery ID
@@ -430,6 +437,7 @@ export const OrderDetailsSheet = ({
                               <TableHead>Delivery Fee</TableHead>
                               <TableHead>Extra Service Fee</TableHead>
                               <TableHead>Tip</TableHead>
+                              <TableHead>Status</TableHead>
                             </TableRow>
                           </TableHeader>
                           <TableBody>
@@ -439,6 +447,7 @@ export const OrderDetailsSheet = ({
                               <TableCell>{delivery.price}</TableCell>
                               <TableCell>$0.00</TableCell>
                               <TableCell>{delivery.tip}</TableCell>
+                              <TableCell>-</TableCell>
                             </TableRow>
                             <TableRow>
                               <TableCell>Driver Payout</TableCell>
@@ -446,6 +455,23 @@ export const OrderDetailsSheet = ({
                               <TableCell>$8.00</TableCell>
                               <TableCell>$0.00</TableCell>
                               <TableCell>{delivery.tip}</TableCell>
+                              <TableCell>
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button variant="outline" size="sm" className="h-6 text-xs px-2 flex items-center">
+                                      {driverStatus}
+                                      <ChevronDown className="h-3 w-3 ml-1" />
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent className="z-50 bg-white">
+                                    <DropdownMenuItem onClick={() => handleDriverStatusChange("Available")}>Available</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => handleDriverStatusChange("Busy")}>Busy</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => handleDriverStatusChange("On Break")}>On Break</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => handleDriverStatusChange("Offline")}>Offline</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => handleDriverStatusChange("Online")}>Online</DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </TableCell>
                             </TableRow>
                           </TableBody>
                         </Table>
