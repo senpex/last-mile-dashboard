@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
-import { Dictionary, DictionaryItem } from "@/types/dictionary";
+import { Dictionary } from "@/types/dictionary";
 
 interface DriverInfoTableProps {
   customerName: string;
@@ -49,14 +49,6 @@ export const DriverInfoTable = ({
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell>{customerName}</TableCell>
-              <TableCell>{price}</TableCell>
-              <TableCell>{price}</TableCell>
-              <TableCell>$0.00</TableCell>
-              <TableCell>{tip}</TableCell>
-              <TableCell>-</TableCell>
-            </TableRow>
             <TableRow>
               <TableCell>{driverName}</TableCell>
               <TableCell>{couriersEarnings || "$10.00"}</TableCell>
