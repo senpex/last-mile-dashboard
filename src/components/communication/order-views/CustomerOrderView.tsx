@@ -99,7 +99,7 @@ export const CustomerOrderView = ({
             <Badge className="bg-green-500">Active</Badge>
           </div>
           
-          <div className="relative overflow-hidden rounded-lg">
+          <div className="relative overflow-hidden rounded-lg h-28">
             <OrderMap 
               pickupAddress={knownLocations[order.pickupAddress] || order.pickupAddress} 
               deliveryAddress={knownLocations[order.deliveryAddress] || order.deliveryAddress} 
