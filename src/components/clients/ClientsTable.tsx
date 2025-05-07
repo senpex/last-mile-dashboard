@@ -4,8 +4,14 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@
 import { UsersTableContainer } from "@/components/ui/users-table-container";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Check, GripVertical } from "lucide-react";
+import { Check, GripVertical, ChevronDown } from "lucide-react";
 import { ColumnOption } from "@/components/table/ColumnSelector";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuTrigger,
+  DropdownMenuItem
+} from "@/components/ui/dropdown-menu";
 
 interface ClientsTableProps {
   currentItems: any[];
@@ -30,6 +36,7 @@ interface ClientsTableProps {
   requestSort: (key: string) => void;
   renderStatus: (status: string) => JSX.Element;
   independent?: boolean;
+  onStatusChange?: (clientId: number, newStatus: string) => void;
 }
 
 export function ClientsTable({
@@ -51,8 +58,16 @@ export function ClientsTable({
   sortConfig,
   requestSort,
   renderStatus,
-  independent = false
+  independent = false,
+  onStatusChange = () => {}
 }: ClientsTableProps) {
+  // Available status options for the dropdown
+  const statusOptions = ['Active', 'Inactive', 'Pending', 'Suspended'];
+  
+  const handleStatusChange = (clientId: number, newStatus: string) => {
+    onStatusChange(clientId, newStatus);
+  };
+
   return (
     <UsersTableContainer className={className} independent={independent}>
       <Table>
@@ -113,7 +128,31 @@ export function ClientsTable({
                     {columnId === 'company' && client.company}
                     {columnId === 'address' && client.address}
                     {columnId === 'zipcode' && client.zipcode}
-                    {columnId === 'status' && renderStatus(client.status)}
+                    {columnId === 'status' && (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            className="w-[110px] justify-between"
+                          >
+                            {client.status || 'Select'}
+                            <ChevronDown className="h-4 w-4 ml-2" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="w-[110px]">
+                          {statusOptions.map((status) => (
+                            <DropdownMenuItem 
+                              key={status}
+                              onClick={() => handleStatusChange(client.id, status)}
+                              className="cursor-pointer"
+                            >
+                              {status}
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    )}
                     {columnId === 'stripeStatus' && renderStripeStatus(client.stripeStatus)}
                     {columnId === 'totalOrders' && (
                       <span className="font-medium">{client.totalOrders}</span>
