@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Delivery, DeliveryStatus } from "@/types/delivery";
@@ -140,9 +141,11 @@ export const OrderDetailsSheet = ({
   };
   const additionalLocations = getAdditionalLocations();
   const hasAdditionalLocations = additionalLocations.length > 0;
-  return <Sheet open={isOpen} onOpenChange={open => {
-    if (!open) onClose();
-  }}>
+  
+  return (
+    <Sheet open={isOpen} onOpenChange={open => {
+      if (!open) onClose();
+    }}>
       <SheetContent className="sm:max-w-xl md:max-w-4xl lg:max-w-6xl w-full overflow-hidden p-0 pr-0 mr-0 flex flex-col">
         {/* Main Content with Flex Structure - ReOrdered to show content first, then fixed controls */}
         <div className="flex-1 overflow-hidden flex flex-col">
@@ -159,9 +162,17 @@ export const OrderDetailsSheet = ({
                   </PopoverTrigger>
                   <PopoverContent className="w-[200px] p-1 bg-popover">
                     <div className="grid gap-1">
-                      {statuses.map(statusOption => <Button key={statusOption} variant="ghost" size="sm" className={cn("justify-start text-left font-normal", statusOption === status ? "bg-accent text-accent-foreground" : "", getStatusColor(statusOption))} onClick={() => handleStatusChange(statusOption)}>
+                      {statuses.map(statusOption => (
+                        <Button 
+                          key={statusOption} 
+                          variant="ghost" 
+                          size="sm" 
+                          className={cn("justify-start text-left font-normal", statusOption === status ? "bg-accent text-accent-foreground" : "", getStatusColor(statusOption))} 
+                          onClick={() => handleStatusChange(statusOption)}
+                        >
                           {statusOption}
-                        </Button>)}
+                        </Button>
+                      ))}
                     </div>
                   </PopoverContent>
                 </Popover>
@@ -181,7 +192,7 @@ export const OrderDetailsSheet = ({
             <div className="flex-1 overflow-hidden">
               <TabsContent value="order-info" className="m-0 h-full">
                 <ScrollArea className="h-[calc(100vh-170px)]">
-                  <div className="p-6 space-y-6">
+                  <div className="p-6 space-y-6 pb-24">
                     <div>
                       <h3 className="text-sm font-medium mb-3 flex items-center">
                         <FileText className="w-4 h-4 mr-2" />
@@ -260,7 +271,8 @@ export const OrderDetailsSheet = ({
                               </TableCell>
                             </TableRow>
                             
-                            {hasAdditionalLocations && additionalLocations.map((location, index) => <TableRow key={index}>
+                            {hasAdditionalLocations && additionalLocations.map((location, index) => (
+                              <TableRow key={index}>
                                 <TableCell>
                                   <p className="text-sm font-medium">{location.name}</p>
                                   <p className="text-xs text-muted-foreground">{location.address}</p>
@@ -297,7 +309,8 @@ export const OrderDetailsSheet = ({
                                     Delete
                                   </Button>
                                 </TableCell>
-                              </TableRow>)}
+                              </TableRow>
+                            ))}
                             
                             <TableRow>
                               <TableCell>
@@ -401,7 +414,8 @@ export const OrderDetailsSheet = ({
                       </div>
                     </div>
                     
-                    {delivery.courier && <div>
+                    {delivery.courier && (
+                      <div>
                         <h3 className="text-sm font-medium mb-3 flex items-center">
                           <Truck className="w-4 h-4 mr-2" />
                           Courier info
@@ -413,7 +427,8 @@ export const OrderDetailsSheet = ({
                             Contact Courier
                           </Button>
                         </div>
-                      </div>}
+                      </div>
+                    )}
                     
                     <div>
                       <h3 className="text-sm font-medium mb-3 flex items-center">
@@ -473,7 +488,7 @@ export const OrderDetailsSheet = ({
               
               <TabsContent value="order-logs" className="m-0 h-full">
                 <ScrollArea className="h-[calc(100vh-170px)]">
-                  <div className="p-6 px-[23px] pt-0">
+                  <div className="p-6 px-[23px] pt-0 pb-24">
                     <Tabs defaultValue="payment-transactions" value={activeLogTab} onValueChange={setActiveLogTab}>
                       <div className="sticky top-0 z-10 bg-background pt-1 pb-2 min-h-[90px]">
                         <TabsList className="flex flex-wrap bg-transparent p-0 py-3 gap-1 justify-start w-full overflow-visible my-0">
@@ -623,4 +638,142 @@ export const OrderDetailsSheet = ({
                             <div className="space-y-3">
                               <div className="bg-muted rounded-lg p-2">
                                 <div className="flex justify-between mb-1">
-                                  <span className="
+                                  <span className="text-sm font-medium">Courier</span>
+                                  <span className="text-xs text-muted-foreground">10:25 AM</span>
+                                </div>
+                                <p className="text-xs">Hi, I'm at the pickup location now.</p>
+                              </div>
+                              <div className="bg-primary/10 rounded-lg p-2 ml-8">
+                                <div className="flex justify-between mb-1">
+                                  <span className="text-sm font-medium">Customer</span>
+                                  <span className="text-xs text-muted-foreground">10:26 AM</span>
+                                </div>
+                                <p className="text-xs">Great! They're expecting you.</p>
+                              </div>
+                              <div className="bg-muted rounded-lg p-2">
+                                <div className="flex justify-between mb-1">
+                                  <span className="text-sm font-medium">Courier</span>
+                                  <span className="text-xs text-muted-foreground">10:45 AM</span>
+                                </div>
+                                <p className="text-xs">Package picked up, on my way to deliver it.</p>
+                              </div>
+                            </div>
+                          </div>
+                        </TabsContent>
+                        
+                        <TabsContent value="status-change-log" className="space-y-4">
+                          <div className="rounded-md border bg-card/50 p-4">
+                            <div className="space-y-2">
+                              <div className="flex justify-between items-center border-b pb-2">
+                                <div>
+                                  <p className="text-sm font-medium">Status changed to "Scheduled Order"</p>
+                                  <p className="text-xs text-muted-foreground">By System</p>
+                                </div>
+                                <p className="text-xs text-muted-foreground">Today, 9:30 AM</p>
+                              </div>
+                              <div className="flex justify-between items-center border-b pb-2">
+                                <div>
+                                  <p className="text-sm font-medium">Status changed to "Arrived For Pickup"</p>
+                                  <p className="text-xs text-muted-foreground">By Driver</p>
+                                </div>
+                                <p className="text-xs text-muted-foreground">Today, 10:15 AM</p>
+                              </div>
+                              <div className="flex justify-between items-center border-b pb-2">
+                                <div>
+                                  <p className="text-sm font-medium">Status changed to "In Transit"</p>
+                                  <p className="text-xs text-muted-foreground">By Driver</p>
+                                </div>
+                                <p className="text-xs text-muted-foreground">Today, 10:30 AM</p>
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <div>
+                                  <p className="text-sm font-medium">Status changed to "Dropoff Complete"</p>
+                                  <p className="text-xs text-muted-foreground">By Driver</p>
+                                </div>
+                                <p className="text-xs text-muted-foreground">Today, 11:05 AM</p>
+                              </div>
+                            </div>
+                          </div>
+                        </TabsContent>
+                      </div>
+                    </Tabs>
+                  </div>
+                </ScrollArea>
+              </TabsContent>
+            </div>
+          </Tabs>
+          
+          {/* Fixed action bar at bottom */}
+          <div className="fixed bottom-0 left-0 right-0 bg-background border-t shadow-md p-4 z-20 flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm" className="h-9" onClick={onClose}>
+                Close
+              </Button>
+              <Button variant="outline" size="sm" className="h-9">
+                <MessageSquare className="w-4 h-4 mr-2" />
+                Message
+              </Button>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm" className="h-9">
+                <Edit className="w-4 h-4 mr-2" />
+                Edit Order
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-9">
+                    <Settings className="w-4 h-4 mr-2" />
+                    More Actions
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem>
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                    Reassign Driver
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Timer className="w-4 h-4 mr-2" />
+                    Reschedule
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Bell className="w-4 h-4 mr-2" />
+                    Send Notification
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="text-destructive">
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Cancel Order
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Button size="sm" className="h-9">
+                <Save className="w-4 h-4 mr-2" />
+                Save Changes
+              </Button>
+            </div>
+          </div>
+        </div>
+        
+        {/* Map Dialog */}
+        <Dialog open={isMapDialogOpen} onOpenChange={setIsMapDialogOpen}>
+          <DialogContent className="sm:max-w-[800px] h-[600px] p-0">
+            <OrderMap 
+              pickupLocation={{
+                name: delivery.pickupLocation.name,
+                address: delivery.pickupLocation.address,
+                lat: 37.7749,
+                lng: -122.4194
+              }}
+              dropoffLocation={{
+                name: delivery.dropoffLocation.name,
+                address: delivery.dropoffLocation.address,
+                lat: 37.7849,
+                lng: -122.4294
+              }}
+            />
+          </DialogContent>
+        </Dialog>
+      </SheetContent>
+    </Sheet>
+  );
+};
