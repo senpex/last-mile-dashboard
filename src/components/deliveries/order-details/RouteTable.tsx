@@ -134,9 +134,10 @@ export const RouteTable = ({
                   )}
                 </TableCell>
                 <TableCell>
-                  <p className="text-sm font-medium">Staff Member {index + 1}</p>
+                  {/* Display "-" for empty contact information */}
+                  <p className="text-sm font-medium">-</p>
                   <p className="text-xs text-muted-foreground flex items-center">
-                    <Phone className="h-3 w-3 mr-1" /> (415) 555-{5000 + index}
+                    <Phone className="h-3 w-3 mr-1" /> -
                   </p>
                 </TableCell>
                 <TableCell>
@@ -146,7 +147,8 @@ export const RouteTable = ({
                   <p className="text-sm">{location.distance || "-"}</p>
                 </TableCell>
                 <TableCell>
-                  <Badge variant="outline" className={location.status === "Completed" ? "bg-green-100 text-green-800" : location.status === "In Progress" ? "bg-blue-100 text-blue-800" : "bg-amber-100 text-amber-800"}>
+                  {/* Display "-" for empty status */}
+                  <Badge variant="outline" className={location.status === "Completed" ? "bg-green-100 text-green-800" : location.status === "In Progress" ? "bg-blue-100 text-blue-800" : location.status ? "bg-amber-100 text-amber-800" : "bg-gray-100 text-gray-800"}>
                     {location.status || "-"}
                   </Badge>
                 </TableCell>
