@@ -109,19 +109,19 @@ export function DeliveryFilters({
                   onToggleMyDeliveries(value === "me");
                 }
               }}
-              className="border rounded-md h-4.5"
+              className="border rounded-md h-6"
             >
               <ToggleGroupItem 
                 value="me" 
                 aria-label="Show my deliveries" 
-                className="px-3 text-xs rounded-md h-4.5 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                className="px-3 text-xs rounded-md h-6 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
               >
                 Me
               </ToggleGroupItem>
               <ToggleGroupItem 
                 value="all" 
                 aria-label="Show all deliveries" 
-                className="px-3 text-xs rounded-md h-4.5 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                className="px-3 text-xs rounded-md h-6 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
               >
                 All
               </ToggleGroupItem>
@@ -134,16 +134,16 @@ export function DeliveryFilters({
                 onValueChange={onActiveViewChange} 
                 className="w-auto"
               >
-                <TabsList className="inline-flex h-4.5 bg-muted space-x-1 items-center justify-center">
+                <TabsList className="inline-flex h-6 bg-muted space-x-1 items-center justify-center">
                   <TabsTrigger 
                     value="main" 
-                    className="px-3 text-xs rounded-md h-4.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative"
+                    className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative"
                   >
                     Main view
                   </TabsTrigger>
                   <TabsTrigger 
                     value="attention" 
-                    className="px-3 text-xs rounded-md h-4.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative flex items-center"
+                    className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative flex items-center"
                   >
                     Attention Required
                     {hasAttentionRequiredOrders && (
