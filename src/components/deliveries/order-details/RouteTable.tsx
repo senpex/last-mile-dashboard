@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { MapPin, Map, Edit, Trash2, Phone, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -118,7 +119,6 @@ export const RouteTable = ({
                 <TableCell>
                   {/* Display "-" for empty contact information */}
                   <p className="text-sm font-medium">-</p>
-                  
                 </TableCell>
                 <TableCell>
                   <p className="text-sm">{location.description || "-"}</p>
@@ -127,10 +127,14 @@ export const RouteTable = ({
                   <p className="text-sm">{location.distance || "-"}</p>
                 </TableCell>
                 <TableCell>
-                  {/* Display "-" for empty status */}
-                  <Badge variant="outline" className={location.status === "Completed" ? "bg-green-100 text-green-800" : location.status === "In Progress" ? "bg-blue-100 text-blue-800" : location.status ? "bg-amber-100 text-amber-800" : "bg-gray-100 text-gray-800"}>
-                    {location.status || "-"}
-                  </Badge>
+                  {/* Display "-" for empty status or if status is "Pending" */}
+                  {location.status && location.status !== "Pending" ? (
+                    <Badge variant="outline" className={location.status === "Completed" ? "bg-green-100 text-green-800" : location.status === "In Progress" ? "bg-blue-100 text-blue-800" : "bg-gray-100 text-gray-800"}>
+                      {location.status}
+                    </Badge>
+                  ) : (
+                    <p className="text-sm">-</p>
+                  )}
                 </TableCell>
                 <TableCell>
                   <p className="text-sm">{location.deliveredAt || "-"}</p>
