@@ -1,82 +1,45 @@
-
 import React from 'react';
-import { CalendarClock, FileCheck, Package, Truck, Clock, Globe, Calendar, Ruler, Weight, Route } from "lucide-react";
+import { CalendarClock, FileCheck, CheckCircle2, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-
 interface OrderDetailsSectionProps {
   organization: string | undefined;
   distance: string;
 }
-
 export const OrderDetailsSection = ({
   organization,
   distance
 }: OrderDetailsSectionProps) => {
-  // Example requirements with icons mapped to specific requirement types
-  const orderRequirements = [
-    {
-      id: 1,
-      name: "Package size",
-      icon: <Package className="h-4 w-4 text-primary shrink-0 mr-2" />,
-      active: true
-    },
-    {
-      id: 2,
-      name: "Transport type",
-      icon: <Truck className="h-4 w-4 text-primary shrink-0 mr-2" />,
-      active: true
-    },
-    {
-      id: 3,
-      name: "Schedule type",
-      icon: <CalendarClock className="h-4 w-4 text-primary shrink-0 mr-2" />,
-      active: true
-    },
-    {
-      id: 4,
-      name: "Scheduled time",
-      icon: <Clock className="h-4 w-4 text-primary shrink-0 mr-2" />,
-      active: true
-    },
-    {
-      id: 5,
-      name: "Timezone",
-      icon: <Globe className="h-4 w-4 text-primary shrink-0 mr-2" />,
-      active: true
-    },
-    {
-      id: 6,
-      name: "Inserted date",
-      icon: <Calendar className="h-4 w-4 text-primary shrink-0 mr-2" />,
-      active: true
-    },
-    {
-      id: 7,
-      name: "Custom dimensions (L×W×H)",
-      icon: <Ruler className="h-4 w-4 text-primary shrink-0 mr-2" />,
-      active: true
-    },
-    {
-      id: 8,
-      name: "Weight",
-      icon: <Weight className="h-4 w-4 text-primary shrink-0 mr-2" />,
-      active: true
-    },
-    {
-      id: 9,
-      name: "Distance",
-      icon: <Route className="h-4 w-4 text-primary shrink-0 mr-2" />,
-      active: true
-    },
-    {
-      id: 10,
-      name: "Delivery time",
-      icon: <Clock className="h-4 w-4 text-primary shrink-0 mr-2" />,
-      active: true
-    }
-  ];
-
+  // Example requirements - in a real app, these would come from props
+  const orderRequirements = [{
+    id: 1,
+    name: "Alcohol delivery license",
+    active: true
+  }, {
+    id: 2,
+    name: "Hazmat delivery license",
+    active: true
+  }, {
+    id: 3,
+    name: "Pharmacy delivery license",
+    active: true
+  }, {
+    id: 4,
+    name: "Recipient verification code",
+    active: true
+  }, {
+    id: 5,
+    name: "Proof of delivery",
+    active: true
+  }, {
+    id: 6,
+    name: "Signature from recipient",
+    active: true
+  }, {
+    id: 7,
+    name: "Items to be scanned at the pick-up and drop-offs",
+    active: true
+  }];
   return <div>
       <h3 className="text-sm font-medium mb-3 flex items-center">
         <CalendarClock className="w-4 h-4 mr-2" />
@@ -98,16 +61,19 @@ export const OrderDetailsSection = ({
               <FileCheck className="w-4 h-4 mr-2 text-primary" />
               <p className="text-sm font-medium">Order Requirements</p>
             </div>
+            
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {orderRequirements.map(req => <div key={req.id} className="flex items-center p-2 transition-colors">
-                {req.icon}
+                <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mr-2" />
                 <span className="text-xs font-medium">
                   {req.name}
                 </span>
               </div>)}
           </div>
+          
+          
         </div>
       </div>
     </div>;
