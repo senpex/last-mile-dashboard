@@ -124,8 +124,14 @@ export const RouteTable = ({
             {additionalLocations.map((location, index) => (
               <TableRow key={index}>
                 <TableCell>
-                  <p className="text-sm font-medium">{location.name || "-"}</p>
-                  <p className="text-xs text-muted-foreground">{location.address || "-"}</p>
+                  {location.name || location.address ? (
+                    <>
+                      <p className="text-sm font-medium">{location.name || "-"}</p>
+                      <p className="text-xs text-muted-foreground">{location.address || "-"}</p>
+                    </>
+                  ) : (
+                    <p className="text-sm font-medium">-</p>
+                  )}
                 </TableCell>
                 <TableCell>
                   <p className="text-sm font-medium">Staff Member {index + 1}</p>
