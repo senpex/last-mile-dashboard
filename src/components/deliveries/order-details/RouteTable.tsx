@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { MapPin, Map, Edit, Trash2, Phone } from "lucide-react";
+import { MapPin, Map, Edit, Trash2, Phone, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -35,10 +35,16 @@ export const RouteTable = ({
           <MapPin className="w-4 h-4 mr-2" /> 
           Route
         </h3>
-        <Button variant="outline" size="sm" className="flex items-center gap-1.5 h-8" onClick={onOpenMap}>
-          <Map className="h-4 w-4" />
-          View Map
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" className="flex items-center gap-1.5 h-8" onClick={onOpenMap}>
+            <Map className="h-4 w-4" />
+            View Map
+          </Button>
+          <Button variant="outline" size="sm" className="flex items-center gap-1.5 h-8">
+            <Plus className="h-4 w-4" />
+            Add Location
+          </Button>
+        </div>
       </div>
       <div className="rounded-md border bg-card/50 p-0">
         <Table>
