@@ -1,11 +1,9 @@
-
 import React, { useState } from 'react';
 import { MapPin, Map, Edit, Trash2, Phone, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Delivery } from "@/types/delivery";
-
 interface AdditionalLocation {
   name: string;
   address: string;
@@ -14,14 +12,12 @@ interface AdditionalLocation {
   status: string;
   deliveredAt: string;
 }
-
 interface RouteTableProps {
   delivery: Delivery;
   additionalLocations: AdditionalLocation[];
   status: string;
   onOpenMap: () => void;
 }
-
 export const RouteTable = ({
   delivery,
   additionalLocations: initialAdditionalLocations,
@@ -29,7 +25,6 @@ export const RouteTable = ({
   onOpenMap
 }: RouteTableProps) => {
   const [additionalLocations, setAdditionalLocations] = useState<AdditionalLocation[]>(initialAdditionalLocations);
-  
   const handleAddLocation = () => {
     const newLocation: AdditionalLocation = {
       name: "",
@@ -39,12 +34,9 @@ export const RouteTable = ({
       status: "Pending",
       deliveredAt: ""
     };
-    
     setAdditionalLocations([...additionalLocations, newLocation]);
   };
-
-  return (
-    <div>
+  return <div>
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-medium flex items-center">
           <MapPin className="w-4 h-4 mr-2" /> 
@@ -55,12 +47,7 @@ export const RouteTable = ({
             <Map className="h-4 w-4" />
             View Map
           </Button>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="flex items-center gap-1.5 h-8"
-            onClick={handleAddLocation}
-          >
+          <Button variant="outline" size="sm" className="flex items-center gap-1.5 h-8" onClick={handleAddLocation}>
             <Plus className="h-4 w-4" />
             Add Location
           </Button>
@@ -121,24 +108,17 @@ export const RouteTable = ({
               </TableCell>
             </TableRow>
             
-            {additionalLocations.map((location, index) => (
-              <TableRow key={index}>
+            {additionalLocations.map((location, index) => <TableRow key={index}>
                 <TableCell>
-                  {location.name || location.address ? (
-                    <>
+                  {location.name || location.address ? <>
                       <p className="text-sm font-medium">{location.name || "-"}</p>
                       <p className="text-xs text-muted-foreground">{location.address || "-"}</p>
-                    </>
-                  ) : (
-                    <p className="text-sm font-medium">-</p>
-                  )}
+                    </> : <p className="text-sm font-medium">-</p>}
                 </TableCell>
                 <TableCell>
                   {/* Display "-" for empty contact information */}
                   <p className="text-sm font-medium">-</p>
-                  <p className="text-xs text-muted-foreground flex items-center">
-                    <Phone className="h-3 w-3 mr-1" /> -
-                  </p>
+                  
                 </TableCell>
                 <TableCell>
                   <p className="text-sm">{location.description || "-"}</p>
@@ -167,8 +147,7 @@ export const RouteTable = ({
                     Delete
                   </Button>
                 </TableCell>
-              </TableRow>
-            ))}
+              </TableRow>)}
             
             <TableRow>
               <TableCell>
@@ -214,6 +193,5 @@ export const RouteTable = ({
           </TableBody>
         </Table>
       </div>
-    </div>
-  );
+    </div>;
 };
