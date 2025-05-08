@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { MapPin, Map, Edit, Trash2, Phone, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -24,10 +24,25 @@ interface RouteTableProps {
 
 export const RouteTable = ({
   delivery,
-  additionalLocations,
+  additionalLocations: initialAdditionalLocations,
   status,
   onOpenMap
 }: RouteTableProps) => {
+  const [additionalLocations, setAdditionalLocations] = useState<AdditionalLocation[]>(initialAdditionalLocations);
+  
+  const handleAddLocation = () => {
+    const newLocation: AdditionalLocation = {
+      name: "",
+      address: "",
+      description: "",
+      distance: "",
+      status: "Pending",
+      deliveredAt: ""
+    };
+    
+    setAdditionalLocations([...additionalLocations, newLocation]);
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
@@ -40,7 +55,12 @@ export const RouteTable = ({
             <Map className="h-4 w-4" />
             View Map
           </Button>
-          <Button variant="outline" size="sm" className="flex items-center gap-1.5 h-8">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="flex items-center gap-1.5 h-8"
+            onClick={handleAddLocation}
+          >
             <Plus className="h-4 w-4" />
             Add Location
           </Button>
