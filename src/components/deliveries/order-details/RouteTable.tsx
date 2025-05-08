@@ -124,8 +124,8 @@ export const RouteTable = ({
             {additionalLocations.map((location, index) => (
               <TableRow key={index}>
                 <TableCell>
-                  <p className="text-sm font-medium">{location.name}</p>
-                  <p className="text-xs text-muted-foreground">{location.address}</p>
+                  <p className="text-sm font-medium">{location.name || "-"}</p>
+                  <p className="text-xs text-muted-foreground">{location.address || "-"}</p>
                 </TableCell>
                 <TableCell>
                   <p className="text-sm font-medium">Staff Member {index + 1}</p>
@@ -134,18 +134,18 @@ export const RouteTable = ({
                   </p>
                 </TableCell>
                 <TableCell>
-                  <p className="text-sm">{location.description}</p>
+                  <p className="text-sm">{location.description || "-"}</p>
                 </TableCell>
                 <TableCell>
-                  <p className="text-sm">{location.distance}</p>
+                  <p className="text-sm">{location.distance || "-"}</p>
                 </TableCell>
                 <TableCell>
                   <Badge variant="outline" className={location.status === "Completed" ? "bg-green-100 text-green-800" : location.status === "In Progress" ? "bg-blue-100 text-blue-800" : "bg-amber-100 text-amber-800"}>
-                    {location.status}
+                    {location.status || "-"}
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <p className="text-sm">{location.deliveredAt}</p>
+                  <p className="text-sm">{location.deliveredAt || "-"}</p>
                 </TableCell>
                 <TableCell>
                   <Button variant="outline" size="sm" className="flex items-center gap-1">
