@@ -26,7 +26,6 @@ export const RouteTable = ({
   onOpenMap
 }: RouteTableProps) => {
   const [additionalLocations, setAdditionalLocations] = useState<AdditionalLocation[]>(initialAdditionalLocations);
-  
   const handleAddLocation = () => {
     const newLocation: AdditionalLocation = {
       name: "",
@@ -38,13 +37,6 @@ export const RouteTable = ({
     };
     setAdditionalLocations([...additionalLocations, newLocation]);
   };
-  
-  const handleDeleteLocation = (index: number) => {
-    const updatedLocations = [...additionalLocations];
-    updatedLocations.splice(index, 1);
-    setAdditionalLocations(updatedLocations);
-  };
-  
   return <div>
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-medium flex items-center">
@@ -154,12 +146,7 @@ export const RouteTable = ({
                   </Button>
                 </TableCell>
                 <TableCell>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="flex items-center gap-1 text-destructive"
-                    onClick={() => handleDeleteLocation(index)}
-                  >
+                  <Button variant="outline" size="sm" className="flex items-center gap-1 text-destructive">
                     <Trash2 className="h-4 w-4" />
                     Delete
                   </Button>
