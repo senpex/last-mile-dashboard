@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MapPin, Map, Edit, Trash2, Phone, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -152,7 +151,7 @@ export const RouteTable = ({
                         <label className="text-xs font-medium mb-1 block">Location</label>
                         <Input className="h-9 text-sm" defaultValue={delivery.pickupLocation.name} />
                       </div>
-                      <div className="w-1/2">
+                      <div className="w-1/4">
                         <label className="text-xs font-medium mb-1 block">Apt #</label>
                         <Input className="h-9 text-sm" />
                       </div>
@@ -167,6 +166,7 @@ export const RouteTable = ({
                         </div>
                       </div>
                     </div>
+                    
                     <div>
                       <label className="text-xs font-medium mb-1 block">Distance</label>
                       <Input className="h-9 text-sm" defaultValue="0.0 miles" />
@@ -179,28 +179,25 @@ export const RouteTable = ({
                       <label className="text-xs font-medium mb-1 block">Contact name</label>
                       <Input className="h-9 text-sm" defaultValue="John Smith" />
                     </div>
-                    <div className="col-span-2">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="text-xs font-medium mb-1 block">Phone number</label>
-                          <Input className="h-9 text-sm" defaultValue="(415) 555-1234" />
-                        </div>
-                        <div>
-                          <label className="text-xs font-medium mb-1 block">Status</label>
-                          <Select defaultValue="Completed">
-                            <SelectTrigger className="h-9 text-sm">
-                              <SelectValue placeholder="Select a status" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {orderStatuses.map((status) => (
-                                <SelectItem key={status} value={status}>
-                                  {status}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </div>
+                    
+                    <div>
+                      <label className="text-xs font-medium mb-1 block">Phone number</label>
+                      <Input className="h-9 text-sm" defaultValue="(415) 555-1234" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium mb-1 block">Status</label>
+                      <Select defaultValue="Completed">
+                        <SelectTrigger className="h-9 text-sm">
+                          <SelectValue placeholder="Select a status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {orderStatuses.map((status) => (
+                            <SelectItem key={status} value={status}>
+                              {status}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                     <div>
                       <label className="text-xs font-medium mb-1 block">Barcode scanning</label>
@@ -217,6 +214,7 @@ export const RouteTable = ({
                         </SelectContent>
                       </Select>
                     </div>
+                    
                     <div className="col-span-3">
                       <label className="text-xs font-medium mb-1 block">Stop notes</label>
                       <Textarea className="text-sm h-9 py-1.5 min-h-0" rows={1} defaultValue="Pickup location for order items" />
@@ -298,7 +296,7 @@ export const RouteTable = ({
                             <label className="text-xs font-medium mb-1 block">Location</label>
                             <Input className="h-9 text-sm" defaultValue={location.name} />
                           </div>
-                          <div className="w-1/2">
+                          <div className="w-1/4">
                             <label className="text-xs font-medium mb-1 block">Apt #</label>
                             <Input className="h-9 text-sm" />
                           </div>
@@ -313,6 +311,7 @@ export const RouteTable = ({
                             </div>
                           </div>
                         </div>
+                        
                         <div>
                           <label className="text-xs font-medium mb-1 block">Distance</label>
                           <Input className="h-9 text-sm" defaultValue={location.distance} />
@@ -325,28 +324,25 @@ export const RouteTable = ({
                           <label className="text-xs font-medium mb-1 block">Contact name</label>
                           <Input className="h-9 text-sm" />
                         </div>
-                        <div className="col-span-2">
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <label className="text-xs font-medium mb-1 block">Phone number</label>
-                              <Input className="h-9 text-sm" />
-                            </div>
-                            <div>
-                              <label className="text-xs font-medium mb-1 block">Status</label>
-                              <Select defaultValue={location.status || "Pending"}>
-                                <SelectTrigger className="h-9 text-sm">
-                                  <SelectValue placeholder="Select a status" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {orderStatuses.map((status) => (
-                                    <SelectItem key={status} value={status}>
-                                      {status}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
-                          </div>
+                        
+                        <div>
+                          <label className="text-xs font-medium mb-1 block">Phone number</label>
+                          <Input className="h-9 text-sm" />
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium mb-1 block">Status</label>
+                          <Select defaultValue={location.status || "Pending"}>
+                            <SelectTrigger className="h-9 text-sm">
+                              <SelectValue placeholder="Select a status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {orderStatuses.map((status) => (
+                                <SelectItem key={status} value={status}>
+                                  {status}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                         </div>
                         <div>
                           <label className="text-xs font-medium mb-1 block">Barcode scanning</label>
@@ -363,6 +359,7 @@ export const RouteTable = ({
                             </SelectContent>
                           </Select>
                         </div>
+                        
                         <div className="col-span-3">
                           <label className="text-xs font-medium mb-1 block">Stop notes</label>
                           <Textarea className="text-sm h-9 py-1.5 min-h-0" rows={1} defaultValue={location.description} />
@@ -437,7 +434,7 @@ export const RouteTable = ({
                         <label className="text-xs font-medium mb-1 block">Location</label>
                         <Input className="h-9 text-sm" defaultValue={delivery.dropoffLocation.name} />
                       </div>
-                      <div className="w-1/2">
+                      <div className="w-1/4">
                         <label className="text-xs font-medium mb-1 block">Apt #</label>
                         <Input className="h-9 text-sm" />
                       </div>
@@ -452,6 +449,7 @@ export const RouteTable = ({
                         </div>
                       </div>
                     </div>
+                    
                     <div>
                       <label className="text-xs font-medium mb-1 block">Distance</label>
                       <Input className="h-9 text-sm" defaultValue={delivery.distance} />
@@ -464,28 +462,25 @@ export const RouteTable = ({
                       <label className="text-xs font-medium mb-1 block">Contact name</label>
                       <Input className="h-9 text-sm" defaultValue={delivery.customerName} />
                     </div>
-                    <div className="col-span-2">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="text-xs font-medium mb-1 block">Phone number</label>
-                          <Input className="h-9 text-sm" defaultValue="(415) 555-9876" />
-                        </div>
-                        <div>
-                          <label className="text-xs font-medium mb-1 block">Status</label>
-                          <Select defaultValue={status === "Dropoff Complete" ? "Completed" : status === "In Transit" ? "In Progress" : "Pending"}>
-                            <SelectTrigger className="h-9 text-sm">
-                              <SelectValue placeholder="Select a status" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {orderStatuses.map((status) => (
-                                <SelectItem key={status} value={status}>
-                                  {status}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </div>
+                    
+                    <div>
+                      <label className="text-xs font-medium mb-1 block">Phone number</label>
+                      <Input className="h-9 text-sm" defaultValue="(415) 555-9876" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium mb-1 block">Status</label>
+                      <Select defaultValue={status === "Dropoff Complete" ? "Completed" : status === "In Transit" ? "In Progress" : "Pending"}>
+                        <SelectTrigger className="h-9 text-sm">
+                          <SelectValue placeholder="Select a status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {orderStatuses.map((status) => (
+                            <SelectItem key={status} value={status}>
+                              {status}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                     <div>
                       <label className="text-xs font-medium mb-1 block">Barcode scanning</label>
@@ -502,6 +497,7 @@ export const RouteTable = ({
                         </SelectContent>
                       </Select>
                     </div>
+                    
                     <div className="col-span-3">
                       <label className="text-xs font-medium mb-1 block">Stop notes</label>
                       <Textarea className="text-sm h-9 py-1.5 min-h-0" rows={1} defaultValue="Final destination for delivery" />
