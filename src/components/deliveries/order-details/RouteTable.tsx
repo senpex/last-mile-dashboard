@@ -147,9 +147,19 @@ export const RouteTable = ({
               <TableRow>
                 <TableCell colSpan={8} className="p-4 bg-muted/20">
                   <div className="grid grid-cols-3 gap-4">
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Location</label>
-                      <Input className="h-9 text-sm" defaultValue={delivery.pickupLocation.name} />
+                    <div className="col-span-3 grid grid-cols-3 gap-4">
+                      <div>
+                        <label className="text-xs font-medium mb-1 block">Location</label>
+                        <Input className="h-9 text-sm" defaultValue={delivery.pickupLocation.name} />
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium mb-1 block">Longitude</label>
+                        <Input className="h-9 text-sm" />
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium mb-1 block">Latitude</label>
+                        <Input className="h-9 text-sm" />
+                      </div>
                     </div>
                     <div>
                       <label className="text-xs font-medium mb-1 block">Apt #</label>
@@ -170,14 +180,6 @@ export const RouteTable = ({
                     <div>
                       <label className="text-xs font-medium mb-1 block">Phone number</label>
                       <Input className="h-9 text-sm" defaultValue="(415) 555-1234" />
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Longitude</label>
-                      <Input className="h-9 text-sm" />
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Latitude</label>
-                      <Input className="h-9 text-sm" />
                     </div>
                     <div>
                       <label className="text-xs font-medium mb-1 block">Status</label>
@@ -285,9 +287,19 @@ export const RouteTable = ({
                   <TableRow>
                     <TableCell colSpan={8} className="p-4 bg-muted/20">
                       <div className="grid grid-cols-3 gap-4">
-                        <div>
-                          <label className="text-xs font-medium mb-1 block">Location</label>
-                          <Input className="h-9 text-sm" defaultValue={location.name} />
+                        <div className="col-span-3 grid grid-cols-3 gap-4">
+                          <div>
+                            <label className="text-xs font-medium mb-1 block">Location</label>
+                            <Input className="h-9 text-sm" defaultValue={location.name} />
+                          </div>
+                          <div>
+                            <label className="text-xs font-medium mb-1 block">Longitude</label>
+                            <Input className="h-9 text-sm" />
+                          </div>
+                          <div>
+                            <label className="text-xs font-medium mb-1 block">Latitude</label>
+                            <Input className="h-9 text-sm" />
+                          </div>
                         </div>
                         <div>
                           <label className="text-xs font-medium mb-1 block">Apt #</label>
@@ -307,14 +319,6 @@ export const RouteTable = ({
                         </div>
                         <div>
                           <label className="text-xs font-medium mb-1 block">Phone number</label>
-                          <Input className="h-9 text-sm" />
-                        </div>
-                        <div>
-                          <label className="text-xs font-medium mb-1 block">Longitude</label>
-                          <Input className="h-9 text-sm" />
-                        </div>
-                        <div>
-                          <label className="text-xs font-medium mb-1 block">Latitude</label>
                           <Input className="h-9 text-sm" />
                         </div>
                         <div>
@@ -416,9 +420,19 @@ export const RouteTable = ({
               <TableRow>
                 <TableCell colSpan={8} className="p-4 bg-muted/20">
                   <div className="grid grid-cols-3 gap-4">
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Location</label>
-                      <Input className="h-9 text-sm" defaultValue={delivery.dropoffLocation.name} />
+                    <div className="col-span-3 grid grid-cols-3 gap-4">
+                      <div>
+                        <label className="text-xs font-medium mb-1 block">Location</label>
+                        <Input className="h-9 text-sm" defaultValue={delivery.dropoffLocation.name} />
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium mb-1 block">Longitude</label>
+                        <Input className="h-9 text-sm" />
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium mb-1 block">Latitude</label>
+                        <Input className="h-9 text-sm" />
+                      </div>
                     </div>
                     <div>
                       <label className="text-xs font-medium mb-1 block">Apt #</label>
@@ -439,14 +453,6 @@ export const RouteTable = ({
                     <div>
                       <label className="text-xs font-medium mb-1 block">Phone number</label>
                       <Input className="h-9 text-sm" defaultValue="(415) 555-9876" />
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Longitude</label>
-                      <Input className="h-9 text-sm" />
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Latitude</label>
-                      <Input className="h-9 text-sm" />
                     </div>
                     <div>
                       <label className="text-xs font-medium mb-1 block">Status</label>
