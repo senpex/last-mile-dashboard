@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MapPin, Map, Edit, Trash2, Phone, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -152,11 +151,11 @@ export const RouteTable = ({
                         <label className="text-xs font-medium mb-1 block">Location</label>
                         <Input className="h-9 text-sm" defaultValue={delivery.pickupLocation.name} />
                       </div>
-                      <div>
+                      <div className="w-1/2">
                         <label className="text-xs font-medium mb-1 block">Longitude</label>
                         <Input className="h-9 text-sm" />
                       </div>
-                      <div>
+                      <div className="w-1/2">
                         <label className="text-xs font-medium mb-1 block">Latitude</label>
                         <Input className="h-9 text-sm" />
                       </div>
@@ -292,11 +291,11 @@ export const RouteTable = ({
                             <label className="text-xs font-medium mb-1 block">Location</label>
                             <Input className="h-9 text-sm" defaultValue={location.name} />
                           </div>
-                          <div>
+                          <div className="w-1/2">
                             <label className="text-xs font-medium mb-1 block">Longitude</label>
                             <Input className="h-9 text-sm" />
                           </div>
-                          <div>
+                          <div className="w-1/2">
                             <label className="text-xs font-medium mb-1 block">Latitude</label>
                             <Input className="h-9 text-sm" />
                           </div>
@@ -425,11 +424,11 @@ export const RouteTable = ({
                         <label className="text-xs font-medium mb-1 block">Location</label>
                         <Input className="h-9 text-sm" defaultValue={delivery.dropoffLocation.name} />
                       </div>
-                      <div>
+                      <div className="w-1/2">
                         <label className="text-xs font-medium mb-1 block">Longitude</label>
                         <Input className="h-9 text-sm" />
                       </div>
-                      <div>
+                      <div className="w-1/2">
                         <label className="text-xs font-medium mb-1 block">Latitude</label>
                         <Input className="h-9 text-sm" />
                       </div>
