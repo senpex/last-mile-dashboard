@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { MapPin, Map, Edit, Trash2, Phone, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -217,7 +218,7 @@ export const RouteTable = ({
                       </Select>
                     </div>
                     <div className="col-span-3">
-                      <label className="text-xs font-medium mb-1 block">Notes</label>
+                      <label className="text-xs font-medium mb-1 block">Stop notes</label>
                       <Textarea className="text-sm" rows={1} defaultValue="Pickup location for order items" />
                     </div>
                   </div>
@@ -363,7 +364,7 @@ export const RouteTable = ({
                           </Select>
                         </div>
                         <div className="col-span-3">
-                          <label className="text-xs font-medium mb-1 block">Notes</label>
+                          <label className="text-xs font-medium mb-1 block">Stop notes</label>
                           <Textarea className="text-sm" rows={1} defaultValue={location.description} />
                         </div>
                       </div>
@@ -502,7 +503,7 @@ export const RouteTable = ({
                       </Select>
                     </div>
                     <div className="col-span-3">
-                      <label className="text-xs font-medium mb-1 block">Notes</label>
+                      <label className="text-xs font-medium mb-1 block">Stop notes</label>
                       <Textarea className="text-sm" rows={1} defaultValue="Final destination for delivery" />
                     </div>
                   </div>
