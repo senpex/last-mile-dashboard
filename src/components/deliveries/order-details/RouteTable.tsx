@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MapPin, Map, Edit, Trash2, Phone, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -219,7 +218,7 @@ export const RouteTable = ({
                     </div>
                     <div className="col-span-3">
                       <label className="text-xs font-medium mb-1 block">Stop notes</label>
-                      <Textarea className="text-sm" rows={1} defaultValue="Pickup location for order items" />
+                      <Textarea className="text-sm h-9 py-1.5 min-h-0" rows={1} defaultValue="Pickup location for order items" />
                     </div>
                   </div>
                   <div className="mt-4 flex justify-end gap-2">
@@ -365,7 +364,7 @@ export const RouteTable = ({
                         </div>
                         <div className="col-span-3">
                           <label className="text-xs font-medium mb-1 block">Stop notes</label>
-                          <Textarea className="text-sm" rows={1} defaultValue={location.description} />
+                          <Textarea className="text-sm h-9 py-1.5 min-h-0" rows={1} defaultValue={location.description} />
                         </div>
                       </div>
                       <div className="mt-4 flex justify-end gap-2">
@@ -504,7 +503,7 @@ export const RouteTable = ({
                     </div>
                     <div className="col-span-3">
                       <label className="text-xs font-medium mb-1 block">Stop notes</label>
-                      <Textarea className="text-sm" rows={1} defaultValue="Final destination for delivery" />
+                      <Textarea className="text-sm h-9 py-1.5 min-h-0" rows={1} defaultValue="Final destination for delivery" />
                     </div>
                   </div>
                   <div className="mt-4 flex justify-end gap-2">
