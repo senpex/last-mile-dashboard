@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { MapPin, Map, Edit, Trash2, Phone, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,12 @@ interface AdditionalLocation {
   distance: string;
   status: string;
   deliveredAt: string;
+  contactName?: string;
+  phoneNumber?: string;
+  routeTime?: string;
+  aptNumber?: string;
+  longitude?: string;
+  latitude?: string;
 }
 
 interface RouteTableProps {
@@ -34,6 +41,25 @@ export const RouteTable = ({
   const [additionalLocations, setAdditionalLocations] = useState<AdditionalLocation[]>(initialAdditionalLocations);
   const [editingRowIndex, setEditingRowIndex] = useState<number | null>(null);
   
+  // Default contact information for pickup/dropoff points
+  const pickupContactInfo = {
+    name: "John Smith",
+    phone: "(415) 555-1234",
+    routeTime: "10:15 AM",
+    aptNumber: "101",
+    longitude: "-122.4194",
+    latitude: "37.7749"
+  };
+  
+  const dropoffContactInfo = {
+    name: delivery.customerName || "Customer",
+    phone: "(415) 555-9876",
+    routeTime: "11:30 AM",
+    aptNumber: "305",
+    longitude: "-122.4284",
+    latitude: "37.7833"
+  };
+  
   const handleAddLocation = () => {
     const newLocation: AdditionalLocation = {
       name: "",
@@ -41,7 +67,13 @@ export const RouteTable = ({
       description: "",
       distance: "",
       status: "Pending",
-      deliveredAt: ""
+      deliveredAt: "",
+      contactName: "",
+      phoneNumber: "",
+      routeTime: "",
+      aptNumber: "",
+      longitude: "",
+      latitude: ""
     };
     setAdditionalLocations([...additionalLocations, newLocation]);
   };
@@ -107,9 +139,9 @@ export const RouteTable = ({
                 </div>
               </TableCell>
               <TableCell>
-                <p className="text-sm font-medium">John Smith</p>
+                <p className="text-sm font-medium">{pickupContactInfo.name}</p>
                 <p className="text-xs text-muted-foreground flex items-center">
-                  <Phone className="h-3 w-3 mr-1" /> (415) 555-1234
+                  <Phone className="h-3 w-3 mr-1" /> {pickupContactInfo.phone}
                 </p>
               </TableCell>
               <TableCell>
@@ -151,38 +183,38 @@ export const RouteTable = ({
                         <label className="text-xs font-medium mb-1 block">Location</label>
                         <Input className="h-9 text-sm" defaultValue={delivery.pickupLocation.name} />
                       </div>
-                      <div className="w-1/4">
+                      <div>
                         <label className="text-xs font-medium mb-1 block">Apt #</label>
-                        <Input className="h-9 text-sm" />
+                        <Input className="h-9 text-sm" defaultValue={pickupContactInfo.aptNumber} />
                       </div>
                       <div className="flex space-x-2">
                         <div className="w-1/2">
                           <label className="text-xs font-medium mb-1 block">Longitude</label>
-                          <Input className="h-9 text-sm" />
+                          <Input className="h-9 text-sm" defaultValue={pickupContactInfo.longitude} />
                         </div>
                         <div className="w-1/2">
                           <label className="text-xs font-medium mb-1 block">Latitude</label>
-                          <Input className="h-9 text-sm" />
+                          <Input className="h-9 text-sm" defaultValue={pickupContactInfo.latitude} />
                         </div>
                       </div>
                     </div>
                     
                     <div>
+                      <label className="text-xs font-medium mb-1 block">Distance</label>
+                      <Input className="h-9 text-sm" defaultValue="0.0 miles" />
+                    </div>
+                    <div>
                       <label className="text-xs font-medium mb-1 block">Contact name</label>
-                      <Input className="h-9 text-sm" defaultValue="John Smith" />
+                      <Input className="h-9 text-sm" defaultValue={pickupContactInfo.name} />
                     </div>
                     <div>
                       <label className="text-xs font-medium mb-1 block">Phone number</label>
-                      <Input className="h-9 text-sm" defaultValue="(415) 555-1234" />
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Distance</label>
-                      <Input className="h-9 text-sm" defaultValue="0.0 miles" />
+                      <Input className="h-9 text-sm" defaultValue={pickupContactInfo.phone} />
                     </div>
                     
                     <div>
                       <label className="text-xs font-medium mb-1 block">Route time</label>
-                      <Input className="h-9 text-sm" />
+                      <Input className="h-9 text-sm" defaultValue={pickupContactInfo.routeTime} />
                     </div>
                     <div>
                       <label className="text-xs font-medium mb-1 block">Status</label>
@@ -242,8 +274,12 @@ export const RouteTable = ({
                       </> : <p className="text-sm font-medium">-</p>}
                   </TableCell>
                   <TableCell>
-                    {/* Display "-" for empty contact information */}
-                    <p className="text-sm font-medium">-</p>
+                    <p className="text-sm font-medium">{location.contactName || "-"}</p>
+                    <p className="text-xs text-muted-foreground flex items-center">
+                      {location.phoneNumber ? (
+                        <><Phone className="h-3 w-3 mr-1" /> {location.phoneNumber}</>
+                      ) : "-"}
+                    </p>
                   </TableCell>
                   <TableCell>
                     <p className="text-sm">{location.description || "-"}</p>
@@ -252,7 +288,6 @@ export const RouteTable = ({
                     <p className="text-sm">{location.distance || "-"}</p>
                   </TableCell>
                   <TableCell>
-                    {/* Display "-" for empty status or if status is "Pending" */}
                     {location.status && location.status !== "Pending" ? (
                       <Badge variant="outline" className={location.status === "Completed" ? "bg-green-100 text-green-800" : location.status === "In Progress" ? "bg-blue-100 text-blue-800" : "bg-gray-100 text-gray-800"}>
                         {location.status}
@@ -296,38 +331,38 @@ export const RouteTable = ({
                             <label className="text-xs font-medium mb-1 block">Location</label>
                             <Input className="h-9 text-sm" defaultValue={location.name} />
                           </div>
-                          <div className="w-1/2">
+                          <div>
                             <label className="text-xs font-medium mb-1 block">Apt #</label>
-                            <Input className="h-9 text-sm" />
+                            <Input className="h-9 text-sm" defaultValue={location.aptNumber || ""} />
                           </div>
                           <div className="flex space-x-2">
                             <div className="w-1/2">
                               <label className="text-xs font-medium mb-1 block">Longitude</label>
-                              <Input className="h-9 text-sm" />
+                              <Input className="h-9 text-sm" defaultValue={location.longitude || "-122.4084"} />
                             </div>
                             <div className="w-1/2">
                               <label className="text-xs font-medium mb-1 block">Latitude</label>
-                              <Input className="h-9 text-sm" />
+                              <Input className="h-9 text-sm" defaultValue={location.latitude || "37.7845"} />
                             </div>
                           </div>
                         </div>
                         
                         <div>
+                          <label className="text-xs font-medium mb-1 block">Distance</label>
+                          <Input className="h-9 text-sm" defaultValue={location.distance || "0.0 miles"} />
+                        </div>
+                        <div>
                           <label className="text-xs font-medium mb-1 block">Contact name</label>
-                          <Input className="h-9 text-sm" />
+                          <Input className="h-9 text-sm" defaultValue={location.contactName || "Contact Person"} />
                         </div>
                         <div>
                           <label className="text-xs font-medium mb-1 block">Phone number</label>
-                          <Input className="h-9 text-sm" />
-                        </div>
-                        <div>
-                          <label className="text-xs font-medium mb-1 block">Distance</label>
-                          <Input className="h-9 text-sm" defaultValue={location.distance} />
+                          <Input className="h-9 text-sm" defaultValue={location.phoneNumber || "(415) 555-0000"} />
                         </div>
                         
                         <div>
                           <label className="text-xs font-medium mb-1 block">Route time</label>
-                          <Input className="h-9 text-sm" />
+                          <Input className="h-9 text-sm" defaultValue={location.routeTime || "10:45 AM"} />
                         </div>
                         <div>
                           <label className="text-xs font-medium mb-1 block">Status</label>
@@ -362,7 +397,7 @@ export const RouteTable = ({
                         
                         <div className="col-span-3">
                           <label className="text-xs font-medium mb-1 block">Stop notes</label>
-                          <Textarea className="text-sm h-9 py-1.5 min-h-0" rows={1} defaultValue={location.description} />
+                          <Textarea className="text-sm h-9 py-1.5 min-h-0" rows={1} defaultValue={location.description || "Additional stop location"} />
                         </div>
                       </div>
                       <div className="mt-4 flex justify-end gap-2">
@@ -390,7 +425,7 @@ export const RouteTable = ({
               <TableCell>
                 <p className="text-sm font-medium">{delivery.customerName}</p>
                 <p className="text-xs text-muted-foreground flex items-center">
-                  <Phone className="h-3 w-3 mr-1" /> (415) 555-9876
+                  <Phone className="h-3 w-3 mr-1" /> {dropoffContactInfo.phone}
                 </p>
               </TableCell>
               <TableCell>
@@ -434,38 +469,38 @@ export const RouteTable = ({
                         <label className="text-xs font-medium mb-1 block">Location</label>
                         <Input className="h-9 text-sm" defaultValue={delivery.dropoffLocation.name} />
                       </div>
-                      <div className="w-1/4">
+                      <div>
                         <label className="text-xs font-medium mb-1 block">Apt #</label>
-                        <Input className="h-9 text-sm" />
+                        <Input className="h-9 text-sm" defaultValue={dropoffContactInfo.aptNumber} />
                       </div>
                       <div className="flex space-x-2">
                         <div className="w-1/2">
                           <label className="text-xs font-medium mb-1 block">Longitude</label>
-                          <Input className="h-9 text-sm" />
+                          <Input className="h-9 text-sm" defaultValue={dropoffContactInfo.longitude} />
                         </div>
                         <div className="w-1/2">
                           <label className="text-xs font-medium mb-1 block">Latitude</label>
-                          <Input className="h-9 text-sm" />
+                          <Input className="h-9 text-sm" defaultValue={dropoffContactInfo.latitude} />
                         </div>
                       </div>
                     </div>
                     
+                    <div>
+                      <label className="text-xs font-medium mb-1 block">Distance</label>
+                      <Input className="h-9 text-sm" defaultValue={delivery.distance} />
+                    </div>
                     <div>
                       <label className="text-xs font-medium mb-1 block">Contact name</label>
                       <Input className="h-9 text-sm" defaultValue={delivery.customerName} />
                     </div>
                     <div>
                       <label className="text-xs font-medium mb-1 block">Phone number</label>
-                      <Input className="h-9 text-sm" defaultValue="(415) 555-9876" />
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Distance</label>
-                      <Input className="h-9 text-sm" defaultValue={delivery.distance} />
+                      <Input className="h-9 text-sm" defaultValue={dropoffContactInfo.phone} />
                     </div>
                     
                     <div>
                       <label className="text-xs font-medium mb-1 block">Route time</label>
-                      <Input className="h-9 text-sm" />
+                      <Input className="h-9 text-sm" defaultValue={dropoffContactInfo.routeTime} />
                     </div>
                     <div>
                       <label className="text-xs font-medium mb-1 block">Status</label>
