@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { MapPin, Map, Edit, Trash2, Phone, Plus, MoveVertical } from "lucide-react";
+import { MapPin, Map, Edit, Trash2, Phone, Plus, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -213,7 +214,7 @@ export const RouteTable = ({
                   <TableCell>
                     {index !== 0 && (
                       <div className="flex justify-center cursor-move" title="Drag to reorder">
-                        <MoveVertical className="h-5 w-5 text-muted-foreground/60" />
+                        <Menu className="h-5 w-5 text-muted-foreground/60" />
                       </div>
                     )}
                   </TableCell>
