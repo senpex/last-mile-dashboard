@@ -168,21 +168,21 @@ export const RouteTable = ({
                     </div>
                     
                     <div>
-                      <label className="text-xs font-medium mb-1 block">Distance</label>
-                      <Input className="h-9 text-sm" defaultValue="0.0 miles" />
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Route time</label>
-                      <Input className="h-9 text-sm" />
-                    </div>
-                    <div>
                       <label className="text-xs font-medium mb-1 block">Contact name</label>
                       <Input className="h-9 text-sm" defaultValue="John Smith" />
                     </div>
-                    
                     <div>
                       <label className="text-xs font-medium mb-1 block">Phone number</label>
                       <Input className="h-9 text-sm" defaultValue="(415) 555-1234" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium mb-1 block">Distance</label>
+                      <Input className="h-9 text-sm" defaultValue="0.0 miles" />
+                    </div>
+                    
+                    <div>
+                      <label className="text-xs font-medium mb-1 block">Route time</label>
+                      <Input className="h-9 text-sm" />
                     </div>
                     <div>
                       <label className="text-xs font-medium mb-1 block">Status</label>
@@ -296,7 +296,7 @@ export const RouteTable = ({
                             <label className="text-xs font-medium mb-1 block">Location</label>
                             <Input className="h-9 text-sm" defaultValue={location.name} />
                           </div>
-                          <div className="w-1/4">
+                          <div className="w-1/2">
                             <label className="text-xs font-medium mb-1 block">Apt #</label>
                             <Input className="h-9 text-sm" />
                           </div>
@@ -313,20 +313,20 @@ export const RouteTable = ({
                         </div>
                         
                         <div>
-                          <label className="text-xs font-medium mb-1 block">Distance</label>
-                          <Input className="h-9 text-sm" defaultValue={location.distance} />
-                        </div>
-                        <div>
-                          <label className="text-xs font-medium mb-1 block">Route time</label>
-                          <Input className="h-9 text-sm" />
-                        </div>
-                        <div>
                           <label className="text-xs font-medium mb-1 block">Contact name</label>
                           <Input className="h-9 text-sm" />
                         </div>
-                        
                         <div>
                           <label className="text-xs font-medium mb-1 block">Phone number</label>
+                          <Input className="h-9 text-sm" />
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium mb-1 block">Distance</label>
+                          <Input className="h-9 text-sm" defaultValue={location.distance} />
+                        </div>
+                        
+                        <div>
+                          <label className="text-xs font-medium mb-1 block">Route time</label>
                           <Input className="h-9 text-sm" />
                         </div>
                         <div>
@@ -451,21 +451,21 @@ export const RouteTable = ({
                     </div>
                     
                     <div>
-                      <label className="text-xs font-medium mb-1 block">Distance</label>
-                      <Input className="h-9 text-sm" defaultValue={delivery.distance} />
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Route time</label>
-                      <Input className="h-9 text-sm" />
-                    </div>
-                    <div>
                       <label className="text-xs font-medium mb-1 block">Contact name</label>
                       <Input className="h-9 text-sm" defaultValue={delivery.customerName} />
                     </div>
-                    
                     <div>
                       <label className="text-xs font-medium mb-1 block">Phone number</label>
                       <Input className="h-9 text-sm" defaultValue="(415) 555-9876" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium mb-1 block">Distance</label>
+                      <Input className="h-9 text-sm" defaultValue={delivery.distance} />
+                    </div>
+                    
+                    <div>
+                      <label className="text-xs font-medium mb-1 block">Route time</label>
+                      <Input className="h-9 text-sm" />
                     </div>
                     <div>
                       <label className="text-xs font-medium mb-1 block">Status</label>
