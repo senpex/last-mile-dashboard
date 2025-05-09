@@ -102,8 +102,8 @@ export const RouteTable = ({
   };
   
   const handleDeleteLocation = (index: number) => {
-    // Prevent deleting pickup or dropoff points (first and last locations)
-    if (index === 0 || index === routeLocations.length - 1) {
+    // Only prevent deleting pickup point (first location)
+    if (index === 0) {
       return;
     }
     
@@ -270,7 +270,7 @@ export const RouteTable = ({
                       size="sm" 
                       className="h-7 text-xs flex items-center gap-1 text-destructive"
                       onClick={() => handleDeleteLocation(index)}
-                      disabled={index === 0 || index === routeLocations.length - 1}
+                      disabled={index === 0} // Only prevent deleting the pickup point
                     >
                       <Trash2 className="h-4 w-4" />
                       Delete
