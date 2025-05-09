@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MapPin, Map, Edit, Trash2, Phone, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -181,7 +180,7 @@ export const RouteTable = ({
                     <div className="col-span-3 grid grid-cols-3 gap-4">
                       <div>
                         <label className="text-xs font-medium mb-1 block">Location</label>
-                        <Input className="h-9 text-sm" defaultValue={delivery.pickupLocation.name} />
+                        <Input className="h-9 text-sm" defaultValue={delivery.pickupLocation.address} />
                       </div>
                       <div>
                         <label className="text-xs font-medium mb-1 block">Apt #</label>
@@ -329,7 +328,7 @@ export const RouteTable = ({
                         <div className="col-span-3 grid grid-cols-3 gap-4">
                           <div>
                             <label className="text-xs font-medium mb-1 block">Location</label>
-                            <Input className="h-9 text-sm" defaultValue={location.name} />
+                            <Input className="h-9 text-sm" defaultValue={location.address || "Enter address here..."} />
                           </div>
                           <div>
                             <label className="text-xs font-medium mb-1 block">Apt #</label>
@@ -467,7 +466,7 @@ export const RouteTable = ({
                     <div className="col-span-3 grid grid-cols-3 gap-4">
                       <div>
                         <label className="text-xs font-medium mb-1 block">Location</label>
-                        <Input className="h-9 text-sm" defaultValue={delivery.dropoffLocation.name} />
+                        <Input className="h-9 text-sm" defaultValue={delivery.dropoffLocation.address} />
                       </div>
                       <div>
                         <label className="text-xs font-medium mb-1 block">Apt #</label>
