@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { MapPin, Map, Edit, Trash2, Phone, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ export const RouteTable = ({
   onOpenMap
 }: RouteTableProps) => {
   const [additionalLocations, setAdditionalLocations] = useState<AdditionalLocation[]>(initialAdditionalLocations);
+  
   const handleAddLocation = () => {
     const newLocation: AdditionalLocation = {
       name: "",
@@ -36,6 +38,13 @@ export const RouteTable = ({
     };
     setAdditionalLocations([...additionalLocations, newLocation]);
   };
+  
+  const handleDeleteLocation = (index: number) => {
+    const updatedLocations = [...additionalLocations];
+    updatedLocations.splice(index, 1);
+    setAdditionalLocations(updatedLocations);
+  };
+  
   return <div>
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-medium flex items-center">
@@ -118,7 +127,6 @@ export const RouteTable = ({
                 <TableCell>
                   {/* Display "-" for empty contact information */}
                   <p className="text-sm font-medium">-</p>
-                  
                 </TableCell>
                 <TableCell>
                   <p className="text-sm">{location.description || "-"}</p>
@@ -127,10 +135,14 @@ export const RouteTable = ({
                   <p className="text-sm">{location.distance || "-"}</p>
                 </TableCell>
                 <TableCell>
-                  {/* Display "-" for empty status */}
-                  <Badge variant="outline" className={location.status === "Completed" ? "bg-green-100 text-green-800" : location.status === "In Progress" ? "bg-blue-100 text-blue-800" : location.status ? "bg-amber-100 text-amber-800" : "bg-gray-100 text-gray-800"}>
-                    {location.status || "-"}
-                  </Badge>
+                  {/* Display "-" for empty status or if status is "Pending" */}
+                  {location.status && location.status !== "Pending" ? (
+                    <Badge variant="outline" className={location.status === "Completed" ? "bg-green-100 text-green-800" : location.status === "In Progress" ? "bg-blue-100 text-blue-800" : "bg-gray-100 text-gray-800"}>
+                      {location.status}
+                    </Badge>
+                  ) : (
+                    <p className="text-sm">-</p>
+                  )}
                 </TableCell>
                 <TableCell>
                   <p className="text-sm">{location.deliveredAt || "-"}</p>
@@ -142,7 +154,12 @@ export const RouteTable = ({
                   </Button>
                 </TableCell>
                 <TableCell>
-                  <Button variant="outline" size="sm" className="flex items-center gap-1 text-destructive">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex items-center gap-1 text-destructive"
+                    onClick={() => handleDeleteLocation(index)}
+                  >
                     <Trash2 className="h-4 w-4" />
                     Delete
                   </Button>
