@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MapPin, Map, Edit, Trash2, Phone, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -52,11 +51,11 @@ export const RouteTable = ({
           Route
         </h3>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="flex items-center gap-1.5 h-8" onClick={onOpenMap}>
+          <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1.5" onClick={onOpenMap}>
             <Map className="h-4 w-4" />
             View Map
           </Button>
-          <Button variant="outline" size="sm" className="flex items-center gap-1.5 h-8" onClick={handleAddLocation}>
+          <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1.5" onClick={handleAddLocation}>
             <Plus className="h-4 w-4" />
             Add Location
           </Button>
