@@ -147,13 +147,19 @@ export const RouteTable = ({
                 <TableCell colSpan={8} className="p-4 bg-muted/20">
                   <div className="grid grid-cols-3 gap-4">
                     <div className="col-span-3 grid grid-cols-3 gap-4">
-                      <div>
-                        <label className="text-xs font-medium mb-1 block">Location</label>
-                        <Input className="h-9 text-sm" defaultValue={delivery.pickupLocation.name} />
+                      <div className="flex gap-2">
+                        <div className="w-2/3">
+                          <label className="text-xs font-medium mb-1 block">Location</label>
+                          <Input className="h-9 text-sm" defaultValue={delivery.pickupLocation.name} />
+                        </div>
+                        <div className="w-1/3">
+                          <label className="text-xs font-medium mb-1 block">Apt #</label>
+                          <Input className="h-9 text-sm" />
+                        </div>
                       </div>
-                      <div className="w-1/4">
-                        <label className="text-xs font-medium mb-1 block">Apt #</label>
-                        <Input className="h-9 text-sm" />
+                      <div>
+                        <label className="text-xs font-medium mb-1 block">Contact name</label>
+                        <Input className="h-9 text-sm" defaultValue="John Smith" />
                       </div>
                       <div className="flex space-x-2">
                         <div className="w-1/2">
@@ -168,6 +174,10 @@ export const RouteTable = ({
                     </div>
                     
                     <div>
+                      <label className="text-xs font-medium mb-1 block">Phone number</label>
+                      <Input className="h-9 text-sm" defaultValue="(415) 555-1234" />
+                    </div>
+                    <div>
                       <label className="text-xs font-medium mb-1 block">Distance</label>
                       <Input className="h-9 text-sm" defaultValue="0.0 miles" />
                     </div>
@@ -175,15 +185,7 @@ export const RouteTable = ({
                       <label className="text-xs font-medium mb-1 block">Route time</label>
                       <Input className="h-9 text-sm" />
                     </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Contact name</label>
-                      <Input className="h-9 text-sm" defaultValue="John Smith" />
-                    </div>
                     
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Phone number</label>
-                      <Input className="h-9 text-sm" defaultValue="(415) 555-1234" />
-                    </div>
                     <div>
                       <label className="text-xs font-medium mb-1 block">Status</label>
                       <Select defaultValue="Completed">
@@ -213,6 +215,9 @@ export const RouteTable = ({
                           ))}
                         </SelectContent>
                       </Select>
+                    </div>
+                    <div>
+                      {/* Empty space for alignment */}
                     </div>
                     
                     <div className="col-span-3">
@@ -292,12 +297,18 @@ export const RouteTable = ({
                     <TableCell colSpan={8} className="p-4 bg-muted/20">
                       <div className="grid grid-cols-3 gap-4">
                         <div className="col-span-3 grid grid-cols-3 gap-4">
-                          <div>
-                            <label className="text-xs font-medium mb-1 block">Location</label>
-                            <Input className="h-9 text-sm" defaultValue={location.name} />
+                          <div className="flex gap-2">
+                            <div className="w-2/3">
+                              <label className="text-xs font-medium mb-1 block">Location</label>
+                              <Input className="h-9 text-sm" defaultValue={location.name} />
+                            </div>
+                            <div className="w-1/3">
+                              <label className="text-xs font-medium mb-1 block">Apt #</label>
+                              <Input className="h-9 text-sm" />
+                            </div>
                           </div>
-                          <div className="w-1/4">
-                            <label className="text-xs font-medium mb-1 block">Apt #</label>
+                          <div>
+                            <label className="text-xs font-medium mb-1 block">Contact name</label>
                             <Input className="h-9 text-sm" />
                           </div>
                           <div className="flex space-x-2">
@@ -313,6 +324,10 @@ export const RouteTable = ({
                         </div>
                         
                         <div>
+                          <label className="text-xs font-medium mb-1 block">Phone number</label>
+                          <Input className="h-9 text-sm" />
+                        </div>
+                        <div>
                           <label className="text-xs font-medium mb-1 block">Distance</label>
                           <Input className="h-9 text-sm" defaultValue={location.distance} />
                         </div>
@@ -320,15 +335,7 @@ export const RouteTable = ({
                           <label className="text-xs font-medium mb-1 block">Route time</label>
                           <Input className="h-9 text-sm" />
                         </div>
-                        <div>
-                          <label className="text-xs font-medium mb-1 block">Contact name</label>
-                          <Input className="h-9 text-sm" />
-                        </div>
                         
-                        <div>
-                          <label className="text-xs font-medium mb-1 block">Phone number</label>
-                          <Input className="h-9 text-sm" />
-                        </div>
                         <div>
                           <label className="text-xs font-medium mb-1 block">Status</label>
                           <Select defaultValue={location.status || "Pending"}>
@@ -358,6 +365,9 @@ export const RouteTable = ({
                               ))}
                             </SelectContent>
                           </Select>
+                        </div>
+                        <div>
+                          {/* Empty space for alignment */}
                         </div>
                         
                         <div className="col-span-3">
@@ -430,13 +440,19 @@ export const RouteTable = ({
                 <TableCell colSpan={8} className="p-4 bg-muted/20">
                   <div className="grid grid-cols-3 gap-4">
                     <div className="col-span-3 grid grid-cols-3 gap-4">
-                      <div>
-                        <label className="text-xs font-medium mb-1 block">Location</label>
-                        <Input className="h-9 text-sm" defaultValue={delivery.dropoffLocation.name} />
+                      <div className="flex gap-2">
+                        <div className="w-2/3">
+                          <label className="text-xs font-medium mb-1 block">Location</label>
+                          <Input className="h-9 text-sm" defaultValue={delivery.dropoffLocation.name} />
+                        </div>
+                        <div className="w-1/3">
+                          <label className="text-xs font-medium mb-1 block">Apt #</label>
+                          <Input className="h-9 text-sm" />
+                        </div>
                       </div>
-                      <div className="w-1/4">
-                        <label className="text-xs font-medium mb-1 block">Apt #</label>
-                        <Input className="h-9 text-sm" />
+                      <div>
+                        <label className="text-xs font-medium mb-1 block">Contact name</label>
+                        <Input className="h-9 text-sm" defaultValue={delivery.customerName} />
                       </div>
                       <div className="flex space-x-2">
                         <div className="w-1/2">
@@ -451,6 +467,10 @@ export const RouteTable = ({
                     </div>
                     
                     <div>
+                      <label className="text-xs font-medium mb-1 block">Phone number</label>
+                      <Input className="h-9 text-sm" defaultValue="(415) 555-9876" />
+                    </div>
+                    <div>
                       <label className="text-xs font-medium mb-1 block">Distance</label>
                       <Input className="h-9 text-sm" defaultValue={delivery.distance} />
                     </div>
@@ -458,15 +478,7 @@ export const RouteTable = ({
                       <label className="text-xs font-medium mb-1 block">Route time</label>
                       <Input className="h-9 text-sm" />
                     </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Contact name</label>
-                      <Input className="h-9 text-sm" defaultValue={delivery.customerName} />
-                    </div>
                     
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Phone number</label>
-                      <Input className="h-9 text-sm" defaultValue="(415) 555-9876" />
-                    </div>
                     <div>
                       <label className="text-xs font-medium mb-1 block">Status</label>
                       <Select defaultValue={status === "Dropoff Complete" ? "Completed" : status === "In Transit" ? "In Progress" : "Pending"}>
@@ -496,6 +508,9 @@ export const RouteTable = ({
                           ))}
                         </SelectContent>
                       </Select>
+                    </div>
+                    <div>
+                      {/* Empty space for alignment */}
                     </div>
                     
                     <div className="col-span-3">
