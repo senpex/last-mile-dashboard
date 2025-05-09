@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { MapPin, Map, Edit, Trash2, Phone, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -147,9 +148,13 @@ export const RouteTable = ({
                 <TableCell colSpan={8} className="p-4 bg-muted/20">
                   <div className="grid grid-cols-3 gap-4">
                     <div className="col-span-3 grid grid-cols-3 gap-4">
-                      <div className="col-span-2">
+                      <div>
                         <label className="text-xs font-medium mb-1 block">Location</label>
                         <Input className="h-9 text-sm" defaultValue={delivery.pickupLocation.name} />
+                      </div>
+                      <div className="w-1/2">
+                        <label className="text-xs font-medium mb-1 block">Apt #</label>
+                        <Input className="h-9 text-sm" />
                       </div>
                       <div className="flex space-x-2">
                         <div className="w-1/2">
@@ -161,10 +166,6 @@ export const RouteTable = ({
                           <Input className="h-9 text-sm" />
                         </div>
                       </div>
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Apt #</label>
-                      <Input className="h-9 text-sm" />
                     </div>
                     <div>
                       <label className="text-xs font-medium mb-1 block">Distance</label>
@@ -293,9 +294,13 @@ export const RouteTable = ({
                     <TableCell colSpan={8} className="p-4 bg-muted/20">
                       <div className="grid grid-cols-3 gap-4">
                         <div className="col-span-3 grid grid-cols-3 gap-4">
-                          <div className="col-span-2">
+                          <div>
                             <label className="text-xs font-medium mb-1 block">Location</label>
                             <Input className="h-9 text-sm" defaultValue={location.name} />
+                          </div>
+                          <div className="w-1/2">
+                            <label className="text-xs font-medium mb-1 block">Apt #</label>
+                            <Input className="h-9 text-sm" />
                           </div>
                           <div className="flex space-x-2">
                             <div className="w-1/2">
@@ -307,10 +312,6 @@ export const RouteTable = ({
                               <Input className="h-9 text-sm" />
                             </div>
                           </div>
-                        </div>
-                        <div>
-                          <label className="text-xs font-medium mb-1 block">Apt #</label>
-                          <Input className="h-9 text-sm" />
                         </div>
                         <div>
                           <label className="text-xs font-medium mb-1 block">Distance</label>
@@ -432,9 +433,13 @@ export const RouteTable = ({
                 <TableCell colSpan={8} className="p-4 bg-muted/20">
                   <div className="grid grid-cols-3 gap-4">
                     <div className="col-span-3 grid grid-cols-3 gap-4">
-                      <div className="col-span-2">
+                      <div>
                         <label className="text-xs font-medium mb-1 block">Location</label>
                         <Input className="h-9 text-sm" defaultValue={delivery.dropoffLocation.name} />
+                      </div>
+                      <div className="w-1/2">
+                        <label className="text-xs font-medium mb-1 block">Apt #</label>
+                        <Input className="h-9 text-sm" />
                       </div>
                       <div className="flex space-x-2">
                         <div className="w-1/2">
@@ -446,10 +451,6 @@ export const RouteTable = ({
                           <Input className="h-9 text-sm" />
                         </div>
                       </div>
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Apt #</label>
-                      <Input className="h-9 text-sm" />
                     </div>
                     <div>
                       <label className="text-xs font-medium mb-1 block">Distance</label>
