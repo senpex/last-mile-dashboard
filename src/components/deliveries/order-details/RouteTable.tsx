@@ -177,8 +177,11 @@ export const RouteTable = ({
           </TableHeader>
           <TableBody>
             {routeLocations.map((location, index) => <React.Fragment key={index}>
-                <TableRow draggable={index !== 0} // Prevent dragging the pickup point
-            onDragStart={() => handleDragStart(index)} onDragOver={handleDragOver} onDrop={() => handleDrop(index)} className={draggedIndex === index ? "opacity-50 bg-muted/30" : ""}>
+                <TableRow draggable={index !== 0} 
+                  onDragStart={() => handleDragStart(index)} 
+                  onDragOver={handleDragOver} 
+                  onDrop={() => handleDrop(index)} 
+                  className={draggedIndex === index ? "opacity-50 bg-muted/30" : ""}>
                   <TableCell>
                     {index !== 0 && <div className="flex justify-center cursor-move" title="Drag to reorder">
                         <Menu className="h-5 w-5 text-muted-foreground/60" />
@@ -195,7 +198,14 @@ export const RouteTable = ({
                   </TableCell>
                   <TableCell>
                     <p className="text-sm font-medium">{location.contactName || "-"}</p>
-                    
+                    <p className="text-xs flex items-center gap-1 text-muted-foreground">
+                      {location.phoneNumber ? (
+                        <>
+                          <Phone className="h-3 w-3" />
+                          {location.phoneNumber}
+                        </>
+                      ) : "-"}
+                    </p>
                   </TableCell>
                   <TableCell>
                     <p className="text-sm">{location.description || "-"}</p>
@@ -218,8 +228,7 @@ export const RouteTable = ({
                     </Button>
                   </TableCell>
                   <TableCell>
-                    <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1 text-destructive" onClick={() => handleDeleteLocation(index)} disabled={index === 0} // Only prevent deleting the pickup point
-                >
+                    <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1 text-destructive" onClick={() => handleDeleteLocation(index)} disabled={index === 0}>
                       <Trash2 className="h-4 w-4" />
                       Delete
                     </Button>
