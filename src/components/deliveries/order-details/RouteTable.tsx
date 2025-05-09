@@ -147,7 +147,7 @@ export const RouteTable = ({
                 <TableCell colSpan={8} className="p-4 bg-muted/20">
                   <div className="grid grid-cols-3 gap-4">
                     <div className="col-span-3 grid grid-cols-3 gap-4">
-                      <div className="col-span-1.5">
+                      <div>
                         <label className="text-xs font-medium mb-1 block">Location</label>
                         <Input className="h-9 text-sm" defaultValue={delivery.pickupLocation.name} />
                       </div>
@@ -287,7 +287,7 @@ export const RouteTable = ({
                     <TableCell colSpan={8} className="p-4 bg-muted/20">
                       <div className="grid grid-cols-3 gap-4">
                         <div className="col-span-3 grid grid-cols-3 gap-4">
-                          <div className="col-span-1.5">
+                          <div>
                             <label className="text-xs font-medium mb-1 block">Location</label>
                             <Input className="h-9 text-sm" defaultValue={location.name} />
                           </div>
@@ -420,7 +420,7 @@ export const RouteTable = ({
                 <TableCell colSpan={8} className="p-4 bg-muted/20">
                   <div className="grid grid-cols-3 gap-4">
                     <div className="col-span-3 grid grid-cols-3 gap-4">
-                      <div className="col-span-1.5">
+                      <div>
                         <label className="text-xs font-medium mb-1 block">Location</label>
                         <Input className="h-9 text-sm" defaultValue={delivery.dropoffLocation.name} />
                       </div>
