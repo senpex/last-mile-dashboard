@@ -38,28 +38,46 @@ export const RouteTable = ({
   status,
   onOpenMap
 }: RouteTableProps) => {
-  const [additionalLocations, setAdditionalLocations] = useState<AdditionalLocation[]>(initialAdditionalLocations);
+  // Convert pickup and dropoff points into the same format as additional locations
+  const [routeLocations, setRouteLocations] = useState<AdditionalLocation[]>([
+    // First location - pickup point
+    {
+      name: delivery.pickupLocation.name,
+      address: delivery.pickupLocation.address,
+      description: "Pickup location for order items",
+      distance: "0.0 miles",
+      status: "Completed",
+      deliveredAt: delivery.pickupTime,
+      contactName: "John Smith",
+      phoneNumber: "(415) 555-1234",
+      routeTime: "10:15 AM",
+      aptNumber: "101",
+      longitude: "-122.4194",
+      latitude: "37.7749",
+      isPickupPoint: true
+    },
+    // Middle locations - additional stops
+    ...initialAdditionalLocations,
+    // Last location - dropoff point
+    {
+      name: delivery.dropoffLocation.name,
+      address: delivery.dropoffLocation.address,
+      description: "Final destination for delivery",
+      distance: delivery.distance,
+      status: status === "Dropoff Complete" ? "Completed" : status === "In Transit" ? "In Progress" : "Pending",
+      deliveredAt: delivery.dropoffTime,
+      contactName: delivery.customerName || "Customer",
+      phoneNumber: "(415) 555-9876",
+      routeTime: "11:30 AM",
+      aptNumber: "305",
+      longitude: "-122.4284",
+      latitude: "37.7833",
+      isDropoffPoint: true
+    }
+  ] as any[]);
+  
   const [editingRowIndex, setEditingRowIndex] = useState<number | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-  
-  // Default contact information for pickup/dropoff points
-  const pickupContactInfo = {
-    name: "John Smith",
-    phone: "(415) 555-1234",
-    routeTime: "10:15 AM",
-    aptNumber: "101",
-    longitude: "-122.4194",
-    latitude: "37.7749"
-  };
-  
-  const dropoffContactInfo = {
-    name: delivery.customerName || "Customer",
-    phone: "(415) 555-9876",
-    routeTime: "11:30 AM",
-    aptNumber: "305",
-    longitude: "-122.4284",
-    latitude: "37.7833"
-  };
   
   const handleAddLocation = () => {
     const newLocation: AdditionalLocation = {
@@ -76,13 +94,22 @@ export const RouteTable = ({
       longitude: "",
       latitude: ""
     };
-    setAdditionalLocations([...additionalLocations, newLocation]);
+    
+    // Insert the new location before the last location (dropoff point)
+    const updatedLocations = [...routeLocations];
+    updatedLocations.splice(routeLocations.length - 1, 0, newLocation);
+    setRouteLocations(updatedLocations);
   };
   
   const handleDeleteLocation = (index: number) => {
-    const updatedLocations = [...additionalLocations];
+    // Prevent deleting pickup or dropoff points (first and last locations)
+    if (index === 0 || index === routeLocations.length - 1) {
+      return;
+    }
+    
+    const updatedLocations = [...routeLocations];
     updatedLocations.splice(index, 1);
-    setAdditionalLocations(updatedLocations);
+    setRouteLocations(updatedLocations);
   };
   
   const handleEditClick = (index: number) => {
@@ -94,6 +121,9 @@ export const RouteTable = ({
   };
 
   const handleDragStart = (index: number) => {
+    // Prevent dragging pickup point (always stays first)
+    if (index === 0) return;
+    
     setDraggedIndex(index);
   };
   
@@ -104,7 +134,10 @@ export const RouteTable = ({
   const handleDrop = (index: number) => {
     if (draggedIndex === null || draggedIndex === index) return;
     
-    const updatedLocations = [...additionalLocations];
+    // Prevent dropping at position 0 (pickup point must stay first)
+    if (index === 0) return;
+    
+    const updatedLocations = [...routeLocations];
     const draggedLocation = updatedLocations[draggedIndex];
     
     // Remove the dragged item
@@ -113,7 +146,7 @@ export const RouteTable = ({
     // Insert at new position
     updatedLocations.splice(index, 0, draggedLocation);
     
-    setAdditionalLocations(updatedLocations);
+    setRouteLocations(updatedLocations);
     setDraggedIndex(null);
   };
 
@@ -122,6 +155,19 @@ export const RouteTable = ({
   ];
   
   const barcodeOptions = ["Yes", "No"];
+  
+  const renderLocationBadge = (location: AdditionalLocation, index: number) => {
+    if (index === 0) {
+      return (
+        <Badge variant="outline" className="mb-1 w-fit bg-blue-100 text-blue-800 border-blue-200">Pickup point</Badge>
+      );
+    } else if (index === routeLocations.length - 1) {
+      return (
+        <Badge variant="outline" className="mb-1 w-fit bg-green-100 text-green-800 border-green-200">Dropoff point</Badge>
+      );
+    }
+    return null;
+  };
   
   return <div>
       <div className="flex items-center justify-between mb-3">
@@ -156,160 +202,30 @@ export const RouteTable = ({
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell></TableCell>
-              <TableCell>
-                <div className="flex flex-col">
-                  <Badge variant="outline" className="mb-1 w-fit bg-blue-100 text-blue-800 border-blue-200">Pickup point</Badge>
-                  <p className="text-sm font-medium">{delivery.pickupLocation.name}</p>
-                  <p className="text-xs text-muted-foreground">{delivery.pickupLocation.address}</p>
-                </div>
-              </TableCell>
-              <TableCell>
-                <p className="text-sm font-medium">{pickupContactInfo.name}</p>
-                <p className="text-xs text-muted-foreground flex items-center">
-                  <Phone className="h-3 w-3 mr-1" /> {pickupContactInfo.phone}
-                </p>
-              </TableCell>
-              <TableCell>
-                <p className="text-sm">Pickup location for order items</p>
-              </TableCell>
-              <TableCell>
-                <p className="text-sm">0.0 miles</p>
-              </TableCell>
-              <TableCell>
-                <Badge variant="outline" className="bg-green-100 text-green-800">Completed</Badge>
-              </TableCell>
-              <TableCell>
-                <p className="text-sm">{delivery.pickupTime}</p>
-              </TableCell>
-              <TableCell>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="h-7 text-xs flex items-center gap-1"
-                  onClick={() => handleEditClick(-1)}
-                >
-                  <Edit className="h-4 w-4" />
-                  Edit
-                </Button>
-              </TableCell>
-              <TableCell>
-                <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1 text-destructive">
-                  <Trash2 className="h-4 w-4" />
-                  Delete
-                </Button>
-              </TableCell>
-            </TableRow>
-            {editingRowIndex === -1 && (
-              <TableRow>
-                <TableCell colSpan={9} className="p-4 bg-muted/20">
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="col-span-3 grid grid-cols-3 gap-4">
-                      <div>
-                        <label className="text-xs font-medium mb-1 block">Location</label>
-                        <Input className="h-9 text-sm" defaultValue={delivery.pickupLocation.address} />
-                      </div>
-                      <div>
-                        <label className="text-xs font-medium mb-1 block">Apt #</label>
-                        <Input className="h-9 text-sm" defaultValue={pickupContactInfo.aptNumber} />
-                      </div>
-                      <div className="flex space-x-2">
-                        <div className="w-1/2">
-                          <label className="text-xs font-medium mb-1 block">Longitude</label>
-                          <Input className="h-9 text-sm" defaultValue={pickupContactInfo.longitude} />
-                        </div>
-                        <div className="w-1/2">
-                          <label className="text-xs font-medium mb-1 block">Latitude</label>
-                          <Input className="h-9 text-sm" defaultValue={pickupContactInfo.latitude} />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Distance</label>
-                      <Input className="h-9 text-sm" defaultValue="0.0 miles" />
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Contact name</label>
-                      <Input className="h-9 text-sm" defaultValue={pickupContactInfo.name} />
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Phone number</label>
-                      <Input className="h-9 text-sm" defaultValue={pickupContactInfo.phone} />
-                    </div>
-                    
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Route time</label>
-                      <Input className="h-9 text-sm" defaultValue={pickupContactInfo.routeTime} />
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Status</label>
-                      <Select defaultValue="Completed">
-                        <SelectTrigger className="h-9 text-sm">
-                          <SelectValue placeholder="Select a status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {orderStatuses.map((status) => (
-                            <SelectItem key={status} value={status}>
-                              {status}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Barcode scanning</label>
-                      <Select defaultValue="No">
-                        <SelectTrigger className="h-9 text-sm">
-                          <SelectValue placeholder="Select an option" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {barcodeOptions.map((option) => (
-                            <SelectItem key={option} value={option}>
-                              {option}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div className="col-span-3">
-                      <label className="text-xs font-medium mb-1 block">Stop notes</label>
-                      <Textarea className="text-sm h-9 py-1.5 min-h-0" rows={1} defaultValue="Pickup location for order items" />
-                    </div>
-                  </div>
-                  <div className="mt-4 flex justify-end gap-2">
-                    <Button size="sm" variant="outline" className="h-7 text-xs" onClick={() => setEditingRowIndex(null)}>
-                      Cancel
-                    </Button>
-                    <Button size="sm" className="h-7 text-xs">
-                      Save Changes
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            )}
-            
-            {additionalLocations.map((location, index) => (
+            {routeLocations.map((location, index) => (
               <React.Fragment key={index}>
                 <TableRow 
-                  draggable 
+                  draggable={index !== 0} // Prevent dragging the pickup point
                   onDragStart={() => handleDragStart(index)}
                   onDragOver={handleDragOver}
                   onDrop={() => handleDrop(index)}
                   className={draggedIndex === index ? "opacity-50 bg-muted/30" : ""}
                 >
                   <TableCell>
-                    <div className="flex justify-center cursor-move" title="Drag to reorder">
-                      <MoveVertical className="h-5 w-5 text-muted-foreground/60" />
-                    </div>
+                    {index !== 0 && (
+                      <div className="flex justify-center cursor-move" title="Drag to reorder">
+                        <MoveVertical className="h-5 w-5 text-muted-foreground/60" />
+                      </div>
+                    )}
                   </TableCell>
                   <TableCell>
-                    {location.name || location.address ? <>
-                        <p className="text-sm font-medium">{location.name || "-"}</p>
-                        <p className="text-xs text-muted-foreground">{location.address || "-"}</p>
-                      </> : <p className="text-sm font-medium">-</p>}
+                    <div className="flex flex-col">
+                      {renderLocationBadge(location, index)}
+                      {location.name || location.address ? <>
+                          <p className="text-sm font-medium">{location.name || "-"}</p>
+                          <p className="text-xs text-muted-foreground">{location.address || "-"}</p>
+                        </> : <p className="text-sm font-medium">-</p>}
+                    </div>
                   </TableCell>
                   <TableCell>
                     <p className="text-sm font-medium">{location.contactName || "-"}</p>
@@ -354,6 +270,7 @@ export const RouteTable = ({
                       size="sm" 
                       className="h-7 text-xs flex items-center gap-1 text-destructive"
                       onClick={() => handleDeleteLocation(index)}
+                      disabled={index === 0 || index === routeLocations.length - 1}
                     >
                       <Trash2 className="h-4 w-4" />
                       Delete
@@ -451,143 +368,6 @@ export const RouteTable = ({
                 )}
               </React.Fragment>
             ))}
-            
-            <TableRow>
-              <TableCell></TableCell>
-              <TableCell>
-                <div className="flex flex-col">
-                  <Badge variant="outline" className="mb-1 w-fit bg-green-100 text-green-800 border-green-200">Dropoff point</Badge>
-                  <p className="text-sm font-medium">{delivery.dropoffLocation.name}</p>
-                  <p className="text-xs text-muted-foreground">{delivery.dropoffLocation.address}</p>
-                </div>
-              </TableCell>
-              <TableCell>
-                <p className="text-sm font-medium">{delivery.customerName}</p>
-                <p className="text-xs text-muted-foreground flex items-center">
-                  <Phone className="h-3 w-3 mr-1" /> {dropoffContactInfo.phone}
-                </p>
-              </TableCell>
-              <TableCell>
-                <p className="text-sm">Final destination for delivery</p>
-              </TableCell>
-              <TableCell>
-                <p className="text-sm">{delivery.distance}</p>
-              </TableCell>
-              <TableCell>
-                <Badge variant="outline" className={status === "Dropoff Complete" ? "bg-green-100 text-green-800" : status === "In Transit" ? "bg-blue-100 text-blue-800" : "bg-amber-100 text-amber-800"}>
-                  {status === "Dropoff Complete" ? "Completed" : status === "In Transit" ? "In Progress" : "Pending"}
-                </Badge>
-              </TableCell>
-              <TableCell>
-                <p className="text-sm">{delivery.dropoffTime}</p>
-              </TableCell>
-              <TableCell>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="h-7 text-xs flex items-center gap-1"
-                  onClick={() => handleEditClick(-2)}
-                >
-                  <Edit className="h-4 w-4" />
-                  Edit
-                </Button>
-              </TableCell>
-              <TableCell>
-                <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1 text-destructive">
-                  <Trash2 className="h-4 w-4" />
-                  Delete
-                </Button>
-              </TableCell>
-            </TableRow>
-            {editingRowIndex === -2 && (
-              <TableRow>
-                <TableCell colSpan={9} className="p-4 bg-muted/20">
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="col-span-3 grid grid-cols-3 gap-4">
-                      <div>
-                        <label className="text-xs font-medium mb-1 block">Location</label>
-                        <Input className="h-9 text-sm" defaultValue={delivery.dropoffLocation.address} />
-                      </div>
-                      <div>
-                        <label className="text-xs font-medium mb-1 block">Apt #</label>
-                        <Input className="h-9 text-sm" defaultValue={dropoffContactInfo.aptNumber} />
-                      </div>
-                      <div className="flex space-x-2">
-                        <div className="w-1/2">
-                          <label className="text-xs font-medium mb-1 block">Longitude</label>
-                          <Input className="h-9 text-sm" defaultValue={dropoffContactInfo.longitude} />
-                        </div>
-                        <div className="w-1/2">
-                          <label className="text-xs font-medium mb-1 block">Latitude</label>
-                          <Input className="h-9 text-sm" defaultValue={dropoffContactInfo.latitude} />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Distance</label>
-                      <Input className="h-9 text-sm" defaultValue={delivery.distance} />
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Contact name</label>
-                      <Input className="h-9 text-sm" defaultValue={delivery.customerName} />
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Phone number</label>
-                      <Input className="h-9 text-sm" defaultValue={dropoffContactInfo.phone} />
-                    </div>
-                    
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Route time</label>
-                      <Input className="h-9 text-sm" defaultValue={dropoffContactInfo.routeTime} />
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Status</label>
-                      <Select defaultValue={status === "Dropoff Complete" ? "Completed" : status === "In Transit" ? "In Progress" : "Pending"}>
-                        <SelectTrigger className="h-9 text-sm">
-                          <SelectValue placeholder="Select a status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {orderStatuses.map((status) => (
-                            <SelectItem key={status} value={status}>
-                              {status}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Barcode scanning</label>
-                      <Select defaultValue="No">
-                        <SelectTrigger className="h-9 text-sm">
-                          <SelectValue placeholder="Select an option" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {barcodeOptions.map((option) => (
-                            <SelectItem key={option} value={option}>
-                              {option}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div className="col-span-3">
-                      <label className="text-xs font-medium mb-1 block">Stop notes</label>
-                      <Textarea className="text-sm h-9 py-1.5 min-h-0" rows={1} defaultValue="Final destination for delivery" />
-                    </div>
-                  </div>
-                  <div className="mt-4 flex justify-end gap-2">
-                    <Button size="sm" variant="outline" className="h-7 text-xs" onClick={() => setEditingRowIndex(null)}>
-                      Cancel
-                    </Button>
-                    <Button size="sm" className="h-7 text-xs">
-                      Save Changes
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            )}
           </TableBody>
         </Table>
       </div>
