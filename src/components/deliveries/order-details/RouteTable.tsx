@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+
 interface AdditionalLocation {
   name: string;
   address: string;
@@ -22,12 +23,14 @@ interface AdditionalLocation {
   longitude?: string;
   latitude?: string;
 }
+
 interface RouteTableProps {
   delivery: Delivery;
   additionalLocations: AdditionalLocation[];
   status: string;
   onOpenMap: () => void;
 }
+
 export const RouteTable = ({
   delivery,
   additionalLocations: initialAdditionalLocations,
