@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MapPin, Map, Edit, Trash2, Phone, Plus, MoveVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -161,12 +160,12 @@ export const RouteTable = ({
       return (
         <Badge variant="outline" className="mb-1 w-fit bg-blue-100 text-blue-800 border-blue-200">Pickup point</Badge>
       );
-    } else if (index === routeLocations.length - 1) {
+    } else {
+      // All other locations are dropoff points
       return (
         <Badge variant="outline" className="mb-1 w-fit bg-green-100 text-green-800 border-green-200">Dropoff point</Badge>
       );
     }
-    return null;
   };
   
   return <div>
