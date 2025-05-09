@@ -56,7 +56,11 @@ export const RouteTable = ({
     isPickupPoint: true
   },
   // Middle locations - additional stops
-  ...initialAdditionalLocations,
+  ...initialAdditionalLocations.map(location => ({
+    ...location,
+    contactName: location.contactName || "Contact Person",
+    phoneNumber: location.phoneNumber || "(415) 555-0000"
+  })),
   // Last location - dropoff point
   {
     name: delivery.dropoffLocation.name,
@@ -83,8 +87,8 @@ export const RouteTable = ({
       distance: "",
       status: "Pending",
       deliveredAt: "",
-      contactName: "",
-      phoneNumber: "",
+      contactName: "Contact Person",
+      phoneNumber: "(415) 555-0000",
       routeTime: "",
       aptNumber: "",
       longitude: "",
