@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { MapPin, Map, Edit, Trash2, Phone, Plus } from "lucide-react";
+import { MapPin, Map, Edit, Trash2, Phone, Plus, MoveVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -39,6 +40,7 @@ export const RouteTable = ({
 }: RouteTableProps) => {
   const [additionalLocations, setAdditionalLocations] = useState<AdditionalLocation[]>(initialAdditionalLocations);
   const [editingRowIndex, setEditingRowIndex] = useState<number | null>(null);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   
   // Default contact information for pickup/dropoff points
   const pickupContactInfo = {
@@ -91,6 +93,30 @@ export const RouteTable = ({
     }
   };
 
+  const handleDragStart = (index: number) => {
+    setDraggedIndex(index);
+  };
+  
+  const handleDragOver = (e: React.DragEvent<HTMLTableRowElement>) => {
+    e.preventDefault();
+  };
+  
+  const handleDrop = (index: number) => {
+    if (draggedIndex === null || draggedIndex === index) return;
+    
+    const updatedLocations = [...additionalLocations];
+    const draggedLocation = updatedLocations[draggedIndex];
+    
+    // Remove the dragged item
+    updatedLocations.splice(draggedIndex, 1);
+    
+    // Insert at new position
+    updatedLocations.splice(index, 0, draggedLocation);
+    
+    setAdditionalLocations(updatedLocations);
+    setDraggedIndex(null);
+  };
+
   const orderStatuses = [
     "Completed", "In Progress", "Pending", "Canceled"
   ];
@@ -118,6 +144,7 @@ export const RouteTable = ({
         <Table>
           <TableHeader className="bg-muted/50">
             <TableRow>
+              <TableHead className="w-[40px]"></TableHead>
               <TableHead className="w-[180px]">Locations</TableHead>
               <TableHead className="w-[180px]">Contact</TableHead>
               <TableHead className="w-[220px]">Description</TableHead>
@@ -130,6 +157,7 @@ export const RouteTable = ({
           </TableHeader>
           <TableBody>
             <TableRow>
+              <TableCell></TableCell>
               <TableCell>
                 <div className="flex flex-col">
                   <Badge variant="outline" className="mb-1 w-fit bg-blue-100 text-blue-800 border-blue-200">Pickup point</Badge>
@@ -175,7 +203,7 @@ export const RouteTable = ({
             </TableRow>
             {editingRowIndex === -1 && (
               <TableRow>
-                <TableCell colSpan={8} className="p-4 bg-muted/20">
+                <TableCell colSpan={9} className="p-4 bg-muted/20">
                   <div className="grid grid-cols-3 gap-4">
                     <div className="col-span-3 grid grid-cols-3 gap-4">
                       <div>
@@ -265,7 +293,18 @@ export const RouteTable = ({
             
             {additionalLocations.map((location, index) => (
               <React.Fragment key={index}>
-                <TableRow>
+                <TableRow 
+                  draggable 
+                  onDragStart={() => handleDragStart(index)}
+                  onDragOver={handleDragOver}
+                  onDrop={() => handleDrop(index)}
+                  className={draggedIndex === index ? "opacity-50 bg-muted/30" : ""}
+                >
+                  <TableCell>
+                    <div className="flex justify-center cursor-move" title="Drag to reorder">
+                      <MoveVertical className="h-5 w-5 text-muted-foreground/60" />
+                    </div>
+                  </TableCell>
                   <TableCell>
                     {location.name || location.address ? <>
                         <p className="text-sm font-medium">{location.name || "-"}</p>
@@ -323,7 +362,7 @@ export const RouteTable = ({
                 </TableRow>
                 {editingRowIndex === index && (
                   <TableRow>
-                    <TableCell colSpan={8} className="p-4 bg-muted/20">
+                    <TableCell colSpan={9} className="p-4 bg-muted/20">
                       <div className="grid grid-cols-3 gap-4">
                         <div className="col-span-3 grid grid-cols-3 gap-4">
                           <div>
@@ -414,6 +453,7 @@ export const RouteTable = ({
             ))}
             
             <TableRow>
+              <TableCell></TableCell>
               <TableCell>
                 <div className="flex flex-col">
                   <Badge variant="outline" className="mb-1 w-fit bg-green-100 text-green-800 border-green-200">Dropoff point</Badge>
@@ -461,7 +501,7 @@ export const RouteTable = ({
             </TableRow>
             {editingRowIndex === -2 && (
               <TableRow>
-                <TableCell colSpan={8} className="p-4 bg-muted/20">
+                <TableCell colSpan={9} className="p-4 bg-muted/20">
                   <div className="grid grid-cols-3 gap-4">
                     <div className="col-span-3 grid grid-cols-3 gap-4">
                       <div>
