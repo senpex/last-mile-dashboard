@@ -10,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { getDictionary } from "@/lib/storage";
 import { DictionaryItem } from "@/types/dictionary";
+import { GooglePlacesAutocomplete } from "@/components/ui/google-places-autocomplete";
+import { toast } from "sonner";
 
 interface AdditionalLocation {
   name: string;
@@ -177,6 +179,24 @@ export const RouteTable = ({
     }
   };
   
+  const handlePlaceSelected = (index: number) => (place: google.maps.places.PlaceResult) => {
+    if (!place.geometry) {
+      toast.error("Invalid location selected");
+      return;
+    }
+
+    const updatedLocations = [...routeLocations];
+    updatedLocations[index] = {
+      ...updatedLocations[index],
+      address: place.formatted_address || "",
+      latitude: place.geometry.location?.lat().toString() || "",
+      longitude: place.geometry.location?.lng().toString() || ""
+    };
+    
+    setRouteLocations(updatedLocations);
+    toast.success("Location updated successfully");
+  };
+  
   return <div>
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-medium flex items-center">
@@ -274,7 +294,11 @@ export const RouteTable = ({
                         <div className="col-span-3 grid grid-cols-3 gap-4">
                           <div>
                             <label className="text-xs font-medium mb-1 block">Location</label>
-                            <Input className="h-9 text-sm" defaultValue={location.address || "Enter address here..."} />
+                            <GooglePlacesAutocomplete 
+                              defaultValue={location.address || ""}
+                              onPlaceSelected={handlePlaceSelected(index)}
+                              placeholder="Enter address here..."
+                            />
                           </div>
                           <div>
                             <label className="text-xs font-medium mb-1 block">Apt #</label>
