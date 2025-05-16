@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapPin, Map, Edit, Trash2, Phone, Plus, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { getDictionary } from "@/lib/storage";
+import { DictionaryItem } from "@/types/dictionary";
 
 interface AdditionalLocation {
   name: string;
@@ -77,8 +79,26 @@ export const RouteTable = ({
     latitude: "37.7833",
     isDropoffPoint: true
   }] as any[]);
+  
   const [editingRowIndex, setEditingRowIndex] = useState<number | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [orderStatuses, setOrderStatuses] = useState<DictionaryItem[]>([]);
+  
+  useEffect(() => {
+    const pickupStatusesDictionary = getDictionary("1401");
+    if (pickupStatusesDictionary) {
+      setOrderStatuses(pickupStatusesDictionary.items);
+    } else {
+      // Fallback statuses if dictionary is not found
+      setOrderStatuses([
+        { id: "completed", value: "Completed", description: "Task completed" },
+        { id: "in_progress", value: "In Progress", description: "Task in progress" },
+        { id: "pending", value: "Pending", description: "Task pending" },
+        { id: "canceled", value: "Canceled", description: "Task canceled" }
+      ]);
+    }
+  }, []);
+
   const handleAddLocation = () => {
     const newLocation: AdditionalLocation = {
       name: "",
@@ -100,6 +120,7 @@ export const RouteTable = ({
     updatedLocations.splice(routeLocations.length - 1, 0, newLocation);
     setRouteLocations(updatedLocations);
   };
+  
   const handleDeleteLocation = (index: number) => {
     // Only prevent deleting pickup point (first location)
     if (index === 0) {
@@ -109,6 +130,7 @@ export const RouteTable = ({
     updatedLocations.splice(index, 1);
     setRouteLocations(updatedLocations);
   };
+  
   const handleEditClick = (index: number) => {
     if (editingRowIndex === index) {
       setEditingRowIndex(null);
@@ -116,14 +138,17 @@ export const RouteTable = ({
       setEditingRowIndex(index);
     }
   };
+  
   const handleDragStart = (index: number) => {
     // Prevent dragging pickup point (always stays first)
     if (index === 0) return;
     setDraggedIndex(index);
   };
+  
   const handleDragOver = (e: React.DragEvent<HTMLTableRowElement>) => {
     e.preventDefault();
   };
+  
   const handleDrop = (index: number) => {
     if (draggedIndex === null || draggedIndex === index) return;
 
@@ -140,8 +165,9 @@ export const RouteTable = ({
     setRouteLocations(updatedLocations);
     setDraggedIndex(null);
   };
-  const orderStatuses = ["Completed", "In Progress", "Pending", "Canceled"];
+  
   const barcodeOptions = ["Yes", "No"];
+  
   const renderLocationBadge = (location: AdditionalLocation, index: number) => {
     if (index === 0) {
       return <Badge variant="outline" className="mb-1 w-fit bg-blue-100 text-blue-800 border-blue-200">Pickup point</Badge>;
@@ -150,6 +176,7 @@ export const RouteTable = ({
       return <Badge variant="outline" className="mb-1 w-fit bg-green-100 text-green-800 border-green-200">Dropoff point</Badge>;
     }
   };
+  
   return <div>
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-medium flex items-center">
@@ -289,9 +316,11 @@ export const RouteTable = ({
                               <SelectValue placeholder="Select a status" />
                             </SelectTrigger>
                             <SelectContent>
-                              {orderStatuses.map(status => <SelectItem key={status} value={status}>
-                                  {status}
-                                </SelectItem>)}
+                              {orderStatuses.map(statusOption => (
+                                <SelectItem key={statusOption.id} value={statusOption.value}>
+                                  {statusOption.value}
+                                </SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
                         </div>
