@@ -1,19 +1,9 @@
 import { useRef, useEffect, useState } from "react";
-import { Loader } from "@googlemaps/js-api-loader";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ZoomIn, ZoomOut, Navigation, Car } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-
-// Create a singleton loader instance
-const loaderInstance = new Loader({
-  apiKey: "AIzaSyD--I0r1HmH90XbB_l-KzBEx-Y3I1uGtOE",
-  version: "weekly",
-  libraries: ["geometry", "places"],
-});
-
-// Global reference to the loaded Google Maps API
-let googleMapsPromise: Promise<typeof google> | null = null;
+import { getGoogleMapsApi } from '@/lib/googleMapsLoader';
 
 interface OrderMapProps {
   pickupAddress: string;
@@ -106,20 +96,12 @@ export const OrderMap = ({ pickupAddress, deliveryAddress, driverName }: OrderMa
     animationRef.current = window.requestAnimationFrame(tick);
   };
 
-  // Load Google Maps API once
-  const getGoogleMaps = () => {
-    if (!googleMapsPromise) {
-      googleMapsPromise = loaderInstance.load();
-    }
-    return googleMapsPromise;
-  };
-
   const initMap = async (container: HTMLDivElement, setMapInstance: (map: google.maps.Map) => void) => {
     setMapError(null);
     console.log("Initializing map in container:", container);
     
     try {
-      const google = await getGoogleMaps();
+      const google = await getGoogleMapsApi();
       console.log("Google Maps API loaded");
       
       const mapInstance = new google.maps.Map(container, {

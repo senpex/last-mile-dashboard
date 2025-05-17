@@ -1,8 +1,8 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Loader } from '@googlemaps/js-api-loader';
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { getGoogleMapsApi } from '@/lib/googleMapsLoader';
 
 interface GooglePlacesAutocompleteProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onPlaceSelected?: (place: google.maps.places.PlaceResult) => void;
@@ -20,19 +20,15 @@ export function GooglePlacesAutocomplete({
   const [isLoaded, setIsLoaded] = useState(false);
   const [value, setValue] = useState(defaultValue);
 
-  // Load the Google Maps API
+  // Load the Google Maps API using our shared loader
   useEffect(() => {
-    const loader = new Loader({
-      apiKey: "", // Will use the API key from window
-      version: "weekly",
-      libraries: ["places"]
-    });
-
-    loader.load().then(() => {
-      setIsLoaded(true);
-    }).catch(e => {
-      console.error("Error loading Google Maps API", e);
-    });
+    getGoogleMapsApi()
+      .then(() => {
+        setIsLoaded(true);
+      })
+      .catch(e => {
+        console.error("Error loading Google Maps API", e);
+      });
   }, []);
 
   // Initialize the Autocomplete once the API is loaded and the input is rendered
