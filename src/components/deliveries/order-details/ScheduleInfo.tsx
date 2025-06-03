@@ -126,7 +126,7 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                       {editedPickupTime}
                     </div>
                   </DialogTrigger>
-                  <DialogContent className="w-auto p-0" align="start">
+                  <DialogContent className="w-auto p-0">
                     <div className="flex flex-col max-h-[500px] max-w-[500px]">
                       <div className="flex">
                         <div className="p-2 flex-1">
@@ -212,7 +212,7 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                       {editedDropoffTime}
                     </div>
                   </DialogTrigger>
-                  <DialogContent className="w-auto p-0" align="start">
+                  <DialogContent className="w-auto p-0">
                     <div className="flex flex-col max-h-[500px] max-w-[500px]">
                       <div className="flex">
                         <div className="p-2 flex-1">
