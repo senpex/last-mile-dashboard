@@ -2,6 +2,7 @@
 export interface Location {
   name: string;
   address: string;
+  description?: string;
 }
 
 export type DeliveryStatus = 
@@ -29,6 +30,7 @@ export interface Delivery {
   dropoffTime: string;
   dropoffLocation: Location;
   customerName: string;
+  recipient?: any;
   price: string;
   tip: string;
   courier: string;

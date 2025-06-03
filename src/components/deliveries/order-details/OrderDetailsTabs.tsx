@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { OrderDetailsSection } from "./OrderDetailsSection";
@@ -46,6 +47,7 @@ export const OrderDetailsTabs = ({
             />
             <CustomerInfo 
               customer={delivery.recipient}
+              customerName={delivery.customerName}
               pickupAddress={delivery.pickupLocation?.address}
               dropoffAddress={delivery.dropoffLocation?.address}
               onOpenMap={onOpenMap}
@@ -60,7 +62,10 @@ export const OrderDetailsTabs = ({
           </div>
 
           <div className="space-y-6">
-            <ScheduleInfo />
+            <ScheduleInfo 
+              pickupTime={delivery.pickupTime}
+              dropoffTime={delivery.dropoffTime}
+            />
             <OrderNotes notes="Verify delivery with photo of drop-off location. Contact customer 15 minutes before arrival. Package contains fragile items - handle with care." />
           </div>
         </div>
@@ -123,7 +128,10 @@ export const OrderDetailsTabs = ({
       <TabsContent value="schedule" className="space-y-6 mt-6">
         <div className="space-y-4">
           <h4 className="text-sm font-medium">Schedule Information</h4>
-          <ScheduleInfo />
+          <ScheduleInfo 
+            pickupTime={delivery.pickupTime}
+            dropoffTime={delivery.dropoffTime}
+          />
         </div>
       </TabsContent>
     </Tabs>
