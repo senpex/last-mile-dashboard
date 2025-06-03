@@ -4,7 +4,7 @@ import { Clock, Edit, Save, X, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { format } from "date-fns";
@@ -18,8 +18,8 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
   const [isEditing, setIsEditing] = useState(false);
   const [editedPickupTime, setEditedPickupTime] = useState(pickupTime);
   const [editedDropoffTime, setEditedDropoffTime] = useState(dropoffTime);
-  const [isPickupDialogOpen, setIsPickupDialogOpen] = useState(false);
-  const [isDropoffDialogOpen, setIsDropoffDialogOpen] = useState(false);
+  const [isPickupPopoverOpen, setIsPickupPopoverOpen] = useState(false);
+  const [isDropoffPopoverOpen, setIsDropoffPopoverOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState("12:00 AM");
 
@@ -61,13 +61,13 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
   const handlePickupTimeUpdate = () => {
     const formattedDateTime = `${format(selectedDate, 'MM/dd/yyyy')} ${selectedTime}`;
     setEditedPickupTime(formattedDateTime);
-    setIsPickupDialogOpen(false);
+    setIsPickupPopoverOpen(false);
   };
 
   const handleDropoffTimeUpdate = () => {
     const formattedDateTime = `${format(selectedDate, 'MM/dd/yyyy')} ${selectedTime}`;
     setEditedDropoffTime(formattedDateTime);
-    setIsDropoffDialogOpen(false);
+    setIsDropoffPopoverOpen(false);
   };
 
   return (
@@ -119,23 +119,23 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
             <div className="flex items-center gap-2 text-sm">
               <span className="font-medium">Start:</span> 
               {isEditing ? (
-                <Dialog open={isPickupDialogOpen} onOpenChange={setIsPickupDialogOpen}>
-                  <DialogTrigger asChild>
+                <Popover open={isPickupPopoverOpen} onOpenChange={setIsPickupPopoverOpen}>
+                  <PopoverTrigger asChild>
                     <div className="border rounded px-2 py-1 cursor-pointer hover:bg-gray-50 flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
                       {editedPickupTime}
                     </div>
-                  </DialogTrigger>
-                  <DialogContent className="w-auto p-0">
-                    <div className="flex flex-col max-h-[500px] max-w-[500px]">
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <div className="flex flex-col max-h-[400px] max-w-[400px]">
                       <div className="flex">
                         <div className="p-2 flex-1">
-                          <div className="grid grid-cols-2 gap-2">
+                          <div className="grid grid-cols-2 gap-2 mb-2">
                             <div>
                               <div className="text-xs font-medium mb-1">Date</div>
                               <Button 
                                 variant="outline" 
-                                className="w-full justify-start text-left text-xs h-8 mb-1"
+                                className="w-full justify-start text-left text-xs h-8"
                                 onClick={() => {}}
                               >
                                 {format(selectedDate, "MMM dd, yyyy")}
@@ -159,16 +159,14 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                             </div>
                           </div>
                           
-                          <div className="mt-2">
-                            <CalendarComponent
-                              mode="single"
-                              selected={selectedDate}
-                              onSelect={(date) => date && setSelectedDate(date)}
-                              numberOfMonths={1}
-                              showOutsideDays={false}
-                              className="rounded-md p-3 pointer-events-auto"
-                            />
-                          </div>
+                          <CalendarComponent
+                            mode="single"
+                            selected={selectedDate}
+                            onSelect={(date) => date && setSelectedDate(date)}
+                            numberOfMonths={1}
+                            showOutsideDays={false}
+                            className="rounded-md p-3 pointer-events-auto"
+                          />
                         </div>
                       </div>
                       
@@ -177,7 +175,7 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                           variant="outline"
                           size="sm"
                           className="h-8 text-xs"
-                          onClick={() => setIsPickupDialogOpen(false)}
+                          onClick={() => setIsPickupPopoverOpen(false)}
                         >
                           Cancel
                         </Button>
@@ -190,8 +188,8 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                         </Button>
                       </div>
                     </div>
-                  </DialogContent>
-                </Dialog>
+                  </PopoverContent>
+                </Popover>
               ) : (
                 editedPickupTime
               )}
@@ -205,23 +203,23 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
             <div className="flex items-center gap-2 text-sm">
               <span className="font-medium">Start:</span>
               {isEditing ? (
-                <Dialog open={isDropoffDialogOpen} onOpenChange={setIsDropoffDialogOpen}>
-                  <DialogTrigger asChild>
+                <Popover open={isDropoffPopoverOpen} onOpenChange={setIsDropoffPopoverOpen}>
+                  <PopoverTrigger asChild>
                     <div className="border rounded px-2 py-1 cursor-pointer hover:bg-gray-50 flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
                       {editedDropoffTime}
                     </div>
-                  </DialogTrigger>
-                  <DialogContent className="w-auto p-0">
-                    <div className="flex flex-col max-h-[500px] max-w-[500px]">
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <div className="flex flex-col max-h-[400px] max-w-[400px]">
                       <div className="flex">
                         <div className="p-2 flex-1">
-                          <div className="grid grid-cols-2 gap-2">
+                          <div className="grid grid-cols-2 gap-2 mb-2">
                             <div>
                               <div className="text-xs font-medium mb-1">Date</div>
                               <Button 
                                 variant="outline" 
-                                className="w-full justify-start text-left text-xs h-8 mb-1"
+                                className="w-full justify-start text-left text-xs h-8"
                                 onClick={() => {}}
                               >
                                 {format(selectedDate, "MMM dd, yyyy")}
@@ -245,16 +243,14 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                             </div>
                           </div>
                           
-                          <div className="mt-2">
-                            <CalendarComponent
-                              mode="single"
-                              selected={selectedDate}
-                              onSelect={(date) => date && setSelectedDate(date)}
-                              numberOfMonths={1}
-                              showOutsideDays={false}
-                              className="rounded-md p-3 pointer-events-auto"
-                            />
-                          </div>
+                          <CalendarComponent
+                            mode="single"
+                            selected={selectedDate}
+                            onSelect={(date) => date && setSelectedDate(date)}
+                            numberOfMonths={1}
+                            showOutsideDays={false}
+                            className="rounded-md p-3 pointer-events-auto"
+                          />
                         </div>
                       </div>
                       
@@ -263,7 +259,7 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                           variant="outline"
                           size="sm"
                           className="h-8 text-xs"
-                          onClick={() => setIsDropoffDialogOpen(false)}
+                          onClick={() => setIsDropoffPopoverOpen(false)}
                         >
                           Cancel
                         </Button>
@@ -276,8 +272,8 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                         </Button>
                       </div>
                     </div>
-                  </DialogContent>
-                </Dialog>
+                  </PopoverContent>
+                </Popover>
               ) : (
                 editedDropoffTime
               )}
