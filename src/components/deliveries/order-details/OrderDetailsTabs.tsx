@@ -9,6 +9,7 @@ import { CustomerInfo } from "./CustomerInfo";
 import { CourierInfo } from "./CourierInfo";
 import { DriverInfoTable } from "./DriverInfoTable";
 import { OrderDetailsSection } from "./OrderDetailsSection";
+import { OrderRequirementsSection } from "./OrderRequirementsSection";
 import { PaymentTransactions } from "./PaymentTransactions";
 import { PackageHistory } from "./PackageHistory";
 import { DriverControl } from "./DriverControl";
@@ -100,6 +101,8 @@ export const OrderDetailsTabs = ({
                 organization={delivery.organization}
                 distance={delivery.distance}
               />
+              
+              <OrderRequirementsSection />
             </div>
           </ScrollArea>
         </TabsContent>
