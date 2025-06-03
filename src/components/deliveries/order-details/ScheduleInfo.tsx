@@ -21,7 +21,7 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
   const [isPickupDialogOpen, setIsPickupDialogOpen] = useState(false);
   const [isDropoffDialogOpen, setIsDropoffDialogOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [selectedTime, setSelectedTime] = useState("12:00");
+  const [selectedTime, setSelectedTime] = useState("12:00 AM");
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -45,14 +45,18 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
     });
   };
 
-  // Generate time options
-  const timeOptions = [];
-  for (let hour = 0; hour < 24; hour++) {
-    for (let minute = 0; minute < 60; minute += 30) {
-      const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-      timeOptions.push(timeString);
-    }
-  }
+  // Generate time options matching DateRangePicker style
+  const timeOptions = React.useMemo(() => {
+    const hours = Array.from({ length: 12 }, (_, i) => i === 0 ? 12 : i);
+    const minutes = ["00", "15", "30", "45"];
+    const periods = ["AM", "PM"];
+    
+    return hours.flatMap(hour => 
+      minutes.flatMap(minute => 
+        periods.map(period => `${hour}:${minute} ${period}`)
+      )
+    );
+  }, []);
 
   const handlePickupTimeUpdate = () => {
     const formattedDateTime = `${format(selectedDate, 'MM/dd/yyyy')} ${selectedTime}`;
@@ -122,32 +126,69 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                       {editedPickupTime}
                     </div>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-md">
-                    <DialogHeader>
-                      <DialogTitle>Select Pickup Date & Time</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4">
-                      <CalendarComponent
-                        mode="single"
-                        selected={selectedDate}
-                        onSelect={(date) => date && setSelectedDate(date)}
-                        className="rounded-md border"
-                      />
-                      <Select value={selectedTime} onValueChange={setSelectedTime}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select time" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {timeOptions.map((time) => (
-                            <SelectItem key={time} value={time}>
-                              {time}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <Button onClick={handlePickupTimeUpdate} className="w-full">
-                        Update Pickup Time
-                      </Button>
+                  <DialogContent className="w-auto p-0" align="start">
+                    <div className="flex flex-col max-h-[500px] max-w-[500px]">
+                      <div className="flex">
+                        <div className="p-2 flex-1">
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <div className="text-xs font-medium mb-1">Date</div>
+                              <Button 
+                                variant="outline" 
+                                className="w-full justify-start text-left text-xs h-8 mb-1"
+                                onClick={() => {}}
+                              >
+                                {format(selectedDate, "MMM dd, yyyy")}
+                              </Button>
+                            </div>
+                            
+                            <div>
+                              <div className="text-xs font-medium mb-1">Time</div>
+                              <Select value={selectedTime} onValueChange={setSelectedTime}>
+                                <SelectTrigger className="h-8 text-xs">
+                                  <SelectValue placeholder="12:00 AM" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {timeOptions.map((time) => (
+                                    <SelectItem key={time} value={time} className="text-xs">
+                                      {time}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+                          
+                          <div className="mt-2">
+                            <CalendarComponent
+                              mode="single"
+                              selected={selectedDate}
+                              onSelect={(date) => date && setSelectedDate(date)}
+                              numberOfMonths={1}
+                              showOutsideDays={false}
+                              className="rounded-md p-3 pointer-events-auto"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="border-t p-2 flex justify-end gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-8 text-xs"
+                          onClick={() => setIsPickupDialogOpen(false)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="h-8 text-xs"
+                          onClick={handlePickupTimeUpdate}
+                        >
+                          Apply
+                        </Button>
+                      </div>
                     </div>
                   </DialogContent>
                 </Dialog>
@@ -171,32 +212,69 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                       {editedDropoffTime}
                     </div>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-md">
-                    <DialogHeader>
-                      <DialogTitle>Select Dropoff Date & Time</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4">
-                      <CalendarComponent
-                        mode="single"
-                        selected={selectedDate}
-                        onSelect={(date) => date && setSelectedDate(date)}
-                        className="rounded-md border"
-                      />
-                      <Select value={selectedTime} onValueChange={setSelectedTime}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select time" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {timeOptions.map((time) => (
-                            <SelectItem key={time} value={time}>
-                              {time}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <Button onClick={handleDropoffTimeUpdate} className="w-full">
-                        Update Dropoff Time
-                      </Button>
+                  <DialogContent className="w-auto p-0" align="start">
+                    <div className="flex flex-col max-h-[500px] max-w-[500px]">
+                      <div className="flex">
+                        <div className="p-2 flex-1">
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <div className="text-xs font-medium mb-1">Date</div>
+                              <Button 
+                                variant="outline" 
+                                className="w-full justify-start text-left text-xs h-8 mb-1"
+                                onClick={() => {}}
+                              >
+                                {format(selectedDate, "MMM dd, yyyy")}
+                              </Button>
+                            </div>
+                            
+                            <div>
+                              <div className="text-xs font-medium mb-1">Time</div>
+                              <Select value={selectedTime} onValueChange={setSelectedTime}>
+                                <SelectTrigger className="h-8 text-xs">
+                                  <SelectValue placeholder="12:00 AM" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {timeOptions.map((time) => (
+                                    <SelectItem key={time} value={time} className="text-xs">
+                                      {time}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+                          
+                          <div className="mt-2">
+                            <CalendarComponent
+                              mode="single"
+                              selected={selectedDate}
+                              onSelect={(date) => date && setSelectedDate(date)}
+                              numberOfMonths={1}
+                              showOutsideDays={false}
+                              className="rounded-md p-3 pointer-events-auto"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="border-t p-2 flex justify-end gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-8 text-xs"
+                          onClick={() => setIsDropoffDialogOpen(false)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="h-8 text-xs"
+                          onClick={handleDropoffTimeUpdate}
+                        >
+                          Apply
+                        </Button>
+                      </div>
                     </div>
                   </DialogContent>
                 </Dialog>
