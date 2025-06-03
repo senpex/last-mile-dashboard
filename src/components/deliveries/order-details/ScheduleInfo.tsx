@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Clock, Edit, Save, X, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -70,6 +69,92 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
     setIsDropoffPopoverOpen(false);
   };
 
+  const renderDatePickerPopover = (isOpen: boolean, onOpenChange: (open: boolean) => void, onUpdate: () => void) => (
+    <PopoverContent className="w-auto p-0" side="bottom" align="start">
+      <div className="flex flex-col w-[300px]">
+        <div className="p-3 space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-2">
+              <label className="text-xs font-medium text-muted-foreground">Date</label>
+              <Button 
+                variant="outline" 
+                className="w-full justify-start text-left text-sm h-8 px-2"
+                onClick={() => {}}
+              >
+                {format(selectedDate, "MMM dd, yyyy")}
+              </Button>
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-xs font-medium text-muted-foreground">Time</label>
+              <Select value={selectedTime} onValueChange={setSelectedTime}>
+                <SelectTrigger className="h-8 text-sm">
+                  <SelectValue placeholder="12:00 AM" />
+                </SelectTrigger>
+                <SelectContent className="max-h-[200px]">
+                  {timeOptions.map((time) => (
+                    <SelectItem key={time} value={time} className="text-sm">
+                      {time}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          
+          <div className="border-t pt-3">
+            <CalendarComponent
+              mode="single"
+              selected={selectedDate}
+              onSelect={(date) => date && setSelectedDate(date)}
+              numberOfMonths={1}
+              showOutsideDays={false}
+              className="rounded-md border-0 p-0 w-full pointer-events-auto"
+              classNames={{
+                months: "flex w-full justify-center",
+                month: "space-y-2 w-full",
+                caption: "flex justify-center pt-1 relative items-center mb-2",
+                caption_label: "text-sm font-medium",
+                nav: "space-x-1 flex items-center",
+                nav_button: "h-6 w-6 bg-transparent p-0 opacity-50 hover:opacity-100 border border-input hover:bg-accent rounded-md transition-colors",
+                nav_button_previous: "absolute left-1",
+                nav_button_next: "absolute right-1",
+                table: "w-full border-collapse",
+                head_row: "flex w-full justify-center",
+                head_cell: "text-muted-foreground rounded-md w-8 font-normal text-xs flex items-center justify-center h-7",
+                row: "flex w-full mt-1 justify-center",
+                cell: "relative p-0 text-center text-sm focus-within:relative focus-within:z-20 w-8 h-7 flex items-center justify-center",
+                day: "h-7 w-7 p-0 font-normal text-xs hover:bg-accent hover:text-accent-foreground rounded-md transition-colors flex items-center justify-center",
+                day_selected: "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
+                day_today: "bg-accent text-accent-foreground font-medium",
+                day_outside: "text-muted-foreground opacity-50",
+                day_disabled: "text-muted-foreground opacity-50",
+              }}
+            />
+          </div>
+        </div>
+        
+        <div className="border-t bg-muted/20 p-3 flex justify-end gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-7 text-xs px-3"
+            onClick={() => onOpenChange(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            size="sm"
+            className="h-7 text-xs px-3"
+            onClick={onUpdate}
+          >
+            Apply
+          </Button>
+        </div>
+      </div>
+    </PopoverContent>
+  );
+
   return (
     <div>
       <h3 className="text-sm font-medium mb-3 flex items-center justify-between">
@@ -126,95 +211,25 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                       {editedPickupTime}
                     </div>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" side="bottom" align="start">
-                    <div className="flex flex-col w-[320px]">
-                      <div className="p-3 space-y-3">
-                        <div className="grid grid-cols-2 gap-3">
-                          <div className="space-y-2">
-                            <label className="text-xs font-medium text-muted-foreground">Date</label>
-                            <Button 
-                              variant="outline" 
-                              className="w-full justify-start text-left text-sm h-8 px-2"
-                              onClick={() => {}}
-                            >
-                              {format(selectedDate, "MMM dd, yyyy")}
-                            </Button>
-                          </div>
-                          
-                          <div className="space-y-2">
-                            <label className="text-xs font-medium text-muted-foreground">Time</label>
-                            <Select value={selectedTime} onValueChange={setSelectedTime}>
-                              <SelectTrigger className="h-8 text-sm">
-                                <SelectValue placeholder="12:00 AM" />
-                              </SelectTrigger>
-                              <SelectContent className="max-h-[200px]">
-                                {timeOptions.map((time) => (
-                                  <SelectItem key={time} value={time} className="text-sm">
-                                    {time}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </div>
-                        
-                        <div className="border-t pt-3">
-                          <CalendarComponent
-                            mode="single"
-                            selected={selectedDate}
-                            onSelect={(date) => date && setSelectedDate(date)}
-                            numberOfMonths={1}
-                            showOutsideDays={false}
-                            className="rounded-md border-0 p-0 w-full pointer-events-auto"
-                            classNames={{
-                              months: "flex w-full justify-center",
-                              month: "space-y-3 w-full",
-                              caption: "flex justify-center pt-1 relative items-center mb-3",
-                              caption_label: "text-sm font-medium",
-                              nav: "space-x-1 flex items-center",
-                              nav_button: "h-6 w-6 bg-transparent p-0 opacity-50 hover:opacity-100 border border-input hover:bg-accent rounded-md transition-colors",
-                              nav_button_previous: "absolute left-1",
-                              nav_button_next: "absolute right-1",
-                              table: "w-full border-collapse",
-                              head_row: "flex w-full justify-center",
-                              head_cell: "text-muted-foreground rounded-md w-8 font-normal text-xs flex items-center justify-center h-8",
-                              row: "flex w-full mt-1 justify-center",
-                              cell: "relative p-0 text-center text-sm focus-within:relative focus-within:z-20 w-8 h-8 flex items-center justify-center",
-                              day: "h-7 w-7 p-0 font-normal text-sm hover:bg-accent hover:text-accent-foreground rounded-md transition-colors flex items-center justify-center",
-                              day_selected: "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-                              day_today: "bg-accent text-accent-foreground font-medium",
-                              day_outside: "text-muted-foreground opacity-50",
-                              day_disabled: "text-muted-foreground opacity-50",
-                            }}
-                          />
-                        </div>
-                      </div>
-                      
-                      <div className="border-t bg-muted/20 p-3 flex justify-end gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-7 text-xs px-3"
-                          onClick={() => setIsPickupPopoverOpen(false)}
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          size="sm"
-                          className="h-7 text-xs px-3"
-                          onClick={handlePickupTimeUpdate}
-                        >
-                          Apply
-                        </Button>
-                      </div>
-                    </div>
-                  </PopoverContent>
+                  {renderDatePickerPopover(isPickupPopoverOpen, setIsPickupPopoverOpen, handlePickupTimeUpdate)}
                 </Popover>
               ) : (
                 editedPickupTime
               )}
               <span className="font-medium ml-4">End:</span> 
-              {calculateEndTime(isEditing ? editedPickupTime : editedPickupTime)}
+              {isEditing ? (
+                <Popover open={isPickupPopoverOpen} onOpenChange={setIsPickupPopoverOpen}>
+                  <PopoverTrigger asChild>
+                    <div className="border rounded px-2 py-1 cursor-pointer hover:bg-gray-50 flex items-center gap-1">
+                      <Calendar className="h-3 w-3" />
+                      {calculateEndTime(editedPickupTime)}
+                    </div>
+                  </PopoverTrigger>
+                  {renderDatePickerPopover(isPickupPopoverOpen, setIsPickupPopoverOpen, handlePickupTimeUpdate)}
+                </Popover>
+              ) : (
+                calculateEndTime(editedPickupTime)
+              )}
             </div>
           </div>
           
@@ -230,95 +245,25 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                       {editedDropoffTime}
                     </div>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" side="bottom" align="start">
-                    <div className="flex flex-col w-[320px]">
-                      <div className="p-3 space-y-3">
-                        <div className="grid grid-cols-2 gap-3">
-                          <div className="space-y-2">
-                            <label className="text-xs font-medium text-muted-foreground">Date</label>
-                            <Button 
-                              variant="outline" 
-                              className="w-full justify-start text-left text-sm h-8 px-2"
-                              onClick={() => {}}
-                            >
-                              {format(selectedDate, "MMM dd, yyyy")}
-                            </Button>
-                          </div>
-                          
-                          <div className="space-y-2">
-                            <label className="text-xs font-medium text-muted-foreground">Time</label>
-                            <Select value={selectedTime} onValueChange={setSelectedTime}>
-                              <SelectTrigger className="h-8 text-sm">
-                                <SelectValue placeholder="12:00 AM" />
-                              </SelectTrigger>
-                              <SelectContent className="max-h-[200px]">
-                                {timeOptions.map((time) => (
-                                  <SelectItem key={time} value={time} className="text-sm">
-                                    {time}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </div>
-                        
-                        <div className="border-t pt-3">
-                          <CalendarComponent
-                            mode="single"
-                            selected={selectedDate}
-                            onSelect={(date) => date && setSelectedDate(date)}
-                            numberOfMonths={1}
-                            showOutsideDays={false}
-                            className="rounded-md border-0 p-0 w-full pointer-events-auto"
-                            classNames={{
-                              months: "flex w-full justify-center",
-                              month: "space-y-3 w-full",
-                              caption: "flex justify-center pt-1 relative items-center mb-3",
-                              caption_label: "text-sm font-medium",
-                              nav: "space-x-1 flex items-center",
-                              nav_button: "h-6 w-6 bg-transparent p-0 opacity-50 hover:opacity-100 border border-input hover:bg-accent rounded-md transition-colors",
-                              nav_button_previous: "absolute left-1",
-                              nav_button_next: "absolute right-1",
-                              table: "w-full border-collapse",
-                              head_row: "flex w-full justify-center",
-                              head_cell: "text-muted-foreground rounded-md w-8 font-normal text-xs flex items-center justify-center h-8",
-                              row: "flex w-full mt-1 justify-center",
-                              cell: "relative p-0 text-center text-sm focus-within:relative focus-within:z-20 w-8 h-8 flex items-center justify-center",
-                              day: "h-7 w-7 p-0 font-normal text-sm hover:bg-accent hover:text-accent-foreground rounded-md transition-colors flex items-center justify-center",
-                              day_selected: "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-                              day_today: "bg-accent text-accent-foreground font-medium",
-                              day_outside: "text-muted-foreground opacity-50",
-                              day_disabled: "text-muted-foreground opacity-50",
-                            }}
-                          />
-                        </div>
-                      </div>
-                      
-                      <div className="border-t bg-muted/20 p-3 flex justify-end gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-7 text-xs px-3"
-                          onClick={() => setIsDropoffPopoverOpen(false)}
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          size="sm"
-                          className="h-7 text-xs px-3"
-                          onClick={handleDropoffTimeUpdate}
-                        >
-                          Apply
-                        </Button>
-                      </div>
-                    </div>
-                  </PopoverContent>
+                  {renderDatePickerPopover(isDropoffPopoverOpen, setIsDropoffPopoverOpen, handleDropoffTimeUpdate)}
                 </Popover>
               ) : (
                 editedDropoffTime
               )}
               <span className="font-medium ml-4">End:</span>
-              {calculateEndTime(isEditing ? editedDropoffTime : editedDropoffTime)}
+              {isEditing ? (
+                <Popover open={isDropoffPopoverOpen} onOpenChange={setIsDropoffPopoverOpen}>
+                  <PopoverTrigger asChild>
+                    <div className="border rounded px-2 py-1 cursor-pointer hover:bg-gray-50 flex items-center gap-1">
+                      <Calendar className="h-3 w-3" />
+                      {calculateEndTime(editedDropoffTime)}
+                    </div>
+                  </PopoverTrigger>
+                  {renderDatePickerPopover(isDropoffPopoverOpen, setIsDropoffPopoverOpen, handleDropoffTimeUpdate)}
+                </Popover>
+              ) : (
+                calculateEndTime(editedDropoffTime)
+              )}
             </div>
           </div>
         </div>
