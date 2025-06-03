@@ -2,10 +2,12 @@ import React from 'react';
 import { CalendarClock, FileCheck, CheckCircle2, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+
 interface OrderDetailsSectionProps {
   organization: string | undefined;
   distance: string;
 }
+
 export const OrderDetailsSection = ({
   organization,
   distance
@@ -40,10 +42,12 @@ export const OrderDetailsSection = ({
     name: "Items to be scanned at the pick-up and drop-offs",
     active: true
   }];
-  return <div>
+
+  return (
+    <div>
       <h3 className="text-sm font-medium mb-3 flex items-center">
         <CalendarClock className="w-4 h-4 mr-2" />
-        Order Details
+        Price Details
       </h3>
       <div className="rounded-md border bg-card/50 p-4 space-y-4">
         <div className="flex justify-between">
@@ -65,16 +69,19 @@ export const OrderDetailsSection = ({
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {orderRequirements.map(req => <div key={req.id} className="flex items-center p-2 transition-colors">
+            {orderRequirements.map(req => (
+              <div key={req.id} className="flex items-center p-2 transition-colors">
                 <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mr-2" />
                 <span className="text-xs font-medium">
                   {req.name}
                 </span>
-              </div>)}
+              </div>
+            ))}
           </div>
           
           
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
