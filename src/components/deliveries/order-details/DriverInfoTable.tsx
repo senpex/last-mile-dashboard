@@ -149,20 +149,36 @@ export const DriverInfoTable = ({
         </Button>
       </h3>
       <div className="rounded-md border bg-card/50 p-0">
+        {/* Header Row */}
+        <div className="border-b bg-muted/50 p-4">
+          <div className="flex items-center gap-4">
+            <div className="w-6"></div> {/* Space for radio button */}
+            
+            <div className="grid grid-cols-6 gap-4 flex-1">
+              <div className="text-xs font-semibold text-muted-foreground">Name</div>
+              <div className="text-xs font-semibold text-muted-foreground">Earnings</div>
+              <div className="text-xs font-semibold text-muted-foreground">Delivery Fee</div>
+              <div className="text-xs font-semibold text-muted-foreground">Extra Service Fee</div>
+              <div className="text-xs font-semibold text-muted-foreground">Tip</div>
+              <div className="text-xs font-semibold text-muted-foreground">Status</div>
+            </div>
+            
+            <div className="w-20">
+              <div className="text-xs font-semibold text-muted-foreground">Action</div>
+            </div>
+          </div>
+        </div>
+
         <RadioGroup value={selectedDriver} onValueChange={handleRadioChange}>
           {drivers.map((driver, index) => (
             <div key={index} className="border-b last:border-b-0 p-4">
               <div className="flex items-start gap-4">
-                <RadioGroupItem value={index.toString()} className="mt-6" />
+                <RadioGroupItem value={index.toString()} className="mt-1" />
                 
                 <div className="grid grid-cols-6 gap-4 flex-1">
-                  <div>
-                    <div className="text-xs font-medium text-muted-foreground mb-1">Name</div>
-                    <div className="text-sm">{driver.name}</div>
-                  </div>
+                  <div className="text-sm">{driver.name}</div>
                   
                   <div>
-                    <div className="text-xs font-medium text-muted-foreground mb-1">Earnings</div>
                     {editingDriverIndex === index ? (
                       <Input 
                         value={editedDriver?.earnings || ""} 
@@ -175,7 +191,6 @@ export const DriverInfoTable = ({
                   </div>
                   
                   <div>
-                    <div className="text-xs font-medium text-muted-foreground mb-1">Delivery Fee</div>
                     {editingDriverIndex === index ? (
                       <Input 
                         value={editedDriver?.deliveryFee || ""} 
@@ -188,7 +203,6 @@ export const DriverInfoTable = ({
                   </div>
                   
                   <div>
-                    <div className="text-xs font-medium text-muted-foreground mb-1">Extra Service Fee</div>
                     {editingDriverIndex === index ? (
                       <Input 
                         value={editedDriver?.extraServiceFee || ""} 
@@ -201,7 +215,6 @@ export const DriverInfoTable = ({
                   </div>
                   
                   <div>
-                    <div className="text-xs font-medium text-muted-foreground mb-1">Tip</div>
                     {editingDriverIndex === index ? (
                       <Input 
                         value={editedDriver?.tip || ""} 
@@ -214,7 +227,6 @@ export const DriverInfoTable = ({
                   </div>
                   
                   <div>
-                    <div className="text-xs font-medium text-muted-foreground mb-1">Status</div>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="outline" size="sm" className="h-6 text-xs px-2 flex items-center">
@@ -245,8 +257,7 @@ export const DriverInfoTable = ({
                   </div>
                 </div>
                 
-                <div className="flex flex-col">
-                  <div className="text-xs font-medium text-muted-foreground mb-1">Action</div>
+                <div className="w-20">
                   {editingDriverIndex === index ? (
                     <Button 
                       variant="destructive" 
