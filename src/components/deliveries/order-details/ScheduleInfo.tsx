@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Clock, Edit, Save, X, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -125,7 +126,7 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                       {editedPickupTime}
                     </div>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0 max-h-[400px] overflow-hidden" side="bottom">
+                  <PopoverContent className="w-auto p-0" side="bottom" align="start">
                     <div className="flex flex-col w-[350px]">
                       <div className="p-4 space-y-4">
                         <div className="grid grid-cols-2 gap-4">
@@ -164,22 +165,22 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                             onSelect={(date) => date && setSelectedDate(date)}
                             numberOfMonths={1}
                             showOutsideDays={false}
-                            className="rounded-md border-0 p-0 w-full"
+                            className="rounded-md border-0 p-0 w-full pointer-events-auto"
                             classNames={{
                               months: "flex w-full",
                               month: "space-y-4 w-full",
                               caption: "flex justify-center pt-1 relative items-center mb-4",
                               caption_label: "text-sm font-medium",
                               nav: "space-x-1 flex items-center",
-                              nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 border border-input hover:bg-accent",
+                              nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 border border-input hover:bg-accent rounded-md transition-colors",
                               nav_button_previous: "absolute left-1",
                               nav_button_next: "absolute right-1",
                               table: "w-full border-collapse",
                               head_row: "flex w-full",
-                              head_cell: "text-muted-foreground rounded-md w-9 font-normal text-xs flex items-center justify-center",
-                              row: "flex w-full mt-2",
-                              cell: "relative p-0 text-center text-sm focus-within:relative focus-within:z-20 w-9 h-9",
-                              day: "h-9 w-9 p-0 font-normal text-sm hover:bg-accent hover:text-accent-foreground rounded-md transition-colors flex items-center justify-center",
+                              head_cell: "text-muted-foreground rounded-md w-9 font-normal text-xs flex items-center justify-center h-9",
+                              row: "flex w-full mt-1",
+                              cell: "relative p-0 text-center text-sm focus-within:relative focus-within:z-20 w-9 h-9 flex items-center justify-center",
+                              day: "h-8 w-8 p-0 font-normal text-sm hover:bg-accent hover:text-accent-foreground rounded-md transition-colors flex items-center justify-center",
                               day_selected: "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
                               day_today: "bg-accent text-accent-foreground font-medium",
                               day_outside: "text-muted-foreground opacity-50",
@@ -229,7 +230,7 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                       {editedDropoffTime}
                     </div>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0 max-h-[400px] overflow-hidden" side="bottom">
+                  <PopoverContent className="w-auto p-0" side="bottom" align="start">
                     <div className="flex flex-col w-[350px]">
                       <div className="p-4 space-y-4">
                         <div className="grid grid-cols-2 gap-4">
@@ -268,22 +269,22 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                             onSelect={(date) => date && setSelectedDate(date)}
                             numberOfMonths={1}
                             showOutsideDays={false}
-                            className="rounded-md border-0 p-0 w-full"
+                            className="rounded-md border-0 p-0 w-full pointer-events-auto"
                             classNames={{
                               months: "flex w-full",
                               month: "space-y-4 w-full",
                               caption: "flex justify-center pt-1 relative items-center mb-4",
                               caption_label: "text-sm font-medium",
                               nav: "space-x-1 flex items-center",
-                              nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 border border-input hover:bg-accent",
+                              nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 border border-input hover:bg-accent rounded-md transition-colors",
                               nav_button_previous: "absolute left-1",
                               nav_button_next: "absolute right-1",
                               table: "w-full border-collapse",
                               head_row: "flex w-full",
-                              head_cell: "text-muted-foreground rounded-md w-9 font-normal text-xs flex items-center justify-center",
-                              row: "flex w-full mt-2",
-                              cell: "relative p-0 text-center text-sm focus-within:relative focus-within:z-20 w-9 h-9",
-                              day: "h-9 w-9 p-0 font-normal text-sm hover:bg-accent hover:text-accent-foreground rounded-md transition-colors flex items-center justify-center",
+                              head_cell: "text-muted-foreground rounded-md w-9 font-normal text-xs flex items-center justify-center h-9",
+                              row: "flex w-full mt-1",
+                              cell: "relative p-0 text-center text-sm focus-within:relative focus-within:z-20 w-9 h-9 flex items-center justify-center",
+                              day: "h-8 w-8 p-0 font-normal text-sm hover:bg-accent hover:text-accent-foreground rounded-md transition-colors flex items-center justify-center",
                               day_selected: "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
                               day_today: "bg-accent text-accent-foreground font-medium",
                               day_outside: "text-muted-foreground opacity-50",
