@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Clock, Edit, Save, X, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -127,50 +126,48 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                     </div>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
-                    <div className="flex flex-col max-h-[400px] max-w-[400px]">
-                      <div className="flex">
-                        <div className="p-2 flex-1">
-                          <div className="grid grid-cols-2 gap-2 mb-2">
-                            <div>
-                              <div className="text-xs font-medium mb-1">Date</div>
-                              <Button 
-                                variant="outline" 
-                                className="w-full justify-start text-left text-xs h-8"
-                                onClick={() => {}}
-                              >
-                                {format(selectedDate, "MMM dd, yyyy")}
-                              </Button>
-                            </div>
-                            
-                            <div>
-                              <div className="text-xs font-medium mb-1">Time</div>
-                              <Select value={selectedTime} onValueChange={setSelectedTime}>
-                                <SelectTrigger className="h-8 text-xs">
-                                  <SelectValue placeholder="12:00 AM" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {timeOptions.map((time) => (
-                                    <SelectItem key={time} value={time} className="text-xs">
-                                      {time}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
+                    <div className="flex flex-col w-[320px]">
+                      <div className="p-3">
+                        <div className="grid grid-cols-2 gap-3 mb-3">
+                          <div>
+                            <div className="text-xs font-medium mb-1">Date</div>
+                            <Button 
+                              variant="outline" 
+                              className="w-full justify-start text-left text-xs h-8"
+                              onClick={() => {}}
+                            >
+                              {format(selectedDate, "MMM dd, yyyy")}
+                            </Button>
                           </div>
                           
-                          <CalendarComponent
-                            mode="single"
-                            selected={selectedDate}
-                            onSelect={(date) => date && setSelectedDate(date)}
-                            numberOfMonths={1}
-                            showOutsideDays={false}
-                            className="rounded-md p-3 pointer-events-auto"
-                          />
+                          <div>
+                            <div className="text-xs font-medium mb-1">Time</div>
+                            <Select value={selectedTime} onValueChange={setSelectedTime}>
+                              <SelectTrigger className="h-8 text-xs">
+                                <SelectValue placeholder="12:00 AM" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {timeOptions.map((time) => (
+                                  <SelectItem key={time} value={time} className="text-xs">
+                                    {time}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
                         </div>
+                        
+                        <CalendarComponent
+                          mode="single"
+                          selected={selectedDate}
+                          onSelect={(date) => date && setSelectedDate(date)}
+                          numberOfMonths={1}
+                          showOutsideDays={false}
+                          className="rounded-md border p-2 pointer-events-auto"
+                        />
                       </div>
                       
-                      <div className="border-t p-2 flex justify-end gap-2">
+                      <div className="border-t p-3 flex justify-end gap-2">
                         <Button
                           variant="outline"
                           size="sm"
@@ -211,50 +208,48 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                     </div>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
-                    <div className="flex flex-col max-h-[400px] max-w-[400px]">
-                      <div className="flex">
-                        <div className="p-2 flex-1">
-                          <div className="grid grid-cols-2 gap-2 mb-2">
-                            <div>
-                              <div className="text-xs font-medium mb-1">Date</div>
-                              <Button 
-                                variant="outline" 
-                                className="w-full justify-start text-left text-xs h-8"
-                                onClick={() => {}}
-                              >
-                                {format(selectedDate, "MMM dd, yyyy")}
-                              </Button>
-                            </div>
-                            
-                            <div>
-                              <div className="text-xs font-medium mb-1">Time</div>
-                              <Select value={selectedTime} onValueChange={setSelectedTime}>
-                                <SelectTrigger className="h-8 text-xs">
-                                  <SelectValue placeholder="12:00 AM" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {timeOptions.map((time) => (
-                                    <SelectItem key={time} value={time} className="text-xs">
-                                      {time}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
+                    <div className="flex flex-col w-[320px]">
+                      <div className="p-3">
+                        <div className="grid grid-cols-2 gap-3 mb-3">
+                          <div>
+                            <div className="text-xs font-medium mb-1">Date</div>
+                            <Button 
+                              variant="outline" 
+                              className="w-full justify-start text-left text-xs h-8"
+                              onClick={() => {}}
+                            >
+                              {format(selectedDate, "MMM dd, yyyy")}
+                            </Button>
                           </div>
                           
-                          <CalendarComponent
-                            mode="single"
-                            selected={selectedDate}
-                            onSelect={(date) => date && setSelectedDate(date)}
-                            numberOfMonths={1}
-                            showOutsideDays={false}
-                            className="rounded-md p-3 pointer-events-auto"
-                          />
+                          <div>
+                            <div className="text-xs font-medium mb-1">Time</div>
+                            <Select value={selectedTime} onValueChange={setSelectedTime}>
+                              <SelectTrigger className="h-8 text-xs">
+                                <SelectValue placeholder="12:00 AM" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {timeOptions.map((time) => (
+                                  <SelectItem key={time} value={time} className="text-xs">
+                                    {time}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
                         </div>
+                        
+                        <CalendarComponent
+                          mode="single"
+                          selected={selectedDate}
+                          onSelect={(date) => date && setSelectedDate(date)}
+                          numberOfMonths={1}
+                          showOutsideDays={false}
+                          className="rounded-md border p-2 pointer-events-auto"
+                        />
                       </div>
                       
-                      <div className="border-t p-2 flex justify-end gap-2">
+                      <div className="border-t p-3 flex justify-end gap-2">
                         <Button
                           variant="outline"
                           size="sm"
