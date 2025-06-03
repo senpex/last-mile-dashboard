@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Truck, ChevronDown, Edit, Trash2, Plus, Save } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -61,11 +60,9 @@ export const DriverInfoTable = ({
     }
   ]);
 
-  // Create a temporary state for edited values
   const [editedDriver, setEditedDriver] = useState<DriverInfo | null>(null);
 
   useEffect(() => {
-    // Load the dictionary 1401 for pickup statuses
     const dictionary = getDictionary("1401");
     if (dictionary) {
       setPickupStatusesDictionary(dictionary);
@@ -152,30 +149,20 @@ export const DriverInfoTable = ({
         </Button>
       </h3>
       <div className="rounded-md border bg-card/50 p-0">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-10">
-                <span className="sr-only">Select</span>
-              </TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Earnings</TableHead>
-              <TableHead>Delivery Fee</TableHead>
-              <TableHead>Extra Service Fee</TableHead>
-              <TableHead>Tip</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <RadioGroup value={selectedDriver} onValueChange={handleRadioChange}>
-              {drivers.map((driver, index) => (
-                <TableRow key={index}>
-                  <TableCell className="p-2 pl-4">
-                    <RadioGroupItem value={index.toString()} />
-                  </TableCell>
-                  <TableCell>{driver.name}</TableCell>
-                  <TableCell>
+        <RadioGroup value={selectedDriver} onValueChange={handleRadioChange}>
+          {drivers.map((driver, index) => (
+            <div key={index} className="border-b last:border-b-0 p-4">
+              <div className="flex items-start gap-4">
+                <RadioGroupItem value={index.toString()} className="mt-6" />
+                
+                <div className="grid grid-cols-6 gap-4 flex-1">
+                  <div>
+                    <div className="text-xs font-medium text-muted-foreground mb-1">Name</div>
+                    <div className="text-sm">{driver.name}</div>
+                  </div>
+                  
+                  <div>
+                    <div className="text-xs font-medium text-muted-foreground mb-1">Earnings</div>
                     {editingDriverIndex === index ? (
                       <Input 
                         value={editedDriver?.earnings || ""} 
@@ -183,10 +170,12 @@ export const DriverInfoTable = ({
                         className="h-6 w-20"
                       />
                     ) : (
-                      driver.earnings
+                      <div className="text-sm">{driver.earnings}</div>
                     )}
-                  </TableCell>
-                  <TableCell>
+                  </div>
+                  
+                  <div>
+                    <div className="text-xs font-medium text-muted-foreground mb-1">Delivery Fee</div>
                     {editingDriverIndex === index ? (
                       <Input 
                         value={editedDriver?.deliveryFee || ""} 
@@ -194,10 +183,12 @@ export const DriverInfoTable = ({
                         className="h-6 w-20"
                       />
                     ) : (
-                      driver.deliveryFee
+                      <div className="text-sm">{driver.deliveryFee}</div>
                     )}
-                  </TableCell>
-                  <TableCell>
+                  </div>
+                  
+                  <div>
+                    <div className="text-xs font-medium text-muted-foreground mb-1">Extra Service Fee</div>
                     {editingDriverIndex === index ? (
                       <Input 
                         value={editedDriver?.extraServiceFee || ""} 
@@ -205,10 +196,12 @@ export const DriverInfoTable = ({
                         className="h-6 w-20"
                       />
                     ) : (
-                      driver.extraServiceFee
+                      <div className="text-sm">{driver.extraServiceFee}</div>
                     )}
-                  </TableCell>
-                  <TableCell>
+                  </div>
+                  
+                  <div>
+                    <div className="text-xs font-medium text-muted-foreground mb-1">Tip</div>
                     {editingDriverIndex === index ? (
                       <Input 
                         value={editedDriver?.tip || ""} 
@@ -216,10 +209,12 @@ export const DriverInfoTable = ({
                         className="h-6 w-20"
                       />
                     ) : (
-                      driver.tip
+                      <div className="text-sm">{driver.tip}</div>
                     )}
-                  </TableCell>
-                  <TableCell>
+                  </div>
+                  
+                  <div>
+                    <div className="text-xs font-medium text-muted-foreground mb-1">Status</div>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="outline" size="sm" className="h-6 text-xs px-2 flex items-center">
@@ -247,44 +242,46 @@ export const DriverInfoTable = ({
                         ))}
                       </DropdownMenuContent>
                     </DropdownMenu>
-                  </TableCell>
-                  <TableCell>
-                    {editingDriverIndex === index ? (
-                      <Button 
-                        variant="destructive" 
-                        size="sm" 
-                        className="h-6 text-xs px-3 flex items-center justify-center gap-1.5"
-                        onClick={() => handleSaveDriver(index)}
-                      >
-                        <Save className="h-3.5 w-3.5" />
-                        <span>Save</span>
-                      </Button>
-                    ) : (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="outline" size="sm" className="h-6 text-xs px-2 flex items-center">
-                            Action
-                            <ChevronDown className="h-3 w-3 ml-1" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="z-50 bg-white">
-                          <DropdownMenuItem onClick={() => handleEditDriver(driver.name, index)} className="flex items-center gap-2">
-                            <Edit className="h-3.5 w-3.5" />
-                            Edit
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleDeleteDriver(driver.name, index)} className="flex items-center gap-2 text-red-500">
-                            <Trash2 className="h-3.5 w-3.5" />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </RadioGroup>
-          </TableBody>
-        </Table>
+                  </div>
+                </div>
+                
+                <div className="flex flex-col">
+                  <div className="text-xs font-medium text-muted-foreground mb-1">Action</div>
+                  {editingDriverIndex === index ? (
+                    <Button 
+                      variant="destructive" 
+                      size="sm" 
+                      className="h-6 text-xs px-3 flex items-center justify-center gap-1.5"
+                      onClick={() => handleSaveDriver(index)}
+                    >
+                      <Save className="h-3.5 w-3.5" />
+                      <span>Save</span>
+                    </Button>
+                  ) : (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="sm" className="h-6 text-xs px-2 flex items-center">
+                          Action
+                          <ChevronDown className="h-3 w-3 ml-1" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="z-50 bg-white">
+                        <DropdownMenuItem onClick={() => handleEditDriver(driver.name, index)} className="flex items-center gap-2">
+                          <Edit className="h-3.5 w-3.5" />
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDeleteDriver(driver.name, index)} className="flex items-center gap-2 text-red-500">
+                          <Trash2 className="h-3.5 w-3.5" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </RadioGroup>
       </div>
     </div>
   );
