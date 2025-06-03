@@ -18,8 +18,13 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
   const [isEditing, setIsEditing] = useState(false);
   const [editedPickupTime, setEditedPickupTime] = useState(pickupTime);
   const [editedDropoffTime, setEditedDropoffTime] = useState(dropoffTime);
-  const [isPickupPopoverOpen, setIsPickupPopoverOpen] = useState(false);
-  const [isDropoffPopoverOpen, setIsDropoffPopoverOpen] = useState(false);
+  
+  // Separate state for each date picker
+  const [isPickupStartPopoverOpen, setIsPickupStartPopoverOpen] = useState(false);
+  const [isPickupEndPopoverOpen, setIsPickupEndPopoverOpen] = useState(false);
+  const [isDropoffStartPopoverOpen, setIsDropoffStartPopoverOpen] = useState(false);
+  const [isDropoffEndPopoverOpen, setIsDropoffEndPopoverOpen] = useState(false);
+  
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState("12:00 AM");
 
@@ -58,16 +63,28 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
     );
   }, []);
 
-  const handlePickupTimeUpdate = () => {
+  const handlePickupStartTimeUpdate = () => {
     const formattedDateTime = `${format(selectedDate, 'MM/dd/yyyy')} ${selectedTime}`;
     setEditedPickupTime(formattedDateTime);
-    setIsPickupPopoverOpen(false);
+    setIsPickupStartPopoverOpen(false);
   };
 
-  const handleDropoffTimeUpdate = () => {
+  const handlePickupEndTimeUpdate = () => {
+    const formattedDateTime = `${format(selectedDate, 'MM/dd/yyyy')} ${selectedTime}`;
+    setEditedPickupTime(formattedDateTime);
+    setIsPickupEndPopoverOpen(false);
+  };
+
+  const handleDropoffStartTimeUpdate = () => {
     const formattedDateTime = `${format(selectedDate, 'MM/dd/yyyy')} ${selectedTime}`;
     setEditedDropoffTime(formattedDateTime);
-    setIsDropoffPopoverOpen(false);
+    setIsDropoffStartPopoverOpen(false);
+  };
+
+  const handleDropoffEndTimeUpdate = () => {
+    const formattedDateTime = `${format(selectedDate, 'MM/dd/yyyy')} ${selectedTime}`;
+    setEditedDropoffTime(formattedDateTime);
+    setIsDropoffEndPopoverOpen(false);
   };
 
   const handleDateSelect = (date: Date | undefined) => {
@@ -77,7 +94,7 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
   };
 
   const renderDatePickerPopover = (isOpen: boolean, onOpenChange: (open: boolean) => void, onUpdate: () => void) => (
-    <PopoverContent className="w-auto p-0" side="bottom" align="start">
+    <PopoverContent className="w-auto p-0 bg-white shadow-lg border" side="bottom" align="start">
       <div className="flex flex-col w-[320px]">
         <div className="p-4 space-y-4">
           <div className="grid grid-cols-2 gap-3">
@@ -94,7 +111,7 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
                 <SelectTrigger className="h-9 text-sm">
                   <SelectValue placeholder="12:00 AM" />
                 </SelectTrigger>
-                <SelectContent className="max-h-[200px]">
+                <SelectContent className="max-h-[200px] bg-white">
                   {timeOptions.map((time) => (
                     <SelectItem key={time} value={time} className="text-sm">
                       {time}
@@ -112,7 +129,7 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
               onSelect={handleDateSelect}
               numberOfMonths={1}
               showOutsideDays={false}
-              className="rounded-md border-0 p-0 w-full"
+              className="rounded-md border-0 p-0 w-full pointer-events-auto"
               classNames={{
                 months: "flex w-full justify-center",
                 month: "space-y-3 w-full",
@@ -207,28 +224,28 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
             <div className="flex items-center gap-2 text-sm">
               <span className="font-medium">Start:</span> 
               {isEditing ? (
-                <Popover open={isPickupPopoverOpen} onOpenChange={setIsPickupPopoverOpen}>
+                <Popover open={isPickupStartPopoverOpen} onOpenChange={setIsPickupStartPopoverOpen}>
                   <PopoverTrigger asChild>
                     <div className="border rounded px-2 py-1 cursor-pointer hover:bg-gray-50 flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
                       {editedPickupTime}
                     </div>
                   </PopoverTrigger>
-                  {renderDatePickerPopover(isPickupPopoverOpen, setIsPickupPopoverOpen, handlePickupTimeUpdate)}
+                  {renderDatePickerPopover(isPickupStartPopoverOpen, setIsPickupStartPopoverOpen, handlePickupStartTimeUpdate)}
                 </Popover>
               ) : (
                 editedPickupTime
               )}
               <span className="font-medium ml-4">End:</span> 
               {isEditing ? (
-                <Popover open={isPickupPopoverOpen} onOpenChange={setIsPickupPopoverOpen}>
+                <Popover open={isPickupEndPopoverOpen} onOpenChange={setIsPickupEndPopoverOpen}>
                   <PopoverTrigger asChild>
                     <div className="border rounded px-2 py-1 cursor-pointer hover:bg-gray-50 flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
                       {calculateEndTime(editedPickupTime)}
                     </div>
                   </PopoverTrigger>
-                  {renderDatePickerPopover(isPickupPopoverOpen, setIsPickupPopoverOpen, handlePickupTimeUpdate)}
+                  {renderDatePickerPopover(isPickupEndPopoverOpen, setIsPickupEndPopoverOpen, handlePickupEndTimeUpdate)}
                 </Popover>
               ) : (
                 calculateEndTime(editedPickupTime)
@@ -241,28 +258,28 @@ export const ScheduleInfo = ({ pickupTime, dropoffTime }: ScheduleInfoProps) => 
             <div className="flex items-center gap-2 text-sm">
               <span className="font-medium">Start:</span>
               {isEditing ? (
-                <Popover open={isDropoffPopoverOpen} onOpenChange={setIsDropoffPopoverOpen}>
+                <Popover open={isDropoffStartPopoverOpen} onOpenChange={setIsDropoffStartPopoverOpen}>
                   <PopoverTrigger asChild>
                     <div className="border rounded px-2 py-1 cursor-pointer hover:bg-gray-50 flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
                       {editedDropoffTime}
                     </div>
                   </PopoverTrigger>
-                  {renderDatePickerPopover(isDropoffPopoverOpen, setIsDropoffPopoverOpen, handleDropoffTimeUpdate)}
+                  {renderDatePickerPopover(isDropoffStartPopoverOpen, setIsDropoffStartPopoverOpen, handleDropoffStartTimeUpdate)}
                 </Popover>
               ) : (
                 editedDropoffTime
               )}
               <span className="font-medium ml-4">End:</span>
               {isEditing ? (
-                <Popover open={isDropoffPopoverOpen} onOpenChange={setIsDropoffPopoverOpen}>
+                <Popover open={isDropoffEndPopoverOpen} onOpenChange={setIsDropoffEndPopoverOpen}>
                   <PopoverTrigger asChild>
                     <div className="border rounded px-2 py-1 cursor-pointer hover:bg-gray-50 flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
                       {calculateEndTime(editedDropoffTime)}
                     </div>
                   </PopoverTrigger>
-                  {renderDatePickerPopover(isDropoffPopoverOpen, setIsDropoffPopoverOpen, handleDropoffTimeUpdate)}
+                  {renderDatePickerPopover(isDropoffEndPopoverOpen, setIsDropoffEndPopoverOpen, handleDropoffEndTimeUpdate)}
                 </Popover>
               ) : (
                 calculateEndTime(editedDropoffTime)
