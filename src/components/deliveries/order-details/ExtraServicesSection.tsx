@@ -295,7 +295,7 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
           <div key={service.id} className="space-y-2">
             <h4 className="text-sm font-medium text-gray-700 mb-2">{service.name}</h4>
             <div className="flex items-center gap-6">
-              <div className="flex items-center gap-3 flex-1">
+              <div className="flex items-center gap-1 flex-1">
                 <Label htmlFor={`price-${service.id}`} className="text-xs font-medium w-16 shrink-0">Price:</Label>
                 <Input 
                   id={`price-${service.id}`}
@@ -306,7 +306,7 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
                   className={`h-8 text-sm flex-1 ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
                 />
               </div>
-              <div className="flex items-center gap-3 flex-1">
+              <div className="flex items-center gap-1 flex-1">
                 <Label htmlFor={`courier-earning-${service.id}`} className="text-xs font-medium w-20 shrink-0">Courier fee:</Label>
                 <Input 
                   id={`courier-earning-${service.id}`}
@@ -317,7 +317,7 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
                   className={`h-8 text-sm flex-1 ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
                 />
               </div>
-              <div className="flex items-center gap-3 flex-1">
+              <div className="flex items-center gap-1 flex-1">
                 <Label htmlFor={`units-${service.id}`} className="text-xs font-medium w-12 shrink-0">Units:</Label>
                 {isEditing ? (
                   <div className="flex gap-2 flex-1">
