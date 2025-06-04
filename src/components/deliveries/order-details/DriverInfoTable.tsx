@@ -149,7 +149,7 @@ export const DriverInfoTable = ({
           onClick={handleAddHelper}
         >
           <Plus className="mr-1 h-3.5 w-3.5" />
-          Add helper
+          Add driver/helper
         </Button>
       </h3>
       <div className="rounded-md border bg-card/50 p-0">
