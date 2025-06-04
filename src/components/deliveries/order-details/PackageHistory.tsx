@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
@@ -43,22 +42,6 @@ export const PackageHistory = () => {
       log1: "Automatic status update via API",
       log2: "GPS coordinates refreshed",
       log3: "ETA recalculated based on traffic"
-    },
-    {
-      eventName: "Transit Update",
-      dispatcher: "Lisa Park",
-      date: "Today, 11:00 AM",
-      log1: "Package in transit to destination",
-      log2: "Driver reported normal progress",
-      log3: "No delivery issues encountered"
-    },
-    {
-      eventName: "Delivery Attempt",
-      dispatcher: "Robert Kim",
-      date: "Today, 11:25 AM",
-      log1: "Arrived at delivery location",
-      log2: "Customer contacted for delivery",
-      log3: "Package successfully delivered"
     },
     {
       eventName: "Status Update",
