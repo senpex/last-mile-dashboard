@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ChevronDown, X, Flag, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,6 +22,7 @@ export const OrderControlPanel = ({
 }: OrderControlPanelProps) => {
   const isFlagged = flaggedOrders.has(delivery.id);
   const [driverControlStatus, setDriverControlStatus] = useState<'On' | 'Off'>('Off');
+  const [automailStatus, setAutomailStatus] = useState<'On' | 'Off'>('Off');
   
   // Get current timezone for display
   const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -43,6 +43,11 @@ export const OrderControlPanel = ({
   const handleDriverControlChange = (status: 'On' | 'Off') => {
     setDriverControlStatus(status);
     console.log(`Driver control set to: ${status}`);
+  };
+  
+  const handleAutomailChange = (status: 'On' | 'Off') => {
+    setAutomailStatus(status);
+    console.log(`Automail set to: ${status}`);
   };
   
   return (
@@ -77,8 +82,8 @@ export const OrderControlPanel = ({
             </Button>
           </div>
           
-          {/* Single Dropdown Section - Only Driver Control */}
-          <div className="flex justify-start">
+          {/* Dropdown Section - Driver Control and Automail */}
+          <div className="flex gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm" className="min-w-[120px]">
@@ -92,6 +97,24 @@ export const OrderControlPanel = ({
                   On
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleDriverControlChange('Off')}>
+                  Off
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="min-w-[120px]">
+                  Automail: {automailStatus} <ChevronDown className="h-3 w-3 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-48">
+                <DropdownMenuLabel>Automail</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => handleAutomailChange('On')}>
+                  On
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleAutomailChange('Off')}>
                   Off
                 </DropdownMenuItem>
               </DropdownMenuContent>
