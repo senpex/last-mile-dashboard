@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ChevronDown, X, Trash2, Send, Download, Timer, Bell, RefreshCw, Plus, Flag, Share, CheckCircle, Filter, Settings, Search, BarChart, UserMinus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -208,7 +207,7 @@ export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPane
               <Search className="h-4 w-4" /> Find Driver
             </Button>
             
-            <Button size="sm" variant="outline" className="flex items-center gap-1">
+            <Button size="sm" className="flex items-center gap-1">
               <Send className="h-4 w-4" /> Send Order
             </Button>
             
