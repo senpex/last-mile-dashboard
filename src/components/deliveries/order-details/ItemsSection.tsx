@@ -10,7 +10,12 @@ export const ItemsSection = () => {
       remoteId: "",
       description: "",
       barcode: "S29433",
-      dimensions: "70.00/12.00/39.00/12.00",
+      dimensions: {
+        width: "70.00",
+        length: "12.00", 
+        height: "39.00",
+        weight: "12.00"
+      },
       pickupStatus: "Not scanned",
       dropoffStatus: "Not scanned",
       returnStatus: "",
@@ -44,7 +49,14 @@ export const ItemsSection = () => {
                 <TableCell className="text-sm">{item.remoteId}</TableCell>
                 <TableCell className="text-sm">{item.description}</TableCell>
                 <TableCell className="text-sm">{item.barcode}</TableCell>
-                <TableCell className="text-sm">{item.dimensions}</TableCell>
+                <TableCell className="text-sm">
+                  <div className="space-y-1">
+                    <div>Width: {item.dimensions.width}</div>
+                    <div>Length: {item.dimensions.length}</div>
+                    <div>Height: {item.dimensions.height}</div>
+                    <div>Weight: {item.dimensions.weight}</div>
+                  </div>
+                </TableCell>
                 <TableCell className="text-sm">
                   <Select defaultValue={item.pickupStatus}>
                     <SelectTrigger className="w-full h-8 text-sm">
