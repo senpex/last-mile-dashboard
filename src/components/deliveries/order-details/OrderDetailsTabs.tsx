@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -136,8 +135,8 @@ export const OrderDetailsTabs = ({
                     </TabsTrigger>
                     <TabsTrigger value="package-history" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
                       <Package className="w-4 h-4" /> 
-                      <span className="hidden sm:inline">Package History</span>
-                      <span className="sm:hidden">Package</span>
+                      <span className="hidden sm:inline">Edits Log</span>
+                      <span className="sm:hidden">Edits</span>
                     </TabsTrigger>
                     <TabsTrigger value="driver-control" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
                       <Truck className="w-4 h-4" /> 
