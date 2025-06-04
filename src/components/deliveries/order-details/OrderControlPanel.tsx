@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { ChevronDown, X, Trash2, Edit, Send, Download, Timer, Bell, RefreshCw, Plus, Flag, Share, CheckCircle, Filter, Settings, Search, BarChart, UserMinus } from "lucide-react";
+import { ChevronDown, X, Trash2, Send, Download, Timer, Bell, RefreshCw, Plus, Flag, Share, CheckCircle, Filter, Settings, Search, BarChart, UserMinus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
@@ -208,7 +209,7 @@ export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPane
             </Button>
             
             <Button size="sm" variant="outline" className="flex items-center gap-1">
-              <Edit className="h-4 w-4" /> Edit
+              <Send className="h-4 w-4" /> Send Order
             </Button>
             
             <Button size="sm" variant="secondary" className="flex items-center gap-1">
