@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Truck, ChevronDown, Edit, Trash2, Plus, Save } from "lucide-react";
+import { Truck, ChevronDown, Edit, Trash2, Plus, Save, Search } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
@@ -116,6 +116,10 @@ export const DriverInfoTable = ({
     
     setDrivers([...drivers, newHelper]);
     toast.success("Adding new helper driver");
+  };
+
+  const handleFindDriver = (driverName: string) => {
+    toast.info(`Finding replacement driver for ${driverName}`);
   };
 
   const handleInputChange = (field: keyof DriverInfo, value: string) => {
@@ -280,6 +284,10 @@ export const DriverInfoTable = ({
                         <DropdownMenuItem onClick={() => handleEditDriver(driver.name, index)} className="flex items-center gap-2">
                           <Edit className="h-3.5 w-3.5" />
                           Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleFindDriver(driver.name)} className="flex items-center gap-2">
+                          <Search className="h-3.5 w-3.5" />
+                          Find Driver
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleDeleteDriver(driver.name, index)} className="flex items-center gap-2 text-red-500">
                           <Trash2 className="h-3.5 w-3.5" />
