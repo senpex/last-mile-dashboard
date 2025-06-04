@@ -19,12 +19,36 @@ export const OrderDetailsSection = ({
       </h3>
       <div className="rounded-md border bg-card/50 p-4 space-y-4">
         <div className="flex justify-between">
-          <p className="text-sm">Organization</p>
-          <p className="text-sm font-medium">{organization}</p>
+          <p className="text-sm">Total charge price</p>
+          <p className="text-sm font-medium">$24.50</p>
         </div>
         <div className="flex justify-between">
-          <p className="text-sm">Distance</p>
-          <p className="text-sm font-medium">{distance}</p>
+          <p className="text-sm">Courier earnings</p>
+          <p className="text-sm font-medium">$18.00</p>
+        </div>
+        <div className="flex justify-between">
+          <p className="text-sm">Total tip</p>
+          <p className="text-sm font-medium">$5.00</p>
+        </div>
+        <div className="flex justify-between">
+          <p className="text-sm">Service fee</p>
+          <p className="text-sm font-medium">$2.50</p>
+        </div>
+        <div className="flex justify-between">
+          <p className="text-sm">Insurance fee</p>
+          <p className="text-sm font-medium">$1.00</p>
+        </div>
+        <div className="flex justify-between">
+          <p className="text-sm">Tax fee</p>
+          <p className="text-sm font-medium">$2.20</p>
+        </div>
+        <div className="flex justify-between">
+          <p className="text-sm">Tax %</p>
+          <p className="text-sm font-medium">8.25%</p>
+        </div>
+        <div className="flex justify-between">
+          <p className="text-sm">Item value</p>
+          <p className="text-sm font-medium">$85.00</p>
         </div>
       </div>
     </div>
