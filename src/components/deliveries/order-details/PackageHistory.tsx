@@ -5,33 +5,65 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 export const PackageHistory = () => {
   const packageEvents = [
     {
-      eventName: "Package Pickup",
+      eventName: "Pack edited",
       dispatcher: "Sarah Johnson",
+      date: "Today, 9:45 AM",
+      log1: "Package details modified by dispatcher",
+      log2: "Weight updated from 2.5kg to 3.2kg",
+      log3: "Special handling instructions added"
+    },
+    {
+      eventName: "Comments entered",
+      dispatcher: "Mike Chen",
+      date: "Today, 10:00 AM",
+      log1: "Customer requested specific delivery time",
+      log2: "Fragile item - handle with care",
+      log3: "Delivery to front desk only"
+    },
+    {
+      eventName: "Package Pickup",
+      dispatcher: "Emily Rodriguez",
       date: "Today, 10:15 AM",
       log1: "Driver arrived at pickup location",
       log2: "Package received and verified",
       log3: "Departure from pickup confirmed"
     },
     {
-      eventName: "Transit Update",
-      dispatcher: "Mike Chen",
+      eventName: "Pack sent to all 0",
+      dispatcher: "James Wilson",
       date: "Today, 10:30 AM",
+      log1: "Package broadcast to available drivers",
+      log2: "Notification sent to delivery team",
+      log3: "Route optimization initiated"
+    },
+    {
+      eventName: "Edited through API",
+      dispatcher: "System Auto",
+      date: "Today, 10:45 AM",
+      log1: "Automatic status update via API",
+      log2: "GPS coordinates refreshed",
+      log3: "ETA recalculated based on traffic"
+    },
+    {
+      eventName: "Transit Update",
+      dispatcher: "Lisa Park",
+      date: "Today, 11:00 AM",
       log1: "Package in transit to destination",
-      log2: "Route optimization applied",
-      log3: "ETA updated based on traffic"
+      log2: "Driver reported normal progress",
+      log3: "No delivery issues encountered"
     },
     {
       eventName: "Delivery Attempt",
-      dispatcher: "Emily Rodriguez",
-      date: "Today, 11:05 AM",
+      dispatcher: "Robert Kim",
+      date: "Today, 11:25 AM",
       log1: "Arrived at delivery location",
       log2: "Customer contacted for delivery",
       log3: "Package successfully delivered"
     },
     {
       eventName: "Status Update",
-      dispatcher: "James Wilson",
-      date: "Today, 11:15 AM",
+      dispatcher: "Anna Davis",
+      date: "Today, 11:30 AM",
       log1: "Delivery confirmation received",
       log2: "Customer signature obtained",
       log3: "Order marked as completed"
