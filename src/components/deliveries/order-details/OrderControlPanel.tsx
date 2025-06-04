@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { ChevronDown, X, Send } from "lucide-react";
+import { ChevronDown, X, Send, Flag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
@@ -122,8 +121,7 @@ export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPane
                 <DropdownMenuItem>Email Template</DropdownMenuItem>
                 <DropdownMenuItem>SMS Template</DropdownMenuItem>
                 <DropdownMenuItem>Invoice Template</DropdownMenuItem>
-                <DropdownMenuItem>Label Template</DropdownMenuItem>
-              </DropdownMenuContent>
+                <DropdownMenuItem>Label Template</DropdownMenuContent>
             </DropdownMenu>
             
             <DropdownMenu>
@@ -179,8 +177,7 @@ export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPane
                 <DropdownMenuItem>Generate Invoice</DropdownMenuItem>
                 <DropdownMenuItem>Create Receipt</DropdownMenuItem>
                 <DropdownMenuItem>Print Waybill</DropdownMenuItem>
-                <DropdownMenuItem>Print Package Labels</DropdownMenuItem>
-              </DropdownMenuContent>
+                <DropdownMenuItem>Print Package Labels</DropdownMenuContent>
             </DropdownMenu>
             
             <DropdownMenu>
@@ -198,10 +195,14 @@ export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPane
             </DropdownMenu>
           </div>
           
-          {/* Button Section - Only Cancel and Send Order */}
-          <div className="grid grid-cols-2 gap-2">
+          {/* Button Section - Cancel, Flag, and Send Order */}
+          <div className="grid grid-cols-3 gap-2">
             <Button size="sm" className="flex items-center gap-1">
               <X className="h-4 w-4" /> Cancel
+            </Button>
+            
+            <Button size="sm" variant="outline" className="flex items-center gap-1">
+              <Flag className="h-4 w-4" /> Flag
             </Button>
             
             <Button size="sm" className="bg-sky-500 hover:bg-sky-600 text-white flex items-center gap-1">
