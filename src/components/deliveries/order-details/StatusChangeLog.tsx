@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
@@ -117,10 +118,8 @@ export const StatusChangeLog = () => {
             <TableRow>
               <TableHead className="w-[180px]">Operation name</TableHead>
               <TableHead className="w-[140px]">Date</TableHead>
-              <TableHead className="w-[100px]">Sender name</TableHead>
-              <TableHead className="w-[120px]">Sender surname</TableHead>
-              <TableHead className="w-[100px]">Courier name</TableHead>
-              <TableHead className="w-[120px]">Courier surname</TableHead>
+              <TableHead className="w-[150px]">Sender</TableHead>
+              <TableHead className="w-[150px]">Courier</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -128,10 +127,8 @@ export const StatusChangeLog = () => {
               <TableRow key={index}>
                 <TableCell className="font-medium text-sm">{event.operationName}</TableCell>
                 <TableCell className="text-sm">{event.operationDate}</TableCell>
-                <TableCell className="text-sm">{event.senderName}</TableCell>
-                <TableCell className="text-sm">{event.senderSurname}</TableCell>
-                <TableCell className="text-sm">{event.courierName}</TableCell>
-                <TableCell className="text-sm">{event.courierSurname}</TableCell>
+                <TableCell className="text-sm">{`${event.senderName} ${event.senderSurname}`}</TableCell>
+                <TableCell className="text-sm">{`${event.courierName} ${event.courierSurname}`}</TableCell>
               </TableRow>
             ))}
           </TableBody>
