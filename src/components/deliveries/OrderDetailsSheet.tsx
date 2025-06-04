@@ -14,12 +14,16 @@ interface OrderDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
   delivery: Delivery | null;
+  flaggedOrders: Set<number>;
+  onOrderFlag: (orderId: number, isFlagged: boolean) => void;
 }
 
 export const OrderDetailsSheet = ({
   isOpen,
   onClose,
-  delivery
+  delivery,
+  flaggedOrders,
+  onOrderFlag
 }: OrderDetailsSheetProps) => {
   if (!delivery) return null;
   
@@ -195,6 +199,9 @@ export const OrderDetailsSheet = ({
         <OrderControlPanel 
           statuses={statuses}
           onStatusChange={handleStatusChange}
+          flaggedOrders={flaggedOrders}
+          onOrderFlag={onOrderFlag}
+          delivery={delivery}
         />
       </SheetContent>
 
