@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MapPin, Edit, Save, X } from "lucide-react";
 import { Label } from "@/components/ui/label";
@@ -37,7 +36,7 @@ export const OrderSummarySection = ({
   estimatedRouteTime = "25 minutes",
   parkingLot = "Main Street Parking",
   returnParkingLot = "Warehouse Lot B",
-  externalOrderId = "EXT-2024-001234",
+  externalOrderId = "Walmart order id 1242342",
   onSave
 }: OrderSummarySectionProps) => {
   const [isEditing, setIsEditing] = useState(false);
