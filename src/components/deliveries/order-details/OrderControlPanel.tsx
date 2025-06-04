@@ -11,10 +11,18 @@ interface OrderControlPanelProps {
 }
 
 export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPanelProps) => {
+  // Get current timezone for display
+  const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  
   return (
     <div className="border-t bg-gray-50 p-4 mt-auto">
       <div className="mb-0">
-        <h3 className="text-sm font-medium mb-2">Control Panel</h3>
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-sm font-medium">Control Panel</h3>
+          <div className="text-xs text-muted-foreground">
+            Time Zone: {currentTimezone}
+          </div>
+        </div>
         <Separator className="mb-3" />
         
         <div className="grid grid-cols-1 gap-3">
