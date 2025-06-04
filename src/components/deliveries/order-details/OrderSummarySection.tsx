@@ -15,6 +15,18 @@ interface OrderSummarySectionProps {
   estimatedRouteTime?: string;
   parkingLot?: string;
   returnParkingLot?: string;
+  onSave?: (data: {
+    distance: string;
+    transportType: string;
+    packageType: string;
+    estimatedRouteTime: string;
+    parkingLot: string;
+    returnParkingLot: string;
+    customLength?: string;
+    customWidth?: string;
+    customHeight?: string;
+    customWeight?: string;
+  }) => void;
 }
 
 export const OrderSummarySection = ({
@@ -23,9 +35,18 @@ export const OrderSummarySection = ({
   packageType = "Standard Package",
   estimatedRouteTime = "25 minutes",
   parkingLot = "Main Street Parking",
-  returnParkingLot = "Warehouse Lot B"
+  returnParkingLot = "Warehouse Lot B",
+  onSave
 }: OrderSummarySectionProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [currentValues, setCurrentValues] = useState({
+    distance,
+    transportType,
+    packageType,
+    estimatedRouteTime,
+    parkingLot,
+    returnParkingLot
+  });
   const [editedValues, setEditedValues] = useState({
     distance,
     transportType,
@@ -64,18 +85,44 @@ export const OrderSummarySection = ({
   };
 
   const handleSave = () => {
+    // Update current values with edited values
+    setCurrentValues({
+      distance: editedValues.distance,
+      transportType: editedValues.transportType,
+      packageType: editedValues.packageType,
+      estimatedRouteTime: editedValues.estimatedRouteTime,
+      parkingLot: editedValues.parkingLot,
+      returnParkingLot: editedValues.returnParkingLot
+    });
+    
+    // Call onSave callback if provided
+    if (onSave) {
+      onSave({
+        distance: editedValues.distance,
+        transportType: editedValues.transportType,
+        packageType: editedValues.packageType,
+        estimatedRouteTime: editedValues.estimatedRouteTime,
+        parkingLot: editedValues.parkingLot,
+        returnParkingLot: editedValues.returnParkingLot,
+        customLength: editedValues.customLength,
+        customWidth: editedValues.customWidth,
+        customHeight: editedValues.customHeight,
+        customWeight: editedValues.customWeight
+      });
+    }
+    
     setIsEditing(false);
     toast.success("Order summary updated successfully");
   };
 
   const handleCancel = () => {
     setEditedValues({
-      distance,
-      transportType,
-      packageType,
-      estimatedRouteTime,
-      parkingLot,
-      returnParkingLot,
+      distance: currentValues.distance,
+      transportType: currentValues.transportType,
+      packageType: currentValues.packageType,
+      estimatedRouteTime: currentValues.estimatedRouteTime,
+      parkingLot: currentValues.parkingLot,
+      returnParkingLot: currentValues.returnParkingLot,
       customLength: "",
       customWidth: "",
       customHeight: "",
@@ -137,7 +184,7 @@ export const OrderSummarySection = ({
             <Input 
               id="distance" 
               type="text" 
-              value={isEditing ? editedValues.distance : distance}
+              value={isEditing ? editedValues.distance : currentValues.distance}
               onChange={(e) => handleInputChange('distance', e.target.value)}
               readOnly={!isEditing}
               className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
@@ -163,8 +210,8 @@ export const OrderSummarySection = ({
               </Select>
             ) : (
               <div className="flex items-center gap-2 h-8 px-3 rounded-md border bg-muted/50">
-                <TransportIcon transportType={transportType as any} size={16} />
-                <span className="text-sm">{transportType.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+                <TransportIcon transportType={currentValues.transportType as any} size={16} />
+                <span className="text-sm">{currentValues.transportType.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
               </div>
             )}
           </div>
@@ -187,7 +234,7 @@ export const OrderSummarySection = ({
               <Input 
                 id="package-type" 
                 type="text" 
-                value={packageType} 
+                value={currentValues.packageType} 
                 readOnly
                 className="h-8 text-sm bg-muted/50" 
               />
@@ -198,7 +245,7 @@ export const OrderSummarySection = ({
             <Input 
               id="estimated-route-time" 
               type="text" 
-              value={isEditing ? editedValues.estimatedRouteTime : estimatedRouteTime}
+              value={isEditing ? editedValues.estimatedRouteTime : currentValues.estimatedRouteTime}
               onChange={(e) => handleInputChange('estimatedRouteTime', e.target.value)}
               readOnly={!isEditing}
               className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
@@ -209,7 +256,7 @@ export const OrderSummarySection = ({
             <Input 
               id="parking-lot" 
               type={isEditing ? "text" : "text"}
-              value={isEditing ? editedValues.parkingLot : parkingLot}
+              value={isEditing ? editedValues.parkingLot : currentValues.parkingLot}
               onChange={(e) => handleInputChange('parkingLot', e.target.value)}
               readOnly={!isEditing}
               className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'} [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
@@ -221,7 +268,7 @@ export const OrderSummarySection = ({
             <Input 
               id="return-parking-lot" 
               type={isEditing ? "text" : "text"}
-              value={isEditing ? editedValues.returnParkingLot : returnParkingLot}
+              value={isEditing ? editedValues.returnParkingLot : currentValues.returnParkingLot}
               onChange={(e) => handleInputChange('returnParkingLot', e.target.value)}
               readOnly={!isEditing}
               className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'} [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
