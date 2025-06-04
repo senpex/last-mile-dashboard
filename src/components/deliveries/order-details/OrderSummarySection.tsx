@@ -168,7 +168,7 @@ export const OrderSummarySection = ({
               variant="outline"
               size="sm"
               onClick={handleSave}
-              className="h-7 px-2"
+              className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50"
             >
               <Save className="w-3 h-3 mr-1" />
               Save
@@ -177,7 +177,7 @@ export const OrderSummarySection = ({
               variant="outline"
               size="sm"
               onClick={handleCancel}
-              className="h-7 px-2"
+              className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50"
             >
               <X className="w-3 h-3 mr-1" />
               Cancel
