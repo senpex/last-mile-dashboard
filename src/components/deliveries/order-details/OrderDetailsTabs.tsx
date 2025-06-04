@@ -81,8 +81,6 @@ export const OrderDetailsTabs = ({
                 dropoffTime={delivery.dropoffTime}
               />
               
-              <ImagesSection />
-              
               <CustomerInfo 
                 customerName={delivery.customerName} 
                 organization={delivery.organization}
@@ -119,6 +117,8 @@ export const OrderDetailsTabs = ({
               <ExtraServicesSection />
               
               <OrderRequirementsSection />
+              
+              <ImagesSection />
             </div>
           </ScrollArea>
         </TabsContent>
