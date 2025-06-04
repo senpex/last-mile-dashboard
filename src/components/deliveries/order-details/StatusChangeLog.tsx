@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
@@ -7,7 +6,6 @@ export const StatusChangeLog = () => {
     {
       operationName: "Item is delivered",
       operationDate: "06/04/2025 08:21",
-      packStatus: "Item is delivered",
       senderName: "Aziz",
       senderSurname: "UseNash",
       courierName: "Bianca",
@@ -16,7 +14,6 @@ export const StatusChangeLog = () => {
     {
       operationName: "Arrived to drop-off location",
       operationDate: "06/04/2025 08:21",
-      packStatus: "Route is delivered",
       senderName: "Aziz",
       senderSurname: "UseNash",
       courierName: "Bianca",
@@ -25,7 +22,6 @@ export const StatusChangeLog = () => {
     {
       operationName: "Item in transit",
       operationDate: "06/04/2025 07:51",
-      packStatus: "Item in transit",
       senderName: "Aziz",
       senderSurname: "UseNash",
       courierName: "Bianca",
@@ -34,7 +30,6 @@ export const StatusChangeLog = () => {
     {
       operationName: "Arrived to pickup location",
       operationDate: "06/04/2025 07:41",
-      packStatus: "Arrived to location",
       senderName: "Aziz",
       senderSurname: "UseNash",
       courierName: "Bianca",
@@ -43,7 +38,6 @@ export const StatusChangeLog = () => {
     {
       operationName: "Started working",
       operationDate: "06/04/2025 07:07",
-      packStatus: "Started route",
       senderName: "Aziz",
       senderSurname: "UseNash",
       courierName: "Bianca",
@@ -52,7 +46,6 @@ export const StatusChangeLog = () => {
     {
       operationName: "Courier selected",
       operationDate: "06/04/2025 07:07",
-      packStatus: "Courier selected",
       senderName: "Aziz",
       senderSurname: "UseNash",
       courierName: "Bianca",
@@ -61,7 +54,6 @@ export const StatusChangeLog = () => {
     {
       operationName: "Courier reported problem",
       operationDate: "06/04/2025 07:05",
-      packStatus: "Sender reported courier",
       senderName: "Aziz",
       senderSurname: "UseNash",
       courierName: "Jorge",
@@ -70,7 +62,6 @@ export const StatusChangeLog = () => {
     {
       operationName: "Courier selected",
       operationDate: "06/04/2025 06:49",
-      packStatus: "Courier selected",
       senderName: "Aziz",
       senderSurname: "UseNash",
       courierName: "Jorge",
@@ -79,7 +70,6 @@ export const StatusChangeLog = () => {
     {
       operationName: "Started working",
       operationDate: "06/04/2025 06:47",
-      packStatus: "Started route",
       senderName: "Aziz",
       senderSurname: "UseNash",
       courierName: "Jorge",
@@ -88,7 +78,6 @@ export const StatusChangeLog = () => {
     {
       operationName: "Courier selected",
       operationDate: "06/04/2025 06:33",
-      packStatus: "Courier selected",
       senderName: "Aziz",
       senderSurname: "UseNash",
       courierName: "Jorge",
@@ -97,7 +86,6 @@ export const StatusChangeLog = () => {
     {
       operationName: "Courier reported problem",
       operationDate: "06/04/2025 06:24",
-      packStatus: "Sender reported courier",
       senderName: "Aziz",
       senderSurname: "UseNash",
       courierName: "Lee",
@@ -106,7 +94,6 @@ export const StatusChangeLog = () => {
     {
       operationName: "Courier selected",
       operationDate: "06/04/2025 04:47",
-      packStatus: "Courier selected",
       senderName: "Aziz",
       senderSurname: "UseNash",
       courierName: "Lee",
@@ -115,7 +102,6 @@ export const StatusChangeLog = () => {
     {
       operationName: "Order paid",
       operationDate: "06/04/2025 04:43",
-      packStatus: "Package paid",
       senderName: "Aziz",
       senderSurname: "UseNash",
       courierName: "Lee",
@@ -131,7 +117,6 @@ export const StatusChangeLog = () => {
             <TableRow>
               <TableHead className="w-[180px]">Operation name</TableHead>
               <TableHead className="w-[140px]">Date</TableHead>
-              <TableHead className="w-[150px]">Pack status</TableHead>
               <TableHead className="w-[100px]">Sender name</TableHead>
               <TableHead className="w-[120px]">Sender surname</TableHead>
               <TableHead className="w-[100px]">Courier name</TableHead>
@@ -143,7 +128,6 @@ export const StatusChangeLog = () => {
               <TableRow key={index}>
                 <TableCell className="font-medium text-sm">{event.operationName}</TableCell>
                 <TableCell className="text-sm">{event.operationDate}</TableCell>
-                <TableCell className="text-sm">{event.packStatus}</TableCell>
                 <TableCell className="text-sm">{event.senderName}</TableCell>
                 <TableCell className="text-sm">{event.senderSurname}</TableCell>
                 <TableCell className="text-sm">{event.courierName}</TableCell>
