@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { ChevronDown, X, Trash2, Send, Download, Timer, Bell, RefreshCw, Plus, Flag, Share, CheckCircle, Filter, Settings, Search, BarChart, UserMinus } from "lucide-react";
+import { ChevronDown, X, Flag, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
@@ -198,69 +199,17 @@ export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPane
           </div>
           
           {/* Button Section */}
-          <div className="grid grid-cols-8 sm:grid-cols-9 gap-2">
+          <div className="grid grid-cols-3 gap-2">
             <Button size="sm" className="flex items-center gap-1">
               <X className="h-4 w-4" /> Cancel
-            </Button>
-            
-            <Button size="sm" className="bg-sky-500 hover:bg-sky-600 text-white flex items-center gap-1">
-              <Send className="h-4 w-4" /> Send Order
-            </Button>
-            
-            <Button size="sm" variant="secondary" className="flex items-center gap-1">
-              <Send className="h-4 w-4" /> Send
-            </Button>
-            
-            <Button size="sm" variant="outline" className="flex items-center gap-1">
-              <Download className="h-4 w-4" /> Print
-            </Button>
-            
-            <Button size="sm" variant="outline" className="flex items-center gap-1">
-              <Timer className="h-4 w-4" /> Reschedule
-            </Button>
-            
-            <Button size="sm" variant="outline" className="flex items-center gap-1">
-              <Bell className="h-4 w-4" /> Notify
-            </Button>
-            
-            <Button size="sm" variant="outline" className="flex items-center gap-1">
-              <RefreshCw className="h-4 w-4" /> Refresh
-            </Button>
-            
-            <Button size="sm" variant="outline" className="flex items-center gap-1">
-              <Plus className="h-4 w-4" /> New Task
             </Button>
             
             <Button size="sm" variant="outline" className="flex items-center gap-1">
               <Flag className="h-4 w-4" /> Flag
             </Button>
             
-            <Button size="sm" variant="outline" className="flex items-center gap-1">
-              <Share className="h-4 w-4" /> Share
-            </Button>
-            
-            <Button size="sm" variant="outline" className="flex items-center gap-1">
-              <Download className="h-4 w-4" /> Export
-            </Button>
-            
-            <Button size="sm" variant="outline" className="flex items-center gap-1">
-              <CheckCircle className="h-4 w-4" /> Approve
-            </Button>
-            
-            <Button size="sm" variant="outline" className="flex items-center gap-1">
-              <Filter className="h-4 w-4" /> Filter
-            </Button>
-            
-            <Button size="sm" variant="outline" className="flex items-center gap-1">
-              <Settings className="h-4 w-4" /> Settings
-            </Button>
-            
-            <Button size="sm" variant="outline" className="flex items-center gap-1">
-              <Search className="h-4 w-4" /> Search
-            </Button>
-            
-            <Button size="sm" variant="outline" className="flex items-center gap-1">
-              <BarChart className="h-4 w-4" /> Analytics
+            <Button size="sm" className="bg-sky-500 hover:bg-sky-600 text-white flex items-center gap-1">
+              <Send className="h-4 w-4" /> Send Order
             </Button>
           </div>
         </div>
