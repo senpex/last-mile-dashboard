@@ -30,7 +30,7 @@ export const ItemsSection = () => {
               <TableHead className="w-[100px]">Remote id</TableHead>
               <TableHead className="w-[120px]">Description</TableHead>
               <TableHead className="w-[100px]">Barcode</TableHead>
-              <TableHead className="w-[160px]">Weight/Width/Length/Height</TableHead>
+              <TableHead className="w-[160px]">Dimensions</TableHead>
               <TableHead className="w-[120px]">Pickup status</TableHead>
               <TableHead className="w-[120px]">Dropoff status</TableHead>
               <TableHead className="w-[120px]">Return status</TableHead>
