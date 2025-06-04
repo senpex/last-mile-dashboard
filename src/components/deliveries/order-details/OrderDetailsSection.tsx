@@ -20,7 +20,7 @@ export const OrderDetailsSection = ({
         Price Details
       </h3>
       <div className="rounded-md border bg-card/50 p-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           <div className="space-y-2">
             <Label htmlFor="total-charge-price" className="text-xs font-medium">Total charge price</Label>
             <Input id="total-charge-price" type="text" value="$24.50" readOnly className="h-8 text-sm" />
