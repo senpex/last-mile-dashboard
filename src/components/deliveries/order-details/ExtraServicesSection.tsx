@@ -24,15 +24,15 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
     {
       id: '1',
       name: 'Packing and Unpacking',
-      price: '$15.00',
-      courierEarning: '$12.00',
+      price: '15.00',
+      courierEarning: '12.00',
       units: '2'
     },
     {
       id: '2', 
       name: 'White Gloves Service',
-      price: '$25.00',
-      courierEarning: '$20.00',
+      price: '25.00',
+      courierEarning: '20.00',
       units: '1'
     }
   ]);

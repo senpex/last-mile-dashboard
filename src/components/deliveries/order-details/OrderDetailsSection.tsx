@@ -17,14 +17,14 @@ export const OrderDetailsSection = ({
 }: OrderDetailsSectionProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [values, setValues] = useState({
-    totalChargePrice: "$24.50",
-    courierEarnings: "$18.00",
-    totalTip: "$5.00",
-    serviceFee: "$2.50",
-    insuranceFee: "$1.00",
-    taxFee: "$2.20",
+    totalChargePrice: "24.50",
+    courierEarnings: "18.00",
+    totalTip: "5.00",
+    serviceFee: "2.50",
+    insuranceFee: "1.00",
+    taxFee: "2.20",
     taxPercentage: "8.25%",
-    itemValue: "$85.00"
+    itemValue: "85.00"
   });
   const [editedValues, setEditedValues] = useState(values);
 
