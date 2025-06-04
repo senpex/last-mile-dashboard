@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import { Package, Edit, Save, X } from "lucide-react";
 import { Label } from "@/components/ui/label";
@@ -309,7 +307,7 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
                 />
               </div>
               <div className="flex items-center gap-3 flex-1">
-                <Label htmlFor={`courier-earning-${service.id}`} className="text-xs font-medium w-20 shrink-0">Courier:</Label>
+                <Label htmlFor={`courier-earning-${service.id}`} className="text-xs font-medium w-20 shrink-0">Courier fee:</Label>
                 <Input 
                   id={`courier-earning-${service.id}`}
                   type="text" 
@@ -371,4 +369,3 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
     </div>
   );
 };
-
