@@ -1,4 +1,3 @@
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -194,6 +193,8 @@ export const CustomerOrderView = ({
         isOpen={isOrderDetailsOpen}
         onClose={() => setIsOrderDetailsOpen(false)}
         delivery={deliveryOrder}
+        flaggedOrders={new Set()}
+        onOrderFlag={() => {}}
       />
     </div>
   );

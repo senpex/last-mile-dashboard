@@ -3,22 +3,24 @@ import { ChevronDown, X, Flag, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { DeliveryStatus } from "@/types/delivery";
+import { DeliveryStatus, Delivery } from "@/types/delivery";
 
 interface OrderControlPanelProps {
   statuses: DeliveryStatus[];
   onStatusChange: (status: DeliveryStatus) => void;
-  onFlagChange?: (isFlagged: boolean) => void;
-  initialFlagged?: boolean;
+  flaggedOrders: Set<number>;
+  onOrderFlag: (orderId: number, isFlagged: boolean) => void;
+  delivery: Delivery;
 }
 
 export const OrderControlPanel = ({ 
   statuses, 
   onStatusChange, 
-  onFlagChange,
-  initialFlagged = false 
+  flaggedOrders,
+  onOrderFlag,
+  delivery
 }: OrderControlPanelProps) => {
-  const [isFlagged, setIsFlagged] = useState(initialFlagged);
+  const isFlagged = flaggedOrders.has(delivery.id);
   
   // Get current timezone for display
   const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -33,9 +35,7 @@ export const OrderControlPanel = ({
   const offsetDisplay = utcOffsetMinutes >= 0 ? `+${utcOffsetMinutes}` : `${utcOffsetMinutes}`;
   
   const handleFlagToggle = () => {
-    const newFlaggedState = !isFlagged;
-    setIsFlagged(newFlaggedState);
-    onFlagChange?.(newFlaggedState);
+    onOrderFlag(delivery.id, !isFlagged);
   };
   
   return (
