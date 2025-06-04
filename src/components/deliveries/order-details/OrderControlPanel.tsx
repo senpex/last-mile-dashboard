@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ChevronDown, X, Flag, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -36,7 +35,22 @@ export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPane
         <Separator className="mb-3" />
         
         <div className="grid grid-cols-1 gap-3">
-          {/* Dropdowns Section */}
+          {/* Button Section - Now positioned above dropdowns */}
+          <div className="grid grid-cols-3 gap-2">
+            <Button size="sm" className="flex items-center gap-1">
+              <X className="h-4 w-4" /> Cancel
+            </Button>
+            
+            <Button size="sm" variant="outline" className="flex items-center gap-1">
+              <Flag className="h-4 w-4" /> Flag
+            </Button>
+            
+            <Button size="sm" className="bg-sky-500 hover:bg-sky-600 text-white flex items-center gap-1">
+              <Send className="h-4 w-4" /> Send Order
+            </Button>
+          </div>
+          
+          {/* Dropdowns Section - Now positioned below buttons */}
           <div className="grid grid-cols-11 gap-2 mb-3">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -196,21 +210,6 @@ export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPane
                 <DropdownMenuItem>Performance Stats</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          </div>
-          
-          {/* Button Section */}
-          <div className="grid grid-cols-3 gap-2">
-            <Button size="sm" className="flex items-center gap-1">
-              <X className="h-4 w-4" /> Cancel
-            </Button>
-            
-            <Button size="sm" variant="outline" className="flex items-center gap-1">
-              <Flag className="h-4 w-4" /> Flag
-            </Button>
-            
-            <Button size="sm" className="bg-sky-500 hover:bg-sky-600 text-white flex items-center gap-1">
-              <Send className="h-4 w-4" /> Send Order
-            </Button>
           </div>
         </div>
       </div>
