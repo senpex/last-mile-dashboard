@@ -80,7 +80,7 @@ export const OrderControlPanel = ({
           <div className="grid grid-cols-11 gap-2 mb-3">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="w-full">
+                <Button variant="outline" size="sm" className="w-full min-w-[120px]">
                   Driver control <ChevronDown className="h-3 w-3 ml-1" />
                 </Button>
               </DropdownMenuTrigger>
