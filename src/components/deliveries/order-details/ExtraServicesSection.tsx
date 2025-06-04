@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Package, Edit, Save, X } from "lucide-react";
 import { Label } from "@/components/ui/label";
@@ -261,7 +262,7 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="h-7 text-xs flex items-center gap-1"
+                className="h-7 text-xs flex items-center gap-1 border-green-500 text-green-700 hover:bg-green-50"
                 onClick={handleSave}
               >
                 <Save className="h-3 w-3" />
@@ -270,7 +271,7 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="h-7 text-xs flex items-center gap-1"
+                className="h-7 text-xs flex items-center gap-1 border-red-500 text-red-700 hover:bg-red-50"
                 onClick={handleCancel}
               >
                 <X className="h-3 w-3" />
