@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ChevronDown, Save, Trash2, Edit, Send, Download, Timer, Bell, RefreshCw, Plus, Flag, Share, CheckCircle, Filter, Settings, Search, BarChart } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,13 +15,22 @@ export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPane
   // Get current timezone for display
   const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   
+  // Get UTC offset in minutes
+  const getUtcOffsetMinutes = () => {
+    const offset = new Date().getTimezoneOffset();
+    return -offset; // getTimezoneOffset returns negative values for positive offsets
+  };
+  
+  const utcOffsetMinutes = getUtcOffsetMinutes();
+  const offsetDisplay = utcOffsetMinutes >= 0 ? `+${utcOffsetMinutes}` : `${utcOffsetMinutes}`;
+  
   return (
     <div className="border-t bg-gray-50 p-4 mt-auto">
       <div className="mb-0">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-sm font-medium">Control Panel</h3>
           <div className="text-xs text-muted-foreground">
-            Time Zone: {currentTimezone}
+            Time Zone: {currentTimezone} ({offsetDisplay})
           </div>
         </div>
         <Separator className="mb-3" />
