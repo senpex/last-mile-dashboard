@@ -23,6 +23,7 @@ export const OrderControlPanel = ({
   const isFlagged = flaggedOrders.has(delivery.id);
   const [driverControlStatus, setDriverControlStatus] = useState<'On' | 'Off'>('Off');
   const [automailStatus, setAutomailStatus] = useState<'On' | 'Off'>('Off');
+  const [notificationsStatus, setNotificationsStatus] = useState<'On' | 'Off'>('Off');
   
   // Get current timezone for display
   const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -48,6 +49,11 @@ export const OrderControlPanel = ({
   const handleAutomailChange = (status: 'On' | 'Off') => {
     setAutomailStatus(status);
     console.log(`Automail set to: ${status}`);
+  };
+  
+  const handleNotificationsChange = (status: 'On' | 'Off') => {
+    setNotificationsStatus(status);
+    console.log(`Notifications set to: ${status}`);
   };
   
   return (
@@ -82,7 +88,7 @@ export const OrderControlPanel = ({
             </Button>
           </div>
           
-          {/* Dropdown Section - Driver Control and Automail */}
+          {/* Dropdown Section - Driver Control, Automail, and Notifications */}
           <div className="flex gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -115,6 +121,24 @@ export const OrderControlPanel = ({
                   On
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleAutomailChange('Off')}>
+                  Off
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="min-w-[120px]">
+                  Notifications: {notificationsStatus} <ChevronDown className="h-3 w-3 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-48">
+                <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => handleNotificationsChange('On')}>
+                  On
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleNotificationsChange('Off')}>
                   Off
                 </DropdownMenuItem>
               </DropdownMenuContent>
