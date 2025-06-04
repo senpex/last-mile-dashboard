@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -11,6 +12,7 @@ import { OrderDetailsSection } from "./OrderDetailsSection";
 import { OrderSummarySection } from "./OrderSummarySection";
 import { OrderRequirementsSection } from "./OrderRequirementsSection";
 import { ExtraServicesSection } from "./ExtraServicesSection";
+import { ImagesSection } from "./ImagesSection";
 import { PaymentTransactions } from "./PaymentTransactions";
 import { PackageHistory } from "./PackageHistory";
 import { DriverControl } from "./DriverControl";
@@ -78,6 +80,8 @@ export const OrderDetailsTabs = ({
                 pickupTime={delivery.pickupTime}
                 dropoffTime={delivery.dropoffTime}
               />
+              
+              <ImagesSection />
               
               <CustomerInfo 
                 customerName={delivery.customerName} 
