@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Package, Edit, Save, X, Trash2 } from "lucide-react";
+import { Package, Edit, Save, X } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -235,10 +234,6 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
     );
   };
 
-  const handleDeleteService = (serviceId: string) => {
-    setEditedServices(prev => prev.filter(service => service.id !== serviceId));
-  };
-
   const handleUnitTypeChange = (serviceId: string, unitType: 'minutes' | 'quantity') => {
     setEditedServices(prev => 
       prev.map(service => 
@@ -367,18 +362,6 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
                   />
                 )}
               </div>
-              {isEditing && (
-                <div className="flex items-end">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-8 w-8 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
-                    onClick={() => handleDeleteService(service.id)}
-                  >
-                    <Trash2 className="h-3 w-3" />
-                  </Button>
-                </div>
-              )}
             </div>
           </div>
         ))}
