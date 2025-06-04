@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
@@ -55,11 +56,6 @@ export const PackageHistory = () => {
 
   return (
     <div className="rounded-md border bg-card/50 p-4">
-      <div className="mb-4">
-        <h3 className="text-sm font-medium mb-2">Package Event History</h3>
-        <p className="text-xs text-muted-foreground">Detailed tracking log for this package delivery</p>
-      </div>
-      
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
