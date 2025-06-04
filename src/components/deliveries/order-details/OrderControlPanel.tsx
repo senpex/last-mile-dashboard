@@ -21,6 +21,7 @@ export const OrderControlPanel = ({
   delivery
 }: OrderControlPanelProps) => {
   const isFlagged = flaggedOrders.has(delivery.id);
+  const [driverControlStatus, setDriverControlStatus] = useState<'On' | 'Off'>('Off');
   
   // Get current timezone for display
   const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -36,6 +37,11 @@ export const OrderControlPanel = ({
   
   const handleFlagToggle = () => {
     onOrderFlag(delivery.id, !isFlagged);
+  };
+  
+  const handleDriverControlChange = (status: 'On' | 'Off') => {
+    setDriverControlStatus(status);
+    console.log(`Driver control set to: ${status}`);
   };
   
   return (
@@ -72,6 +78,24 @@ export const OrderControlPanel = ({
           
           {/* Dropdowns Section - Now positioned below buttons */}
           <div className="grid grid-cols-11 gap-2 mb-3">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="w-full">
+                  Driver control <ChevronDown className="h-3 w-3 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-48">
+                <DropdownMenuLabel>Driver Control</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => handleDriverControlChange('On')}>
+                  On
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleDriverControlChange('Off')}>
+                  Off
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm" className="w-full">
