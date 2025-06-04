@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
-import { CalendarClock, Edit } from "lucide-react";
+import { CalendarClock, Edit, Save, X } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface OrderDetailsSectionProps {
   organization: string | undefined;
@@ -25,12 +26,28 @@ export const OrderDetailsSection = ({
     taxPercentage: "8.25%",
     itemValue: "$85.00"
   });
+  const [editedValues, setEditedValues] = useState(values);
 
   const handleInputChange = (field: string, value: string) => {
-    setValues(prev => ({
+    setEditedValues(prev => ({
       ...prev,
       [field]: value
     }));
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleSave = () => {
+    setValues(editedValues);
+    setIsEditing(false);
+    toast.success("Price details updated successfully");
+  };
+
+  const handleCancel = () => {
+    setEditedValues(values);
+    setIsEditing(false);
   };
 
   return (
@@ -40,24 +57,49 @@ export const OrderDetailsSection = ({
           <CalendarClock className="w-4 h-4 mr-2" />
           Price Details
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setIsEditing(!isEditing)}
-          className="h-7 px-2"
-        >
-          <Edit className="w-3 h-3 mr-1" />
-          {isEditing ? 'Save' : 'Edit'}
-        </Button>
+        <div className="flex items-center gap-2">
+          {isEditing ? (
+            <>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="h-7 text-xs flex items-center gap-1"
+                onClick={handleSave}
+              >
+                <Save className="h-3 w-3" />
+                Save
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="h-7 text-xs flex items-center gap-1"
+                onClick={handleCancel}
+              >
+                <X className="h-3 w-3" />
+                Cancel
+              </Button>
+            </>
+          ) : (
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="h-7 text-xs flex items-center gap-1"
+              onClick={handleEdit}
+            >
+              <Edit className="h-3 w-3" />
+              Edit
+            </Button>
+          )}
+        </div>
       </h3>
       <div className="rounded-md border bg-card/50 p-4">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-5 gap-4">
           <div className="space-y-2">
             <Label htmlFor="total-charge-price" className="text-xs font-medium">Total charge price</Label>
             <Input 
               id="total-charge-price" 
               type="text" 
-              value={values.totalChargePrice} 
+              value={isEditing ? editedValues.totalChargePrice : values.totalChargePrice} 
               readOnly={!isEditing}
               onChange={(e) => handleInputChange('totalChargePrice', e.target.value)}
               className="h-8 text-sm" 
@@ -68,7 +110,7 @@ export const OrderDetailsSection = ({
             <Input 
               id="courier-earnings" 
               type="text" 
-              value={values.courierEarnings} 
+              value={isEditing ? editedValues.courierEarnings : values.courierEarnings} 
               readOnly={!isEditing}
               onChange={(e) => handleInputChange('courierEarnings', e.target.value)}
               className="h-8 text-sm" 
@@ -79,7 +121,7 @@ export const OrderDetailsSection = ({
             <Input 
               id="total-tip" 
               type="text" 
-              value={values.totalTip} 
+              value={isEditing ? editedValues.totalTip : values.totalTip} 
               readOnly={!isEditing}
               onChange={(e) => handleInputChange('totalTip', e.target.value)}
               className="h-8 text-sm" 
@@ -90,7 +132,7 @@ export const OrderDetailsSection = ({
             <Input 
               id="service-fee" 
               type="text" 
-              value={values.serviceFee} 
+              value={isEditing ? editedValues.serviceFee : values.serviceFee} 
               readOnly={!isEditing}
               onChange={(e) => handleInputChange('serviceFee', e.target.value)}
               className="h-8 text-sm" 
@@ -101,7 +143,7 @@ export const OrderDetailsSection = ({
             <Input 
               id="insurance-fee" 
               type="text" 
-              value={values.insuranceFee} 
+              value={isEditing ? editedValues.insuranceFee : values.insuranceFee} 
               readOnly={!isEditing}
               onChange={(e) => handleInputChange('insuranceFee', e.target.value)}
               className="h-8 text-sm" 
@@ -112,7 +154,7 @@ export const OrderDetailsSection = ({
             <Input 
               id="tax-fee" 
               type="text" 
-              value={values.taxFee} 
+              value={isEditing ? editedValues.taxFee : values.taxFee} 
               readOnly={!isEditing}
               onChange={(e) => handleInputChange('taxFee', e.target.value)}
               className="h-8 text-sm" 
@@ -123,7 +165,7 @@ export const OrderDetailsSection = ({
             <Input 
               id="tax-percentage" 
               type="text" 
-              value={values.taxPercentage} 
+              value={isEditing ? editedValues.taxPercentage : values.taxPercentage} 
               readOnly={!isEditing}
               onChange={(e) => handleInputChange('taxPercentage', e.target.value)}
               className="h-8 text-sm" 
@@ -134,7 +176,7 @@ export const OrderDetailsSection = ({
             <Input 
               id="item-value" 
               type="text" 
-              value={values.itemValue} 
+              value={isEditing ? editedValues.itemValue : values.itemValue} 
               readOnly={!isEditing}
               onChange={(e) => handleInputChange('itemValue', e.target.value)}
               className="h-8 text-sm" 
