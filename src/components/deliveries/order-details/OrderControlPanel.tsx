@@ -203,10 +203,6 @@ export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPane
               <X className="h-4 w-4" /> Cancel
             </Button>
             
-            <Button size="sm" variant="destructive" className="flex items-center gap-1">
-              <Search className="h-4 w-4" /> Find Driver
-            </Button>
-            
             <Button size="sm" className="bg-sky-500 hover:bg-sky-600 text-white flex items-center gap-1">
               <Send className="h-4 w-4" /> Send Order
             </Button>
