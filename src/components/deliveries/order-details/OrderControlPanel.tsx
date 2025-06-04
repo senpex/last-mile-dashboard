@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { ChevronDown, X, Flag, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { DeliveryStatus, Delivery } from "@/types/delivery";
 
 interface OrderControlPanelProps {
@@ -22,10 +22,7 @@ export const OrderControlPanel = ({
   delivery
 }: OrderControlPanelProps) => {
   const isFlagged = flaggedOrders.has(delivery.id);
-  const [driverControl, setDriverControl] = useState<string>('Off');
-  const [priority, setPriority] = useState<string>('Normal');
-  const [orderStatus, setOrderStatus] = useState<string>(delivery.status);
-  const [assignedDriver, setAssignedDriver] = useState<string>(delivery.courier || 'Unassigned');
+  const [driverControlStatus, setDriverControlStatus] = useState<'On' | 'Off'>('Off');
   
   // Get current timezone for display
   const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -43,24 +40,9 @@ export const OrderControlPanel = ({
     onOrderFlag(delivery.id, !isFlagged);
   };
   
-  const handleDriverControlChange = (value: string) => {
-    setDriverControl(value);
-    console.log(`Driver control set to: ${value}`);
-  };
-
-  const handlePriorityChange = (value: string) => {
-    setPriority(value);
-    console.log(`Priority set to: ${value}`);
-  };
-
-  const handleStatusChange = (value: string) => {
-    setOrderStatus(value);
-    console.log(`Order status set to: ${value}`);
-  };
-
-  const handleDriverChange = (value: string) => {
-    setAssignedDriver(value);
-    console.log(`Driver assigned: ${value}`);
+  const handleDriverControlChange = (status: 'On' | 'Off') => {
+    setDriverControlStatus(status);
+    console.log(`Driver control set to: ${status}`);
   };
   
   return (
@@ -75,7 +57,7 @@ export const OrderControlPanel = ({
         <Separator className="mb-3" />
         
         <div className="grid grid-cols-1 gap-3">
-          {/* Button Section */}
+          {/* Button Section - Now positioned above dropdowns */}
           <div className="grid grid-cols-3 gap-2">
             <Button size="sm" className="flex items-center gap-1">
               <X className="h-4 w-4" /> Cancel
@@ -95,71 +77,25 @@ export const OrderControlPanel = ({
             </Button>
           </div>
           
-          {/* Dropdown Controls Section */}
-          <div className="grid grid-cols-2 gap-3">
-            {/* Driver Control */}
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-gray-600">Driver Control</label>
-              <Select value={driverControl} onValueChange={handleDriverControlChange}>
-                <SelectTrigger className="h-8 text-xs">
-                  <SelectValue placeholder="Select control" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="On">On</SelectItem>
-                  <SelectItem value="Off">Off</SelectItem>
-                  <SelectItem value="Manual">Manual</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Priority */}
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-gray-600">Priority</label>
-              <Select value={priority} onValueChange={handlePriorityChange}>
-                <SelectTrigger className="h-8 text-xs">
-                  <SelectValue placeholder="Select priority" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Low">Low</SelectItem>
-                  <SelectItem value="Normal">Normal</SelectItem>
-                  <SelectItem value="High">High</SelectItem>
-                  <SelectItem value="Urgent">Urgent</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Order Status */}
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-gray-600">Order Status</label>
-              <Select value={orderStatus} onValueChange={handleStatusChange}>
-                <SelectTrigger className="h-8 text-xs">
-                  <SelectValue placeholder="Select status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Pending">Pending</SelectItem>
-                  <SelectItem value="En Route">En Route</SelectItem>
-                  <SelectItem value="Delivered">Delivered</SelectItem>
-                  <SelectItem value="Cancelled">Cancelled</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Assigned Driver */}
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-gray-600">Assigned Driver</label>
-              <Select value={assignedDriver} onValueChange={handleDriverChange}>
-                <SelectTrigger className="h-8 text-xs">
-                  <SelectValue placeholder="Select driver" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Unassigned">Unassigned</SelectItem>
-                  <SelectItem value="John Smith">John Smith</SelectItem>
-                  <SelectItem value="Sarah Johnson">Sarah Johnson</SelectItem>
-                  <SelectItem value="Mike Wilson">Mike Wilson</SelectItem>
-                  <SelectItem value="Lisa Brown">Lisa Brown</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+          {/* Single Dropdown Section - Only Driver Control */}
+          <div className="flex justify-start">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="min-w-[120px]">
+                  Driver control <ChevronDown className="h-3 w-3 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-48">
+                <DropdownMenuLabel>Driver Control</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => handleDriverControlChange('On')}>
+                  On
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleDriverControlChange('Off')}>
+                  Off
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
