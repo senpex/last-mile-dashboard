@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -18,7 +19,8 @@ import { DriverControl } from "./DriverControl";
 import { MailingHistory } from "./MailingHistory";
 import { ChatHistory } from "./ChatHistory";
 import { StatusChangeLog } from "./StatusChangeLog";
-import { CreditCard, Package, Truck, Mail, MessageSquare, Activity } from "lucide-react";
+import { ItemsSection } from "./ItemsSection";
+import { CreditCard, Package, Truck, Mail, MessageSquare, Activity, ShoppingCart } from "lucide-react";
 import { Delivery } from "@/types/delivery";
 import { Dictionary } from "@/types/dictionary";
 
@@ -138,6 +140,11 @@ export const OrderDetailsTabs = ({
                       <span className="hidden sm:inline">Edits Log</span>
                       <span className="sm:hidden">Edits</span>
                     </TabsTrigger>
+                    <TabsTrigger value="items" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
+                      <ShoppingCart className="w-4 h-4" /> 
+                      <span className="hidden sm:inline">Items</span>
+                      <span className="sm:hidden">Items</span>
+                    </TabsTrigger>
                     <TabsTrigger value="driver-control" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
                       <Truck className="w-4 h-4" /> 
                       <span className="hidden sm:inline">Driver Control</span>
@@ -168,6 +175,10 @@ export const OrderDetailsTabs = ({
                   
                   <TabsContent value="package-history" className="space-y-4">
                     <PackageHistory />
+                  </TabsContent>
+                  
+                  <TabsContent value="items" className="space-y-4">
+                    <ItemsSection />
                   </TabsContent>
                   
                   <TabsContent value="driver-control" className="space-y-4">
