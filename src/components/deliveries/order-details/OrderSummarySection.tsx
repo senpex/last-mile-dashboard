@@ -190,16 +190,6 @@ export const OrderSummarySection = ({
       <div className="rounded-md border bg-card/50 p-4">
         <div className="grid grid-cols-3 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="external-order-id" className="text-xs font-medium">External order id</Label>
-            <Input 
-              id="external-order-id" 
-              type="text" 
-              value={externalOrderId}
-              readOnly
-              className="h-8 text-sm bg-muted/50"
-            />
-          </div>
-          <div className="space-y-2">
             <Label htmlFor="distance" className="text-xs font-medium">Distance</Label>
             <Input 
               id="distance" 
@@ -293,6 +283,16 @@ export const OrderSummarySection = ({
               readOnly={!isEditing}
               className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'} [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
               style={{ MozAppearance: 'textfield' }}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="external-order-id" className="text-xs font-medium">External order id</Label>
+            <Input 
+              id="external-order-id" 
+              type="text" 
+              value={externalOrderId}
+              readOnly
+              className="h-8 text-sm bg-muted/50"
             />
           </div>
         </div>
