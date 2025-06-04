@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ChevronDown, X, Flag, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -41,12 +42,12 @@ export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPane
               <X className="h-4 w-4" /> Cancel
             </Button>
             
-            <Button size="sm" variant="outline" className="flex items-center gap-1">
-              <Flag className="h-4 w-4" /> Flag
-            </Button>
-            
             <Button size="sm" className="bg-sky-500 hover:bg-sky-600 text-white flex items-center gap-1">
               <Send className="h-4 w-4" /> Send Order
+            </Button>
+            
+            <Button size="sm" variant="outline" className="flex items-center gap-1">
+              <Flag className="h-4 w-4" /> Flag
             </Button>
           </div>
           
