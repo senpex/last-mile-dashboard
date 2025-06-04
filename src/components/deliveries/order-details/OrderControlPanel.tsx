@@ -76,8 +76,8 @@ export const OrderControlPanel = ({
             </Button>
           </div>
           
-          {/* Dropdowns Section - Now positioned below buttons */}
-          <div className="grid grid-cols-11 gap-2 mb-3">
+          {/* Dropdowns Section - Now with flexible grid that wraps */}
+          <div className="grid grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2 mb-3">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm" className="w-full min-w-[120px]">
