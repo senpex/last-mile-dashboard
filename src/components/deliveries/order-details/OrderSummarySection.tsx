@@ -45,7 +45,11 @@ export const OrderSummarySection = ({
     packageType,
     estimatedRouteTime,
     parkingLot,
-    returnParkingLot
+    returnParkingLot,
+    customLength: "",
+    customWidth: "",
+    customHeight: "",
+    customWeight: ""
   });
   const [editedValues, setEditedValues] = useState({
     distance,
@@ -92,7 +96,11 @@ export const OrderSummarySection = ({
       packageType: editedValues.packageType,
       estimatedRouteTime: editedValues.estimatedRouteTime,
       parkingLot: editedValues.parkingLot,
-      returnParkingLot: editedValues.returnParkingLot
+      returnParkingLot: editedValues.returnParkingLot,
+      customLength: editedValues.customLength,
+      customWidth: editedValues.customWidth,
+      customHeight: editedValues.customHeight,
+      customWeight: editedValues.customWeight
     });
     
     // Call onSave callback if provided
@@ -123,10 +131,10 @@ export const OrderSummarySection = ({
       estimatedRouteTime: currentValues.estimatedRouteTime,
       parkingLot: currentValues.parkingLot,
       returnParkingLot: currentValues.returnParkingLot,
-      customLength: "",
-      customWidth: "",
-      customHeight: "",
-      customWeight: ""
+      customLength: currentValues.customLength,
+      customWidth: currentValues.customWidth,
+      customHeight: currentValues.customHeight,
+      customWeight: currentValues.customWeight
     });
     setIsEditing(false);
   };
@@ -135,7 +143,7 @@ export const OrderSummarySection = ({
     setEditedValues(prev => ({ ...prev, [field]: value }));
   };
 
-  const isCustomSize = editedValues.packageType === 'Custom Size';
+  const isCustomSize = isEditing ? editedValues.packageType === 'Custom Size' : currentValues.packageType === 'Custom Size';
 
   return (
     <div>
@@ -278,7 +286,7 @@ export const OrderSummarySection = ({
         </div>
         
         {/* Custom Size Fields */}
-        {isEditing && isCustomSize && (
+        {isCustomSize && (
           <div className="mt-4 pt-4 border-t">
             <h4 className="text-sm font-medium mb-3">Custom Size Details</h4>
             <div className="grid grid-cols-4 gap-4">
@@ -287,10 +295,11 @@ export const OrderSummarySection = ({
                 <Input 
                   id="custom-length" 
                   type="text" 
-                  value={editedValues.customLength}
+                  value={isEditing ? editedValues.customLength : currentValues.customLength}
                   onChange={(e) => handleInputChange('customLength', e.target.value)}
-                  placeholder="Length"
-                  className="h-8 text-sm bg-background [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                  readOnly={!isEditing}
+                  placeholder={isEditing ? "Length" : ""}
+                  className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'} [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
                   style={{ MozAppearance: 'textfield' }}
                 />
               </div>
@@ -299,10 +308,11 @@ export const OrderSummarySection = ({
                 <Input 
                   id="custom-width" 
                   type="text" 
-                  value={editedValues.customWidth}
+                  value={isEditing ? editedValues.customWidth : currentValues.customWidth}
                   onChange={(e) => handleInputChange('customWidth', e.target.value)}
-                  placeholder="Width"
-                  className="h-8 text-sm bg-background [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                  readOnly={!isEditing}
+                  placeholder={isEditing ? "Width" : ""}
+                  className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'} [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
                   style={{ MozAppearance: 'textfield' }}
                 />
               </div>
@@ -311,10 +321,11 @@ export const OrderSummarySection = ({
                 <Input 
                   id="custom-height" 
                   type="text" 
-                  value={editedValues.customHeight}
+                  value={isEditing ? editedValues.customHeight : currentValues.customHeight}
                   onChange={(e) => handleInputChange('customHeight', e.target.value)}
-                  placeholder="Height"
-                  className="h-8 text-sm bg-background [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                  readOnly={!isEditing}
+                  placeholder={isEditing ? "Height" : ""}
+                  className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'} [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
                   style={{ MozAppearance: 'textfield' }}
                 />
               </div>
@@ -323,10 +334,11 @@ export const OrderSummarySection = ({
                 <Input 
                   id="custom-weight" 
                   type="text" 
-                  value={editedValues.customWeight}
+                  value={isEditing ? editedValues.customWeight : currentValues.customWeight}
                   onChange={(e) => handleInputChange('customWeight', e.target.value)}
-                  placeholder="Weight"
-                  className="h-8 text-sm bg-background [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                  readOnly={!isEditing}
+                  placeholder={isEditing ? "Weight" : ""}
+                  className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'} [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
                   style={{ MozAppearance: 'textfield' }}
                 />
               </div>
