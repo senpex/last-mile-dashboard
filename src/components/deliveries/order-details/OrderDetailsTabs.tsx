@@ -9,6 +9,7 @@ import { CustomerInfo } from "./CustomerInfo";
 import { CourierInfo } from "./CourierInfo";
 import { DriverInfoTable } from "./DriverInfoTable";
 import { OrderDetailsSection } from "./OrderDetailsSection";
+import { OrderSummarySection } from "./OrderSummarySection";
 import { OrderRequirementsSection } from "./OrderRequirementsSection";
 import { PaymentTransactions } from "./PaymentTransactions";
 import { PackageHistory } from "./PackageHistory";
@@ -95,6 +96,15 @@ export const OrderDetailsTabs = ({
                 couriersEarnings={delivery.couriersEarnings}
                 driverStatus={driverStatus}
                 orderStatusesDictionary={orderStatusesDictionary}
+              />
+              
+              <OrderSummarySection 
+                distance={delivery.distance}
+                transportType="9ft_cargo_van"
+                packageType="Standard Package"
+                estimatedRouteTime="25 minutes"
+                parkingLot="Main Street Parking"
+                returnParkingLot="Warehouse Lot B"
               />
               
               <OrderDetailsSection 
