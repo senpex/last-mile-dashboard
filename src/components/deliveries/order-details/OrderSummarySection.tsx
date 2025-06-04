@@ -15,6 +15,7 @@ interface OrderSummarySectionProps {
   estimatedRouteTime?: string;
   parkingLot?: string;
   returnParkingLot?: string;
+  externalOrderId?: string;
   onSave?: (data: {
     distance: string;
     transportType: string;
@@ -36,6 +37,7 @@ export const OrderSummarySection = ({
   estimatedRouteTime = "25 minutes",
   parkingLot = "Main Street Parking",
   returnParkingLot = "Warehouse Lot B",
+  externalOrderId = "EXT-2024-001234",
   onSave
 }: OrderSummarySectionProps) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -187,6 +189,16 @@ export const OrderSummarySection = ({
       </div>
       <div className="rounded-md border bg-card/50 p-4">
         <div className="grid grid-cols-3 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="external-order-id" className="text-xs font-medium">External order id</Label>
+            <Input 
+              id="external-order-id" 
+              type="text" 
+              value={externalOrderId}
+              readOnly
+              className="h-8 text-sm bg-muted/50"
+            />
+          </div>
           <div className="space-y-2">
             <Label htmlFor="distance" className="text-xs font-medium">Distance</Label>
             <Input 
