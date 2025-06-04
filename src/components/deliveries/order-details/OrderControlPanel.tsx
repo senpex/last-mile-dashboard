@@ -82,7 +82,7 @@ export const OrderControlPanel = ({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm" className="min-w-[120px]">
-                  Driver control <ChevronDown className="h-3 w-3 ml-1" />
+                  Driver control: {driverControlStatus} <ChevronDown className="h-3 w-3 ml-1" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-48">
