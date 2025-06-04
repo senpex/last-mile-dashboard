@@ -102,7 +102,7 @@ export const OrderDetailsSection = ({
               value={isEditing ? editedValues.totalChargePrice : values.totalChargePrice} 
               readOnly={!isEditing}
               onChange={(e) => handleInputChange('totalChargePrice', e.target.value)}
-              className="h-8 text-sm" 
+              className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
             />
           </div>
           <div className="space-y-2">
@@ -113,7 +113,7 @@ export const OrderDetailsSection = ({
               value={isEditing ? editedValues.courierEarnings : values.courierEarnings} 
               readOnly={!isEditing}
               onChange={(e) => handleInputChange('courierEarnings', e.target.value)}
-              className="h-8 text-sm" 
+              className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
             />
           </div>
           <div className="space-y-2">
@@ -124,7 +124,7 @@ export const OrderDetailsSection = ({
               value={isEditing ? editedValues.totalTip : values.totalTip} 
               readOnly={!isEditing}
               onChange={(e) => handleInputChange('totalTip', e.target.value)}
-              className="h-8 text-sm" 
+              className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
             />
           </div>
           <div className="space-y-2">
@@ -135,7 +135,7 @@ export const OrderDetailsSection = ({
               value={isEditing ? editedValues.serviceFee : values.serviceFee} 
               readOnly={!isEditing}
               onChange={(e) => handleInputChange('serviceFee', e.target.value)}
-              className="h-8 text-sm" 
+              className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
             />
           </div>
           <div className="space-y-2">
@@ -146,7 +146,7 @@ export const OrderDetailsSection = ({
               value={isEditing ? editedValues.insuranceFee : values.insuranceFee} 
               readOnly={!isEditing}
               onChange={(e) => handleInputChange('insuranceFee', e.target.value)}
-              className="h-8 text-sm" 
+              className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
             />
           </div>
           <div className="space-y-2">
@@ -157,7 +157,7 @@ export const OrderDetailsSection = ({
               value={isEditing ? editedValues.taxFee : values.taxFee} 
               readOnly={!isEditing}
               onChange={(e) => handleInputChange('taxFee', e.target.value)}
-              className="h-8 text-sm" 
+              className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
             />
           </div>
           <div className="space-y-2">
@@ -168,7 +168,7 @@ export const OrderDetailsSection = ({
               value={isEditing ? editedValues.taxPercentage : values.taxPercentage} 
               readOnly={!isEditing}
               onChange={(e) => handleInputChange('taxPercentage', e.target.value)}
-              className="h-8 text-sm" 
+              className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
             />
           </div>
           <div className="space-y-2">
@@ -179,7 +179,7 @@ export const OrderDetailsSection = ({
               value={isEditing ? editedValues.itemValue : values.itemValue} 
               readOnly={!isEditing}
               onChange={(e) => handleInputChange('itemValue', e.target.value)}
-              className="h-8 text-sm" 
+              className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
             />
           </div>
         </div>
