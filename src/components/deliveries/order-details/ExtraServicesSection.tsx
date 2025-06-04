@@ -1,4 +1,5 @@
 
+
 import React, { useState } from 'react';
 import { Package, Edit, Save, X } from "lucide-react";
 import { Label } from "@/components/ui/label";
@@ -291,13 +292,13 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
           )}
         </div>
       </h3>
-      <div className="rounded-md border bg-card/50 p-4 space-y-4">
+      <div className="rounded-md border bg-card/50 p-4 space-y-3">
         {(isEditing ? editedServices : services).map((service) => (
-          <div key={service.id} className="space-y-3">
-            <h4 className="text-sm font-medium text-gray-700">{service.name}</h4>
-            <div className="grid grid-cols-3 gap-4">
-              <div className="flex items-center gap-2">
-                <Label htmlFor={`price-${service.id}`} className="text-xs font-medium w-20 shrink-0">Price</Label>
+          <div key={service.id} className="space-y-2">
+            <h4 className="text-sm font-medium text-gray-700 mb-2">{service.name}</h4>
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-3 flex-1">
+                <Label htmlFor={`price-${service.id}`} className="text-xs font-medium w-16 shrink-0">Price:</Label>
                 <Input 
                   id={`price-${service.id}`}
                   type="text" 
@@ -307,8 +308,8 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
                   className={`h-8 text-sm flex-1 ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
                 />
               </div>
-              <div className="flex items-center gap-2">
-                <Label htmlFor={`courier-earning-${service.id}`} className="text-xs font-medium w-20 shrink-0">Courier Earning</Label>
+              <div className="flex items-center gap-3 flex-1">
+                <Label htmlFor={`courier-earning-${service.id}`} className="text-xs font-medium w-20 shrink-0">Courier:</Label>
                 <Input 
                   id={`courier-earning-${service.id}`}
                   type="text" 
@@ -318,8 +319,8 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
                   className={`h-8 text-sm flex-1 ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
                 />
               </div>
-              <div className="flex items-center gap-2">
-                <Label htmlFor={`units-${service.id}`} className="text-xs font-medium w-20 shrink-0">Units</Label>
+              <div className="flex items-center gap-3 flex-1">
+                <Label htmlFor={`units-${service.id}`} className="text-xs font-medium w-12 shrink-0">Units:</Label>
                 {isEditing ? (
                   <div className="flex gap-2 flex-1">
                     <Select 
@@ -370,3 +371,4 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
     </div>
   );
 };
+
