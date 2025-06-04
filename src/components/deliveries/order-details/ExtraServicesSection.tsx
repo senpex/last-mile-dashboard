@@ -294,8 +294,8 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
         {(isEditing ? editedServices : services).map((service) => (
           <div key={service.id} className="space-y-3">
             <h4 className="text-sm font-medium text-gray-700">{service.name}</h4>
-            <div className="flex items-end gap-4">
-              <div className="flex-1 space-y-2">
+            <div className="grid grid-cols-3 gap-4">
+              <div className="space-y-2">
                 <Label htmlFor={`price-${service.id}`} className="text-xs font-medium">Price</Label>
                 <Input 
                   id={`price-${service.id}`}
@@ -306,7 +306,7 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
                   className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
                 />
               </div>
-              <div className="flex-1 space-y-2">
+              <div className="space-y-2">
                 <Label htmlFor={`courier-earning-${service.id}`} className="text-xs font-medium">Courier Earning</Label>
                 <Input 
                   id={`courier-earning-${service.id}`}
@@ -317,7 +317,7 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
                   className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
                 />
               </div>
-              <div className="flex-1 space-y-2">
+              <div className="space-y-2">
                 <Label htmlFor={`units-${service.id}`} className="text-xs font-medium">Units</Label>
                 {isEditing ? (
                   <div className="flex gap-2">
