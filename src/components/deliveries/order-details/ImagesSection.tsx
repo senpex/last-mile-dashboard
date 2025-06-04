@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Images, Edit, Save, X, ExternalLink, Clock } from "lucide-react";
+import { Images, Edit, Save, X, ExternalLink, Clock, Trash2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -69,9 +69,44 @@ export const ImagesSection = ({}: ImagesSectionProps) => {
     setIsEditing(false);
   };
 
+  const handleDeleteImage = (imageId: string, images: ImageData[], setImages: React.Dispatch<React.SetStateAction<ImageData[]>>) => {
+    const newImages = images.filter(image => image.id !== imageId);
+    setImages(newImages);
+    toast.success("Image deleted successfully");
+  };
+
+  const handleAddImage = (images: ImageData[], setImages: React.Dispatch<React.SetStateAction<ImageData[]>>) => {
+    const newImage: ImageData = {
+      id: Date.now().toString(),
+      url: "",
+      timestamp: new Date().toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      })
+    };
+    setImages([...images, newImage]);
+  };
+
   const renderImageGroup = (title: string, images: ImageData[], setImages: React.Dispatch<React.SetStateAction<ImageData[]>>) => (
     <div className="space-y-3">
-      <h4 className="text-sm font-medium text-muted-foreground">{title}</h4>
+      <div className="flex items-center justify-between">
+        <h4 className="text-sm font-medium text-muted-foreground">{title}</h4>
+        {isEditing && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-7 text-xs flex items-center gap-1"
+            onClick={() => handleAddImage(images, setImages)}
+          >
+            <Plus className="h-3 w-3" />
+            Add Image
+          </Button>
+        )}
+      </div>
       <div className="space-y-2">
         {images.map((image, index) => (
           <div key={image.id} className="flex items-center justify-between p-3 border rounded-md bg-card/50">
@@ -106,16 +141,28 @@ export const ImagesSection = ({}: ImagesSectionProps) => {
                 </div>
               </div>
             </div>
-            {!isEditing && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-8 w-8 p-0"
-                onClick={() => window.open(image.url, '_blank')}
-              >
-                <ExternalLink className="h-3 w-3" />
-              </Button>
-            )}
+            <div className="flex items-center gap-1">
+              {!isEditing && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 p-0"
+                  onClick={() => window.open(image.url, '_blank')}
+                >
+                  <ExternalLink className="h-3 w-3" />
+                </Button>
+              )}
+              {isEditing && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 p-0 text-red-600 hover:text-red-800 hover:bg-red-50"
+                  onClick={() => handleDeleteImage(image.id, images, setImages)}
+                >
+                  <Trash2 className="h-3 w-3" />
+                </Button>
+              )}
+            </div>
           </div>
         ))}
       </div>
