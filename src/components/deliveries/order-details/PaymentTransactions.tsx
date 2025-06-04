@@ -30,6 +30,16 @@ export const PaymentTransactions = ({ price, tip }: PaymentTransactionsProps) =>
             <span className="text-xs text-muted-foreground">Today, 10:50 AM</span>
           </div>
         </div>
+        <div className="border-b pb-2">
+          <div className="flex justify-between">
+            <span className="text-sm font-medium">Courier payed</span>
+            <span className="text-sm text-red-600">-$12.50</span>
+          </div>
+          <div className="flex justify-between mt-1">
+            <span className="text-xs text-muted-foreground">Direct Transfer</span>
+            <span className="text-xs text-muted-foreground">Today, 11:15 AM</span>
+          </div>
+        </div>
       </div>
     </div>
   );
