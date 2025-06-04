@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
-import { Package, Edit, Save, X } from "lucide-react";
+import { Package, Edit, Save, X, Trash2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 
 interface ExtraService {
@@ -12,6 +13,7 @@ interface ExtraService {
   price: string;
   courierEarning: string;
   units: string;
+  unitType: 'minutes' | 'quantity';
 }
 
 interface ExtraServicesSectionProps {
@@ -26,17 +28,43 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
       name: 'Packing and Unpacking',
       price: '15.00',
       courierEarning: '12.00',
-      units: '2'
+      units: '2',
+      unitType: 'quantity'
     },
     {
       id: '2', 
       name: 'White Gloves Service',
       price: '25.00',
       courierEarning: '20.00',
-      units: '1'
+      units: '15 minutes',
+      unitType: 'minutes'
     }
   ]);
   const [editedServices, setEditedServices] = useState<ExtraService[]>(services);
+
+  // Generate minutes options from 15 minutes to 6 hours (360 minutes) in 15-minute increments
+  const generateMinutesOptions = () => {
+    const options = [];
+    for (let i = 15; i <= 360; i += 15) {
+      if (i < 60) {
+        options.push(`${i} minutes`);
+      } else {
+        const hours = Math.floor(i / 60);
+        const remainingMinutes = i % 60;
+        if (remainingMinutes === 0) {
+          options.push(`${hours} hour${hours > 1 ? 's' : ''}`);
+        } else {
+          options.push(`${hours} hour${hours > 1 ? 's' : ''} ${remainingMinutes} minutes`);
+        }
+      }
+    }
+    return options;
+  };
+
+  // Generate quantity options from 1 to 10
+  const generateQuantityOptions = () => {
+    return Array.from({ length: 10 }, (_, i) => (i + 1).toString());
+  };
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -61,6 +89,24 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
       prev.map(service => 
         service.id === serviceId 
           ? { ...service, [field]: value }
+          : service
+      )
+    );
+  };
+
+  const handleDeleteService = (serviceId: string) => {
+    setEditedServices(prev => prev.filter(service => service.id !== serviceId));
+  };
+
+  const handleUnitTypeChange = (serviceId: string, unitType: 'minutes' | 'quantity') => {
+    setEditedServices(prev => 
+      prev.map(service => 
+        service.id === serviceId 
+          ? { 
+              ...service, 
+              unitType, 
+              units: unitType === 'minutes' ? '15 minutes' : '1'
+            }
           : service
       )
     );
@@ -111,8 +157,18 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
       <div className="rounded-md border bg-card/50 p-4 space-y-4">
         {(isEditing ? editedServices : services).map((service) => (
           <div key={service.id} className="space-y-3">
-            <div className="flex items-center">
+            <div className="flex items-center justify-between">
               <h4 className="text-sm font-medium text-gray-700">{service.name}</h4>
+              {isEditing && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-7 w-7 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                  onClick={() => handleDeleteService(service.id)}
+                >
+                  <Trash2 className="h-3 w-3" />
+                </Button>
+              )}
             </div>
             <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2">
@@ -139,14 +195,48 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
               </div>
               <div className="space-y-2">
                 <Label htmlFor={`units-${service.id}`} className="text-xs font-medium">Units</Label>
-                <Input 
-                  id={`units-${service.id}`}
-                  type="text" 
-                  value={service.units}
-                  readOnly={!isEditing}
-                  onChange={(e) => handleServiceChange(service.id, 'units', e.target.value)}
-                  className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
-                />
+                {isEditing ? (
+                  <div className="space-y-2">
+                    <Select 
+                      value={service.unitType} 
+                      onValueChange={(value: 'minutes' | 'quantity') => handleUnitTypeChange(service.id, value)}
+                    >
+                      <SelectTrigger className="h-8 text-sm">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="minutes">Minutes</SelectItem>
+                        <SelectItem value="quantity">Quantity</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Select 
+                      value={service.units} 
+                      onValueChange={(value) => handleServiceChange(service.id, 'units', value)}
+                    >
+                      <SelectTrigger className="h-8 text-sm">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {service.unitType === 'minutes' 
+                          ? generateMinutesOptions().map(option => (
+                              <SelectItem key={option} value={option}>{option}</SelectItem>
+                            ))
+                          : generateQuantityOptions().map(option => (
+                              <SelectItem key={option} value={option}>{option}</SelectItem>
+                            ))
+                        }
+                      </SelectContent>
+                    </Select>
+                  </div>
+                ) : (
+                  <Input 
+                    id={`units-${service.id}`}
+                    type="text" 
+                    value={service.units}
+                    readOnly
+                    className="h-8 text-sm bg-muted/50"
+                  />
+                )}
               </div>
             </div>
           </div>
