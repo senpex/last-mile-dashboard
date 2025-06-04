@@ -157,19 +157,7 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
       <div className="rounded-md border bg-card/50 p-4 space-y-4">
         {(isEditing ? editedServices : services).map((service) => (
           <div key={service.id} className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h4 className="text-sm font-medium text-gray-700">{service.name}</h4>
-              {isEditing && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-7 w-7 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
-                  onClick={() => handleDeleteService(service.id)}
-                >
-                  <Trash2 className="h-3 w-3" />
-                </Button>
-              )}
-            </div>
+            <h4 className="text-sm font-medium text-gray-700">{service.name}</h4>
             <div className="flex items-end gap-4">
               <div className="flex-1 space-y-2">
                 <Label htmlFor={`price-${service.id}`} className="text-xs font-medium">Price</Label>
@@ -238,6 +226,18 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
                   />
                 )}
               </div>
+              {isEditing && (
+                <div className="flex items-end">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 w-8 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                    onClick={() => handleDeleteService(service.id)}
+                  >
+                    <Trash2 className="h-3 w-3" />
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         ))}
