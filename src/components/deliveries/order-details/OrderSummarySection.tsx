@@ -208,22 +208,24 @@ export const OrderSummarySection = ({
             <Label htmlFor="parking-lot" className="text-xs font-medium">Parking lot</Label>
             <Input 
               id="parking-lot" 
-              type={isEditing ? "number" : "text"}
+              type={isEditing ? "text" : "text"}
               value={isEditing ? editedValues.parkingLot : parkingLot}
               onChange={(e) => handleInputChange('parkingLot', e.target.value)}
               readOnly={!isEditing}
-              className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
+              className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'} [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
+              style={{ MozAppearance: 'textfield' }}
             />
           </div>
           <div className="space-y-2">
             <Label htmlFor="return-parking-lot" className="text-xs font-medium">Return parking lot</Label>
             <Input 
               id="return-parking-lot" 
-              type={isEditing ? "number" : "text"}
+              type={isEditing ? "text" : "text"}
               value={isEditing ? editedValues.returnParkingLot : returnParkingLot}
               onChange={(e) => handleInputChange('returnParkingLot', e.target.value)}
               readOnly={!isEditing}
-              className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
+              className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'} [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
+              style={{ MozAppearance: 'textfield' }}
             />
           </div>
         </div>
@@ -237,44 +239,48 @@ export const OrderSummarySection = ({
                 <Label htmlFor="custom-length" className="text-xs font-medium">Length</Label>
                 <Input 
                   id="custom-length" 
-                  type="number" 
+                  type="text" 
                   value={editedValues.customLength}
                   onChange={(e) => handleInputChange('customLength', e.target.value)}
                   placeholder="Length"
-                  className="h-8 text-sm bg-background" 
+                  className="h-8 text-sm bg-background [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                  style={{ MozAppearance: 'textfield' }}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="custom-width" className="text-xs font-medium">Width</Label>
                 <Input 
                   id="custom-width" 
-                  type="number" 
+                  type="text" 
                   value={editedValues.customWidth}
                   onChange={(e) => handleInputChange('customWidth', e.target.value)}
                   placeholder="Width"
-                  className="h-8 text-sm bg-background" 
+                  className="h-8 text-sm bg-background [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                  style={{ MozAppearance: 'textfield' }}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="custom-height" className="text-xs font-medium">Height</Label>
                 <Input 
                   id="custom-height" 
-                  type="number" 
+                  type="text" 
                   value={editedValues.customHeight}
                   onChange={(e) => handleInputChange('customHeight', e.target.value)}
                   placeholder="Height"
-                  className="h-8 text-sm bg-background" 
+                  className="h-8 text-sm bg-background [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                  style={{ MozAppearance: 'textfield' }}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="custom-weight" className="text-xs font-medium">Weight</Label>
                 <Input 
                   id="custom-weight" 
-                  type="number" 
+                  type="text" 
                   value={editedValues.customWeight}
                   onChange={(e) => handleInputChange('customWeight', e.target.value)}
                   placeholder="Weight"
-                  className="h-8 text-sm bg-background" 
+                  className="h-8 text-sm bg-background [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                  style={{ MozAppearance: 'textfield' }}
                 />
               </div>
             </div>
