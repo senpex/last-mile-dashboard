@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { ChevronDown, X, Flag, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -12,6 +12,8 @@ interface OrderControlPanelProps {
 }
 
 export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPanelProps) => {
+  const [isFlagged, setIsFlagged] = useState(false);
+  
   // Get current timezone for display
   const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   
@@ -23,6 +25,10 @@ export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPane
   
   const utcOffsetMinutes = getUtcOffsetMinutes();
   const offsetDisplay = utcOffsetMinutes >= 0 ? `+${utcOffsetMinutes}` : `${utcOffsetMinutes}`;
+  
+  const handleFlagToggle = () => {
+    setIsFlagged(!isFlagged);
+  };
   
   return (
     <div className="border-t bg-gray-50 p-4 mt-auto">
@@ -46,7 +52,12 @@ export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPane
               <Send className="h-4 w-4" /> Send Order
             </Button>
             
-            <Button size="sm" variant="outline" className="flex items-center gap-1">
+            <Button 
+              size="sm" 
+              variant={isFlagged ? "destructive" : "outline"}
+              className={`flex items-center gap-1 ${isFlagged ? "bg-red-500 hover:bg-red-600 text-white" : ""}`}
+              onClick={handleFlagToggle}
+            >
               <Flag className="h-4 w-4" /> Flag
             </Button>
           </div>
