@@ -129,7 +129,7 @@ export const StatusChangeLog = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[180px]">Operation_name</TableHead>
+              <TableHead className="w-[180px]">Operation name</TableHead>
               <TableHead className="w-[140px]">Operation_date</TableHead>
               <TableHead className="w-[150px]">Pack status</TableHead>
               <TableHead className="w-[100px]">Sender name</TableHead>
