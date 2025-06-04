@@ -204,7 +204,7 @@ export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPane
             </Button>
             
             <Button size="sm" variant="destructive" className="flex items-center gap-1">
-              <UserMinus className="h-4 w-4" /> Remove Driver
+              <Search className="h-4 w-4" /> Find Driver
             </Button>
             
             <Button size="sm" variant="outline" className="flex items-center gap-1">
