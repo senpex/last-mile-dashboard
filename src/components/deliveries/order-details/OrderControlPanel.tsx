@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ChevronDown, Save, Trash2, Edit, Send, Download, Timer, Bell, RefreshCw, Plus, Flag, Share, CheckCircle, Filter, Settings, Search, BarChart } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -201,7 +200,7 @@ export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPane
           {/* Button Section */}
           <div className="grid grid-cols-8 sm:grid-cols-9 gap-2">
             <Button size="sm" className="flex items-center gap-1">
-              <Save className="h-4 w-4" /> Save
+              <Save className="h-4 w-4" /> Cancel
             </Button>
             
             <Button size="sm" variant="destructive" className="flex items-center gap-1">
