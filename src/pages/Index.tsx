@@ -19,6 +19,7 @@ const Index = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedCourier, setSelectedCourier] = useState("");
   const [showMyDeliveriesOnly, setShowMyDeliveriesOnly] = useState(true);
+  const [flaggedOrders, setFlaggedOrders] = useState<Set<number>>(new Set());
 
   const {
     pageSize,
@@ -84,8 +85,12 @@ const Index = () => {
     showMyDeliveriesOnly 
   });
 
+  // Calculate orders that need attention (either flagged or have specific statuses)
   const hasAttentionRequiredOrders = deliveriesData.some(
-    delivery => delivery.status === "Canceled By Customer" || delivery.status === "Cancelled By Admin"
+    delivery => 
+      delivery.status === "Canceled By Customer" || 
+      delivery.status === "Cancelled By Admin" ||
+      flaggedOrders.has(delivery.id)
   );
 
   const handleCourierClick = (courierName: string) => {
@@ -96,6 +101,18 @@ const Index = () => {
 
   const handleToggleMyDeliveries = (showMine: boolean) => {
     setShowMyDeliveriesOnly(showMine);
+  };
+
+  const handleOrderFlag = (orderId: number, isFlagged: boolean) => {
+    setFlaggedOrders(prev => {
+      const newSet = new Set(prev);
+      if (isFlagged) {
+        newSet.add(orderId);
+      } else {
+        newSet.delete(orderId);
+      }
+      return newSet;
+    });
   };
 
   return (
@@ -142,6 +159,8 @@ const Index = () => {
               handleDrop={handleDrop}
               isFilterSidebarOpen={isFilterSidebarOpen}
               toggleFilterSidebar={toggleFilterSidebar}
+              flaggedOrders={flaggedOrders}
+              onOrderFlag={handleOrderFlag}
               allDeliveryStatuses={allDeliveryStatuses}
               selectedStatuses={selectedStatuses}
               setSelectedStatuses={setSelectedStatuses}

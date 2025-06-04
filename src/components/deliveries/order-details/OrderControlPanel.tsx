@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ChevronDown, X, Flag, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,10 +8,17 @@ import { DeliveryStatus } from "@/types/delivery";
 interface OrderControlPanelProps {
   statuses: DeliveryStatus[];
   onStatusChange: (status: DeliveryStatus) => void;
+  onFlagChange?: (isFlagged: boolean) => void;
+  initialFlagged?: boolean;
 }
 
-export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPanelProps) => {
-  const [isFlagged, setIsFlagged] = useState(false);
+export const OrderControlPanel = ({ 
+  statuses, 
+  onStatusChange, 
+  onFlagChange,
+  initialFlagged = false 
+}: OrderControlPanelProps) => {
+  const [isFlagged, setIsFlagged] = useState(initialFlagged);
   
   // Get current timezone for display
   const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -27,7 +33,9 @@ export const OrderControlPanel = ({ statuses, onStatusChange }: OrderControlPane
   const offsetDisplay = utcOffsetMinutes >= 0 ? `+${utcOffsetMinutes}` : `${utcOffsetMinutes}`;
   
   const handleFlagToggle = () => {
-    setIsFlagged(!isFlagged);
+    const newFlaggedState = !isFlagged;
+    setIsFlagged(newFlaggedState);
+    onFlagChange?.(newFlaggedState);
   };
   
   return (
