@@ -24,6 +24,8 @@ interface DeliveryTableProps {
   handleDrop: (e: React.DragEvent<HTMLDivElement>, columnId: string) => void;
   isFilterSidebarOpen: boolean;
   toggleFilterSidebar: () => void;
+  flaggedOrders: Set<number>;
+  onOrderFlag: (orderId: number, isFlagged: boolean) => void;
   allDeliveryStatuses: DeliveryStatus[];
   selectedStatuses: DeliveryStatus[];
   setSelectedStatuses: (statuses: DeliveryStatus[]) => void;
@@ -60,6 +62,7 @@ interface DeliveryTableProps {
   };
   requestSort?: (key: string) => void;
 }
+
 const getColumnWidth = (columnId: string): string => {
   switch (columnId) {
     case "status":
@@ -108,6 +111,7 @@ const doesCustomerNeedAttention = (customerId: string | number): boolean => {
 const doesCourierNeedAttention = (deliveryId: number): boolean => {
   return deliveryId % 10 < 3;
 };
+
 const DeliveryTable = ({
   items,
   sortedColumns,
@@ -121,6 +125,8 @@ const DeliveryTable = ({
   handleDrop,
   isFilterSidebarOpen,
   toggleFilterSidebar,
+  flaggedOrders,
+  onOrderFlag,
   allDeliveryStatuses,
   selectedStatuses,
   setSelectedStatuses,
@@ -373,7 +379,10 @@ const DeliveryTable = ({
         isOpen={isOrderDetailsOpen}
         onClose={() => setIsOrderDetailsOpen(false)}
         delivery={selectedDelivery}
+        flaggedOrders={flaggedOrders}
+        onOrderFlag={onOrderFlag}
       />
     </div>;
 };
+
 export default DeliveryTable;
