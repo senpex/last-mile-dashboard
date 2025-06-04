@@ -40,11 +40,143 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
       unitType: 'minutes'
     }
   ]);
-  const [editedServices, setEditedServices] = useState<ExtraService[]>(services);
+
+  const [allServices] = useState<ExtraService[]>([
+    {
+      id: '1',
+      name: 'Packing and Unpacking',
+      price: '15.00',
+      courierEarning: '12.00',
+      units: '2',
+      unitType: 'quantity'
+    },
+    {
+      id: '2', 
+      name: 'White Gloves Service',
+      price: '25.00',
+      courierEarning: '20.00',
+      units: '15 minutes',
+      unitType: 'minutes'
+    },
+    {
+      id: '3',
+      name: 'Furniture Assembly and Disassembly',
+      price: '60.00',
+      courierEarning: '42.00',
+      units: '15 minutes',
+      unitType: 'minutes'
+    },
+    {
+      id: '4',
+      name: 'Appliance Dolly',
+      price: '18.00',
+      courierEarning: '14.40',
+      units: '0',
+      unitType: 'quantity'
+    },
+    {
+      id: '5',
+      name: 'Blankets',
+      price: '18.00',
+      courierEarning: '14.40',
+      units: '0',
+      unitType: 'quantity'
+    },
+    {
+      id: '6',
+      name: 'Food Catering Setup',
+      price: '31.50',
+      courierEarning: '22.50',
+      units: '0',
+      unitType: 'minutes'
+    },
+    {
+      id: '7',
+      name: 'White gloves service',
+      price: '31.50',
+      courierEarning: '18.00',
+      units: '0',
+      unitType: 'minutes'
+    },
+    {
+      id: '8',
+      name: 'Waiting on the line',
+      price: '27.00',
+      courierEarning: '18.90',
+      units: '0',
+      unitType: 'minutes'
+    },
+    {
+      id: '9',
+      name: 'Temperature Controlled Coolers',
+      price: '27.00',
+      courierEarning: '18.90',
+      units: '0',
+      unitType: 'quantity'
+    },
+    {
+      id: '10',
+      name: 'Special Handling',
+      price: '17.00',
+      courierEarning: '9.50',
+      units: '0',
+      unitType: 'minutes'
+    },
+    {
+      id: '11',
+      name: 'Insulated Bag',
+      price: '7.20',
+      courierEarning: '4.50',
+      units: '0',
+      unitType: 'quantity'
+    },
+    {
+      id: '12',
+      name: 'Parking fee',
+      price: '10.00',
+      courierEarning: '10.00',
+      units: '0',
+      unitType: 'quantity'
+    },
+    {
+      id: '13',
+      name: '4x7 Utility Trailer',
+      price: '85.00',
+      courierEarning: '21.00',
+      units: '0',
+      unitType: 'quantity'
+    },
+    {
+      id: '14',
+      name: '6x12 Utility Trailer',
+      price: '120.00',
+      courierEarning: '30.00',
+      units: '0',
+      unitType: 'quantity'
+    },
+    {
+      id: '15',
+      name: 'Liftgate',
+      price: '160.00',
+      courierEarning: '60.00',
+      units: '0',
+      unitType: 'quantity'
+    },
+    {
+      id: '16',
+      name: 'Pallet jack',
+      price: '0.00',
+      courierEarning: '0.00',
+      units: '0',
+      unitType: 'quantity'
+    }
+  ]);
+
+  const [editedServices, setEditedServices] = useState<ExtraService[]>(allServices);
 
   // Generate minutes options from 15 minutes to 6 hours (360 minutes) in 15-minute increments
   const generateMinutesOptions = () => {
-    const options = [];
+    const options = ['0'];
     for (let i = 15; i <= 360; i += 15) {
       if (i < 60) {
         options.push(`${i} minutes`);
@@ -61,26 +193,35 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
     return options;
   };
 
-  // Generate quantity options from 1 to 10
+  // Generate quantity options from 0 to 10
   const generateQuantityOptions = () => {
-    return Array.from({ length: 10 }, (_, i) => (i + 1).toString());
+    return Array.from({ length: 11 }, (_, i) => i.toString());
   };
 
   const handleEdit = () => {
+    setEditedServices(allServices);
     setIsEditing(true);
   };
 
   const handleSave = () => {
-    setServices(editedServices);
+    // Filter services with units > 0 for display in normal view
+    const servicesWithValues = editedServices.filter(service => {
+      const unitValue = service.unitType === 'minutes' 
+        ? (service.units === '0' ? 0 : 1) 
+        : parseInt(service.units) || 0;
+      return unitValue > 0;
+    });
+    
+    setServices(servicesWithValues);
     setIsEditing(false);
     if (onSave) {
-      onSave(editedServices);
+      onSave(servicesWithValues);
     }
     toast.success("Extra services updated successfully");
   };
 
   const handleCancel = () => {
-    setEditedServices(services);
+    setEditedServices(allServices);
     setIsEditing(false);
   };
 
@@ -105,7 +246,7 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
           ? { 
               ...service, 
               unitType, 
-              units: unitType === 'minutes' ? '15 minutes' : '1'
+              units: unitType === 'minutes' ? '0' : '0'
             }
           : service
       )
