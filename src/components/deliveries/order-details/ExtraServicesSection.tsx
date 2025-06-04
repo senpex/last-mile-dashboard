@@ -170,8 +170,8 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
                 </Button>
               )}
             </div>
-            <div className="grid grid-cols-3 gap-4">
-              <div className="space-y-2">
+            <div className="flex items-end gap-4">
+              <div className="flex-1 space-y-2">
                 <Label htmlFor={`price-${service.id}`} className="text-xs font-medium">Price</Label>
                 <Input 
                   id={`price-${service.id}`}
@@ -182,7 +182,7 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
                   className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
                 />
               </div>
-              <div className="space-y-2">
+              <div className="flex-1 space-y-2">
                 <Label htmlFor={`courier-earning-${service.id}`} className="text-xs font-medium">Courier Earning</Label>
                 <Input 
                   id={`courier-earning-${service.id}`}
@@ -193,15 +193,15 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
                   className={`h-8 text-sm ${!isEditing ? 'bg-muted/50' : 'bg-background'}`}
                 />
               </div>
-              <div className="space-y-2">
+              <div className="flex-1 space-y-2">
                 <Label htmlFor={`units-${service.id}`} className="text-xs font-medium">Units</Label>
                 {isEditing ? (
-                  <div className="space-y-2">
+                  <div className="flex gap-2">
                     <Select 
                       value={service.unitType} 
                       onValueChange={(value: 'minutes' | 'quantity') => handleUnitTypeChange(service.id, value)}
                     >
-                      <SelectTrigger className="h-8 text-sm">
+                      <SelectTrigger className="h-8 text-sm flex-1">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -213,7 +213,7 @@ export const ExtraServicesSection = ({ onSave }: ExtraServicesSectionProps) => {
                       value={service.units} 
                       onValueChange={(value) => handleServiceChange(service.id, 'units', value)}
                     >
-                      <SelectTrigger className="h-8 text-sm">
+                      <SelectTrigger className="h-8 text-sm flex-1">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
