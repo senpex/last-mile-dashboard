@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Images, Edit, Save, X, ExternalLink, Clock, Trash2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +14,8 @@ interface ImagesSectionProps {}
 
 export const ImagesSection = ({}: ImagesSectionProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [currentImageSetter, setCurrentImageSetter] = useState<React.Dispatch<React.SetStateAction<ImageData[]>> | null>(null);
   
   // Sample image data for each category
   const [clientImages, setClientImages] = useState<ImageData[]>([
@@ -76,19 +77,38 @@ export const ImagesSection = ({}: ImagesSectionProps) => {
   };
 
   const handleAddImage = (images: ImageData[], setImages: React.Dispatch<React.SetStateAction<ImageData[]>>) => {
-    const newImage: ImageData = {
-      id: Date.now().toString(),
-      url: "",
-      timestamp: new Date().toLocaleString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      })
-    };
-    setImages([...images, newImage]);
+    setCurrentImageSetter(setImages);
+    fileInputRef.current?.click();
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && currentImageSetter) {
+      // Create a local URL for the uploaded file
+      const imageUrl = URL.createObjectURL(file);
+      
+      const newImage: ImageData = {
+        id: Date.now().toString(),
+        url: imageUrl,
+        timestamp: new Date().toLocaleString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        })
+      };
+      
+      currentImageSetter(prevImages => [...prevImages, newImage]);
+      toast.success("Image uploaded successfully");
+      
+      // Reset the file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+      setCurrentImageSetter(null);
+    }
   };
 
   const renderImageGroup = (title: string, images: ImageData[], setImages: React.Dispatch<React.SetStateAction<ImageData[]>>) => (
@@ -171,6 +191,15 @@ export const ImagesSection = ({}: ImagesSectionProps) => {
 
   return (
     <div>
+      {/* Hidden file input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: 'none' }}
+        onChange={handleFileUpload}
+      />
+      
       <h3 className="text-sm font-medium mb-3 flex items-center justify-between">
         <div className="flex items-center">
           <Images className="w-4 h-4 mr-2" />
