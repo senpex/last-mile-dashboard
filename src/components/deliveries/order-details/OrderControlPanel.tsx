@@ -24,6 +24,7 @@ export const OrderControlPanel = ({
   const [driverControlStatus, setDriverControlStatus] = useState<'On' | 'Off'>('Off');
   const [automailStatus, setAutomailStatus] = useState<'On' | 'Off'>('Off');
   const [notificationsStatus, setNotificationsStatus] = useState<'On' | 'Off'>('Off');
+  const [parkingLotStatus, setParkingLotStatus] = useState<'Yes' | 'No'>('No');
   
   // Get current timezone for display
   const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -54,6 +55,11 @@ export const OrderControlPanel = ({
   const handleNotificationsChange = (status: 'On' | 'Off') => {
     setNotificationsStatus(status);
     console.log(`Notifications set to: ${status}`);
+  };
+  
+  const handleParkingLotChange = (status: 'Yes' | 'No') => {
+    setParkingLotStatus(status);
+    console.log(`Parking lot set to: ${status}`);
   };
   
   return (
@@ -88,7 +94,7 @@ export const OrderControlPanel = ({
             </Button>
           </div>
           
-          {/* Dropdown Section - Driver Control, Automail, and Notifications */}
+          {/* Dropdown Section - Driver Control, Automail, Notifications, and Parking lot */}
           <div className="flex gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -140,6 +146,24 @@ export const OrderControlPanel = ({
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleNotificationsChange('Off')}>
                   Off
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="min-w-[120px]">
+                  Parking lot: {parkingLotStatus} <ChevronDown className="h-3 w-3 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-48">
+                <DropdownMenuLabel>Parking lot</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => handleParkingLotChange('Yes')}>
+                  Yes
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleParkingLotChange('No')}>
+                  No
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
