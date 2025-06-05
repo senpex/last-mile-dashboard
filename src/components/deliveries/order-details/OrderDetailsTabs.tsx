@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -20,7 +19,8 @@ import { MailingHistory } from "./MailingHistory";
 import { ChatHistory } from "./ChatHistory";
 import { StatusChangeLog } from "./StatusChangeLog";
 import { ItemsSection } from "./ItemsSection";
-import { CreditCard, Package, Truck, Mail, MessageSquare, Activity, ShoppingCart } from "lucide-react";
+import { Webhooks } from "./Webhooks";
+import { CreditCard, Package, Truck, Mail, MessageSquare, Activity, ShoppingCart, Webhook } from "lucide-react";
 import { Delivery } from "@/types/delivery";
 import { Dictionary } from "@/types/dictionary";
 
@@ -165,6 +165,11 @@ export const OrderDetailsTabs = ({
                       <span className="hidden sm:inline">Status Change Log</span>
                       <span className="sm:hidden">Status</span>
                     </TabsTrigger>
+                    <TabsTrigger value="webhooks" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
+                      <Webhook className="w-4 h-4" /> 
+                      <span className="hidden sm:inline">Webhooks</span>
+                      <span className="sm:hidden">Webhooks</span>
+                    </TabsTrigger>
                   </TabsList>
                 </div>
                 
@@ -195,6 +200,10 @@ export const OrderDetailsTabs = ({
                   
                   <TabsContent value="status-change-log" className="space-y-4">
                     <StatusChangeLog />
+                  </TabsContent>
+                  
+                  <TabsContent value="webhooks" className="space-y-4">
+                    <Webhooks />
                   </TabsContent>
                 </div>
               </Tabs>
