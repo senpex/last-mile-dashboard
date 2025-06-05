@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -13,12 +14,21 @@ interface WebhookEntry {
   response: string;
 }
 
+const beautifyJson = (jsonString: string): string => {
+  try {
+    const parsed = JSON.parse(jsonString);
+    return JSON.stringify(parsed, null, 2);
+  } catch {
+    return jsonString;
+  }
+};
+
 const mockWebhookData: WebhookEntry[] = [
   {
     id: 1,
     status: 'success',
     date: '2024-06-05 14:30:25',
-    payload: '{"orderId": "5K1-6U4", "status": "in_transit", "driver": "Michael Torres"}',
+    payload: '{"data": [{"id": "730616", "routes": [{"id": "442764", "rec_name": "Jane Doe", "rec_phone": " 16507883883", "remote_id": null, "route_desc": "dropoff Instructions", "route_sign": null, "route_status": "35", "route_to_lat": "28.9671605000000000000000", "route_to_lng": "-80.9125194000000000000000", "route_to_text": "1819 Sabal Palm Dr, Edgewater, FL 32132", "pack_status_uq": "350", "route_distance": "1.29", "route_work_type": "0", "route_delivery_date": null, "route_distance_time": "225.50"}], "history": [{"route_id": "-1", "remote_id": null, "pack_status": "10", "operation_date": "2025-04-23 09:45:42", "operation_name": "Paid order", "pack_status_uq": "10"}, {"route_id": "-1", "remote_id": null, "pack_status": "20", "operation_date": "2025-04-23 09:46:57", "operation_name": "Courier selected", "pack_status_uq": "20"}, {"route_id": "-1", "remote_id": null, "pack_status": "25", "operation_date": "2025-04-23 09:46:59", "operation_name": "Arrived for pickup", "pack_status_uq": "25"}, {"route_id": "-1", "remote_id": null, "pack_status": "30", "operation_date": "2025-04-23 09:47:02", "operation_name": "In transit", "pack_status_uq": "30"}, {"route_id": "442764", "remote_id": null, "pack_status": "35", "operation_date": "2025-04-23 09:47:05", "operation_name": "Arrived to drop-off location", "pack_status_uq": "350"}], "snpx_sms": "0", "secret_id": "505B9D7E-977A-4C75-8E64-11FC0C9B6C322025042205170", "snpx_nots": "0", "item_value": "1000.00", "order_name": "Test Order RESTFUL CAnada", "pack_price": "27.00", "taken_asap": "0", "tip_amount": "44.00", "pack_status": "30", "route_count": "1", "sender_cell": "2313213213", "sender_name": "Hasan", "snpx_emails": "1", "courier_cell": "0000000000", "courier_name": "Default", "order_images": [], "pack_map_img": null, "pack_size_id": "1", "sender_email": "test@senpex.com", "pack_from_lat": "28.9614430000000000000000", "pack_from_lng": "-80.8992458000000000000000", "rest_api_vers": "4", "schedule_date": "2025-04-26 02:00:00", "status_sender": "In transit", "distance_miles": "1.29", "pack_from_text": "2220 Hibiscus Dr. Suite 7 Edgewater, FL 32141", "pack_work_type": "0", "sender_surname": "Eyvazoff", "sender_user_id": "5650", "courier_surname": "Driver", "instant_not_url": "https://mdev.topscripts.in/chad/shippingData.php", "remote_order_id": null, "company_metadata": null, "conn_client_name": "REST API", "courier_self_img": null, "last_pack_to_lat": "28.9671605000000000000000", "last_pack_to_lng": "-80.9125194000000000000000", "snpx_instant_not": "0", "last_pack_to_text": "1819 Sabal Palm Dr, Edgewater, FL 32132", "order_status_text": "In transit", "pack_transport_id": "1", "total_charge_price": "101.00", "pack_mailing_status": "1", "schedule_date_local": "2025-04-25 22:00:00", "distance_time_seconds": "225.50"}], "info": "{\\"courier_rate\\":\\"0.00\\"}", "event_id": "35", "order_id": "730616", "secret_id": "505B9D7E-977A-4C75-8E64-11FC0C9B6C322025042205170", "request_type": "test"}',
     responseCode: 200,
     response: '{"success": true, "message": "Webhook received successfully"}'
   },
@@ -109,9 +119,9 @@ export const Webhooks = () => {
                         {webhook.payload}
                       </div>
                     </HoverCardTrigger>
-                    <HoverCardContent className="w-96 max-h-64 overflow-auto">
-                      <div className="text-sm font-mono whitespace-pre-wrap break-words">
-                        {webhook.payload}
+                    <HoverCardContent className="w-[600px] max-h-96 overflow-auto">
+                      <div className="text-xs font-mono whitespace-pre-wrap break-words">
+                        {beautifyJson(webhook.payload)}
                       </div>
                     </HoverCardContent>
                   </HoverCard>
@@ -136,7 +146,7 @@ export const Webhooks = () => {
                     </HoverCardTrigger>
                     <HoverCardContent className="w-96 max-h-64 overflow-auto">
                       <div className="text-sm font-mono whitespace-pre-wrap break-words">
-                        {webhook.response}
+                        {beautifyJson(webhook.response)}
                       </div>
                     </HoverCardContent>
                   </HoverCard>
