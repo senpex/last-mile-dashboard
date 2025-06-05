@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 
 interface WebhookEntry {
   id: number;
@@ -103,9 +103,18 @@ export const Webhooks = () => {
                   {webhook.date}
                 </TableCell>
                 <TableCell>
-                  <div className="max-w-[300px] truncate text-sm font-mono bg-muted p-2 rounded">
-                    {webhook.payload}
-                  </div>
+                  <HoverCard>
+                    <HoverCardTrigger asChild>
+                      <div className="max-w-[300px] truncate text-sm font-mono bg-muted p-2 rounded cursor-pointer hover:bg-muted/80 transition-colors">
+                        {webhook.payload}
+                      </div>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-96 max-h-64 overflow-auto">
+                      <div className="text-sm font-mono whitespace-pre-wrap break-words">
+                        {webhook.payload}
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
                 </TableCell>
                 <TableCell>
                   <Badge variant="outline" className={
@@ -119,9 +128,18 @@ export const Webhooks = () => {
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <div className="max-w-[300px] truncate text-sm font-mono bg-muted p-2 rounded">
-                    {webhook.response}
-                  </div>
+                  <HoverCard>
+                    <HoverCardTrigger asChild>
+                      <div className="max-w-[300px] truncate text-sm font-mono bg-muted p-2 rounded cursor-pointer hover:bg-muted/80 transition-colors">
+                        {webhook.response}
+                      </div>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-96 max-h-64 overflow-auto">
+                      <div className="text-sm font-mono whitespace-pre-wrap break-words">
+                        {webhook.response}
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
                 </TableCell>
               </TableRow>
             ))}
