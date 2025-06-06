@@ -85,6 +85,20 @@ export const RouteTable = ({
   const [editingRowIndex, setEditingRowIndex] = useState<number | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [orderStatuses, setOrderStatuses] = useState<DictionaryItem[]>([]);
+  const [editFormData, setEditFormData] = useState<AdditionalLocation>({
+    name: "",
+    address: "",
+    description: "",
+    distance: "",
+    status: "Pending",
+    deliveredAt: "",
+    contactName: "",
+    phoneNumber: "",
+    routeTime: "",
+    aptNumber: "",
+    longitude: "",
+    latitude: ""
+  });
   
   useEffect(() => {
     const pickupStatusesDictionary = getDictionary("1401");
@@ -138,7 +152,40 @@ export const RouteTable = ({
       setEditingRowIndex(null);
     } else {
       setEditingRowIndex(index);
+      // Populate form data with current location data
+      setEditFormData({
+        name: routeLocations[index].name || "",
+        address: routeLocations[index].address || "",
+        description: routeLocations[index].description || "",
+        distance: routeLocations[index].distance || "",
+        status: routeLocations[index].status || "Pending",
+        deliveredAt: routeLocations[index].deliveredAt || "",
+        contactName: routeLocations[index].contactName || "",
+        phoneNumber: routeLocations[index].phoneNumber || "",
+        routeTime: routeLocations[index].routeTime || "",
+        aptNumber: routeLocations[index].aptNumber || "",
+        longitude: routeLocations[index].longitude || "",
+        latitude: routeLocations[index].latitude || ""
+      });
     }
+  };
+
+  const handleSaveChanges = () => {
+    if (editingRowIndex !== null) {
+      const updatedLocations = [...routeLocations];
+      updatedLocations[editingRowIndex] = { ...editFormData };
+      setRouteLocations(updatedLocations);
+      setEditingRowIndex(null);
+      toast.success("Location updated successfully");
+      console.log("Saved location data:", editFormData);
+    }
+  };
+
+  const handleFormChange = (field: keyof AdditionalLocation, value: string) => {
+    setEditFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
   
   const handleDragStart = (index: number) => {
@@ -179,21 +226,19 @@ export const RouteTable = ({
     }
   };
   
-  const handlePlaceSelected = (index: number) => (place: google.maps.places.PlaceResult) => {
+  const handlePlaceSelected = (place: google.maps.places.PlaceResult) => {
     if (!place.geometry) {
       toast.error("Invalid location selected");
       return;
     }
 
-    const updatedLocations = [...routeLocations];
-    updatedLocations[index] = {
-      ...updatedLocations[index],
+    setEditFormData(prev => ({
+      ...prev,
       address: place.formatted_address || "",
-      latitude: place.geometry.location?.lat().toString() || "",
-      longitude: place.geometry.location?.lng().toString() || ""
-    };
+      latitude: place.geometry!.location?.lat().toString() || "",
+      longitude: place.geometry!.location?.lng().toString() || ""
+    }));
     
-    setRouteLocations(updatedLocations);
     toast.success("Location updated successfully");
   };
   
@@ -295,47 +340,78 @@ export const RouteTable = ({
                           <div>
                             <label className="text-xs font-medium mb-1 block">Location</label>
                             <GooglePlacesAutocomplete 
-                              defaultValue={location.address || ""}
-                              onPlaceSelected={handlePlaceSelected(index)}
+                              defaultValue={editFormData.address}
+                              onPlaceSelected={handlePlaceSelected}
                               placeholder="Enter address here..."
                             />
                           </div>
                           <div>
                             <label className="text-xs font-medium mb-1 block">Apt #</label>
-                            <Input className="h-9 text-sm" defaultValue={location.aptNumber || ""} />
+                            <Input 
+                              className="h-9 text-sm" 
+                              value={editFormData.aptNumber || ""} 
+                              onChange={(e) => handleFormChange('aptNumber', e.target.value)}
+                            />
                           </div>
                           <div className="flex space-x-2">
                             <div className="w-1/2">
                               <label className="text-xs font-medium mb-1 block">Longitude</label>
-                              <Input className="h-9 text-sm" defaultValue={location.longitude || "-122.4084"} />
+                              <Input 
+                                className="h-9 text-sm" 
+                                value={editFormData.longitude || ""} 
+                                onChange={(e) => handleFormChange('longitude', e.target.value)}
+                              />
                             </div>
                             <div className="w-1/2">
                               <label className="text-xs font-medium mb-1 block">Latitude</label>
-                              <Input className="h-9 text-sm" defaultValue={location.latitude || "37.7845"} />
+                              <Input 
+                                className="h-9 text-sm" 
+                                value={editFormData.latitude || ""} 
+                                onChange={(e) => handleFormChange('latitude', e.target.value)}
+                              />
                             </div>
                           </div>
                         </div>
                         
                         <div>
                           <label className="text-xs font-medium mb-1 block">Distance</label>
-                          <Input className="h-9 text-sm" defaultValue={location.distance || "0.0 miles"} />
+                          <Input 
+                            className="h-9 text-sm" 
+                            value={editFormData.distance || ""} 
+                            onChange={(e) => handleFormChange('distance', e.target.value)}
+                          />
                         </div>
                         <div>
                           <label className="text-xs font-medium mb-1 block">Contact name</label>
-                          <Input className="h-9 text-sm" defaultValue={location.contactName || "Contact Person"} />
+                          <Input 
+                            className="h-9 text-sm" 
+                            value={editFormData.contactName || ""} 
+                            onChange={(e) => handleFormChange('contactName', e.target.value)}
+                          />
                         </div>
                         <div>
                           <label className="text-xs font-medium mb-1 block">Phone number</label>
-                          <Input className="h-9 text-sm" defaultValue={location.phoneNumber || "(415) 555-0000"} />
+                          <Input 
+                            className="h-9 text-sm" 
+                            value={editFormData.phoneNumber || ""} 
+                            onChange={(e) => handleFormChange('phoneNumber', e.target.value)}
+                          />
                         </div>
                         
                         <div>
                           <label className="text-xs font-medium mb-1 block">Route time</label>
-                          <Input className="h-9 text-sm" defaultValue={location.routeTime || "10:45 AM"} />
+                          <Input 
+                            className="h-9 text-sm" 
+                            value={editFormData.routeTime || ""} 
+                            onChange={(e) => handleFormChange('routeTime', e.target.value)}
+                          />
                         </div>
                         <div>
                           <label className="text-xs font-medium mb-1 block">Status</label>
-                          <Select defaultValue={location.status || "Pending"}>
+                          <Select 
+                            value={editFormData.status || "Pending"}
+                            onValueChange={(value) => handleFormChange('status', value)}
+                          >
                             <SelectTrigger className="h-9 text-sm">
                               <SelectValue placeholder="Select a status" />
                             </SelectTrigger>
@@ -364,14 +440,19 @@ export const RouteTable = ({
                         
                         <div className="col-span-3">
                           <label className="text-xs font-medium mb-1 block">Stop notes</label>
-                          <Textarea className="text-sm h-9 py-1.5 min-h-0" rows={1} defaultValue={location.description || "Additional stop location"} />
+                          <Textarea 
+                            className="text-sm h-9 py-1.5 min-h-0" 
+                            rows={1} 
+                            value={editFormData.description || ""} 
+                            onChange={(e) => handleFormChange('description', e.target.value)}
+                          />
                         </div>
                       </div>
                       <div className="mt-4 flex justify-end gap-2">
                         <Button size="sm" variant="outline" className="h-7 text-xs" onClick={() => setEditingRowIndex(null)}>
                           Cancel
                         </Button>
-                        <Button size="sm" className="h-7 text-xs">
+                        <Button size="sm" className="h-7 text-xs" onClick={handleSaveChanges}>
                           Save Changes
                         </Button>
                       </div>
