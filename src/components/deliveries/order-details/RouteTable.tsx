@@ -216,6 +216,7 @@ export const RouteTable = ({
   };
   
   const barcodeOptions = ["Yes", "No"];
+  const eSignatureOptions = ["Yes", "No"];
   
   const renderLocationBadge = (location: AdditionalLocation, index: number) => {
     if (index === 0) {
@@ -437,6 +438,24 @@ export const RouteTable = ({
                             </SelectContent>
                           </Select>
                         </div>
+                        
+                        <div>
+                          <label className="text-xs font-medium mb-1 block">eSignature</label>
+                          <Select defaultValue="No">
+                            <SelectTrigger className="h-9 text-sm">
+                              <SelectValue placeholder="Select an option" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {eSignatureOptions.map(option => (
+                                <SelectItem key={option} value={option}>
+                                  {option}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div></div>
+                        <div></div>
                         
                         <div className="col-span-3">
                           <label className="text-xs font-medium mb-1 block">Stop notes</label>
