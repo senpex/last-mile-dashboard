@@ -157,10 +157,10 @@ export const DriverInfoTable = ({
       <div className="rounded-md border bg-card/50 p-0">
         {/* Header Row */}
         <div className="border-b bg-muted/50 p-4">
-          <div className="flex items-center gap-4">
-            <div className="w-6"></div> {/* Space for radio button */}
+          <div className="flex items-center gap-3">
+            <div className="w-6 flex-shrink-0"></div> {/* Space for radio button */}
             
-            <div className="grid grid-cols-7 gap-4 flex-1">
+            <div className="grid grid-cols-7 gap-3 flex-1 min-w-0">
               <div className="text-xs font-semibold text-muted-foreground">Role</div>
               <div className="text-xs font-semibold text-muted-foreground">Name</div>
               <div className="text-xs font-semibold text-muted-foreground">Earnings</div>
@@ -170,7 +170,7 @@ export const DriverInfoTable = ({
               <div className="text-xs font-semibold text-muted-foreground">Status</div>
             </div>
             
-            <div className="w-20">
+            <div className="w-24 flex-shrink-0">
               <div className="text-xs font-semibold text-muted-foreground">Action</div>
             </div>
           </div>
@@ -179,78 +179,80 @@ export const DriverInfoTable = ({
         <RadioGroup value={selectedDriver} onValueChange={handleRadioChange}>
           {drivers.map((driver, index) => (
             <div key={index} className="border-b last:border-b-0 p-4">
-              <div className="flex items-start gap-4">
-                <RadioGroupItem value={index.toString()} className="mt-1" />
+              <div className="flex items-center gap-3">
+                <div className="w-6 flex-shrink-0">
+                  <RadioGroupItem value={index.toString()} />
+                </div>
                 
-                <div className="grid grid-cols-7 gap-4 flex-1">
-                  <div>
+                <div className="grid grid-cols-7 gap-3 flex-1 min-w-0 items-center">
+                  <div className="flex-shrink-0">
                     <Badge 
                       variant={index === 0 ? "default" : "secondary"} 
-                      className="text-xs px-2 py-0.5"
+                      className="text-xs px-2 py-0.5 whitespace-nowrap"
                     >
                       {index === 0 ? "Driver" : "Helper"}
                     </Badge>
                   </div>
                   
-                  <div className="text-sm">{driver.name}</div>
+                  <div className="text-sm truncate min-w-0">{driver.name}</div>
                   
-                  <div>
+                  <div className="min-w-0">
                     {editingDriverIndex === index ? (
                       <Input 
                         value={editedDriver?.earnings || ""} 
                         onChange={(e) => handleInputChange('earnings', e.target.value)}
-                        className="h-6 w-20"
+                        className="h-7 w-full min-w-[80px]"
                       />
                     ) : (
-                      <div className="text-sm">{driver.earnings}</div>
+                      <div className="text-sm truncate">{driver.earnings}</div>
                     )}
                   </div>
                   
-                  <div>
+                  <div className="min-w-0">
                     {editingDriverIndex === index ? (
                       <Input 
                         value={editedDriver?.deliveryFee || ""} 
                         onChange={(e) => handleInputChange('deliveryFee', e.target.value)}
-                        className="h-6 w-20"
+                        className="h-7 w-full min-w-[80px]"
                       />
                     ) : (
-                      <div className="text-sm">{driver.deliveryFee}</div>
+                      <div className="text-sm truncate">{driver.deliveryFee}</div>
                     )}
                   </div>
                   
-                  <div>
+                  <div className="min-w-0">
                     {editingDriverIndex === index ? (
                       <Input 
                         value={editedDriver?.extraServiceFee || ""} 
                         onChange={(e) => handleInputChange('extraServiceFee', e.target.value)}
-                        className="h-6 w-20"
+                        className="h-7 w-full min-w-[80px]"
                       />
                     ) : (
-                      <div className="text-sm">{driver.extraServiceFee}</div>
+                      <div className="text-sm truncate">{driver.extraServiceFee}</div>
                     )}
                   </div>
                   
-                  <div>
+                  <div className="min-w-0">
                     {editingDriverIndex === index ? (
                       <Input 
                         value={editedDriver?.tip || ""} 
                         onChange={(e) => handleInputChange('tip', e.target.value)}
-                        className="h-6 w-20"
+                        className="h-7 w-full min-w-[80px]"
                       />
                     ) : (
-                      <div className="text-sm">{driver.tip}</div>
+                      <div className="text-sm truncate">{driver.tip}</div>
                     )}
                   </div>
                   
-                  <div>
+                  <div className="min-w-0">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="outline" size="sm" className="h-6 text-xs px-2 flex items-center">
-                          {driver.status}
-                          <ChevronDown className="h-3 w-3 ml-1" />
+                        <Button variant="outline" size="sm" className="h-7 text-xs px-2 flex items-center w-full min-w-[120px] justify-between">
+                          <span className="truncate">{driver.status}</span>
+                          <ChevronDown className="h-3 w-3 ml-1 flex-shrink-0" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent className="z-50 bg-white">
+                      <DropdownMenuContent className="z-50 bg-white min-w-[200px]">
                         {pickupStatusesDictionary?.items.map((item) => (
                           <DropdownMenuItem 
                             key={item.id} 
@@ -273,12 +275,12 @@ export const DriverInfoTable = ({
                   </div>
                 </div>
                 
-                <div className="w-20">
+                <div className="w-24 flex-shrink-0">
                   {editingDriverIndex === index ? (
                     <Button 
                       variant="destructive" 
                       size="sm" 
-                      className="h-6 text-xs px-3 flex items-center justify-center gap-1.5"
+                      className="h-7 text-xs px-2 flex items-center justify-center gap-1 w-full"
                       onClick={() => handleSaveDriver(index)}
                     >
                       <Save className="h-3.5 w-3.5" />
@@ -287,8 +289,8 @@ export const DriverInfoTable = ({
                   ) : (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="outline" size="sm" className="h-6 text-xs px-2 flex items-center">
-                          Action
+                        <Button variant="outline" size="sm" className="h-7 text-xs px-2 flex items-center w-full justify-between">
+                          <span>Action</span>
                           <ChevronDown className="h-3 w-3 ml-1" />
                         </Button>
                       </DropdownMenuTrigger>
