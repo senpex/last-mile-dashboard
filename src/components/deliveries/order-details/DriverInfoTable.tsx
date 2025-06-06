@@ -1,7 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { Truck, ChevronDown, Edit, Trash2, Plus, Save, Search } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import { Dictionary } from "@/types/dictionary";
@@ -180,7 +182,17 @@ export const DriverInfoTable = ({
                 <RadioGroupItem value={index.toString()} className="mt-1" />
                 
                 <div className="grid grid-cols-6 gap-4 flex-1">
-                  <div className="text-sm">{driver.name}</div>
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                      <Badge 
+                        variant={index === 0 ? "default" : "secondary"} 
+                        className="text-xs px-2 py-0.5"
+                      >
+                        {index === 0 ? "Driver" : "Helper"}
+                      </Badge>
+                    </div>
+                    <div className="text-sm">{driver.name}</div>
+                  </div>
                   
                   <div>
                     {editingDriverIndex === index ? (
