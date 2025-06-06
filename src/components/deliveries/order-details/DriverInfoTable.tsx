@@ -160,7 +160,8 @@ export const DriverInfoTable = ({
           <div className="flex items-center gap-4">
             <div className="w-6"></div> {/* Space for radio button */}
             
-            <div className="grid grid-cols-6 gap-4 flex-1">
+            <div className="grid grid-cols-7 gap-4 flex-1">
+              <div className="text-xs font-semibold text-muted-foreground">Role</div>
               <div className="text-xs font-semibold text-muted-foreground">Name</div>
               <div className="text-xs font-semibold text-muted-foreground">Earnings</div>
               <div className="text-xs font-semibold text-muted-foreground">Delivery Fee</div>
@@ -181,18 +182,17 @@ export const DriverInfoTable = ({
               <div className="flex items-start gap-4">
                 <RadioGroupItem value={index.toString()} className="mt-1" />
                 
-                <div className="grid grid-cols-6 gap-4 flex-1">
-                  <div className="flex flex-col gap-1">
-                    <div className="flex items-center gap-2">
-                      <Badge 
-                        variant={index === 0 ? "default" : "secondary"} 
-                        className="text-xs px-2 py-0.5"
-                      >
-                        {index === 0 ? "Driver" : "Helper"}
-                      </Badge>
-                    </div>
-                    <div className="text-sm">{driver.name}</div>
+                <div className="grid grid-cols-7 gap-4 flex-1">
+                  <div>
+                    <Badge 
+                      variant={index === 0 ? "default" : "secondary"} 
+                      className="text-xs px-2 py-0.5"
+                    >
+                      {index === 0 ? "Driver" : "Helper"}
+                    </Badge>
                   </div>
+                  
+                  <div className="text-sm">{driver.name}</div>
                   
                   <div>
                     {editingDriverIndex === index ? (
