@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Map, Edit, Trash2, Phone, Plus, Menu } from "lucide-react";
+import { MapPin, Map, Edit, Trash2, Phone, Plus, Menu, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -12,6 +12,12 @@ import { getDictionary } from "@/lib/storage";
 import { DictionaryItem } from "@/types/dictionary";
 import { GooglePlacesAutocomplete } from "@/components/ui/google-places-autocomplete";
 import { toast } from "sonner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface AdditionalLocation {
   name: string;
@@ -271,8 +277,7 @@ export const RouteTable = ({
               <TableHead className="w-[100px]">Distance</TableHead>
               <TableHead className="w-[100px]">Status</TableHead>
               <TableHead className="w-[120px]">Delivered At</TableHead>
-              <TableHead className="w-[100px]">Action 1</TableHead>
-              <TableHead className="w-[100px]">Action 2</TableHead>
+              <TableHead className="w-[100px]">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -322,20 +327,31 @@ export const RouteTable = ({
                     <p className="text-sm">{location.deliveredAt || "-"}</p>
                   </TableCell>
                   <TableCell>
-                    <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1" onClick={() => handleEditClick(index)}>
-                      <Edit className="h-4 w-4" />
-                      Edit
-                    </Button>
-                  </TableCell>
-                  <TableCell>
-                    <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1 text-destructive" onClick={() => handleDeleteLocation(index)} disabled={index === 0}>
-                      <Trash2 className="h-4 w-4" />
-                      Delete
-                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="sm" className="h-7 w-7 p-0">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-40">
+                        <DropdownMenuItem onClick={() => handleEditClick(index)}>
+                          <Edit className="mr-2 h-4 w-4" />
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          onClick={() => handleDeleteLocation(index)} 
+                          disabled={index === 0}
+                          className="text-destructive focus:text-destructive"
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </TableCell>
                 </TableRow>
                 {editingRowIndex === index && <TableRow>
-                    <TableCell colSpan={9} className="p-4 bg-muted/20">
+                    <TableCell colSpan={8} className="p-4 bg-muted/20">
                       <div className="grid grid-cols-3 gap-4">
                         <div className="col-span-3 grid grid-cols-3 gap-4">
                           <div>
