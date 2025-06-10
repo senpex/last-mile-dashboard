@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { ChevronDown, X, Flag, Send, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -110,31 +111,41 @@ export const OrderControlPanel = ({
                 <DropdownMenuSeparator />
                 <DropdownMenuItem 
                   onClick={() => handleTakeAction('Start Delivery')}
-                  className="hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800"
+                  className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${
+                    selectedAction === 'Start Delivery' ? 'bg-green-100 text-green-800' : ''
+                  }`}
                 >
                   Start Delivery
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => handleTakeAction('Arrived for pickup')}
-                  className="hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800"
+                  className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${
+                    selectedAction === 'Arrived for pickup' ? 'bg-green-100 text-green-800' : ''
+                  }`}
                 >
                   Arrived for pickup
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => handleTakeAction('Take package')}
-                  className="hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800"
+                  className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${
+                    selectedAction === 'Take package' ? 'bg-green-100 text-green-800' : ''
+                  }`}
                 >
                   Take package
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => handleTakeAction('Courier reported problem')}
-                  className="hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800"
+                  className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${
+                    selectedAction === 'Courier reported problem' ? 'bg-green-100 text-green-800' : ''
+                  }`}
                 >
                   Courier reported problem
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => handleTakeAction('Sender reported problem')}
-                  className="hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800"
+                  className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${
+                    selectedAction === 'Sender reported problem' ? 'bg-green-100 text-green-800' : ''
+                  }`}
                 >
                   Sender reported problem
                 </DropdownMenuItem>
