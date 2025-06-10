@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ChevronDown, X, Flag, Send, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -251,15 +250,15 @@ export const OrderControlPanel = ({
 
       {/* Cancel Dialog */}
       <Dialog open={isCancelDialogOpen} onOpenChange={setIsCancelDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Cancel Order</DialogTitle>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader className="pb-4">
+            <DialogTitle className="text-center">Cancel Order</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Cancellation Reason</label>
+          <div className="space-y-6 py-2">
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-foreground">Cancellation Reason</label>
               <Select value={cancelReason} onValueChange={setCancelReason}>
-                <SelectTrigger>
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select a reason" />
                 </SelectTrigger>
                 <SelectContent>
@@ -273,17 +272,18 @@ export const OrderControlPanel = ({
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Additional Details</label>
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-foreground">Additional Details</label>
               <Textarea 
                 placeholder="Enter additional cancellation details..."
                 value={cancelText}
                 onChange={(e) => setCancelText(e.target.value)}
                 rows={3}
+                className="w-full resize-none"
               />
             </div>
           </div>
-          <DialogFooter className="flex flex-row gap-2 sm:flex-row sm:space-x-0">
+          <DialogFooter className="flex flex-row gap-3 pt-4">
             <Button 
               onClick={() => handleCancelConfirm('Cancel by client')}
               className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
