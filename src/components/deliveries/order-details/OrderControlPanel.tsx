@@ -7,7 +7,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { DeliveryStatus, Delivery } from "@/types/delivery";
-
 interface OrderControlPanelProps {
   statuses: DeliveryStatus[];
   onStatusChange: (status: DeliveryStatus) => void;
@@ -15,10 +14,9 @@ interface OrderControlPanelProps {
   onOrderFlag: (orderId: number, isFlagged: boolean) => void;
   delivery: Delivery;
 }
-
-export const OrderControlPanel = ({ 
-  statuses, 
-  onStatusChange, 
+export const OrderControlPanel = ({
+  statuses,
+  onStatusChange,
   flaggedOrders,
   onOrderFlag,
   delivery
@@ -32,52 +30,43 @@ export const OrderControlPanel = ({
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const [cancelReason, setCancelReason] = useState('');
   const [cancelText, setCancelText] = useState('');
-  
+
   // Get current timezone for display
   const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  
+
   // Get UTC offset in minutes
   const getUtcOffsetMinutes = () => {
     const offset = new Date().getTimezoneOffset();
     return -offset; // getTimezoneOffset returns negative values for positive offsets
   };
-  
   const utcOffsetMinutes = getUtcOffsetMinutes();
   const offsetDisplay = utcOffsetMinutes >= 0 ? `+${utcOffsetMinutes}` : `${utcOffsetMinutes}`;
-  
   const handleFlagToggle = () => {
     onOrderFlag(delivery.id, !isFlagged);
   };
-  
   const handleDriverControlChange = (status: 'On' | 'Off') => {
     setDriverControlStatus(status);
     console.log(`Driver control set to: ${status}`);
   };
-  
   const handleAutomailChange = (status: 'On' | 'Off') => {
     setAutomailStatus(status);
     console.log(`Automail set to: ${status}`);
   };
-  
   const handleNotificationsChange = (status: 'On' | 'Off') => {
     setNotificationsStatus(status);
     console.log(`Notifications set to: ${status}`);
   };
-  
   const handleParkingLotChange = (status: 'Yes' | 'No') => {
     setParkingLotStatus(status);
     console.log(`Parking lot set to: ${status}`);
   };
-
   const handleTakeAction = (action: string) => {
     setSelectedAction(action);
     console.log(`Take action: ${action}`);
   };
-  
   const handleCancelClick = () => {
     setIsCancelDialogOpen(true);
   };
-
   const handleCancelConfirm = (cancelType: string) => {
     console.log(`Order cancelled: ${cancelType}`);
     console.log(`Reason: ${cancelReason}`);
@@ -86,9 +75,7 @@ export const OrderControlPanel = ({
     setCancelReason('');
     setCancelText('');
   };
-  
-  return (
-    <div className="border-t bg-gray-50 p-4 mt-auto">
+  return <div className="border-t bg-gray-50 p-4 mt-auto">
       <div className="mb-0">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-sm font-medium">Control Panel</h3>
@@ -109,12 +96,7 @@ export const OrderControlPanel = ({
               <Send className="h-4 w-4" /> Send Order
             </Button>
             
-            <Button 
-              size="sm" 
-              variant={isFlagged ? "destructive" : "outline"}
-              className={`flex items-center gap-1 ${isFlagged ? "bg-red-500 hover:bg-red-600 text-white" : ""}`}
-              onClick={handleFlagToggle}
-            >
+            <Button size="sm" variant={isFlagged ? "destructive" : "outline"} className={`flex items-center gap-1 ${isFlagged ? "bg-red-500 hover:bg-red-600 text-white" : ""}`} onClick={handleFlagToggle}>
               <Flag className="h-4 w-4" /> Flag
             </Button>
 
@@ -127,44 +109,19 @@ export const OrderControlPanel = ({
               <DropdownMenuContent className="w-48">
                 <DropdownMenuLabel>Take Action</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem 
-                  onClick={() => handleTakeAction('Start Delivery')}
-                  className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${
-                    selectedAction === 'Start Delivery' ? 'bg-green-100 text-green-800' : ''
-                  }`}
-                >
+                <DropdownMenuItem onClick={() => handleTakeAction('Start Delivery')} className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${selectedAction === 'Start Delivery' ? 'bg-green-100 text-green-800' : ''}`}>
                   Start Delivery
                 </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => handleTakeAction('Arrived for pickup')}
-                  className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${
-                    selectedAction === 'Arrived for pickup' ? 'bg-green-100 text-green-800' : ''
-                  }`}
-                >
+                <DropdownMenuItem onClick={() => handleTakeAction('Arrived for pickup')} className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${selectedAction === 'Arrived for pickup' ? 'bg-green-100 text-green-800' : ''}`}>
                   Arrived for pickup
                 </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => handleTakeAction('Take package')}
-                  className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${
-                    selectedAction === 'Take package' ? 'bg-green-100 text-green-800' : ''
-                  }`}
-                >
+                <DropdownMenuItem onClick={() => handleTakeAction('Take package')} className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${selectedAction === 'Take package' ? 'bg-green-100 text-green-800' : ''}`}>
                   Take package
                 </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => handleTakeAction('Courier reported problem')}
-                  className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${
-                    selectedAction === 'Courier reported problem' ? 'bg-green-100 text-green-800' : ''
-                  }`}
-                >
+                <DropdownMenuItem onClick={() => handleTakeAction('Courier reported problem')} className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${selectedAction === 'Courier reported problem' ? 'bg-green-100 text-green-800' : ''}`}>
                   Courier reported problem
                 </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => handleTakeAction('Sender reported problem')}
-                  className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${
-                    selectedAction === 'Sender reported problem' ? 'bg-green-100 text-green-800' : ''
-                  }`}
-                >
+                <DropdownMenuItem onClick={() => handleTakeAction('Sender reported problem')} className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${selectedAction === 'Sender reported problem' ? 'bg-green-100 text-green-800' : ''}`}>
                   Sender reported problem
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -250,7 +207,7 @@ export const OrderControlPanel = ({
 
       {/* Cancel Dialog */}
       <Dialog open={isCancelDialogOpen} onOpenChange={setIsCancelDialogOpen}>
-        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto p-[10px]">
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto p-[10px] px-0 py-0">
           <DialogHeader className="space-y-4 pb-6 p-[10px]">
             <DialogTitle className="text-xl font-semibold text-center">Cancel Order</DialogTitle>
           </DialogHeader>
@@ -280,43 +237,24 @@ export const OrderControlPanel = ({
               <label className="text-sm font-medium text-foreground block">
                 Additional Details (Optional)
               </label>
-              <Textarea 
-                placeholder="Please provide any additional details about the cancellation..."
-                value={cancelText}
-                onChange={(e) => setCancelText(e.target.value)}
-                rows={4}
-                className="w-full resize-none min-h-[100px]"
-              />
+              <Textarea placeholder="Please provide any additional details about the cancellation..." value={cancelText} onChange={e => setCancelText(e.target.value)} rows={4} className="w-full resize-none min-h-[100px]" />
             </div>
           </div>
           
           <DialogFooter className="pt-8 pb-2 p-[10px]">
             <div className="flex flex-col sm:flex-row gap-4 w-full p-[10px]">
-              <Button 
-                onClick={() => handleCancelConfirm('Cancel by client')}
-                size="sm"
-                className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-medium"
-              >
+              <Button onClick={() => handleCancelConfirm('Cancel by client')} size="sm" className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-medium">
                 Cancel by Client
               </Button>
-              <Button 
-                onClick={() => handleCancelConfirm('Cancel by senpex(full refund)')}
-                size="sm"
-                className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium"
-              >
+              <Button onClick={() => handleCancelConfirm('Cancel by senpex(full refund)')} size="sm" className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium">
                 Cancel by Senpex (Full Refund)
               </Button>
-              <Button 
-                onClick={() => handleCancelConfirm('Cancel by admin')}
-                size="sm"
-                className="flex-1 bg-red-500 hover:bg-red-600 text-white font-medium"
-              >
+              <Button onClick={() => handleCancelConfirm('Cancel by admin')} size="sm" className="flex-1 bg-red-500 hover:bg-red-600 text-white font-medium">
                 Cancel by Admin
               </Button>
             </div>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
-  );
+    </div>;
 };
