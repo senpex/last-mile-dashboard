@@ -1,9 +1,23 @@
-
 import React, { useState } from 'react';
 import { FileCheck, CheckCircle2, Edit, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+
+// Predefined requirements list
+const PREDEFINED_REQUIREMENTS = [
+  "Age verification required",
+  "ID check mandatory",
+  "Temperature controlled delivery",
+  "Fragile item handling",
+  "Direct handoff only",
+  "Building access code required",
+  "Special delivery instructions",
+  "Insurance documentation",
+  "Chain of custody tracking",
+  "Quality inspection needed"
+];
 
 export const OrderRequirementsSection = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -40,6 +54,7 @@ export const OrderRequirementsSection = () => {
   ]);
   const [editingRequirement, setEditingRequirement] = useState<number | null>(null);
   const [editingText, setEditingText] = useState("");
+  const [selectedPredefinedRequirement, setSelectedPredefinedRequirement] = useState<string>("");
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
@@ -49,12 +64,26 @@ export const OrderRequirementsSection = () => {
   };
 
   const handleAddRequirement = () => {
+    if (!selectedPredefinedRequirement) {
+      toast.error("Please select a requirement from the list");
+      return;
+    }
+
+    // Check if requirement already exists
+    const exists = requirements.some(req => req.name === selectedPredefinedRequirement);
+    if (exists) {
+      toast.error("This requirement is already added");
+      return;
+    }
+
     const newRequirement = {
       id: Math.max(...requirements.map(r => r.id)) + 1,
-      name: "New requirement",
+      name: selectedPredefinedRequirement,
       active: true
     };
     setRequirements([...requirements, newRequirement]);
+    setSelectedPredefinedRequirement("");
+    toast.success("Requirement added successfully");
   };
 
   const handleDeleteRequirement = (id: number) => {
@@ -157,12 +186,28 @@ export const OrderRequirementsSection = () => {
             </div>
           ))}
           {isEditing && (
-            <div className="flex items-center p-2">
+            <div className="flex items-center gap-2 p-2">
+              <Select
+                value={selectedPredefinedRequirement}
+                onValueChange={setSelectedPredefinedRequirement}
+              >
+                <SelectTrigger className="h-7 text-xs flex-1">
+                  <SelectValue placeholder="Select requirement..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {PREDEFINED_REQUIREMENTS.map(requirement => (
+                    <SelectItem key={requirement} value={requirement}>
+                      {requirement}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <Button
                 variant="outline"
                 size="sm"
                 className="h-7 text-xs flex items-center gap-1.5"
                 onClick={handleAddRequirement}
+                disabled={!selectedPredefinedRequirement}
               >
                 <Plus className="h-4 w-4" />
                 Add Requirement
