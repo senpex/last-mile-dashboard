@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { ChevronDown, X, Flag, Send, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -282,22 +283,22 @@ export const OrderControlPanel = ({
               />
             </div>
           </div>
-          <DialogFooter className="flex flex-col gap-2 sm:flex-col sm:space-x-0">
+          <DialogFooter className="flex flex-row gap-2 sm:flex-row sm:space-x-0">
             <Button 
               onClick={() => handleCancelConfirm('Cancel by client')}
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+              className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
             >
               Cancel by Client
             </Button>
             <Button 
               onClick={() => handleCancelConfirm('Cancel by senpex(full refund)')}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+              className="flex-1 bg-blue-500 hover:bg-blue-600 text-white"
             >
               Cancel by Senpex (Full Refund)
             </Button>
             <Button 
               onClick={() => handleCancelConfirm('Cancel by admin')}
-              className="w-full bg-red-500 hover:bg-red-600 text-white"
+              className="flex-1 bg-red-500 hover:bg-red-600 text-white"
             >
               Cancel by Admin
             </Button>
