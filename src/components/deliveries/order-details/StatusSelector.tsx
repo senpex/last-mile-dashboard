@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { DeliveryStatus } from "@/types/delivery";
 import { Button } from "@/components/ui/button";
@@ -21,6 +20,7 @@ const PRIMARY_STATUSES = [
   "Started working",
   "Arrived for pickup",
   "Picked up",
+  "In transit",
   "Arrived for dropoff",
   "Delivered",
   "Cancelled by client",
@@ -33,6 +33,7 @@ const NO_ACTION_STATUSES = [
   "Started working",
   "Arrived for pickup",
   "Picked up",
+  "In transit",
   "Arrived for dropoff",
   "Delivered",
   "Cancelled by client",
