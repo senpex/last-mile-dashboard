@@ -294,19 +294,22 @@ export const OrderControlPanel = ({
             <div className="flex flex-col sm:flex-row gap-4 w-full p-[10px]">
               <Button 
                 onClick={() => handleCancelConfirm('Cancel by client')}
-                className="flex-1 h-6 bg-orange-500 hover:bg-orange-600 text-white font-medium"
+                size="sm"
+                className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-medium"
               >
                 Cancel by Client
               </Button>
               <Button 
                 onClick={() => handleCancelConfirm('Cancel by senpex(full refund)')}
-                className="flex-1 h-6 bg-blue-500 hover:bg-blue-600 text-white font-medium"
+                size="sm"
+                className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium"
               >
                 Cancel by Senpex (Full Refund)
               </Button>
               <Button 
                 onClick={() => handleCancelConfirm('Cancel by admin')}
-                className="flex-1 h-6 bg-red-500 hover:bg-red-600 text-white font-medium"
+                size="sm"
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white font-medium"
               >
                 Cancel by Admin
               </Button>
