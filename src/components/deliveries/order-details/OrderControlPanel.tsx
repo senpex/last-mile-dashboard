@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { ChevronDown, X, Flag, Send, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -250,16 +251,19 @@ export const OrderControlPanel = ({
 
       {/* Cancel Dialog */}
       <Dialog open={isCancelDialogOpen} onOpenChange={setIsCancelDialogOpen}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader className="pb-4">
-            <DialogTitle className="text-center">Cancel Order</DialogTitle>
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="space-y-4 pb-6">
+            <DialogTitle className="text-xl font-semibold text-center">Cancel Order</DialogTitle>
           </DialogHeader>
-          <div className="space-y-6 py-2">
-            <div className="space-y-3">
-              <label className="text-sm font-medium text-foreground">Cancellation Reason</label>
+          
+          <div className="space-y-8 px-2">
+            <div className="space-y-4">
+              <label className="text-sm font-medium text-foreground block">
+                Cancellation Reason <span className="text-red-500">*</span>
+              </label>
               <Select value={cancelReason} onValueChange={setCancelReason}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a reason" />
+                <SelectTrigger className="w-full h-12">
+                  <SelectValue placeholder="Please select a reason for cancellation" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="customer-request">Customer Request</SelectItem>
@@ -272,36 +276,42 @@ export const OrderControlPanel = ({
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-3">
-              <label className="text-sm font-medium text-foreground">Additional Details</label>
+            
+            <div className="space-y-4">
+              <label className="text-sm font-medium text-foreground block">
+                Additional Details (Optional)
+              </label>
               <Textarea 
-                placeholder="Enter additional cancellation details..."
+                placeholder="Please provide any additional details about the cancellation..."
                 value={cancelText}
                 onChange={(e) => setCancelText(e.target.value)}
-                rows={3}
-                className="w-full resize-none"
+                rows={4}
+                className="w-full resize-none min-h-[100px]"
               />
             </div>
           </div>
-          <DialogFooter className="flex flex-row gap-3 pt-4">
-            <Button 
-              onClick={() => handleCancelConfirm('Cancel by client')}
-              className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
-            >
-              Cancel by Client
-            </Button>
-            <Button 
-              onClick={() => handleCancelConfirm('Cancel by senpex(full refund)')}
-              className="flex-1 bg-blue-500 hover:bg-blue-600 text-white"
-            >
-              Cancel by Senpex (Full Refund)
-            </Button>
-            <Button 
-              onClick={() => handleCancelConfirm('Cancel by admin')}
-              className="flex-1 bg-red-500 hover:bg-red-600 text-white"
-            >
-              Cancel by Admin
-            </Button>
+          
+          <DialogFooter className="pt-8 pb-2">
+            <div className="flex flex-col sm:flex-row gap-4 w-full">
+              <Button 
+                onClick={() => handleCancelConfirm('Cancel by client')}
+                className="flex-1 h-12 bg-orange-500 hover:bg-orange-600 text-white font-medium"
+              >
+                Cancel by Client
+              </Button>
+              <Button 
+                onClick={() => handleCancelConfirm('Cancel by senpex(full refund)')}
+                className="flex-1 h-12 bg-blue-500 hover:bg-blue-600 text-white font-medium"
+              >
+                Cancel by Senpex (Full Refund)
+              </Button>
+              <Button 
+                onClick={() => handleCancelConfirm('Cancel by admin')}
+                className="flex-1 h-12 bg-red-500 hover:bg-red-600 text-white font-medium"
+              >
+                Cancel by Admin
+              </Button>
+            </div>
           </DialogFooter>
         </DialogContent>
       </Dialog>
