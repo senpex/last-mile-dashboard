@@ -1,9 +1,11 @@
-
 import React, { useState } from 'react';
 import { ChevronDown, X, Flag, Send, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { DeliveryStatus, Delivery } from "@/types/delivery";
 
 interface OrderControlPanelProps {
@@ -27,6 +29,9 @@ export const OrderControlPanel = ({
   const [notificationsStatus, setNotificationsStatus] = useState<'On' | 'Off'>('Off');
   const [parkingLotStatus, setParkingLotStatus] = useState<'Yes' | 'No'>('No');
   const [selectedAction, setSelectedAction] = useState<string>('Take Action');
+  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+  const [cancelReason, setCancelReason] = useState('');
+  const [cancelText, setCancelText] = useState('');
   
   // Get current timezone for display
   const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -69,6 +74,19 @@ export const OrderControlPanel = ({
     console.log(`Take action: ${action}`);
   };
   
+  const handleCancelClick = () => {
+    setIsCancelDialogOpen(true);
+  };
+
+  const handleCancelConfirm = (cancelType: string) => {
+    console.log(`Order cancelled: ${cancelType}`);
+    console.log(`Reason: ${cancelReason}`);
+    console.log(`Additional text: ${cancelText}`);
+    setIsCancelDialogOpen(false);
+    setCancelReason('');
+    setCancelText('');
+  };
+  
   return (
     <div className="border-t bg-gray-50 p-4 mt-auto">
       <div className="mb-0">
@@ -83,7 +101,7 @@ export const OrderControlPanel = ({
         <div className="grid grid-cols-1 gap-3">
           {/* Button Section - Now positioned above dropdowns */}
           <div className="grid grid-cols-4 gap-2">
-            <Button size="sm" className="flex items-center gap-1">
+            <Button size="sm" className="flex items-center gap-1" onClick={handleCancelClick}>
               <X className="h-4 w-4" /> Cancel
             </Button>
             
@@ -229,6 +247,63 @@ export const OrderControlPanel = ({
           </div>
         </div>
       </div>
+
+      {/* Cancel Dialog */}
+      <Dialog open={isCancelDialogOpen} onOpenChange={setIsCancelDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Cancel Order</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Cancellation Reason</label>
+              <Select value={cancelReason} onValueChange={setCancelReason}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a reason" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="customer-request">Customer Request</SelectItem>
+                  <SelectItem value="driver-unavailable">Driver Unavailable</SelectItem>
+                  <SelectItem value="weather-conditions">Weather Conditions</SelectItem>
+                  <SelectItem value="technical-issues">Technical Issues</SelectItem>
+                  <SelectItem value="address-issues">Address Issues</SelectItem>
+                  <SelectItem value="payment-issues">Payment Issues</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Additional Details</label>
+              <Textarea 
+                placeholder="Enter additional cancellation details..."
+                value={cancelText}
+                onChange={(e) => setCancelText(e.target.value)}
+                rows={3}
+              />
+            </div>
+          </div>
+          <DialogFooter className="flex flex-col gap-2 sm:flex-col sm:space-x-0">
+            <Button 
+              onClick={() => handleCancelConfirm('Cancel by client')}
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+            >
+              Cancel by Client
+            </Button>
+            <Button 
+              onClick={() => handleCancelConfirm('Cancel by senpex(full refund)')}
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+            >
+              Cancel by Senpex (Full Refund)
+            </Button>
+            <Button 
+              onClick={() => handleCancelConfirm('Cancel by admin')}
+              className="w-full bg-red-500 hover:bg-red-600 text-white"
+            >
+              Cancel by Admin
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
