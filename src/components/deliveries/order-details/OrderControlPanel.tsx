@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ChevronDown, X, Flag, Send, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -26,6 +25,7 @@ export const OrderControlPanel = ({
   const [automailStatus, setAutomailStatus] = useState<'On' | 'Off'>('Off');
   const [notificationsStatus, setNotificationsStatus] = useState<'On' | 'Off'>('Off');
   const [parkingLotStatus, setParkingLotStatus] = useState<'Yes' | 'No'>('No');
+  const [selectedAction, setSelectedAction] = useState<string>('Take Action');
   
   // Get current timezone for display
   const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -64,6 +64,7 @@ export const OrderControlPanel = ({
   };
 
   const handleTakeAction = (action: string) => {
+    setSelectedAction(action);
     console.log(`Take action: ${action}`);
   };
   
@@ -101,7 +102,7 @@ export const OrderControlPanel = ({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button size="sm" className="bg-green-500 hover:bg-green-600 text-white flex items-center gap-1">
-                  <Zap className="h-4 w-4" /> Take Action <ChevronDown className="h-3 w-3 ml-1" />
+                  <Zap className="h-4 w-4" /> {selectedAction} <ChevronDown className="h-3 w-3 ml-1" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-48">
