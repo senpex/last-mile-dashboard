@@ -15,6 +15,30 @@ interface StatusSelectorProps {
   onStatusChange: (status: DeliveryStatus) => void;
 }
 
+const PRIMARY_STATUSES = [
+  "Paid order",
+  "Courier selected",
+  "Started working",
+  "Arrived for pickup",
+  "Picked up",
+  "Arrived for dropoff",
+  "Delivered",
+  "Cancelled by client",
+  "Cancelled by senpex"
+];
+
+const NO_ACTION_STATUSES = [
+  "Paid order",
+  "Courier selected",
+  "Started working",
+  "Arrived for pickup",
+  "Picked up",
+  "Arrived for dropoff",
+  "Delivered",
+  "Cancelled by client",
+  "Cancelled by senpex"
+];
+
 export const StatusSelector = ({
   status,
   statuses,
@@ -47,7 +71,7 @@ export const StatusSelector = ({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-1 bg-popover">
         <div className="grid gap-1">
-          {statuses.map(statusOption => (
+          {PRIMARY_STATUSES.map(statusOption => (
             <Button 
               key={statusOption} 
               variant="ghost" 
@@ -57,7 +81,29 @@ export const StatusSelector = ({
                 statusOption === status ? "bg-accent text-accent-foreground" : "",
                 getStatusColor(statusOption)
               )}
-              onClick={() => handleStatusChange(statusOption)}
+              onClick={() => handleStatusChange(statusOption as DeliveryStatus)}
+            >
+              {statusOption}
+            </Button>
+          ))}
+          
+          <div className="my-2 border-t border-border">
+            <div className="py-1 px-2">
+              <span className="text-xs text-muted-foreground font-medium">No action</span>
+            </div>
+          </div>
+          
+          {NO_ACTION_STATUSES.map(statusOption => (
+            <Button 
+              key={`no-action-${statusOption}`} 
+              variant="ghost" 
+              size="sm" 
+              className={cn(
+                "justify-start text-left font-normal opacity-60",
+                statusOption === status ? "bg-accent text-accent-foreground" : "",
+                getStatusColor(statusOption)
+              )}
+              onClick={() => handleStatusChange(statusOption as DeliveryStatus)}
             >
               {statusOption}
             </Button>
