@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ChevronDown, X, Flag, Send, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -251,13 +250,13 @@ export const OrderControlPanel = ({
 
       {/* Cancel Dialog */}
       <Dialog open={isCancelDialogOpen} onOpenChange={setIsCancelDialogOpen}>
-        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader className="space-y-4 pb-6">
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto p-[15px]">
+          <DialogHeader className="space-y-4 pb-6 p-[15px]">
             <DialogTitle className="text-xl font-semibold text-center">Cancel Order</DialogTitle>
           </DialogHeader>
           
-          <div className="space-y-8 px-2">
-            <div className="space-y-4">
+          <div className="space-y-8 p-[15px]">
+            <div className="space-y-4 p-[15px]">
               <label className="text-sm font-medium text-foreground block">
                 Cancellation Reason <span className="text-red-500">*</span>
               </label>
@@ -277,7 +276,7 @@ export const OrderControlPanel = ({
               </Select>
             </div>
             
-            <div className="space-y-4">
+            <div className="space-y-4 p-[15px]">
               <label className="text-sm font-medium text-foreground block">
                 Additional Details (Optional)
               </label>
@@ -291,8 +290,8 @@ export const OrderControlPanel = ({
             </div>
           </div>
           
-          <DialogFooter className="pt-8 pb-2">
-            <div className="flex flex-col sm:flex-row gap-4 w-full">
+          <DialogFooter className="pt-8 pb-2 p-[15px]">
+            <div className="flex flex-col sm:flex-row gap-4 w-full p-[15px]">
               <Button 
                 onClick={() => handleCancelConfirm('Cancel by client')}
                 className="flex-1 h-12 bg-orange-500 hover:bg-orange-600 text-white font-medium"
