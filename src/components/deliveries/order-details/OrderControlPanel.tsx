@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { ChevronDown, X, Flag, Send } from "lucide-react";
+import { ChevronDown, X, Flag, Send, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
@@ -61,6 +62,10 @@ export const OrderControlPanel = ({
     setParkingLotStatus(status);
     console.log(`Parking lot set to: ${status}`);
   };
+
+  const handleTakeAction = (action: string) => {
+    console.log(`Take action: ${action}`);
+  };
   
   return (
     <div className="border-t bg-gray-50 p-4 mt-auto">
@@ -75,7 +80,7 @@ export const OrderControlPanel = ({
         
         <div className="grid grid-cols-1 gap-3">
           {/* Button Section - Now positioned above dropdowns */}
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-4 gap-2">
             <Button size="sm" className="flex items-center gap-1">
               <X className="h-4 w-4" /> Cancel
             </Button>
@@ -92,6 +97,33 @@ export const OrderControlPanel = ({
             >
               <Flag className="h-4 w-4" /> Flag
             </Button>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="sm" className="bg-green-500 hover:bg-green-600 text-white flex items-center gap-1">
+                  <Zap className="h-4 w-4" /> Take Action <ChevronDown className="h-3 w-3 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-48">
+                <DropdownMenuLabel>Take Action</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => handleTakeAction('Start Delivery')}>
+                  Start Delivery
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleTakeAction('Arrived for pickup')}>
+                  Arrived for pickup
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleTakeAction('Take package')}>
+                  Take package
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleTakeAction('Courier reported problem')}>
+                  Courier reported problem
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleTakeAction('Sender reported problem')}>
+                  Sender reported problem
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           
           {/* Dropdown Section - Driver Control, Automail, Notifications, and Parking lot */}
