@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { DeliveryStatus } from "@/types/delivery";
 import { Button } from "@/components/ui/button";
@@ -15,19 +16,6 @@ interface StatusSelectorProps {
 }
 
 const PRIMARY_STATUSES = [
-  "Paid order",
-  "Courier selected",
-  "Started working",
-  "Arrived for pickup",
-  "Picked up",
-  "In transit",
-  "Arrived for dropoff",
-  "Delivered",
-  "Cancelled by client",
-  "Cancelled by senpex"
-];
-
-const NO_ACTION_STATUSES = [
   "Paid order",
   "Courier selected",
   "Started working",
@@ -79,28 +67,6 @@ export const StatusSelector = ({
               size="sm" 
               className={cn(
                 "justify-start text-left font-normal",
-                statusOption === status ? "bg-accent text-accent-foreground" : "",
-                getStatusColor(statusOption)
-              )}
-              onClick={() => handleStatusChange(statusOption as DeliveryStatus)}
-            >
-              {statusOption}
-            </Button>
-          ))}
-          
-          <div className="my-2 border-t border-border">
-            <div className="py-1 px-2">
-              <span className="text-xs text-muted-foreground font-medium">No action</span>
-            </div>
-          </div>
-          
-          {NO_ACTION_STATUSES.map(statusOption => (
-            <Button 
-              key={`no-action-${statusOption}`} 
-              variant="ghost" 
-              size="sm" 
-              className={cn(
-                "justify-start text-left font-normal opacity-60",
                 statusOption === status ? "bg-accent text-accent-foreground" : "",
                 getStatusColor(statusOption)
               )}
