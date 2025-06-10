@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ChevronDown, X, Flag, Send, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -100,8 +99,8 @@ export const OrderControlPanel = ({
         <Separator className="mb-3" />
         
         <div className="grid grid-cols-1 gap-3">
-          {/* All Buttons Section - Now in one line */}
-          <div className="flex gap-2">
+          {/* Button Section - Now positioned above dropdowns */}
+          <div className="grid grid-cols-4 gap-2">
             <Button size="sm" className="flex items-center gap-1" onClick={handleCancelClick}>
               <X className="h-4 w-4" /> Cancel
             </Button>
@@ -170,8 +169,10 @@ export const OrderControlPanel = ({
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-
-            {/* Control Dropdowns - Now in the same line */}
+          </div>
+          
+          {/* Dropdown Section - Driver Control, Automail, Notifications, and Parking lot */}
+          <div className="flex gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm" className="min-w-[120px]">
