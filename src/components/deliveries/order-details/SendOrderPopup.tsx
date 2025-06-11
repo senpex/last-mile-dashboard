@@ -7,7 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { DriversSidebar } from "@/components/drivers/DriversSidebar";
 import { DeliveryStatus } from "@/types/delivery";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
-import { Star, MapPin, Clock, Phone, X } from "lucide-react";
+import { Star, MapPin, Clock, Phone, X, MessageCircle } from "lucide-react";
 
 interface Driver {
   id: number;
@@ -721,6 +721,13 @@ export const SendOrderPopup = ({
     onClose();
   };
 
+  const handleChatWithDriver = (driver: Driver, event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent driver selection when clicking chat button
+    console.log(`Initiating chat with driver: ${driver.name} (ID: ${driver.id})`);
+    // TODO: Implement chat functionality - this could open a chat modal or navigate to chat
+    alert(`Opening chat with ${driver.name}`);
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Available":
@@ -964,6 +971,15 @@ export const SendOrderPopup = ({
                               </div>
                               
                               <div className="flex items-center gap-1">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-8 w-8 p-0 hover:bg-blue-100"
+                                  onClick={(e) => handleChatWithDriver(driver, e)}
+                                  title={`Chat with ${driver.name}`}
+                                >
+                                  <MessageCircle className="h-4 w-4 text-blue-600" />
+                                </Button>
                                 {transportTypes.map((transportType, index) => (
                                   <div 
                                     key={index}
