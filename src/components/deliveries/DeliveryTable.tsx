@@ -1,4 +1,5 @@
 
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -333,7 +334,7 @@ const DeliveryTable = ({
         onRecipientNameChange={setSelectedRecipientNames}
       />
       
-      <div className={`transition-all duration-300 ${isFilterSidebarOpen ? 'ml-[285px]' : 'ml-0'} flex-1 overflow-hidden w-full`}>
+      <div className={`transition-all duration-300 ${isFilterSidebarOpen ? 'ml-[285px]' : 'ml-0'} flex-1 overflow-hidden p-[10px] w-full -p-[100px]`}>
         <UsersTableContainer stickyHeader={false} independent={true} height="h-[calc(100vh-310px)]">
           <Table className="w-full">
             <TableHeader className="bg-muted/50 border-b-0 sticky top-0 z-10">
@@ -383,3 +384,4 @@ const DeliveryTable = ({
 };
 
 export default DeliveryTable;
+
