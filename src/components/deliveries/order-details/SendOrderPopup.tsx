@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DriversSidebar } from "@/components/drivers/DriversSidebar";
 import { DeliveryStatus } from "@/types/delivery";
-import { Star, MapPin, Clock, Phone } from "lucide-react";
+import { Star, MapPin, Clock, Phone, X } from "lucide-react";
 
 interface Driver {
   id: number;
@@ -207,7 +207,87 @@ export const SendOrderPopup = ({
 
           {/* Drivers List */}
           <div className="flex-1 flex flex-col">
-            
+            {/* Active Filters */}
+            {hasActiveFilters && (
+              <div className="p-4 border-b bg-gray-50">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-sm font-medium">Active Filters</h3>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={clearAllFilters}
+                    className="text-xs"
+                  >
+                    Clear All
+                  </Button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {selectedStatuses.map(status => (
+                    <Badge key={status} variant="secondary" className="flex items-center gap-1">
+                      Status: {status}
+                      <X
+                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                        onClick={() => clearFilter('status', status)}
+                      />
+                    </Badge>
+                  ))}
+                  {selectedZipcodes.map(zipcode => (
+                    <Badge key={zipcode} variant="secondary" className="flex items-center gap-1">
+                      Zipcode: {zipcode}
+                      <X
+                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                        onClick={() => clearFilter('zipcode', zipcode)}
+                      />
+                    </Badge>
+                  ))}
+                  {selectedCities.map(city => (
+                    <Badge key={city} variant="secondary" className="flex items-center gap-1">
+                      City: {city}
+                      <X
+                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                        onClick={() => clearFilter('city', city)}
+                      />
+                    </Badge>
+                  ))}
+                  {selectedStates.map(state => (
+                    <Badge key={state} variant="secondary" className="flex items-center gap-1">
+                      State: {state}
+                      <X
+                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                        onClick={() => clearFilter('state', state)}
+                      />
+                    </Badge>
+                  ))}
+                  {selectedProfiles.map(profile => (
+                    <Badge key={profile} variant="secondary" className="flex items-center gap-1">
+                      Profile: {profile}
+                      <X
+                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                        onClick={() => clearFilter('profile', profile)}
+                      />
+                    </Badge>
+                  ))}
+                  {selectedTransports.map(transport => (
+                    <Badge key={transport} variant="secondary" className="flex items-center gap-1">
+                      Transport: {transport}
+                      <X
+                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                        onClick={() => clearFilter('transport', transport)}
+                      />
+                    </Badge>
+                  ))}
+                  {selectedHireStatuses.map(hireStatus => (
+                    <Badge key={hireStatus} variant="secondary" className="flex items-center gap-1">
+                      Hire Status: {hireStatus}
+                      <X
+                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                        onClick={() => clearFilter('hireStatus', hireStatus)}
+                      />
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <ScrollArea className="flex-1 p-4">
               <div className="space-y-3">
