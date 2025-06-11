@@ -6,7 +6,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DriversSidebar } from "@/components/drivers/DriversSidebar";
 import { DeliveryStatus } from "@/types/delivery";
-import { Star, MapPin, Clock, Phone, X } from "lucide-react";
+import { Star, MapPin, Clock, Phone } from "lucide-react";
+
 interface Driver {
   id: number;
   name: string;
@@ -185,7 +186,23 @@ export const SendOrderPopup = ({
         <div className="flex h-[600px]">
           {/* Filter Sidebar */}
           <div className="w-[275px] border-r">
-            <DriversSidebar open={true} onClose={() => {}} selectedStatuses={selectedStatuses} setSelectedStatuses={setSelectedStatuses} allDeliveryStatuses={allDeliveryStatuses} allZipcodes={allZipcodes} selectedZipcodes={selectedZipcodes} setSelectedZipcodes={setSelectedZipcodes} allCities={allCities} selectedCities={selectedCities} setSelectedCities={setSelectedCities} allStates={allStates} selectedStates={selectedStates} setSelectedStates={setSelectedStates} onFiltersAdd={onFiltersAdd} />
+            <DriversSidebar 
+              open={true} 
+              onClose={() => {}} 
+              selectedStatuses={selectedStatuses} 
+              setSelectedStatuses={setSelectedStatuses} 
+              allDeliveryStatuses={allDeliveryStatuses} 
+              allZipcodes={allZipcodes} 
+              selectedZipcodes={selectedZipcodes} 
+              setSelectedZipcodes={setSelectedZipcodes} 
+              allCities={allCities} 
+              selectedCities={selectedCities} 
+              setSelectedCities={setSelectedCities} 
+              allStates={allStates} 
+              selectedStates={selectedStates} 
+              setSelectedStates={setSelectedStates} 
+              onFiltersAdd={onFiltersAdd} 
+            />
           </div>
 
           {/* Drivers List */}
