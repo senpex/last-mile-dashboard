@@ -91,8 +91,7 @@ export const MailingHistory = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-xs font-semibold">Name</TableHead>
-              <TableHead className="text-xs font-semibold">Surname</TableHead>
+              <TableHead className="text-xs font-semibold">Courier name</TableHead>
               <TableHead className="text-xs font-semibold">Rate</TableHead>
               <TableHead className="text-xs font-semibold">ID CARD</TableHead>
               <TableHead className="text-xs font-semibold">Sent distance</TableHead>
@@ -105,8 +104,7 @@ export const MailingHistory = () => {
           <TableBody>
             {packageRecipients.map((recipient, index) => (
               <TableRow key={index} className="hover:bg-muted/50">
-                <TableCell className="text-sm">{recipient.name}</TableCell>
-                <TableCell className="text-sm">{recipient.surname}</TableCell>
+                <TableCell className="text-sm">{`${recipient.name} ${recipient.surname}`}</TableCell>
                 <TableCell className="text-sm">{recipient.rate}</TableCell>
                 <TableCell className="text-sm font-mono">{recipient.idCard}</TableCell>
                 <TableCell className="text-sm">{recipient.sentDistance}</TableCell>
