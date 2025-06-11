@@ -78,7 +78,7 @@ export function DriversSidebar({
   const [citySearchTerm, setCitySearchTerm] = useState("");
   const [stateSearchTerm, setStateSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState('drivers');
-  const [selectedRadius, setSelectedRadius] = useState<number>(50);
+  const [selectedRadius, setSelectedRadius] = useState<number>(15);
 
   useEffect(() => {
     const transportDict = getDictionary("2");
@@ -159,7 +159,7 @@ export function DriversSidebar({
     setSelectedCities([]);
     setSelectedStates([]);
     setSelectedHireStatuses([]);
-    setSelectedRadius(50);
+    setSelectedRadius(15);
   };
 
   const updateFilters = () => {
