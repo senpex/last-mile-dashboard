@@ -12,6 +12,7 @@ import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+
 interface DriversSidebarProps {
   open: boolean;
   onClose: () => void;
@@ -39,6 +40,7 @@ interface DriversSidebarProps {
     names?: string[];
   }) => void;
 }
+
 export function DriversSidebar({
   open,
   onClose,
@@ -82,7 +84,12 @@ export function DriversSidebar({
   const [nameSearchTerm, setNameSearchTerm] = useState("");
 
   // Mock driver names data
-  const driverNames = ["John Smith", "Maria Rodriguez", "David Chen", "Sarah Johnson", "Michael Brown", "Jennifer Garcia", "Robert Davis", "Lisa Wilson", "James Miller", "Ashley Martinez", "Christopher Anderson", "Amanda Taylor"];
+  const driverNames = [
+    "John Smith", "Maria Rodriguez", "David Chen", "Sarah Johnson", 
+    "Michael Brown", "Jennifer Garcia", "Robert Davis", "Lisa Wilson",
+    "James Miller", "Ashley Martinez", "Christopher Anderson", "Amanda Taylor"
+  ];
+
   useEffect(() => {
     const transportDict = getDictionary("2");
     const hireStatusDict = getDictionary("1455");
@@ -93,9 +100,11 @@ export function DriversSidebar({
       setHireStatusOptions(hireStatusDict.items);
     }
   }, []);
+
   useEffect(() => {
     updateFilters();
   }, [selectedStatuses, selectedZipcodes, selectedCities, selectedStates, selectedProfiles, selectedTransports, selectedHireStatuses, selectedRadius, selectedNames]);
+
   const handleStatusChange = (status: DeliveryStatus) => {
     if (selectedStatuses.includes(status)) {
       setSelectedStatuses(selectedStatuses.filter(s => s !== status));
@@ -103,6 +112,7 @@ export function DriversSidebar({
       setSelectedStatuses([...selectedStatuses, status]);
     }
   };
+
   const handleTransportChange = (transportId: string) => {
     if (selectedTransports.includes(transportId)) {
       setSelectedTransports(selectedTransports.filter(t => t !== transportId));
@@ -110,6 +120,7 @@ export function DriversSidebar({
       setSelectedTransports([...selectedTransports, transportId]);
     }
   };
+
   const handleZipcodeChange = (zipcode: string) => {
     if (selectedZipcodes.includes(zipcode)) {
       setSelectedZipcodes(selectedZipcodes.filter(z => z !== zipcode));
@@ -117,6 +128,7 @@ export function DriversSidebar({
       setSelectedZipcodes([...selectedZipcodes, zipcode]);
     }
   };
+
   const handleHireStatusChange = (status: string) => {
     if (selectedHireStatuses.includes(status)) {
       setSelectedHireStatuses(selectedHireStatuses.filter(s => s !== status));
@@ -124,6 +136,7 @@ export function DriversSidebar({
       setSelectedHireStatuses([...selectedHireStatuses, status]);
     }
   };
+
   const handleProfileChange = (profile: string, checked: boolean) => {
     if (checked) {
       setSelectedProfiles([...selectedProfiles, profile]);
@@ -131,6 +144,7 @@ export function DriversSidebar({
       setSelectedProfiles(selectedProfiles.filter(p => p !== profile));
     }
   };
+
   const handleCityChange = (city: string) => {
     if (selectedCities.includes(city)) {
       setSelectedCities(selectedCities.filter(c => c !== city));
@@ -138,6 +152,7 @@ export function DriversSidebar({
       setSelectedCities([...selectedCities, city]);
     }
   };
+
   const handleStateChange = (state: string) => {
     if (selectedStates.includes(state)) {
       setSelectedStates(selectedStates.filter(s => s !== state));
@@ -145,6 +160,7 @@ export function DriversSidebar({
       setSelectedStates([...selectedStates, state]);
     }
   };
+
   const handleNameChange = (name: string) => {
     if (selectedNames.includes(name)) {
       setSelectedNames(selectedNames.filter(n => n !== name));
@@ -152,6 +168,7 @@ export function DriversSidebar({
       setSelectedNames([...selectedNames, name]);
     }
   };
+
   const handleResetFilters = () => {
     setSelectedStatuses([]);
     setSelectedTransports([]);
@@ -163,9 +180,11 @@ export function DriversSidebar({
     setSelectedRadius(15);
     setSelectedNames([]);
   };
+
   const handleRadiusChange = (value: number[]) => {
     setSelectedRadius(value[0]);
   };
+
   const updateFilters = () => {
     onFiltersAdd({
       statuses: selectedStatuses,
@@ -179,33 +198,43 @@ export function DriversSidebar({
       names: selectedNames
     });
   };
+
   const handleSaveFilters = () => {
     updateFilters();
   };
+
   const getProfileCount = (profileId: string) => {
     return Math.floor(Math.random() * 20) + 1;
   };
+
   const getStatusCount = (status: DeliveryStatus) => {
     return allDeliveryStatuses.filter(s => s === status).length;
   };
+
   const getZipcodeCount = (zipcode: string) => {
     return allZipcodes.filter(z => z === zipcode).length;
   };
+
   const getTransportCount = (transportId: string) => {
     return transportTypes.filter(t => t.id === transportId).length;
   };
+
   const getCityCount = (city: string) => {
     return Math.floor(Math.random() * 20) + 1;
   };
+
   const getStateCount = (state: string) => {
     return Math.floor(Math.random() * 20) + 1;
   };
+
   const getHireStatusCount = (statusId: string) => {
     return Math.floor(Math.random() * 15) + 1;
   };
+
   const getNameCount = (name: string) => {
     return Math.floor(Math.random() * 5) + 1;
   };
+
   const filteredDeliveryStatuses = allDeliveryStatuses.filter(status => !["Picking Up", "In Transit", "Arrived For Pickup", "Dropoff Complete", "Scheduled Order", "Canceled By Customer", "Cancelled By Admin"].includes(status) && status.toLowerCase().includes(statusSearchTerm.toLowerCase()));
   const filteredTransportTypes = transportTypes.filter(transport => transport.value.toLowerCase().includes(transportSearchTerm.toLowerCase()));
   const filteredZipcodes = allZipcodes.filter(zipcode => zipcode.toLowerCase().includes(zipcodeSearchTerm.toLowerCase()));
@@ -237,6 +266,7 @@ export function DriversSidebar({
   const filteredCities = allCities.filter(city => city.toLowerCase().includes(citySearchTerm.toLowerCase()));
   const filteredStates = allStates.filter(state => state.toLowerCase().includes(stateSearchTerm.toLowerCase()));
   const filteredNames = driverNames.filter(name => name.toLowerCase().includes(nameSearchTerm.toLowerCase()));
+
   const getTitle = () => {
     switch (activeTab) {
       case 'drivers':
@@ -249,8 +279,13 @@ export function DriversSidebar({
         return 'Filter';
     }
   };
-  return <div className={cn("h-full bg-white dark:bg-gray-900 rounded-lg shadow-md transition-all duration-300", "border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md", open ? "w-[275px] max-w-[80vw] opacity-100 visible" : "w-0 opacity-0 invisible overflow-hidden", "rounded-none")}>
-    <div className="p-3 w-full h-full flex flex-col overflow-y-auto px-[80px] mx-0">
+
+  return <div className={cn("h-full bg-white dark:bg-gray-900 rounded-lg shadow-md transition-all duration-300", 
+    "border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md", 
+    open ? "w-[275px] max-w-[80vw] opacity-100 visible" : "w-0 opacity-0 invisible overflow-hidden",
+    "rounded-none"
+  )}>
+    <div className="p-3 w-full h-full flex flex-col overflow-y-auto">
       <h2 className="text-lg font-semibold mb-4">{getTitle()}</h2>
       
       <ScrollArea className="flex-1 -mr-4 pr-4">
@@ -268,7 +303,14 @@ export function DriversSidebar({
                       {selectedRadius} miles
                     </Badge>
                   </div>
-                  <Slider value={[selectedRadius]} onValueChange={handleRadiusChange} min={1} max={100} step={1} className="w-full" />
+                  <Slider
+                    value={[selectedRadius]}
+                    onValueChange={handleRadiusChange}
+                    min={1}
+                    max={100}
+                    step={1}
+                    className="w-full"
+                  />
                   <div className="flex justify-between text-xs text-muted-foreground">
                     <span>1 mile</span>
                     <span>100 miles</span>
