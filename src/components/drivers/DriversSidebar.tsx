@@ -282,10 +282,10 @@ export function DriversSidebar({
 
   return <div className={cn("h-full bg-white dark:bg-gray-900 rounded-lg shadow-md transition-all duration-300", 
     "border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md", 
-    open ? "w-[275px] max-w-[80vw] opacity-100 visible" : "w-0 opacity-0 invisible overflow-hidden",
+    open ? "w-80 opacity-100 visible" : "w-0 opacity-0 invisible overflow-hidden",
     "rounded-none"
   )}>
-    <div className="p-3 w-full h-full flex flex-col overflow-y-auto">
+    <div className="p-4 w-full h-full flex flex-col overflow-y-auto">
       <h2 className="text-lg font-semibold mb-4">{getTitle()}</h2>
       
       <ScrollArea className="flex-1 -mr-4 pr-4">
