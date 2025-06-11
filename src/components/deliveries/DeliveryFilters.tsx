@@ -50,7 +50,7 @@ export function DeliveryFilters({
   hasAttentionRequiredOrders = false
 }: DeliveryFiltersProps) {
   return (
-    <div className="px-4 py-3 flex-shrink-0 border-b w-[200%] max-w-full">
+    <div className="px-4 py-6 flex-shrink-0 border-b w-[200%] max-w-full">
       <div className="flex flex-col space-y-4">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold">Deliveries</h1>
