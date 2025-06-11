@@ -87,7 +87,7 @@ export function ClientsSidebar({
       <div className="p-4 border-b">
         <h2 className="text-lg font-medium">Filters</h2>
       </div>
-      <ScrollArea className="flex-1 p-4 h-[calc(100vh-300px)]">
+      <ScrollArea className="flex-1 p-4 h-[calc(100vh-280px)]">
         <Accordion type="multiple" className="w-full">
           <AccordionItem value="company">
             <AccordionTrigger className="text-sm">Company</AccordionTrigger>
