@@ -281,7 +281,7 @@ export function DriversSidebar({
   };
 
   const filterContent = (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col border-t border-b">
       <div className="p-4 flex-shrink-0 border-b">
         <h2 className="text-lg font-medium">Filters</h2>
       </div>
