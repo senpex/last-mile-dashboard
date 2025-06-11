@@ -41,6 +41,7 @@ export const SendOrderPopup = ({
   const [selectedTransports, setSelectedTransports] = useState<string[]>([]);
   const [selectedHireStatuses, setSelectedHireStatuses] = useState<string[]>([]);
   const [selectedRadius, setSelectedRadius] = useState<number>(15);
+  const [selectedNames, setSelectedNames] = useState<string[]>([]);
 
   // Mock drivers data with multiple transport types
   const [drivers] = useState<Driver[]>([{
@@ -156,6 +157,9 @@ export const SendOrderPopup = ({
     if (filters.radius !== undefined) {
       setSelectedRadius(filters.radius);
     }
+    if (filters.names !== undefined) {
+      setSelectedNames(filters.names);
+    }
   };
   const clearFilter = (type: string, value: string) => {
     switch (type) {
@@ -183,9 +187,12 @@ export const SendOrderPopup = ({
       case 'radius':
         setSelectedRadius(15);
         break;
+      case 'name':
+        setSelectedNames(prev => prev.filter(n => n !== value));
+        break;
     }
   };
-  const hasActiveFilters = selectedStatuses.length > 0 || selectedZipcodes.length > 0 || selectedCities.length > 0 || selectedStates.length > 0 || selectedProfiles.length > 0 || selectedTransports.length > 0 || selectedHireStatuses.length > 0;
+  const hasActiveFilters = selectedStatuses.length > 0 || selectedZipcodes.length > 0 || selectedCities.length > 0 || selectedStates.length > 0 || selectedProfiles.length > 0 || selectedTransports.length > 0 || selectedHireStatuses.length > 0 || selectedNames.length > 0;
   return <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-6xl max-h-[90vh] p-0">
         <DialogHeader className="p-6 pb-0">
@@ -231,6 +238,17 @@ export const SendOrderPopup = ({
                     &times;
                   </button>
                 </div>
+                {selectedNames.map(name => (
+                  <div key={name} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
+                    <span>Name: {name}</span>
+                    <button 
+                      className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
+                      onClick={() => clearFilter('name', name)}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
                 {selectedStatuses.map(status => (
                   <div key={status} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
                     <span>Status: {status}</span>
