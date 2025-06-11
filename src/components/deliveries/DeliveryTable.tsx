@@ -296,82 +296,80 @@ const DeliveryTable = ({
     }
   };
   
-  return <div className="flex-1 overflow-hidden px-0">
-      <div className="flex h-full mx-0">
-        <DeliverySidebar 
-          open={isFilterSidebarOpen} 
-          onClose={toggleFilterSidebar} 
-          deliveryStatuses={allDeliveryStatuses}
-          selectedStatuses={selectedStatuses}
-          onStatusChange={setSelectedStatuses}
-          organizations={allOrganizations}
-          selectedOrganizations={selectedOrganizations}
-          onOrganizationChange={setSelectedOrganizations}
-          couriers={allCouriers}
-          selectedCouriers={selectedCouriers}
-          onCourierChange={setSelectedCouriers}
-          zipcodes={allZipcodes}
-          selectedZipcodes={selectedZipcodes}
-          onZipcodeChange={setSelectedZipcodes}
-          cities={allCities}
-          selectedCities={selectedCities}
-          onCityChange={setSelectedCities}
-          states={allStates}
-          selectedStates={selectedStates}
-          onStateChange={setSelectedStates}
-          pickupAddresses={allPickupAddresses}
-          selectedPickupAddresses={selectedPickupAddresses}
-          onPickupAddressChange={setSelectedPickupAddresses}
-          dropoffAddresses={allDropoffAddresses}
-          selectedDropoffAddresses={selectedDropoffAddresses}
-          onDropoffAddressChange={setSelectedDropoffAddresses}
-          senderNames={allSenderNames}
-          selectedSenderNames={selectedSenderNames}
-          onSenderNameChange={setSelectedSenderNames}
-          recipientNames={allRecipientNames}
-          selectedRecipientNames={selectedRecipientNames}
-          onRecipientNameChange={setSelectedRecipientNames}
-        />
-        
-        <div className="flex-1 transition-all duration-300 my-4 ml-0 w-full">
-          <div className="flex flex-col h-full w-full px-[7px]">
-            <UsersTableContainer stickyHeader={false} independent={true} height="h-[calc(100vh-300px)]">
-              <Table>
-                <TableHeader className="bg-muted/50 border-b-0 sticky top-0 z-10">
-                  <TableRow>
-                    {sortedColumns.map(columnId => {
-                      const column = availableColumns.find(col => col.id === columnId);
-                      if (!column) return null;
-                      return <TableHead key={columnId} className={`${getColumnWidth(columnId)} text-left whitespace-nowrap`} onClick={() => requestSort(columnId)}>
-                          <div className="flex items-center gap-1">
-                            <div draggable={true} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className="cursor-grab">
-                              <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
-                            </div>
-                            <button className="flex items-center cursor-pointer hover:text-primary transition-colors" type="button">
-                              <span className="truncate">{column.label}</span>
-                              {renderSortIcon(columnId)}
-                            </button>
+  return <div className="flex flex-1 w-full overflow-hidden relative">
+      <DeliverySidebar 
+        open={isFilterSidebarOpen} 
+        onClose={toggleFilterSidebar} 
+        deliveryStatuses={allDeliveryStatuses}
+        selectedStatuses={selectedStatuses}
+        onStatusChange={setSelectedStatuses}
+        organizations={allOrganizations}
+        selectedOrganizations={selectedOrganizations}
+        onOrganizationChange={setSelectedOrganizations}
+        couriers={allCouriers}
+        selectedCouriers={selectedCouriers}
+        onCourierChange={setSelectedCouriers}
+        zipcodes={allZipcodes}
+        selectedZipcodes={selectedZipcodes}
+        onZipcodeChange={setSelectedZipcodes}
+        cities={allCities}
+        selectedCities={selectedCities}
+        onCityChange={setSelectedCities}
+        states={allStates}
+        selectedStates={selectedStates}
+        onStateChange={setSelectedStates}
+        pickupAddresses={allPickupAddresses}
+        selectedPickupAddresses={selectedPickupAddresses}
+        onPickupAddressChange={setSelectedPickupAddresses}
+        dropoffAddresses={allDropoffAddresses}
+        selectedDropoffAddresses={selectedDropoffAddresses}
+        onDropoffAddressChange={setSelectedDropoffAddresses}
+        senderNames={allSenderNames}
+        selectedSenderNames={selectedSenderNames}
+        onSenderNameChange={setSelectedSenderNames}
+        recipientNames={allRecipientNames}
+        selectedRecipientNames={selectedRecipientNames}
+        onRecipientNameChange={setSelectedRecipientNames}
+      />
+      
+      <div className={`transition-all duration-300 ${isFilterSidebarOpen ? 'ml-[300px]' : 'ml-[10px]'} flex-1 overflow-hidden`}>
+        <div className="px-[10px]">
+          <UsersTableContainer stickyHeader={false} independent={true} height="h-[calc(100vh-300px)]">
+            <Table>
+              <TableHeader className="bg-muted/50 border-b-0 sticky top-0 z-10">
+                <TableRow>
+                  {sortedColumns.map(columnId => {
+                    const column = availableColumns.find(col => col.id === columnId);
+                    if (!column) return null;
+                    return <TableHead key={columnId} className={`${getColumnWidth(columnId)} text-left whitespace-nowrap`} onClick={() => requestSort(columnId)}>
+                        <div className="flex items-center gap-1">
+                          <div draggable={true} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className="cursor-grab">
+                            <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
                           </div>
-                        </TableHead>;
-                  })}
+                          <button className="flex items-center cursor-pointer hover:text-primary transition-colors" type="button">
+                            <span className="truncate">{column.label}</span>
+                            {renderSortIcon(columnId)}
+                          </button>
+                        </div>
+                      </TableHead>;
+                })}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {items.length > 0 ? items.map(delivery => (
+                  <TableRow key={delivery.id}>
+                    {sortedColumns.map(columnId => renderCellContent(delivery, columnId))}
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {items.length > 0 ? items.map(delivery => (
-                    <TableRow key={delivery.id}>
-                      {sortedColumns.map(columnId => renderCellContent(delivery, columnId))}
-                    </TableRow>
-                  )) : (
-                    <TableRow>
-                      <TableCell colSpan={sortedColumns.length} className="h-24 text-center">
-                        No results found
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </UsersTableContainer>
-          </div>
+                )) : (
+                  <TableRow>
+                    <TableCell colSpan={sortedColumns.length} className="h-24 text-center">
+                      No results found
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </UsersTableContainer>
         </div>
       </div>
       
