@@ -7,6 +7,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { DeliveryStatus, Delivery } from "@/types/delivery";
+import { SendOrderPopup } from "./SendOrderPopup";
+
 interface OrderControlPanelProps {
   statuses: DeliveryStatus[];
   onStatusChange: (status: DeliveryStatus) => void;
@@ -14,6 +16,7 @@ interface OrderControlPanelProps {
   onOrderFlag: (orderId: number, isFlagged: boolean) => void;
   delivery: Delivery;
 }
+
 export const OrderControlPanel = ({
   statuses,
   onStatusChange,
@@ -28,6 +31,7 @@ export const OrderControlPanel = ({
   const [parkingLotStatus, setParkingLotStatus] = useState<'Yes' | 'No'>('No');
   const [selectedAction, setSelectedAction] = useState<string>('Take Action');
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+  const [isSendOrderPopupOpen, setIsSendOrderPopupOpen] = useState(false);
   const [cancelReason, setCancelReason] = useState('');
   const [cancelText, setCancelText] = useState('');
 
@@ -75,6 +79,10 @@ export const OrderControlPanel = ({
     setCancelReason('');
     setCancelText('');
   };
+  const handleSendOrderClick = () => {
+    setIsSendOrderPopupOpen(true);
+  };
+
   return <div className="border-t bg-gray-50 p-4 mt-auto">
       <div className="mb-0">
         <div className="flex items-center justify-between mb-2">
@@ -92,7 +100,7 @@ export const OrderControlPanel = ({
               <X className="h-4 w-4" /> Cancel
             </Button>
             
-            <Button size="sm" className="bg-sky-500 hover:bg-sky-600 text-white flex items-center gap-1">
+            <Button size="sm" className="bg-sky-500 hover:bg-sky-600 text-white flex items-center gap-1" onClick={handleSendOrderClick}>
               <Send className="h-4 w-4" /> Send Order
             </Button>
             
@@ -256,5 +264,12 @@ export const OrderControlPanel = ({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Send Order Popup */}
+      <SendOrderPopup
+        isOpen={isSendOrderPopupOpen}
+        onClose={() => setIsSendOrderPopupOpen(false)}
+        orderId={delivery.packageId}
+      />
     </div>;
 };
