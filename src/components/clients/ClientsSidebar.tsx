@@ -276,7 +276,7 @@ export function ClientsSidebar({
   }
   
   return (
-    <div className={`fixed left-[240px] top-[120px] z-40 h-[calc(100vh-120px)] transition-transform duration-300 bg-background border-r shadow-lg ${
+    <div className={`fixed left-0 top-[130px] z-40 h-[calc(100vh-190px)] transition-transform duration-300 bg-background border-r shadow-lg ${
       open ? 'translate-x-0' : '-translate-x-full'
     } w-[280px]`}>
       {filterContent}
