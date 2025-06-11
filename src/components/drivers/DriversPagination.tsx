@@ -16,20 +16,26 @@ interface DriversPaginationProps {
   currentPage: number;
   totalPages: number;
   totalItems: number;
-  pageSize: number;
-  pageSizeOptions: number[];
+  itemsPerPage: number;
   onPageChange: (page: number) => void;
-  onPageSizeChange: (size: number) => void;
+  onItemsPerPageChange: (size: number) => void;
+  startIndex: number;
+  endIndex: number;
+  pageSize?: number;
+  pageSizeOptions?: number[];
 }
 
 export const DriversPagination = ({
   currentPage,
   totalPages,
   totalItems,
-  pageSize,
-  pageSizeOptions,
+  itemsPerPage,
   onPageChange,
-  onPageSizeChange
+  onItemsPerPageChange,
+  startIndex,
+  endIndex,
+  pageSize = 10,
+  pageSizeOptions = [10, 25, 50, 100]
 }: DriversPaginationProps) => {
   const getPageNumbers = () => {
     const pages = [];
@@ -68,7 +74,7 @@ export const DriversPagination = ({
   return (
     <div className="border-t mt-auto w-full">
       <div className="px-6 py-4 flex justify-between items-center">
-        <PaginationInfo total={totalItems} pageSize={pageSize} currentPage={currentPage} />
+        <PaginationInfo total={totalItems} pageSize={itemsPerPage} currentPage={currentPage} />
         
         <Pagination className="flex-1 flex justify-center">
           <PaginationContent>
@@ -145,7 +151,7 @@ export const DriversPagination = ({
           </PaginationContent>
         </Pagination>
         
-        <PaginationSize sizes={pageSizeOptions} pageSize={pageSize} onChange={onPageSizeChange} />
+        <PaginationSize sizes={pageSizeOptions} pageSize={itemsPerPage} onChange={onItemsPerPageChange} />
       </div>
     </div>
   );
