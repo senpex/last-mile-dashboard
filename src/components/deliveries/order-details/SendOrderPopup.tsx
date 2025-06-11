@@ -35,6 +35,9 @@ export const SendOrderPopup = ({ isOpen, onClose, orderId }: SendOrderPopupProps
   const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
+  const [selectedProfiles, setSelectedProfiles] = useState<string[]>([]);
+  const [selectedTransports, setSelectedTransports] = useState<string[]>([]);
+  const [selectedHireStatuses, setSelectedHireStatuses] = useState<string[]>([]);
 
   // Mock drivers data
   const [drivers] = useState<Driver[]>([
@@ -131,8 +134,30 @@ export const SendOrderPopup = ({ isOpen, onClose, orderId }: SendOrderPopupProps
   };
 
   const onFiltersAdd = (filters: any) => {
-    // Handle filter updates
     console.log("Filters updated:", filters);
+    
+    // Update all filter states when filters are applied
+    if (filters.statuses !== undefined) {
+      setSelectedStatuses(filters.statuses);
+    }
+    if (filters.zipcodes !== undefined) {
+      setSelectedZipcodes(filters.zipcodes);
+    }
+    if (filters.cities !== undefined) {
+      setSelectedCities(filters.cities);
+    }
+    if (filters.states !== undefined) {
+      setSelectedStates(filters.states);
+    }
+    if (filters.profiles !== undefined) {
+      setSelectedProfiles(filters.profiles);
+    }
+    if (filters.transports !== undefined) {
+      setSelectedTransports(filters.transports);
+    }
+    if (filters.hireStatuses !== undefined) {
+      setSelectedHireStatuses(filters.hireStatuses);
+    }
   };
 
   const clearFilter = (type: string, value: string) => {
@@ -149,6 +174,15 @@ export const SendOrderPopup = ({ isOpen, onClose, orderId }: SendOrderPopupProps
       case 'state':
         setSelectedStates(prev => prev.filter(s => s !== value));
         break;
+      case 'profile':
+        setSelectedProfiles(prev => prev.filter(p => p !== value));
+        break;
+      case 'transport':
+        setSelectedTransports(prev => prev.filter(t => t !== value));
+        break;
+      case 'hireStatus':
+        setSelectedHireStatuses(prev => prev.filter(h => h !== value));
+        break;
     }
   };
 
@@ -157,9 +191,12 @@ export const SendOrderPopup = ({ isOpen, onClose, orderId }: SendOrderPopupProps
     setSelectedZipcodes([]);
     setSelectedCities([]);
     setSelectedStates([]);
+    setSelectedProfiles([]);
+    setSelectedTransports([]);
+    setSelectedHireStatuses([]);
   };
 
-  const hasActiveFilters = selectedStatuses.length > 0 || selectedZipcodes.length > 0 || selectedCities.length > 0 || selectedStates.length > 0;
+  const hasActiveFilters = selectedStatuses.length > 0 || selectedZipcodes.length > 0 || selectedCities.length > 0 || selectedStates.length > 0 || selectedProfiles.length > 0 || selectedTransports.length > 0 || selectedHireStatuses.length > 0;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -223,6 +260,45 @@ export const SendOrderPopup = ({ isOpen, onClose, orderId }: SendOrderPopupProps
                           size="sm"
                           className="ml-1 h-3 w-3 p-0"
                           onClick={() => clearFilter('status', status)}
+                        >
+                          <X className="h-2 w-2" />
+                        </Button>
+                      </Badge>
+                    ))}
+                    {selectedProfiles.map((profile) => (
+                      <Badge key={profile} variant="secondary" className="text-xs">
+                        Profile: {profile}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="ml-1 h-3 w-3 p-0"
+                          onClick={() => clearFilter('profile', profile)}
+                        >
+                          <X className="h-2 w-2" />
+                        </Button>
+                      </Badge>
+                    ))}
+                    {selectedTransports.map((transport) => (
+                      <Badge key={transport} variant="secondary" className="text-xs">
+                        Transport: {transport}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="ml-1 h-3 w-3 p-0"
+                          onClick={() => clearFilter('transport', transport)}
+                        >
+                          <X className="h-2 w-2" />
+                        </Button>
+                      </Badge>
+                    ))}
+                    {selectedHireStatuses.map((status) => (
+                      <Badge key={status} variant="secondary" className="text-xs">
+                        Hire Status: {status}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="ml-1 h-3 w-3 p-0"
+                          onClick={() => clearFilter('hireStatus', status)}
                         >
                           <X className="h-2 w-2" />
                         </Button>
