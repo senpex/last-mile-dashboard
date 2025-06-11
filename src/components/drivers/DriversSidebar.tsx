@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -286,7 +285,7 @@ export function DriversSidebar({
       <div className="p-4 flex-shrink-0">
         <h2 className="text-lg font-medium">Filters</h2>
       </div>
-      <ScrollArea className="flex-1 p-4 overflow-auto" style={{ height: "calc(100vh - 320px)" }}>
+      <ScrollArea className="flex-1 px-4 overflow-auto" style={{ height: "calc(100vh - 260px)" }}>
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="radius" className="border-b">
             <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
@@ -523,7 +522,7 @@ export function DriversSidebar({
         </Accordion>
       </ScrollArea>
 
-      <div className="mt-4 pt-4 border-t flex gap-2 mx-[23px] py-[24px] flex-shrink-0">
+      <div className="mt-auto pt-4 border-t flex gap-2 mx-4 py-4 flex-shrink-0">
         <Button variant="outline" className="flex-1 gap-1" onClick={handleResetFilters}>
           <RotateCcw className="h-4 w-4" />
           Reset
@@ -533,7 +532,7 @@ export function DriversSidebar({
   );
 
   return (
-    <div className={`fixed left-0 top-[140px] z-40 h-[calc(100vh-200px)] transition-transform duration-300 bg-background border-r shadow-lg ${
+    <div className={`fixed left-0 top-[140px] z-40 h-[calc(100vh-140px)] transition-transform duration-300 bg-background border-r shadow-lg ${
       open ? 'translate-x-0' : '-translate-x-full'
     } w-[280px]`}>
       {filterContent}
