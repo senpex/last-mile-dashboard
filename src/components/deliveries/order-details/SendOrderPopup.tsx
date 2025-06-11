@@ -95,6 +95,15 @@ export const SendOrderPopup = ({
   const handleDriverSelect = (driverId: number) => {
     setSelectedDrivers(prev => prev.includes(driverId) ? prev.filter(id => id !== driverId) : [...prev, driverId]);
   };
+
+  const handleSelectAll = () => {
+    if (selectedDrivers.length === drivers.length) {
+      setSelectedDrivers([]);
+    } else {
+      setSelectedDrivers(drivers.map(driver => driver.id));
+    }
+  };
+
   const handleSendToSelected = () => {
     if (selectedDrivers.length === 0) {
       alert("Please select at least one driver");
@@ -104,6 +113,7 @@ export const SendOrderPopup = ({
     alert(`Order sent to ${selectedDrivers.length} driver(s)`);
     onClose();
   };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Available":
@@ -378,8 +388,17 @@ export const SendOrderPopup = ({
             {/* Footer Actions */}
             <div className="p-4 border-t bg-gray-50">
               <div className="flex justify-between items-center">
-                <div className="text-sm text-muted-foreground">
-                  {selectedDrivers.length} driver(s) selected
+                <div className="flex items-center gap-3">
+                  <div className="text-sm text-muted-foreground">
+                    {selectedDrivers.length} driver(s) selected
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={handleSelectAll}
+                  >
+                    {selectedDrivers.length === drivers.length ? 'Deselect All' : 'Select All'}
+                  </Button>
                 </div>
                 <div className="flex gap-2">
                   <Button variant="outline" onClick={onClose}>
