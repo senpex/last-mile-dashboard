@@ -190,63 +190,7 @@ export const SendOrderPopup = ({
 
           {/* Drivers List */}
           <div className="flex-1 flex flex-col">
-            <div className="p-4 border-b">
-              
-
-              {/* Active Filters Display */}
-              {hasActiveFilters && <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-muted-foreground">Active Filters:</span>
-                    <Button variant="ghost" size="sm" onClick={clearAllFilters} className="text-xs h-6 px-2">
-                      Clear All
-                    </Button>
-                  </div>
-                  <div className="flex flex-wrap gap-1">
-                    {selectedStatuses.map(status => <Badge key={status} variant="secondary" className="text-xs">
-                        Status: {status}
-                        <Button variant="ghost" size="sm" className="ml-1 h-3 w-3 p-0" onClick={() => clearFilter('status', status)}>
-                          <X className="h-2 w-2" />
-                        </Button>
-                      </Badge>)}
-                    {selectedProfiles.map(profile => <Badge key={profile} variant="secondary" className="text-xs">
-                        Profile: {profile}
-                        <Button variant="ghost" size="sm" className="ml-1 h-3 w-3 p-0" onClick={() => clearFilter('profile', profile)}>
-                          <X className="h-2 w-2" />
-                        </Button>
-                      </Badge>)}
-                    {selectedTransports.map(transport => <Badge key={transport} variant="secondary" className="text-xs">
-                        Transport: {transport}
-                        <Button variant="ghost" size="sm" className="ml-1 h-3 w-3 p-0" onClick={() => clearFilter('transport', transport)}>
-                          <X className="h-2 w-2" />
-                        </Button>
-                      </Badge>)}
-                    {selectedHireStatuses.map(status => <Badge key={status} variant="secondary" className="text-xs">
-                        Hire Status: {status}
-                        <Button variant="ghost" size="sm" className="ml-1 h-3 w-3 p-0" onClick={() => clearFilter('hireStatus', status)}>
-                          <X className="h-2 w-2" />
-                        </Button>
-                      </Badge>)}
-                    {selectedCities.map(city => <Badge key={city} variant="secondary" className="text-xs">
-                        City: {city}
-                        <Button variant="ghost" size="sm" className="ml-1 h-3 w-3 p-0" onClick={() => clearFilter('city', city)}>
-                          <X className="h-2 w-2" />
-                        </Button>
-                      </Badge>)}
-                    {selectedStates.map(state => <Badge key={state} variant="secondary" className="text-xs">
-                        State: {state}
-                        <Button variant="ghost" size="sm" className="ml-1 h-3 w-3 p-0" onClick={() => clearFilter('state', state)}>
-                          <X className="h-2 w-2" />
-                        </Button>
-                      </Badge>)}
-                    {selectedZipcodes.map(zipcode => <Badge key={zipcode} variant="secondary" className="text-xs">
-                        Zipcode: {zipcode}
-                        <Button variant="ghost" size="sm" className="ml-1 h-3 w-3 p-0" onClick={() => clearFilter('zipcode', zipcode)}>
-                          <X className="h-2 w-2" />
-                        </Button>
-                      </Badge>)}
-                  </div>
-                </div>}
-            </div>
+            
 
             <ScrollArea className="flex-1 p-4">
               <div className="space-y-3">
