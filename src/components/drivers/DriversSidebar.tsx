@@ -479,10 +479,6 @@ export function DriversSidebar({
           <RotateCcw className="h-4 w-4" />
           Reset
         </Button>
-        <Button className="flex-1 gap-1" onClick={handleSaveFilters}>
-          <Save className="h-4 w-4" />
-          Apply
-        </Button>
       </div>
     </div>
   </div>;
