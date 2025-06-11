@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Save, RotateCcw, Search } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { DeliveryStatus } from "@/types/delivery";
 import { getDictionary } from "@/lib/storage";
@@ -35,6 +36,7 @@ interface DriversSidebarProps {
     profiles?: string[];
     transports?: string[];
     hireStatuses?: string[];
+    radius?: number;
   }) => void;
 }
 
@@ -76,6 +78,7 @@ export function DriversSidebar({
   const [citySearchTerm, setCitySearchTerm] = useState("");
   const [stateSearchTerm, setStateSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState('drivers');
+  const [selectedRadius, setSelectedRadius] = useState<number>(50);
 
   useEffect(() => {
     const transportDict = getDictionary("2");
@@ -156,6 +159,7 @@ export function DriversSidebar({
     setSelectedCities([]);
     setSelectedStates([]);
     setSelectedHireStatuses([]);
+    setSelectedRadius(50);
   };
 
   const updateFilters = () => {
@@ -166,7 +170,8 @@ export function DriversSidebar({
       states: selectedStates,
       profiles: selectedProfiles,
       transports: selectedTransports,
-      hireStatuses: selectedHireStatuses
+      hireStatuses: selectedHireStatuses,
+      radius: selectedRadius
     });
   };
 
@@ -256,6 +261,36 @@ export function DriversSidebar({
       
       <ScrollArea className="flex-1 -mr-4 pr-4">
         <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="radius" className="border-b">
+            <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
+              Radius
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="flex flex-col space-y-4 py-2">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label className="text-sm font-medium">Distance</Label>
+                    <Badge variant="outline" className="text-xs">
+                      {selectedRadius} miles
+                    </Badge>
+                  </div>
+                  <Slider
+                    value={[selectedRadius]}
+                    onValueChange={(value) => setSelectedRadius(value[0])}
+                    min={1}
+                    max={100}
+                    step={1}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>1 mile</span>
+                    <span>100 miles</span>
+                  </div>
+                </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
           <AccordionItem value="profile" className="border-b">
             <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
               Profile Type
