@@ -39,6 +39,7 @@ export const SendOrderPopup = ({
   const [selectedProfiles, setSelectedProfiles] = useState<string[]>([]);
   const [selectedTransports, setSelectedTransports] = useState<string[]>([]);
   const [selectedHireStatuses, setSelectedHireStatuses] = useState<string[]>([]);
+  const [selectedRadius, setSelectedRadius] = useState<number>(15);
 
   // Mock drivers data
   const [drivers] = useState<Driver[]>([{
@@ -141,6 +142,9 @@ export const SendOrderPopup = ({
     if (filters.hireStatuses !== undefined) {
       setSelectedHireStatuses(filters.hireStatuses);
     }
+    if (filters.radius !== undefined) {
+      setSelectedRadius(filters.radius);
+    }
   };
   const clearFilter = (type: string, value: string) => {
     switch (type) {
@@ -165,6 +169,9 @@ export const SendOrderPopup = ({
       case 'hireStatus':
         setSelectedHireStatuses(prev => prev.filter(h => h !== value));
         break;
+      case 'radius':
+        setSelectedRadius(15);
+        break;
     }
   };
   const clearAllFilters = () => {
@@ -175,8 +182,9 @@ export const SendOrderPopup = ({
     setSelectedProfiles([]);
     setSelectedTransports([]);
     setSelectedHireStatuses([]);
+    setSelectedRadius(15);
   };
-  const hasActiveFilters = selectedStatuses.length > 0 || selectedZipcodes.length > 0 || selectedCities.length > 0 || selectedStates.length > 0 || selectedProfiles.length > 0 || selectedTransports.length > 0 || selectedHireStatuses.length > 0;
+  const hasActiveFilters = selectedStatuses.length > 0 || selectedZipcodes.length > 0 || selectedCities.length > 0 || selectedStates.length > 0 || selectedProfiles.length > 0 || selectedTransports.length > 0 || selectedHireStatuses.length > 0 || selectedRadius !== 15;
   return <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-6xl max-h-[90vh] p-0">
         <DialogHeader className="p-6 pb-0">
@@ -222,6 +230,15 @@ export const SendOrderPopup = ({
                   </Button>
                 </div>
                 <div className="flex flex-wrap gap-2">
+                  {selectedRadius !== 15 && (
+                    <Badge variant="secondary" className="flex items-center gap-1">
+                      Radius: {selectedRadius} miles
+                      <X
+                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                        onClick={() => clearFilter('radius', '')}
+                      />
+                    </Badge>
+                  )}
                   {selectedStatuses.map(status => (
                     <Badge key={status} variant="secondary" className="flex items-center gap-1">
                       Status: {status}
