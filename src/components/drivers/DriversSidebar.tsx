@@ -93,7 +93,7 @@ export function DriversSidebar({
 
   useEffect(() => {
     updateFilters();
-  }, [selectedStatuses, selectedZipcodes, selectedCities, selectedStates, selectedProfiles, selectedTransports, selectedHireStatuses]);
+  }, [selectedStatuses, selectedZipcodes, selectedCities, selectedStates, selectedProfiles, selectedTransports, selectedHireStatuses, selectedRadius]);
 
   const handleStatusChange = (status: DeliveryStatus) => {
     if (selectedStatuses.includes(status)) {
@@ -160,6 +160,10 @@ export function DriversSidebar({
     setSelectedStates([]);
     setSelectedHireStatuses([]);
     setSelectedRadius(15);
+  };
+
+  const handleRadiusChange = (value: number[]) => {
+    setSelectedRadius(value[0]);
   };
 
   const updateFilters = () => {
@@ -256,7 +260,7 @@ export function DriversSidebar({
     open ? "w-[275px] max-w-[80vw] opacity-100 visible" : "w-0 opacity-0 invisible overflow-hidden",
     "rounded-none"
   )}>
-    <div className="p-4 w-full h-full flex flex-col overflow-y-auto">
+    <div className="p-3 w-full h-full flex flex-col overflow-y-auto">
       <h2 className="text-lg font-semibold mb-4">{getTitle()}</h2>
       
       <ScrollArea className="flex-1 -mr-4 pr-4">
@@ -276,7 +280,7 @@ export function DriversSidebar({
                   </div>
                   <Slider
                     value={[selectedRadius]}
-                    onValueChange={(value) => setSelectedRadius(value[0])}
+                    onValueChange={handleRadiusChange}
                     min={1}
                     max={100}
                     step={1}
