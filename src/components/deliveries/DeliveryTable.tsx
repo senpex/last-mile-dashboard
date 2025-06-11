@@ -296,7 +296,7 @@ const DeliveryTable = ({
     }
   };
   
-  return <div className="flex flex-1 w-full overflow-hidden relative p-4 gap-4">
+  return <div className="flex flex-1 w-full overflow-hidden relative">
       <DeliverySidebar 
         open={isFilterSidebarOpen} 
         onClose={toggleFilterSidebar} 
@@ -332,8 +332,8 @@ const DeliveryTable = ({
         onRecipientNameChange={setSelectedRecipientNames}
       />
       
-      <div className={`transition-all duration-300 ${isFilterSidebarOpen ? 'ml-0' : 'ml-0'} flex-1 overflow-hidden`}>
-        <UsersTableContainer stickyHeader={false} independent={true} height="h-[calc(100vh-310px)]">
+      <div className={`transition-all duration-300 ${isFilterSidebarOpen ? 'ml-0' : 'ml-0'} flex-1 overflow-hidden p-[10px]`}>
+        <UsersTableContainer stickyHeader={false} independent={true} height="h-[calc(100vh-280px)]">
           <Table className="w-full">
             <TableHeader className="bg-muted/50 border-b-0 sticky top-0 z-10">
               <TableRow>
@@ -382,3 +382,5 @@ const DeliveryTable = ({
 };
 
 export default DeliveryTable;
+
+}
