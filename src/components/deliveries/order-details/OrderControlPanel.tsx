@@ -30,6 +30,7 @@ export const OrderControlPanel = ({
   const [notificationsStatus, setNotificationsStatus] = useState<'On' | 'Off'>('Off');
   const [parkingLotStatus, setParkingLotStatus] = useState<'Yes' | 'No'>('No');
   const [selectedAction, setSelectedAction] = useState<string>('Take Action');
+  const [ezcaterStatus, setEzcaterStatus] = useState<string>('Waiting');
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const [isSendOrderPopupOpen, setIsSendOrderPopupOpen] = useState(false);
   const [cancelReason, setCancelReason] = useState('');
@@ -83,6 +84,11 @@ export const OrderControlPanel = ({
     setIsSendOrderPopupOpen(true);
   };
 
+  const handleEzcaterStatusChange = (status: string) => {
+    setEzcaterStatus(status);
+    console.log(`eZcater status set to: ${status}`);
+  };
+
   return <div className="border-t bg-gray-50 p-4 mt-auto">
       <div className="mb-0">
         <div className="flex items-center justify-between mb-2">
@@ -95,7 +101,7 @@ export const OrderControlPanel = ({
         
         <div className="grid grid-cols-1 gap-3">
           {/* Button Section - Now positioned above dropdowns */}
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-5 gap-2">
             <Button size="sm" className="flex items-center gap-1" onClick={handleCancelClick}>
               <X className="h-4 w-4" /> Cancel
             </Button>
@@ -131,6 +137,30 @@ export const OrderControlPanel = ({
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleTakeAction('Sender reported problem')} className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${selectedAction === 'Sender reported problem' ? 'bg-green-100 text-green-800' : ''}`}>
                   Sender reported problem
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="sm" className="bg-purple-500 hover:bg-purple-600 text-white flex items-center gap-1">
+                  eZcater: 123456 <ChevronDown className="h-3 w-3 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-48">
+                <DropdownMenuLabel>eZcater Status</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => handleEzcaterStatusChange('Waiting')} className={`hover:bg-purple-100 focus:bg-purple-100 hover:text-purple-800 focus:text-purple-800 ${ezcaterStatus === 'Waiting' ? 'bg-purple-100 text-purple-800' : ''}`}>
+                  Waiting
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleEzcaterStatusChange('Accepted')} className={`hover:bg-purple-100 focus:bg-purple-100 hover:text-purple-800 focus:text-purple-800 ${ezcaterStatus === 'Accepted' ? 'bg-purple-100 text-purple-800' : ''}`}>
+                  Accepted
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleEzcaterStatusChange('Cancelled')} className={`hover:bg-purple-100 focus:bg-purple-100 hover:text-purple-800 focus:text-purple-800 ${ezcaterStatus === 'Cancelled' ? 'bg-purple-100 text-purple-800' : ''}`}>
+                  Cancelled
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleEzcaterStatusChange('Created/modified')} className={`hover:bg-purple-100 focus:bg-purple-100 hover:text-purple-800 focus:text-purple-800 ${ezcaterStatus === 'Created/modified' ? 'bg-purple-100 text-purple-800' : ''}`}>
+                  Created/modified
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
