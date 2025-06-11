@@ -185,7 +185,7 @@ export const SendOrderPopup = ({
         break;
     }
   };
-  const hasActiveFilters = selectedStatuses.length > 0 || selectedZipcodes.length > 0 || selectedCities.length > 0 || selectedStates.length > 0 || selectedProfiles.length > 0 || selectedTransports.length > 0 || selectedHireStatuses.length > 0 || selectedRadius !== 15;
+  const hasActiveFilters = selectedStatuses.length > 0 || selectedZipcodes.length > 0 || selectedCities.length > 0 || selectedStates.length > 0 || selectedProfiles.length > 0 || selectedTransports.length > 0 || selectedHireStatuses.length > 0;
   return <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-6xl max-h-[90vh] p-0">
         <DialogHeader className="p-6 pb-0">
@@ -217,103 +217,99 @@ export const SendOrderPopup = ({
           {/* Drivers List */}
           <div className="flex-1 flex flex-col">
             {/* Active Filters */}
-            {hasActiveFilters && (
-              <div className="p-4 border-b bg-gray-50">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-sm font-medium">Active Filters</h3>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {selectedRadius !== 15 && (
-                    <div className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
-                      <span>Radius: {selectedRadius} miles</span>
-                      <button 
-                        className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
-                        onClick={() => clearFilter('radius', '')}
-                      >
-                        &times;
-                      </button>
-                    </div>
-                  )}
-                  {selectedStatuses.map(status => (
-                    <div key={status} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
-                      <span>Status: {status}</span>
-                      <button 
-                        className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
-                        onClick={() => clearFilter('status', status)}
-                      >
-                        &times;
-                      </button>
-                    </div>
-                  ))}
-                  {selectedZipcodes.map(zipcode => (
-                    <div key={zipcode} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
-                      <span>Zipcode: {zipcode}</span>
-                      <button 
-                        className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
-                        onClick={() => clearFilter('zipcode', zipcode)}
-                      >
-                        &times;
-                      </button>
-                    </div>
-                  ))}
-                  {selectedCities.map(city => (
-                    <div key={city} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
-                      <span>City: {city}</span>
-                      <button 
-                        className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
-                        onClick={() => clearFilter('city', city)}
-                      >
-                        &times;
-                      </button>
-                    </div>
-                  ))}
-                  {selectedStates.map(state => (
-                    <div key={state} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
-                      <span>State: {state}</span>
-                      <button 
-                        className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
-                        onClick={() => clearFilter('state', state)}
-                      >
-                        &times;
-                      </button>
-                    </div>
-                  ))}
-                  {selectedProfiles.map(profile => (
-                    <div key={profile} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
-                      <span>Profile: {profile}</span>
-                      <button 
-                        className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
-                        onClick={() => clearFilter('profile', profile)}
-                      >
-                        &times;
-                      </button>
-                    </div>
-                  ))}
-                  {selectedTransports.map(transport => (
-                    <div key={transport} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
-                      <span>Transport: {transport}</span>
-                      <button 
-                        className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
-                        onClick={() => clearFilter('transport', transport)}
-                      >
-                        &times;
-                      </button>
-                    </div>
-                  ))}
-                  {selectedHireStatuses.map(hireStatus => (
-                    <div key={hireStatus} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
-                      <span>Hire Status: {hireStatus}</span>
-                      <button 
-                        className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
-                        onClick={() => clearFilter('hireStatus', hireStatus)}
-                      >
-                        &times;
-                      </button>
-                    </div>
-                  ))}
-                </div>
+            <div className="p-4 border-b bg-gray-50">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-medium">Active Filters</h3>
               </div>
-            )}
+              <div className="flex flex-wrap gap-2">
+                <div className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
+                  <span>Radius: {selectedRadius} miles</span>
+                  <button 
+                    className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
+                    onClick={() => clearFilter('radius', '')}
+                  >
+                    &times;
+                  </button>
+                </div>
+                {selectedStatuses.map(status => (
+                  <div key={status} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
+                    <span>Status: {status}</span>
+                    <button 
+                      className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
+                      onClick={() => clearFilter('status', status)}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+                {selectedZipcodes.map(zipcode => (
+                  <div key={zipcode} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
+                    <span>Zipcode: {zipcode}</span>
+                    <button 
+                      className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
+                      onClick={() => clearFilter('zipcode', zipcode)}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+                {selectedCities.map(city => (
+                  <div key={city} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
+                    <span>City: {city}</span>
+                    <button 
+                      className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
+                      onClick={() => clearFilter('city', city)}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+                {selectedStates.map(state => (
+                  <div key={state} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
+                    <span>State: {state}</span>
+                    <button 
+                      className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
+                      onClick={() => clearFilter('state', state)}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+                {selectedProfiles.map(profile => (
+                  <div key={profile} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
+                    <span>Profile: {profile}</span>
+                    <button 
+                      className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
+                      onClick={() => clearFilter('profile', profile)}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+                {selectedTransports.map(transport => (
+                  <div key={transport} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
+                    <span>Transport: {transport}</span>
+                    <button 
+                      className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
+                      onClick={() => clearFilter('transport', transport)}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+                {selectedHireStatuses.map(hireStatus => (
+                  <div key={hireStatus} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
+                    <span>Hire Status: {hireStatus}</span>
+                    <button 
+                      className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
+                      onClick={() => clearFilter('hireStatus', hireStatus)}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             <ScrollArea className="flex-1 p-4">
               <div className="space-y-2">
