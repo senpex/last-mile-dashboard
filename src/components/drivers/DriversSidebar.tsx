@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -281,11 +282,11 @@ export function DriversSidebar({
   };
 
   const filterContent = (
-    <div className="h-full flex flex-col max-h-[calc(100vh-200px)]">
+    <div className="h-full flex flex-col">
       <div className="p-4 flex-shrink-0">
         <h2 className="text-lg font-medium">Filters</h2>
       </div>
-      <ScrollArea className="flex-1 p-4 overflow-auto">
+      <ScrollArea className="flex-1 p-4 overflow-auto" style={{ height: "calc(100vh - 320px)" }}>
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="radius" className="border-b">
             <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
