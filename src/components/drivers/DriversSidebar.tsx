@@ -532,7 +532,7 @@ export function DriversSidebar({
   );
 
   return (
-    <div className={`fixed left-0 top-[120px] z-40 h-[calc(100vh-180px)] transition-transform duration-300 bg-background border-r ${
+    <div className={`fixed left-0 top-[140px] z-40 h-[calc(100vh-200px)] transition-transform duration-300 bg-background border-r ${
       open ? 'translate-x-0' : '-translate-x-full'
     } w-[280px]`}>
       {filterContent}
