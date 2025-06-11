@@ -256,8 +256,8 @@ export function DriversSidebar({
     open ? "w-[275px] max-w-[80vw] opacity-100 visible" : "w-0 opacity-0 invisible overflow-hidden",
     "rounded-none"
   )}>
-    <div className="p-6 w-full h-full flex flex-col overflow-y-auto mx-0 px-[24px] py-[29px]">
-      <h2 className="text-lg font-semibold mb-4 px-0 py-[15px] my-[9px]">{getTitle()}</h2>
+    <div className="p-4 w-full h-full flex flex-col overflow-y-auto">
+      <h2 className="text-lg font-semibold mb-4">{getTitle()}</h2>
       
       <ScrollArea className="flex-1 -mr-4 pr-4">
         <Accordion type="single" collapsible className="w-full">
@@ -474,7 +474,7 @@ export function DriversSidebar({
         </Accordion>
       </ScrollArea>
 
-      <div className="mt-4 pt-4 border-t flex gap-2 my-0">
+      <div className="mt-4 pt-4 border-t flex gap-2">
         <Button variant="outline" className="flex-1 gap-1" onClick={handleResetFilters}>
           <RotateCcw className="h-4 w-4" />
           Reset
