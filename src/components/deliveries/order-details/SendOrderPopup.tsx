@@ -1037,7 +1037,7 @@ export const SendOrderPopup = ({
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-3">
                     <div className="text-sm text-muted-foreground">
-                      {selectedDrivers.length} driver(s) selected
+                      {drivers.length} driver(s) found • {selectedDrivers.length} driver(s) selected
                     </div>
                     <Button 
                       variant="outline" 
