@@ -90,15 +90,15 @@ const DriverChatModal: React.FC<DriverChatModalProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md h-[500px] p-0">
-        <DialogHeader className="border-b p-4">
+      <DialogContent className="sm:max-w-md max-h-[600px] p-0 gap-0">
+        <DialogHeader className="border-b px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Avatar className="h-8 w-8">
+            <div className="flex items-center gap-3">
+              <Avatar className="h-10 w-10">
                 <AvatarImage src={driver.avatar} />
-                <AvatarFallback className="text-xs">{getInitials(driver.name)}</AvatarFallback>
+                <AvatarFallback className="text-sm font-medium">{getInitials(driver.name)}</AvatarFallback>
               </Avatar>
-              <DialogTitle className="flex items-center gap-2 text-sm">
+              <DialogTitle className="flex items-center gap-2 text-lg font-semibold">
                 {driver.name}
                 <Circle 
                   className="text-green-500 fill-green-500" 
@@ -107,14 +107,14 @@ const DriverChatModal: React.FC<DriverChatModalProps> = ({
                 />
               </DialogTitle>
             </div>
-            <Button variant="ghost" size="icon" onClick={onClose} className="h-6 w-6">
-              <X className="h-3 w-3" />
+            <Button variant="ghost" size="icon" onClick={onClose} className="h-8 w-8">
+              <X className="h-4 w-4" />
             </Button>
           </div>
         </DialogHeader>
         
-        <ScrollArea className="flex-1 p-4 h-[350px]">
-          <div className="space-y-3">
+        <ScrollArea className="flex-1 px-6 py-4 h-[400px]">
+          <div className="space-y-4">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -123,14 +123,14 @@ const DriverChatModal: React.FC<DriverChatModalProps> = ({
                 }`}
               >
                 <div
-                  className={`max-w-[80%] rounded-lg p-2 ${
+                  className={`max-w-[75%] rounded-xl px-4 py-3 ${
                     message.sender === "user"
                       ? "bg-primary text-primary-foreground"
                       : "bg-muted"
                   }`}
                 >
-                  <div className="flex flex-col gap-1">
-                    <p className="text-xs">{message.content}</p>
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm leading-relaxed">{message.content}</p>
                     <span className="text-xs opacity-70 text-right">
                       {formatTime(message.timestamp)}
                     </span>
@@ -141,8 +141,8 @@ const DriverChatModal: React.FC<DriverChatModalProps> = ({
           </div>
         </ScrollArea>
         
-        <div className="border-t p-4">
-          <div className="flex items-center gap-2">
+        <div className="border-t px-6 py-4">
+          <div className="flex items-center gap-3">
             <Input
               placeholder="Type your message..."
               value={messageText}
@@ -152,10 +152,10 @@ const DriverChatModal: React.FC<DriverChatModalProps> = ({
                   handleSendMessage();
                 }
               }}
-              className="flex-1 h-8 text-xs"
+              className="flex-1 h-10"
             />
-            <Button size="sm" onClick={handleSendMessage} className="h-8 w-8 p-0">
-              <Send className="h-3 w-3" />
+            <Button size="sm" onClick={handleSendMessage} className="h-10 w-10 p-0">
+              <Send className="h-4 w-4" />
             </Button>
           </div>
         </div>
