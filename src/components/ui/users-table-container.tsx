@@ -21,7 +21,7 @@ const UsersTableContainer = React.forwardRef<HTMLDivElement, React.HTMLAttribute
       "transition-all duration-300 shadow-sm", 
       "px-0 mt-0 mb-[5px]", 
       independent ? "" : "-ml-[10px]", 
-      "w-full max-w-full", 
+      "w-full", 
       height, 
       className
     )}
@@ -30,7 +30,7 @@ const UsersTableContainer = React.forwardRef<HTMLDivElement, React.HTMLAttribute
       orientation="both" 
       className="h-full w-full"
     >
-      <div className="w-full min-w-max overflow-x-auto">
+      <div className="w-full min-w-max">
         {props.children}
       </div>
     </ScrollArea>
