@@ -14,8 +14,7 @@ import { Button } from "@/components/ui/button";
 export type ColumnOption = {
   id: string;
   label: string;
-  isVisible: boolean;
-  default?: boolean;
+  default: boolean;
 };
 
 type ColumnSelectorProps = {

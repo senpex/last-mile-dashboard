@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -34,7 +33,6 @@ interface DriversTableProps {
   className?: string;
   sortConfig: { key: string | null; direction: 'ascending' | 'descending' | null };
   requestSort: (key: string) => void;
-  onViewDriver: (driver: any) => void;
 }
 
 export const DriversTable = ({
@@ -60,8 +58,7 @@ export const DriversTable = ({
   saveNotes,
   className,
   sortConfig,
-  requestSort,
-  onViewDriver
+  requestSort
 }: DriversTableProps) => {
   const renderCellContent = (driver: any, columnId: string) => {
     switch (columnId) {
@@ -134,7 +131,7 @@ export const DriversTable = ({
             </div>;
         }
       case "actions":
-        return <Button variant="outline" size="sm" className="h-8 px-2 text-xs" onClick={() => onViewDriver(driver)}>
+        return <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
             View
           </Button>;
       default:
