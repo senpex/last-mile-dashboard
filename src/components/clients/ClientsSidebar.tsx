@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
@@ -276,7 +275,7 @@ export function ClientsSidebar({
   }
   
   return (
-    <div className={`fixed left-0 top-[130px] z-40 h-[calc(100vh-190px)] transition-transform duration-300 bg-background border-r shadow-lg ${
+    <div className={`fixed left-0 top-[120px] z-40 h-[calc(100vh-120px)] transition-transform duration-300 bg-background border-r ${
       open ? 'translate-x-0' : '-translate-x-full'
     } w-[280px]`}>
       {filterContent}
