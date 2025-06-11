@@ -382,5 +382,3 @@ const DeliveryTable = ({
 };
 
 export default DeliveryTable;
-
-}
