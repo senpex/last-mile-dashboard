@@ -69,7 +69,7 @@ export function ClientsTable({
   };
 
   return (
-    <UsersTableContainer className={className} independent={independent}>
+    <UsersTableContainer className={className} independent={true}>
       <Table>
         <TableHeader className="bg-muted/50 border-b-0 m-0 p-0">
           <TableRow className="border-b-0">

@@ -466,20 +466,84 @@ const ClientsPage = () => {
   const selectedStatuses: string[] = [];
   const setSelectedStatuses = () => {};
   const allClientStatuses = ["active", "inactive", "pending"];
-  return <Layout showFooter={false}>
+  return (
+    <Layout showFooter={false}>
       <div className="flex flex-col h-screen">
-        <ClientsFilters searchTerm={searchTerm} onSearchChange={setSearchTerm} dateRange={dateRange} onDateRangeChange={setDateRange} timezone={timezone} onTimezoneChange={setTimezone} availableColumns={availableColumns} visibleColumns={visibleColumns} onVisibleColumnsChange={setVisibleColumns} activeView={activeView} onActiveViewChange={setActiveView} onToggleFilterSidebar={handleToggleFilterSidebar} isFilterSidebarOpen={isFilterSidebarOpen} />
+        <ClientsFilters 
+          searchTerm={searchTerm} 
+          onSearchChange={setSearchTerm} 
+          dateRange={dateRange} 
+          onDateRangeChange={setDateRange} 
+          timezone={timezone} 
+          onTimezoneChange={setTimezone} 
+          availableColumns={availableColumns} 
+          visibleColumns={visibleColumns} 
+          onVisibleColumnsChange={setVisibleColumns} 
+          activeView={activeView} 
+          onActiveViewChange={setActiveView} 
+          onToggleFilterSidebar={handleToggleFilterSidebar} 
+          isFilterSidebarOpen={isFilterSidebarOpen} 
+        />
 
-        <div className="flex flex-1 w-full overflow-hidden relative mx-0 px-[5px]">
-          <ClientsSidebar open={isFilterSidebarOpen} onClose={() => setIsFilterSidebarOpen(false)} selectedStatuses={selectedStatuses} setSelectedStatuses={setSelectedStatuses} allClientStatuses={allClientStatuses} allZipcodes={allZipcodes} selectedZipcodes={selectedZipcodes} setSelectedZipcodes={setSelectedZipcodes} allCities={allCities} selectedCities={selectedCities} setSelectedCities={setSelectedCities} allStates={allStates} selectedStates={selectedStates} setSelectedStates={setSelectedStates} allCompanies={allCompanies} selectedCompanies={selectedCompanies} setSelectedCompanies={setSelectedCompanies} />
+        <div className="flex flex-1 w-full overflow-hidden relative">
+          <ClientsSidebar 
+            open={isFilterSidebarOpen} 
+            onClose={() => setIsFilterSidebarOpen(false)} 
+            selectedStatuses={selectedStatuses} 
+            setSelectedStatuses={setSelectedStatuses} 
+            allClientStatuses={allClientStatuses} 
+            allZipcodes={allZipcodes} 
+            selectedZipcodes={selectedZipcodes} 
+            setSelectedZipcodes={setSelectedZipcodes} 
+            allCities={allCities} 
+            selectedCities={selectedCities} 
+            setSelectedCities={setSelectedCities} 
+            allStates={allStates} 
+            selectedStates={selectedStates} 
+            setSelectedStates={setSelectedStates} 
+            allCompanies={allCompanies} 
+            selectedCompanies={selectedCompanies} 
+            setSelectedCompanies={setSelectedCompanies} 
+          />
 
-          <div className={`flex-1 w-full transition-all duration-300 ease-in-out ${isFilterSidebarOpen ? "ml-[10px]" : "ml-[10px]"}`}>
-            <ClientsTable currentItems={currentItems} sortedColumns={sortedColumns} availableColumns={availableColumns} editingNotes={editingNotes} draggedColumn={draggedColumn} dragOverColumn={dragOverColumn} onDragStart={handleDragStart} onDragOver={handleDragOver} onDrop={handleDrop} onDragEnd={handleDragEnd} renderStripeStatus={renderStripeStatus} handleNotesClick={handleNotesClick} handleNotesChange={handleNotesChange} saveNotes={saveNotes} className="mt-[10px]" sortConfig={sortConfig} requestSort={requestSort} renderStatus={renderStatus} />
+          <div className={`flex-1 transition-all duration-300 ${
+            isFilterSidebarOpen ? 'ml-[280px]' : 'ml-0'
+          } px-[15px] overflow-hidden`}>
+            <ClientsTable 
+              currentItems={currentItems} 
+              sortedColumns={sortedColumns} 
+              availableColumns={availableColumns} 
+              editingNotes={editingNotes} 
+              draggedColumn={draggedColumn} 
+              dragOverColumn={dragOverColumn} 
+              onDragStart={handleDragStart} 
+              onDragOver={handleDragOver} 
+              onDrop={handleDrop} 
+              onDragEnd={handleDragEnd} 
+              renderStripeStatus={renderStripeStatus} 
+              handleNotesClick={handleNotesClick} 
+              handleNotesChange={handleNotesChange} 
+              saveNotes={saveNotes} 
+              className="mt-[10px]" 
+              sortConfig={sortConfig} 
+              requestSort={requestSort} 
+              renderStatus={renderStatus} 
+            />
           </div>
         </div>
 
-        <ClientsPagination currentPage={currentPage} totalPages={totalPages} totalItems={totalItems} pageSize={pageSize} pageSizeOptions={pageSizeOptions} onPageChange={handlePageChange} onPageSizeChange={handlePageSizeChange} />
+        <ClientsPagination 
+          currentPage={currentPage} 
+          totalPages={totalPages} 
+          totalItems={totalItems} 
+          pageSize={pageSize} 
+          pageSizeOptions={pageSizeOptions} 
+          onPageChange={handlePageChange} 
+          onPageSizeChange={handlePageSizeChange} 
+        />
       </div>
-    </Layout>;
+    </Layout>
+  );
 };
+
 export default ClientsPage;
