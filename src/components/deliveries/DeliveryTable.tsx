@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -333,45 +332,43 @@ const DeliveryTable = ({
         onRecipientNameChange={setSelectedRecipientNames}
       />
       
-      <div className={`transition-all duration-300 ${isFilterSidebarOpen ? 'ml-[285px]' : 'ml-[10px]'} mr-[10px] flex-1 overflow-hidden`}>
-        <div className="p-[10px]">
-          <UsersTableContainer stickyHeader={false} independent={true} height="h-[calc(100vh-310px)]">
-            <Table>
-              <TableHeader className="bg-muted/50 border-b-0 sticky top-0 z-10">
-                <TableRow>
-                  {sortedColumns.map(columnId => {
-                    const column = availableColumns.find(col => col.id === columnId);
-                    if (!column) return null;
-                    return <TableHead key={columnId} className={`${getColumnWidth(columnId)} text-left whitespace-nowrap`} onClick={() => requestSort(columnId)}>
-                        <div className="flex items-center gap-1">
-                          <div draggable={true} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className="cursor-grab">
-                            <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
-                          </div>
-                          <button className="flex items-center cursor-pointer hover:text-primary transition-colors" type="button">
-                            <span className="truncate">{column.label}</span>
-                            {renderSortIcon(columnId)}
-                          </button>
+      <div className={`transition-all duration-300 ${isFilterSidebarOpen ? 'ml-[285px]' : 'ml-0'} flex-1 overflow-hidden p-[10px]`}>
+        <UsersTableContainer stickyHeader={false} independent={true} height="h-[calc(100vh-310px)]">
+          <Table>
+            <TableHeader className="bg-muted/50 border-b-0 sticky top-0 z-10">
+              <TableRow>
+                {sortedColumns.map(columnId => {
+                  const column = availableColumns.find(col => col.id === columnId);
+                  if (!column) return null;
+                  return <TableHead key={columnId} className={`${getColumnWidth(columnId)} text-left whitespace-nowrap`} onClick={() => requestSort(columnId)}>
+                      <div className="flex items-center gap-1">
+                        <div draggable={true} onDragStart={e => handleDragStart(e, columnId)} onDragOver={e => handleDragOver(e, columnId)} onDragEnd={handleDragEnd} onDrop={e => handleDrop(e, columnId)} className="cursor-grab">
+                          <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
                         </div>
-                      </TableHead>;
-                })}
+                        <button className="flex items-center cursor-pointer hover:text-primary transition-colors" type="button">
+                          <span className="truncate">{column.label}</span>
+                          {renderSortIcon(columnId)}
+                        </button>
+                      </div>
+                    </TableHead>;
+              })}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {items.length > 0 ? items.map(delivery => (
+                <TableRow key={delivery.id}>
+                  {sortedColumns.map(columnId => renderCellContent(delivery, columnId))}
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {items.length > 0 ? items.map(delivery => (
-                  <TableRow key={delivery.id}>
-                    {sortedColumns.map(columnId => renderCellContent(delivery, columnId))}
-                  </TableRow>
-                )) : (
-                  <TableRow>
-                    <TableCell colSpan={sortedColumns.length} className="h-24 text-center">
-                      No results found
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </UsersTableContainer>
-        </div>
+              )) : (
+                <TableRow>
+                  <TableCell colSpan={sortedColumns.length} className="h-24 text-center">
+                    No results found
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </UsersTableContainer>
       </div>
       
       <OrderDetailsSheet
