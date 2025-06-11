@@ -221,14 +221,6 @@ export const SendOrderPopup = ({
               <div className="p-4 border-b bg-gray-50">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium">Active Filters</h3>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={clearAllFilters}
-                    className="text-xs"
-                  >
-                    Clear All
-                  </Button>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {selectedRadius !== 15 && (
