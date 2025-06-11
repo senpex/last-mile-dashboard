@@ -629,7 +629,7 @@ const DriversPage = () => {
         <div className="flex flex-1 w-full overflow-hidden relative mx-0 px-[5px]">
           <DriversSidebar open={isFilterSidebarOpen} onClose={() => setIsFilterSidebarOpen(false)} selectedStatuses={selectedStatuses} setSelectedStatuses={setSelectedStatuses} allDeliveryStatuses={allDriverStatuses} allZipcodes={allZipcodes} selectedZipcodes={selectedZipcodes} setSelectedZipcodes={setSelectedZipcodes} allCities={allCities} selectedCities={selectedCities} setSelectedCities={setSelectedCities} allStates={allStates} selectedStates={selectedStates} setSelectedStates={setSelectedStates} onFiltersAdd={handleFiltersAdd} />
 
-          <div className="px-[50px]">
+          <div className="px-[15px]">
             <DriversTable currentItems={currentItems} sortedColumns={sortedColumns} availableColumns={availableColumns} transportTypes={transportTypes} statusDictionary={statusDictionary} statusColors={statusColors} editingNotes={editingNotes} draggedColumn={draggedColumn} dragOverColumn={dragOverColumn} onDragStart={handleDragStart} onDragOver={handleDragOver} onDrop={handleDrop} onDragEnd={handleDragEnd} renderRating={renderRating} renderStatus={renderStatus} renderHireStatus={renderHireStatus} renderStripeStatus={renderStripeStatus} handleNotesClick={handleNotesClick} handleNotesChange={handleNotesChange} saveNotes={saveNotes} className="mt-[10px]" sortConfig={sortConfig} requestSort={requestSort} />
           </div>
         </div>
