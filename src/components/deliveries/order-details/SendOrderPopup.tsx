@@ -175,16 +175,6 @@ export const SendOrderPopup = ({
         break;
     }
   };
-  const clearAllFilters = () => {
-    setSelectedStatuses([]);
-    setSelectedZipcodes([]);
-    setSelectedCities([]);
-    setSelectedStates([]);
-    setSelectedProfiles([]);
-    setSelectedTransports([]);
-    setSelectedHireStatuses([]);
-    setSelectedRadius(15);
-  };
   const hasActiveFilters = selectedStatuses.length > 0 || selectedZipcodes.length > 0 || selectedCities.length > 0 || selectedStates.length > 0 || selectedProfiles.length > 0 || selectedTransports.length > 0 || selectedHireStatuses.length > 0 || selectedRadius !== 15;
   return <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-6xl max-h-[90vh] p-0">
@@ -224,76 +214,92 @@ export const SendOrderPopup = ({
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {selectedRadius !== 15 && (
-                    <Badge variant="secondary" className="flex items-center gap-1">
-                      Radius: {selectedRadius} miles
-                      <X
-                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                    <div className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
+                      <span>Radius: {selectedRadius} miles</span>
+                      <button 
+                        className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
                         onClick={() => clearFilter('radius', '')}
-                      />
-                    </Badge>
+                      >
+                        &times;
+                      </button>
+                    </div>
                   )}
                   {selectedStatuses.map(status => (
-                    <Badge key={status} variant="secondary" className="flex items-center gap-1">
-                      Status: {status}
-                      <X
-                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                    <div key={status} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
+                      <span>Status: {status}</span>
+                      <button 
+                        className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
                         onClick={() => clearFilter('status', status)}
-                      />
-                    </Badge>
+                      >
+                        &times;
+                      </button>
+                    </div>
                   ))}
                   {selectedZipcodes.map(zipcode => (
-                    <Badge key={zipcode} variant="secondary" className="flex items-center gap-1">
-                      Zipcode: {zipcode}
-                      <X
-                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                    <div key={zipcode} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
+                      <span>Zipcode: {zipcode}</span>
+                      <button 
+                        className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
                         onClick={() => clearFilter('zipcode', zipcode)}
-                      />
-                    </Badge>
+                      >
+                        &times;
+                      </button>
+                    </div>
                   ))}
                   {selectedCities.map(city => (
-                    <Badge key={city} variant="secondary" className="flex items-center gap-1">
-                      City: {city}
-                      <X
-                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                    <div key={city} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
+                      <span>City: {city}</span>
+                      <button 
+                        className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
                         onClick={() => clearFilter('city', city)}
-                      />
-                    </Badge>
+                      >
+                        &times;
+                      </button>
+                    </div>
                   ))}
                   {selectedStates.map(state => (
-                    <Badge key={state} variant="secondary" className="flex items-center gap-1">
-                      State: {state}
-                      <X
-                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                    <div key={state} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
+                      <span>State: {state}</span>
+                      <button 
+                        className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
                         onClick={() => clearFilter('state', state)}
-                      />
-                    </Badge>
+                      >
+                        &times;
+                      </button>
+                    </div>
                   ))}
                   {selectedProfiles.map(profile => (
-                    <Badge key={profile} variant="secondary" className="flex items-center gap-1">
-                      Profile: {profile}
-                      <X
-                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                    <div key={profile} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
+                      <span>Profile: {profile}</span>
+                      <button 
+                        className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
                         onClick={() => clearFilter('profile', profile)}
-                      />
-                    </Badge>
+                      >
+                        &times;
+                      </button>
+                    </div>
                   ))}
                   {selectedTransports.map(transport => (
-                    <Badge key={transport} variant="secondary" className="flex items-center gap-1">
-                      Transport: {transport}
-                      <X
-                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                    <div key={transport} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
+                      <span>Transport: {transport}</span>
+                      <button 
+                        className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
                         onClick={() => clearFilter('transport', transport)}
-                      />
-                    </Badge>
+                      >
+                        &times;
+                      </button>
+                    </div>
                   ))}
                   {selectedHireStatuses.map(hireStatus => (
-                    <Badge key={hireStatus} variant="secondary" className="flex items-center gap-1">
-                      Hire Status: {hireStatus}
-                      <X
-                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                    <div key={hireStatus} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-3 text-sm flex items-center text-blue-700 dark:text-blue-200">
+                      <span>Hire Status: {hireStatus}</span>
+                      <button 
+                        className="ml-2 text-blue-700 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-100" 
                         onClick={() => clearFilter('hireStatus', hireStatus)}
-                      />
-                    </Badge>
+                      >
+                        &times;
+                      </button>
+                    </div>
                   ))}
                 </div>
               </div>
