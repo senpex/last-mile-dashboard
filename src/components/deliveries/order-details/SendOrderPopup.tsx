@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo, useCallback } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -85,6 +84,17 @@ export const SendOrderPopup = ({
     setSelectedDriverForChat(driver);
     setIsChatModalOpen(true);
   }, []);
+
+  const handleAssignToDriver = useCallback(() => {
+    if (selectedDrivers.length !== 1) {
+      alert("Please select exactly one driver to assign");
+      return;
+    }
+    const selectedDriver = mockDrivers.find(driver => driver.id === selectedDrivers[0]);
+    console.log(`Assigning order ${orderId} to driver:`, selectedDriver?.name);
+    alert(`Order assigned to ${selectedDriver?.name}`);
+    onClose();
+  }, [selectedDrivers, orderId, onClose]);
 
   const getStatusColor = useCallback((status: string) => {
     switch (status) {
@@ -419,6 +429,13 @@ export const SendOrderPopup = ({
                   <div className="flex gap-2">
                     <Button variant="outline" onClick={onClose}>
                       Cancel
+                    </Button>
+                    <Button 
+                      variant="secondary" 
+                      onClick={handleAssignToDriver} 
+                      disabled={selectedDrivers.length !== 1}
+                    >
+                      Assign to driver
                     </Button>
                     <Button onClick={handleSendToSelected} disabled={selectedDrivers.length === 0}>
                       Send to Selected ({selectedDrivers.length})
