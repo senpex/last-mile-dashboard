@@ -83,7 +83,21 @@ export function DriversFilters({
 
   const viewControls = (
     <Tabs value={activeView} onValueChange={onActiveViewChange} className="w-auto">
-      {/* Tabs content */}
+      <TabsList className="inline-flex h-6 bg-muted space-x-1 items-center justify-center">
+        <TabsTrigger 
+          value="table" 
+          className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+        >
+          Table View
+        </TabsTrigger>
+        <TabsTrigger 
+          value="map" 
+          className="px-3 text-xs rounded-md h-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex items-center gap-1"
+        >
+          <Map className="h-3 w-3" />
+          Map View
+        </TabsTrigger>
+      </TabsList>
     </Tabs>
   );
 
