@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -446,384 +445,386 @@ export function DeliverySidebar({
   };
 
   return (
-    <div className={`h-full bg-background border-r shadow-lg transition-all duration-300 ${open ? 'w-[275px] max-w-[80vw]' : 'w-0 overflow-hidden'}`}>
-      <div className="p-4 w-full h-full flex flex-col">
-        <h2 className="text-lg font-semibold mb-4">Filters</h2>
+    <div className={`h-full bg-background border-r transition-all duration-300 ${open ? 'w-[275px] max-w-[80vw]' : 'w-0 overflow-hidden'}`}>
+      <div className="w-full h-full flex flex-col">
+        <h2 className="text-lg font-semibold p-4 border-b">Filters</h2>
         
-        <ScrollArea className="flex-1 -mr-4 pr-4">
-          <Accordion 
-            type="single" 
-            collapsible 
-            className="w-full" 
-            defaultValue=""
-            value={isAccordionOpen}
-            onValueChange={setIsAccordionOpen}
-          >
-            <AccordionItem value="status" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">Status</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search statuses..."
-                    value={statusSearchTerm}
-                    onChange={(e) => setStatusSearchTerm(e.target.value)}
-                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
-                  />
-                  {getFilteredStatusItems().map(item => {
-                    const actualStatus = statusMapping[item.value];
-                    if (!actualStatus) return null;
-                    
-                    const count = getStatusCount(actualStatus);
-                    
-                    if (count === 0) return null;
-                    
-                    return (
-                      <div key={item.id} className="flex items-center space-x-2">
+        <ScrollArea className="flex-1">
+          <div className="px-4">
+            <Accordion 
+              type="single" 
+              collapsible 
+              className="w-full" 
+              defaultValue=""
+              value={isAccordionOpen}
+              onValueChange={setIsAccordionOpen}
+            >
+              <AccordionItem value="status" className="border-b">
+                <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
+                  <span className="flex-grow">Status</span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex flex-col space-y-3 py-2">
+                    <Input
+                      placeholder="Search statuses..."
+                      value={statusSearchTerm}
+                      onChange={(e) => setStatusSearchTerm(e.target.value)}
+                      className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                    />
+                    {getFilteredStatusItems().map(item => {
+                      const actualStatus = statusMapping[item.value];
+                      if (!actualStatus) return null;
+                      
+                      const count = getStatusCount(actualStatus);
+                      
+                      if (count === 0) return null;
+                      
+                      return (
+                        <div key={item.id} className="flex items-center space-x-2">
+                          <Checkbox 
+                            id={`status-${item.id}`} 
+                            checked={selectedStatuses.includes(actualStatus as DeliveryStatus)} 
+                            onCheckedChange={checked => handleStatusChange(item.value, checked === true)} 
+                          />
+                          <Label 
+                            htmlFor={`status-${item.id}`} 
+                            className="flex flex-1 items-center justify-between" 
+                            title={item.description || ''}
+                          >
+                            <span>{item.value}</span>
+                            <Badge variant="outline" className="ml-auto">{count}</Badge>
+                          </Label>
+                        </div>
+                      );
+                    })}
+                    {getFilteredStatusItems().length === 0 && (
+                      <div className="text-sm text-muted-foreground">No statuses match your search</div>
+                    )}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="zipcode" className="border-b">
+                <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
+                  <span className="flex-grow">Zipcode</span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex flex-col space-y-3 py-2">
+                    <Input
+                      placeholder="Search zipcodes..."
+                      value={zipcodeSearchTerm}
+                      onChange={(e) => setZipcodeSearchTerm(e.target.value)}
+                      className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                    />
+                    {getFilteredZipcodes().map(zipcode => (
+                      <div key={zipcode} className="flex items-center space-x-2">
                         <Checkbox 
-                          id={`status-${item.id}`} 
-                          checked={selectedStatuses.includes(actualStatus as DeliveryStatus)} 
-                          onCheckedChange={checked => handleStatusChange(item.value, checked === true)} 
+                          id={`zipcode-${zipcode}`} 
+                          checked={selectedZipcodes.includes(zipcode)} 
+                          onCheckedChange={checked => handleZipcodeChange(zipcode, checked === true)} 
                         />
                         <Label 
-                          htmlFor={`status-${item.id}`} 
-                          className="flex flex-1 items-center justify-between" 
-                          title={item.description || ''}
+                          htmlFor={`zipcode-${zipcode}`} 
+                          className="flex flex-1 items-center justify-between"
                         >
-                          <span>{item.value}</span>
-                          <Badge variant="outline" className="ml-auto">{count}</Badge>
+                          <span>{zipcode}</span>
+                          <Badge variant="outline" className="ml-auto">{getZipcodeCount(zipcode)}</Badge>
                         </Label>
                       </div>
-                    );
-                  })}
-                  {getFilteredStatusItems().length === 0 && (
-                    <div className="text-sm text-muted-foreground">No statuses match your search</div>
-                  )}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            
-            <AccordionItem value="zipcode" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">Zipcode</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search zipcodes..."
-                    value={zipcodeSearchTerm}
-                    onChange={(e) => setZipcodeSearchTerm(e.target.value)}
-                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
-                  />
-                  {getFilteredZipcodes().map(zipcode => (
-                    <div key={zipcode} className="flex items-center space-x-2">
-                      <Checkbox 
-                        id={`zipcode-${zipcode}`} 
-                        checked={selectedZipcodes.includes(zipcode)} 
-                        onCheckedChange={checked => handleZipcodeChange(zipcode, checked === true)} 
-                      />
-                      <Label 
-                        htmlFor={`zipcode-${zipcode}`} 
-                        className="flex flex-1 items-center justify-between"
-                      >
-                        <span>{zipcode}</span>
-                        <Badge variant="outline" className="ml-auto">{getZipcodeCount(zipcode)}</Badge>
-                      </Label>
-                    </div>
-                  ))}
-                  {getFilteredZipcodes().length === 0 && (
-                    <div className="text-sm text-muted-foreground">No zipcodes match your search</div>
-                  )}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            
-            <AccordionItem value="city" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">City</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search cities..."
-                    value={citySearchTerm}
-                    onChange={(e) => setCitySearchTerm(e.target.value)}
-                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
-                  />
-                  {getFilteredCities().map(city => (
-                    <div key={city} className="flex items-center space-x-2">
-                      <Checkbox 
-                        id={`city-${city}`} 
-                        checked={selectedCities.includes(city)} 
-                        onCheckedChange={checked => handleCityChange(city, checked === true)} 
-                      />
-                      <Label 
-                        htmlFor={`city-${city}`} 
-                        className="flex flex-1 items-center justify-between"
-                      >
-                        <span>{city}</span>
-                        <Badge variant="outline" className="ml-auto">{getCityCount(city)}</Badge>
-                      </Label>
-                    </div>
-                  ))}
-                  {getFilteredCities().length === 0 && (
-                    <div className="text-sm text-muted-foreground">No cities match your search</div>
-                  )}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            
-            <AccordionItem value="state" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">State</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search states..."
-                    value={stateSearchTerm}
-                    onChange={(e) => setStateSearchTerm(e.target.value)}
-                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
-                  />
-                  {getFilteredStates().map(state => (
-                    <div key={state} className="flex items-center space-x-2">
-                      <Checkbox 
-                        id={`state-${state}`} 
-                        checked={selectedStates.includes(state)} 
-                        onCheckedChange={checked => handleStateChange(state, checked === true)} 
-                      />
-                      <Label 
-                        htmlFor={`state-${state}`} 
-                        className="flex flex-1 items-center justify-between"
-                      >
-                        <span>{state}</span>
-                        <Badge variant="outline" className="ml-auto">{getStateCount(state)}</Badge>
-                      </Label>
-                    </div>
-                  ))}
-                  {getFilteredStates().length === 0 && (
-                    <div className="text-sm text-muted-foreground">No states match your search</div>
-                  )}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            
-            <AccordionItem value="pickupAddress" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">Pickup Address</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search pickup addresses..."
-                    value={pickupAddressSearchTerm}
-                    onChange={(e) => setPickupAddressSearchTerm(e.target.value)}
-                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
-                  />
-                  {getFilteredPickupAddresses().map(address => (
-                    <div key={address} className="flex items-center space-x-2">
-                      <Checkbox 
-                        id={`pickup-${address}`} 
-                        checked={selectedPickupAddresses.includes(address)} 
-                        onCheckedChange={checked => handlePickupAddressChange(address, checked === true)} 
-                      />
-                      <Label 
-                        htmlFor={`pickup-${address}`} 
-                        className="flex flex-1 items-center justify-between"
-                        title={address}
-                      >
-                        <span className="truncate pr-2">{truncateAddress(address)}</span>
-                        <Badge variant="outline" className="ml-auto shrink-0">{getPickupAddressCount(address)}</Badge>
-                      </Label>
-                    </div>
-                  ))}
-                  {getFilteredPickupAddresses().length === 0 && (
-                    <div className="text-sm text-muted-foreground">No pickup addresses match your search</div>
-                  )}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            
-            <AccordionItem value="dropoffAddress" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">Dropoff Address</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search dropoff addresses..."
-                    value={dropoffAddressSearchTerm}
-                    onChange={(e) => setDropoffAddressSearchTerm(e.target.value)}
-                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
-                  />
-                  {getFilteredDropoffAddresses().map(address => (
-                    <div key={address} className="flex items-center space-x-2">
-                      <Checkbox 
-                        id={`dropoff-${address}`} 
-                        checked={selectedDropoffAddresses.includes(address)} 
-                        onCheckedChange={checked => handleDropoffAddressChange(address, checked === true)} 
-                      />
-                      <Label 
-                        htmlFor={`dropoff-${address}`} 
-                        className="flex flex-1 items-center justify-between"
-                        title={address}
-                      >
-                        <span className="truncate pr-2">{truncateAddress(address)}</span>
-                        <Badge variant="outline" className="ml-auto shrink-0">{getDropoffAddressCount(address)}</Badge>
-                      </Label>
-                    </div>
-                  ))}
-                  {getFilteredDropoffAddresses().length === 0 && (
-                    <div className="text-sm text-muted-foreground">No dropoff addresses match your search</div>
-                  )}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            
-            <AccordionItem value="senderName" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">Sender Name</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search sender names..."
-                    value={senderNameSearchTerm}
-                    onChange={(e) => setSenderNameSearchTerm(e.target.value)}
-                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input w-[90%]"
-                  />
-                  {getFilteredSenderNames().map(name => (
-                    <div key={name} className="flex items-center space-x-2">
-                      <Checkbox 
-                        id={`sender-${name}`} 
-                        checked={selectedSenderNames.includes(name)} 
-                        onCheckedChange={checked => handleSenderNameChange(name, checked === true)} 
-                      />
-                      <Label 
-                        htmlFor={`sender-${name}`} 
-                        className="flex flex-1 items-center justify-between"
-                      >
-                        <span>{name}</span>
-                        <Badge variant="outline" className="ml-auto">{getSenderNameCount(name)}</Badge>
-                      </Label>
-                    </div>
-                  ))}
-                  {getFilteredSenderNames().length === 0 && (
-                    <div className="text-sm text-muted-foreground">No sender names match your search</div>
-                  )}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            
-            <AccordionItem value="recipientName" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">Recipient Name</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search recipient names..."
-                    value={recipientNameSearchTerm}
-                    onChange={(e) => setRecipientNameSearchTerm(e.target.value)}
-                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input w-[90%]"
-                  />
-                  {getFilteredRecipientNames().map(name => (
-                    <div key={name} className="flex items-center space-x-2">
-                      <Checkbox 
-                        id={`recipient-${name}`} 
-                        checked={selectedRecipientNames.includes(name)} 
-                        onCheckedChange={checked => handleRecipientNameChange(name, checked === true)} 
-                      />
-                      <Label 
-                        htmlFor={`recipient-${name}`} 
-                        className="flex flex-1 items-center justify-between"
-                      >
-                        <span>{name}</span>
-                        <Badge variant="outline" className="ml-auto">{getRecipientNameCount(name)}</Badge>
-                      </Label>
-                    </div>
-                  ))}
-                  {getFilteredRecipientNames().length === 0 && (
-                    <div className="text-sm text-muted-foreground">No recipient names match your search</div>
-                  )}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            
-            <AccordionItem value="organization" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">Organization</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search organizations..."
-                    value={organizationSearchTerm}
-                    onChange={(e) => setOrganizationSearchTerm(e.target.value)}
-                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
-                  />
-                  {getFilteredOrganizations().map(org => (
-                    <div key={org} className="flex items-center space-x-2">
-                      <Checkbox 
-                        id={`org-${org}`} 
-                        checked={selectedOrganizations.includes(org)} 
-                        onCheckedChange={checked => handleOrganizationChange(org, checked === true)} 
-                      />
-                      <Label 
-                        htmlFor={`org-${org}`} 
-                        className="flex flex-1 items-center justify-between"
-                      >
-                        <span>{org}</span>
-                        <Badge variant="outline" className="ml-auto">{getOrganizationCount(org)}</Badge>
-                      </Label>
-                    </div>
-                  ))}
-                  {getFilteredOrganizations().length === 0 && (
-                    <div className="text-sm text-muted-foreground">No organizations match your search</div>
-                  )}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
+                    ))}
+                    {getFilteredZipcodes().length === 0 && (
+                      <div className="text-sm text-muted-foreground">No zipcodes match your search</div>
+                    )}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="city" className="border-b">
+                <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
+                  <span className="flex-grow">City</span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex flex-col space-y-3 py-2">
+                    <Input
+                      placeholder="Search cities..."
+                      value={citySearchTerm}
+                      onChange={(e) => setCitySearchTerm(e.target.value)}
+                      className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                    />
+                    {getFilteredCities().map(city => (
+                      <div key={city} className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`city-${city}`} 
+                          checked={selectedCities.includes(city)} 
+                          onCheckedChange={checked => handleCityChange(city, checked === true)} 
+                        />
+                        <Label 
+                          htmlFor={`city-${city}`} 
+                          className="flex flex-1 items-center justify-between"
+                        >
+                          <span>{city}</span>
+                          <Badge variant="outline" className="ml-auto">{getCityCount(city)}</Badge>
+                        </Label>
+                      </div>
+                    ))}
+                    {getFilteredCities().length === 0 && (
+                      <div className="text-sm text-muted-foreground">No cities match your search</div>
+                    )}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="state" className="border-b">
+                <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
+                  <span className="flex-grow">State</span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex flex-col space-y-3 py-2">
+                    <Input
+                      placeholder="Search states..."
+                      value={stateSearchTerm}
+                      onChange={(e) => setStateSearchTerm(e.target.value)}
+                      className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                    />
+                    {getFilteredStates().map(state => (
+                      <div key={state} className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`state-${state}`} 
+                          checked={selectedStates.includes(state)} 
+                          onCheckedChange={checked => handleStateChange(state, checked === true)} 
+                        />
+                        <Label 
+                          htmlFor={`state-${state}`} 
+                          className="flex flex-1 items-center justify-between"
+                        >
+                          <span>{state}</span>
+                          <Badge variant="outline" className="ml-auto">{getStateCount(state)}</Badge>
+                        </Label>
+                      </div>
+                    ))}
+                    {getFilteredStates().length === 0 && (
+                      <div className="text-sm text-muted-foreground">No states match your search</div>
+                    )}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="pickupAddress" className="border-b">
+                <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
+                  <span className="flex-grow">Pickup Address</span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex flex-col space-y-3 py-2">
+                    <Input
+                      placeholder="Search pickup addresses..."
+                      value={pickupAddressSearchTerm}
+                      onChange={(e) => setPickupAddressSearchTerm(e.target.value)}
+                      className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                    />
+                    {getFilteredPickupAddresses().map(address => (
+                      <div key={address} className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`pickup-${address}`} 
+                          checked={selectedPickupAddresses.includes(address)} 
+                          onCheckedChange={checked => handlePickupAddressChange(address, checked === true)} 
+                        />
+                        <Label 
+                          htmlFor={`pickup-${address}`} 
+                          className="flex flex-1 items-center justify-between"
+                          title={address}
+                        >
+                          <span className="truncate pr-2">{truncateAddress(address)}</span>
+                          <Badge variant="outline" className="ml-auto shrink-0">{getPickupAddressCount(address)}</Badge>
+                        </Label>
+                      </div>
+                    ))}
+                    {getFilteredPickupAddresses().length === 0 && (
+                      <div className="text-sm text-muted-foreground">No pickup addresses match your search</div>
+                    )}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="dropoffAddress" className="border-b">
+                <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
+                  <span className="flex-grow">Dropoff Address</span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex flex-col space-y-3 py-2">
+                    <Input
+                      placeholder="Search dropoff addresses..."
+                      value={dropoffAddressSearchTerm}
+                      onChange={(e) => setDropoffAddressSearchTerm(e.target.value)}
+                      className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                    />
+                    {getFilteredDropoffAddresses().map(address => (
+                      <div key={address} className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`dropoff-${address}`} 
+                          checked={selectedDropoffAddresses.includes(address)} 
+                          onCheckedChange={checked => handleDropoffAddressChange(address, checked === true)} 
+                        />
+                        <Label 
+                          htmlFor={`dropoff-${address}`} 
+                          className="flex flex-1 items-center justify-between"
+                          title={address}
+                        >
+                          <span className="truncate pr-2">{truncateAddress(address)}</span>
+                          <Badge variant="outline" className="ml-auto shrink-0">{getDropoffAddressCount(address)}</Badge>
+                        </Label>
+                      </div>
+                    ))}
+                    {getFilteredDropoffAddresses().length === 0 && (
+                      <div className="text-sm text-muted-foreground">No dropoff addresses match your search</div>
+                    )}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="senderName" className="border-b">
+                <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
+                  <span className="flex-grow">Sender Name</span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex flex-col space-y-3 py-2">
+                    <Input
+                      placeholder="Search sender names..."
+                      value={senderNameSearchTerm}
+                      onChange={(e) => setSenderNameSearchTerm(e.target.value)}
+                      className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input w-[90%]"
+                    />
+                    {getFilteredSenderNames().map(name => (
+                      <div key={name} className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`sender-${name}`} 
+                          checked={selectedSenderNames.includes(name)} 
+                          onCheckedChange={checked => handleSenderNameChange(name, checked === true)} 
+                        />
+                        <Label 
+                          htmlFor={`sender-${name}`} 
+                          className="flex flex-1 items-center justify-between"
+                        >
+                          <span>{name}</span>
+                          <Badge variant="outline" className="ml-auto">{getSenderNameCount(name)}</Badge>
+                        </Label>
+                      </div>
+                    ))}
+                    {getFilteredSenderNames().length === 0 && (
+                      <div className="text-sm text-muted-foreground">No sender names match your search</div>
+                    )}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="recipientName" className="border-b">
+                <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
+                  <span className="flex-grow">Recipient Name</span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex flex-col space-y-3 py-2">
+                    <Input
+                      placeholder="Search recipient names..."
+                      value={recipientNameSearchTerm}
+                      onChange={(e) => setRecipientNameSearchTerm(e.target.value)}
+                      className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input w-[90%]"
+                    />
+                    {getFilteredRecipientNames().map(name => (
+                      <div key={name} className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`recipient-${name}`} 
+                          checked={selectedRecipientNames.includes(name)} 
+                          onCheckedChange={checked => handleRecipientNameChange(name, checked === true)} 
+                        />
+                        <Label 
+                          htmlFor={`recipient-${name}`} 
+                          className="flex flex-1 items-center justify-between"
+                        >
+                          <span>{name}</span>
+                          <Badge variant="outline" className="ml-auto">{getRecipientNameCount(name)}</Badge>
+                        </Label>
+                      </div>
+                    ))}
+                    {getFilteredRecipientNames().length === 0 && (
+                      <div className="text-sm text-muted-foreground">No recipient names match your search</div>
+                    )}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="organization" className="border-b">
+                <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
+                  <span className="flex-grow">Organization</span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex flex-col space-y-3 py-2">
+                    <Input
+                      placeholder="Search organizations..."
+                      value={organizationSearchTerm}
+                      onChange={(e) => setOrganizationSearchTerm(e.target.value)}
+                      className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                    />
+                    {getFilteredOrganizations().map(org => (
+                      <div key={org} className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`org-${org}`} 
+                          checked={selectedOrganizations.includes(org)} 
+                          onCheckedChange={checked => handleOrganizationChange(org, checked === true)} 
+                        />
+                        <Label 
+                          htmlFor={`org-${org}`} 
+                          className="flex flex-1 items-center justify-between"
+                        >
+                          <span>{org}</span>
+                          <Badge variant="outline" className="ml-auto">{getOrganizationCount(org)}</Badge>
+                        </Label>
+                      </div>
+                    ))}
+                    {getFilteredOrganizations().length === 0 && (
+                      <div className="text-sm text-muted-foreground">No organizations match your search</div>
+                    )}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
 
-            <AccordionItem value="courier" className="border-b">
-              <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
-                <span className="flex-grow">Courier</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col space-y-3 py-2">
-                  <Input
-                    placeholder="Search couriers..."
-                    value={courierSearchTerm}
-                    onChange={(e) => setCourierSearchTerm(e.target.value)}
-                    className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
-                  />
-                  {getFilteredCouriers().map(courier => (
-                    <div key={courier} className="flex items-center space-x-2">
-                      <Checkbox 
-                        id={`courier-${courier}`} 
-                        checked={selectedCouriers.includes(courier)} 
-                        onCheckedChange={checked => handleCourierChange(courier, checked === true)} 
-                      />
-                      <Label 
-                        htmlFor={`courier-${courier}`} 
-                        className="flex flex-1 items-center justify-between"
-                      >
-                        <span>{courier}</span>
-                        <Badge variant="outline" className="ml-auto">{getCourierCount(courier)}</Badge>
-                      </Label>
-                    </div>
-                  ))}
-                  {getFilteredCouriers().length === 0 && (
-                    <div className="text-sm text-muted-foreground">No couriers match your search</div>
-                  )}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+              <AccordionItem value="courier" className="border-b">
+                <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
+                  <span className="flex-grow">Courier</span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex flex-col space-y-3 py-2">
+                    <Input
+                      placeholder="Search couriers..."
+                      value={courierSearchTerm}
+                      onChange={(e) => setCourierSearchTerm(e.target.value)}
+                      className="mb-2 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input"
+                    />
+                    {getFilteredCouriers().map(courier => (
+                      <div key={courier} className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`courier-${courier}`} 
+                          checked={selectedCouriers.includes(courier)} 
+                          onCheckedChange={checked => handleCourierChange(courier, checked === true)} 
+                        />
+                        <Label 
+                          htmlFor={`courier-${courier}`} 
+                          className="flex flex-1 items-center justify-between"
+                        >
+                          <span>{courier}</span>
+                          <Badge variant="outline" className="ml-auto">{getCourierCount(courier)}</Badge>
+                        </Label>
+                      </div>
+                    ))}
+                    {getFilteredCouriers().length === 0 && (
+                      <div className="text-sm text-muted-foreground">No couriers match your search</div>
+                    )}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
         </ScrollArea>
 
-        <div className="mt-4 pt-4 border-t flex gap-2">
+        <div className="border-t flex gap-2 p-4">
           <Button 
             variant="outline" 
             className="flex-1 gap-1" 
