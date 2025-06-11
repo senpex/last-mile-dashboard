@@ -333,7 +333,7 @@ const DeliveryTable = ({
         onRecipientNameChange={setSelectedRecipientNames}
       />
       
-      <div className={`transition-all duration-300 ${isFilterSidebarOpen ? 'ml-[310px]' : 'ml-[10px]'} mr-[10px] flex-1 overflow-hidden`}>
+      <div className={`transition-all duration-300 ${isFilterSidebarOpen ? 'ml-[300px]' : 'ml-[10px]'} mr-[10px] flex-1 overflow-hidden`}>
         <div className="p-[10px]">
           <UsersTableContainer stickyHeader={false} independent={true} height="h-[calc(100vh-310px)]">
             <Table>
