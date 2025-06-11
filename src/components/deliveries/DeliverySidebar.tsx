@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -446,7 +445,7 @@ export function DeliverySidebar({
   };
 
   return (
-    <div className={`h-full bg-background border-r transition-all duration-300 overflow-hidden ${open ? 'w-[275px] max-w-[80vw]' : 'w-0'}`}>
+    <div className={`h-full bg-background transition-all duration-300 overflow-hidden ${open ? 'w-[275px] max-w-[80vw] border-r' : 'w-0'}`}>
       <div className="w-[275px] h-full flex flex-col">
         <h2 className="text-lg font-semibold p-4 border-b">Filters</h2>
         
