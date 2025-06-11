@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -7,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { DriversSidebar } from "@/components/drivers/DriversSidebar";
 import { DeliveryStatus } from "@/types/delivery";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
-import { Star, MapPin, Clock, Phone, X, MessageCircle } from "lucide-react";
+import { Star, MapPin, Clock, Phone, X } from "lucide-react";
 import DriverChatModal from "./DriverChatModal";
 
 interface Driver {
@@ -976,13 +977,12 @@ export const SendOrderPopup = ({
                                 <div className="flex items-center gap-2">
                                   <h4 className="font-medium text-sm truncate">{driver.name}</h4>
                                   <Button
-                                    variant="ghost"
+                                    variant="outline"
                                     size="sm"
-                                    className="h-6 w-6 p-0 hover:bg-blue-100"
+                                    className="h-6 px-2 py-0 text-xs hover:bg-blue-50"
                                     onClick={(e) => handleChatWithDriver(driver, e)}
-                                    title={`Chat with ${driver.name}`}
                                   >
-                                    <MessageCircle className="h-3 w-3 text-blue-600" />
+                                    Chat
                                   </Button>
                                   <Badge variant="outline" className={`text-xs px-1 py-0.5 ${getStatusColor(driver.status)}`}>
                                     {driver.status}
