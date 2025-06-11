@@ -431,13 +431,17 @@ export const SendOrderPopup = ({
                       Cancel
                     </Button>
                     <Button 
-                      variant="secondary" 
                       onClick={handleAssignToDriver} 
                       disabled={selectedDrivers.length !== 1}
+                      className="bg-green-500 hover:bg-green-600 text-white"
                     >
                       Assign to driver
                     </Button>
-                    <Button onClick={handleSendToSelected} disabled={selectedDrivers.length === 0}>
+                    <Button 
+                      onClick={handleSendToSelected} 
+                      disabled={selectedDrivers.length === 0}
+                      className="bg-blue-500 hover:bg-blue-600 text-white"
+                    >
                       Send to Selected ({selectedDrivers.length})
                     </Button>
                   </div>
@@ -456,3 +460,5 @@ export const SendOrderPopup = ({
     </>
   );
 };
+
+export default SendOrderPopup;
