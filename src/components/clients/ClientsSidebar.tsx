@@ -87,7 +87,7 @@ export function ClientsSidebar({
       <div className="p-4 border-b">
         <h2 className="text-lg font-medium">Filters</h2>
       </div>
-      <ScrollArea className="flex-1 p-4 h-[calc(100vh-280px)]">
+      <ScrollArea className="flex-1 p-4 h-[calc(100vh-200px)]">
         <Accordion type="multiple" className="w-full">
           <AccordionItem value="company">
             <AccordionTrigger className="text-sm">Company</AccordionTrigger>
@@ -275,7 +275,7 @@ export function ClientsSidebar({
   }
   
   return (
-    <div className={`fixed left-0 top-[120px] z-40 h-[calc(100vh-120px)] transition-transform duration-300 bg-background border-r ${
+    <div className={`fixed left-0 top-[80px] z-40 h-[calc(100vh-140px)] transition-transform duration-300 bg-background border-r ${
       open ? 'translate-x-0' : '-translate-x-full'
     } w-[280px]`}>
       {filterContent}
