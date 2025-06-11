@@ -37,6 +37,7 @@ interface DriversSidebarProps {
     transports?: string[];
     hireStatuses?: string[];
     radius?: number;
+    names?: string[];
   }) => void;
 }
 
@@ -79,6 +80,15 @@ export function DriversSidebar({
   const [stateSearchTerm, setStateSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState('drivers');
   const [selectedRadius, setSelectedRadius] = useState<number>(15);
+  const [selectedNames, setSelectedNames] = useState<string[]>([]);
+  const [nameSearchTerm, setNameSearchTerm] = useState("");
+
+  // Mock driver names data
+  const driverNames = [
+    "John Smith", "Maria Rodriguez", "David Chen", "Sarah Johnson", 
+    "Michael Brown", "Jennifer Garcia", "Robert Davis", "Lisa Wilson",
+    "James Miller", "Ashley Martinez", "Christopher Anderson", "Amanda Taylor"
+  ];
 
   useEffect(() => {
     const transportDict = getDictionary("2");
@@ -93,7 +103,7 @@ export function DriversSidebar({
 
   useEffect(() => {
     updateFilters();
-  }, [selectedStatuses, selectedZipcodes, selectedCities, selectedStates, selectedProfiles, selectedTransports, selectedHireStatuses, selectedRadius]);
+  }, [selectedStatuses, selectedZipcodes, selectedCities, selectedStates, selectedProfiles, selectedTransports, selectedHireStatuses, selectedRadius, selectedNames]);
 
   const handleStatusChange = (status: DeliveryStatus) => {
     if (selectedStatuses.includes(status)) {
@@ -151,6 +161,14 @@ export function DriversSidebar({
     }
   };
 
+  const handleNameChange = (name: string) => {
+    if (selectedNames.includes(name)) {
+      setSelectedNames(selectedNames.filter(n => n !== name));
+    } else {
+      setSelectedNames([...selectedNames, name]);
+    }
+  };
+
   const handleResetFilters = () => {
     setSelectedStatuses([]);
     setSelectedTransports([]);
@@ -160,6 +178,7 @@ export function DriversSidebar({
     setSelectedStates([]);
     setSelectedHireStatuses([]);
     setSelectedRadius(15);
+    setSelectedNames([]);
   };
 
   const handleRadiusChange = (value: number[]) => {
@@ -175,7 +194,8 @@ export function DriversSidebar({
       profiles: selectedProfiles,
       transports: selectedTransports,
       hireStatuses: selectedHireStatuses,
-      radius: selectedRadius
+      radius: selectedRadius,
+      names: selectedNames
     });
   };
 
@@ -211,6 +231,10 @@ export function DriversSidebar({
     return Math.floor(Math.random() * 15) + 1;
   };
 
+  const getNameCount = (name: string) => {
+    return Math.floor(Math.random() * 5) + 1;
+  };
+
   const filteredDeliveryStatuses = allDeliveryStatuses.filter(status => !["Picking Up", "In Transit", "Arrived For Pickup", "Dropoff Complete", "Scheduled Order", "Canceled By Customer", "Cancelled By Admin"].includes(status) && status.toLowerCase().includes(statusSearchTerm.toLowerCase()));
   const filteredTransportTypes = transportTypes.filter(transport => transport.value.toLowerCase().includes(transportSearchTerm.toLowerCase()));
   const filteredZipcodes = allZipcodes.filter(zipcode => zipcode.toLowerCase().includes(zipcodeSearchTerm.toLowerCase()));
@@ -241,6 +265,7 @@ export function DriversSidebar({
   const filteredProfiles = driverProfiles.filter(profile => profile.value.toLowerCase().includes(profileSearchTerm.toLowerCase()));
   const filteredCities = allCities.filter(city => city.toLowerCase().includes(citySearchTerm.toLowerCase()));
   const filteredStates = allStates.filter(state => state.toLowerCase().includes(stateSearchTerm.toLowerCase()));
+  const filteredNames = driverNames.filter(name => name.toLowerCase().includes(nameSearchTerm.toLowerCase()));
 
   const getTitle = () => {
     switch (activeTab) {
@@ -291,6 +316,28 @@ export function DriversSidebar({
                     <span>100 miles</span>
                   </div>
                 </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="name" className="border-b">
+            <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
+              Name
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="flex flex-col space-y-3 py-2">
+                <div className="relative">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input placeholder="Search names..." value={nameSearchTerm} onChange={e => setNameSearchTerm(e.target.value)} className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input" />
+                </div>
+                {filteredNames.map(name => <div key={name} className="flex items-center space-x-2">
+                    <Checkbox id={`name-${name}`} checked={selectedNames.includes(name)} onCheckedChange={() => handleNameChange(name)} />
+                    <Label htmlFor={`name-${name}`} className="flex flex-1 items-center justify-between">
+                      <span>{name}</span>
+                      <Badge variant="outline" className="ml-auto">{getNameCount(name)}</Badge>
+                    </Label>
+                  </div>)}
+                {filteredNames.length === 0 && <p className="text-sm text-muted-foreground">No matching names found</p>}
               </div>
             </AccordionContent>
           </AccordionItem>
