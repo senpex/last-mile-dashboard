@@ -132,7 +132,7 @@ export const DriversTable = ({
         }
       case "actions":
         return <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
-            View
+            Edit profile
           </Button>;
       default:
         return null;
