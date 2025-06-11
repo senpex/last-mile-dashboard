@@ -965,21 +965,21 @@ export const SendOrderPopup = ({
                             <div className="flex items-center justify-between mb-1">
                               <div className="flex items-center gap-2">
                                 <h4 className="font-medium text-sm truncate">{driver.name}</h4>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-6 w-6 p-0 hover:bg-blue-100"
+                                  onClick={(e) => handleChatWithDriver(driver, e)}
+                                  title={`Chat with ${driver.name}`}
+                                >
+                                  <MessageCircle className="h-3 w-3 text-blue-600" />
+                                </Button>
                                 <Badge variant="outline" className={`text-xs px-1 py-0.5 ${getStatusColor(driver.status)}`}>
                                   {driver.status}
                                 </Badge>
                               </div>
                               
                               <div className="flex items-center gap-1">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-8 w-8 p-0 hover:bg-blue-100"
-                                  onClick={(e) => handleChatWithDriver(driver, e)}
-                                  title={`Chat with ${driver.name}`}
-                                >
-                                  <MessageCircle className="h-4 w-4 text-blue-600" />
-                                </Button>
                                 {transportTypes.map((transportType, index) => (
                                   <div 
                                     key={index}
