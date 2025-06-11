@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { RotateCcw, Search, X } from "lucide-react";
+import { Save, RotateCcw, Search } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
@@ -255,37 +255,6 @@ export function DriversSidebar({
     }
   };
 
-  const clearFilter = (type: string, value: string) => {
-    switch (type) {
-      case 'status':
-        setSelectedStatuses(selectedStatuses.filter(s => s !== value));
-        break;
-      case 'zipcode':
-        setSelectedZipcodes(selectedZipcodes.filter(z => z !== value));
-        break;
-      case 'city':
-        setSelectedCities(selectedCities.filter(c => c !== value));
-        break;
-      case 'state':
-        setSelectedStates(selectedStates.filter(s => s !== value));
-        break;
-      case 'profile':
-        setSelectedProfiles(selectedProfiles.filter(p => p !== value));
-        break;
-      case 'transport':
-        setSelectedTransports(selectedTransports.filter(t => t !== value));
-        break;
-      case 'hireStatus':
-        setSelectedHireStatuses(selectedHireStatuses.filter(h => h !== value));
-        break;
-      case 'radius':
-        setSelectedRadius(15);
-        break;
-    }
-  };
-
-  const hasActiveFilters = selectedStatuses.length > 0 || selectedZipcodes.length > 0 || selectedCities.length > 0 || selectedStates.length > 0 || selectedProfiles.length > 0 || selectedTransports.length > 0 || selectedHireStatuses.length > 0 || selectedRadius !== 15;
-
   return <div className={cn("h-full bg-white dark:bg-gray-900 rounded-lg shadow-md transition-all duration-300", 
     "border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md", 
     open ? "w-[275px] max-w-[80vw] opacity-100 visible" : "w-0 opacity-0 invisible overflow-hidden",
@@ -293,81 +262,6 @@ export function DriversSidebar({
   )}>
     <div className="p-3 w-full h-full flex flex-col overflow-y-auto">
       <h2 className="text-lg font-semibold mb-4">{getTitle()}</h2>
-      
-      {/* Active Filters Section */}
-      {hasActiveFilters && (
-        <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Active Filters</h3>
-          </div>
-          <div className="flex flex-wrap gap-2 max-h-[120px] overflow-y-auto">
-            {selectedRadius !== 15 && (
-              <div className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-2 text-sm text-blue-700 dark:text-blue-200 flex items-center gap-1">
-                Radius: {selectedRadius} miles
-                <button onClick={() => clearFilter('radius', '')} className="ml-1 hover:text-destructive">
-                  <X className="h-3 w-3" />
-                </button>
-              </div>
-            )}
-            {selectedStatuses.map(status => (
-              <div key={status} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-2 text-sm text-blue-700 dark:text-blue-200 flex items-center gap-1">
-                Status: {status}
-                <button onClick={() => clearFilter('status', status)} className="ml-1 hover:text-destructive">
-                  <X className="h-3 w-3" />
-                </button>
-              </div>
-            ))}
-            {selectedZipcodes.map(zipcode => (
-              <div key={zipcode} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-2 text-sm text-blue-700 dark:text-blue-200 flex items-center gap-1">
-                Zipcode: {zipcode}
-                <button onClick={() => clearFilter('zipcode', zipcode)} className="ml-1 hover:text-destructive">
-                  <X className="h-3 w-3" />
-                </button>
-              </div>
-            ))}
-            {selectedCities.map(city => (
-              <div key={city} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-2 text-sm text-blue-700 dark:text-blue-200 flex items-center gap-1">
-                City: {city}
-                <button onClick={() => clearFilter('city', city)} className="ml-1 hover:text-destructive">
-                  <X className="h-3 w-3" />
-                </button>
-              </div>
-            ))}
-            {selectedStates.map(state => (
-              <div key={state} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-2 text-sm text-blue-700 dark:text-blue-200 flex items-center gap-1">
-                State: {state}
-                <button onClick={() => clearFilter('state', state)} className="ml-1 hover:text-destructive">
-                  <X className="h-3 w-3" />
-                </button>
-              </div>
-            ))}
-            {selectedProfiles.map(profile => (
-              <div key={profile} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-2 text-sm text-blue-700 dark:text-blue-200 flex items-center gap-1">
-                Profile: {profile}
-                <button onClick={() => clearFilter('profile', profile)} className="ml-1 hover:text-destructive">
-                  <X className="h-3 w-3" />
-                </button>
-              </div>
-            ))}
-            {selectedTransports.map(transport => (
-              <div key={transport} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-2 text-sm text-blue-700 dark:text-blue-200 flex items-center gap-1">
-                Transport: {transport}
-                <button onClick={() => clearFilter('transport', transport)} className="ml-1 hover:text-destructive">
-                  <X className="h-3 w-3" />
-                </button>
-              </div>
-            ))}
-            {selectedHireStatuses.map(hireStatus => (
-              <div key={hireStatus} className="bg-blue-100 dark:bg-blue-900 rounded-md py-1 px-2 text-sm text-blue-700 dark:text-blue-200 flex items-center gap-1">
-                Hire Status: {hireStatus}
-                <button onClick={() => clearFilter('hireStatus', hireStatus)} className="ml-1 hover:text-destructive">
-                  <X className="h-3 w-3" />
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
       
       <ScrollArea className="flex-1 -mr-4 pr-4">
         <Accordion type="single" collapsible className="w-full">
