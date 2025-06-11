@@ -178,6 +178,212 @@ export function FilterSidebar({
             </AccordionContent>
           </AccordionItem>
 
+          <AccordionItem value="status" className="border-b">
+            <AccordionTrigger className="py-3 text-sm font-medium">
+              Status
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-3 py-2">
+                <div className="relative">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    placeholder="Search statuses..." 
+                    value={statusSearchTerm} 
+                    onChange={e => setStatusSearchTerm(e.target.value)} 
+                    className="pl-8 h-9" 
+                  />
+                </div>
+                {filteredDeliveryStatuses.map(status => (
+                  <div key={status} className="flex items-center space-x-2">
+                    <Checkbox 
+                      id={`status-${status}`} 
+                      checked={selectedStatuses.includes(status)} 
+                      onCheckedChange={() => {
+                        if (selectedStatuses.includes(status)) {
+                          setSelectedStatuses(selectedStatuses.filter(s => s !== status));
+                        } else {
+                          setSelectedStatuses([...selectedStatuses, status]);
+                        }
+                      }} 
+                    />
+                    <Label htmlFor={`status-${status}`} className="flex flex-1 items-center justify-between text-sm">
+                      <span>{status}</span>
+                      <Badge variant="outline" className="ml-auto text-xs">
+                        {Math.floor(Math.random() * 20) + 1}
+                      </Badge>
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="transport" className="border-b">
+            <AccordionTrigger className="py-3 text-sm font-medium">
+              Transport Type
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-3 py-2">
+                <div className="relative">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    placeholder="Search transport types..." 
+                    value={transportSearchTerm} 
+                    onChange={e => setTransportSearchTerm(e.target.value)} 
+                    className="pl-8 h-9" 
+                  />
+                </div>
+                {filteredTransportTypes.map(transport => (
+                  <div key={transport.id} className="flex items-center space-x-2">
+                    <Checkbox 
+                      id={`transport-${transport.id}`} 
+                      checked={selectedTransports.includes(transport.id)} 
+                      onCheckedChange={() => {
+                        if (selectedTransports.includes(transport.id)) {
+                          setSelectedTransports(selectedTransports.filter(t => t !== transport.id));
+                        } else {
+                          setSelectedTransports([...selectedTransports, transport.id]);
+                        }
+                      }} 
+                    />
+                    <Label htmlFor={`transport-${transport.id}`} className="flex flex-1 items-center justify-between text-sm">
+                      <div className="flex items-center space-x-2">
+                        <TransportIcon 
+                          transportType={transport.value.toLowerCase() as TransportType} 
+                          size={16} 
+                        />
+                        <span>{transport.value}</span>
+                      </div>
+                      <Badge variant="outline" className="ml-auto text-xs">
+                        {Math.floor(Math.random() * 15) + 1}
+                      </Badge>
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="state" className="border-b">
+            <AccordionTrigger className="py-3 text-sm font-medium">
+              State
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-3 py-2">
+                <div className="relative">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    placeholder="Search states..." 
+                    value={stateSearchTerm} 
+                    onChange={e => setStateSearchTerm(e.target.value)} 
+                    className="pl-8 h-9" 
+                  />
+                </div>
+                {filteredStates.map(state => (
+                  <div key={state} className="flex items-center space-x-2">
+                    <Checkbox 
+                      id={`state-${state}`} 
+                      checked={selectedStates.includes(state)} 
+                      onCheckedChange={() => {
+                        if (selectedStates.includes(state)) {
+                          setSelectedStates(selectedStates.filter(s => s !== state));
+                        } else {
+                          setSelectedStates([...selectedStates, state]);
+                        }
+                      }} 
+                    />
+                    <Label htmlFor={`state-${state}`} className="flex flex-1 items-center justify-between text-sm">
+                      <span>{state}</span>
+                      <Badge variant="outline" className="ml-auto text-xs">
+                        {Math.floor(Math.random() * 50) + 1}
+                      </Badge>
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="city" className="border-b">
+            <AccordionTrigger className="py-3 text-sm font-medium">
+              City
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-3 py-2">
+                <div className="relative">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    placeholder="Search cities..." 
+                    value={citySearchTerm} 
+                    onChange={e => setCitySearchTerm(e.target.value)} 
+                    className="pl-8 h-9" 
+                  />
+                </div>
+                {filteredCities.map(city => (
+                  <div key={city} className="flex items-center space-x-2">
+                    <Checkbox 
+                      id={`city-${city}`} 
+                      checked={selectedCities.includes(city)} 
+                      onCheckedChange={() => {
+                        if (selectedCities.includes(city)) {
+                          setSelectedCities(selectedCities.filter(c => c !== city));
+                        } else {
+                          setSelectedCities([...selectedCities, city]);
+                        }
+                      }} 
+                    />
+                    <Label htmlFor={`city-${city}`} className="flex flex-1 items-center justify-between text-sm">
+                      <span>{city}</span>
+                      <Badge variant="outline" className="ml-auto text-xs">
+                        {Math.floor(Math.random() * 30) + 1}
+                      </Badge>
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="zipcode" className="border-b">
+            <AccordionTrigger className="py-3 text-sm font-medium">
+              Zipcode
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-3 py-2">
+                <div className="relative">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    placeholder="Search zipcodes..." 
+                    value={zipcodeSearchTerm} 
+                    onChange={e => setZipcodeSearchTerm(e.target.value)} 
+                    className="pl-8 h-9" 
+                  />
+                </div>
+                {filteredZipcodes.map(zipcode => (
+                  <div key={zipcode} className="flex items-center space-x-2">
+                    <Checkbox 
+                      id={`zipcode-${zipcode}`} 
+                      checked={selectedZipcodes.includes(zipcode)} 
+                      onCheckedChange={() => {
+                        if (selectedZipcodes.includes(zipcode)) {
+                          setSelectedZipcodes(selectedZipcodes.filter(z => z !== zipcode));
+                        } else {
+                          setSelectedZipcodes([...selectedZipcodes, zipcode]);
+                        }
+                      }} 
+                    />
+                    <Label htmlFor={`zipcode-${zipcode}`} className="flex flex-1 items-center justify-between text-sm">
+                      <span>{zipcode}</span>
+                      <Badge variant="outline" className="ml-auto text-xs">
+                        {Math.floor(Math.random() * 10) + 1}
+                      </Badge>
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
           <AccordionItem value="name" className="border-b">
             <AccordionTrigger className="py-3 text-sm font-medium">
               Name
@@ -217,8 +423,6 @@ export function FilterSidebar({
               </div>
             </AccordionContent>
           </AccordionItem>
-
-          {/* Add other accordion items for profiles, statuses, transport types, etc. */}
         </Accordion>
       </ScrollArea>
 
