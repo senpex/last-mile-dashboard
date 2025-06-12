@@ -115,29 +115,29 @@ export function useDeliveriesTable({ deliveries, showMyDeliveriesOnly = false }:
   ).filter(Boolean) as string[];
 
   const availableColumns: ColumnOption[] = [
-    { id: "status", label: "Status", default: true },
-    { id: "packageId", label: "ID", default: true },
-    { id: "orderName", label: "Order name", default: true },
-    { id: "customerName", label: "Customer Name", default: true },
-    { id: "pickupTime", label: "Pickup Time", default: true },
-    { id: "pickupLocation", label: "Pickup Location", default: true },
-    { id: "dropoffTime", label: "Dropoff Time", default: true },
-    { id: "dropoffLocation", label: "Dropoff Location", default: true },
-    { id: "price", label: "Price", default: true },
-    { id: "tip", label: "Tip", default: true },
-    { id: "courier", label: "Courier", default: true },
-    { id: "organization", label: "Organization", default: true },
-    { id: "distance", label: "Distance", default: true },
-    { id: "couriersEarnings", label: "Couriers Earnings", default: true },
-    { id: "notes", label: "Notes", default: true },
+    { id: "status", label: "Status", visible: true },
+    { id: "packageId", label: "ID", visible: true },
+    { id: "orderName", label: "Order name", visible: true },
+    { id: "customerName", label: "Customer Name", visible: true },
+    { id: "pickupTime", label: "Pickup Time", visible: true },
+    { id: "pickupLocation", label: "Pickup Location", visible: true },
+    { id: "dropoffTime", label: "Dropoff Time", visible: true },
+    { id: "dropoffLocation", label: "Dropoff Location", visible: true },
+    { id: "price", label: "Price", visible: true },
+    { id: "tip", label: "Tip", visible: true },
+    { id: "courier", label: "Courier", visible: true },
+    { id: "organization", label: "Organization", visible: true },
+    { id: "distance", label: "Distance", visible: true },
+    { id: "couriersEarnings", label: "Couriers Earnings", visible: true },
+    { id: "notes", label: "Notes", visible: true },
   ];
 
   const [visibleColumns, setVisibleColumns] = useState<string[]>(
-    availableColumns.filter(col => col.default).map(col => col.id)
+    availableColumns.filter(col => col.visible).map(col => col.id)
   );
   
   const [columnOrder, setColumnOrder] = useState<string[]>(
-    availableColumns.filter(col => col.default).map(col => col.id)
+    availableColumns.filter(col => col.visible).map(col => col.id)
   );
 
   const statusMapping: Record<string, string> = {
