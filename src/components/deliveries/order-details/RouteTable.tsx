@@ -511,8 +511,11 @@ export const RouteTable = ({
                         <div>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button size="sm" className="bg-green-500 hover:bg-green-600 text-white flex items-center gap-1 h-7 text-xs mt-5">
-                                <Zap className="h-4 w-4" /> Take Action <ChevronDown className="h-3 w-3 ml-1" />
+                              <Button size="sm" className="bg-green-500 hover:bg-green-600 text-white flex items-center gap-1 h-9 text-xs w-full justify-between">
+                                <div className="flex items-center gap-1">
+                                  <Zap className="h-4 w-4" /> Take Action
+                                </div>
+                                <ChevronDown className="h-3 w-3" />
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-48">
