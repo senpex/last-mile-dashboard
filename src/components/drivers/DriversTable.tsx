@@ -30,6 +30,7 @@ interface DriversTableProps {
   handleNotesClick: (driverId: number) => void;
   handleNotesChange: (driverId: number, notes: string) => void;
   saveNotes: (driverId: number) => void;
+  onEditProfile: (driver: any) => void;
   className?: string;
   sortConfig: { key: string | null; direction: 'ascending' | 'descending' | null };
   requestSort: (key: string) => void;
@@ -56,6 +57,7 @@ export const DriversTable = ({
   handleNotesClick,
   handleNotesChange,
   saveNotes,
+  onEditProfile,
   className,
   sortConfig,
   requestSort
@@ -131,7 +133,12 @@ export const DriversTable = ({
             </div>;
         }
       case "actions":
-        return <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
+        return <Button 
+            variant="outline" 
+            size="sm" 
+            className="h-8 px-2 text-xs"
+            onClick={() => onEditProfile(driver)}
+          >
             Edit profile
           </Button>;
       default:

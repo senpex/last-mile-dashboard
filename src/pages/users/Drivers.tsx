@@ -4,6 +4,7 @@ import { DriversTable } from '@/components/drivers/DriversTable';
 import { DriversPagination } from '@/components/drivers/DriversPagination';
 import { DriversFilters } from "@/components/drivers/DriversFilters";
 import { DriversSidebar } from "@/components/drivers/DriversSidebar";
+import { DriverDetailsSheet } from "@/components/drivers/DriverDetailsSheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Check, X, Clock, ChevronDown } from "lucide-react";
@@ -15,6 +16,7 @@ import CourierChat from '@/components/chat/CourierChat';
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { DeliveryStatus } from "@/types/delivery";
 import { Dispatch, SetStateAction } from 'react';
+
 type StripeStatus = 'verified' | 'unverified' | 'pending';
 const allDriverStatuses: DeliveryStatus[] = ["Online", "Offline", "Busy", "Picking Up", "In Transit", "Arrived For Pickup", "Dropoff Complete", "Scheduled Order", "Canceled By Customer", "Cancelled By Admin"];
 const getRandomPhone = (): string => {
@@ -100,6 +102,7 @@ const generateRandomDrivers = (count: number, startId: number = 10000): any[] =>
     };
   });
 };
+
 const DriversPage = () => {
   const [transportTypes, setTransportTypes] = useState<{
     [key: string]: string;
@@ -166,6 +169,11 @@ const DriversPage = () => {
     address: "789 Pine Rd, New York, NY",
     notes: "Not available on Mondays."
   }]);
+  
+  // Add new state for driver details sheet
+  const [isDriverDetailsOpen, setIsDriverDetailsOpen] = useState(false);
+  const [selectedDriver, setSelectedDriver] = useState<any | null>(null);
+
   const availableColumns: ColumnOption[] = [{
     id: "id",
     label: "ID",
@@ -253,14 +261,13 @@ const DriversPage = () => {
   const [selectedZipcodes, setSelectedZipcodes] = useState<string[]>([]);
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
-  const updateDriverHireStatus = (driverId: number, newStatus: string) => {
-    setDrivers(prevDrivers => prevDrivers.map(driver => driver.id === driverId ? {
-      ...driver,
-      hireStatus: newStatus
-    } : driver));
-    const statusLabel = hireStatusDictionary[newStatus] || newStatus;
-    toast.success(`Driver status updated to ${statusLabel}`);
+
+  // Add handler for opening driver details
+  const handleEditProfile = (driver: any) => {
+    setSelectedDriver(driver);
+    setIsDriverDetailsOpen(true);
   };
+
   useEffect(() => {
     loadTransportDictionary();
     loadStatusDictionary();
@@ -622,6 +629,7 @@ const DriversPage = () => {
     setSelectedCities(filters.cities);
     setSelectedStates(filters.states);
   };
+
   return <Layout showFooter={false}>
       <div className="flex flex-col h-screen">
         <DriversFilters searchTerm={searchTerm} onSearchChange={setSearchTerm} dateRange={dateRange} onDateRangeChange={setDateRange} timezone={timezone} onTimezoneChange={setTimezone} availableColumns={availableColumns} visibleColumns={visibleColumns} onVisibleColumnsChange={setVisibleColumns} activeView={activeView} onActiveViewChange={setActiveView} onToggleFilterSidebar={handleToggleFilterSidebar} isFilterSidebarOpen={isFilterSidebarOpen} />
@@ -631,7 +639,32 @@ const DriversPage = () => {
 
           <div className={`transition-all duration-300 ${isFilterSidebarOpen ? 'ml-[290px]' : 'ml-[10px]'} flex-1 overflow-hidden`}>
             <div className="px-[10px]">
-              <DriversTable currentItems={currentItems} sortedColumns={sortedColumns} availableColumns={availableColumns} transportTypes={transportTypes} statusDictionary={statusDictionary} statusColors={statusColors} editingNotes={editingNotes} draggedColumn={draggedColumn} dragOverColumn={dragOverColumn} onDragStart={handleDragStart} onDragOver={handleDragOver} onDrop={handleDrop} onDragEnd={handleDragEnd} renderRating={renderRating} renderStatus={renderStatus} renderHireStatus={renderHireStatus} renderStripeStatus={renderStripeStatus} handleNotesClick={handleNotesClick} handleNotesChange={handleNotesChange} saveNotes={saveNotes} className="mt-[10px]" sortConfig={sortConfig} requestSort={requestSort} />
+              <DriversTable 
+                currentItems={currentItems} 
+                sortedColumns={sortedColumns} 
+                availableColumns={availableColumns} 
+                transportTypes={transportTypes} 
+                statusDictionary={statusDictionary} 
+                statusColors={statusColors} 
+                editingNotes={editingNotes} 
+                draggedColumn={draggedColumn} 
+                dragOverColumn={dragOverColumn} 
+                onDragStart={handleDragStart} 
+                onDragOver={handleDragOver} 
+                onDrop={handleDrop} 
+                onDragEnd={handleDragEnd} 
+                renderRating={renderRating} 
+                renderStatus={renderStatus} 
+                renderHireStatus={renderHireStatus} 
+                renderStripeStatus={renderStripeStatus} 
+                handleNotesClick={handleNotesClick} 
+                handleNotesChange={handleNotesChange} 
+                saveNotes={saveNotes} 
+                onEditProfile={handleEditProfile}
+                className="mt-[10px]" 
+                sortConfig={sortConfig} 
+                requestSort={requestSort} 
+              />
             </div>
           </div>
         </div>
@@ -639,6 +672,17 @@ const DriversPage = () => {
         <DriversPagination currentPage={currentPage} totalPages={totalPages} totalItems={totalItems} pageSize={pageSize} pageSizeOptions={pageSizeOptions} onPageChange={handlePageChange} onPageSizeChange={handlePageSizeChange} />
         
         {chatOpen && selectedCourier && <CourierChat open={chatOpen} courierName={selectedCourier} onClose={handleChatClose} hasUnreadMessages={false} />}
+        
+        <DriverDetailsSheet
+          isOpen={isDriverDetailsOpen}
+          onClose={() => setIsDriverDetailsOpen(false)}
+          driver={selectedDriver}
+          transportTypes={transportTypes}
+          statusDictionary={statusDictionary}
+          hireStatusDictionary={hireStatusDictionary}
+          renderStatus={renderStatus}
+          renderStripeStatus={renderStripeStatus}
+        />
       </div>
     </Layout>;
 };
