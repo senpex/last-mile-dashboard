@@ -547,20 +547,11 @@ export const RouteTable = ({
                             <DropdownMenuContent className="w-48">
                               <DropdownMenuLabel>Take Action</DropdownMenuLabel>
                               <DropdownMenuSeparator />
-                              <DropdownMenuItem onClick={() => handleTakeAction('Start Delivery')} className="hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800">
-                                Start Delivery
-                              </DropdownMenuItem>
                               <DropdownMenuItem onClick={() => handleTakeAction('Arrived for pickup')} className="hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800">
                                 Arrived for pickup
                               </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => handleTakeAction('Take package')} className="hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800">
-                                Take package
-                              </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => handleTakeAction('Courier reported problem')} className="hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800">
-                                Courier reported problem
-                              </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => handleTakeAction('Sender reported problem')} className="hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800">
-                                Sender reported problem
+                              <DropdownMenuItem onClick={() => handleTakeAction('Delivered')} className="hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800">
+                                Delivered
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
