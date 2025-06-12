@@ -319,24 +319,33 @@ export const RouteTable = ({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {routeLocations.map((location, index) => <React.Fragment key={index}>
-                <TableRow draggable={index !== 0} 
-                  onDragStart={() => handleDragStart(index)} 
-                  onDragOver={handleDragOver} 
-                  onDrop={() => handleDrop(index)} 
-                  className={draggedIndex === index ? "opacity-50 bg-muted/30" : ""}>
+            {routeLocations.map((location, index) => (
+              <React.Fragment key={index}>
+                <TableRow
+                  draggable={index !== 0}
+                  onDragStart={() => handleDragStart(index)}
+                  onDragOver={handleDragOver}
+                  onDrop={() => handleDrop(index)}
+                  className={draggedIndex === index ? "opacity-50 bg-muted/30" : ""}
+                >
                   <TableCell>
-                    {index !== 0 && <div className="flex justify-center cursor-move" title="Drag to reorder">
+                    {index !== 0 && (
+                      <div className="flex justify-center cursor-move" title="Drag to reorder">
                         <Menu className="h-5 w-5 text-muted-foreground/60" />
-                      </div>}
+                      </div>
+                    )}
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-col">
                       {renderLocationBadge(location, index)}
-                      {location.name || location.address ? <>
+                      {location.name || location.address ? (
+                        <>
                           <p className="text-sm font-medium">{location.name || "-"}</p>
                           <p className="text-xs text-muted-foreground">{location.address || "-"}</p>
-                        </> : <p className="text-sm font-medium">-</p>}
+                        </>
+                      ) : (
+                        <p className="text-sm font-medium">-</p>
+                      )}
                     </div>
                   </TableCell>
                   <TableCell>
@@ -357,9 +366,22 @@ export const RouteTable = ({
                     <p className="text-sm">{location.distance || "-"}</p>
                   </TableCell>
                   <TableCell>
-                    {location.status && location.status !== "Pending" ? <Badge variant="outline" className={location.status === "Completed" ? "bg-green-100 text-green-800" : location.status === "In Progress" ? "bg-blue-100 text-blue-800" : "bg-gray-100 text-gray-800"}>
+                    {location.status && location.status !== "Pending" ? (
+                      <Badge
+                        variant="outline"
+                        className={
+                          location.status === "Completed"
+                            ? "bg-green-100 text-green-800"
+                            : location.status === "In Progress"
+                            ? "bg-blue-100 text-blue-800"
+                            : "bg-gray-100 text-gray-800"
+                        }
+                      >
                         {location.status}
-                      </Badge> : <p className="text-sm">-</p>}
+                      </Badge>
+                    ) : (
+                      <p className="text-sm">-</p>
+                    )}
                   </TableCell>
                   <TableCell>
                     <p className="text-sm">{location.deliveredAt || "-"}</p>
@@ -376,8 +398,8 @@ export const RouteTable = ({
                           <Edit className="mr-2 h-4 w-4" />
                           Edit
                         </DropdownMenuItem>
-                        <DropdownMenuItem 
-                          onClick={() => handleDeleteLocation(index)} 
+                        <DropdownMenuItem
+                          onClick={() => handleDeleteLocation(index)}
                           disabled={index === 0}
                           className="text-destructive focus:text-destructive"
                         >
@@ -388,13 +410,14 @@ export const RouteTable = ({
                     </DropdownMenu>
                   </TableCell>
                 </TableRow>
-                {editingRowIndex === index && <TableRow>
+                {editingRowIndex === index && (
+                  <TableRow>
                     <TableCell colSpan={8} className="p-4 bg-muted/20">
                       <div className="grid grid-cols-3 gap-4">
                         <div className="col-span-3 grid grid-cols-3 gap-4">
                           <div>
                             <label className="text-xs font-medium mb-1 block">Location</label>
-                            <GooglePlacesAutocomplete 
+                            <GooglePlacesAutocomplete
                               defaultValue={editFormData.address}
                               onPlaceSelected={handlePlaceSelected}
                               placeholder="Enter address here..."
@@ -402,68 +425,68 @@ export const RouteTable = ({
                           </div>
                           <div>
                             <label className="text-xs font-medium mb-1 block">Apt #</label>
-                            <Input 
-                              className="h-9 text-sm" 
-                              value={editFormData.aptNumber || ""} 
+                            <Input
+                              className="h-9 text-sm"
+                              value={editFormData.aptNumber || ""}
                               onChange={(e) => handleFormChange('aptNumber', e.target.value)}
                             />
                           </div>
                           <div className="flex space-x-2">
                             <div className="w-1/2">
                               <label className="text-xs font-medium mb-1 block">Longitude</label>
-                              <Input 
-                                className="h-9 text-sm" 
-                                value={editFormData.longitude || ""} 
+                              <Input
+                                className="h-9 text-sm"
+                                value={editFormData.longitude || ""}
                                 onChange={(e) => handleFormChange('longitude', e.target.value)}
                               />
                             </div>
                             <div className="w-1/2">
                               <label className="text-xs font-medium mb-1 block">Latitude</label>
-                              <Input 
-                                className="h-9 text-sm" 
-                                value={editFormData.latitude || ""} 
+                              <Input
+                                className="h-9 text-sm"
+                                value={editFormData.latitude || ""}
                                 onChange={(e) => handleFormChange('latitude', e.target.value)}
                               />
                             </div>
                           </div>
                         </div>
-                        
+
                         <div>
                           <label className="text-xs font-medium mb-1 block">Distance</label>
-                          <Input 
-                            className="h-9 text-sm" 
-                            value={editFormData.distance || ""} 
+                          <Input
+                            className="h-9 text-sm"
+                            value={editFormData.distance || ""}
                             onChange={(e) => handleFormChange('distance', e.target.value)}
                           />
                         </div>
                         <div>
                           <label className="text-xs font-medium mb-1 block">Contact name</label>
-                          <Input 
-                            className="h-9 text-sm" 
-                            value={editFormData.contactName || ""} 
+                          <Input
+                            className="h-9 text-sm"
+                            value={editFormData.contactName || ""}
                             onChange={(e) => handleFormChange('contactName', e.target.value)}
                           />
                         </div>
                         <div>
                           <label className="text-xs font-medium mb-1 block">Phone number</label>
-                          <Input 
-                            className="h-9 text-sm" 
-                            value={editFormData.phoneNumber || ""} 
+                          <Input
+                            className="h-9 text-sm"
+                            value={editFormData.phoneNumber || ""}
                             onChange={(e) => handleFormChange('phoneNumber', e.target.value)}
                           />
                         </div>
-                        
+
                         <div>
                           <label className="text-xs font-medium mb-1 block">Route time</label>
-                          <Input 
-                            className="h-9 text-sm" 
-                            value={editFormData.routeTime || ""} 
+                          <Input
+                            className="h-9 text-sm"
+                            value={editFormData.routeTime || ""}
                             onChange={(e) => handleFormChange('routeTime', e.target.value)}
                           />
                         </div>
                         <div>
                           <label className="text-xs font-medium mb-1 block">Status</label>
-                          <Select 
+                          <Select
                             value={editFormData.status || "Pending"}
                             onValueChange={(value) => handleFormChange('status', value)}
                           >
@@ -471,7 +494,7 @@ export const RouteTable = ({
                               <SelectValue placeholder="Select a status" />
                             </SelectTrigger>
                             <SelectContent>
-                              {orderStatuses.map(statusOption => (
+                              {orderStatuses.map((statusOption) => (
                                 <SelectItem key={statusOption.id} value={statusOption.value}>
                                   {statusOption.value}
                                 </SelectItem>
@@ -486,13 +509,15 @@ export const RouteTable = ({
                               <SelectValue placeholder="Select an option" />
                             </SelectTrigger>
                             <SelectContent>
-                              {barcodeOptions.map(option => <SelectItem key={option} value={option}>
+                              {barcodeOptions.map((option) => (
+                                <SelectItem key={option} value={option}>
                                   {option}
-                                </SelectItem>)}
+                                </SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
                         </div>
-                        
+
                         <div>
                           <label className="text-xs font-medium mb-1 block">eSignature</label>
                           <Select defaultValue="No">
@@ -500,7 +525,7 @@ export const RouteTable = ({
                               <SelectValue placeholder="Select an option" />
                             </SelectTrigger>
                             <SelectContent>
-                              {eSignatureOptions.map(option => (
+                              {eSignatureOptions.map((option) => (
                                 <SelectItem key={option} value={option}>
                                   {option}
                                 </SelectItem>
@@ -509,6 +534,7 @@ export const RouteTable = ({
                           </Select>
                         </div>
                         <div>
+                          <label className="text-xs font-medium mb-1 block">Take Action</label>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button size="sm" className="bg-green-500 hover:bg-green-600 text-white flex items-center gap-1 h-9 text-xs w-full justify-between">
@@ -540,13 +566,13 @@ export const RouteTable = ({
                           </DropdownMenu>
                         </div>
                         <div></div>
-                        
+
                         <div className="col-span-3">
                           <label className="text-xs font-medium mb-1 block">Stop notes</label>
-                          <Textarea 
-                            className="text-sm h-9 py-1.5 min-h-0" 
-                            rows={1} 
-                            value={editFormData.description || ""} 
+                          <Textarea
+                            className="text-sm h-9 py-1.5 min-h-0"
+                            rows={1}
+                            value={editFormData.description || ""}
                             onChange={(e) => handleFormChange('description', e.target.value)}
                           />
                         </div>
@@ -560,8 +586,10 @@ export const RouteTable = ({
                         </Button>
                       </div>
                     </TableCell>
-                  </TableRow>}
-              </React.Fragment>)}
+                  </TableRow>
+                )}
+              </React.Fragment>
+            ))}
           </TableBody>
         </Table>
       </div>
