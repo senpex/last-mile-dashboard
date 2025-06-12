@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Map, Edit, Trash2, Phone, Plus, Menu, MoreHorizontal } from "lucide-react";
+import { MapPin, Map, Edit, Trash2, Phone, Plus, Menu, MoreHorizontal, Zap, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -17,6 +17,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 interface AdditionalLocation {
@@ -106,6 +108,8 @@ export const RouteTable = ({
     latitude: ""
   });
   
+  const [selectedAction, setSelectedAction] = useState<string>('Take Action');
+
   useEffect(() => {
     const pickupStatusesDictionary = getDictionary("1401");
     if (pickupStatusesDictionary) {
@@ -249,6 +253,12 @@ export const RouteTable = ({
     toast.success("Location updated successfully");
   };
   
+  const handleTakeAction = (action: string) => {
+    setSelectedAction(action);
+    console.log(`Take action: ${action}`);
+    toast.success(`Action selected: ${action}`);
+  };
+
   return <div>
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-medium flex items-center">
@@ -260,6 +270,34 @@ export const RouteTable = ({
             <Map className="h-4 w-4" />
             View Map
           </Button>
+          
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="sm" className="bg-green-500 hover:bg-green-600 text-white flex items-center gap-1 h-7 text-xs">
+                <Zap className="h-4 w-4" /> {selectedAction} <ChevronDown className="h-3 w-3 ml-1" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-48">
+              <DropdownMenuLabel>Take Action</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => handleTakeAction('Start Delivery')} className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${selectedAction === 'Start Delivery' ? 'bg-green-100 text-green-800' : ''}`}>
+                Start Delivery
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleTakeAction('Arrived for pickup')} className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${selectedAction === 'Arrived for pickup' ? 'bg-green-100 text-green-800' : ''}`}>
+                Arrived for pickup
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleTakeAction('Take package')} className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${selectedAction === 'Take package' ? 'bg-green-100 text-green-800' : ''}`}>
+                Take package
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleTakeAction('Courier reported problem')} className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${selectedAction === 'Courier reported problem' ? 'bg-green-100 text-green-800' : ''}`}>
+                Courier reported problem
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleTakeAction('Sender reported problem')} className={`hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800 ${selectedAction === 'Sender reported problem' ? 'bg-green-100 text-green-800' : ''}`}>
+                Sender reported problem
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          
           <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1.5" onClick={handleAddLocation}>
             <Plus className="h-4 w-4" />
             Add Location
