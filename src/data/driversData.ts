@@ -1,3 +1,4 @@
+
 export interface Driver {
   id: number;
   name: string;
@@ -10,56 +11,32 @@ export interface Driver {
   avatar?: string;
   transportType: string;
   totalDeliveries: number;
-  email: string;
-  zipcode: string;
-  address: string;
-  transports: string[];
-  hireStatus: string;
-  stripeStatus: 'verified' | 'unverified' | 'pending';
-  profileTypes: string[];
-  notes: string;
 }
 
-export const driversData: Driver[] = [
+export const mockDrivers: Driver[] = [
   {
     id: 1,
     name: "John Smith",
     rating: 4.8,
-    status: "1",
+    status: "Available",
     location: "Downtown SF",
     distance: "2.1 miles",
     eta: "8 min",
     phone: "+1 (555) 123-4567",
-    email: "john.smith@example.com",
-    zipcode: "94102",
-    address: "123 Main St, San Francisco, CA 94102",
     transportType: "car,helper",
-    transports: ["car"],
-    totalDeliveries: 1234,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard", "Premium"],
-    notes: "Reliable driver with excellent customer service"
+    totalDeliveries: 1234
   },
   {
     id: 2,
     name: "Maria Rodriguez",
     rating: 4.9,
-    status: "1",
+    status: "Available",
     location: "Mission District",
     distance: "3.5 miles",
     eta: "12 min",
     phone: "+1 (555) 987-6543",
-    email: "maria.rodriguez@example.com",
-    zipcode: "94110",
-    address: "456 Valencia St, San Francisco, CA 94110",
     transportType: "suv",
-    transports: ["van"],
-    totalDeliveries: 856,
-    hireStatus: "hired",
-    stripeStatus: "verified",
-    profileTypes: ["Premium"],
-    notes: "Specializes in large deliveries"
+    totalDeliveries: 856
   },
   {
     id: 3,
@@ -71,12 +48,7 @@ export const driversData: Driver[] = [
     eta: "15 min",
     phone: "+1 (555) 456-7890",
     transportType: "pickup_truck,9ft_cargo_van",
-    transports: ["truck"],
-    totalDeliveries: 2103,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Experienced driver with reliable transportation"
+    totalDeliveries: 2103
   },
   {
     id: 4,
@@ -88,12 +60,7 @@ export const driversData: Driver[] = [
     eta: "18 min",
     phone: "+1 (555) 321-0987",
     transportType: "10ft_box_truck",
-    transports: ["box_truck"],
-    totalDeliveries: 678,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 678
   },
   {
     id: 5,
@@ -105,12 +72,7 @@ export const driversData: Driver[] = [
     eta: "10 min",
     phone: "+1 (555) 234-5678",
     transportType: "car",
-    transports: ["car"],
-    totalDeliveries: 945,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Friendly driver with a good reputation"
+    totalDeliveries: 945
   },
   {
     id: 6,
@@ -122,12 +84,7 @@ export const driversData: Driver[] = [
     eta: "25 min",
     phone: "+1 (555) 345-6789",
     transportType: "suv,helper",
-    transports: ["van", "helper"],
-    totalDeliveries: 723,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Premium"],
-    notes: "Specializes in large deliveries and customer service"
+    totalDeliveries: 723
   },
   {
     id: 7,
@@ -139,12 +96,7 @@ export const driversData: Driver[] = [
     eta: "14 min",
     phone: "+1 (555) 456-7891",
     transportType: "pickup_truck",
-    transports: ["truck"],
-    totalDeliveries: 1567,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Experienced driver with reliable transportation"
+    totalDeliveries: 1567
   },
   {
     id: 8,
@@ -156,12 +108,7 @@ export const driversData: Driver[] = [
     eta: "22 min",
     phone: "+1 (555) 567-8912",
     transportType: "9ft_cargo_van",
-    transports: ["box_truck"],
-    totalDeliveries: 834,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 834
   },
   {
     id: 9,
@@ -173,12 +120,7 @@ export const driversData: Driver[] = [
     eta: "9 min",
     phone: "+1 (555) 678-9123",
     transportType: "car,helper",
-    transports: ["car", "helper"],
-    totalDeliveries: 1289,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Friendly driver with a good reputation"
+    totalDeliveries: 1289
   },
   {
     id: 10,
@@ -190,12 +132,7 @@ export const driversData: Driver[] = [
     eta: "11 min",
     phone: "+1 (555) 789-1234",
     transportType: "suv",
-    transports: ["van"],
-    totalDeliveries: 612,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 612
   },
   {
     id: 11,
@@ -207,12 +144,7 @@ export const driversData: Driver[] = [
     eta: "7 min",
     phone: "+1 (555) 891-2345",
     transportType: "car",
-    transports: ["car"],
-    totalDeliveries: 1045,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Friendly driver with a good reputation"
+    totalDeliveries: 1045
   },
   {
     id: 12,
@@ -224,12 +156,7 @@ export const driversData: Driver[] = [
     eta: "19 min",
     phone: "+1 (555) 912-3456",
     transportType: "pickup_truck,helper",
-    transports: ["truck", "helper"],
-    totalDeliveries: 987,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 987
   },
   {
     id: 13,
@@ -241,12 +168,7 @@ export const driversData: Driver[] = [
     eta: "16 min",
     phone: "+1 (555) 123-4568",
     transportType: "10ft_box_truck",
-    transports: ["box_truck"],
-    totalDeliveries: 756,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Friendly driver with a good reputation"
+    totalDeliveries: 756
   },
   {
     id: 14,
@@ -258,12 +180,7 @@ export const driversData: Driver[] = [
     eta: "21 min",
     phone: "+1 (555) 234-5679",
     transportType: "9ft_cargo_van,helper",
-    transports: ["box_truck", "helper"],
-    totalDeliveries: 1398,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1398
   },
   {
     id: 15,
@@ -275,12 +192,7 @@ export const driversData: Driver[] = [
     eta: "20 min",
     phone: "+1 (555) 345-6781",
     transportType: "suv",
-    transports: ["van"],
-    totalDeliveries: 823,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Friendly driver with a good reputation"
+    totalDeliveries: 823
   },
   {
     id: 16,
@@ -292,12 +204,7 @@ export const driversData: Driver[] = [
     eta: "24 min",
     phone: "+1 (555) 456-7892",
     transportType: "car,helper",
-    transports: ["car", "helper"],
-    totalDeliveries: 1167,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1167
   },
   {
     id: 17,
@@ -309,12 +216,7 @@ export const driversData: Driver[] = [
     eta: "28 min",
     phone: "+1 (555) 567-8923",
     transportType: "pickup_truck",
-    transports: ["truck"],
-    totalDeliveries: 645,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Friendly driver with a good reputation"
+    totalDeliveries: 645
   },
   {
     id: 18,
@@ -326,12 +228,7 @@ export const driversData: Driver[] = [
     eta: "12 min",
     phone: "+1 (555) 678-9134",
     transportType: "car",
-    transports: ["car"],
-    totalDeliveries: 1234,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1234
   },
   {
     id: 19,
@@ -343,12 +240,7 @@ export const driversData: Driver[] = [
     eta: "10 min",
     phone: "+1 (555) 789-1245",
     transportType: "suv,helper",
-    transports: ["van", "helper"],
-    totalDeliveries: 789,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 789
   },
   {
     id: 20,
@@ -360,12 +252,7 @@ export const driversData: Driver[] = [
     eta: "15 min",
     phone: "+1 (555) 891-2356",
     transportType: "9ft_cargo_van",
-    transports: ["box_truck"],
-    totalDeliveries: 1456,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1456
   },
   {
     id: 21,
@@ -377,12 +264,7 @@ export const driversData: Driver[] = [
     eta: "13 min",
     phone: "+1 (555) 912-3467",
     transportType: "pickup_truck,helper",
-    transports: ["truck", "helper"],
-    totalDeliveries: 912,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 912
   },
   {
     id: 22,
@@ -394,12 +276,7 @@ export const driversData: Driver[] = [
     eta: "8 min",
     phone: "+1 (555) 123-4569",
     transportType: "car",
-    transports: ["car"],
-    totalDeliveries: 1089,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1089
   },
   {
     id: 23,
@@ -411,12 +288,7 @@ export const driversData: Driver[] = [
     eta: "11 min",
     phone: "+1 (555) 234-5671",
     transportType: "suv",
-    transports: ["van"],
-    totalDeliveries: 567,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 567
   },
   {
     id: 24,
@@ -428,12 +300,7 @@ export const driversData: Driver[] = [
     eta: "9 min",
     phone: "+1 (555) 345-6782",
     transportType: "car,helper",
-    transports: ["car", "helper"],
-    totalDeliveries: 1278,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1278
   },
   {
     id: 25,
@@ -445,12 +312,7 @@ export const driversData: Driver[] = [
     eta: "12 min",
     phone: "+1 (555) 456-7893",
     transportType: "10ft_box_truck",
-    transports: ["box_truck"],
-    totalDeliveries: 834,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 834
   },
   {
     id: 26,
@@ -462,12 +324,7 @@ export const driversData: Driver[] = [
     eta: "18 min",
     phone: "+1 (555) 567-8924",
     transportType: "pickup_truck",
-    transports: ["truck"],
-    totalDeliveries: 1567,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1567
   },
   {
     id: 27,
@@ -479,12 +336,7 @@ export const driversData: Driver[] = [
     eta: "22 min",
     phone: "+1 (555) 678-9135",
     transportType: "9ft_cargo_van,helper",
-    transports: ["box_truck", "helper"],
-    totalDeliveries: 923,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 923
   },
   {
     id: 28,
@@ -496,12 +348,7 @@ export const driversData: Driver[] = [
     eta: "16 min",
     phone: "+1 (555) 789-1246",
     transportType: "suv",
-    transports: ["van"],
-    totalDeliveries: 1145,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1145
   },
   {
     id: 29,
@@ -513,12 +360,7 @@ export const driversData: Driver[] = [
     eta: "17 min",
     phone: "+1 (555) 891-2357",
     transportType: "car",
-    transports: ["car"],
-    totalDeliveries: 678,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 678
   },
   {
     id: 30,
@@ -530,12 +372,7 @@ export const driversData: Driver[] = [
     eta: "13 min",
     phone: "+1 (555) 912-3468",
     transportType: "pickup_truck,helper",
-    transports: ["truck", "helper"],
-    totalDeliveries: 1234,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1234
   },
   {
     id: 31,
@@ -547,12 +384,7 @@ export const driversData: Driver[] = [
     eta: "7 min",
     phone: "+1 (555) 123-4571",
     transportType: "car,helper",
-    transports: ["car", "helper"],
-    totalDeliveries: 789,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 789
   },
   {
     id: 32,
@@ -564,12 +396,7 @@ export const driversData: Driver[] = [
     eta: "12 min",
     phone: "+1 (555) 234-5672",
     transportType: "suv",
-    transports: ["van"],
-    totalDeliveries: 1456,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1456
   },
   {
     id: 33,
@@ -581,12 +408,7 @@ export const driversData: Driver[] = [
     eta: "26 min",
     phone: "+1 (555) 345-6783",
     transportType: "10ft_box_truck",
-    transports: ["box_truck"],
-    totalDeliveries: 912,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 912
   },
   {
     id: 34,
@@ -598,12 +420,7 @@ export const driversData: Driver[] = [
     eta: "30 min",
     phone: "+1 (555) 456-7894",
     transportType: "9ft_cargo_van",
-    transports: ["box_truck"],
-    totalDeliveries: 1089,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1089
   },
   {
     id: 35,
@@ -615,12 +432,7 @@ export const driversData: Driver[] = [
     eta: "32 min",
     phone: "+1 (555) 567-8925",
     transportType: "pickup_truck",
-    transports: ["truck"],
-    totalDeliveries: 567,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 567
   },
   {
     id: 36,
@@ -632,12 +444,7 @@ export const driversData: Driver[] = [
     eta: "29 min",
     phone: "+1 (555) 678-9136",
     transportType: "car",
-    transports: ["car"],
-    totalDeliveries: 1278,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1278
   },
   {
     id: 37,
@@ -649,12 +456,7 @@ export const driversData: Driver[] = [
     eta: "24 min",
     phone: "+1 (555) 789-1247",
     transportType: "suv,helper",
-    transports: ["van", "helper"],
-    totalDeliveries: 834,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 834
   },
   {
     id: 38,
@@ -666,12 +468,7 @@ export const driversData: Driver[] = [
     eta: "20 min",
     phone: "+1 (555) 891-2358",
     transportType: "car,helper",
-    transports: ["car", "helper"],
-    totalDeliveries: 1567,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1567
   },
   {
     id: 39,
@@ -683,12 +480,7 @@ export const driversData: Driver[] = [
     eta: "19 min",
     phone: "+1 (555) 912-3469",
     transportType: "pickup_truck",
-    transports: ["truck"],
-    totalDeliveries: 923,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 923
   },
   {
     id: 40,
@@ -700,12 +492,7 @@ export const driversData: Driver[] = [
     eta: "23 min",
     phone: "+1 (555) 123-4572",
     transportType: "9ft_cargo_van,helper",
-    transports: ["box_truck", "helper"],
-    totalDeliveries: 1145,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1145
   },
   {
     id: 41,
@@ -717,12 +504,7 @@ export const driversData: Driver[] = [
     eta: "25 min",
     phone: "+1 (555) 234-5673",
     transportType: "10ft_box_truck",
-    transports: ["box_truck"],
-    totalDeliveries: 678,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 678
   },
   {
     id: 42,
@@ -734,12 +516,7 @@ export const driversData: Driver[] = [
     eta: "27 min",
     phone: "+1 (555) 345-6784",
     transportType: "suv",
-    transports: ["van"],
-    totalDeliveries: 1234,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1234
   },
   {
     id: 43,
@@ -751,12 +528,7 @@ export const driversData: Driver[] = [
     eta: "33 min",
     phone: "+1 (555) 456-7895",
     transportType: "car",
-    transports: ["car"],
-    totalDeliveries: 789,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 789
   },
   {
     id: 44,
@@ -768,12 +540,7 @@ export const driversData: Driver[] = [
     eta: "28 min",
     phone: "+1 (555) 567-8926",
     transportType: "pickup_truck,helper",
-    transports: ["truck", "helper"],
-    totalDeliveries: 1456,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1456
   },
   {
     id: 45,
@@ -785,12 +552,7 @@ export const driversData: Driver[] = [
     eta: "27 min",
     phone: "+1 (555) 678-9137",
     transportType: "9ft_cargo_van",
-    transports: ["box_truck"],
-    totalDeliveries: 912,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 912
   },
   {
     id: 46,
@@ -802,12 +564,7 @@ export const driversData: Driver[] = [
     eta: "31 min",
     phone: "+1 (555) 789-1248",
     transportType: "car,helper",
-    transports: ["car", "helper"],
-    totalDeliveries: 1089,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1089
   },
   {
     id: 47,
@@ -819,12 +576,7 @@ export const driversData: Driver[] = [
     eta: "32 min",
     phone: "+1 (555) 891-2359",
     transportType: "suv",
-    transports: ["van"],
-    totalDeliveries: 567,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 567
   },
   {
     id: 48,
@@ -836,12 +588,7 @@ export const driversData: Driver[] = [
     eta: "29 min",
     phone: "+1 (555) 912-3471",
     transportType: "10ft_box_truck",
-    transports: ["box_truck"],
-    totalDeliveries: 1278,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1278
   },
   {
     id: 49,
@@ -853,12 +600,7 @@ export const driversData: Driver[] = [
     eta: "24 min",
     phone: "+1 (555) 123-4573",
     transportType: "pickup_truck",
-    transports: ["truck"],
-    totalDeliveries: 834,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 834
   },
   {
     id: 50,
@@ -870,12 +612,7 @@ export const driversData: Driver[] = [
     eta: "26 min",
     phone: "+1 (555) 234-5674",
     transportType: "car",
-    transports: ["car"],
-    totalDeliveries: 1567,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1567
   },
   {
     id: 51,
@@ -887,12 +624,7 @@ export const driversData: Driver[] = [
     eta: "26 min",
     phone: "+1 (555) 345-6785",
     transportType: "suv,helper",
-    transports: ["van", "helper"],
-    totalDeliveries: 923,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 923
   },
   {
     id: 52,
@@ -904,12 +636,7 @@ export const driversData: Driver[] = [
     eta: "23 min",
     phone: "+1 (555) 456-7896",
     transportType: "9ft_cargo_van",
-    transports: ["box_truck"],
-    totalDeliveries: 1145,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1145
   },
   {
     id: 53,
@@ -921,12 +648,7 @@ export const driversData: Driver[] = [
     eta: "16 min",
     phone: "+1 (555) 567-8927",
     transportType: "car,helper",
-    transports: ["car", "helper"],
-    totalDeliveries: 678,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 678
   },
   {
     id: 54,
@@ -938,13 +660,6 @@ export const driversData: Driver[] = [
     eta: "17 min",
     phone: "+1 (555) 678-9138",
     transportType: "pickup_truck,helper",
-    transports: ["truck", "helper"],
-    totalDeliveries: 1234,
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: "Skilled driver with a wide range of vehicles"
+    totalDeliveries: 1234
   }
 ];
-
-export const mockDrivers: Driver[] = driversData;

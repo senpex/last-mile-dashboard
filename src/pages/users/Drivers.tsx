@@ -9,10 +9,10 @@ import { DriverProfileSheet } from "@/components/drivers/DriverProfileSheet";
 import { Star, StarHalf } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { driversData } from "@/data/driversData";
-import { useColumnManagement, ExtendedColumnOption } from "@/hooks/useColumnManagement";
-import { DateRange } from "react-day-picker";
+import { useColumnManagement } from "@/hooks/useColumnManagement";
+import { ColumnOption } from "@/components/table/ColumnSelector";
 
-const availableColumns: ExtendedColumnOption[] = [
+const availableColumns: ColumnOption[] = [
   { id: "id", label: "ID", visible: true },
   { id: "name", label: "Name", visible: true },
   { id: "email", label: "Email", visible: true },
@@ -58,10 +58,6 @@ const Drivers = () => {
   const [editingNotes, setEditingNotes] = useState<number | null>(null);
   const [selectedDriver, setSelectedDriver] = useState<any>(null);
   const [isProfileSheetOpen, setIsProfileSheetOpen] = useState(false);
-  const [dateRange, setDateRange] = useState<DateRange | undefined>();
-  const [timezone, setTimezone] = useState('America/New_York');
-  const [activeView, setActiveView] = useState('table');
-  const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
   const [sortConfig, setSortConfig] = useState<{ key: string | null; direction: 'ascending' | 'descending' | null }>({
     key: null,
     direction: null,
@@ -202,6 +198,8 @@ const Drivers = () => {
       <div className="container mx-auto p-4">
         <div className="flex flex-col lg:flex-row gap-6">
           <DriversSidebar 
+            columns={columns}
+            onColumnVisibilityChange={updateColumnVisibility}
             totalDrivers={totalItems}
           />
           
@@ -209,23 +207,12 @@ const Drivers = () => {
             <DriversFilters 
               searchTerm={searchTerm}
               onSearchChange={setSearchTerm}
-              dateRange={dateRange}
-              onDateRangeChange={setDateRange}
-              timezone={timezone}
-              onTimezoneChange={setTimezone}
-              availableColumns={columns}
-              visibleColumns={sortedColumns}
-              onVisibleColumnsChange={() => {}}
-              activeView={activeView}
-              onActiveViewChange={setActiveView}
-              onToggleFilterSidebar={() => setIsFilterSidebarOpen(!isFilterSidebarOpen)}
-              isFilterSidebarOpen={isFilterSidebarOpen}
             />
             
             <DriversTable
               currentItems={currentItems}
               sortedColumns={sortedColumns}
-              availableColumns={columns}
+              availableColumns={availableColumns}
               transportTypes={transportTypes}
               statusDictionary={statusDictionary}
               statusColors={statusColors}
@@ -252,10 +239,9 @@ const Drivers = () => {
               currentPage={currentPage}
               totalPages={totalPages}
               totalItems={totalItems}
-              pageSize={itemsPerPage}
-              pageSizeOptions={[10, 25, 50, 100]}
+              itemsPerPage={itemsPerPage}
               onPageChange={setCurrentPage}
-              onPageSizeChange={setItemsPerPage}
+              onItemsPerPageChange={setItemsPerPage}
             />
           </div>
         </div>
