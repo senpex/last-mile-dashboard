@@ -508,7 +508,34 @@ export const RouteTable = ({
                             </SelectContent>
                           </Select>
                         </div>
-                        <div></div>
+                        <div>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button size="sm" className="bg-green-500 hover:bg-green-600 text-white flex items-center gap-1 h-7 text-xs mt-5">
+                                <Zap className="h-4 w-4" /> Take Action <ChevronDown className="h-3 w-3 ml-1" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-48">
+                              <DropdownMenuLabel>Take Action</DropdownMenuLabel>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem onClick={() => handleTakeAction('Start Delivery')} className="hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800">
+                                Start Delivery
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleTakeAction('Arrived for pickup')} className="hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800">
+                                Arrived for pickup
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleTakeAction('Take package')} className="hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800">
+                                Take package
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleTakeAction('Courier reported problem')} className="hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800">
+                                Courier reported problem
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleTakeAction('Sender reported problem')} className="hover:bg-green-100 focus:bg-green-100 hover:text-green-800 focus:text-green-800">
+                                Sender reported problem
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
                         <div></div>
                         
                         <div className="col-span-3">
