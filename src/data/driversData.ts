@@ -1,3 +1,4 @@
+
 export interface Driver {
   id: number;
   name: string;
@@ -681,4 +682,4 @@ export const driversData = mockDrivers.map(driver => ({
   stripeStatus: ['verified', 'unverified', 'pending'][Math.floor(Math.random() * 3)] as 'verified' | 'unverified' | 'pending',
   profileTypes: ['Standard', 'Premium', 'Enterprise'].slice(0, Math.floor(Math.random() * 3) + 1),
   notes: Math.random() > 0.5 ? `Notes for ${driver.name}` : ''
-});
+}));
