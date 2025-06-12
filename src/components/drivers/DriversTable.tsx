@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -6,13 +7,13 @@ import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { ColumnOption } from "@/components/table/ColumnSelector";
+import { ExtendedColumnOption } from "@/hooks/useColumnManagement";
 import { UsersTableContainer } from "@/components/ui/users-table-container";
 
 interface DriversTableProps {
   currentItems: any[];
   sortedColumns: string[];
-  availableColumns: ColumnOption[];
+  availableColumns: ExtendedColumnOption[];
   transportTypes: { [key: string]: string };
   statusDictionary: { [key: string]: string };
   statusColors: { [key: string]: string };

@@ -1,9 +1,14 @@
 
 import { useState } from 'react';
-import { ColumnOption } from "@/components/table/ColumnSelector";
 
-export const useColumnManagement = (initialColumns: ColumnOption[]) => {
-  const [columns, setColumns] = useState<ColumnOption[]>(initialColumns);
+export interface ExtendedColumnOption {
+  id: string;
+  label: string;
+  visible: boolean;
+}
+
+export const useColumnManagement = (initialColumns: ExtendedColumnOption[]) => {
+  const [columns, setColumns] = useState<ExtendedColumnOption[]>(initialColumns);
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
 
