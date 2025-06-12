@@ -630,6 +630,17 @@ const DriversPage = () => {
     setSelectedStates(filters.states);
   };
 
+  const updateDriverHireStatus = (driverId: number, newHireStatus: string) => {
+    setDrivers(prevDrivers => 
+      prevDrivers.map(driver => 
+        driver.id === driverId 
+          ? { ...driver, hireStatus: newHireStatus }
+          : driver
+      )
+    );
+    toast.success(`Driver hire status updated to ${hireStatusDictionary[newHireStatus] || newHireStatus}`);
+  };
+
   return <Layout showFooter={false}>
       <div className="flex flex-col h-screen">
         <DriversFilters searchTerm={searchTerm} onSearchChange={setSearchTerm} dateRange={dateRange} onDateRangeChange={setDateRange} timezone={timezone} onTimezoneChange={setTimezone} availableColumns={availableColumns} visibleColumns={visibleColumns} onVisibleColumnsChange={setVisibleColumns} activeView={activeView} onActiveViewChange={setActiveView} onToggleFilterSidebar={handleToggleFilterSidebar} isFilterSidebarOpen={isFilterSidebarOpen} />
@@ -686,4 +697,5 @@ const DriversPage = () => {
       </div>
     </Layout>;
 };
+
 export default DriversPage;
