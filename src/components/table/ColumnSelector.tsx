@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Check, Columns } from "lucide-react";
 import {
@@ -11,11 +10,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 
-export type ColumnOption = {
+export interface ColumnOption {
   id: string;
   label: string;
-  default: boolean;
-};
+  visible: boolean;
+}
 
 type ColumnSelectorProps = {
   columns: ColumnOption[];
@@ -42,7 +41,7 @@ const ColumnSelector = ({
   };
 
   const resetToDefaults = () => {
-    setVisibleColumns(columns.filter(col => col.default).map(col => col.id));
+    setVisibleColumns(columns.filter(col => col.visible).map(col => col.id));
   };
 
   return (

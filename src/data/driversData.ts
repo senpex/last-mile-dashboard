@@ -1,4 +1,3 @@
-
 export interface Driver {
   id: number;
   name: string;
@@ -11,6 +10,14 @@ export interface Driver {
   avatar?: string;
   transportType: string;
   totalDeliveries: number;
+  email: string;
+  zipcode: string;
+  address: string;
+  transports: string[];
+  hireStatus: string;
+  stripeStatus: 'verified' | 'unverified' | 'pending';
+  profileTypes: string[];
+  notes: string;
 }
 
 export const mockDrivers: Driver[] = [
@@ -663,3 +670,15 @@ export const mockDrivers: Driver[] = [
     totalDeliveries: 1234
   }
 ];
+
+export const driversData = mockDrivers.map(driver => ({
+  ...driver,
+  email: `${driver.name.toLowerCase().replace(' ', '.')}@example.com`,
+  zipcode: '94102',
+  address: `${Math.floor(Math.random() * 9999) + 1} ${driver.location} St, San Francisco, CA`,
+  transports: driver.transportType.split(','),
+  hireStatus: Math.random() > 0.7 ? 'hired' : 'available',
+  stripeStatus: ['verified', 'unverified', 'pending'][Math.floor(Math.random() * 3)] as 'verified' | 'unverified' | 'pending',
+  profileTypes: ['Standard', 'Premium', 'Enterprise'].slice(0, Math.floor(Math.random() * 3) + 1),
+  notes: Math.random() > 0.5 ? `Notes for ${driver.name}` : ''
+});

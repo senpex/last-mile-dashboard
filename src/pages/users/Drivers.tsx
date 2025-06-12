@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { Layout } from "@/components/layout/Layout";
 import { DriversTable } from "@/components/drivers/DriversTable";
@@ -198,8 +197,6 @@ const Drivers = () => {
       <div className="container mx-auto p-4">
         <div className="flex flex-col lg:flex-row gap-6">
           <DriversSidebar 
-            columns={columns}
-            onColumnVisibilityChange={updateColumnVisibility}
             totalDrivers={totalItems}
           />
           
@@ -207,6 +204,18 @@ const Drivers = () => {
             <DriversFilters 
               searchTerm={searchTerm}
               onSearchChange={setSearchTerm}
+              dateRange={null}
+              onDateRangeChange={() => {}}
+              timezone=""
+              onTimezoneChange={() => {}}
+              statusFilter=""
+              onStatusFilterChange={() => {}}
+              transportFilter=""
+              onTransportFilterChange={() => {}}
+              availabilityFilter=""
+              onAvailabilityFilterChange={() => {}}
+              ratingFilter=""
+              onRatingFilterChange={() => {}}
             />
             
             <DriversTable
@@ -239,7 +248,6 @@ const Drivers = () => {
               currentPage={currentPage}
               totalPages={totalPages}
               totalItems={totalItems}
-              itemsPerPage={itemsPerPage}
               onPageChange={setCurrentPage}
               onItemsPerPageChange={setItemsPerPage}
             />
