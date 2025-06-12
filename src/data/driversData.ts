@@ -1,3 +1,4 @@
+
 export interface Driver {
   id: number;
   name: string;
@@ -10,14 +11,6 @@ export interface Driver {
   avatar?: string;
   transportType: string;
   totalDeliveries: number;
-  email: string;
-  zipcode: string;
-  address: string;
-  transports: string[];
-  hireStatus: string;
-  stripeStatus: 'verified' | 'unverified' | 'pending';
-  profileTypes: string[];
-  notes: string;
 }
 
 export const mockDrivers: Driver[] = [
@@ -31,15 +24,7 @@ export const mockDrivers: Driver[] = [
     eta: "8 min",
     phone: "+1 (555) 123-4567",
     transportType: "car,helper",
-    totalDeliveries: 1234,
-    email: "john.smith@example.com",
-    zipcode: "94102",
-    address: "123 Downtown SF St, San Francisco, CA",
-    transports: ["car", "helper"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 1234
   },
   {
     id: 2,
@@ -51,15 +36,7 @@ export const mockDrivers: Driver[] = [
     eta: "12 min",
     phone: "+1 (555) 987-6543",
     transportType: "suv",
-    totalDeliveries: 856,
-    email: "maria.rodriguez@example.com",
-    zipcode: "94102",
-    address: "456 Mission District St, San Francisco, CA",
-    transports: ["suv"],
-    hireStatus: "hired",
-    stripeStatus: "verified",
-    profileTypes: ["Premium"],
-    notes: "Excellent driver with high ratings"
+    totalDeliveries: 856
   },
   {
     id: 3,
@@ -71,15 +48,7 @@ export const mockDrivers: Driver[] = [
     eta: "15 min",
     phone: "+1 (555) 456-7890",
     transportType: "pickup_truck,9ft_cargo_van",
-    totalDeliveries: 2103,
-    email: "david.chen@example.com",
-    zipcode: "94102",
-    address: "789 SOMA St, San Francisco, CA",
-    transports: ["pickup_truck", "9ft_cargo_van"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Standard", "Enterprise"],
-    notes: ""
+    totalDeliveries: 2103
   },
   {
     id: 4,
@@ -91,15 +60,7 @@ export const mockDrivers: Driver[] = [
     eta: "18 min",
     phone: "+1 (555) 321-0987",
     transportType: "10ft_box_truck",
-    totalDeliveries: 678,
-    email: "sarah.johnson@example.com",
-    zipcode: "94102",
-    address: "101 Financial District St, San Francisco, CA",
-    transports: ["10ft_box_truck"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 678
   },
   {
     id: 5,
@@ -111,15 +72,7 @@ export const mockDrivers: Driver[] = [
     eta: "10 min",
     phone: "+1 (555) 234-5678",
     transportType: "car",
-    totalDeliveries: 945,
-    email: "michael.brown@example.com",
-    zipcode: "94102",
-    address: "234 Castro St, San Francisco, CA",
-    transports: ["car"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 945
   },
   {
     id: 6,
@@ -131,15 +84,7 @@ export const mockDrivers: Driver[] = [
     eta: "25 min",
     phone: "+1 (555) 345-6789",
     transportType: "suv,helper",
-    totalDeliveries: 723,
-    email: "emily.davis@example.com",
-    zipcode: "94102",
-    address: "345 Richmond St, San Francisco, CA",
-    transports: ["suv", "helper"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Standard", "Enterprise"],
-    notes: ""
+    totalDeliveries: 723
   },
   {
     id: 7,
@@ -151,15 +96,7 @@ export const mockDrivers: Driver[] = [
     eta: "14 min",
     phone: "+1 (555) 456-7891",
     transportType: "pickup_truck",
-    totalDeliveries: 1567,
-    email: "james.wilson@example.com",
-    zipcode: "94102",
-    address: "456 Haight St, San Francisco, CA",
-    transports: ["pickup_truck"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 1567
   },
   {
     id: 8,
@@ -171,15 +108,7 @@ export const mockDrivers: Driver[] = [
     eta: "22 min",
     phone: "+1 (555) 567-8912",
     transportType: "9ft_cargo_van",
-    totalDeliveries: 834,
-    email: "ashley.martinez@example.com",
-    zipcode: "94102",
-    address: "567 Sunset St, San Francisco, CA",
-    transports: ["9ft_cargo_van"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 834
   },
   {
     id: 9,
@@ -191,15 +120,7 @@ export const mockDrivers: Driver[] = [
     eta: "9 min",
     phone: "+1 (555) 678-9123",
     transportType: "car,helper",
-    totalDeliveries: 1289,
-    email: "daniel.garcia@example.com",
-    zipcode: "94102",
-    address: "678 North Beach St, San Francisco, CA",
-    transports: ["car", "helper"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 1289
   },
   {
     id: 10,
@@ -211,15 +132,7 @@ export const mockDrivers: Driver[] = [
     eta: "11 min",
     phone: "+1 (555) 789-1234",
     transportType: "suv",
-    totalDeliveries: 612,
-    email: "jessica.thompson@example.com",
-    zipcode: "94102",
-    address: "789 Chinatown St, San Francisco, CA",
-    transports: ["suv"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 612
   },
   {
     id: 11,
@@ -231,15 +144,7 @@ export const mockDrivers: Driver[] = [
     eta: "7 min",
     phone: "+1 (555) 891-2345",
     transportType: "car",
-    totalDeliveries: 1045,
-    email: "christopher.lee@example.com",
-    zipcode: "94102",
-    address: "891 Nob Hill St, San Francisco, CA",
-    transports: ["car"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 1045
   },
   {
     id: 12,
@@ -251,15 +156,7 @@ export const mockDrivers: Driver[] = [
     eta: "19 min",
     phone: "+1 (555) 912-3456",
     transportType: "pickup_truck,helper",
-    totalDeliveries: 987,
-    email: "amanda.white@example.com",
-    zipcode: "94102",
-    address: "912 Potrero Hill St, San Francisco, CA",
-    transports: ["pickup_truck", "helper"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 987
   },
   {
     id: 13,
@@ -271,15 +168,7 @@ export const mockDrivers: Driver[] = [
     eta: "16 min",
     phone: "+1 (555) 123-4568",
     transportType: "10ft_box_truck",
-    totalDeliveries: 756,
-    email: "ryan.taylor@example.com",
-    zipcode: "94102",
-    address: "1234 Dogpatch St, San Francisco, CA",
-    transports: ["10ft_box_truck"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 756
   },
   {
     id: 14,
@@ -291,15 +180,7 @@ export const mockDrivers: Driver[] = [
     eta: "21 min",
     phone: "+1 (555) 234-5679",
     transportType: "9ft_cargo_van,helper",
-    totalDeliveries: 1398,
-    email: "nicole.anderson@example.com",
-    zipcode: "94102",
-    address: "2345 Bernal Heights St, San Francisco, CA",
-    transports: ["9ft_cargo_van", "helper"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1398
   },
   {
     id: 15,
@@ -311,15 +192,7 @@ export const mockDrivers: Driver[] = [
     eta: "20 min",
     phone: "+1 (555) 345-6781",
     transportType: "suv",
-    totalDeliveries: 823,
-    email: "kevin.miller@example.com",
-    zipcode: "94102",
-    address: "3456 Glen Park St, San Francisco, CA",
-    transports: ["suv"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 823
   },
   {
     id: 16,
@@ -331,15 +204,7 @@ export const mockDrivers: Driver[] = [
     eta: "24 min",
     phone: "+1 (555) 456-7892",
     transportType: "car,helper",
-    totalDeliveries: 1167,
-    email: "stephanie.jackson@example.com",
-    zipcode: "94102",
-    address: "4567 Inner Richmond St, San Francisco, CA",
-    transports: ["car", "helper"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1167
   },
   {
     id: 17,
@@ -351,15 +216,7 @@ export const mockDrivers: Driver[] = [
     eta: "28 min",
     phone: "+1 (555) 567-8923",
     transportType: "pickup_truck",
-    totalDeliveries: 645,
-    email: "brandon.harris@example.com",
-    zipcode: "94102",
-    address: "5678 Outer Sunset St, San Francisco, CA",
-    transports: ["pickup_truck"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 645
   },
   {
     id: 18,
@@ -371,15 +228,7 @@ export const mockDrivers: Driver[] = [
     eta: "12 min",
     phone: "+1 (555) 678-9134",
     transportType: "car",
-    totalDeliveries: 1234,
-    email: "rachel.clark@example.com",
-    zipcode: "94102",
-    address: "6789 Marina St, San Francisco, CA",
-    transports: ["car"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1234
   },
   {
     id: 19,
@@ -391,15 +240,7 @@ export const mockDrivers: Driver[] = [
     eta: "10 min",
     phone: "+1 (555) 789-1245",
     transportType: "suv,helper",
-    totalDeliveries: 789,
-    email: "tyler.lewis@example.com",
-    zipcode: "94102",
-    address: "7890 Hayes Valley St, San Francisco, CA",
-    transports: ["suv", "helper"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 789
   },
   {
     id: 20,
@@ -411,15 +252,7 @@ export const mockDrivers: Driver[] = [
     eta: "15 min",
     phone: "+1 (555) 891-2356",
     transportType: "9ft_cargo_van",
-    totalDeliveries: 1456,
-    email: "megan.walker@example.com",
-    zipcode: "94102",
-    address: "8912 Lower Haight St, San Francisco, CA",
-    transports: ["9ft_cargo_van"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1456
   },
   {
     id: 21,
@@ -431,15 +264,7 @@ export const mockDrivers: Driver[] = [
     eta: "13 min",
     phone: "+1 (555) 912-3467",
     transportType: "pickup_truck,helper",
-    totalDeliveries: 912,
-    email: "justin.hall@example.com",
-    zipcode: "94102",
-    address: "9123 Mission Bay St, San Francisco, CA",
-    transports: ["pickup_truck", "helper"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 912
   },
   {
     id: 22,
@@ -451,15 +276,7 @@ export const mockDrivers: Driver[] = [
     eta: "8 min",
     phone: "+1 (555) 123-4569",
     transportType: "car",
-    totalDeliveries: 1089,
-    email: "brittany.young@example.com",
-    zipcode: "94102",
-    address: "1234 SOMA St, San Francisco, CA",
-    transports: ["car"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1089
   },
   {
     id: 23,
@@ -471,15 +288,7 @@ export const mockDrivers: Driver[] = [
     eta: "11 min",
     phone: "+1 (555) 234-5671",
     transportType: "suv",
-    totalDeliveries: 567,
-    email: "jordan.king@example.com",
-    zipcode: "94102",
-    address: "2345 Tenderloin St, San Francisco, CA",
-    transports: ["suv"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 567
   },
   {
     id: 24,
@@ -491,15 +300,7 @@ export const mockDrivers: Driver[] = [
     eta: "9 min",
     phone: "+1 (555) 345-6782",
     transportType: "car,helper",
-    totalDeliveries: 1278,
-    email: "samantha.wright@example.com",
-    zipcode: "94102",
-    address: "3456 Russian Hill St, San Francisco, CA",
-    transports: ["car", "helper"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1278
   },
   {
     id: 25,
@@ -511,15 +312,7 @@ export const mockDrivers: Driver[] = [
     eta: "12 min",
     phone: "+1 (555) 456-7893",
     transportType: "10ft_box_truck",
-    totalDeliveries: 834,
-    email: "austin.lopez@example.com",
-    zipcode: "94102",
-    address: "4567 Pacific Heights St, San Francisco, CA",
-    transports: ["10ft_box_truck"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 834
   },
   {
     id: 26,
@@ -531,15 +324,7 @@ export const mockDrivers: Driver[] = [
     eta: "18 min",
     phone: "+1 (555) 567-8924",
     transportType: "pickup_truck",
-    totalDeliveries: 1567,
-    email: "kayla.hill@example.com",
-    zipcode: "94102",
-    address: "5678 Fillmore St, San Francisco, CA",
-    transports: ["pickup_truck"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1567
   },
   {
     id: 27,
@@ -551,15 +336,7 @@ export const mockDrivers: Driver[] = [
     eta: "22 min",
     phone: "+1 (555) 678-9135",
     transportType: "9ft_cargo_van,helper",
-    totalDeliveries: 923,
-    email: "derek.scott@example.com",
-    zipcode: "94102",
-    address: "6789 Presidio St, San Francisco, CA",
-    transports: ["9ft_cargo_van", "helper"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 923
   },
   {
     id: 28,
@@ -571,15 +348,7 @@ export const mockDrivers: Driver[] = [
     eta: "16 min",
     phone: "+1 (555) 789-1246",
     transportType: "suv",
-    totalDeliveries: 1145,
-    email: "alexis.green@example.com",
-    zipcode: "94102",
-    address: "7890 Japantown St, San Francisco, CA",
-    transports: ["suv"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1145
   },
   {
     id: 29,
@@ -591,15 +360,7 @@ export const mockDrivers: Driver[] = [
     eta: "17 min",
     phone: "+1 (555) 891-2357",
     transportType: "car",
-    totalDeliveries: 678,
-    email: "marcus.adams@example.com",
-    zipcode: "94102",
-    address: "8912 Western Addition St, San Francisco, CA",
-    transports: ["car"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 678
   },
   {
     id: 30,
@@ -611,15 +372,7 @@ export const mockDrivers: Driver[] = [
     eta: "13 min",
     phone: "+1 (555) 912-3468",
     transportType: "pickup_truck,helper",
-    totalDeliveries: 1234,
-    email: "victoria.baker@example.com",
-    zipcode: "94102",
-    address: "9123 Cow Hollow St, San Francisco, CA",
-    transports: ["pickup_truck", "helper"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1234
   },
   {
     id: 31,
@@ -631,15 +384,7 @@ export const mockDrivers: Driver[] = [
     eta: "7 min",
     phone: "+1 (555) 123-4571",
     transportType: "car,helper",
-    totalDeliveries: 789,
-    email: "cameron.gonzalez@example.com",
-    zipcode: "94102",
-    address: "1234 Telegraph Hill St, San Francisco, CA",
-    transports: ["car", "helper"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 789
   },
   {
     id: 32,
@@ -651,15 +396,7 @@ export const mockDrivers: Driver[] = [
     eta: "12 min",
     phone: "+1 (555) 234-5672",
     transportType: "suv",
-    totalDeliveries: 1456,
-    email: "jasmine.nelson@example.com",
-    zipcode: "94102",
-    address: "2345 South Beach St, San Francisco, CA",
-    transports: ["suv"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1456
   },
   {
     id: 33,
@@ -671,15 +408,7 @@ export const mockDrivers: Driver[] = [
     eta: "26 min",
     phone: "+1 (555) 345-6783",
     transportType: "10ft_box_truck",
-    totalDeliveries: 912,
-    email: "trevor.carter@example.com",
-    zipcode: "94102",
-    address: "3456 Excelsior St, San Francisco, CA",
-    transports: ["10ft_box_truck"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 912
   },
   {
     id: 34,
@@ -691,15 +420,7 @@ export const mockDrivers: Driver[] = [
     eta: "30 min",
     phone: "+1 (555) 456-7894",
     transportType: "9ft_cargo_van",
-    totalDeliveries: 1089,
-    email: "gabrielle.mitchell@example.com",
-    zipcode: "94102",
-    address: "4567 Visitacion Valley St, San Francisco, CA",
-    transports: ["9ft_cargo_van"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1089
   },
   {
     id: 35,
@@ -711,15 +432,7 @@ export const mockDrivers: Driver[] = [
     eta: "32 min",
     phone: "+1 (555) 567-8925",
     transportType: "pickup_truck",
-    totalDeliveries: 567,
-    email: "logan.perez@example.com",
-    zipcode: "94102",
-    address: "5678 Bayview St, San Francisco, CA",
-    transports: ["pickup_truck"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 567
   },
   {
     id: 36,
@@ -731,15 +444,7 @@ export const mockDrivers: Driver[] = [
     eta: "29 min",
     phone: "+1 (555) 678-9136",
     transportType: "car",
-    totalDeliveries: 1278,
-    email: "destiny.roberts@example.com",
-    zipcode: "94102",
-    address: "6789 Hunters Point St, San Francisco, CA",
-    transports: ["car"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1278
   },
   {
     id: 37,
@@ -751,15 +456,7 @@ export const mockDrivers: Driver[] = [
     eta: "24 min",
     phone: "+1 (555) 789-1247",
     transportType: "suv,helper",
-    totalDeliveries: 834,
-    email: "ethan.turner@example.com",
-    zipcode: "94102",
-    address: "7890 Portola St, San Francisco, CA",
-    transports: ["suv", "helper"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 834
   },
   {
     id: 38,
@@ -771,15 +468,7 @@ export const mockDrivers: Driver[] = [
     eta: "20 min",
     phone: "+1 (555) 891-2358",
     transportType: "car,helper",
-    totalDeliveries: 1567,
-    email: "tiffany.phillips@example.com",
-    zipcode: "94102",
-    address: "8912 Diamond Heights St, San Francisco, CA",
-    transports: ["car", "helper"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1567
   },
   {
     id: 39,
@@ -791,15 +480,7 @@ export const mockDrivers: Driver[] = [
     eta: "19 min",
     phone: "+1 (555) 912-3469",
     transportType: "pickup_truck",
-    totalDeliveries: 923,
-    email: "sean.campbell@example.com",
-    zipcode: "94102",
-    address: "9123 Twin Peaks St, San Francisco, CA",
-    transports: ["pickup_truck"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 923
   },
   {
     id: 40,
@@ -811,15 +492,7 @@ export const mockDrivers: Driver[] = [
     eta: "23 min",
     phone: "+1 (555) 123-4572",
     transportType: "9ft_cargo_van,helper",
-    totalDeliveries: 1145,
-    email: "crystal.parker@example.com",
-    zipcode: "94102",
-    address: "1234 Forest Hill St, San Francisco, CA",
-    transports: ["9ft_cargo_van", "helper"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1145
   },
   {
     id: 41,
@@ -831,15 +504,7 @@ export const mockDrivers: Driver[] = [
     eta: "25 min",
     phone: "+1 (555) 234-5673",
     transportType: "10ft_box_truck",
-    totalDeliveries: 678,
-    email: "corey.evans@example.com",
-    zipcode: "94102",
-    address: "2345 West Portal St, San Francisco, CA",
-    transports: ["10ft_box_truck"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 678
   },
   {
     id: 42,
@@ -851,15 +516,7 @@ export const mockDrivers: Driver[] = [
     eta: "27 min",
     phone: "+1 (555) 345-6784",
     transportType: "suv",
-    totalDeliveries: 1234,
-    email: "vanessa.edwards@example.com",
-    zipcode: "94102",
-    address: "3456 Ingleside St, San Francisco, CA",
-    transports: ["suv"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1234
   },
   {
     id: 43,
@@ -871,15 +528,7 @@ export const mockDrivers: Driver[] = [
     eta: "33 min",
     phone: "+1 (555) 456-7895",
     transportType: "car",
-    totalDeliveries: 789,
-    email: "isaac.collins@example.com",
-    zipcode: "94102",
-    address: "4567 Oceanview St, San Francisco, CA",
-    transports: ["car"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 789
   },
   {
     id: 44,
@@ -891,15 +540,7 @@ export const mockDrivers: Driver[] = [
     eta: "28 min",
     phone: "+1 (555) 567-8926",
     transportType: "pickup_truck,helper",
-    totalDeliveries: 1456,
-    email: "sierra.stewart@example.com",
-    zipcode: "94102",
-    address: "5678 Merced Heights St, San Francisco, CA",
-    transports: ["pickup_truck", "helper"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1456
   },
   {
     id: 45,
@@ -911,15 +552,7 @@ export const mockDrivers: Driver[] = [
     eta: "27 min",
     phone: "+1 (555) 678-9137",
     transportType: "9ft_cargo_van",
-    totalDeliveries: 912,
-    email: "blake.sanchez@example.com",
-    zipcode: "94102",
-    address: "6789 Stonestown St, San Francisco, CA",
-    transports: ["9ft_cargo_van"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 912
   },
   {
     id: 46,
@@ -931,15 +564,7 @@ export const mockDrivers: Driver[] = [
     eta: "31 min",
     phone: "+1 (555) 789-1248",
     transportType: "car,helper",
-    totalDeliveries: 1089,
-    email: "alicia.morris@example.com",
-    zipcode: "94102",
-    address: "7890 Lakeshore St, San Francisco, CA",
-    transports: ["car", "helper"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1089
   },
   {
     id: 47,
@@ -951,15 +576,7 @@ export const mockDrivers: Driver[] = [
     eta: "32 min",
     phone: "+1 (555) 891-2359",
     transportType: "suv",
-    totalDeliveries: 567,
-    email: "caleb.rogers@example.com",
-    zipcode: "94102",
-    address: "8912 Parkside St, San Francisco, CA",
-    transports: ["suv"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 567
   },
   {
     id: 48,
@@ -971,15 +588,7 @@ export const mockDrivers: Driver[] = [
     eta: "29 min",
     phone: "+1 (555) 912-3471",
     transportType: "10ft_box_truck",
-    totalDeliveries: 1278,
-    email: "jenna.reed@example.com",
-    zipcode: "94102",
-    address: "9123 Outer Richmond St, San Francisco, CA",
-    transports: ["10ft_box_truck"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1278
   },
   {
     id: 49,
@@ -991,15 +600,7 @@ export const mockDrivers: Driver[] = [
     eta: "24 min",
     phone: "+1 (555) 123-4573",
     transportType: "pickup_truck",
-    totalDeliveries: 834,
-    email: "malik.cook@example.com",
-    zipcode: "94102",
-    address: "1234 Seacliff St, San Francisco, CA",
-    transports: ["pickup_truck"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 834
   },
   {
     id: 50,
@@ -1011,15 +612,7 @@ export const mockDrivers: Driver[] = [
     eta: "26 min",
     phone: "+1 (555) 234-5674",
     transportType: "car",
-    totalDeliveries: 1567,
-    email: "maya.bailey@example.com",
-    zipcode: "94102",
-    address: "2345 Lincoln Park St, San Francisco, CA",
-    transports: ["car"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1567
   },
   {
     id: 51,
@@ -1031,15 +624,7 @@ export const mockDrivers: Driver[] = [
     eta: "26 min",
     phone: "+1 (555) 345-6785",
     transportType: "suv,helper",
-    totalDeliveries: 923,
-    email: "devin.rivera@example.com",
-    zipcode: "94102",
-    address: "3456 Richmond District St, San Francisco, CA",
-    transports: ["suv", "helper"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 923
   },
   {
     id: 52,
@@ -1051,15 +636,7 @@ export const mockDrivers: Driver[] = [
     eta: "23 min",
     phone: "+1 (555) 456-7896",
     transportType: "9ft_cargo_van",
-    totalDeliveries: 1145,
-    email: "paige.cooper@example.com",
-    zipcode: "94102",
-    address: "4567 Golden Gate Park St, San Francisco, CA",
-    transports: ["9ft_cargo_van"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1145
   },
   {
     id: 53,
@@ -1071,15 +648,7 @@ export const mockDrivers: Driver[] = [
     eta: "16 min",
     phone: "+1 (555) 567-8927",
     transportType: "car,helper",
-    totalDeliveries: 678,
-    email: "jared.richardson@example.com",
-    zipcode: "94102",
-    address: "6789 Panhandle St, San Francisco, CA",
-    transports: ["car", "helper"],
-    hireStatus: "available",
-    stripeStatus: "verified",
-    profileTypes: ["Standard"],
-    notes: ""
+    totalDeliveries: 678
   },
   {
     id: 54,
@@ -1091,26 +660,6 @@ export const mockDrivers: Driver[] = [
     eta: "17 min",
     phone: "+1 (555) 678-9138",
     transportType: "pickup_truck,helper",
-    totalDeliveries: 1234,
-    email: "chloe.cox@example.com",
-    zipcode: "94102",
-    address: "7890 Cole Valley St, San Francisco, CA",
-    transports: ["pickup_truck", "helper"],
-    hireStatus: "available",
-    stripeStatus: "pending",
-    profileTypes: ["Premium"],
-    notes: ""
+    totalDeliveries: 1234
   }
 ];
-
-export const driversData = mockDrivers.map(driver => ({
-  ...driver,
-  email: driver.email || `${driver.name.toLowerCase().replace(' ', '.')}@example.com`,
-  zipcode: driver.zipcode || '94102',
-  address: driver.address || `${Math.floor(Math.random() * 9999) + 1} ${driver.location} St, San Francisco, CA`,
-  transports: driver.transports || driver.transportType.split(','),
-  hireStatus: driver.hireStatus || (Math.random() > 0.7 ? 'hired' : 'available'),
-  stripeStatus: driver.stripeStatus || (['verified', 'unverified', 'pending'][Math.floor(Math.random() * 3)] as 'verified' | 'unverified' | 'pending'),
-  profileTypes: driver.profileTypes || ['Standard', 'Premium', 'Enterprise'].slice(0, Math.floor(Math.random() * 3) + 1),
-  notes: driver.notes || (Math.random() > 0.5 ? `Notes for ${driver.name}` : '')
-}));

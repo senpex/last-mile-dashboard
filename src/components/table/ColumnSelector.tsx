@@ -11,11 +11,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 
-export interface ColumnOption {
+export type ColumnOption = {
   id: string;
   label: string;
-  visible: boolean;
-}
+  default: boolean;
+};
 
 type ColumnSelectorProps = {
   columns: ColumnOption[];
@@ -42,7 +42,7 @@ const ColumnSelector = ({
   };
 
   const resetToDefaults = () => {
-    setVisibleColumns(columns.filter(col => col.visible).map(col => col.id));
+    setVisibleColumns(columns.filter(col => col.default).map(col => col.id));
   };
 
   return (

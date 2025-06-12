@@ -110,58 +110,58 @@ const ClientsPage = () => {
   const availableColumns: ColumnOption[] = [{
     id: "id",
     label: "ID",
-    visible: true
+    default: true
   }, {
     id: "name",
     label: "Name",
-    visible: true
+    default: true
   }, {
     id: "email",
     label: "Email",
-    visible: true
+    default: true
   }, {
     id: "phone",
     label: "Phone",
-    visible: true
+    default: true
   }, {
     id: "company",
     label: "Company",
-    visible: true
+    default: true
   }, {
     id: "address",
     label: "Address",
-    visible: true
+    default: true
   }, {
     id: "zipcode",
     label: "Zipcode",
-    visible: false
+    default: false
   }, {
     id: "status",
     label: "Status",
-    visible: true
+    default: true
   }, {
     id: "stripeStatus",
     label: "Stripe Status",
-    visible: true
+    default: true
   }, {
     id: "totalOrders",
     label: "Total Orders",
-    visible: true
+    default: true
   }, {
     id: "lastOrderDate",
     label: "Last Order Date",
-    visible: true
+    default: true
   }, {
     id: "notes",
     label: "Notes",
-    visible: true
+    default: true
   }, {
     id: "actions",
     label: "Actions",
-    visible: true
+    default: true
   }];
-  const [visibleColumns, setVisibleColumns] = useState<string[]>(availableColumns.filter(col => col.visible).map(col => col.id));
-  const [columnOrder, setColumnOrder] = useState<string[]>(availableColumns.filter(col => col.visible).map(col => col.id));
+  const [visibleColumns, setVisibleColumns] = useState<string[]>(availableColumns.filter(col => col.default).map(col => col.id));
+  const [columnOrder, setColumnOrder] = useState<string[]>(availableColumns.filter(col => col.default).map(col => col.id));
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const pageSizeOptions = [5, 10, 20, 30, 50];
