@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Phone, Mail, MapPin, Star, FileText, CreditCard } from "lucide-react";
+import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 
 interface Driver {
@@ -82,10 +82,10 @@ export const DriverDetailsSheet = ({
           <div className="flex-1 overflow-y-auto px-6 space-y-6">
             {/* Contact Information */}
             <div>
-              <CardTitle className="text-lg flex items-center gap-2 mb-4">
-                <Phone className="h-5 w-5" />
+              <h3 className="text-sm font-medium mb-3 flex items-center">
+                <Phone className="w-4 h-4 mr-2" />
                 Contact Information
-              </CardTitle>
+              </h3>
               <Card>
                 <CardContent className="space-y-4 pt-6">
                   <div className="grid grid-cols-2 gap-4">
@@ -108,10 +108,10 @@ export const DriverDetailsSheet = ({
 
             {/* Location Information */}
             <div>
-              <CardTitle className="text-lg flex items-center gap-2 mb-4">
-                <MapPin className="h-5 w-5" />
+              <h3 className="text-sm font-medium mb-3 flex items-center">
+                <MapPin className="w-4 h-4 mr-2" />
                 Location
-              </CardTitle>
+              </h3>
               <Card>
                 <CardContent className="space-y-4 pt-6">
                   <div className="grid grid-cols-2 gap-4">
@@ -130,7 +130,10 @@ export const DriverDetailsSheet = ({
 
             {/* Status Information */}
             <div>
-              <CardTitle className="text-lg mb-4">Status & Rating</CardTitle>
+              <h3 className="text-sm font-medium mb-3 flex items-center">
+                <Settings className="w-4 h-4 mr-2" />
+                Status & Rating
+              </h3>
               <Card>
                 <CardContent className="space-y-4 pt-6">
                   <div className="grid grid-cols-2 gap-4">
@@ -175,7 +178,10 @@ export const DriverDetailsSheet = ({
 
             {/* Profile Types */}
             <div>
-              <CardTitle className="text-lg mb-4">Profile Types</CardTitle>
+              <h3 className="text-sm font-medium mb-3 flex items-center">
+                <User className="w-4 h-4 mr-2" />
+                Profile Types
+              </h3>
               <Card>
                 <CardContent className="pt-6">
                   <div className="flex flex-wrap gap-2">
@@ -194,7 +200,10 @@ export const DriverDetailsSheet = ({
 
             {/* Transport Types */}
             <div>
-              <CardTitle className="text-lg mb-4">Transport Types</CardTitle>
+              <h3 className="text-sm font-medium mb-3 flex items-center">
+                <Award className="w-4 h-4 mr-2" />
+                Transport Types
+              </h3>
               <Card>
                 <CardContent className="pt-6">
                   <div className="flex flex-wrap gap-3">
@@ -213,10 +222,10 @@ export const DriverDetailsSheet = ({
 
             {/* Notes */}
             <div>
-              <CardTitle className="text-lg flex items-center gap-2 mb-4">
-                <FileText className="h-5 w-5" />
+              <h3 className="text-sm font-medium mb-3 flex items-center">
+                <FileText className="w-4 h-4 mr-2" />
                 Notes
-              </CardTitle>
+              </h3>
               <Card>
                 <CardContent className="pt-6">
                   <Textarea 
