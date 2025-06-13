@@ -121,7 +121,7 @@ export const DriverDetailsSheet = ({
                     <Settings className="w-4 h-4 mr-2" />
                     Status & Rating
                   </h3>
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                     <Edit className="w-4 h-4" />
                   </Button>
                 </div>
@@ -174,7 +174,7 @@ export const DriverDetailsSheet = ({
                     <Phone className="w-4 h-4 mr-2" />
                     Contact Information
                   </h3>
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                     <Edit className="w-4 h-4" />
                   </Button>
                 </div>
@@ -205,7 +205,7 @@ export const DriverDetailsSheet = ({
                     <MapPin className="w-4 h-4 mr-2" />
                     Location
                   </h3>
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                     <Edit className="w-4 h-4" />
                   </Button>
                 </div>
@@ -232,7 +232,7 @@ export const DriverDetailsSheet = ({
                     <User className="w-4 h-4 mr-2" />
                     Profile Types
                   </h3>
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                     <Edit className="w-4 h-4" />
                   </Button>
                 </div>
@@ -254,7 +254,7 @@ export const DriverDetailsSheet = ({
                     <Award className="w-4 h-4 mr-2" />
                     Transport Types
                   </h3>
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                     <Edit className="w-4 h-4" />
                   </Button>
                 </div>
@@ -279,7 +279,7 @@ export const DriverDetailsSheet = ({
                     <File className="w-4 h-4 mr-2" />
                     Documents
                   </h3>
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                     <Edit className="w-4 h-4" />
                   </Button>
                 </div>
@@ -329,7 +329,7 @@ export const DriverDetailsSheet = ({
                     <FileText className="w-4 h-4 mr-2" />
                     Notes
                   </h3>
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                     <Edit className="w-4 h-4" />
                   </Button>
                 </div>
