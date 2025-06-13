@@ -56,13 +56,13 @@ export const DriverDetailsSheet = ({
   // Sample documents data - in a real app this would come from the driver data
   const documents = [{
     id: 1,
-    name: "Driver's License",
+    name: "Driver's License - Front",
     type: "PDF",
     uploadDate: "2024-01-15",
     status: "Verified"
   }, {
     id: 2,
-    name: "Driver's License",
+    name: "Driver's License - Back",
     type: "PDF", 
     uploadDate: "2024-01-12",
     status: "Pending"
