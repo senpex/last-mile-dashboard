@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image } from "lucide-react";
+import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { DocumentViewerModal } from "./DocumentViewerModal";
 
@@ -116,10 +116,15 @@ export const DriverDetailsSheet = ({
             <div className="flex-1 overflow-y-auto px-6 space-y-6 my-[25px]">
               {/* Status Information */}
               <div>
-                <h3 className="text-sm font-medium mb-3 flex items-center">
-                  <Settings className="w-4 h-4 mr-2" />
-                  Status & Rating
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-medium flex items-center">
+                    <Settings className="w-4 h-4 mr-2" />
+                    Status & Rating
+                  </h3>
+                  <Button variant="ghost" size="sm">
+                    <Edit className="w-4 h-4" />
+                  </Button>
+                </div>
                 <Card>
                   <CardContent className="space-y-4 pt-6">
                     <div className="grid grid-cols-2 gap-4">
@@ -164,10 +169,15 @@ export const DriverDetailsSheet = ({
 
               {/* Contact Information */}
               <div>
-                <h3 className="text-sm font-medium mb-3 flex items-center">
-                  <Phone className="w-4 h-4 mr-2" />
-                  Contact Information
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-medium flex items-center">
+                    <Phone className="w-4 h-4 mr-2" />
+                    Contact Information
+                  </h3>
+                  <Button variant="ghost" size="sm">
+                    <Edit className="w-4 h-4" />
+                  </Button>
+                </div>
                 <Card>
                   <CardContent className="space-y-4 pt-6">
                     <div className="grid grid-cols-2 gap-4">
@@ -190,10 +200,15 @@ export const DriverDetailsSheet = ({
 
               {/* Location Information */}
               <div>
-                <h3 className="text-sm font-medium mb-3 flex items-center">
-                  <MapPin className="w-4 h-4 mr-2" />
-                  Location
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-medium flex items-center">
+                    <MapPin className="w-4 h-4 mr-2" />
+                    Location
+                  </h3>
+                  <Button variant="ghost" size="sm">
+                    <Edit className="w-4 h-4" />
+                  </Button>
+                </div>
                 <Card>
                   <CardContent className="space-y-4 pt-6">
                     <div className="grid grid-cols-2 gap-4">
@@ -212,10 +227,15 @@ export const DriverDetailsSheet = ({
 
               {/* Profile Types */}
               <div>
-                <h3 className="text-sm font-medium mb-3 flex items-center">
-                  <User className="w-4 h-4 mr-2" />
-                  Profile Types
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-medium flex items-center">
+                    <User className="w-4 h-4 mr-2" />
+                    Profile Types
+                  </h3>
+                  <Button variant="ghost" size="sm">
+                    <Edit className="w-4 h-4" />
+                  </Button>
+                </div>
                 <Card>
                   <CardContent className="pt-6">
                     <div className="flex flex-wrap gap-2">
@@ -229,10 +249,15 @@ export const DriverDetailsSheet = ({
 
               {/* Transport Types */}
               <div>
-                <h3 className="text-sm font-medium mb-3 flex items-center">
-                  <Award className="w-4 h-4 mr-2" />
-                  Transport Types
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-medium flex items-center">
+                    <Award className="w-4 h-4 mr-2" />
+                    Transport Types
+                  </h3>
+                  <Button variant="ghost" size="sm">
+                    <Edit className="w-4 h-4" />
+                  </Button>
+                </div>
                 <Card>
                   <CardContent className="pt-6">
                     <div className="flex flex-wrap gap-3">
@@ -249,10 +274,15 @@ export const DriverDetailsSheet = ({
 
               {/* Documents */}
               <div>
-                <h3 className="text-sm font-medium mb-3 flex items-center">
-                  <File className="w-4 h-4 mr-2" />
-                  Documents
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-medium flex items-center">
+                    <File className="w-4 h-4 mr-2" />
+                    Documents
+                  </h3>
+                  <Button variant="ghost" size="sm">
+                    <Edit className="w-4 h-4" />
+                  </Button>
+                </div>
                 <Card>
                   <CardContent className="pt-6">
                     <div className="space-y-4">
@@ -294,10 +324,15 @@ export const DriverDetailsSheet = ({
 
               {/* Notes */}
               <div>
-                <h3 className="text-sm font-medium mb-3 flex items-center">
-                  <FileText className="w-4 h-4 mr-2" />
-                  Notes
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-medium flex items-center">
+                    <FileText className="w-4 h-4 mr-2" />
+                    Notes
+                  </h3>
+                  <Button variant="ghost" size="sm">
+                    <Edit className="w-4 h-4" />
+                  </Button>
+                </div>
                 <Card>
                   <CardContent className="pt-6">
                     <Textarea placeholder="Add notes about this driver..." value={driver.notes || ''} className="min-h-[100px]" readOnly />
