@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
@@ -98,32 +97,6 @@ export const DriverDetailsSheet = ({
           </SheetHeader>
 
           <div className="flex-1 overflow-y-auto px-6 space-y-6 my-[25px]">
-            {/* Contact Information */}
-            <div>
-              <h3 className="text-sm font-medium mb-3 flex items-center">
-                <Phone className="w-4 h-4 mr-2" />
-                Contact Information
-              </h3>
-              <Card>
-                <CardContent className="space-y-4 pt-6">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="name">Full Name</Label>
-                      <Input id="name" value={driver.name} readOnly />
-                    </div>
-                    <div>
-                      <Label htmlFor="phone">Phone Number</Label>
-                      <Input id="phone" value={driver.phone} readOnly />
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="email">Email Address</Label>
-                    <Input id="email" value={driver.email} readOnly />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
             {/* Status Information */}
             <div>
               <h3 className="text-sm font-medium mb-3 flex items-center">
@@ -167,6 +140,32 @@ export const DriverDetailsSheet = ({
                         {renderStripeStatus(driver.stripeStatus)}
                       </div>
                     </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Contact Information */}
+            <div>
+              <h3 className="text-sm font-medium mb-3 flex items-center">
+                <Phone className="w-4 h-4 mr-2" />
+                Contact Information
+              </h3>
+              <Card>
+                <CardContent className="space-y-4 pt-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="name">Full Name</Label>
+                      <Input id="name" value={driver.name} readOnly />
+                    </div>
+                    <div>
+                      <Label htmlFor="phone">Phone Number</Label>
+                      <Input id="phone" value={driver.phone} readOnly />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="email">Email Address</Label>
+                    <Input id="email" value={driver.email} readOnly />
                   </div>
                 </CardContent>
               </Card>
