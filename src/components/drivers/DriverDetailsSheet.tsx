@@ -58,7 +58,17 @@ export const DriverDetailsSheet = ({
 
   // Sample documents data - in a real app this would come from the driver data
   const documents = [
-    { id: 1, name: "Driver's License", type: "PDF", uploadDate: "2024-01-15", status: "Verified" },
+    { 
+      id: 1, 
+      name: "Driver's License", 
+      type: "PDF", 
+      uploadDate: "2024-01-15", 
+      status: "Verified",
+      images: {
+        front: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=250&fit=crop",
+        back: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=250&fit=crop"
+      }
+    },
     { id: 2, name: "Vehicle Registration", type: "PDF", uploadDate: "2024-01-10", status: "Pending" },
     { id: 3, name: "Insurance Certificate", type: "PDF", uploadDate: "2024-01-08", status: "Verified" },
   ];
@@ -235,26 +245,54 @@ export const DriverDetailsSheet = ({
               </h3>
               <Card>
                 <CardContent className="pt-6">
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {documents.map(document => (
-                      <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <FileText className="h-4 w-4 text-muted-foreground" />
-                          <div>
-                            <p className="text-sm font-medium">{document.name}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {document.type} • Uploaded {document.uploadDate}
-                            </p>
+                      <div key={document.id} className="space-y-3">
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <FileText className="h-4 w-4 text-muted-foreground" />
+                            <div>
+                              <p className="text-sm font-medium">{document.name}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {document.type} • Uploaded {document.uploadDate}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Badge variant={document.status === 'Verified' ? 'default' : 'secondary'}>
+                              {document.status}
+                            </Badge>
+                            <Button variant="ghost" size="sm">
+                              View
+                            </Button>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Badge variant={document.status === 'Verified' ? 'default' : 'secondary'}>
-                            {document.status}
-                          </Badge>
-                          <Button variant="ghost" size="sm">
-                            View
-                          </Button>
-                        </div>
+                        
+                        {/* Driver's License Images */}
+                        {document.name === "Driver's License" && document.images && (
+                          <div className="grid grid-cols-2 gap-4 pl-7">
+                            <div className="space-y-2">
+                              <Label className="text-xs font-medium text-muted-foreground">Front</Label>
+                              <div className="relative aspect-video border rounded-lg overflow-hidden bg-muted">
+                                <img 
+                                  src={document.images.front} 
+                                  alt="Driver's License Front" 
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="text-xs font-medium text-muted-foreground">Back</Label>
+                              <div className="relative aspect-video border rounded-lg overflow-hidden bg-muted">
+                                <img 
+                                  src={document.images.back} 
+                                  alt="Driver's License Back" 
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     ))}
                     {documents.length === 0 && (
