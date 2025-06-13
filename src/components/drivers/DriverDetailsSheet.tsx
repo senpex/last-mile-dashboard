@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
@@ -7,8 +8,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Phone, Mail, MapPin, Star, FileText, CreditCard } from "lucide-react";
+import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
+
 interface Driver {
   id: number;
   name: string;
@@ -24,6 +26,7 @@ interface Driver {
   notes: string;
   profileTypes: string[];
 }
+
 interface DriverDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -40,6 +43,7 @@ interface DriverDetailsSheetProps {
   renderStatus: (statusId: string) => JSX.Element;
   renderStripeStatus: (status: 'verified' | 'unverified' | 'pending') => JSX.Element;
 }
+
 export const DriverDetailsSheet = ({
   isOpen,
   onClose,
@@ -51,165 +55,194 @@ export const DriverDetailsSheet = ({
   renderStripeStatus
 }: DriverDetailsSheetProps) => {
   if (!driver) return null;
-  return <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="sm:max-w-xl md:max-w-4xl lg:max-w-6xl w-full overflow-y-auto">
-        <SheetHeader>
-          <SheetTitle className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-              <span className="text-lg font-semibold text-primary">
-                {driver.name.split(' ').map(n => n[0]).join('')}
-              </span>
+
+  return (
+    <Sheet open={isOpen} onOpenChange={onClose}>
+      <SheetContent className="sm:max-w-xl md:max-w-4xl lg:max-w-6xl w-full overflow-hidden p-0 pr-0 mr-0 flex flex-col">
+        {/* Main Content with Flex Structure */}
+        <div className="flex-1 overflow-hidden flex flex-col">
+          <SheetHeader className="p-6 pb-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <span className="text-lg font-semibold text-primary">
+                    {driver.name.split(' ').map(n => n[0]).join('')}
+                  </span>
+                </div>
+                <div>
+                  <SheetTitle className="text-left text-lg">{driver.name}</SheetTitle>
+                  <SheetDescription className="text-left text-sm">
+                    Driver ID: {driver.id}
+                  </SheetDescription>
+                </div>
+              </div>
             </div>
+          </SheetHeader>
+
+          <div className="flex-1 overflow-y-auto px-6 space-y-6">
+            {/* Contact Information */}
             <div>
-              <h2 className="text-xl font-semibold">{driver.name}</h2>
-              <p className="text-sm text-muted-foreground">Driver ID: {driver.id}</p>
-            </div>
-          </SheetTitle>
-          
-        </SheetHeader>
-
-        <div className="mt-6 space-y-6">
-          {/* Contact Information */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Phone className="h-5 w-5" />
+              <h3 className="text-sm font-medium mb-3 flex items-center">
+                <Phone className="w-4 h-4 mr-2" />
                 Contact Information
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="my-[25px]">
-                  <Label htmlFor="name">Full Name</Label>
-                  <Input id="name" value={driver.name} readOnly />
-                </div>
-                <div>
-                  <Label htmlFor="phone">Phone Number</Label>
-                  <Input id="phone" value={driver.phone} readOnly />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="email">Email Address</Label>
-                <Input id="email" value={driver.email} readOnly />
-              </div>
-            </CardContent>
-          </Card>
+              </h3>
+              <Card>
+                <CardContent className="space-y-4 pt-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="name">Full Name</Label>
+                      <Input id="name" value={driver.name} readOnly />
+                    </div>
+                    <div>
+                      <Label htmlFor="phone">Phone Number</Label>
+                      <Input id="phone" value={driver.phone} readOnly />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="email">Email Address</Label>
+                    <Input id="email" value={driver.email} readOnly />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
-          {/* Location Information */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <MapPin className="h-5 w-5" />
+            {/* Location Information */}
+            <div>
+              <h3 className="text-sm font-medium mb-3 flex items-center">
+                <MapPin className="w-4 h-4 mr-2" />
                 Location
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="zipcode">Zipcode</Label>
-                  <Input id="zipcode" value={driver.zipcode} readOnly />
-                </div>
-                <div>
-                  <Label htmlFor="address">Address</Label>
-                  <Input id="address" value={driver.address} readOnly />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Status Information */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Status & Rating</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>Current Status</Label>
-                  <div className="mt-1">
-                    {renderStatus(driver.status)}
+              </h3>
+              <Card>
+                <CardContent className="space-y-4 pt-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="zipcode">Zipcode</Label>
+                      <Input id="zipcode" value={driver.zipcode} readOnly />
+                    </div>
+                    <div>
+                      <Label htmlFor="address">Address</Label>
+                      <Input id="address" value={driver.address} readOnly />
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <Label>Hire Status</Label>
-                  <div className="mt-1">
-                    <Badge variant="secondary">
-                      {hireStatusDictionary[driver.hireStatus] || driver.hireStatus}
-                    </Badge>
-                  </div>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label className="flex items-center gap-2">
-                    <Star className="h-4 w-4" />
-                    Rating
-                  </Label>
-                  <div className="mt-1 text-lg font-semibold">
-                    {driver.rating.toFixed(1)} / 5.0
-                  </div>
-                </div>
-                <div>
-                  <Label className="flex items-center gap-2">
-                    <CreditCard className="h-4 w-4" />
-                    Stripe Status
-                  </Label>
-                  <div className="mt-1">
-                    {renderStripeStatus(driver.stripeStatus)}
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                </CardContent>
+              </Card>
+            </div>
 
-          {/* Profile Types */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Profile Types</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2">
-                {driver.profileTypes && driver.profileTypes.length > 0 ? driver.profileTypes.map(type => <Badge key={type} variant="outline">
-                      {type}
-                    </Badge>) : <span className="text-muted-foreground text-sm">No profile types assigned</span>}
-              </div>
-            </CardContent>
-          </Card>
+            {/* Status Information */}
+            <div>
+              <h3 className="text-sm font-medium mb-3 flex items-center">
+                <Settings className="w-4 h-4 mr-2" />
+                Status & Rating
+              </h3>
+              <Card>
+                <CardContent className="space-y-4 pt-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label>Current Status</Label>
+                      <div className="mt-1">
+                        {renderStatus(driver.status)}
+                      </div>
+                    </div>
+                    <div>
+                      <Label>Hire Status</Label>
+                      <div className="mt-1">
+                        <Badge variant="secondary">
+                          {hireStatusDictionary[driver.hireStatus] || driver.hireStatus}
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label className="flex items-center gap-2">
+                        <Star className="h-4 w-4" />
+                        Rating
+                      </Label>
+                      <div className="mt-1 text-lg font-semibold">
+                        {driver.rating.toFixed(1)} / 5.0
+                      </div>
+                    </div>
+                    <div>
+                      <Label className="flex items-center gap-2">
+                        <CreditCard className="h-4 w-4" />
+                        Stripe Status
+                      </Label>
+                      <div className="mt-1">
+                        {renderStripeStatus(driver.stripeStatus)}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
-          {/* Transport Types */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Transport Types</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-3">
-                {driver.transports.map(transportId => <div key={transportId} className="flex items-center gap-2 p-2 border rounded-lg">
-                    <TransportIcon transportType={transportId as TransportType} size={16} className="h-4 w-4" />
-                    <span className="text-sm">
-                      {transportTypes[transportId] || `Transport ${transportId}`}
-                    </span>
-                  </div>)}
-              </div>
-            </CardContent>
-          </Card>
+            {/* Profile Types */}
+            <div>
+              <h3 className="text-sm font-medium mb-3 flex items-center">
+                <User className="w-4 h-4 mr-2" />
+                Profile Types
+              </h3>
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="flex flex-wrap gap-2">
+                    {driver.profileTypes && driver.profileTypes.length > 0 ? 
+                      driver.profileTypes.map(type => (
+                        <Badge key={type} variant="outline">
+                          {type}
+                        </Badge>
+                      )) : 
+                      <span className="text-muted-foreground text-sm">No profile types assigned</span>
+                    }
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
-          {/* Notes */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <FileText className="h-5 w-5" />
+            {/* Transport Types */}
+            <div>
+              <h3 className="text-sm font-medium mb-3 flex items-center">
+                <Award className="w-4 h-4 mr-2" />
+                Transport Types
+              </h3>
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="flex flex-wrap gap-3">
+                    {driver.transports.map(transportId => (
+                      <div key={transportId} className="flex items-center gap-2 p-2 border rounded-lg">
+                        <TransportIcon transportType={transportId as TransportType} size={16} className="h-4 w-4" />
+                        <span className="text-sm">
+                          {transportTypes[transportId] || `Transport ${transportId}`}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Notes */}
+            <div>
+              <h3 className="text-sm font-medium mb-3 flex items-center">
+                <FileText className="w-4 h-4 mr-2" />
                 Notes
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Textarea placeholder="Add notes about this driver..." value={driver.notes || ''} className="min-h-[100px]" readOnly />
-            </CardContent>
-          </Card>
+              </h3>
+              <Card>
+                <CardContent className="pt-6">
+                  <Textarea 
+                    placeholder="Add notes about this driver..." 
+                    value={driver.notes || ''} 
+                    className="min-h-[100px]" 
+                    readOnly 
+                  />
+                </CardContent>
+              </Card>
+            </div>
+          </div>
 
           <Separator />
 
           {/* Actions */}
-          <div className="flex justify-end gap-3 pb-6">
+          <div className="flex justify-end gap-3 p-6">
             <Button variant="outline" onClick={onClose}>
               Close
             </Button>
@@ -219,5 +252,6 @@ export const DriverDetailsSheet = ({
           </div>
         </div>
       </SheetContent>
-    </Sheet>;
+    </Sheet>
+  );
 };
