@@ -63,7 +63,8 @@ export const DriverDetailsSheet = ({
   // Editing states
   const [editingSection, setEditingSection] = useState<string | null>(null);
   const [editedData, setEditedData] = useState({
-    name: driver?.name || '',
+    firstName: driver?.name.split(' ')[0] || '',
+    lastName: driver?.name.split(' ').slice(1).join(' ') || '',
     email: driver?.email || '',
     phone: driver?.phone || '',
     zipcode: driver?.zipcode || '',
@@ -118,7 +119,8 @@ export const DriverDetailsSheet = ({
     setEditingSection(section);
     // Reset edited data to current driver data
     setEditedData({
-      name: driver.name,
+      firstName: driver.name.split(' ')[0] || '',
+      lastName: driver.name.split(' ').slice(1).join(' ') || '',
       email: driver.email,
       phone: driver.phone,
       zipcode: driver.zipcode,
@@ -141,7 +143,8 @@ export const DriverDetailsSheet = ({
     setEditingSection(null);
     // Reset edited data to original values
     setEditedData({
-      name: driver.name,
+      firstName: driver.name.split(' ')[0] || '',
+      lastName: driver.name.split(' ').slice(1).join(' ') || '',
       email: driver.email,
       phone: driver.phone,
       zipcode: driver.zipcode,
@@ -403,15 +406,27 @@ export const DriverDetailsSheet = ({
                   <CardContent className="space-y-4 pt-6">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="name">Full Name</Label>
+                        <Label htmlFor="firstName">First Name</Label>
                         <Input 
-                          id="name" 
-                          value={editingSection === 'contact' ? editedData.name : driver.name} 
-                          onChange={(e) => handleInputChange('name', e.target.value)}
+                          id="firstName" 
+                          value={editingSection === 'contact' ? editedData.firstName : driver.name.split(' ')[0] || ''} 
+                          onChange={(e) => handleInputChange('firstName', e.target.value)}
                           readOnly={editingSection !== 'contact'} 
                           className={editingSection !== 'contact' ? 'bg-muted/50' : 'bg-background'}
                         />
                       </div>
+                      <div>
+                        <Label htmlFor="lastName">Last Name</Label>
+                        <Input 
+                          id="lastName" 
+                          value={editingSection === 'contact' ? editedData.lastName : driver.name.split(' ').slice(1).join(' ') || ''} 
+                          onChange={(e) => handleInputChange('lastName', e.target.value)}
+                          readOnly={editingSection !== 'contact'} 
+                          className={editingSection !== 'contact' ? 'bg-muted/50' : 'bg-background'}
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="phone">Phone Number</Label>
                         <Input 
@@ -422,16 +437,16 @@ export const DriverDetailsSheet = ({
                           className={editingSection !== 'contact' ? 'bg-muted/50' : 'bg-background'}
                         />
                       </div>
-                    </div>
-                    <div>
-                      <Label htmlFor="email">Email Address</Label>
-                      <Input 
-                        id="email" 
-                        value={editingSection === 'contact' ? editedData.email : driver.email} 
-                        onChange={(e) => handleInputChange('email', e.target.value)}
-                        readOnly={editingSection !== 'contact'} 
-                        className={editingSection !== 'contact' ? 'bg-muted/50' : 'bg-background'}
-                      />
+                      <div>
+                        <Label htmlFor="email">Email Address</Label>
+                        <Input 
+                          id="email" 
+                          value={editingSection === 'contact' ? editedData.email : driver.email} 
+                          onChange={(e) => handleInputChange('email', e.target.value)}
+                          readOnly={editingSection !== 'contact'} 
+                          className={editingSection !== 'contact' ? 'bg-muted/50' : 'bg-background'}
+                        />
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
