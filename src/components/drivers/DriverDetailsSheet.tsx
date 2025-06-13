@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
@@ -10,10 +9,19 @@ import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit, Save, X } from "lucide-react";
+import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit, Save, X, Plus, Trash2 } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { DocumentViewerModal } from "./DocumentViewerModal";
 import { toast } from "sonner";
+
+interface VehicleInfo {
+  transportId: string;
+  year?: string;
+  make?: string;
+  model?: string;
+  plateNumber?: string;
+  plateImage?: string;
+}
 
 interface Driver {
   id: number;
@@ -31,6 +39,7 @@ interface Driver {
   profileTypes: string[];
   verifiedByDriver?: 'Verified' | 'Not verified';
   approvedByAdmin?: 'approved' | 'disapproved' | 'pending';
+  vehicleInfo?: VehicleInfo[];
 }
 
 interface DriverDetailsSheetProps {
@@ -77,13 +86,18 @@ export const DriverDetailsSheet = ({
     stripeStatus: driver?.stripeStatus || 'unverified' as const,
     verifiedByDriver: driver?.verifiedByDriver || 'Not verified' as const,
     approvedByAdmin: driver?.approvedByAdmin || 'pending' as const,
-    profileTypes: driver?.profileTypes || []
+    profileTypes: driver?.profileTypes || [],
+    transports: driver?.transports || [],
+    vehicleInfo: driver?.vehicleInfo || []
   });
 
   if (!driver) return null;
 
   // Available profile types
   const availableProfileTypes = ['Driver', 'Mover', 'Helper'];
+
+  // Available transport types - get all available transport types from the dictionary
+  const availableTransportTypes = Object.keys(transportTypes);
 
   // Sample documents data - in a real app this would come from the driver data
   const documents = [{
@@ -137,7 +151,9 @@ export const DriverDetailsSheet = ({
       stripeStatus: driver.stripeStatus,
       verifiedByDriver: driver.verifiedByDriver || 'Not verified',
       approvedByAdmin: driver.approvedByAdmin || 'pending',
-      profileTypes: driver.profileTypes || []
+      profileTypes: driver.profileTypes || [],
+      transports: driver.transports || [],
+      vehicleInfo: driver.vehicleInfo || []
     });
   };
 
@@ -162,11 +178,13 @@ export const DriverDetailsSheet = ({
       stripeStatus: driver.stripeStatus,
       verifiedByDriver: driver.verifiedByDriver || 'Not verified',
       approvedByAdmin: driver.approvedByAdmin || 'pending',
-      profileTypes: driver.profileTypes || []
+      profileTypes: driver.profileTypes || [],
+      transports: driver.transports || [],
+      vehicleInfo: driver.vehicleInfo || []
     });
   };
 
-  const handleInputChange = (field: string, value: string | number | string[]) => {
+  const handleInputChange = (field: string, value: string | number | string[] | VehicleInfo[]) => {
     setEditedData(prev => ({
       ...prev,
       [field]: value
@@ -186,6 +204,58 @@ export const DriverDetailsSheet = ({
         profileTypes: currentTypes.filter(type => type !== profileType)
       }));
     }
+  };
+
+  const handleAddTransport = (transportId: string) => {
+    if (!editedData.transports.includes(transportId)) {
+      const newTransports = [...editedData.transports, transportId];
+      const newVehicleInfo = [...editedData.vehicleInfo, {
+        transportId,
+        year: '',
+        make: '',
+        model: '',
+        plateNumber: '',
+        plateImage: ''
+      }];
+      setEditedData(prev => ({
+        ...prev,
+        transports: newTransports,
+        vehicleInfo: newVehicleInfo
+      }));
+    }
+  };
+
+  const handleRemoveTransport = (transportId: string) => {
+    const newTransports = editedData.transports.filter(id => id !== transportId);
+    const newVehicleInfo = editedData.vehicleInfo.filter(info => info.transportId !== transportId);
+    setEditedData(prev => ({
+      ...prev,
+      transports: newTransports,
+      vehicleInfo: newVehicleInfo
+    }));
+  };
+
+  const handleVehicleInfoChange = (transportId: string, field: keyof VehicleInfo, value: string) => {
+    const newVehicleInfo = editedData.vehicleInfo.map(info => 
+      info.transportId === transportId 
+        ? { ...info, [field]: value }
+        : info
+    );
+    setEditedData(prev => ({
+      ...prev,
+      vehicleInfo: newVehicleInfo
+    }));
+  };
+
+  const getVehicleInfo = (transportId: string) => {
+    return editedData.vehicleInfo.find(info => info.transportId === transportId) || {
+      transportId,
+      year: '',
+      make: '',
+      model: '',
+      plateNumber: '',
+      plateImage: ''
+    };
   };
 
   return (
@@ -623,21 +693,179 @@ export const DriverDetailsSheet = ({
                     <Award className="w-4 h-4 mr-2" />
                     Transport Types
                   </h3>
-                  <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1">
-                    <Edit className="h-3 w-3" />
-                    Edit
-                  </Button>
+                  {editingSection === 'transports' ? (
+                    <div className="flex gap-1">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleSave('Transport Types')}
+                        className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50"
+                      >
+                        <Save className="w-3 h-3 mr-1" />
+                        Save
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleCancel}
+                        className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50"
+                      >
+                        <X className="w-3 h-3 mr-1" />
+                        Cancel
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="h-7 text-xs flex items-center gap-1"
+                      onClick={() => handleEdit('transports')}
+                    >
+                      <Edit className="h-3 w-3" />
+                      Edit
+                    </Button>
+                  )}
                 </div>
                 <Card>
                   <CardContent className="pt-6">
-                    <div className="flex flex-wrap gap-3">
-                      {driver.transports.map(transportId => <div key={transportId} className="flex items-center gap-2 p-2 border rounded-lg">
-                          <TransportIcon transportType={transportId as TransportType} size={16} className="h-4 w-4" />
-                          <span className="text-sm">
-                            {transportTypes[transportId] || `Transport ${transportId}`}
-                          </span>
-                        </div>)}
-                    </div>
+                    {editingSection === 'transports' ? (
+                      <div className="space-y-6">
+                        {/* Add Transport Type Dropdown */}
+                        <div>
+                          <Label>Add Transport Type</Label>
+                          <Select onValueChange={handleAddTransport}>
+                            <SelectTrigger className="mt-1">
+                              <SelectValue placeholder="Select transport type to add" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {availableTransportTypes
+                                .filter(id => !editedData.transports.includes(id))
+                                .map(id => (
+                                  <SelectItem key={id} value={id}>
+                                    <div className="flex items-center gap-2">
+                                      <TransportIcon transportType={id as TransportType} size={16} />
+                                      {transportTypes[id] || `Transport ${id}`}
+                                    </div>
+                                  </SelectItem>
+                                ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        {/* Current Transport Types with Vehicle Info */}
+                        <div className="space-y-4">
+                          {editedData.transports.map(transportId => {
+                            const vehicleInfo = getVehicleInfo(transportId);
+                            return (
+                              <div key={transportId} className="border rounded-lg p-4 space-y-4">
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-2">
+                                    <TransportIcon transportType={transportId as TransportType} size={20} />
+                                    <span className="font-medium">
+                                      {transportTypes[transportId] || `Transport ${transportId}`}
+                                    </span>
+                                  </div>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleRemoveTransport(transportId)}
+                                    className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50"
+                                  >
+                                    <Trash2 className="w-3 h-3" />
+                                  </Button>
+                                </div>
+                                
+                                {/* Vehicle Information */}
+                                <div className="grid grid-cols-2 gap-3">
+                                  <div>
+                                    <Label htmlFor={`year-${transportId}`}>Year</Label>
+                                    <Input
+                                      id={`year-${transportId}`}
+                                      value={vehicleInfo.year || ''}
+                                      onChange={(e) => handleVehicleInfoChange(transportId, 'year', e.target.value)}
+                                      placeholder="e.g., 2020"
+                                      className="mt-1"
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label htmlFor={`make-${transportId}`}>Make</Label>
+                                    <Input
+                                      id={`make-${transportId}`}
+                                      value={vehicleInfo.make || ''}
+                                      onChange={(e) => handleVehicleInfoChange(transportId, 'make', e.target.value)}
+                                      placeholder="e.g., Ford"
+                                      className="mt-1"
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label htmlFor={`model-${transportId}`}>Model</Label>
+                                    <Input
+                                      id={`model-${transportId}`}
+                                      value={vehicleInfo.model || ''}
+                                      onChange={(e) => handleVehicleInfoChange(transportId, 'model', e.target.value)}
+                                      placeholder="e.g., Transit"
+                                      className="mt-1"
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label htmlFor={`plate-${transportId}`}>Plate Number</Label>
+                                    <Input
+                                      id={`plate-${transportId}`}
+                                      value={vehicleInfo.plateNumber || ''}
+                                      onChange={(e) => handleVehicleInfoChange(transportId, 'plateNumber', e.target.value)}
+                                      placeholder="e.g., ABC-123"
+                                      className="mt-1"
+                                    />
+                                  </div>
+                                </div>
+                                
+                                {/* Plate Image */}
+                                <div>
+                                  <Label htmlFor={`plateImage-${transportId}`}>Plate Image URL</Label>
+                                  <Input
+                                    id={`plateImage-${transportId}`}
+                                    value={vehicleInfo.plateImage || ''}
+                                    onChange={(e) => handleVehicleInfoChange(transportId, 'plateImage', e.target.value)}
+                                    placeholder="Image URL or path"
+                                    className="mt-1"
+                                  />
+                                  {vehicleInfo.plateImage && (
+                                    <div className="mt-2">
+                                      <img 
+                                        src={vehicleInfo.plateImage} 
+                                        alt="Plate" 
+                                        className="w-24 h-16 object-cover rounded border"
+                                        onError={(e) => {
+                                          e.currentTarget.style.display = 'none';
+                                        }}
+                                      />
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        {editedData.transports.length === 0 && (
+                          <div className="text-center py-8 text-muted-foreground">
+                            <Award className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                            <p className="text-sm">No transport types assigned</p>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="flex flex-wrap gap-3">
+                        {driver.transports.map(transportId => (
+                          <div key={transportId} className="flex items-center gap-2 p-2 border rounded-lg">
+                            <TransportIcon transportType={transportId as TransportType} size={16} className="h-4 w-4" />
+                            <span className="text-sm">
+                              {transportTypes[transportId] || `Transport ${transportId}`}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </div>
