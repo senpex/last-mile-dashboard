@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
@@ -10,7 +9,6 @@ import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
-
 interface Driver {
   id: number;
   name: string;
@@ -26,7 +24,6 @@ interface Driver {
   notes: string;
   profileTypes: string[];
 }
-
 interface DriverDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -43,7 +40,6 @@ interface DriverDetailsSheetProps {
   renderStatus: (statusId: string) => JSX.Element;
   renderStripeStatus: (status: 'verified' | 'unverified' | 'pending') => JSX.Element;
 }
-
 export const DriverDetailsSheet = ({
   isOpen,
   onClose,
@@ -55,9 +51,7 @@ export const DriverDetailsSheet = ({
   renderStripeStatus
 }: DriverDetailsSheetProps) => {
   if (!driver) return null;
-
-  return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
+  return <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="sm:max-w-xl md:max-w-4xl lg:max-w-6xl w-full overflow-hidden p-0 pr-0 mr-0 flex flex-col">
         {/* Main Content with Flex Structure */}
         <div className="flex-1 overflow-hidden flex flex-col">
@@ -79,7 +73,7 @@ export const DriverDetailsSheet = ({
             </div>
           </SheetHeader>
 
-          <div className="flex-1 overflow-y-auto px-6 space-y-6">
+          <div className="flex-1 overflow-y-auto px-6 space-y-6 my-[25px]">
             {/* Contact Information */}
             <div>
               <h3 className="text-sm font-medium mb-3 flex items-center">
@@ -185,14 +179,9 @@ export const DriverDetailsSheet = ({
               <Card>
                 <CardContent className="pt-6">
                   <div className="flex flex-wrap gap-2">
-                    {driver.profileTypes && driver.profileTypes.length > 0 ? 
-                      driver.profileTypes.map(type => (
-                        <Badge key={type} variant="outline">
+                    {driver.profileTypes && driver.profileTypes.length > 0 ? driver.profileTypes.map(type => <Badge key={type} variant="outline">
                           {type}
-                        </Badge>
-                      )) : 
-                      <span className="text-muted-foreground text-sm">No profile types assigned</span>
-                    }
+                        </Badge>) : <span className="text-muted-foreground text-sm">No profile types assigned</span>}
                   </div>
                 </CardContent>
               </Card>
@@ -207,14 +196,12 @@ export const DriverDetailsSheet = ({
               <Card>
                 <CardContent className="pt-6">
                   <div className="flex flex-wrap gap-3">
-                    {driver.transports.map(transportId => (
-                      <div key={transportId} className="flex items-center gap-2 p-2 border rounded-lg">
+                    {driver.transports.map(transportId => <div key={transportId} className="flex items-center gap-2 p-2 border rounded-lg">
                         <TransportIcon transportType={transportId as TransportType} size={16} className="h-4 w-4" />
                         <span className="text-sm">
                           {transportTypes[transportId] || `Transport ${transportId}`}
                         </span>
-                      </div>
-                    ))}
+                      </div>)}
                   </div>
                 </CardContent>
               </Card>
@@ -228,12 +215,7 @@ export const DriverDetailsSheet = ({
               </h3>
               <Card>
                 <CardContent className="pt-6">
-                  <Textarea 
-                    placeholder="Add notes about this driver..." 
-                    value={driver.notes || ''} 
-                    className="min-h-[100px]" 
-                    readOnly 
-                  />
+                  <Textarea placeholder="Add notes about this driver..." value={driver.notes || ''} className="min-h-[100px]" readOnly />
                 </CardContent>
               </Card>
             </div>
@@ -252,6 +234,5 @@ export const DriverDetailsSheet = ({
           </div>
         </div>
       </SheetContent>
-    </Sheet>
-  );
+    </Sheet>;
 };
