@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit, Save, X } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { DocumentViewerModal } from "./DocumentViewerModal";
@@ -74,10 +76,14 @@ export const DriverDetailsSheet = ({
     hireStatus: driver?.hireStatus || '',
     stripeStatus: driver?.stripeStatus || 'unverified' as const,
     verifiedByDriver: driver?.verifiedByDriver || 'Not verified' as const,
-    approvedByAdmin: driver?.approvedByAdmin || 'pending' as const
+    approvedByAdmin: driver?.approvedByAdmin || 'pending' as const,
+    profileTypes: driver?.profileTypes || []
   });
 
   if (!driver) return null;
+
+  // Available profile types
+  const availableProfileTypes = ['Driver', 'Mover', 'Helper'];
 
   // Sample documents data - in a real app this would come from the driver data
   const documents = [{
@@ -130,7 +136,8 @@ export const DriverDetailsSheet = ({
       hireStatus: driver.hireStatus,
       stripeStatus: driver.stripeStatus,
       verifiedByDriver: driver.verifiedByDriver || 'Not verified',
-      approvedByAdmin: driver.approvedByAdmin || 'pending'
+      approvedByAdmin: driver.approvedByAdmin || 'pending',
+      profileTypes: driver.profileTypes || []
     });
   };
 
@@ -154,15 +161,31 @@ export const DriverDetailsSheet = ({
       hireStatus: driver.hireStatus,
       stripeStatus: driver.stripeStatus,
       verifiedByDriver: driver.verifiedByDriver || 'Not verified',
-      approvedByAdmin: driver.approvedByAdmin || 'pending'
+      approvedByAdmin: driver.approvedByAdmin || 'pending',
+      profileTypes: driver.profileTypes || []
     });
   };
 
-  const handleInputChange = (field: string, value: string | number) => {
+  const handleInputChange = (field: string, value: string | number | string[]) => {
     setEditedData(prev => ({
       ...prev,
       [field]: value
     }));
+  };
+
+  const handleProfileTypeChange = (profileType: string, checked: boolean) => {
+    const currentTypes = editedData.profileTypes;
+    if (checked) {
+      setEditedData(prev => ({
+        ...prev,
+        profileTypes: [...currentTypes, profileType]
+      }));
+    } else {
+      setEditedData(prev => ({
+        ...prev,
+        profileTypes: currentTypes.filter(type => type !== profileType)
+      }));
+    }
   };
 
   return (
@@ -527,18 +550,68 @@ export const DriverDetailsSheet = ({
                     <User className="w-4 h-4 mr-2" />
                     Profile Types
                   </h3>
-                  <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1">
-                    <Edit className="h-3 w-3" />
-                    Edit
-                  </Button>
+                  {editingSection === 'profileTypes' ? (
+                    <div className="flex gap-1">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleSave('Profile Types')}
+                        className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50"
+                      >
+                        <Save className="w-3 h-3 mr-1" />
+                        Save
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleCancel}
+                        className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50"
+                      >
+                        <X className="w-3 h-3 mr-1" />
+                        Cancel
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="h-7 text-xs flex items-center gap-1"
+                      onClick={() => handleEdit('profileTypes')}
+                    >
+                      <Edit className="h-3 w-3" />
+                      Edit
+                    </Button>
+                  )}
                 </div>
                 <Card>
                   <CardContent className="pt-6">
-                    <div className="flex flex-wrap gap-2">
-                      {driver.profileTypes && driver.profileTypes.length > 0 ? driver.profileTypes.map(type => <Badge key={type} variant="outline">
-                            {type}
-                          </Badge>) : <span className="text-muted-foreground text-sm">No profile types assigned</span>}
-                    </div>
+                    {editingSection === 'profileTypes' ? (
+                      <div className="space-y-3">
+                        {availableProfileTypes.map(profileType => (
+                          <div key={profileType} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`profile-${profileType}`}
+                              checked={editedData.profileTypes.includes(profileType)}
+                              onCheckedChange={(checked) => handleProfileTypeChange(profileType, checked as boolean)}
+                            />
+                            <Label htmlFor={`profile-${profileType}`} className="text-sm font-normal">
+                              {profileType}
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="flex flex-wrap gap-2">
+                        {driver.profileTypes && driver.profileTypes.length > 0 ? 
+                          driver.profileTypes.map(type => (
+                            <Badge key={type} variant="outline">
+                              {type}
+                            </Badge>
+                          )) : 
+                          <span className="text-muted-foreground text-sm">No profile types assigned</span>
+                        }
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </div>
