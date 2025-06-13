@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
@@ -123,28 +124,6 @@ export const DriverDetailsSheet = ({
               </Card>
             </div>
 
-            {/* Location Information */}
-            <div>
-              <h3 className="text-sm font-medium mb-3 flex items-center">
-                <MapPin className="w-4 h-4 mr-2" />
-                Location
-              </h3>
-              <Card>
-                <CardContent className="space-y-4 pt-6">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="zipcode">Zipcode</Label>
-                      <Input id="zipcode" value={driver.zipcode} readOnly />
-                    </div>
-                    <div>
-                      <Label htmlFor="address">Address</Label>
-                      <Input id="address" value={driver.address} readOnly />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
             {/* Status Information */}
             <div>
               <h3 className="text-sm font-medium mb-3 flex items-center">
@@ -187,6 +166,28 @@ export const DriverDetailsSheet = ({
                       <div className="mt-1">
                         {renderStripeStatus(driver.stripeStatus)}
                       </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Location Information */}
+            <div>
+              <h3 className="text-sm font-medium mb-3 flex items-center">
+                <MapPin className="w-4 h-4 mr-2" />
+                Location
+              </h3>
+              <Card>
+                <CardContent className="space-y-4 pt-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="zipcode">Zipcode</Label>
+                      <Input id="zipcode" value={driver.zipcode} readOnly />
+                    </div>
+                    <div>
+                      <Label htmlFor="address">Address</Label>
+                      <Input id="address" value={driver.address} readOnly />
                     </div>
                   </div>
                 </CardContent>
