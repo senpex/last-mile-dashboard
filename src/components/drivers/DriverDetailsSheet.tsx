@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
+
 interface Driver {
   id: number;
   name: string;
@@ -62,12 +62,18 @@ export const DriverDetailsSheet = ({
     status: "Verified"
   }, {
     id: 2,
+    name: "Driver's License",
+    type: "PDF", 
+    uploadDate: "2024-01-12",
+    status: "Pending"
+  }, {
+    id: 3,
     name: "Vehicle Registration",
     type: "PDF",
     uploadDate: "2024-01-10",
     status: "Pending"
   }, {
-    id: 3,
+    id: 4,
     name: "Insurance Certificate",
     type: "PDF",
     uploadDate: "2024-01-08",
