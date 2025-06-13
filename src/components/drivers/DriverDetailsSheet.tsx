@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit, Save, X } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { DocumentViewerModal } from "./DocumentViewerModal";
@@ -28,7 +27,10 @@ interface Driver {
   stripeStatus: 'verified' | 'unverified' | 'pending';
   notes: string;
   profileTypes: string[];
+  verifiedByDriver?: 'Verified' | 'Not verified';
+  approvedByAdmin?: 'approved' | 'disapproved' | 'pending';
 }
+
 interface DriverDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -67,7 +69,11 @@ export const DriverDetailsSheet = ({
     zipcode: driver?.zipcode || '',
     address: driver?.address || '',
     notes: driver?.notes || '',
-    rating: driver?.rating || 0
+    rating: driver?.rating || 0,
+    hireStatus: driver?.hireStatus || '',
+    stripeStatus: driver?.stripeStatus || 'unverified' as const,
+    verifiedByDriver: driver?.verifiedByDriver || 'Not verified' as const,
+    approvedByAdmin: driver?.approvedByAdmin || 'pending' as const
   });
 
   if (!driver) return null;
@@ -103,6 +109,11 @@ export const DriverDetailsSheet = ({
     setSelectedDocument(null);
   };
 
+  const hireStatusOptions = Object.entries(hireStatusDictionary).map(([key, value]) => ({
+    value: key,
+    label: value
+  }));
+
   const handleEdit = (section: string) => {
     setEditingSection(section);
     // Reset edited data to current driver data
@@ -113,7 +124,11 @@ export const DriverDetailsSheet = ({
       zipcode: driver.zipcode,
       address: driver.address,
       notes: driver.notes,
-      rating: driver.rating
+      rating: driver.rating,
+      hireStatus: driver.hireStatus,
+      stripeStatus: driver.stripeStatus,
+      verifiedByDriver: driver.verifiedByDriver || 'Not verified',
+      approvedByAdmin: driver.approvedByAdmin || 'pending'
     });
   };
 
@@ -132,7 +147,11 @@ export const DriverDetailsSheet = ({
       zipcode: driver.zipcode,
       address: driver.address,
       notes: driver.notes,
-      rating: driver.rating
+      rating: driver.rating,
+      hireStatus: driver.hireStatus,
+      stripeStatus: driver.stripeStatus,
+      verifiedByDriver: driver.verifiedByDriver || 'Not verified',
+      approvedByAdmin: driver.approvedByAdmin || 'pending'
     });
   };
 
@@ -221,9 +240,27 @@ export const DriverDetailsSheet = ({
                       <div>
                         <Label>Hire Status</Label>
                         <div className="mt-1">
-                          <Badge variant="secondary">
-                            {hireStatusDictionary[driver.hireStatus] || driver.hireStatus}
-                          </Badge>
+                          {editingSection === 'status' ? (
+                            <Select 
+                              value={editedData.hireStatus} 
+                              onValueChange={(value) => handleInputChange('hireStatus', value)}
+                            >
+                              <SelectTrigger className="h-8 text-sm">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {hireStatusOptions.map(option => (
+                                  <SelectItem key={option.value} value={option.value}>
+                                    {option.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          ) : (
+                            <Badge variant="secondary">
+                              {hireStatusDictionary[driver.hireStatus] || driver.hireStatus}
+                            </Badge>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -234,21 +271,9 @@ export const DriverDetailsSheet = ({
                           Rating
                         </Label>
                         <div className="mt-1">
-                          {editingSection === 'status' ? (
-                            <Input
-                              type="number"
-                              step="0.1"
-                              min="0"
-                              max="5"
-                              value={editedData.rating}
-                              onChange={(e) => handleInputChange('rating', parseFloat(e.target.value))}
-                              className="h-8 text-sm"
-                            />
-                          ) : (
-                            <div className="text-lg font-semibold">
-                              {driver.rating.toFixed(1)} / 5.0
-                            </div>
-                          )}
+                          <div className="text-lg font-semibold">
+                            {driver.rating.toFixed(1)} / 5.0
+                          </div>
                         </div>
                       </div>
                       <div>
@@ -257,7 +282,76 @@ export const DriverDetailsSheet = ({
                           Stripe Status
                         </Label>
                         <div className="mt-1">
-                          {renderStripeStatus(driver.stripeStatus)}
+                          {editingSection === 'status' ? (
+                            <Select 
+                              value={editedData.stripeStatus} 
+                              onValueChange={(value) => handleInputChange('stripeStatus', value)}
+                            >
+                              <SelectTrigger className="h-8 text-sm">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="unverified">Unverified</SelectItem>
+                                <SelectItem value="pending">Pending</SelectItem>
+                                <SelectItem value="verified">Verified</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          ) : (
+                            renderStripeStatus(driver.stripeStatus)
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label>Verified by Driver</Label>
+                        <div className="mt-1">
+                          {editingSection === 'status' ? (
+                            <Select 
+                              value={editedData.verifiedByDriver} 
+                              onValueChange={(value) => handleInputChange('verifiedByDriver', value)}
+                            >
+                              <SelectTrigger className="h-8 text-sm">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Verified">Verified</SelectItem>
+                                <SelectItem value="Not verified">Not verified</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          ) : (
+                            <Badge variant={driver.verifiedByDriver === 'Verified' ? 'default' : 'secondary'}>
+                              {driver.verifiedByDriver || 'Not verified'}
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <Label>Approved by Admin</Label>
+                        <div className="mt-1">
+                          {editingSection === 'status' ? (
+                            <Select 
+                              value={editedData.approvedByAdmin} 
+                              onValueChange={(value) => handleInputChange('approvedByAdmin', value)}
+                            >
+                              <SelectTrigger className="h-8 text-sm">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="approved">Approved</SelectItem>
+                                <SelectItem value="disapproved">Disapproved</SelectItem>
+                                <SelectItem value="pending">Pending</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          ) : (
+                            <Badge variant={
+                              driver.approvedByAdmin === 'approved' ? 'default' : 
+                              driver.approvedByAdmin === 'disapproved' ? 'destructive' : 
+                              'secondary'
+                            }>
+                              {driver.approvedByAdmin || 'Pending'}
+                            </Badge>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -596,4 +690,3 @@ export const DriverDetailsSheet = ({
     </>
   );
 };
-
