@@ -1,11 +1,9 @@
-
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Download, X } from "lucide-react";
 import { toast } from "sonner";
-
 interface Document {
   id: number;
   name: string;
@@ -13,16 +11,17 @@ interface Document {
   uploadDate: string;
   status: string;
 }
-
 interface DocumentViewerModalProps {
   isOpen: boolean;
   onClose: () => void;
   document: Document | null;
 }
-
-export const DocumentViewerModal = ({ isOpen, onClose, document }: DocumentViewerModalProps) => {
+export const DocumentViewerModal = ({
+  isOpen,
+  onClose,
+  document
+}: DocumentViewerModalProps) => {
   if (!document) return null;
-
   const handleDownload = () => {
     // Simulate file download
     const link = window.document.createElement('a');
@@ -31,12 +30,9 @@ export const DocumentViewerModal = ({ isOpen, onClose, document }: DocumentViewe
     window.document.body.appendChild(link);
     link.click();
     window.document.body.removeChild(link);
-    
     toast.success(`Downloaded ${document.name}`);
   };
-
-  return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+  return <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-4xl max-h-[90vh] p-0">
         <DialogHeader className="p-6 pb-4 border-b">
           <div className="flex items-center justify-between">
@@ -71,14 +67,10 @@ export const DocumentViewerModal = ({ isOpen, onClose, document }: DocumentViewe
               <p className="text-sm text-gray-500">
                 Document preview would be displayed here
               </p>
-              <Button variant="outline" className="mt-4" onClick={handleDownload}>
-                <Download className="h-4 w-4 mr-2" />
-                Download to View
-              </Button>
+              
             </div>
           </div>
         </div>
       </DialogContent>
-    </Dialog>
-  );
+    </Dialog>;
 };
