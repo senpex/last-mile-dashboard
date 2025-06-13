@@ -25,12 +25,12 @@ export const DocumentViewerModal = ({ isOpen, onClose, document }: DocumentViewe
 
   const handleDownload = () => {
     // Simulate file download
-    const link = document.createElement('a');
+    const link = window.document.createElement('a');
     link.href = '#'; // In a real app, this would be the actual file URL
     link.download = `${document.name}.${document.type.toLowerCase()}`;
-    document.body.appendChild(link);
+    window.document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
+    window.document.body.removeChild(link);
     
     toast.success(`Downloaded ${document.name}`);
   };
