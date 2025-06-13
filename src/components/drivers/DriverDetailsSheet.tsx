@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
@@ -58,11 +59,7 @@ export const DriverDetailsSheet = ({
     name: "Driver's License",
     type: "PDF",
     uploadDate: "2024-01-15",
-    status: "Verified",
-    images: {
-      front: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=250&fit=crop",
-      back: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=250&fit=crop"
-    }
+    status: "Verified"
   }, {
     id: 2,
     name: "Vehicle Registration",
@@ -241,29 +238,24 @@ export const DriverDetailsSheet = ({
               <Card>
                 <CardContent className="pt-6">
                   <div className="space-y-4">
-                    {documents.map(document => <div key={document.id} className="space-y-3">
-                        <div className="flex items-center justify-between p-3 border rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <FileText className="h-4 w-4 text-muted-foreground" />
-                            <div>
-                              <p className="text-sm font-medium">{document.name}</p>
-                              <p className="text-xs text-muted-foreground">
-                                {document.type} • Uploaded {document.uploadDate}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Badge variant={document.status === 'Verified' ? 'default' : 'secondary'}>
-                              {document.status}
-                            </Badge>
-                            <Button variant="ghost" size="sm">
-                              View
-                            </Button>
+                    {documents.map(document => <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <FileText className="h-4 w-4 text-muted-foreground" />
+                          <div>
+                            <p className="text-sm font-medium">{document.name}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {document.type} • Uploaded {document.uploadDate}
+                            </p>
                           </div>
                         </div>
-                        
-                        {/* Driver's License Images */}
-                        {document.name === "Driver's License" && document.images}
+                        <div className="flex items-center gap-2">
+                          <Badge variant={document.status === 'Verified' ? 'default' : 'secondary'}>
+                            {document.status}
+                          </Badge>
+                          <Button variant="ghost" size="sm">
+                            View
+                          </Button>
+                        </div>
                       </div>)}
                     {documents.length === 0 && <div className="text-center py-8 text-muted-foreground">
                         <FileText className="h-8 w-8 mx-auto mb-2 opacity-50" />
