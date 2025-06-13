@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
@@ -7,8 +8,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings } from "lucide-react";
+import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
+
 interface Driver {
   id: number;
   name: string;
@@ -24,6 +26,7 @@ interface Driver {
   notes: string;
   profileTypes: string[];
 }
+
 interface DriverDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -40,6 +43,7 @@ interface DriverDetailsSheetProps {
   renderStatus: (statusId: string) => JSX.Element;
   renderStripeStatus: (status: 'verified' | 'unverified' | 'pending') => JSX.Element;
 }
+
 export const DriverDetailsSheet = ({
   isOpen,
   onClose,
@@ -51,7 +55,16 @@ export const DriverDetailsSheet = ({
   renderStripeStatus
 }: DriverDetailsSheetProps) => {
   if (!driver) return null;
-  return <Sheet open={isOpen} onOpenChange={onClose}>
+
+  // Sample documents data - in a real app this would come from the driver data
+  const documents = [
+    { id: 1, name: "Driver's License", type: "PDF", uploadDate: "2024-01-15", status: "Verified" },
+    { id: 2, name: "Vehicle Registration", type: "PDF", uploadDate: "2024-01-10", status: "Pending" },
+    { id: 3, name: "Insurance Certificate", type: "PDF", uploadDate: "2024-01-08", status: "Verified" },
+  ];
+
+  return (
+    <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="sm:max-w-xl md:max-w-4xl lg:max-w-6xl w-full overflow-hidden p-0 pr-0 mr-0 flex flex-col">
         {/* Main Content with Flex Structure */}
         <div className="flex-1 overflow-hidden flex flex-col">
@@ -179,9 +192,14 @@ export const DriverDetailsSheet = ({
               <Card>
                 <CardContent className="pt-6">
                   <div className="flex flex-wrap gap-2">
-                    {driver.profileTypes && driver.profileTypes.length > 0 ? driver.profileTypes.map(type => <Badge key={type} variant="outline">
+                    {driver.profileTypes && driver.profileTypes.length > 0 ? 
+                      driver.profileTypes.map(type => (
+                        <Badge key={type} variant="outline">
                           {type}
-                        </Badge>) : <span className="text-muted-foreground text-sm">No profile types assigned</span>}
+                        </Badge>
+                      )) : 
+                      <span className="text-muted-foreground text-sm">No profile types assigned</span>
+                    }
                   </div>
                 </CardContent>
               </Card>
@@ -196,12 +214,55 @@ export const DriverDetailsSheet = ({
               <Card>
                 <CardContent className="pt-6">
                   <div className="flex flex-wrap gap-3">
-                    {driver.transports.map(transportId => <div key={transportId} className="flex items-center gap-2 p-2 border rounded-lg">
+                    {driver.transports.map(transportId => (
+                      <div key={transportId} className="flex items-center gap-2 p-2 border rounded-lg">
                         <TransportIcon transportType={transportId as TransportType} size={16} className="h-4 w-4" />
                         <span className="text-sm">
                           {transportTypes[transportId] || `Transport ${transportId}`}
                         </span>
-                      </div>)}
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Documents */}
+            <div>
+              <h3 className="text-sm font-medium mb-3 flex items-center">
+                <File className="w-4 h-4 mr-2" />
+                Documents
+              </h3>
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="space-y-3">
+                    {documents.map(document => (
+                      <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <FileText className="h-4 w-4 text-muted-foreground" />
+                          <div>
+                            <p className="text-sm font-medium">{document.name}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {document.type} • Uploaded {document.uploadDate}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge variant={document.status === 'Verified' ? 'default' : 'secondary'}>
+                            {document.status}
+                          </Badge>
+                          <Button variant="ghost" size="sm">
+                            View
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                    {documents.length === 0 && (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <FileText className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                        <p className="text-sm">No documents uploaded</p>
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -215,7 +276,12 @@ export const DriverDetailsSheet = ({
               </h3>
               <Card>
                 <CardContent className="pt-6">
-                  <Textarea placeholder="Add notes about this driver..." value={driver.notes || ''} className="min-h-[100px]" readOnly />
+                  <Textarea 
+                    placeholder="Add notes about this driver..." 
+                    value={driver.notes || ''} 
+                    className="min-h-[100px]" 
+                    readOnly 
+                  />
                 </CardContent>
               </Card>
             </div>
@@ -234,5 +300,6 @@ export const DriverDetailsSheet = ({
           </div>
         </div>
       </SheetContent>
-    </Sheet>;
+    </Sheet>
+  );
 };
