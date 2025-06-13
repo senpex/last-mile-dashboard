@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File } from "lucide-react";
+import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { DocumentViewerModal } from "./DocumentViewerModal";
 
@@ -61,19 +61,19 @@ export const DriverDetailsSheet = ({
   const documents = [{
     id: 1,
     name: "Driver's License - Front",
-    type: "PDF",
+    type: "Image",
     uploadDate: "2024-01-15",
     status: "Verified"
   }, {
     id: 2,
     name: "Driver's License - Back",
-    type: "PDF", 
+    type: "Image", 
     uploadDate: "2024-01-12",
     status: "Pending"
   }, {
     id: 4,
     name: "Insurance Certificate",
-    type: "PDF",
+    type: "Image",
     uploadDate: "2024-01-08",
     status: "Verified"
   }];
@@ -94,6 +94,7 @@ export const DriverDetailsSheet = ({
         <SheetContent className="sm:max-w-xl md:max-w-4xl lg:max-w-6xl w-full overflow-hidden p-0 pr-0 mr-0 flex flex-col">
           {/* Main Content with Flex Structure */}
           <div className="flex-1 overflow-hidden flex flex-col">
+            {/* Main Content with Flex Structure */}
             <SheetHeader className="p-6 pb-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -258,7 +259,7 @@ export const DriverDetailsSheet = ({
                       {documents.map(document => (
                         <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
                           <div className="flex items-center gap-3">
-                            <FileText className="h-4 w-4 text-muted-foreground" />
+                            <Image className="h-4 w-4 text-muted-foreground" />
                             <div>
                               <p className="text-sm font-medium">{document.name}</p>
                               <p className="text-xs text-muted-foreground">
@@ -282,7 +283,7 @@ export const DriverDetailsSheet = ({
                       ))}
                       {documents.length === 0 && (
                         <div className="text-center py-8 text-muted-foreground">
-                          <FileText className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                          <Image className="h-8 w-8 mx-auto mb-2 opacity-50" />
                           <p className="text-sm">No documents uploaded</p>
                         </div>
                       )}
