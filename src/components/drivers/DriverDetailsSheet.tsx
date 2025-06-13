@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   Sheet,
@@ -57,7 +58,7 @@ export const DriverDetailsSheet = ({
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-[1200px] sm:max-w-[1200px] overflow-y-auto">
+      <SheetContent className="sm:max-w-xl md:max-w-4xl lg:max-w-6xl w-full overflow-y-auto">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-3">
             <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
