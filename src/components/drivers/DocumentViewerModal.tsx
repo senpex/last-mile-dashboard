@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Download, X } from "lucide-react";
+import { toast } from "sonner";
 
 interface Document {
   id: number;
@@ -21,6 +22,18 @@ interface DocumentViewerModalProps {
 
 export const DocumentViewerModal = ({ isOpen, onClose, document }: DocumentViewerModalProps) => {
   if (!document) return null;
+
+  const handleDownload = () => {
+    // Simulate file download
+    const link = document.createElement('a');
+    link.href = '#'; // In a real app, this would be the actual file URL
+    link.download = `${document.name}.${document.type.toLowerCase()}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast.success(`Downloaded ${document.name}`);
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -42,7 +55,7 @@ export const DocumentViewerModal = ({ isOpen, onClose, document }: DocumentViewe
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={handleDownload}>
                 <Download className="h-4 w-4 mr-2" />
                 Download
               </Button>
@@ -58,7 +71,7 @@ export const DocumentViewerModal = ({ isOpen, onClose, document }: DocumentViewe
               <p className="text-sm text-gray-500">
                 Document preview would be displayed here
               </p>
-              <Button variant="outline" className="mt-4">
+              <Button variant="outline" className="mt-4" onClick={handleDownload}>
                 <Download className="h-4 w-4 mr-2" />
                 Download to View
               </Button>
