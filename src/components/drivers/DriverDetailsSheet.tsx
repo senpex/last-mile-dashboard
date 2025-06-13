@@ -67,18 +67,13 @@ export const DriverDetailsSheet = ({
     uploadDate: "2024-01-12",
     status: "Pending"
   }, {
-    id: 3,
-    name: "Vehicle Registration",
-    type: "PDF",
-    uploadDate: "2024-01-10",
-    status: "Pending"
-  }, {
     id: 4,
     name: "Insurance Certificate",
     type: "PDF",
     uploadDate: "2024-01-08",
     status: "Verified"
   }];
+
   return <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="sm:max-w-xl md:max-w-4xl lg:max-w-6xl w-full overflow-hidden p-0 pr-0 mr-0 flex flex-col">
         {/* Main Content with Flex Structure */}
