@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
@@ -121,8 +122,9 @@ export const DriverDetailsSheet = ({
                     <Settings className="w-4 h-4 mr-2" />
                     Status & Rating
                   </h3>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <Edit className="w-4 h-4" />
+                  <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1">
+                    <Edit className="h-3 w-3" />
+                    Edit
                   </Button>
                 </div>
                 <Card>
@@ -174,8 +176,9 @@ export const DriverDetailsSheet = ({
                     <Phone className="w-4 h-4 mr-2" />
                     Contact Information
                   </h3>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <Edit className="w-4 h-4" />
+                  <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1">
+                    <Edit className="h-3 w-3" />
+                    Edit
                   </Button>
                 </div>
                 <Card>
@@ -205,8 +208,9 @@ export const DriverDetailsSheet = ({
                     <MapPin className="w-4 h-4 mr-2" />
                     Location
                   </h3>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <Edit className="w-4 h-4" />
+                  <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1">
+                    <Edit className="h-3 w-3" />
+                    Edit
                   </Button>
                 </div>
                 <Card>
@@ -232,8 +236,9 @@ export const DriverDetailsSheet = ({
                     <User className="w-4 h-4 mr-2" />
                     Profile Types
                   </h3>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <Edit className="w-4 h-4" />
+                  <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1">
+                    <Edit className="h-3 w-3" />
+                    Edit
                   </Button>
                 </div>
                 <Card>
@@ -254,8 +259,9 @@ export const DriverDetailsSheet = ({
                     <Award className="w-4 h-4 mr-2" />
                     Transport Types
                   </h3>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <Edit className="w-4 h-4" />
+                  <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1">
+                    <Edit className="h-3 w-3" />
+                    Edit
                   </Button>
                 </div>
                 <Card>
@@ -279,8 +285,9 @@ export const DriverDetailsSheet = ({
                     <File className="w-4 h-4 mr-2" />
                     Documents
                   </h3>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <Edit className="w-4 h-4" />
+                  <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1">
+                    <Edit className="h-3 w-3" />
+                    Edit
                   </Button>
                 </div>
                 <Card>
@@ -329,8 +336,9 @@ export const DriverDetailsSheet = ({
                     <FileText className="w-4 h-4 mr-2" />
                     Notes
                   </h3>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <Edit className="w-4 h-4" />
+                  <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1">
+                    <Edit className="h-3 w-3" />
+                    Edit
                   </Button>
                 </div>
                 <Card>
