@@ -1,12 +1,5 @@
-
 import React from 'react';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +9,6 @@ import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Phone, Mail, MapPin, Star, FileText, CreditCard } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
-
 interface Driver {
   id: number;
   name: string;
@@ -32,18 +24,22 @@ interface Driver {
   notes: string;
   profileTypes: string[];
 }
-
 interface DriverDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
   driver: Driver | null;
-  transportTypes: { [key: string]: string };
-  statusDictionary: { [key: string]: string };
-  hireStatusDictionary: { [key: string]: string };
+  transportTypes: {
+    [key: string]: string;
+  };
+  statusDictionary: {
+    [key: string]: string;
+  };
+  hireStatusDictionary: {
+    [key: string]: string;
+  };
   renderStatus: (statusId: string) => JSX.Element;
   renderStripeStatus: (status: 'verified' | 'unverified' | 'pending') => JSX.Element;
 }
-
 export const DriverDetailsSheet = ({
   isOpen,
   onClose,
@@ -55,9 +51,7 @@ export const DriverDetailsSheet = ({
   renderStripeStatus
 }: DriverDetailsSheetProps) => {
   if (!driver) return null;
-
-  return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
+  return <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="sm:max-w-xl md:max-w-4xl lg:max-w-6xl w-full overflow-y-auto">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-3">
@@ -71,9 +65,7 @@ export const DriverDetailsSheet = ({
               <p className="text-sm text-muted-foreground">Driver ID: {driver.id}</p>
             </div>
           </SheetTitle>
-          <SheetDescription>
-            View and edit driver profile information
-          </SheetDescription>
+          
         </SheetHeader>
 
         <div className="mt-6 space-y-6">
@@ -177,15 +169,9 @@ export const DriverDetailsSheet = ({
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                {driver.profileTypes && driver.profileTypes.length > 0 ? (
-                  driver.profileTypes.map((type) => (
-                    <Badge key={type} variant="outline">
+                {driver.profileTypes && driver.profileTypes.length > 0 ? driver.profileTypes.map(type => <Badge key={type} variant="outline">
                       {type}
-                    </Badge>
-                  ))
-                ) : (
-                  <span className="text-muted-foreground text-sm">No profile types assigned</span>
-                )}
+                    </Badge>) : <span className="text-muted-foreground text-sm">No profile types assigned</span>}
               </div>
             </CardContent>
           </Card>
@@ -197,18 +183,12 @@ export const DriverDetailsSheet = ({
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-3">
-                {driver.transports.map((transportId) => (
-                  <div key={transportId} className="flex items-center gap-2 p-2 border rounded-lg">
-                    <TransportIcon 
-                      transportType={transportId as TransportType} 
-                      size={16} 
-                      className="h-4 w-4" 
-                    />
+                {driver.transports.map(transportId => <div key={transportId} className="flex items-center gap-2 p-2 border rounded-lg">
+                    <TransportIcon transportType={transportId as TransportType} size={16} className="h-4 w-4" />
                     <span className="text-sm">
                       {transportTypes[transportId] || `Transport ${transportId}`}
                     </span>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </CardContent>
           </Card>
@@ -222,12 +202,7 @@ export const DriverDetailsSheet = ({
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <Textarea 
-                placeholder="Add notes about this driver..."
-                value={driver.notes || ''}
-                className="min-h-[100px]"
-                readOnly
-              />
+              <Textarea placeholder="Add notes about this driver..." value={driver.notes || ''} className="min-h-[100px]" readOnly />
             </CardContent>
           </Card>
 
@@ -244,6 +219,5 @@ export const DriverDetailsSheet = ({
           </div>
         </div>
       </SheetContent>
-    </Sheet>
-  );
+    </Sheet>;
 };
