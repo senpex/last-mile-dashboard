@@ -1,4 +1,5 @@
 
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
@@ -8,9 +9,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit } from "lucide-react";
+import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit, Save, X } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { DocumentViewerModal } from "./DocumentViewerModal";
+import { toast } from "sonner";
 
 interface Driver {
   id: number;
@@ -55,6 +57,18 @@ export const DriverDetailsSheet = ({
 }: DriverDetailsSheetProps) => {
   const [selectedDocument, setSelectedDocument] = useState<typeof documents[0] | null>(null);
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
+  
+  // Editing states
+  const [editingSection, setEditingSection] = useState<string | null>(null);
+  const [editedData, setEditedData] = useState({
+    name: driver?.name || '',
+    email: driver?.email || '',
+    phone: driver?.phone || '',
+    zipcode: driver?.zipcode || '',
+    address: driver?.address || '',
+    notes: driver?.notes || '',
+    rating: driver?.rating || 0
+  });
 
   if (!driver) return null;
 
@@ -87,6 +101,46 @@ export const DriverDetailsSheet = ({
   const handleCloseDocumentModal = () => {
     setIsDocumentModalOpen(false);
     setSelectedDocument(null);
+  };
+
+  const handleEdit = (section: string) => {
+    setEditingSection(section);
+    // Reset edited data to current driver data
+    setEditedData({
+      name: driver.name,
+      email: driver.email,
+      phone: driver.phone,
+      zipcode: driver.zipcode,
+      address: driver.address,
+      notes: driver.notes,
+      rating: driver.rating
+    });
+  };
+
+  const handleSave = (section: string) => {
+    setEditingSection(null);
+    toast.success(`${section} updated successfully`);
+  };
+
+  const handleCancel = () => {
+    setEditingSection(null);
+    // Reset edited data to original values
+    setEditedData({
+      name: driver.name,
+      email: driver.email,
+      phone: driver.phone,
+      zipcode: driver.zipcode,
+      address: driver.address,
+      notes: driver.notes,
+      rating: driver.rating
+    });
+  };
+
+  const handleInputChange = (field: string, value: string | number) => {
+    setEditedData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   return (
@@ -122,10 +176,38 @@ export const DriverDetailsSheet = ({
                     <Settings className="w-4 h-4 mr-2" />
                     Status & Rating
                   </h3>
-                  <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1">
-                    <Edit className="h-3 w-3" />
-                    Edit
-                  </Button>
+                  {editingSection === 'status' ? (
+                    <div className="flex gap-1">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleSave('Status & Rating')}
+                        className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50"
+                      >
+                        <Save className="w-3 h-3 mr-1" />
+                        Save
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleCancel}
+                        className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50"
+                      >
+                        <X className="w-3 h-3 mr-1" />
+                        Cancel
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="h-7 text-xs flex items-center gap-1"
+                      onClick={() => handleEdit('status')}
+                    >
+                      <Edit className="h-3 w-3" />
+                      Edit
+                    </Button>
+                  )}
                 </div>
                 <Card>
                   <CardContent className="space-y-4 pt-6">
@@ -151,8 +233,22 @@ export const DriverDetailsSheet = ({
                           <Star className="h-4 w-4" />
                           Rating
                         </Label>
-                        <div className="mt-1 text-lg font-semibold">
-                          {driver.rating.toFixed(1)} / 5.0
+                        <div className="mt-1">
+                          {editingSection === 'status' ? (
+                            <Input
+                              type="number"
+                              step="0.1"
+                              min="0"
+                              max="5"
+                              value={editedData.rating}
+                              onChange={(e) => handleInputChange('rating', parseFloat(e.target.value))}
+                              className="h-8 text-sm"
+                            />
+                          ) : (
+                            <div className="text-lg font-semibold">
+                              {driver.rating.toFixed(1)} / 5.0
+                            </div>
+                          )}
                         </div>
                       </div>
                       <div>
@@ -176,26 +272,72 @@ export const DriverDetailsSheet = ({
                     <Phone className="w-4 h-4 mr-2" />
                     Contact Information
                   </h3>
-                  <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1">
-                    <Edit className="h-3 w-3" />
-                    Edit
-                  </Button>
+                  {editingSection === 'contact' ? (
+                    <div className="flex gap-1">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleSave('Contact Information')}
+                        className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50"
+                      >
+                        <Save className="w-3 h-3 mr-1" />
+                        Save
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleCancel}
+                        className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50"
+                      >
+                        <X className="w-3 h-3 mr-1" />
+                        Cancel
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="h-7 text-xs flex items-center gap-1"
+                      onClick={() => handleEdit('contact')}
+                    >
+                      <Edit className="h-3 w-3" />
+                      Edit
+                    </Button>
+                  )}
                 </div>
                 <Card>
                   <CardContent className="space-y-4 pt-6">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="name">Full Name</Label>
-                        <Input id="name" value={driver.name} readOnly />
+                        <Input 
+                          id="name" 
+                          value={editingSection === 'contact' ? editedData.name : driver.name} 
+                          onChange={(e) => handleInputChange('name', e.target.value)}
+                          readOnly={editingSection !== 'contact'} 
+                          className={editingSection !== 'contact' ? 'bg-muted/50' : 'bg-background'}
+                        />
                       </div>
                       <div>
                         <Label htmlFor="phone">Phone Number</Label>
-                        <Input id="phone" value={driver.phone} readOnly />
+                        <Input 
+                          id="phone" 
+                          value={editingSection === 'contact' ? editedData.phone : driver.phone} 
+                          onChange={(e) => handleInputChange('phone', e.target.value)}
+                          readOnly={editingSection !== 'contact'} 
+                          className={editingSection !== 'contact' ? 'bg-muted/50' : 'bg-background'}
+                        />
                       </div>
                     </div>
                     <div>
                       <Label htmlFor="email">Email Address</Label>
-                      <Input id="email" value={driver.email} readOnly />
+                      <Input 
+                        id="email" 
+                        value={editingSection === 'contact' ? editedData.email : driver.email} 
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        readOnly={editingSection !== 'contact'} 
+                        className={editingSection !== 'contact' ? 'bg-muted/50' : 'bg-background'}
+                      />
                     </div>
                   </CardContent>
                 </Card>
@@ -208,21 +350,61 @@ export const DriverDetailsSheet = ({
                     <MapPin className="w-4 h-4 mr-2" />
                     Location
                   </h3>
-                  <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1">
-                    <Edit className="h-3 w-3" />
-                    Edit
-                  </Button>
+                  {editingSection === 'location' ? (
+                    <div className="flex gap-1">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleSave('Location')}
+                        className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50"
+                      >
+                        <Save className="w-3 h-3 mr-1" />
+                        Save
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleCancel}
+                        className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50"
+                      >
+                        <X className="w-3 h-3 mr-1" />
+                        Cancel
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="h-7 text-xs flex items-center gap-1"
+                      onClick={() => handleEdit('location')}
+                    >
+                      <Edit className="h-3 w-3" />
+                      Edit
+                    </Button>
+                  )}
                 </div>
                 <Card>
                   <CardContent className="space-y-4 pt-6">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="zipcode">Zipcode</Label>
-                        <Input id="zipcode" value={driver.zipcode} readOnly />
+                        <Input 
+                          id="zipcode" 
+                          value={editingSection === 'location' ? editedData.zipcode : driver.zipcode} 
+                          onChange={(e) => handleInputChange('zipcode', e.target.value)}
+                          readOnly={editingSection !== 'location'} 
+                          className={editingSection !== 'location' ? 'bg-muted/50' : 'bg-background'}
+                        />
                       </div>
                       <div>
                         <Label htmlFor="address">Address</Label>
-                        <Input id="address" value={driver.address} readOnly />
+                        <Input 
+                          id="address" 
+                          value={editingSection === 'location' ? editedData.address : driver.address} 
+                          onChange={(e) => handleInputChange('address', e.target.value)}
+                          readOnly={editingSection !== 'location'} 
+                          className={editingSection !== 'location' ? 'bg-muted/50' : 'bg-background'}
+                        />
                       </div>
                     </div>
                   </CardContent>
@@ -336,14 +518,56 @@ export const DriverDetailsSheet = ({
                     <FileText className="w-4 h-4 mr-2" />
                     Notes
                   </h3>
-                  <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1">
-                    <Edit className="h-3 w-3" />
-                    Edit
-                  </Button>
+                  {editingSection === 'notes' ? (
+                    <div className="flex gap-1">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleSave('Notes')}
+                        className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50"
+                      >
+                        <Save className="w-3 h-3 mr-1" />
+                        Save
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleCancel}
+                        className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50"
+                      >
+                        <X className="w-3 h-3 mr-1" />
+                        Cancel
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="h-7 text-xs flex items-center gap-1"
+                      onClick={() => handleEdit('notes')}
+                    >
+                      <Edit className="h-3 w-3" />
+                      Edit
+                    </Button>
+                  )}
                 </div>
                 <Card>
                   <CardContent className="pt-6">
-                    <Textarea placeholder="Add notes about this driver..." value={driver.notes || ''} className="min-h-[100px]" readOnly />
+                    {editingSection === 'notes' ? (
+                      <Textarea 
+                        placeholder="Add notes about this driver..." 
+                        value={editedData.notes} 
+                        onChange={(e) => handleInputChange('notes', e.target.value)}
+                        className="min-h-[100px]" 
+                      />
+                    ) : (
+                      <Textarea 
+                        placeholder="Add notes about this driver..." 
+                        value={driver.notes || ''} 
+                        className="min-h-[100px] bg-muted/50" 
+                        readOnly 
+                      />
+                    )}
                   </CardContent>
                 </Card>
               </div>
@@ -372,3 +596,4 @@ export const DriverDetailsSheet = ({
     </>
   );
 };
+
