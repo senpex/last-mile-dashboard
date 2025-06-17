@@ -530,16 +530,16 @@ export const DriverDetailsSheet = ({
                               className="flex gap-4"
                             >
                               <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="yes" id="two-step-yes" />
-                                <Label htmlFor="two-step-yes" className="text-sm font-normal">Yes</Label>
+                                <RadioGroupItem value="yes" id="two-step-yes" className="border-red-500 text-red-600" />
+                                <Label htmlFor="two-step-yes" className="text-sm font-normal text-red-600">Yes</Label>
                               </div>
                               <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="no" id="two-step-no" />
-                                <Label htmlFor="two-step-no" className="text-sm font-normal">No</Label>
+                                <RadioGroupItem value="no" id="two-step-no" className="border-gray-500 text-gray-600" />
+                                <Label htmlFor="two-step-no" className="text-sm font-normal text-gray-600">No</Label>
                               </div>
                             </RadioGroup>
                           ) : (
-                            <Badge variant={driver.twoStepVerification === 'yes' ? 'default' : 'secondary'}>
+                            <Badge variant={driver.twoStepVerification === 'yes' ? 'destructive' : 'secondary'}>
                               {driver.twoStepVerification === 'yes' ? 'Yes' : 'No'}
                             </Badge>
                           )}
@@ -555,16 +555,16 @@ export const DriverDetailsSheet = ({
                               className="flex gap-4"
                             >
                               <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="yes" id="driver-control-yes" />
-                                <Label htmlFor="driver-control-yes" className="text-sm font-normal">Yes</Label>
+                                <RadioGroupItem value="yes" id="driver-control-yes" className="border-red-500 text-red-600" />
+                                <Label htmlFor="driver-control-yes" className="text-sm font-normal text-red-600">Yes</Label>
                               </div>
                               <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="no" id="driver-control-no" />
-                                <Label htmlFor="driver-control-no" className="text-sm font-normal">No</Label>
+                                <RadioGroupItem value="no" id="driver-control-no" className="border-gray-500 text-gray-600" />
+                                <Label htmlFor="driver-control-no" className="text-sm font-normal text-gray-600">No</Label>
                               </div>
                             </RadioGroup>
                           ) : (
-                            <Badge variant={driver.driverControl === 'yes' ? 'default' : 'secondary'}>
+                            <Badge variant={driver.driverControl === 'yes' ? 'destructive' : 'secondary'}>
                               {driver.driverControl === 'yes' ? 'Yes' : 'No'}
                             </Badge>
                           )}
@@ -583,16 +583,16 @@ export const DriverDetailsSheet = ({
                               className="flex gap-4"
                             >
                               <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="yes" id="planning-yes" />
-                                <Label htmlFor="planning-yes" className="text-sm font-normal">Yes</Label>
+                                <RadioGroupItem value="yes" id="planning-yes" className="border-red-500 text-red-600" />
+                                <Label htmlFor="planning-yes" className="text-sm font-normal text-red-600">Yes</Label>
                               </div>
                               <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="no" id="planning-no" />
-                                <Label htmlFor="planning-no" className="text-sm font-normal">No</Label>
+                                <RadioGroupItem value="no" id="planning-no" className="border-gray-500 text-gray-600" />
+                                <Label htmlFor="planning-no" className="text-sm font-normal text-gray-600">No</Label>
                               </div>
                             </RadioGroup>
                           ) : (
-                            <Badge variant={driver.planning === 'enabled' ? 'default' : 'secondary'}>
+                            <Badge variant={driver.planning === 'enabled' ? 'destructive' : 'secondary'}>
                               {driver.planning === 'enabled' ? 'Yes' : 'No'}
                             </Badge>
                           )}
@@ -608,16 +608,16 @@ export const DriverDetailsSheet = ({
                               className="flex gap-4"
                             >
                               <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="yes" id="banned-yes" />
-                                <Label htmlFor="banned-yes" className="text-sm font-normal">Yes</Label>
+                                <RadioGroupItem value="yes" id="banned-yes" className="border-red-500 text-red-600" />
+                                <Label htmlFor="banned-yes" className="text-sm font-normal text-red-600">Yes</Label>
                               </div>
                               <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="no" id="banned-no" />
-                                <Label htmlFor="banned-no" className="text-sm font-normal">No</Label>
+                                <RadioGroupItem value="no" id="banned-no" className="border-gray-500 text-gray-600" />
+                                <Label htmlFor="banned-no" className="text-sm font-normal text-gray-600">No</Label>
                               </div>
                             </RadioGroup>
                           ) : (
-                            <Badge variant={driver.banned === 'yes' ? 'destructive' : 'default'}>
+                            <Badge variant={driver.banned === 'yes' ? 'destructive' : 'secondary'}>
                               {driver.banned === 'yes' ? 'Yes' : 'No'}
                             </Badge>
                           )}
