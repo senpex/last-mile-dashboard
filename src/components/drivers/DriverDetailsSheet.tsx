@@ -1,5 +1,8 @@
+
+import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Sheet,
   SheetClose,
@@ -8,13 +11,9 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
-import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
 import { Driver } from "@/types";
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
 
 interface DriverDetailsSheetProps {
   driver: Driver;
@@ -100,10 +99,10 @@ export default function DriverDetailsSheet({ driver, open, onOpenChange }: Drive
               Name
             </label>
             <Input
-              type="text"
               id="name"
               value={driver.name}
               className="col-span-3"
+              readOnly
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
@@ -111,10 +110,10 @@ export default function DriverDetailsSheet({ driver, open, onOpenChange }: Drive
               Phone
             </label>
             <Input
-              type="text"
               id="phone"
               value={driver.phone}
               className="col-span-3"
+              readOnly
             />
           </div>
         </div>
@@ -139,6 +138,21 @@ export default function DriverDetailsSheet({ driver, open, onOpenChange }: Drive
                   />
                 </div>
               </Button>
+              {expandedPayouts.includes(payout.id) && (
+                <div className="px-4 pb-4">
+                  <div className="space-y-2">
+                    {payout.transactions.map((transaction, index) => (
+                      <div key={index} className="grid grid-cols-5 gap-2 text-sm">
+                        <span className="font-medium">{transaction.orderNumber}</span>
+                        <span>{transaction.date}</span>
+                        <span>${transaction.earning.toFixed(2)}</span>
+                        <span>${transaction.commission.toFixed(2)}</span>
+                        <span>${transaction.tip.toFixed(2)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -151,21 +165,3 @@ export default function DriverDetailsSheet({ driver, open, onOpenChange }: Drive
     </Sheet>
   );
 }
-
-const Input = React.forwardRef<
-  HTMLInputElement,
-  React.HTMLAttributes<HTMLInputElement>
->(({ className, type, ...props }, ref) => {
-  return (
-    <input
-      type={type}
-      className={cn(
-        "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-        className
-      )}
-      ref={ref}
-      {...props}
-    />
-  );
-});
-Input.displayName = "Input";
