@@ -688,6 +688,11 @@ const DriversPage = () => {
           isOpen={isDriverDetailsOpen}
           onClose={() => setIsDriverDetailsOpen(false)}
           driver={selectedDriver}
+          transportTypes={transportTypes}
+          statusDictionary={statusDictionary}
+          hireStatusDictionary={hireStatusDictionary}
+          renderStatus={renderStatus}
+          renderStripeStatus={renderStripeStatus}
         />
       </div>
     </Layout>;
