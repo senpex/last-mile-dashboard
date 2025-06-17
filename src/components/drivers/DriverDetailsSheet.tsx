@@ -1200,9 +1200,6 @@ export const DriverDetailsSheet = ({
               <Button variant="outline" onClick={onClose}>
                 Close
               </Button>
-              <Button>
-                Edit Profile
-              </Button>
             </div>
           </div>
         </SheetContent>
