@@ -539,9 +539,9 @@ export const DriverDetailsSheet = ({
                               </div>
                             </RadioGroup>
                           ) : (
-                            <Badge variant={driver.twoStepVerification === 'yes' ? 'destructive' : 'secondary'}>
+                            <span className="text-sm">
                               {driver.twoStepVerification === 'yes' ? 'Yes' : 'No'}
-                            </Badge>
+                            </span>
                           )}
                         </div>
                       </div>
@@ -564,9 +564,9 @@ export const DriverDetailsSheet = ({
                               </div>
                             </RadioGroup>
                           ) : (
-                            <Badge variant={driver.driverControl === 'yes' ? 'destructive' : 'secondary'}>
+                            <span className="text-sm">
                               {driver.driverControl === 'yes' ? 'Yes' : 'No'}
-                            </Badge>
+                            </span>
                           )}
                         </div>
                       </div>
@@ -592,9 +592,9 @@ export const DriverDetailsSheet = ({
                               </div>
                             </RadioGroup>
                           ) : (
-                            <Badge variant={driver.planning === 'enabled' ? 'destructive' : 'secondary'}>
+                            <span className="text-sm">
                               {driver.planning === 'enabled' ? 'Yes' : 'No'}
-                            </Badge>
+                            </span>
                           )}
                         </div>
                       </div>
@@ -617,9 +617,9 @@ export const DriverDetailsSheet = ({
                               </div>
                             </RadioGroup>
                           ) : (
-                            <Badge variant={driver.banned === 'yes' ? 'destructive' : 'secondary'}>
+                            <span className="text-sm">
                               {driver.banned === 'yes' ? 'Yes' : 'No'}
-                            </Badge>
+                            </span>
                           )}
                         </div>
                       </div>
