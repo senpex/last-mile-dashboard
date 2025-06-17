@@ -9,9 +9,10 @@ import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit, Save, X, Plus, Trash2, Upload } from "lucide-react";
+import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit, Save, X, Plus, Trash2, Upload, Eye } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { DocumentViewerModal } from "./DocumentViewerModal";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
 
 interface VehicleInfo {
@@ -71,6 +72,7 @@ export const DriverDetailsSheet = ({
   const [selectedDocument, setSelectedDocument] = useState<typeof documents[0] | null>(null);
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
   const [selectedTransportToAdd, setSelectedTransportToAdd] = useState<string>('');
+  const [expandedImage, setExpandedImage] = useState<string | null>(null);
   
   // Editing states
   const [editingSection, setEditingSection] = useState<string | null>(null);
@@ -271,6 +273,14 @@ export const DriverDetailsSheet = ({
       handleVehicleInfoChange(transportId, 'plateImage', imageUrl);
       toast.success('Image uploaded successfully');
     }
+  };
+
+  const handleImageClick = (imageUrl: string) => {
+    setExpandedImage(imageUrl);
+  };
+
+  const handleCloseImageModal = () => {
+    setExpandedImage(null);
   };
 
   return (
@@ -872,15 +882,24 @@ export const DriverDetailsSheet = ({
                                       </Button>
                                     </div>
                                     {vehicleInfo.plateImage && (
-                                      <div className="mt-2">
-                                        <img 
-                                          src={vehicleInfo.plateImage} 
-                                          alt="Plate" 
-                                          className="w-32 h-20 object-cover rounded border"
-                                          onError={(e) => {
-                                            e.currentTarget.style.display = 'none';
-                                          }}
-                                        />
+                                      <div className="mt-2 flex items-center gap-2">
+                                        <div 
+                                          className="relative cursor-pointer group border rounded overflow-hidden"
+                                          onClick={() => handleImageClick(vehicleInfo.plateImage)}
+                                        >
+                                          <img 
+                                            src={vehicleInfo.plateImage} 
+                                            alt="Plate" 
+                                            className="w-16 h-10 object-cover transition-transform group-hover:scale-105"
+                                            onError={(e) => {
+                                              e.currentTarget.style.display = 'none';
+                                            }}
+                                          />
+                                          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
+                                            <Eye className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                                          </div>
+                                        </div>
+                                        <span className="text-sm text-muted-foreground">Click to expand</span>
                                       </div>
                                     )}
                                   </div>
@@ -1046,6 +1065,27 @@ export const DriverDetailsSheet = ({
         onClose={handleCloseDocumentModal}
         document={selectedDocument}
       />
+
+      {/* Image Expansion Modal */}
+      <Dialog open={!!expandedImage} onOpenChange={handleCloseImageModal}>
+        <DialogContent className="sm:max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>Plate Image Preview</DialogTitle>
+          </DialogHeader>
+          <div className="flex justify-center p-4">
+            {expandedImage && (
+              <img 
+                src={expandedImage} 
+                alt="Expanded plate image" 
+                className="max-w-full max-h-[70vh] object-contain rounded-lg"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
