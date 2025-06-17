@@ -210,11 +210,11 @@ export const DriverDetailsSheet = ({
     }
   };
 
-  const handleAddTransport = (transportId: string) => {
-    if (!editedData.transports.includes(transportId)) {
-      const newTransports = [...editedData.transports, transportId];
+  const handleAddTransport = () => {
+    if (selectedTransportToAdd && !editedData.transports.includes(selectedTransportToAdd)) {
+      const newTransports = [...editedData.transports, selectedTransportToAdd];
       const newVehicleInfo = [...editedData.vehicleInfo, {
-        transportId,
+        transportId: selectedTransportToAdd,
         year: '',
         make: '',
         model: '',
@@ -226,8 +226,8 @@ export const DriverDetailsSheet = ({
         transports: newTransports,
         vehicleInfo: newVehicleInfo
       }));
+      setSelectedTransportToAdd('');
     }
-    setSelectedTransportToAdd('');
   };
 
   const handleRemoveTransport = (transportId: string) => {
@@ -738,29 +738,37 @@ export const DriverDetailsSheet = ({
                         {/* Add Transport Type Dropdown */}
                         <div>
                           <Label>Add Transport Type</Label>
-                          <Select 
-                            value={selectedTransportToAdd} 
-                            onValueChange={(value) => {
-                              setSelectedTransportToAdd(value);
-                              handleAddTransport(value);
-                            }}
-                          >
-                            <SelectTrigger className="mt-1">
-                              <SelectValue placeholder="Select transport type to add" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {availableTransportTypes
-                                .filter(id => !editedData.transports.includes(id))
-                                .map(id => (
-                                  <SelectItem key={id} value={id}>
-                                    <div className="flex items-center gap-2">
-                                      <TransportIcon transportType={id as TransportType} size={16} />
-                                      {transportTypes[id] || `Transport ${id}`}
-                                    </div>
-                                  </SelectItem>
-                                ))}
-                            </SelectContent>
-                          </Select>
+                          <div className="flex gap-2 mt-1">
+                            <Select 
+                              value={selectedTransportToAdd} 
+                              onValueChange={setSelectedTransportToAdd}
+                            >
+                              <SelectTrigger className="flex-1">
+                                <SelectValue placeholder="Select transport type to add" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {availableTransportTypes
+                                  .filter(id => !editedData.transports.includes(id))
+                                  .map(id => (
+                                    <SelectItem key={id} value={id}>
+                                      <div className="flex items-center gap-2">
+                                        <TransportIcon transportType={id as TransportType} size={16} />
+                                        {transportTypes[id] || `Transport ${id}`}
+                                      </div>
+                                    </SelectItem>
+                                  ))}
+                              </SelectContent>
+                            </Select>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={handleAddTransport}
+                              disabled={!selectedTransportToAdd}
+                              className="px-3"
+                            >
+                              <Plus className="w-4 h-4" />
+                            </Button>
+                          </div>
                         </div>
 
                         {/* Current Transport Types with Vehicle Info */}
