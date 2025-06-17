@@ -70,6 +70,7 @@ export const DriverDetailsSheet = ({
 }: DriverDetailsSheetProps) => {
   const [selectedDocument, setSelectedDocument] = useState<typeof documents[0] | null>(null);
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
+  const [selectedTransportToAdd, setSelectedTransportToAdd] = useState<string>('');
   
   // Editing states
   const [editingSection, setEditingSection] = useState<string | null>(null);
@@ -137,6 +138,7 @@ export const DriverDetailsSheet = ({
 
   const handleEdit = (section: string) => {
     setEditingSection(section);
+    setSelectedTransportToAdd('');
     // Reset edited data to current driver data
     setEditedData({
       firstName: driver.name.split(' ')[0] || '',
@@ -159,11 +161,13 @@ export const DriverDetailsSheet = ({
 
   const handleSave = (section: string) => {
     setEditingSection(null);
+    setSelectedTransportToAdd('');
     toast.success(`${section} updated successfully`);
   };
 
   const handleCancel = () => {
     setEditingSection(null);
+    setSelectedTransportToAdd('');
     // Reset edited data to original values
     setEditedData({
       firstName: driver.name.split(' ')[0] || '',
@@ -223,6 +227,7 @@ export const DriverDetailsSheet = ({
         vehicleInfo: newVehicleInfo
       }));
     }
+    setSelectedTransportToAdd('');
   };
 
   const handleRemoveTransport = (transportId: string) => {
@@ -733,7 +738,13 @@ export const DriverDetailsSheet = ({
                         {/* Add Transport Type Dropdown */}
                         <div>
                           <Label>Add Transport Type</Label>
-                          <Select onValueChange={handleAddTransport}>
+                          <Select 
+                            value={selectedTransportToAdd} 
+                            onValueChange={(value) => {
+                              setSelectedTransportToAdd(value);
+                              handleAddTransport(value);
+                            }}
+                          >
                             <SelectTrigger className="mt-1">
                               <SelectValue placeholder="Select transport type to add" />
                             </SelectTrigger>
