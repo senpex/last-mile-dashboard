@@ -141,6 +141,29 @@ export const DriverDetailsSheet = ({
   const handleEdit = (section: string) => {
     setEditingSection(section);
     setSelectedTransportToAdd('');
+    
+    // Initialize vehicle info for all existing transports when editing transports section
+    let initialVehicleInfo = driver.vehicleInfo || [];
+    if (section === 'transports') {
+      // Ensure every transport has a vehicle info entry
+      const existingTransportIds = initialVehicleInfo.map(info => info.transportId);
+      const missingTransports = driver.transports.filter(transportId => 
+        !existingTransportIds.includes(transportId)
+      );
+      
+      // Add vehicle info entries for transports that don't have them
+      const newVehicleInfoEntries = missingTransports.map(transportId => ({
+        transportId,
+        year: '',
+        make: '',
+        model: '',
+        plateNumber: '',
+        plateImage: ''
+      }));
+      
+      initialVehicleInfo = [...initialVehicleInfo, ...newVehicleInfoEntries];
+    }
+    
     // Reset edited data to current driver data
     setEditedData({
       firstName: driver.name.split(' ')[0] || '',
@@ -157,7 +180,7 @@ export const DriverDetailsSheet = ({
       approvedByAdmin: driver.approvedByAdmin || 'pending',
       profileTypes: driver.profileTypes || [],
       transports: driver.transports || [],
-      vehicleInfo: driver.vehicleInfo || []
+      vehicleInfo: initialVehicleInfo
     });
   };
 
