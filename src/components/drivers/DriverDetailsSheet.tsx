@@ -9,6 +9,8 @@ import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit, Save, X, Plus, Trash2, Upload, Eye } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { DocumentViewerModal } from "./DocumentViewerModal";
@@ -41,6 +43,10 @@ interface Driver {
   verifiedByDriver?: 'Verified' | 'Not verified';
   approvedByAdmin?: 'approved' | 'disapproved' | 'pending';
   vehicleInfo?: VehicleInfo[];
+  twoStepVerification?: 'yes' | 'no';
+  driverControl?: 'yes' | 'no';
+  planning?: 'enabled' | 'disabled';
+  banned?: 'yes' | 'no';
 }
 
 interface DriverDetailsSheetProps {
@@ -91,7 +97,11 @@ export const DriverDetailsSheet = ({
     approvedByAdmin: driver?.approvedByAdmin || 'pending' as const,
     profileTypes: driver?.profileTypes || [],
     transports: driver?.transports || [],
-    vehicleInfo: driver?.vehicleInfo || []
+    vehicleInfo: driver?.vehicleInfo || [],
+    twoStepVerification: driver?.twoStepVerification || 'no' as const,
+    driverControl: driver?.driverControl || 'no' as const,
+    planning: driver?.planning || 'disabled' as const,
+    banned: driver?.banned || 'no' as const
   });
 
   if (!driver) return null;
@@ -180,7 +190,11 @@ export const DriverDetailsSheet = ({
       approvedByAdmin: driver.approvedByAdmin || 'pending',
       profileTypes: driver.profileTypes || [],
       transports: driver.transports || [],
-      vehicleInfo: initialVehicleInfo
+      vehicleInfo: initialVehicleInfo,
+      twoStepVerification: driver.twoStepVerification || 'no',
+      driverControl: driver.driverControl || 'no',
+      planning: driver.planning || 'disabled',
+      banned: driver.banned || 'no'
     });
   };
 
@@ -209,7 +223,11 @@ export const DriverDetailsSheet = ({
       approvedByAdmin: driver.approvedByAdmin || 'pending',
       profileTypes: driver.profileTypes || [],
       transports: driver.transports || [],
-      vehicleInfo: driver.vehicleInfo || []
+      vehicleInfo: driver.vehicleInfo || [],
+      twoStepVerification: driver.twoStepVerification || 'no',
+      driverControl: driver.driverControl || 'no',
+      planning: driver.planning || 'disabled',
+      banned: driver.banned || 'no'
     });
   };
 
@@ -494,6 +512,108 @@ export const DriverDetailsSheet = ({
                               'secondary'
                             }>
                               {driver.approvedByAdmin || 'Pending'}
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* New Fields */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label>Two Step Verification</Label>
+                        <div className="mt-1">
+                          {editingSection === 'status' ? (
+                            <RadioGroup 
+                              value={editedData.twoStepVerification} 
+                              onValueChange={(value) => handleInputChange('twoStepVerification', value)}
+                              className="flex gap-4"
+                            >
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="yes" id="two-step-yes" />
+                                <Label htmlFor="two-step-yes" className="text-sm font-normal">Yes</Label>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="no" id="two-step-no" />
+                                <Label htmlFor="two-step-no" className="text-sm font-normal">No</Label>
+                              </div>
+                            </RadioGroup>
+                          ) : (
+                            <Badge variant={driver.twoStepVerification === 'yes' ? 'default' : 'secondary'}>
+                              {driver.twoStepVerification === 'yes' ? 'Yes' : 'No'}
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <Label>Driver Control</Label>
+                        <div className="mt-1">
+                          {editingSection === 'status' ? (
+                            <RadioGroup 
+                              value={editedData.driverControl} 
+                              onValueChange={(value) => handleInputChange('driverControl', value)}
+                              className="flex gap-4"
+                            >
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="yes" id="driver-control-yes" />
+                                <Label htmlFor="driver-control-yes" className="text-sm font-normal">Yes</Label>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="no" id="driver-control-no" />
+                                <Label htmlFor="driver-control-no" className="text-sm font-normal">No</Label>
+                              </div>
+                            </RadioGroup>
+                          ) : (
+                            <Badge variant={driver.driverControl === 'yes' ? 'default' : 'secondary'}>
+                              {driver.driverControl === 'yes' ? 'Yes' : 'No'}
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label>Planning</Label>
+                        <div className="mt-1">
+                          {editingSection === 'status' ? (
+                            <div className="flex items-center space-x-2">
+                              <Switch
+                                checked={editedData.planning === 'enabled'}
+                                onCheckedChange={(checked) => handleInputChange('planning', checked ? 'enabled' : 'disabled')}
+                              />
+                              <Label className="text-sm font-normal">
+                                {editedData.planning === 'enabled' ? 'Enabled' : 'Disabled'}
+                              </Label>
+                            </div>
+                          ) : (
+                            <Badge variant={driver.planning === 'enabled' ? 'default' : 'secondary'}>
+                              {driver.planning === 'enabled' ? 'Enabled' : 'Disabled'}
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <Label>Banned</Label>
+                        <div className="mt-1">
+                          {editingSection === 'status' ? (
+                            <RadioGroup 
+                              value={editedData.banned} 
+                              onValueChange={(value) => handleInputChange('banned', value)}
+                              className="flex gap-4"
+                            >
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="yes" id="banned-yes" />
+                                <Label htmlFor="banned-yes" className="text-sm font-normal">Yes</Label>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="no" id="banned-no" />
+                                <Label htmlFor="banned-no" className="text-sm font-normal">No</Label>
+                              </div>
+                            </RadioGroup>
+                          ) : (
+                            <Badge variant={driver.banned === 'yes' ? 'destructive' : 'default'}>
+                              {driver.banned === 'yes' ? 'Yes' : 'No'}
                             </Badge>
                           )}
                         </div>
