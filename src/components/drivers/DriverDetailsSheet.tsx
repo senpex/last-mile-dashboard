@@ -42,13 +42,13 @@ interface Driver {
   earnings: number;
   joinDate: string;
   location: string;
-  documents: {
+  documents?: {
     driverLicense: { status: string; expiryDate: string };
     insurance: { status: string; expiryDate: string };
     vehicleRegistration: { status: string; expiryDate: string };
     backgroundCheck: { status: string; date: string };
   };
-  bankDetails: {
+  bankDetails?: {
     accountNumber: string;
     routingNumber: string;
     bankName: string;
@@ -99,7 +99,7 @@ export const DriverDetailsSheet = ({ isOpen, onClose, driver }: DriverDetailsShe
       setEditedDriver({
         ...editedDriver,
         [parent]: {
-          ...editedDriver[parent as keyof Driver],
+          ...(editedDriver[parent as keyof Driver] as object || {}),
           [field]: value
         }
       });
@@ -112,16 +112,6 @@ export const DriverDetailsSheet = ({ isOpen, onClose, driver }: DriverDetailsShe
         <SheetHeader className="p-6 pb-2">
           <div className="flex items-center justify-between">
             <SheetTitle className="text-left text-lg">Driver Profile - {currentDriver.name}</SheetTitle>
-            <div className="flex gap-2">
-              {!isEditing ? (
-                <Button onClick={handleEdit}>Edit Profile</Button>
-              ) : (
-                <>
-                  <Button variant="outline" onClick={handleCancel}>Cancel</Button>
-                  <Button onClick={handleSave}>Save Changes</Button>
-                </>
-              )}
-            </div>
           </div>
         </SheetHeader>
 
@@ -153,52 +143,19 @@ export const DriverDetailsSheet = ({ isOpen, onClose, driver }: DriverDetailsShe
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="name">Full Name</Label>
-                          {isEditing ? (
-                            <Input
-                              id="name"
-                              value={currentDriver.name}
-                              onChange={(e) => updateField('name', e.target.value)}
-                            />
-                          ) : (
-                            <p className="mt-1 text-sm">{currentDriver.name}</p>
-                          )}
+                          <p className="mt-1 text-sm">{currentDriver.name}</p>
                         </div>
                         <div>
                           <Label htmlFor="email">Email</Label>
-                          {isEditing ? (
-                            <Input
-                              id="email"
-                              type="email"
-                              value={currentDriver.email}
-                              onChange={(e) => updateField('email', e.target.value)}
-                            />
-                          ) : (
-                            <p className="mt-1 text-sm">{currentDriver.email}</p>
-                          )}
+                          <p className="mt-1 text-sm">{currentDriver.email}</p>
                         </div>
                         <div>
                           <Label htmlFor="phone">Phone</Label>
-                          {isEditing ? (
-                            <Input
-                              id="phone"
-                              value={currentDriver.phone}
-                              onChange={(e) => updateField('phone', e.target.value)}
-                            />
-                          ) : (
-                            <p className="mt-1 text-sm">{currentDriver.phone}</p>
-                          )}
+                          <p className="mt-1 text-sm">{currentDriver.phone}</p>
                         </div>
                         <div>
                           <Label htmlFor="location">Location</Label>
-                          {isEditing ? (
-                            <Input
-                              id="location"
-                              value={currentDriver.location}
-                              onChange={(e) => updateField('location', e.target.value)}
-                            />
-                          ) : (
-                            <p className="mt-1 text-sm">{currentDriver.location}</p>
-                          )}
+                          <p className="mt-1 text-sm">{currentDriver.location || 'N/A'}</p>
                         </div>
                       </div>
                     </CardContent>
@@ -215,21 +172,7 @@ export const DriverDetailsSheet = ({ isOpen, onClose, driver }: DriverDetailsShe
                     <CardContent>
                       <div>
                         <Label htmlFor="vehicle">Vehicle Type</Label>
-                        {isEditing ? (
-                          <Select value={currentDriver.vehicle} onValueChange={(value) => updateField('vehicle', value)}>
-                            <SelectTrigger>
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Sedan">Sedan</SelectItem>
-                              <SelectItem value="SUV">SUV</SelectItem>
-                              <SelectItem value="Van">Van</SelectItem>
-                              <SelectItem value="Truck">Truck</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        ) : (
-                          <p className="mt-1 text-sm">{currentDriver.vehicle}</p>
-                        )}
+                        <p className="mt-1 text-sm">{currentDriver.vehicle || 'N/A'}</p>
                       </div>
                     </CardContent>
                   </Card>
@@ -246,22 +189,9 @@ export const DriverDetailsSheet = ({ isOpen, onClose, driver }: DriverDetailsShe
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label>Status</Label>
-                          {isEditing ? (
-                            <Select value={currentDriver.status} onValueChange={(value) => updateField('status', value)}>
-                              <SelectTrigger>
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="Active">Active</SelectItem>
-                                <SelectItem value="Inactive">Inactive</SelectItem>
-                                <SelectItem value="Suspended">Suspended</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          ) : (
-                            <Badge variant={currentDriver.status === 'Active' ? 'default' : 'secondary'} className="mt-1">
-                              {currentDriver.status}
-                            </Badge>
-                          )}
+                          <Badge variant={currentDriver.status === 'Active' ? 'default' : 'secondary'} className="mt-1">
+                            {currentDriver.status}
+                          </Badge>
                         </div>
                         <div>
                           <Label>Rating</Label>
@@ -275,202 +205,114 @@ export const DriverDetailsSheet = ({ isOpen, onClose, driver }: DriverDetailsShe
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                           <Label>Two Step Verification</Label>
-                          {isEditing ? (
-                            <RadioGroup 
-                              value={currentDriver.twoStepVerification ? "yes" : "no"} 
-                              onValueChange={(value) => updateField('twoStepVerification', value === "yes")}
-                              className="flex gap-4 mt-2"
-                            >
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="yes" id="two-step-yes" />
-                                <Label htmlFor="two-step-yes">Yes</Label>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="no" id="two-step-no" />
-                                <Label htmlFor="two-step-no">No</Label>
-                              </div>
-                            </RadioGroup>
-                          ) : (
-                            <p className="mt-1 text-sm">{currentDriver.twoStepVerification ? "Yes" : "No"}</p>
-                          )}
+                          <p className="mt-1 text-sm">{currentDriver.twoStepVerification ? "Yes" : "No"}</p>
                         </div>
 
                         <div>
                           <Label>Driver Control</Label>
-                          {isEditing ? (
-                            <RadioGroup 
-                              value={currentDriver.driverControl ? "yes" : "no"} 
-                              onValueChange={(value) => updateField('driverControl', value === "yes")}
-                              className="flex gap-4 mt-2"
-                            >
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="yes" id="driver-control-yes" />
-                                <Label htmlFor="driver-control-yes">Yes</Label>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="no" id="driver-control-no" />
-                                <Label htmlFor="driver-control-no">No</Label>
-                              </div>
-                            </RadioGroup>
-                          ) : (
-                            <p className="mt-1 text-sm">{currentDriver.driverControl ? "Yes" : "No"}</p>
-                          )}
+                          <p className="mt-1 text-sm">{currentDriver.driverControl ? "Yes" : "No"}</p>
                         </div>
 
                         <div>
                           <Label>Planning</Label>
-                          {isEditing ? (
-                            <RadioGroup 
-                              value={currentDriver.planning ? "yes" : "no"} 
-                              onValueChange={(value) => updateField('planning', value === "yes")}
-                              className="flex gap-4 mt-2"
-                            >
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="yes" id="planning-yes" />
-                                <Label htmlFor="planning-yes">Yes</Label>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="no" id="planning-no" />
-                                <Label htmlFor="planning-no">No</Label>
-                              </div>
-                            </RadioGroup>
-                          ) : (
-                            <p className="mt-1 text-sm">{currentDriver.planning ? "Yes" : "No"}</p>
-                          )}
+                          <p className="mt-1 text-sm">{currentDriver.planning ? "Yes" : "No"}</p>
                         </div>
 
                         <div>
                           <Label>Banned</Label>
-                          {isEditing ? (
-                            <RadioGroup 
-                              value={currentDriver.banned ? "yes" : "no"} 
-                              onValueChange={(value) => updateField('banned', value === "yes")}
-                              className="flex gap-4 mt-2"
-                            >
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="yes" id="banned-yes" />
-                                <Label htmlFor="banned-yes">Yes</Label>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="no" id="banned-no" />
-                                <Label htmlFor="banned-no">No</Label>
-                              </div>
-                            </RadioGroup>
-                          ) : (
-                            <p className="mt-1 text-sm">{currentDriver.banned ? "Yes" : "No"}</p>
-                          )}
+                          <p className="mt-1 text-sm">{currentDriver.banned ? "Yes" : "No"}</p>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
 
                   {/* Documents */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Shield className="w-5 h-5" />
-                        Documents
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label>Driver License</Label>
-                          <div className="flex items-center justify-between">
-                            <Badge variant={currentDriver.documents.driverLicense.status === 'Verified' ? 'default' : 'secondary'}>
-                              {currentDriver.documents.driverLicense.status}
-                            </Badge>
-                            <span className="text-sm text-muted-foreground">
-                              Expires: {currentDriver.documents.driverLicense.expiryDate}
-                            </span>
+                  {currentDriver.documents && (
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Shield className="w-5 h-5" />
+                          Documents
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label>Driver License</Label>
+                            <div className="flex items-center justify-between">
+                              <Badge variant={currentDriver.documents.driverLicense.status === 'Verified' ? 'default' : 'secondary'}>
+                                {currentDriver.documents.driverLicense.status}
+                              </Badge>
+                              <span className="text-sm text-muted-foreground">
+                                Expires: {currentDriver.documents.driverLicense.expiryDate}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Insurance</Label>
+                            <div className="flex items-center justify-between">
+                              <Badge variant={currentDriver.documents.insurance.status === 'Verified' ? 'default' : 'secondary'}>
+                                {currentDriver.documents.insurance.status}
+                              </Badge>
+                              <span className="text-sm text-muted-foreground">
+                                Expires: {currentDriver.documents.insurance.expiryDate}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Vehicle Registration</Label>
+                            <div className="flex items-center justify-between">
+                              <Badge variant={currentDriver.documents.vehicleRegistration.status === 'Verified' ? 'default' : 'secondary'}>
+                                {currentDriver.documents.vehicleRegistration.status}
+                              </Badge>
+                              <span className="text-sm text-muted-foreground">
+                                Expires: {currentDriver.documents.vehicleRegistration.expiryDate}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Background Check</Label>
+                            <div className="flex items-center justify-between">
+                              <Badge variant={currentDriver.documents.backgroundCheck.status === 'Verified' ? 'default' : 'secondary'}>
+                                {currentDriver.documents.backgroundCheck.status}
+                              </Badge>
+                              <span className="text-sm text-muted-foreground">
+                                Date: {currentDriver.documents.backgroundCheck.date}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                        <div className="space-y-2">
-                          <Label>Insurance</Label>
-                          <div className="flex items-center justify-between">
-                            <Badge variant={currentDriver.documents.insurance.status === 'Verified' ? 'default' : 'secondary'}>
-                              {currentDriver.documents.insurance.status}
-                            </Badge>
-                            <span className="text-sm text-muted-foreground">
-                              Expires: {currentDriver.documents.insurance.expiryDate}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Vehicle Registration</Label>
-                          <div className="flex items-center justify-between">
-                            <Badge variant={currentDriver.documents.vehicleRegistration.status === 'Verified' ? 'default' : 'secondary'}>
-                              {currentDriver.documents.vehicleRegistration.status}
-                            </Badge>
-                            <span className="text-sm text-muted-foreground">
-                              Expires: {currentDriver.documents.vehicleRegistration.expiryDate}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Background Check</Label>
-                          <div className="flex items-center justify-between">
-                            <Badge variant={currentDriver.documents.backgroundCheck.status === 'Verified' ? 'default' : 'secondary'}>
-                              {currentDriver.documents.backgroundCheck.status}
-                            </Badge>
-                            <span className="text-sm text-muted-foreground">
-                              Date: {currentDriver.documents.backgroundCheck.date}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardContent>
+                    </Card>
+                  )}
 
                   {/* Bank Details */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <CreditCard className="w-5 h-5" />
-                        Bank Details
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <Label htmlFor="bank-name">Bank Name</Label>
-                          {isEditing ? (
-                            <Input
-                              id="bank-name"
-                              value={currentDriver.bankDetails.bankName}
-                              onChange={(e) => updateNestedField('bankDetails', 'bankName', e.target.value)}
-                            />
-                          ) : (
+                  {currentDriver.bankDetails && (
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <CreditCard className="w-5 h-5" />
+                          Bank Details
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <Label htmlFor="bank-name">Bank Name</Label>
                             <p className="mt-1 text-sm">{currentDriver.bankDetails.bankName}</p>
-                          )}
-                        </div>
-                        <div>
-                          <Label htmlFor="account-number">Account Number</Label>
-                          {isEditing ? (
-                            <Input
-                              id="account-number"
-                              value={currentDriver.bankDetails.accountNumber}
-                              onChange={(e) => updateNestedField('bankDetails', 'accountNumber', e.target.value)}
-                            />
-                          ) : (
+                          </div>
+                          <div>
+                            <Label htmlFor="account-number">Account Number</Label>
                             <p className="mt-1 text-sm">****{currentDriver.bankDetails.accountNumber.slice(-4)}</p>
-                          )}
-                        </div>
-                        <div>
-                          <Label htmlFor="routing-number">Routing Number</Label>
-                          {isEditing ? (
-                            <Input
-                              id="routing-number"
-                              value={currentDriver.bankDetails.routingNumber}
-                              onChange={(e) => updateNestedField('bankDetails', 'routingNumber', e.target.value)}
-                            />
-                          ) : (
+                          </div>
+                          <div>
+                            <Label htmlFor="routing-number">Routing Number</Label>
                             <p className="mt-1 text-sm">{currentDriver.bankDetails.routingNumber}</p>
-                          )}
+                          </div>
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardContent>
+                    </Card>
+                  )}
                 </div>
               </ScrollArea>
             </TabsContent>
