@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit, Save, X, Plus, Trash2 } from "lucide-react";
+import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit, Save, X, Plus, Trash2, Upload } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { DocumentViewerModal } from "./DocumentViewerModal";
 import { toast } from "sonner";
@@ -261,6 +261,16 @@ export const DriverDetailsSheet = ({
       plateNumber: '',
       plateImage: ''
     };
+  };
+
+  const handleImageUpload = (transportId: string, event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Create a local URL for the image preview
+      const imageUrl = URL.createObjectURL(file);
+      handleVehicleInfoChange(transportId, 'plateImage', imageUrl);
+      toast.success('Image uploaded successfully');
+    }
   };
 
   return (
@@ -838,28 +848,50 @@ export const DriverDetailsSheet = ({
                                   </div>
                                 </div>
                                 
-                                {/* Plate Image */}
+                                {/* Plate Image Upload */}
                                 <div>
-                                  <Label htmlFor={`plateImage-${transportId}`}>Plate Image URL</Label>
-                                  <Input
-                                    id={`plateImage-${transportId}`}
-                                    value={vehicleInfo.plateImage || ''}
-                                    onChange={(e) => handleVehicleInfoChange(transportId, 'plateImage', e.target.value)}
-                                    placeholder="Image URL or path"
-                                    className="mt-1"
-                                  />
-                                  {vehicleInfo.plateImage && (
-                                    <div className="mt-2">
-                                      <img 
-                                        src={vehicleInfo.plateImage} 
-                                        alt="Plate" 
-                                        className="w-24 h-16 object-cover rounded border"
-                                        onError={(e) => {
-                                          e.currentTarget.style.display = 'none';
-                                        }}
+                                  <Label htmlFor={`plateImageUpload-${transportId}`}>Plate Image</Label>
+                                  <div className="mt-1 space-y-3">
+                                    <div className="flex items-center gap-3">
+                                      <Input
+                                        id={`plateImageUpload-${transportId}`}
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => handleImageUpload(transportId, e)}
+                                        className="hidden"
                                       />
+                                      <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => document.getElementById(`plateImageUpload-${transportId}`)?.click()}
+                                        className="flex items-center gap-2"
+                                      >
+                                        <Upload className="w-4 h-4" />
+                                        Upload Image
+                                      </Button>
+                                      <span className="text-sm text-muted-foreground">
+                                        or enter URL below
+                                      </span>
                                     </div>
-                                  )}
+                                    <Input
+                                      value={vehicleInfo.plateImage || ''}
+                                      onChange={(e) => handleVehicleInfoChange(transportId, 'plateImage', e.target.value)}
+                                      placeholder="Image URL or path"
+                                    />
+                                    {vehicleInfo.plateImage && (
+                                      <div className="mt-2">
+                                        <img 
+                                          src={vehicleInfo.plateImage} 
+                                          alt="Plate" 
+                                          className="w-32 h-20 object-cover rounded border"
+                                          onError={(e) => {
+                                            e.currentTarget.style.display = 'none';
+                                          }}
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             );
