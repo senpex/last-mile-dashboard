@@ -577,18 +577,23 @@ export const DriverDetailsSheet = ({
                         <Label>Planning</Label>
                         <div className="mt-1">
                           {editingSection === 'status' ? (
-                            <div className="flex items-center space-x-2">
-                              <Switch
-                                checked={editedData.planning === 'enabled'}
-                                onCheckedChange={(checked) => handleInputChange('planning', checked ? 'enabled' : 'disabled')}
-                              />
-                              <Label className="text-sm font-normal">
-                                {editedData.planning === 'enabled' ? 'Enabled' : 'Disabled'}
-                              </Label>
-                            </div>
+                            <RadioGroup 
+                              value={editedData.planning === 'enabled' ? 'yes' : 'no'} 
+                              onValueChange={(value) => handleInputChange('planning', value === 'yes' ? 'enabled' : 'disabled')}
+                              className="flex gap-4"
+                            >
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="yes" id="planning-yes" />
+                                <Label htmlFor="planning-yes" className="text-sm font-normal">Yes</Label>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="no" id="planning-no" />
+                                <Label htmlFor="planning-no" className="text-sm font-normal">No</Label>
+                              </div>
+                            </RadioGroup>
                           ) : (
                             <Badge variant={driver.planning === 'enabled' ? 'default' : 'secondary'}>
-                              {driver.planning === 'enabled' ? 'Enabled' : 'Disabled'}
+                              {driver.planning === 'enabled' ? 'Yes' : 'No'}
                             </Badge>
                           )}
                         </div>
