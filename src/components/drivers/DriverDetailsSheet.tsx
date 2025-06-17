@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -145,6 +146,7 @@ export const DriverDetailsSheet = ({
       id: 1,
       date: "2024-01-15",
       amount: 425.50,
+      status: "paid",
       transactions: [
         { orderNumber: "ORD-2024-001", date: "2024-01-14", earning: 85.00, commission: 12.75, tip: 15.00 },
         { orderNumber: "ORD-2024-002", date: "2024-01-14", earning: 120.00, commission: 18.00, tip: 25.00 },
@@ -156,6 +158,7 @@ export const DriverDetailsSheet = ({
       id: 2,
       date: "2024-01-08",
       amount: 312.75,
+      status: "paid",
       transactions: [
         { orderNumber: "ORD-2024-005", date: "2024-01-07", earning: 75.00, commission: 11.25, tip: 12.00 },
         { orderNumber: "ORD-2024-006", date: "2024-01-08", earning: 90.00, commission: 13.50, tip: 22.50 },
@@ -166,6 +169,7 @@ export const DriverDetailsSheet = ({
       id: 3,
       date: "2024-01-01",
       amount: 198.25,
+      status: "paid",
       transactions: [
         { orderNumber: "ORD-2023-099", date: "2023-12-31", earning: 65.00, commission: 9.75, tip: 8.00 },
         { orderNumber: "ORD-2024-008", date: "2024-01-01", earning: 115.50, commission: 17.33, tip: 0.00 }
@@ -1299,7 +1303,10 @@ export const DriverDetailsSheet = ({
                                               </p>
                                             </div>
                                           </div>
-                                          <div className="flex items-center gap-2">
+                                          <div className="flex items-center gap-3">
+                                            <Badge variant="success" className="text-xs">
+                                              Paid
+                                            </Badge>
                                             <span className="font-semibold text-lg">
                                               ${payout.amount.toFixed(2)}
                                             </span>
