@@ -530,12 +530,12 @@ export const DriverDetailsSheet = ({
                               className="flex gap-4"
                             >
                               <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="yes" id="two-step-yes" className="border-red-500 text-red-500 focus-visible:ring-red-500" />
-                                <Label htmlFor="two-step-yes" className="text-sm font-normal text-red-700">Yes</Label>
+                                <RadioGroupItem value="yes" id="two-step-yes" />
+                                <Label htmlFor="two-step-yes" className="text-sm font-normal">Yes</Label>
                               </div>
                               <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="no" id="two-step-no" className="border-green-500 text-green-500 focus-visible:ring-green-500" />
-                                <Label htmlFor="two-step-no" className="text-sm font-normal text-green-700">No</Label>
+                                <RadioGroupItem value="no" id="two-step-no" />
+                                <Label htmlFor="two-step-no" className="text-sm font-normal">No</Label>
                               </div>
                             </RadioGroup>
                           ) : (
@@ -555,12 +555,12 @@ export const DriverDetailsSheet = ({
                               className="flex gap-4"
                             >
                               <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="yes" id="driver-control-yes" className="border-red-500 text-red-500 focus-visible:ring-red-500" />
-                                <Label htmlFor="driver-control-yes" className="text-sm font-normal text-red-700">Yes</Label>
+                                <RadioGroupItem value="yes" id="driver-control-yes" />
+                                <Label htmlFor="driver-control-yes" className="text-sm font-normal">Yes</Label>
                               </div>
                               <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="no" id="driver-control-no" className="border-green-500 text-green-500 focus-visible:ring-green-500" />
-                                <Label htmlFor="driver-control-no" className="text-sm font-normal text-green-700">No</Label>
+                                <RadioGroupItem value="no" id="driver-control-no" />
+                                <Label htmlFor="driver-control-no" className="text-sm font-normal">No</Label>
                               </div>
                             </RadioGroup>
                           ) : (
@@ -583,12 +583,12 @@ export const DriverDetailsSheet = ({
                               className="flex gap-4"
                             >
                               <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="yes" id="planning-yes" className="border-red-500 text-red-500 focus-visible:ring-red-500" />
-                                <Label htmlFor="planning-yes" className="text-sm font-normal text-red-700">Yes</Label>
+                                <RadioGroupItem value="yes" id="planning-yes" />
+                                <Label htmlFor="planning-yes" className="text-sm font-normal">Yes</Label>
                               </div>
                               <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="no" id="planning-no" className="border-green-500 text-green-500 focus-visible:ring-green-500" />
-                                <Label htmlFor="planning-no" className="text-sm font-normal text-green-700">No</Label>
+                                <RadioGroupItem value="no" id="planning-no" />
+                                <Label htmlFor="planning-no" className="text-sm font-normal">No</Label>
                               </div>
                             </RadioGroup>
                           ) : (
@@ -608,12 +608,12 @@ export const DriverDetailsSheet = ({
                               className="flex gap-4"
                             >
                               <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="yes" id="banned-yes" className="border-red-500 text-red-500 focus-visible:ring-red-500" />
-                                <Label htmlFor="banned-yes" className="text-sm font-normal text-red-700">Yes</Label>
+                                <RadioGroupItem value="yes" id="banned-yes" />
+                                <Label htmlFor="banned-yes" className="text-sm font-normal">Yes</Label>
                               </div>
                               <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="no" id="banned-no" className="border-green-500 text-green-500 focus-visible:ring-green-500" />
-                                <Label htmlFor="banned-no" className="text-sm font-normal text-green-700">No</Label>
+                                <RadioGroupItem value="no" id="banned-no" />
+                                <Label htmlFor="banned-no" className="text-sm font-normal">No</Label>
                               </div>
                             </RadioGroup>
                           ) : (
