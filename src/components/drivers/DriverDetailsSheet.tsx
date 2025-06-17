@@ -870,15 +870,7 @@ export const DriverDetailsSheet = ({
                                         <Upload className="w-4 h-4" />
                                         Upload Image
                                       </Button>
-                                      <span className="text-sm text-muted-foreground">
-                                        or enter URL below
-                                      </span>
                                     </div>
-                                    <Input
-                                      value={vehicleInfo.plateImage || ''}
-                                      onChange={(e) => handleVehicleInfoChange(transportId, 'plateImage', e.target.value)}
-                                      placeholder="Image URL or path"
-                                    />
                                     {vehicleInfo.plateImage && (
                                       <div className="mt-2">
                                         <img 
