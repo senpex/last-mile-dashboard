@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -8,32 +9,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { 
-  Edit2, 
-  Save, 
-  X, 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Car, 
-  CreditCard, 
-  FileText, 
-  Calendar, 
-  Clock, 
-  DollarSign,
-  Image,
-  Upload,
-  Eye,
-  Trash2,
-  MessageSquare,
-  Send
-} from "lucide-react";
+import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit, Save, X, Plus, Trash2, Upload, Eye, ChevronDown, Building } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { DocumentViewerModal } from "./DocumentViewerModal";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -109,7 +91,7 @@ interface DriverDetailsSheetProps {
   onOpenOrderDetails?: (orderId: number) => void;
 }
 
-export default function DriverDetailsSheet({ 
+export const DriverDetailsSheet = ({
   isOpen,
   onClose,
   driver,
@@ -119,7 +101,7 @@ export default function DriverDetailsSheet({
   renderStatus,
   renderStripeStatus,
   onOpenOrderDetails
-}: DriverDetailsSheetProps) {
+}: DriverDetailsSheetProps) => {
   const navigate = useNavigate();
   const [selectedDocument, setSelectedDocument] = useState<typeof documents[0] | null>(null);
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
@@ -1312,10 +1294,10 @@ export default function DriverDetailsSheet({
 
                               {/* Insurance Certificate Images Grid - Same structure as Driver's License */}
                               <div className="grid grid-cols-2 gap-4 mb-4">
-                                {documents.filter(doc => doc.name.includes("Insurance")).map(doc => <div key={doc.id} className="flex items-center justify-between p-3 border rounded-lg">
+                                {documents.filter(doc => doc.name.includes("Insurance")).map(document => <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
                                     <div className="flex items-center gap-3">
-                                      <div className="relative cursor-pointer group border rounded overflow-hidden" onClick={() => handleViewDocument(doc)}>
-                                        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=250&fit=crop" alt={doc.name} className="w-16 h-10 object-cover transition-transform group-hover:scale-105" onError={e => {
+                                      <div className="relative cursor-pointer group border rounded overflow-hidden" onClick={() => handleViewDocument(document)}>
+                                        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=250&fit=crop" alt={document.name} className="w-16 h-10 object-cover transition-transform group-hover:scale-105" onError={e => {
                                       e.currentTarget.style.display = 'none';
                                     }} />
                                         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
@@ -1323,20 +1305,20 @@ export default function DriverDetailsSheet({
                                         </div>
                                       </div>
                                       <div>
-                                        <p className="text-sm font-medium">{doc.name}</p>
+                                        <p className="text-sm font-medium">{document.name}</p>
                                         <p className="text-xs text-muted-foreground">
-                                          Uploaded {doc.uploadDate}
+                                          {document.type} • Uploaded {document.uploadDate}
                                         </p>
                                       </div>
                                     </div>
                                     <div className="flex items-center gap-2">
                                       {editingSection === 'documents' && <>
-                                          <Input type="file" accept="image/*" className="hidden" id={`insurance-upload-${doc.id}`} onChange={e => handleLicenseImageUpload(doc.id, e)} />
-                                          <Button variant="outline" size="sm" onClick={() => window.document.getElementById(`insurance-upload-${doc.id}`)?.click()} className="h-7 px-2 border-blue-500 text-blue-700 hover:bg-blue-50">
+                                          <Input type="file" accept="image/*" className="hidden" id={`insurance-upload-${document.id}`} onChange={e => handleLicenseImageUpload(document.id, e)} />
+                                          <Button variant="outline" size="sm" onClick={() => document.getElementById(`insurance-upload-${document.id}`)?.click()} className="h-7 px-2 border-blue-500 text-blue-700 hover:bg-blue-50">
                                             <Upload className="w-3 h-3" />
                                           </Button>
                                         </>}
-                                      <Button variant="ghost" size="sm" onClick={() => handleViewDocument(doc)}>
+                                      <Button variant="ghost" size="sm" onClick={() => handleViewDocument(document)}>
                                         View
                                       </Button>
                                     </div>
@@ -1637,4 +1619,4 @@ export default function DriverDetailsSheet({
         </DialogContent>
       </Dialog>
     </>;
-}
+};
