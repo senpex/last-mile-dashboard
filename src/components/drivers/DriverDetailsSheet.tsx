@@ -1,809 +1,1640 @@
 import React, { useState } from 'react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Settings, Edit2, Star, User, Award, Plus, Building, ChevronDown } from 'lucide-react';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { 
+  Edit2, 
+  Save, 
+  X, 
+  Phone, 
+  Mail, 
+  MapPin, 
+  Car, 
+  CreditCard, 
+  FileText, 
+  Calendar, 
+  Clock, 
+  DollarSign,
+  Image,
+  Upload,
+  Eye,
+  Trash2,
+  MessageSquare,
+  Send
+} from "lucide-react";
+import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
+import { DocumentViewerModal } from "./DocumentViewerModal";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { OrderDetailsSheet } from "@/components/deliveries/OrderDetailsSheet";
+import { deliveriesData } from "@/data/deliveriesData";
+import { EmailsSentList } from "./EmailsSentList";
+import { RandomImage } from "@/components/ui/random-image";
 
-interface DriverDetailsSheetProps {
-  driver: any;
-  isOpen: boolean;
-  onClose: () => void;
+interface VehicleInfo {
+  transportId: string;
+  year?: string;
+  make?: string;
+  model?: string;
+  plateNumber?: string;
+  plateImage?: string;
 }
 
-const mockDocuments = [
-  {
-    id: '1',
-    name: 'License-Front.jpg',
-    uploadDate: '2024-01-20',
-  },
-  {
-    id: '2',
-    name: 'License-Back.jpg',
-    uploadDate: '2024-01-20',
-  },
-  {
-    id: '3',
-    name: 'Insurance.pdf',
-    uploadDate: '2024-01-15',
-  },
-];
+interface DriverLicenseInfo {
+  dlNumber?: string;
+  expirationDate?: string;
+  ssn?: string;
+  state?: string;
+}
 
-const DriverDetailsSheet = ({ driver, isOpen, onClose }: DriverDetailsSheetProps) => {
-  const [name, setName] = useState(driver?.name || '');
-  const [email, setEmail] = useState(driver?.email || '');
-  const [phone, setPhone] = useState(driver?.phone || '');
-  const [address, setAddress] = useState(driver?.address || '');
-  const [city, setCity] = useState(driver?.city || '');
-  const [region, setRegion] = useState(driver?.region || '');
-  const [postalCode, setPostalCode] = useState(driver?.postalCode || '');
-  const [country, setCountry] = useState(driver?.country || '');
-  const [vehicleMake, setVehicleMake] = useState(driver?.vehicleMake || '');
-  const [vehicleModel, setVehicleModel] = useState(driver?.vehicleModel || '');
-  const [vehicleYear, setVehicleYear] = useState(driver?.vehicleYear || '');
-  const [licensePlate, setLicensePlate] = useState(driver?.licensePlate || '');
-  const [employmentStatus, setEmploymentStatus] = useState(driver?.employmentStatus || '');
-  const [hireDate, setHireDate] = useState(driver?.hireDate || '');
-  const [terminationDate, setTerminationDate] = useState(driver?.terminationDate || '');
-  const [notes, setNotes] = useState(driver?.notes || '');
-  const [bankName, setBankName] = useState(driver?.bankName || '');
-  const [accountNumber, setAccountNumber] = useState(driver?.accountNumber || '');
-  const [routingNumber, setRoutingNumber] = useState(driver?.routingNumber || '');
+interface InsuranceInfo {
+  policyNumber?: string;
+  expirationDate?: string;
+}
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'email':
-        setEmail(value);
-        break;
-      case 'phone':
-        setPhone(value);
-        break;
-      case 'address':
-        setAddress(value);
-        break;
-      case 'city':
-        setCity(value);
-        break;
-      case 'region':
-        setRegion(value);
-        break;
-      case 'postalCode':
-        setPostalCode(value);
-        break;
-      case 'country':
-        setCountry(value);
-        break;
-      case 'vehicleMake':
-        setVehicleMake(value);
-        break;
-      case 'vehicleModel':
-        setVehicleModel(value);
-        break;
-      case 'vehicleYear':
-        setVehicleYear(value);
-        break;
-      case 'licensePlate':
-        setLicensePlate(value);
-        break;
-      case 'employmentStatus':
-        setEmploymentStatus(value);
-        break;
-      case 'hireDate':
-        setHireDate(value);
-        break;
-      case 'terminationDate':
-        setTerminationDate(value);
-        break;
-      case 'notes':
-        setNotes(value);
-        break;
-      case 'bankName':
-        setBankName(value);
-        break;
-      case 'accountNumber':
-        setAccountNumber(value);
-        break;
-      case 'routingNumber':
-        setRoutingNumber(value);
-        break;
-      default:
-        break;
+interface Driver {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  zipcode: string;
+  address: string;
+  transports: string[];
+  rating: number;
+  status: string;
+  hireStatus: string;
+  stripeStatus: 'verified' | 'unverified' | 'pending';
+  notes: string;
+  profileTypes: string[];
+  verifiedByDriver?: 'Verified' | 'Not verified';
+  approvedByAdmin?: 'approved' | 'disapproved' | 'pending';
+  vehicleInfo?: VehicleInfo[];
+  twoStepVerification?: 'yes' | 'no';
+  driverControl?: 'yes' | 'no';
+  planning?: 'enabled' | 'disabled';
+  banned?: 'yes' | 'no';
+  dedicatedCompanies?: string[];
+  driverLicenseInfo?: DriverLicenseInfo;
+  insuranceInfo?: InsuranceInfo;
+}
+
+interface DriverDetailsSheetProps {
+  isOpen: boolean;
+  onClose: () => void;
+  driver: Driver | null;
+  transportTypes: {
+    [key: string]: string;
+  };
+  statusDictionary: {
+    [key: string]: string;
+  };
+  hireStatusDictionary: {
+    [key: string]: string;
+  };
+  renderStatus: (statusId: string) => JSX.Element;
+  renderStripeStatus: (status: 'verified' | 'unverified' | 'pending') => JSX.Element;
+  onOpenOrderDetails?: (orderId: number) => void;
+}
+
+export default function DriverDetailsSheet({ 
+  isOpen,
+  onClose,
+  driver,
+  transportTypes,
+  statusDictionary,
+  hireStatusDictionary,
+  renderStatus,
+  renderStripeStatus,
+  onOpenOrderDetails
+}: DriverDetailsSheetProps) {
+  const navigate = useNavigate();
+  const [selectedDocument, setSelectedDocument] = useState<typeof documents[0] | null>(null);
+  const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
+  const [selectedTransportToAdd, setSelectedTransportToAdd] = useState<string>('');
+  const [selectedCompanyToAdd, setSelectedCompanyToAdd] = useState<string>('');
+  const [expandedImage, setExpandedImage] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<string>("driver-info");
+  const [activeLogTab, setActiveLogTab] = useState<string>("payment-history");
+  const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
+  const [isOrderDetailsOpen, setIsOrderDetailsOpen] = useState(false);
+  const [flaggedOrders, setFlaggedOrders] = useState<Set<number>>(new Set());
+
+  // Editing states
+  const [editingSection, setEditingSection] = useState<string | null>(null);
+  const [editedData, setEditedData] = useState({
+    firstName: driver?.name.split(' ')[0] || '',
+    lastName: driver?.name.split(' ').slice(1).join(' ') || '',
+    email: driver?.email || '',
+    phone: driver?.phone || '',
+    zipcode: driver?.zipcode || '',
+    address: driver?.address || '',
+    notes: driver?.notes || '',
+    rating: driver?.rating || 0,
+    hireStatus: driver?.hireStatus || '',
+    stripeStatus: driver?.stripeStatus || 'unverified' as const,
+    verifiedByDriver: driver?.verifiedByDriver || 'Not verified' as const,
+    approvedByAdmin: driver?.approvedByAdmin || 'pending' as const,
+    profileTypes: driver?.profileTypes || [],
+    transports: driver?.transports || [],
+    vehicleInfo: driver?.vehicleInfo || [],
+    twoStepVerification: driver?.twoStepVerification || 'no' as const,
+    driverControl: driver?.driverControl || 'no' as const,
+    planning: driver?.planning || 'disabled' as const,
+    banned: driver?.banned || 'no' as const,
+    dedicatedCompanies: driver?.dedicatedCompanies || [],
+    driverLicenseInfo: driver?.driverLicenseInfo || {
+      dlNumber: '',
+      expirationDate: '',
+      ssn: '',
+      state: ''
+    },
+    insuranceInfo: driver?.insuranceInfo || {
+      policyNumber: '',
+      expirationDate: ''
     }
+  });
+  if (!driver) return null;
+
+  // Available profile types
+  const availableProfileTypes = ['Driver', 'Mover', 'Helper'];
+
+  // Available transport types - get all available transport types from the dictionary
+  const availableTransportTypes = Object.keys(transportTypes);
+
+  // Available dedicated companies
+  const availableCompanies = ['Amazon Logistics', 'FedEx Ground', 'UPS', 'DHL Express', 'USPS', 'OnTrac', 'LaserShip', 'Blue Dart', 'Aramex', 'TNT Express'];
+
+  // Available US states
+  const usStates = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
+
+  // Sample documents data - in a real app this would come from the driver data
+  const documents = [{
+    id: 1,
+    name: "Driver's License - Front",
+    type: "Image",
+    uploadDate: "2024-01-15",
+    status: "Verified"
+  }, {
+    id: 2,
+    name: "Driver's License - Back",
+    type: "Image",
+    uploadDate: "2024-01-12",
+    status: "Pending"
+  }, {
+    id: 4,
+    name: "Insurance Certificate",
+    type: "Image",
+    uploadDate: "2024-01-08",
+    status: "Verified"
+  }];
+
+  // Driver's license images - now with only 2 original images
+  const driverLicenseImages = [{
+    id: 1,
+    name: "Driver's License - Front",
+    type: "Image",
+    uploadDate: "2024-01-15",
+    status: "Verified",
+    imageUrl: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=250&fit=crop"
+  }, {
+    id: 2,
+    name: "Driver's License - Back",
+    type: "Image",
+    uploadDate: "2024-01-12",
+    status: "Pending",
+    imageUrl: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=250&fit=crop"
+  }];
+
+  // Get actual delivery data for this driver
+  const getDeliveriesForDriver = () => {
+    return deliveriesData.filter(delivery => delivery.courier === driver.name);
+  };
+  const driverDeliveries = getDeliveriesForDriver();
+
+  // Sample payout records with real delivery order numbers
+  const payoutRecords = [{
+    id: 1,
+    date: "2024-01-15",
+    amount: 425.50,
+    status: "paid",
+    transactions: [{
+      orderId: driverDeliveries[0]?.id || 1,
+      orderNumber: driverDeliveries[0]?.id || "100001",
+      date: "2024-01-14",
+      earning: 85.00,
+      commission: 12.75,
+      tip: 15.00
+    }, {
+      orderId: driverDeliveries[1]?.id || 2,
+      orderNumber: driverDeliveries[1]?.id || "100002",
+      date: "2024-01-14",
+      earning: 120.00,
+      commission: 18.00,
+      tip: 25.00
+    }, {
+      orderId: driverDeliveries[2]?.id || 3,
+      orderNumber: driverDeliveries[2]?.id || "100003",
+      date: "2024-01-15",
+      earning: 95.50,
+      commission: 14.33,
+      tip: 20.00
+    }, {
+      orderId: driverDeliveries[3]?.id || 4,
+      orderNumber: driverDeliveries[3]?.id || "100004",
+      date: "2024-01-15",
+      earning: 110.00,
+      commission: 16.50,
+      tip: 18.92
+    }]
+  }, {
+    id: 2,
+    date: "2024-01-08",
+    amount: 312.75,
+    status: "paid",
+    transactions: [{
+      orderId: driverDeliveries[4]?.id || 5,
+      orderNumber: driverDeliveries[4]?.id || "100005",
+      date: "2024-01-07",
+      earning: 75.00,
+      commission: 11.25,
+      tip: 12.00
+    }, {
+      orderId: driverDeliveries[5]?.id || 6,
+      orderNumber: driverDeliveries[5]?.id || "100006",
+      date: "2024-01-08",
+      earning: 90.00,
+      commission: 13.50,
+      tip: 22.50
+    }, {
+      orderId: driverDeliveries[6]?.id || 7,
+      orderNumber: driverDeliveries[6]?.id || "100007",
+      date: "2024-01-08",
+      earning: 88.50,
+      commission: 13.28,
+      tip: 0.00
+    }]
+  }, {
+    id: 3,
+    date: "2024-01-01",
+    amount: 198.25,
+    status: "paid",
+    transactions: [{
+      orderId: driverDeliveries[7]?.id || 8,
+      orderNumber: driverDeliveries[7]?.id || "100008",
+      date: "2023-12-31",
+      earning: 65.00,
+      commission: 9.75,
+      tip: 8.00
+    }, {
+      orderId: driverDeliveries[8]?.id || 9,
+      orderNumber: driverDeliveries[8]?.id || "100009",
+      date: "2024-01-01",
+      earning: 115.50,
+      commission: 17.33,
+      tip: 0.00
+    }]
+  }];
+
+  // Sample upcoming payment data with real delivery order numbers
+  const upcomingPayment = {
+    id: 'upcoming-1',
+    date: "2024-01-22",
+    amount: 285.75,
+    status: "pending",
+    transactions: [{
+      orderId: driverDeliveries[9]?.id || 10,
+      orderNumber: driverDeliveries[9]?.id || "100010",
+      date: "2024-01-20",
+      earning: 95.00,
+      commission: 14.25,
+      tip: 20.00
+    }, {
+      orderId: driverDeliveries[10]?.id || 11,
+      orderNumber: driverDeliveries[10]?.id || "100011",
+      date: "2024-01-21",
+      earning: 80.50,
+      commission: 12.08,
+      tip: 15.00
+    }, {
+      orderId: driverDeliveries[11]?.id || 12,
+      orderNumber: driverDeliveries[11]?.id || "100012",
+      date: "2024-01-21",
+      earning: 105.00,
+      commission: 15.75,
+      tip: 12.92
+    }]
   };
 
-  return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-[800px] sm:max-w-[800px] overflow-y-auto">
-        <SheetHeader>
-          <SheetTitle>Driver Details - {driver?.name}</SheetTitle>
-        </SheetHeader>
+  // Use actual driver deliveries for orders on hands - take first 4 orders
+  const ordersOnHands = [{
+    id: 100429,
+    pickupDate: "2024-01-26",
+    status: "In Progress"
+  }, ...driverDeliveries.slice(0, 3).map(delivery => ({
+    id: delivery.id,
+    pickupDate: delivery.pickupTime.split(' ')[0],
+    // Extract just the date part
+    status: delivery.status
+  }))];
+  const handleViewDocument = (document: typeof documents[0]) => {
+    setSelectedDocument(document);
+    setIsDocumentModalOpen(true);
+  };
+  const handleCloseDocumentModal = () => {
+    setIsDocumentModalOpen(false);
+    setSelectedDocument(null);
+  };
+  const hireStatusOptions = Object.entries(hireStatusDictionary).map(([key, value]) => ({
+    value: key,
+    label: value
+  }));
+  const handleEdit = (section: string) => {
+    setEditingSection(section);
+    setSelectedTransportToAdd('');
+    setSelectedCompanyToAdd('');
 
-        <div className="mt-6 space-y-6">
-          {/* Basic Information */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-              <div className="flex items-center space-x-2">
-                <Settings className="h-4 w-4" />
-                <CardTitle className="text-lg">Basic Information</CardTitle>
-              </div>
-              <Button variant="ghost" size="sm">
-                <Edit2 className="h-4 w-4" />
-              </Button>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="name">Name</Label>
-                  <Input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={name}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={email}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={phone}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="address">Address</Label>
-                  <Input
-                    type="text"
-                    id="address"
-                    name="address"
-                    value={address}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="city">City</Label>
-                  <Input
-                    type="text"
-                    id="city"
-                    name="city"
-                    value={city}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="region">Region</Label>
-                  <Input
-                    type="text"
-                    id="region"
-                    name="region"
-                    value={region}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="postalCode">Postal Code</Label>
-                  <Input
-                    type="text"
-                    id="postalCode"
-                    name="postalCode"
-                    value={postalCode}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="country">Country</Label>
-                  <Input
-                    type="text"
-                    id="country"
-                    name="country"
-                    value={country}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+    // Initialize vehicle info for all existing transports when editing transports section
+    let initialVehicleInfo = driver.vehicleInfo || [];
+    if (section === 'transports') {
+      // Ensure every transport has a vehicle info entry
+      const existingTransportIds = initialVehicleInfo.map(info => info.transportId);
+      const missingTransports = driver.transports.filter(transportId => !existingTransportIds.includes(transportId));
 
-          {/* Contact Information */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-              <div className="flex items-center space-x-2">
-                <Star className="h-4 w-4" />
-                <CardTitle className="text-lg">Contact Information</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="emergencyContactName">Emergency Contact Name</Label>
-                  <Input
-                    type="text"
-                    id="emergencyContactName"
-                    defaultValue="John Doe"
-                    readOnly
-                    className="bg-gray-50"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="emergencyContactPhone">Emergency Contact Phone</Label>
-                  <Input
-                    type="tel"
-                    id="emergencyContactPhone"
-                    defaultValue="555-123-4567"
-                    readOnly
-                    className="bg-gray-50"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="secondaryContactName">Secondary Contact Name</Label>
-                  <Input
-                    type="text"
-                    id="secondaryContactName"
-                    defaultValue="Jane Smith"
-                    readOnly
-                    className="bg-gray-50"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="secondaryContactPhone">Secondary Contact Phone</Label>
-                  <Input
-                    type="tel"
-                    id="secondaryContactPhone"
-                    defaultValue="555-987-6543"
-                    readOnly
-                    className="bg-gray-50"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+      // Add vehicle info entries for transports that don't have them
+      const newVehicleInfoEntries = missingTransports.map(transportId => ({
+        transportId,
+        year: '',
+        make: '',
+        model: '',
+        plateNumber: '',
+        plateImage: ''
+      }));
+      initialVehicleInfo = [...initialVehicleInfo, ...newVehicleInfoEntries];
+    }
 
-          {/* Vehicle Information */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-              <div className="flex items-center space-x-2">
-                <Building className="h-4 w-4" />
-                <CardTitle className="text-lg">Vehicle Information</CardTitle>
-              </div>
-              <Button variant="ghost" size="sm">
-                <Edit2 className="h-4 w-4" />
-              </Button>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="vehicleMake">Vehicle Make</Label>
-                  <Input
-                    type="text"
-                    id="vehicleMake"
-                    name="vehicleMake"
-                    value={vehicleMake}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="vehicleModel">Vehicle Model</Label>
-                  <Input
-                    type="text"
-                    id="vehicleModel"
-                    name="vehicleModel"
-                    value={vehicleModel}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="vehicleYear">Vehicle Year</Label>
-                  <Input
-                    type="text"
-                    id="vehicleYear"
-                    name="vehicleYear"
-                    value={vehicleYear}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="licensePlate">License Plate</Label>
-                  <Input
-                    type="text"
-                    id="licensePlate"
-                    name="licensePlate"
-                    value={licensePlate}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Driver Profile */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-              <div className="flex items-center space-x-2">
-                <User className="h-4 w-4" />
-                <CardTitle className="text-lg">Driver Profile</CardTitle>
-              </div>
-              <Button variant="ghost" size="sm">
-                <Edit2 className="h-4 w-4" />
-              </Button>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="employmentStatus">Employment Status</Label>
-                  <Input
-                    type="text"
-                    id="employmentStatus"
-                    name="employmentStatus"
-                    value={employmentStatus}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="hireDate">Hire Date</Label>
-                  <Input
-                    type="date"
-                    id="hireDate"
-                    name="hireDate"
-                    value={hireDate}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="terminationDate">Termination Date</Label>
-                  <Input
-                    type="date"
-                    id="terminationDate"
-                    name="terminationDate"
-                    value={terminationDate}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="notes">Notes</Label>
-                  <Textarea
-                    id="notes"
-                    name="notes"
-                    value={notes}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Performance */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-              <div className="flex items-center space-x-2">
-                <Award className="h-4 w-4" />
-                <CardTitle className="text-lg">Performance</CardTitle>
-              </div>
-              <Button variant="ghost" size="sm">
-                <Edit2 className="h-4 w-4" />
-              </Button>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="deliveriesCompleted">Deliveries Completed</Label>
-                  <Input
-                    type="text"
-                    id="deliveriesCompleted"
-                    defaultValue="1200"
-                    readOnly
-                    className="bg-gray-50"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="rating">Rating</Label>
-                  <Input
-                    type="text"
-                    id="rating"
-                    defaultValue="4.8"
-                    readOnly
-                    className="bg-gray-50"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="milesDriven">Miles Driven</Label>
-                  <Input
-                    type="text"
-                    id="milesDriven"
-                    defaultValue="50000"
-                    readOnly
-                    className="bg-gray-50"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="accidents">Accidents</Label>
-                  <Input
-                    type="text"
-                    id="accidents"
-                    defaultValue="0"
-                    readOnly
-                    className="bg-gray-50"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Bank Account Information */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-              <div className="flex items-center space-x-2">
-                <Building className="h-4 w-4" />
-                <CardTitle className="text-lg">Bank Account Information</CardTitle>
-              </div>
-              <Button variant="ghost" size="sm">
-                <Plus className="h-4 w-4" />
-              </Button>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="bankName">Bank Name</Label>
-                  <Input
-                    type="text"
-                    id="bankName"
-                    name="bankName"
-                    value={bankName}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="accountNumber">Account Number</Label>
-                  <Input
-                    type="text"
-                    id="accountNumber"
-                    name="accountNumber"
-                    value={accountNumber}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="routingNumber">Routing Number</Label>
-                  <Input
-                    type="text"
-                    id="routingNumber"
-                    name="routingNumber"
-                    value={routingNumber}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Documents */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Award className="h-4 w-4" />
-                <span>Documents</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Tabs defaultValue="drivers-license" className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
-                  <TabsTrigger value="drivers-license">Driver's License</TabsTrigger>
-                  <TabsTrigger value="insurance">Insurance Certificate</TabsTrigger>
-                  <TabsTrigger value="background">Background Check</TabsTrigger>
-                  <TabsTrigger value="vehicle">Vehicle Registration</TabsTrigger>
-                </TabsList>
-
-                {/* Driver's License Tab */}
-                <TabsContent value="drivers-license" className="space-y-4">
-                  <div className="flex items-center space-x-2">
-                    <Building className="h-4 w-4" />
-                    <h3 className="text-lg font-semibold">Driver's License</h3>
+    // Reset edited data to current driver data
+    setEditedData({
+      firstName: driver.name.split(' ')[0] || '',
+      lastName: driver.name.split(' ').slice(1).join(' ') || '',
+      email: driver.email,
+      phone: driver.phone,
+      zipcode: driver.zipcode,
+      address: driver.address,
+      notes: driver.notes,
+      rating: driver.rating,
+      hireStatus: driver.hireStatus,
+      stripeStatus: driver.stripeStatus,
+      verifiedByDriver: driver.verifiedByDriver || 'Not verified',
+      approvedByAdmin: driver.approvedByAdmin || 'pending',
+      profileTypes: driver.profileTypes || [],
+      transports: driver.transports || [],
+      vehicleInfo: initialVehicleInfo,
+      twoStepVerification: driver.twoStepVerification || 'no',
+      driverControl: driver.driverControl || 'no',
+      planning: driver.planning || 'disabled',
+      banned: driver.banned || 'no',
+      dedicatedCompanies: driver.dedicatedCompanies || [],
+      driverLicenseInfo: driver.driverLicenseInfo || {
+        dlNumber: '',
+        expirationDate: '',
+        ssn: '',
+        state: ''
+      },
+      insuranceInfo: driver.insuranceInfo || {
+        policyNumber: '',
+        expirationDate: ''
+      }
+    });
+  };
+  const handleSave = (section: string) => {
+    // Save the edited data back to the driver object
+    if (section === 'companies') {
+      // Update the driver's dedicated companies
+      driver.dedicatedCompanies = [...editedData.dedicatedCompanies];
+      console.log('Saved dedicated companies:', driver.dedicatedCompanies);
+    }
+    setEditingSection(null);
+    setSelectedTransportToAdd('');
+    setSelectedCompanyToAdd('');
+    toast.success(`${section} updated successfully`);
+  };
+  const handleCancel = () => {
+    setEditingSection(null);
+    setSelectedTransportToAdd('');
+    setSelectedCompanyToAdd('');
+    // Reset edited data to original values
+    setEditedData({
+      firstName: driver.name.split(' ')[0] || '',
+      lastName: driver.name.split(' ').slice(1).join(' ') || '',
+      email: driver.email,
+      phone: driver.phone,
+      zipcode: driver.zipcode,
+      address: driver.address,
+      notes: driver.notes,
+      rating: driver.rating,
+      hireStatus: driver.hireStatus,
+      stripeStatus: driver.stripeStatus,
+      verifiedByDriver: driver.verifiedByDriver || 'Not verified',
+      approvedByAdmin: driver.approvedByAdmin || 'pending',
+      profileTypes: driver.profileTypes || [],
+      transports: driver.transports || [],
+      vehicleInfo: driver.vehicleInfo || [],
+      twoStepVerification: driver.twoStepVerification || 'no',
+      driverControl: driver.driverControl || 'no',
+      planning: driver.planning || 'disabled',
+      banned: driver.banned || 'no',
+      dedicatedCompanies: driver.dedicatedCompanies || [],
+      driverLicenseInfo: driver.driverLicenseInfo || {
+        dlNumber: '',
+        expirationDate: '',
+        ssn: '',
+        state: ''
+      },
+      insuranceInfo: driver.insuranceInfo || {
+        policyNumber: '',
+        expirationDate: ''
+      }
+    });
+  };
+  const handleInputChange = (field: string, value: string | number | string[] | VehicleInfo[]) => {
+    setEditedData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+  const handleProfileTypeChange = (profileType: string, checked: boolean) => {
+    const currentTypes = editedData.profileTypes;
+    if (checked) {
+      setEditedData(prev => ({
+        ...prev,
+        profileTypes: [...currentTypes, profileType]
+      }));
+    } else {
+      setEditedData(prev => ({
+        ...prev,
+        profileTypes: currentTypes.filter(type => type !== profileType)
+      }));
+    }
+  };
+  const handleAddTransport = () => {
+    if (selectedTransportToAdd && !editedData.transports.includes(selectedTransportToAdd)) {
+      const newTransports = [...editedData.transports, selectedTransportToAdd];
+      const newVehicleInfo = [...editedData.vehicleInfo, {
+        transportId: selectedTransportToAdd,
+        year: '',
+        make: '',
+        model: '',
+        plateNumber: '',
+        plateImage: ''
+      }];
+      setEditedData(prev => ({
+        ...prev,
+        transports: newTransports,
+        vehicleInfo: newVehicleInfo
+      }));
+      setSelectedTransportToAdd('');
+    }
+  };
+  const handleRemoveTransport = (transportId: string) => {
+    const newTransports = editedData.transports.filter(id => id !== transportId);
+    const newVehicleInfo = editedData.vehicleInfo.filter(info => info.transportId !== transportId);
+    setEditedData(prev => ({
+      ...prev,
+      transports: newTransports,
+      vehicleInfo: newVehicleInfo
+    }));
+  };
+  const handleVehicleInfoChange = (transportId: string, field: keyof VehicleInfo, value: string) => {
+    const newVehicleInfo = editedData.vehicleInfo.map(info => info.transportId === transportId ? {
+      ...info,
+      [field]: value
+    } : info);
+    setEditedData(prev => ({
+      ...prev,
+      vehicleInfo: newVehicleInfo
+    }));
+  };
+  const getVehicleInfo = (transportId: string) => {
+    return editedData.vehicleInfo.find(info => info.transportId === transportId) || {
+      transportId,
+      year: '',
+      make: '',
+      model: '',
+      plateNumber: '',
+      plateImage: ''
+    };
+  };
+  const handleImageUpload = (transportId: string, event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Create a local URL for the image preview
+      const imageUrl = URL.createObjectURL(file);
+      handleVehicleInfoChange(transportId, 'plateImage', imageUrl);
+      toast.success('Image uploaded successfully');
+    }
+  };
+  const handleImageClick = (imageUrl: string) => {
+    setExpandedImage(imageUrl);
+  };
+  const handleCloseImageModal = () => {
+    setExpandedImage(null);
+  };
+  const handleOrderClick = (orderId: number) => {
+    // Find the delivery by ID
+    const delivery = deliveriesData.find(d => d.id === orderId);
+    if (delivery) {
+      setSelectedOrderId(orderId);
+      setIsOrderDetailsOpen(true);
+    } else {
+      // If not found in deliveriesData, create a mock delivery object for demonstration
+      console.log(`Order #${orderId} clicked - creating mock delivery data`);
+      setSelectedOrderId(orderId);
+      setIsOrderDetailsOpen(true);
+    }
+  };
+  const handleCloseOrderDetails = () => {
+    setIsOrderDetailsOpen(false);
+    setSelectedOrderId(null);
+  };
+  const handleOrderFlag = (orderId: number, isFlagged: boolean) => {
+    setFlaggedOrders(prev => {
+      const newSet = new Set(prev);
+      if (isFlagged) {
+        newSet.add(orderId);
+      } else {
+        newSet.delete(orderId);
+      }
+      return newSet;
+    });
+  };
+  const handleAddCompany = () => {
+    if (selectedCompanyToAdd && !editedData.dedicatedCompanies.includes(selectedCompanyToAdd)) {
+      const newCompanies = [...editedData.dedicatedCompanies, selectedCompanyToAdd];
+      setEditedData(prev => ({
+        ...prev,
+        dedicatedCompanies: newCompanies
+      }));
+      setSelectedCompanyToAdd('');
+    }
+  };
+  const handleRemoveCompany = (company: string) => {
+    const newCompanies = editedData.dedicatedCompanies.filter(c => c !== company);
+    setEditedData(prev => ({
+      ...prev,
+      dedicatedCompanies: newCompanies
+    }));
+  };
+  const handleDriverLicenseInfoChange = (field: keyof DriverLicenseInfo, value: string) => {
+    setEditedData(prev => ({
+      ...prev,
+      driverLicenseInfo: {
+        ...prev.driverLicenseInfo,
+        [field]: value
+      }
+    }));
+  };
+  const handleLicenseImageUpload = (imageId: number, event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Create a local URL for the image preview
+      const imageUrl = URL.createObjectURL(file);
+      // Update the specific license image
+      const updatedImages = driverLicenseImages.map(img => img.id === imageId ? {
+        ...img,
+        imageUrl,
+        uploadDate: new Date().toISOString().split('T')[0]
+      } : img);
+      toast.success('License image uploaded successfully');
+    }
+  };
+  const handleInsuranceInfoChange = (field: keyof InsuranceInfo, value: string) => {
+    setEditedData(prev => ({
+      ...prev,
+      insuranceInfo: {
+        ...prev.insuranceInfo,
+        [field]: value
+      }
+    }));
+  };
+  return <>
+      <Sheet open={isOpen} onOpenChange={onClose}>
+        <SheetContent className="sm:max-w-xl md:max-w-4xl lg:max-w-6xl w-full overflow-hidden p-0 pr-0 mr-0 flex flex-col">
+          {/* Main Content with Flex Structure */}
+          <div className="flex-1 overflow-hidden flex flex-col">
+            {/* Header */}
+            <SheetHeader className="p-6 pb-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    <RandomImage width={48} height={48} className="rounded-full" alt="Driver profile" />
                   </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-4">
+                  <div>
+                    <SheetTitle className="text-left text-lg">{driver.name}</SheetTitle>
+                    <SheetDescription className="text-left text-sm">
+                      Driver ID: {driver.id}
+                    </SheetDescription>
+                  </div>
+                </div>
+              </div>
+            </SheetHeader>
+
+            {/* Tabs */}
+            <Tabs defaultValue="driver-info" className="w-full flex-1 overflow-hidden" value={activeTab} onValueChange={setActiveTab}>
+              <TabsList className="grid grid-cols-2 mx-6 mb-2 mt-2 sticky top-0 z-10 bg-background">
+                <TabsTrigger value="driver-info">Driver Info</TabsTrigger>
+                <TabsTrigger value="driver-logs">Driver Logs</TabsTrigger>
+              </TabsList>
+              
+              <div className="flex-1 overflow-hidden">
+                <TabsContent value="driver-info" className="m-0 h-full">
+                  <ScrollArea className="h-[calc(100vh-220px)]">
+                    <div className="p-6 space-y-6 pb-96">
+                      {/* Status Information */}
                       <div>
-                        <Label htmlFor="license-number">License Number</Label>
-                        <Input
-                          id="license-number"
-                          value="DL123456789"
-                          readOnly
-                          className="bg-gray-50"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="license-expire">Expiration Date</Label>
-                        <Input
-                          id="license-expire"
-                          value="2025-12-31"
-                          readOnly
-                          className="bg-gray-50"
-                        />
-                      </div>
-                      <div className="flex space-x-2">
-                        <Button variant="outline" size="sm">
-                          <Building className="h-4 w-4 mr-2" />
-                          Upload Front
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          <Building className="h-4 w-4 mr-2" />
-                          Upload Back
-                        </Button>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-4">
-                      <div>
-                        <h4 className="text-sm font-medium mb-2">Current Images</h4>
-                        <div className="grid grid-cols-2 gap-2">
-                          {mockDocuments.map((doc) => (
-                            <div key={doc.id} className="relative group cursor-pointer border rounded-lg p-2 hover:bg-gray-50">
-                              <div className="aspect-[3/2] bg-gray-100 rounded flex items-center justify-center text-xs text-gray-500 mb-2">
-                                {doc.name}
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="text-sm font-medium flex items-center">
+                            <Settings className="w-4 h-4 mr-2" />
+                            Status & Rating
+                          </h3>
+                          {editingSection === 'status' ? <div className="flex gap-1">
+                              <Button variant="outline" size="sm" onClick={() => handleSave('Status & Rating')} className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50">
+                                <Save className="w-3 h-3 mr-1" />
+                                Save
+                              </Button>
+                              <Button variant="outline" size="sm" onClick={handleCancel} className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                <X className="w-3 h-3 mr-1" />
+                                Cancel
+                              </Button>
+                            </div> : <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1" onClick={() => handleEdit('status')}>
+                              <Edit className="h-3 w-3" />
+                              Edit
+                            </Button>}
+                        </div>
+                        <Card>
+                          <CardContent className="space-y-4 pt-6">
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <Label>Current Status</Label>
+                                <div className="mt-1">
+                                  {renderStatus(driver.status)}
+                                </div>
                               </div>
-                              <div className="flex justify-between items-center">
-                                <span className="text-xs text-gray-600">{doc.uploadDate}</span>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => {
-                                    const input = window.document.createElement('input');
-                                    input.type = 'file';
-                                    input.accept = 'image/*';
-                                    input.click();
-                                  }}
-                                >
-                                  <Edit2 className="h-3 w-3" />
-                                </Button>
+                              <div>
+                                <Label>Hire Status</Label>
+                                <div className="mt-1">
+                                  {editingSection === 'status' ? <Select value={editedData.hireStatus} onValueChange={value => handleInputChange('hireStatus', value)}>
+                                      <SelectTrigger className="h-8 text-sm">
+                                        <SelectValue />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        {hireStatusOptions.map(option => <SelectItem key={option.value} value={option.value}>
+                                            {option.label}
+                                          </SelectItem>)}
+                                      </SelectContent>
+                                    </Select> : <Badge variant="secondary">
+                                      {hireStatusDictionary[driver.hireStatus] || driver.hireStatus}
+                                    </Badge>}
+                                </div>
                               </div>
                             </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </TabsContent>
-
-                {/* Insurance Certificate Tab */}
-                <TabsContent value="insurance" className="space-y-4">
-                  <div className="flex items-center space-x-2">
-                    <Building className="h-4 w-4" />
-                    <h3 className="text-lg font-semibold">Insurance Certificate</h3>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-4">
-                      <div>
-                        <Label htmlFor="policy-number">Policy Number</Label>
-                        <Input
-                          id="policy-number"
-                          value="POL123456789"
-                          readOnly
-                          className="bg-gray-50"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="insurance-expire">Expiration Date</Label>
-                        <Input
-                          id="insurance-expire"
-                          value="2025-06-30"
-                          readOnly
-                          className="bg-gray-50"
-                        />
-                      </div>
-                      <div className="flex space-x-2">
-                        <Button variant="outline" size="sm">
-                          <Building className="h-4 w-4 mr-2" />
-                          Upload Front
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          <Building className="h-4 w-4 mr-2" />
-                          Upload Back
-                        </Button>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-4">
-                      <div>
-                        <h4 className="text-sm font-medium mb-2">Current Images</h4>
-                        <div className="grid grid-cols-2 gap-2">
-                          {mockDocuments.map((doc) => (
-                            <div key={doc.id} className="relative group cursor-pointer border rounded-lg p-2 hover:bg-gray-50">
-                              <div className="aspect-[3/2] bg-gray-100 rounded flex items-center justify-center text-xs text-gray-500 mb-2">
-                                {doc.name}
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <Label className="flex items-center gap-2">
+                                  <Star className="h-4 w-4" />
+                                  Rating
+                                </Label>
+                                <div className="mt-1">
+                                  <div className="text-lg font-semibold">
+                                    {driver.rating.toFixed(1)} / 5.0
+                                  </div>
+                                </div>
                               </div>
-                              <div className="flex justify-between items-center">
-                                <span className="text-xs text-gray-600">{doc.uploadDate}</span>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => {
-                                    const input = window.document.createElement('input');
-                                    input.type = 'file';
-                                    input.accept = 'image/*';
-                                    input.click();
-                                  }}
-                                >
-                                  <Edit2 className="h-3 w-3" />
-                                </Button>
+                              <div>
+                                <Label className="flex items-center gap-2">
+                                  <CreditCard className="h-4 w-4" />
+                                  Stripe Status
+                                </Label>
+                                <div className="mt-1">
+                                  {editingSection === 'status' ? <Select value={editedData.stripeStatus} onValueChange={value => handleInputChange('stripeStatus', value)}>
+                                      <SelectTrigger className="h-8 text-sm">
+                                        <SelectValue />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        <SelectItem value="unverified">Unverified</SelectItem>
+                                        <SelectItem value="pending">Pending</SelectItem>
+                                        <SelectItem value="verified">Verified</SelectItem>
+                                      </SelectContent>
+                                    </Select> : renderStripeStatus(driver.stripeStatus)}
+                                </div>
                               </div>
                             </div>
-                          ))}
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <Label>Verified by Driver</Label>
+                                <div className="mt-1">
+                                  {editingSection === 'status' ? <Select value={editedData.verifiedByDriver} onValueChange={value => handleInputChange('verifiedByDriver', value)}>
+                                      <SelectTrigger className="h-8 text-sm">
+                                        <SelectValue />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        <SelectItem value="Verified">Verified</SelectItem>
+                                        <SelectItem value="Not verified">Not verified</SelectItem>
+                                      </SelectContent>
+                                    </Select> : <Badge variant={driver.verifiedByDriver === 'Verified' ? 'default' : 'secondary'}>
+                                      {driver.verifiedByDriver || 'Not verified'}
+                                    </Badge>}
+                                </div>
+                              </div>
+                              <div>
+                                <Label>Approved by Admin</Label>
+                                <div className="mt-1">
+                                  {editingSection === 'status' ? <Select value={editedData.approvedByAdmin} onValueChange={value => handleInputChange('approvedByAdmin', value)}>
+                                      <SelectTrigger className="h-8 text-sm">
+                                        <SelectValue />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        <SelectItem value="approved">Approved</SelectItem>
+                                        <SelectItem value="disapproved">Disapproved</SelectItem>
+                                        <SelectItem value="pending">Pending</SelectItem>
+                                      </SelectContent>
+                                    </Select> : <Badge variant={driver.approvedByAdmin === 'approved' ? 'default' : driver.approvedByAdmin === 'disapproved' ? 'destructive' : 'secondary'}>
+                                      {driver.approvedByAdmin || 'Pending'}
+                                    </Badge>}
+                                </div>
+                              </div>
+                            </div>
+                            
+                            {/* New Fields */}
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <Label>Two Step Verification</Label>
+                                <div className="mt-1">
+                                  {editingSection === 'status' ? <RadioGroup value={editedData.twoStepVerification === 'yes' ? 'yes' : 'no'} onValueChange={value => handleInputChange('twoStepVerification', value)} className="flex gap-4">
+                                      <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="yes" id="two-step-yes" className="border-gray-500 text-gray-600" />
+                                        <Label htmlFor="two-step-yes" className="text-sm font-normal text-gray-600">Yes</Label>
+                                      </div>
+                                      <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="no" id="two-step-no" className="border-gray-500 text-gray-600" />
+                                        <Label htmlFor="two-step-no" className="text-sm font-normal text-gray-600">No</Label>
+                                      </div>
+                                    </RadioGroup> : <span className="text-sm">
+                                      {driver.twoStepVerification === 'yes' ? 'Yes' : 'No'}
+                                    </span>}
+                                </div>
+                              </div>
+                              <div>
+                                <Label>Driver Control</Label>
+                                <div className="mt-1">
+                                  {editingSection === 'status' ? <RadioGroup value={editedData.driverControl === 'yes' ? 'yes' : 'no'} onValueChange={value => handleInputChange('driverControl', value)} className="flex gap-4">
+                                      <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="yes" id="driver-control-yes" className="border-gray-500 text-gray-600" />
+                                        <Label htmlFor="driver-control-yes" className="text-sm font-normal text-gray-600">Yes</Label>
+                                      </div>
+                                      <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="no" id="driver-control-no" className="border-gray-500 text-gray-600" />
+                                        <Label htmlFor="driver-control-no" className="text-sm font-normal text-gray-600">No</Label>
+                                      </div>
+                                    </RadioGroup> : <span className="text-sm">
+                                      {driver.driverControl === 'yes' ? 'Yes' : 'No'}
+                                    </span>}
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <Label>Planning</Label>
+                                <div className="mt-1">
+                                  {editingSection === 'status' ? <RadioGroup value={editedData.planning === 'enabled' ? 'yes' : 'no'} onValueChange={value => handleInputChange('planning', value === 'yes' ? 'enabled' : 'disabled')} className="flex gap-4">
+                                      <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="yes" id="planning-yes" className="border-gray-500 text-gray-600" />
+                                        <Label htmlFor="planning-yes" className="text-sm font-normal text-gray-600">Yes</Label>
+                                      </div>
+                                      <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="no" id="planning-no" className="border-gray-500 text-gray-600" />
+                                        <Label htmlFor="planning-no" className="text-sm font-normal text-gray-600">No</Label>
+                                      </div>
+                                    </RadioGroup> : <span className="text-sm">
+                                      {driver.planning === 'enabled' ? 'Yes' : 'No'}
+                                    </span>}
+                                </div>
+                              </div>
+                              <div>
+                                <Label>Banned</Label>
+                                <div className="mt-1">
+                                  {editingSection === 'status' ? <RadioGroup value={editedData.banned} onValueChange={value => handleInputChange('banned', value)} className="flex gap-4">
+                                      <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="yes" id="banned-yes" className="border-gray-500 text-gray-600" />
+                                        <Label htmlFor="banned-yes" className="text-sm font-normal text-gray-600">Yes</Label>
+                                      </div>
+                                      <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="no" id="banned-no" className="border-gray-500 text-gray-600" />
+                                        <Label htmlFor="banned-no" className="text-sm font-normal text-gray-600">No</Label>
+                                      </div>
+                                    </RadioGroup> : <span className="text-sm">
+                                      {driver.banned === 'yes' ? 'Yes' : 'No'}
+                                    </span>}
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+
+                      {/* Contact Information */}
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="text-sm font-medium flex items-center">
+                            <Phone className="w-4 h-4 mr-2" />
+                            Contact Information
+                          </h3>
+                          {editingSection === 'contact' ? <div className="flex gap-1">
+                              <Button variant="outline" size="sm" onClick={() => handleSave('Contact Information')} className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50">
+                                <Save className="w-3 h-3 mr-1" />
+                                Save
+                              </Button>
+                              <Button variant="outline" size="sm" onClick={handleCancel} className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                <X className="w-3 h-3 mr-1" />
+                                Cancel
+                              </Button>
+                            </div> : <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1" onClick={() => handleEdit('contact')}>
+                              <Edit className="h-3 w-3" />
+                              Edit
+                            </Button>}
                         </div>
+                        <Card>
+                          <CardContent className="space-y-4 pt-6">
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <Label htmlFor="firstName">First Name</Label>
+                                <Input id="firstName" value={editingSection === 'contact' ? editedData.firstName : driver.name.split(' ')[0] || ''} onChange={e => handleInputChange('firstName', e.target.value)} readOnly={editingSection !== 'contact'} className={editingSection !== 'contact' ? 'bg-muted/50' : 'bg-background'} />
+                              </div>
+                              <div>
+                                <Label htmlFor="lastName">Last Name</Label>
+                                <Input id="lastName" value={editingSection === 'contact' ? editedData.lastName : driver.name.split(' ').slice(1).join(' ') || ''} onChange={e => handleInputChange('lastName', e.target.value)} readOnly={editingSection !== 'contact'} className={editingSection !== 'contact' ? 'bg-muted/50' : 'bg-background'} />
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <Label htmlFor="phone">Phone Number</Label>
+                                <Input id="phone" value={editingSection === 'contact' ? editedData.phone : driver.phone} onChange={e => handleInputChange('phone', e.target.value)} readOnly={editingSection !== 'contact'} className={editingSection !== 'contact' ? 'bg-muted/50' : 'bg-background'} />
+                              </div>
+                              <div>
+                                <Label htmlFor="email">Email Address</Label>
+                                <Input id="email" value={editingSection === 'contact' ? editedData.email : driver.email} onChange={e => handleInputChange('email', e.target.value)} readOnly={editingSection !== 'contact'} className={editingSection !== 'contact' ? 'bg-muted/50' : 'bg-background'} />
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+
+                      {/* Location Information */}
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="text-sm font-medium flex items-center">
+                            <MapPin className="w-4 h-4 mr-2" />
+                            Address
+                          </h3>
+                          {editingSection === 'location' ? <div className="flex gap-1">
+                              <Button variant="outline" size="sm" onClick={() => handleSave('Address')} className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50">
+                                <Save className="w-3 h-3 mr-1" />
+                                Save
+                              </Button>
+                              <Button variant="outline" size="sm" onClick={handleCancel} className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                <X className="w-3 h-3 mr-1" />
+                                Cancel
+                              </Button>
+                            </div> : <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1" onClick={() => handleEdit('location')}>
+                              <Edit className="h-3 w-3" />
+                              Edit
+                            </Button>}
+                        </div>
+                        <Card>
+                          <CardContent className="space-y-4 pt-6">
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <Label htmlFor="zipcode">Zipcode</Label>
+                                <Input id="zipcode" value={editingSection === 'location' ? editedData.zipcode : driver.zipcode} onChange={e => handleInputChange('zipcode', e.target.value)} readOnly={editingSection !== 'location'} className={editingSection !== 'location' ? 'bg-muted/50' : 'bg-background'} />
+                              </div>
+                              <div>
+                                <Label htmlFor="address">Address</Label>
+                                <Input id="address" value={editingSection === 'location' ? editedData.address : driver.address} onChange={e => handleInputChange('address', e.target.value)} readOnly={editingSection !== 'location'} className={editingSection !== 'location' ? 'bg-muted/50' : 'bg-background'} />
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+
+                      {/* Profile Types */}
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="text-sm font-medium flex items-center">
+                            <User className="w-4 h-4 mr-2" />
+                            Profile Types
+                          </h3>
+                          {editingSection === 'profileTypes' ? <div className="flex gap-1">
+                              <Button variant="outline" size="sm" onClick={() => handleSave('Profile Types')} className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50">
+                                <Save className="w-3 h-3 mr-1" />
+                                Save
+                              </Button>
+                              <Button variant="outline" size="sm" onClick={handleCancel} className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                <X className="w-3 h-3 mr-1" />
+                                Cancel
+                              </Button>
+                            </div> : <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1" onClick={() => handleEdit('profileTypes')}>
+                              <Edit className="h-3 w-3" />
+                              Edit
+                            </Button>}
+                        </div>
+                        <Card>
+                          <CardContent className="pt-6">
+                            {editingSection === 'profileTypes' ? <div className="space-y-3">
+                                {availableProfileTypes.map(profileType => <div key={profileType} className="flex items-center space-x-2">
+                                    <Checkbox id={`profile-${profileType}`} checked={editedData.profileTypes.includes(profileType)} onCheckedChange={checked => handleProfileTypeChange(profileType, checked as boolean)} />
+                                    <Label htmlFor={`profile-${profileType}`} className="text-sm font-normal">
+                                      {profileType}
+                                    </Label>
+                                  </div>)}
+                              </div> : <div className="flex flex-wrap gap-2">
+                                {driver.profileTypes && driver.profileTypes.length > 0 ? driver.profileTypes.map(type => <Badge key={type} variant="outline">
+                                      {type}
+                                    </Badge>) : <span className="text-muted-foreground text-sm">No profile types assigned</span>}
+                              </div>}
+                          </CardContent>
+                        </Card>
+                      </div>
+
+                      {/* Transport Types */}
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="text-sm font-medium flex items-center">
+                            <Award className="w-4 h-4 mr-2" />
+                            Transport Types
+                          </h3>
+                          {editingSection === 'transports' ? <div className="flex gap-1">
+                              <Button variant="outline" size="sm" onClick={() => handleSave('Transport Types')} className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50">
+                                <Save className="w-3 h-3 mr-1" />
+                                Save
+                              </Button>
+                              <Button variant="outline" size="sm" onClick={handleCancel} className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                <X className="w-3 h-3 mr-1" />
+                                Cancel
+                              </Button>
+                            </div> : <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1" onClick={() => handleEdit('transports')}>
+                              <Edit className="h-3 w-3" />
+                              Edit
+                            </Button>}
+                        </div>
+                        <Card>
+                          <CardContent className="pt-6">
+                            {editingSection === 'transports' ? <div className="space-y-6">
+                                {/* Add Transport Type Dropdown */}
+                                <div>
+                                  <Label>Add Transport Type</Label>
+                                  <div className="flex gap-2 mt-1">
+                                    <Select value={selectedTransportToAdd} onValueChange={setSelectedTransportToAdd}>
+                                      <SelectTrigger className="flex-1">
+                                        <SelectValue placeholder="Select transport type to add" />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        {availableTransportTypes.filter(id => !editedData.transports.includes(id)).map(id => <SelectItem key={id} value={id}>
+                                              <div className="flex items-center gap-2">
+                                                <TransportIcon transportType={id as TransportType} size={16} />
+                                                {transportTypes[id] || `Transport ${id}`}
+                                              </div>
+                                            </SelectItem>)}
+                                      </SelectContent>
+                                    </Select>
+                                    <Button variant="outline" size="sm" onClick={handleAddTransport} disabled={!selectedTransportToAdd} className="px-3">
+                                      <Plus className="w-4 h-4" />
+                                    </Button>
+                                  </div>
+                                </div>
+
+                                {/* Current Transport Types with Vehicle Info */}
+                                <div className="space-y-4">
+                                  {editedData.transports.map(transportId => {
+                                const vehicleInfo = getVehicleInfo(transportId);
+                                return <div key={transportId} className="border rounded-lg p-4 space-y-4">
+                                        <div className="flex items-center justify-between">
+                                          <div className="flex items-center gap-2">
+                                            <TransportIcon transportType={transportId as TransportType} size={20} />
+                                            <span className="font-medium">
+                                              {transportTypes[transportId] || `Transport ${transportId}`}
+                                            </span>
+                                          </div>
+                                          <Button variant="outline" size="sm" onClick={() => handleRemoveTransport(transportId)} className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                            <Trash2 className="w-3 h-3" />
+                                          </Button>
+                                        </div>
+                                        
+                                        {/* Vehicle Information */}
+                                        <div className="grid grid-cols-2 gap-3">
+                                          <div>
+                                            <Label htmlFor={`year-${transportId}`}>Year</Label>
+                                            <Input id={`year-${transportId}`} value={vehicleInfo.year || ''} onChange={e => handleVehicleInfoChange(transportId, 'year', e.target.value)} placeholder="e.g., 2020" className="mt-1" />
+                                          </div>
+                                          <div>
+                                            <Label htmlFor={`make-${transportId}`}>Make</Label>
+                                            <Input id={`make-${transportId}`} value={vehicleInfo.make || ''} onChange={e => handleVehicleInfoChange(transportId, 'make', e.target.value)} placeholder="e.g., Ford" className="mt-1" />
+                                          </div>
+                                          <div>
+                                            <Label htmlFor={`model-${transportId}`}>Model</Label>
+                                            <Input id={`model-${transportId}`} value={vehicleInfo.model || ''} onChange={e => handleVehicleInfoChange(transportId, 'model', e.target.value)} placeholder="e.g., Transit" className="mt-1" />
+                                          </div>
+                                          <div>
+                                            <Label htmlFor={`plate-${transportId}`}>Plate Number</Label>
+                                            <Input id={`plate-${transportId}`} value={vehicleInfo.plateNumber || ''} onChange={e => handleVehicleInfoChange(transportId, 'plateNumber', e.target.value)} placeholder="e.g., ABC-123" className="mt-1" />
+                                          </div>
+                                        </div>
+                                        
+                                        {/* Plate Image Upload */}
+                                        <div>
+                                          <Label htmlFor={`plateImageUpload-${transportId}`}>Plate Image</Label>
+                                          <div className="mt-1 space-y-3">
+                                            <div className="flex items-center gap-3">
+                                              <Input id={`plateImageUpload-${transportId}`} type="file" accept="image/*" onChange={e => handleImageUpload(transportId, e)} className="hidden" />
+                                              <Button type="button" variant="outline" size="sm" onClick={() => document.getElementById(`plateImageUpload-${transportId}`)?.click()} className="flex items-center gap-2">
+                                                <Upload className="w-4 h-4" />
+                                                Upload Image
+                                              </Button>
+                                            </div>
+                                            {vehicleInfo.plateImage && <div className="mt-2 flex items-center gap-2">
+                                                <div className="relative cursor-pointer group border rounded overflow-hidden" onClick={() => handleImageClick(vehicleInfo.plateImage)}>
+                                                  <img src={vehicleInfo.plateImage} alt="Plate" className="w-16 h-10 object-cover transition-transform group-hover:scale-105" onError={e => {
+                                            e.currentTarget.style.display = 'none';
+                                          }} />
+                                                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
+                                                    <Eye className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                  </div>
+                                                </div>
+                                                <span className="text-sm text-muted-foreground">Click to expand</span>
+                                              </div>}
+                                          </div>
+                                        </div>
+                                      </div>;
+                              })}
+                                </div>
+
+                                {editedData.transports.length === 0 && <div className="text-center py-8 text-muted-foreground">
+                                    <Award className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                                    <p className="text-sm">No transport types assigned</p>
+                                  </div>}
+                              </div> : <div className="flex flex-wrap gap-3">
+                                {driver.transports.map(transportId => <div key={transportId} className="flex items-center gap-2 p-2 border rounded-lg">
+                                    <TransportIcon transportType={transportId as TransportType} size={16} className="h-4 w-4" />
+                                    <span className="text-sm">
+                                      {transportTypes[transportId] || `Transport ${transportId}`}
+                                    </span>
+                                  </div>)}
+                              </div>}
+                          </CardContent>
+                        </Card>
+                      </div>
+
+                      {/* Dedicated Companies */}
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="text-sm font-medium flex items-center">
+                            <Building className="w-4 h-4 mr-2" />
+                            Dedicated Companies
+                          </h3>
+                          {editingSection === 'companies' ? <div className="flex gap-1">
+                              <Button variant="outline" size="sm" onClick={() => handleSave('companies')} className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50">
+                                <Save className="w-3 h-3 mr-1" />
+                                Save
+                              </Button>
+                              <Button variant="outline" size="sm" onClick={handleCancel} className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                <X className="w-3 h-3 mr-1" />
+                                Cancel
+                              </Button>
+                            </div> : <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1" onClick={() => handleEdit('companies')}>
+                              <Edit className="h-3 w-3" />
+                              Edit
+                            </Button>}
+                        </div>
+                        <Card>
+                          <CardContent className="pt-6">
+                            {editingSection === 'companies' ? <div className="space-y-4">
+                                {/* Add Company Dropdown */}
+                                <div>
+                                  <Label>Add Company</Label>
+                                  <div className="flex gap-2 mt-1">
+                                    <Select value={selectedCompanyToAdd} onValueChange={setSelectedCompanyToAdd}>
+                                      <SelectTrigger className="flex-1">
+                                        <SelectValue placeholder="Select company to add" />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        {availableCompanies.filter(company => !editedData.dedicatedCompanies.includes(company)).map(company => <SelectItem key={company} value={company}>
+                                              <div className="flex items-center gap-2">
+                                                <Building className="w-4 h-4" />
+                                                {company}
+                                              </div>
+                                            </SelectItem>)}
+                                      </SelectContent>
+                                    </Select>
+                                    <Button variant="outline" size="sm" onClick={handleAddCompany} disabled={!selectedCompanyToAdd} className="px-3">
+                                      <Plus className="w-4 h-4" />
+                                    </Button>
+                                  </div>
+                                </div>
+
+                                {/* Current Companies */}
+                                <div className="space-y-2">
+                                  {editedData.dedicatedCompanies.map(company => <div key={company} className="flex items-center justify-between p-3 border rounded-lg">
+                                      <div className="flex items-center gap-2">
+                                        <Building className="w-4 h-4" />
+                                        <span className="font-medium">{company}</span>
+                                      </div>
+                                      <Button variant="outline" size="sm" onClick={() => handleRemoveCompany(company)} className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                        <Trash2 className="w-3 h-3" />
+                                      </Button>
+                                    </div>)}
+                                </div>
+
+                                {editedData.dedicatedCompanies.length === 0 && <div className="text-center py-8 text-muted-foreground">
+                                    <Building className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                                    <p className="text-sm">No dedicated companies assigned</p>
+                                  </div>}
+                              </div> : <div className="flex flex-wrap gap-3">
+                                {(driver.dedicatedCompanies || []).map(company => <div key={company} className="flex items-center gap-2 p-2 border rounded-lg">
+                                    <Building className="w-4 h-4" />
+                                    <span className="text-sm">{company}</span>
+                                  </div>)}
+                                {(!driver.dedicatedCompanies || driver.dedicatedCompanies.length === 0) && <div className="text-center py-8 text-muted-foreground w-full">
+                                    <Building className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                                    <p className="text-sm">No dedicated companies assigned</p>
+                                  </div>}
+                              </div>}
+                          </CardContent>
+                        </Card>
+                      </div>
+
+                      {/* Documents */}
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="text-sm font-medium flex items-center">
+                            <File className="w-4 h-4 mr-2" />
+                            Documents
+                          </h3>
+                          {editingSection === 'documents' ? <div className="flex gap-1">
+                              <Button variant="outline" size="sm" onClick={() => handleSave('Documents')} className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50">
+                                <Save className="w-3 h-3 mr-1" />
+                                Save
+                              </Button>
+                              <Button variant="outline" size="sm" onClick={handleCancel} className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                <X className="w-3 h-3 mr-1" />
+                                Cancel
+                              </Button>
+                            </div> : <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1" onClick={() => handleEdit('documents')}>
+                              <Edit className="h-3 w-3" />
+                              Edit
+                            </Button>}
+                        </div>
+                        <Card>
+                          <CardContent className="pt-6 space-y-6">
+                            {/* Driver's License Subsection */}
+                            <div>
+                              <div className="flex items-center gap-2 mb-4">
+                                <Image className="h-4 w-4 text-muted-foreground" />
+                                <h4 className="text-sm font-medium">Driver's License</h4>
+                              </div>
+                              
+                              {/* Driver's License Fields */}
+                              <div className="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                  <Label htmlFor="dlNumber">DL Number</Label>
+                                  <Input id="dlNumber" value={editingSection === 'documents' ? editedData.driverLicenseInfo.dlNumber : driver.driverLicenseInfo?.dlNumber || ''} onChange={e => handleDriverLicenseInfoChange('dlNumber', e.target.value)} readOnly={editingSection !== 'documents'} className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} placeholder="Enter DL number" />
+                                </div>
+                                <div>
+                                  <Label htmlFor="dlExpiration">Date of Expire</Label>
+                                  <Input id="dlExpiration" type="date" value={editingSection === 'documents' ? editedData.driverLicenseInfo.expirationDate : driver.driverLicenseInfo?.expirationDate || ''} onChange={e => handleDriverLicenseInfoChange('expirationDate', e.target.value)} readOnly={editingSection !== 'documents'} className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} />
+                                </div>
+                                <div>
+                                  <Label htmlFor="ssn">SSN</Label>
+                                  <Input id="ssn" value={editingSection === 'documents' ? editedData.driverLicenseInfo.ssn : driver.driverLicenseInfo?.ssn || ''} onChange={e => handleDriverLicenseInfoChange('ssn', e.target.value)} readOnly={editingSection !== 'documents'} className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} placeholder="XXX-XX-XXXX" type="password" />
+                                </div>
+                                <div>
+                                  <Label htmlFor="dlState">State</Label>
+                                  {editingSection === 'documents' ? <Select value={editedData.driverLicenseInfo.state} onValueChange={value => handleDriverLicenseInfoChange('state', value)}>
+                                      <SelectTrigger className="h-9">
+                                        <SelectValue placeholder="Select state" />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        {usStates.map(state => <SelectItem key={state} value={state}>
+                                            {state}
+                                          </SelectItem>)}
+                                      </SelectContent>
+                                    </Select> : <Input id="dlState" value={driver.driverLicenseInfo?.state || ''} readOnly className="bg-muted/50" placeholder="State not specified" />}
+                                </div>
+                              </div>
+
+                              {/* Driver's License Images Grid */}
+                              <div className="grid grid-cols-2 gap-4 mb-4">
+                                {driverLicenseImages.map(image => <div key={image.id} className="flex items-center justify-between p-3 border rounded-lg">
+                                    <div className="flex items-center gap-3">
+                                      <div className="relative cursor-pointer group border rounded overflow-hidden" onClick={() => handleImageClick(image.imageUrl)}>
+                                        <img src={image.imageUrl} alt={image.name} className="w-16 h-10 object-cover transition-transform group-hover:scale-105" onError={e => {
+                                      e.currentTarget.style.display = 'none';
+                                    }} />
+                                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
+                                          <Eye className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <p className="text-sm font-medium">{image.name}</p>
+                                        <p className="text-xs text-muted-foreground">
+                                          {image.type} • Uploaded {image.uploadDate}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      {editingSection === 'documents' && <>
+                                          <Input type="file" accept="image/*" className="hidden" id={`license-upload-${image.id}`} onChange={e => handleLicenseImageUpload(image.id, e)} />
+                                          <Button variant="outline" size="sm" onClick={() => document.getElementById(`license-upload-${image.id}`)?.click()} className="h-7 px-2 border-blue-500 text-blue-700 hover:bg-blue-50">
+                                            <Upload className="w-3 h-3" />
+                                          </Button>
+                                        </>}
+                                      <Button variant="ghost" size="sm" onClick={() => handleViewDocument(image)}>
+                                        View
+                                      </Button>
+                                    </div>
+                                  </div>)}
+                              </div>
+                            </div>
+
+                            {/* Insurance Certificate */}
+                            <div>
+                              <div className="flex items-center gap-2 mb-4">
+                                <FileText className="h-4 w-4 text-muted-foreground" />
+                                <h4 className="text-sm font-medium">Insurance Certificate</h4>
+                              </div>
+                              
+                              {/* Insurance Info Fields */}
+                              <div className="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                  <Label htmlFor="policyNumber">Policy Number</Label>
+                                  <Input 
+                                    id="policyNumber" 
+                                    value={editingSection === 'documents' ? editedData.insuranceInfo.policyNumber : driver.insuranceInfo?.policyNumber || ''} 
+                                    onChange={e => handleInsuranceInfoChange('policyNumber', e.target.value)} 
+                                    readOnly={editingSection !== 'documents'} 
+                                    className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} 
+                                    placeholder="Enter policy number" 
+                                  />
+                                </div>
+                                <div>
+                                  <Label htmlFor="insuranceExpiration">Expire Date</Label>
+                                  <Input 
+                                    id="insuranceExpiration" 
+                                    type="date" 
+                                    value={editingSection === 'documents' ? editedData.insuranceInfo.expirationDate : driver.insuranceInfo?.expirationDate || ''} 
+                                    onChange={e => handleInsuranceInfoChange('expirationDate', e.target.value)} 
+                                    readOnly={editingSection !== 'documents'} 
+                                    className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} 
+                                  />
+                                </div>
+                              </div>
+
+                              {/* Insurance Certificate Images Grid - Same structure as Driver's License */}
+                              <div className="grid grid-cols-2 gap-4 mb-4">
+                                {documents.filter(doc => doc.name.includes("Insurance")).map(doc => <div key={doc.id} className="flex items-center justify-between p-3 border rounded-lg">
+                                    <div className="flex items-center gap-3">
+                                      <div className="relative cursor-pointer group border rounded overflow-hidden" onClick={() => handleViewDocument(doc)}>
+                                        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=250&fit=crop" alt={doc.name} className="w-16 h-10 object-cover transition-transform group-hover:scale-105" onError={e => {
+                                      e.currentTarget.style.display = 'none';
+                                    }} />
+                                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
+                                          <Eye className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <p className="text-sm font-medium">{doc.name}</p>
+                                        <p className="text-xs text-muted-foreground">
+                                          Uploaded {doc.uploadDate}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      {editingSection === 'documents' && <>
+                                          <Input type="file" accept="image/*" className="hidden" id={`insurance-upload-${doc.id}`} onChange={e => handleLicenseImageUpload(doc.id, e)} />
+                                          <Button variant="outline" size="sm" onClick={() => window.document.getElementById(`insurance-upload-${doc.id}`)?.click()} className="h-7 px-2 border-blue-500 text-blue-700 hover:bg-blue-50">
+                                            <Upload className="w-3 h-3" />
+                                          </Button>
+                                        </>}
+                                      <Button variant="ghost" size="sm" onClick={() => handleViewDocument(doc)}>
+                                        View
+                                      </Button>
+                                    </div>
+                                  </div>)}
+                              </div>
+                              
+                              {editingSection === 'documents' && <div className="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-lg text-center">
+                                  <Input type="file" accept="image/*,.pdf,.doc,.docx" className="hidden" id="document-upload" multiple />
+                                  <Button variant="outline" onClick={() => document.getElementById('document-upload')?.click()} className="flex items-center gap-2">
+                                    <Upload className="w-4 h-4" />
+                                    Upload Documents
+                                  </Button>
+                                  <p className="text-xs text-muted-foreground mt-2">
+                                    Support: Images, PDF, DOC, DOCX
+                                  </p>
+                                </div>}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+
+                      {/* Notes */}
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="text-sm font-medium flex items-center">
+                            <FileText className="w-4 h-4 mr-2" />
+                            Notes
+                          </h3>
+                          {editingSection === 'notes' ? <div className="flex gap-1">
+                              <Button variant="outline" size="sm" onClick={() => handleSave('Notes')} className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50">
+                                <Save className="w-3 h-3 mr-1" />
+                                Save
+                              </Button>
+                              <Button variant="outline" size="sm" onClick={handleCancel} className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                <X className="w-3 h-3 mr-1" />
+                                Cancel
+                              </Button>
+                            </div> : <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1" onClick={() => handleEdit('notes')}>
+                              <Edit className="h-3 w-3" />
+                              Edit
+                            </Button>}
+                        </div>
+                        <Card>
+                          <CardContent className="pt-6">
+                            {editingSection === 'notes' ? <Textarea placeholder="Add notes about this driver..." value={editedData.notes} onChange={e => handleInputChange('notes', e.target.value)} className="min-h-[100px]" /> : <Textarea placeholder="Add notes about this driver..." value={driver.notes || ''} className="min-h-[100px] bg-muted/50" readOnly />}
+                          </CardContent>
+                        </Card>
                       </div>
                     </div>
-                  </div>
+                  </ScrollArea>
                 </TabsContent>
+                
+                <TabsContent value="driver-logs" className="m-0 h-full">
+                  <ScrollArea className="h-[calc(100vh-220px)]">
+                    <div className="p-6 px-[23px] pt-0 pb-96">
+                      <Tabs defaultValue="payment-history" value={activeLogTab} onValueChange={setActiveLogTab}>
+                        <div className="sticky top-0 z-10 bg-background pt-1 pb-2 min-h-[90px]">
+                          <TabsList className="flex flex-wrap bg-transparent p-0 py-3 gap-1 justify-start w-full overflow-visible my-0">
+                            <TabsTrigger value="payment-history" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
+                              <CreditCard className="w-4 h-4" /> 
+                              <span className="hidden sm:inline">Payment History</span>
+                              <span className="sm:hidden">Payments</span>
+                            </TabsTrigger>
+                            <TabsTrigger value="delivery-history" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
+                              <File className="w-4 h-4" /> 
+                              <span className="hidden sm:inline">Orders on hands</span>
+                              <span className="sm:hidden">Orders</span>
+                            </TabsTrigger>
+                            <TabsTrigger value="communication" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
+                              <Mail className="w-4 h-4" /> 
+                              <span className="hidden sm:inline">Emails sent</span>
+                              <span className="sm:hidden">Emails</span>
+                            </TabsTrigger>
+                            <TabsTrigger value="activity-log" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
+                              <Settings className="w-4 h-4" /> 
+                              <span className="hidden sm:inline">Activity Log</span>
+                              <span className="sm:hidden">Activity</span>
+                            </TabsTrigger>
+                          </TabsList>
+                        </div>
+                        
+                        <div className="mt-4 space-y-4">
+                          <TabsContent value="payment-history" className="space-y-4">
+                            {/* Upcoming Payment Section */}
+                            <Card>
+                              <CardHeader>
+                                <CardTitle>Upcoming Payment</CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <Collapsible>
+                                  <CollapsibleTrigger asChild>
+                                    <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors">
+                                      <div className="flex items-center gap-4">
+                                        <div>
+                                          <p className="font-medium">{upcomingPayment.date}</p>
+                                          <p className="text-sm text-muted-foreground">
+                                            {upcomingPayment.transactions.length} transactions
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <div className="flex items-center gap-3">
+                                        <Badge variant="secondary" className="text-xs">
+                                          Pending
+                                        </Badge>
+                                        <span className="font-semibold text-lg">
+                                          ${upcomingPayment.amount.toFixed(2)}
+                                        </span>
+                                        <ChevronDown className="h-4 w-4 transition-transform" />
+                                      </div>
+                                    </div>
+                                  </CollapsibleTrigger>
+                                  <CollapsibleContent>
+                                    <div className="mt-2 ml-4 mr-4 mb-2">
+                                      <div className="border rounded-lg overflow-hidden">
+                                        <div className="bg-muted/30 px-4 py-2 border-b">
+                                          <div className="grid grid-cols-5 gap-4 text-sm font-medium text-muted-foreground">
+                                            <div>Order Number</div>
+                                            <div>Date</div>
+                                            <div>Earning</div>
+                                            <div>Commission</div>
+                                            <div>Tip</div>
+                                          </div>
+                                        </div>
+                                        <div className="divide-y">
+                                          {upcomingPayment.transactions.map((transaction, index) => <div key={index} className="px-4 py-3">
+                                              <div className="grid grid-cols-5 gap-4 text-sm">
+                                                <div className="font-medium text-blue-600 hover:text-blue-800 cursor-pointer underline" onClick={() => handleOrderClick(transaction.orderId)}>
+                                                  {transaction.orderNumber}
+                                                </div>
+                                                <div>{transaction.date}</div>
+                                                <div>${transaction.earning.toFixed(2)}</div>
+                                                <div>${transaction.commission.toFixed(2)}</div>
+                                                <div>${transaction.tip.toFixed(2)}</div>
+                                              </div>
+                                            </div>)}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </CollapsibleContent>
+                                </Collapsible>
+                              </CardContent>
+                            </Card>
 
-                {/* Background Check Tab */}
-                <TabsContent value="background" className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold">Background Check</h3>
-                    <Button variant="outline" size="sm">
-                      <Settings className="h-4 w-4 mr-2" />
-                      Request Check
-                    </Button>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="background-status">Status</Label>
-                      <Input
-                        id="background-status"
-                        value="Completed"
-                        readOnly
-                        className="bg-gray-50"
-                      />
+                            {/* Payment History Section */}
+                            <Card>
+                              <CardHeader>
+                                <CardTitle>Payment History</CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <div className="space-y-3">
+                                  {payoutRecords.map(payout => <Collapsible key={payout.id}>
+                                      <CollapsibleTrigger asChild>
+                                        <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors">
+                                          <div className="flex items-center gap-4">
+                                            <div>
+                                              <p className="font-medium">{payout.date}</p>
+                                              <p className="text-sm text-muted-foreground">
+                                                {payout.transactions.length} transactions
+                                              </p>
+                                            </div>
+                                          </div>
+                                          <div className="flex items-center gap-3">
+                                            <Badge variant="success" className="text-xs">
+                                              Paid
+                                            </Badge>
+                                            <span className="font-semibold text-lg">
+                                              ${payout.amount.toFixed(2)}
+                                            </span>
+                                            <ChevronDown className="h-4 w-4 transition-transform" />
+                                          </div>
+                                        </div>
+                                      </CollapsibleTrigger>
+                                      <CollapsibleContent>
+                                        <div className="mt-2 ml-4 mr-4 mb-2">
+                                          <div className="border rounded-lg overflow-hidden">
+                                            <div className="bg-muted/30 px-4 py-2 border-b">
+                                              <div className="grid grid-cols-5 gap-4 text-sm font-medium text-muted-foreground">
+                                                <div>Order Number</div>
+                                                <div>Date</div>
+                                                <div>Earning</div>
+                                                <div>Commission</div>
+                                                <div>Tip</div>
+                                              </div>
+                                            </div>
+                                            <div className="divide-y">
+                                              {payout.transactions.map((transaction, index) => <div key={index} className="px-4 py-3">
+                                                  <div className="grid grid-cols-5 gap-4 text-sm">
+                                                    <div className="font-medium text-blue-600 hover:text-blue-800 cursor-pointer underline" onClick={() => handleOrderClick(transaction.orderId)}>
+                                                      {transaction.orderNumber}
+                                                    </div>
+                                                    <div>{transaction.date}</div>
+                                                    <div>${transaction.earning.toFixed(2)}</div>
+                                                    <div>${transaction.commission.toFixed(2)}</div>
+                                                    <div>${transaction.tip.toFixed(2)}</div>
+                                                  </div>
+                                                </div>)}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </CollapsibleContent>
+                                    </Collapsible>)}
+                                </div>
+                              </CardContent>
+                            </Card>
+                          </TabsContent>
+                          
+                          <TabsContent value="delivery-history" className="space-y-4">
+                            <Card>
+                              <CardHeader>
+                                <CardTitle>Orders on Hands</CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <div className="border rounded-lg overflow-hidden">
+                                  <div className="bg-muted/30 px-4 py-2 border-b">
+                                    <div className="grid grid-cols-3 gap-4 text-sm font-medium text-muted-foreground">
+                                      <div>Order ID</div>
+                                      <div>Pickup Date</div>
+                                      <div>Status</div>
+                                    </div>
+                                  </div>
+                                  <div className="divide-y">
+                                    {ordersOnHands.map(order => <div key={order.id} className="px-4 py-3">
+                                        <div className="grid grid-cols-3 gap-4 text-sm">
+                                          <div className="font-medium text-blue-600 hover:text-blue-800 cursor-pointer underline" onClick={() => handleOrderClick(order.id)}>
+                                            {order.id}
+                                          </div>
+                                          <div>{order.pickupDate}</div>
+                                          <div>
+                                            <Badge variant={order.status === 'In Progress' ? 'default' : order.status === 'Pending' ? 'secondary' : order.status === 'Assigned' ? 'outline' : 'success'} className="text-xs">
+                                              {order.status}
+                                            </Badge>
+                                          </div>
+                                        </div>
+                                      </div>)}
+                                  </div>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          </TabsContent>
+                          
+                          <TabsContent value="communication" className="space-y-4">
+                            <Card>
+                              <CardHeader>
+                                <CardTitle>Emails sent</CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <EmailsSentList driverName={driver.name} />
+                              </CardContent>
+                            </Card>
+                          </TabsContent>
+                          
+                          <TabsContent value="activity-log" className="space-y-4">
+                            <Card>
+                              <CardHeader>
+                                <CardTitle>Activity Log</CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <p className="text-muted-foreground">Activity log content would go here.</p>
+                              </CardContent>
+                            </Card>
+                          </TabsContent>
+                        </div>
+                      </Tabs>
                     </div>
-                    <div>
-                      <Label htmlFor="background-date">Last Checked</Label>
-                      <Input
-                        id="background-date"
-                        value="2024-01-01"
-                        readOnly
-                        className="bg-gray-50"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="background-notes">Notes</Label>
-                      <Textarea
-                        id="background-notes"
-                        defaultValue="No issues found"
-                        readOnly
-                        className="bg-gray-50"
-                      />
-                    </div>
-                  </div>
+                  </ScrollArea>
                 </TabsContent>
-
-                {/* Vehicle Registration Tab */}
-                <TabsContent value="vehicle" className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold">Vehicle Registration</h3>
-                    <Select defaultValue="all">
-                      <SelectTrigger className="w-48">
-                        <SelectValue />
-                        <ChevronDown className="h-4 w-4" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Vehicles</SelectItem>
-                        <SelectItem value="active">Active Only</SelectItem>
-                        <SelectItem value="expired">Expired</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="vehicle-number">Registration Number</Label>
-                      <Input
-                        id="vehicle-number"
-                        value="VRN123456789"
-                        readOnly
-                        className="bg-gray-50"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="vehicle-expire">Expiration Date</Label>
-                      <Input
-                        id="vehicle-expire"
-                        value="2024-12-31"
-                        readOnly
-                        className="bg-gray-50"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="vehicle-notes">Notes</Label>
-                      <Textarea
-                        id="vehicle-notes"
-                        defaultValue="Vehicle is in good condition"
-                        readOnly
-                        className="bg-gray-50"
-                      />
-                    </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-          </Card>
-
-          {/* Work History */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Work History</CardTitle>
-              <CardDescription>Driver's employment and delivery history</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-medium">Recent Activity</h4>
-                  <Select defaultValue="30">
-                    <SelectTrigger className="w-32">
-                      <SelectValue />
-                      <ChevronDown className="h-4 w-4" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="7">Last 7 days</SelectItem>
-                      <SelectItem value="30">Last 30 days</SelectItem>
-                      <SelectItem value="90">Last 90 days</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Date
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Activity
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Details
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      <tr>
-                        <td className="px-6 py-4 whitespace-nowrap">2024-02-01</td>
-                        <td className="px-6 py-4 whitespace-nowrap">Delivery</td>
-                        <td className="px-6 py-4 whitespace-nowrap">Delivered package to 123 Main St</td>
-                      </tr>
-                      <tr>
-                        <td className="px-6 py-4 whitespace-nowrap">2024-01-31</td>
-                        <td className="px-6 py-4 whitespace-nowrap">Maintenance</td>
-                        <td className="px-6 py-4 whitespace-nowrap">Vehicle maintenance completed</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      </SheetContent>
-    </Sheet>
-  );
-};
+            </Tabs>
 
-export default DriverDetailsSheet;
+            <Separator />
+
+            {/* Actions */}
+            <div className="flex justify-end gap-3 p-6">
+              <Button variant="outline" onClick={onClose}>
+                Close
+              </Button>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      <DocumentViewerModal isOpen={isDocumentModalOpen} onClose={handleCloseDocumentModal} document={selectedDocument} />
+
+      {/* Order Details Sheet */}
+      {selectedOrderId && <OrderDetailsSheet isOpen={isOrderDetailsOpen} onClose={handleCloseOrderDetails} delivery={deliveriesData.find(d => d.id === selectedOrderId)} flaggedOrders={flaggedOrders} onOrderFlag={handleOrderFlag} />}
+
+      {/* Image Expansion Modal */}
+      <Dialog open={!!expandedImage} onOpenChange={handleCloseImageModal}>
+        <DialogContent className="sm:max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>Plate Image Preview</DialogTitle>
+          </DialogHeader>
+          <div className="flex justify-center p-4">
+            {expandedImage && <img src={expandedImage} alt="Expanded plate image" className="max-w-full max-h-[70vh] object-contain rounded-lg" onError={e => {
+            e.currentTarget.style.display = 'none';
+          }} />}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>;
+}
