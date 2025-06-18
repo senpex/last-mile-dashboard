@@ -1,3 +1,4 @@
+
 import {
   Sheet,
   SheetClose,
@@ -6,7 +7,6 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -14,18 +14,68 @@ import { useState } from "react";
 import { Delivery } from "@/types/delivery";
 
 interface DriverDetailsSheetProps {
+  isOpen: boolean;
+  onClose: () => void;
   driver: any;
-  driverDeliveries: Delivery[];
+  transportTypes: { [key: string]: string };
+  statusDictionary: { [key: string]: string };
+  hireStatusDictionary: { [key: string]: string };
+  renderStatus: (statusId: string) => JSX.Element;
+  renderStripeStatus: (status: "verified" | "unverified" | "pending") => JSX.Element;
 }
 
-export function DriverDetailsSheet({ driver, driverDeliveries }: DriverDetailsSheetProps) {
+export function DriverDetailsSheet({ 
+  isOpen, 
+  onClose, 
+  driver, 
+  transportTypes, 
+  statusDictionary, 
+  hireStatusDictionary, 
+  renderStatus, 
+  renderStripeStatus 
+}: DriverDetailsSheetProps) {
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
 
+  // Mock deliveries data for now - in a real app this would come from props or API
+  const mockDeliveries: Delivery[] = [
+    {
+      id: 234567,
+      orderNumber: "234567",
+      pickupTime: "2024-01-15 10:30",
+      price: "$45.50",
+      couriersEarnings: "$22.75",
+      status: "Dropoff Complete"
+    },
+    {
+      id: 345678,
+      orderNumber: "345678", 
+      pickupTime: "2024-01-14 14:20",
+      price: "$32.00",
+      couriersEarnings: "$16.00",
+      status: "Dropoff Complete"
+    },
+    {
+      id: 456789,
+      orderNumber: "456789",
+      pickupTime: "2024-01-16 09:15",
+      price: "$67.25",
+      couriersEarnings: "$33.63",
+      status: "In Transit"
+    },
+    {
+      id: 567890,
+      orderNumber: "567890",
+      pickupTime: "2024-01-17 16:45",
+      price: "$28.75", 
+      couriersEarnings: "$14.38",
+      status: "Scheduled Order"
+    }
+  ];
+
+  if (!driver) return null;
+
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="outline">View Driver Details</Button>
-      </SheetTrigger>
+    <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="sm:max-w-[425px]">
         <SheetHeader>
           <SheetTitle>Driver Details</SheetTitle>
@@ -37,7 +87,9 @@ export function DriverDetailsSheet({ driver, driverDeliveries }: DriverDetailsSh
           <div className="flex items-center gap-4">
             <Avatar>
               <AvatarImage src="/avatars/01.png" />
-              <AvatarFallback>OM</AvatarFallback>
+              <AvatarFallback>
+                {driver.name?.split(' ').map((n: string) => n[0]).join('') || 'DR'}
+              </AvatarFallback>
             </Avatar>
             <div>
               <p className="text-lg font-semibold">{driver.name}</p>
@@ -53,10 +105,12 @@ export function DriverDetailsSheet({ driver, driverDeliveries }: DriverDetailsSh
               </Button>
             </div>
             <div className="space-y-3">
-              {driverDeliveries.slice(0, 4).map((delivery) => (
+              {mockDeliveries.slice(0, 4).map((delivery) => (
                 <div key={delivery.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div>
-                    <p className="font-medium cursor-pointer hover:text-blue-600" onClick={() => setSelectedOrderId(delivery.id)}>{delivery.id}</p>
+                    <p className="font-medium cursor-pointer hover:text-blue-600" onClick={() => setSelectedOrderId(delivery.id)}>
+                      {delivery.id}
+                    </p>
                     <p className="text-sm text-gray-500">{delivery.pickupTime}</p>
                   </div>
                   <div className="text-right">
@@ -76,10 +130,12 @@ export function DriverDetailsSheet({ driver, driverDeliveries }: DriverDetailsSh
               </Button>
             </div>
             <div className="space-y-3">
-              {driverDeliveries.slice(4, 7).map((delivery) => (
+              {mockDeliveries.slice(2, 4).map((delivery) => (
                 <div key={delivery.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div>
-                    <p className="font-medium cursor-pointer hover:text-blue-600" onClick={() => setSelectedOrderId(delivery.id)}>{delivery.id}</p>
+                    <p className="font-medium cursor-pointer hover:text-blue-600" onClick={() => setSelectedOrderId(delivery.id)}>
+                      {delivery.id}
+                    </p>
                     <p className="text-sm text-gray-500">{delivery.pickupTime}</p>
                   </div>
                   <div className="text-right">
@@ -94,9 +150,11 @@ export function DriverDetailsSheet({ driver, driverDeliveries }: DriverDetailsSh
           <div className="space-y-4">
             <h3 className="font-semibold">Weekly Summary</h3>
             <div className="grid grid-cols-2 gap-4">
-              {driverDeliveries.slice(0, 2).map((delivery) => (
+              {mockDeliveries.slice(0, 2).map((delivery) => (
                 <div key={delivery.id} className="p-3 bg-gray-50 rounded-lg">
-                  <p className="font-medium cursor-pointer hover:text-blue-600" onClick={() => setSelectedOrderId(delivery.id)}>{delivery.id}</p>
+                  <p className="font-medium cursor-pointer hover:text-blue-600" onClick={() => setSelectedOrderId(delivery.id)}>
+                    {delivery.id}
+                  </p>
                   <p className="text-sm text-gray-500">{delivery.pickupTime}</p>
                   <p className="font-medium text-green-600">{delivery.couriersEarnings || delivery.price}</p>
                 </div>
