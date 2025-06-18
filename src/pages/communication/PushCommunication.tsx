@@ -2,9 +2,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { TowerControl, Filter } from "lucide-react";
 import CommunicationPanel from "@/components/communication/CommunicationPanel";
-import { DriversSidebar } from "@/components/drivers/DriversSidebar";
-import { CustomerFiltersSidebar } from "@/components/communication/CustomerFiltersSidebar";
-import { DispatcherFiltersSidebar } from "@/components/communication/DispatcherFiltersSidebar";
+import { CommunicationFiltersSidebar } from "@/components/communication/CommunicationFiltersSidebar";
 import { useState } from "react";
 import { DeliveryStatus } from "@/types/delivery";
 import { Button } from "@/components/ui/button";
@@ -52,19 +50,19 @@ const CommunicationTower = () => {
 
   const handleFiltersAdd = (filters: any) => {
     if (activeTab === "drivers") {
-      setSelectedStatuses(filters.statuses as DeliveryStatus[]);
-      setSelectedZipcodes(filters.zipcodes);
-      setSelectedCities(filters.cities);
-      setSelectedStates(filters.states);
+      setSelectedStatuses(filters.statuses || []);
+      setSelectedZipcodes(filters.zipcodes || []);
+      setSelectedCities(filters.cities || []);
+      setSelectedStates(filters.states || []);
       setSelectedProfiles(filters.profiles || []);
       setSelectedTransports(filters.transports || []);
       setSelectedHireStatuses(filters.hireStatuses || []);
     } else if (activeTab === "clients") {
-      setSelectedClientCities(filters.cities);
-      setSelectedClientStates(filters.states);
-      setSelectedOrganizations(filters.organizations);
+      setSelectedClientCities(filters.cities || []);
+      setSelectedClientStates(filters.states || []);
+      setSelectedOrganizations(filters.organizations || []);
     } else if (activeTab === "groups") {
-      setSelectedDispatchers(filters.dispatchers);
+      setSelectedDispatchers(filters.dispatchers || []);
     }
   };
 
@@ -109,49 +107,52 @@ const CommunicationTower = () => {
                 {getCurrentSidebarState() && (
                   <>
                     <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
-                      {activeTab === "drivers" ? (
-                        <DriversSidebar
-                          selectedStatuses={selectedStatuses}
-                          setSelectedStatuses={setSelectedStatuses}
-                          allDeliveryStatuses={allDriverStatuses}
-                          allZipcodes={allZipcodes}
-                          selectedZipcodes={selectedZipcodes}
-                          setSelectedZipcodes={setSelectedZipcodes}
-                          allCities={allCities}
-                          selectedCities={selectedCities}
-                          setSelectedCities={setSelectedCities}
-                          allStates={allStates}
-                          selectedStates={selectedStates}
-                          setSelectedStates={setSelectedStates}
-                          open={driverFilterSidebarOpen}
-                          onClose={() => setDriverFilterSidebarOpen(false)}
-                          onFiltersAdd={handleFiltersAdd}
-                        />
-                      ) : activeTab === "clients" ? (
-                        <CustomerFiltersSidebar
-                          selectedCities={selectedClientCities}
-                          setSelectedCities={setSelectedClientCities}
-                          allCities={allCities}
-                          selectedStates={selectedClientStates}
-                          setSelectedStates={setSelectedClientStates}
-                          allStates={allStates}
-                          selectedOrganizations={selectedOrganizations}
-                          setSelectedOrganizations={setSelectedOrganizations}
-                          allOrganizations={allOrganizations}
-                          onFiltersAdd={handleFiltersAdd}
-                          open={clientFilterSidebarOpen}
-                          onClose={() => setClientFilterSidebarOpen(false)}
-                        />
-                      ) : (
-                        <DispatcherFiltersSidebar
-                          selectedDispatchers={selectedDispatchers}
-                          setSelectedDispatchers={setSelectedDispatchers}
-                          allDispatchers={allDispatchers}
-                          onFiltersAdd={handleFiltersAdd}
-                          open={dispatcherFilterSidebarOpen}
-                          onClose={() => setDispatcherFilterSidebarOpen(false)}
-                        />
-                      )}
+                      <CommunicationFiltersSidebar
+                        activeTab={activeTab}
+                        onFiltersAdd={handleFiltersAdd}
+                        open={getCurrentSidebarState()}
+                        onClose={() => {
+                          if (activeTab === "drivers") {
+                            setDriverFilterSidebarOpen(false);
+                          } else if (activeTab === "clients") {
+                            setClientFilterSidebarOpen(false);
+                          } else if (activeTab === "groups") {
+                            setDispatcherFilterSidebarOpen(false);
+                          }
+                        }}
+                        
+                        // Driver filters
+                        selectedStatuses={selectedStatuses}
+                        setSelectedStatuses={setSelectedStatuses}
+                        selectedZipcodes={selectedZipcodes}
+                        setSelectedZipcodes={setSelectedZipcodes}
+                        selectedCities={activeTab === "drivers" ? selectedCities : selectedClientCities}
+                        setSelectedCities={activeTab === "drivers" ? setSelectedCities : setSelectedClientCities}
+                        selectedStates={activeTab === "drivers" ? selectedStates : selectedClientStates}
+                        setSelectedStates={activeTab === "drivers" ? setSelectedStates : setSelectedClientStates}
+                        selectedProfiles={selectedProfiles}
+                        setSelectedProfiles={setSelectedProfiles}
+                        selectedTransports={selectedTransports}
+                        setSelectedTransports={setSelectedTransports}
+                        selectedHireStatuses={selectedHireStatuses}
+                        setSelectedHireStatuses={setSelectedHireStatuses}
+                        
+                        // Client filters
+                        selectedOrganizations={selectedOrganizations}
+                        setSelectedOrganizations={setSelectedOrganizations}
+                        
+                        // Dispatcher filters
+                        selectedDispatchers={selectedDispatchers}
+                        setSelectedDispatchers={setSelectedDispatchers}
+                        
+                        // Data arrays
+                        allDeliveryStatuses={allDriverStatuses}
+                        allZipcodes={allZipcodes}
+                        allCities={allCities}
+                        allStates={allStates}
+                        allOrganizations={allOrganizations}
+                        allDispatchers={allDispatchers}
+                      />
                     </ResizablePanel>
                     <ResizableHandle withHandle />
                   </>
