@@ -1,3 +1,4 @@
+
 import React from "react"
 import {
   Sheet,
@@ -13,6 +14,7 @@ import { Button } from "@/components/ui/button"
 import { Eye, Pencil, User } from "lucide-react"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
+import { InsuranceCertificateImageView } from "./InsuranceCertificateImageView"
 
 interface DriverDetailsSheetProps {
   isOpen: boolean
@@ -224,16 +226,11 @@ const DriverDetailsSheet: React.FC<DriverDetailsSheetProps> = ({
                     </div>
                   </div>
                   
-                  {/* Image View Component */}
-                  {insuranceCert.url && (
-                    <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
-                      <img 
-                        src={insuranceCert.url} 
-                        alt="Insurance Certificate"
-                        className="max-w-full max-h-full object-contain rounded-lg"
-                      />
-                    </div>
-                  )}
+                  {/* Independent Insurance Certificate Image View Component */}
+                  <InsuranceCertificateImageView 
+                    imageUrl={insuranceCert.url} 
+                    isEditing={isEditing}
+                  />
                   
                   <div className="text-sm text-gray-600">
                     <p>Uploaded: {insuranceCert.uploadDate}</p>
