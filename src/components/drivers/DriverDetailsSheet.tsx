@@ -1231,7 +1231,7 @@ export const DriverDetailsSheet = ({
                                 </div>
                               </div>
 
-                              {/* Driver's License Images Grid - Now showing all 4 images */}
+                              {/* Driver's License Images Grid */}
                               <div className="grid grid-cols-2 gap-4 mb-4">
                                 {driverLicenseImages.map((image) => (
                                   <div key={image.id} className="flex items-center justify-between p-3 border rounded-lg">
@@ -1264,23 +1264,6 @@ export const DriverDetailsSheet = ({
                                   </div>
                                 ))}
                               </div>
-
-                              {editingSection === 'documents' && (
-                                <div className="p-4 border-2 border-dashed border-gray-300 rounded-lg text-center">
-                                  <Input type="file" accept="image/*" className="hidden" id="license-image-upload" multiple />
-                                  <Button 
-                                    variant="outline" 
-                                    onClick={() => document.getElementById('license-image-upload')?.click()}
-                                    className="flex items-center gap-2"
-                                  >
-                                    <Upload className="w-4 h-4" />
-                                    Upload License Images
-                                  </Button>
-                                  <p className="text-xs text-muted-foreground mt-2">
-                                    Upload front and back of driver's license
-                                  </p>
-                                </div>
-                              )}
                             </div>
 
                             {/* Other Documents */}
