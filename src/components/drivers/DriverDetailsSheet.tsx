@@ -1300,7 +1300,7 @@ export const DriverDetailsSheet = ({
                                 <h4 className="text-sm font-medium">Other Documents</h4>
                               </div>
                               <div className="space-y-4">
-                                {documents.filter(doc => !doc.name.includes("Driver's License")).map(document => (
+                                {documents.filter(doc => !doc.name.includes("Driver's License") && doc.name !== "Insurance Certificate").map(document => (
                                   <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
                                     <div className="flex items-center gap-3">
                                       <Image className="h-4 w-4 text-muted-foreground" />
