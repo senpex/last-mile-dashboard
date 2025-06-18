@@ -26,6 +26,8 @@ interface RecipientListProps {
     transports?: string[];
     hireStatuses?: string[];
     dispatchers?: string[];
+    radius?: number;
+    names?: string[];
   };
 }
 
@@ -66,7 +68,6 @@ export const RecipientList: React.FC<RecipientListProps> = ({
     if (selectedFilters.recipientNames?.length) {
       groups.push({ type: "Recipient", values: selectedFilters.recipientNames });
     }
-    // Add the new filter types
     if (selectedFilters.profiles?.length) {
       groups.push({ type: "Profile", values: selectedFilters.profiles });
     }
@@ -76,9 +77,14 @@ export const RecipientList: React.FC<RecipientListProps> = ({
     if (selectedFilters.hireStatuses?.length) {
       groups.push({ type: "Hire Status", values: selectedFilters.hireStatuses });
     }
-    // Add the dispatchers filter
     if (selectedFilters.dispatchers?.length) {
       groups.push({ type: "Dispatcher", values: selectedFilters.dispatchers });
+    }
+    if (selectedFilters.radius && selectedFilters.radius !== 15) {
+      groups.push({ type: "Radius", values: [`${selectedFilters.radius} miles`] });
+    }
+    if (selectedFilters.names?.length) {
+      groups.push({ type: "Name", values: selectedFilters.names });
     }
 
     return groups;

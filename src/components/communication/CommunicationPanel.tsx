@@ -22,6 +22,8 @@ interface CommunicationPanelProps {
     hireStatuses?: string[];
     organizations?: string[];
     dispatchers?: string[];
+    radius?: number;
+    names?: string[];
   };
   activeTab?: string;
   setActiveTab?: (tab: string) => void;

@@ -1,3 +1,4 @@
+
 import { Layout } from "@/components/layout/Layout";
 import { TowerControl, Filter } from "lucide-react";
 import CommunicationPanel from "@/components/communication/CommunicationPanel";
@@ -16,6 +17,8 @@ const CommunicationTower = () => {
   const [selectedProfiles, setSelectedProfiles] = useState<string[]>([]);
   const [selectedTransports, setSelectedTransports] = useState<string[]>([]);
   const [selectedHireStatuses, setSelectedHireStatuses] = useState<string[]>([]);
+  const [selectedRadius, setSelectedRadius] = useState<number>(15);
+  const [selectedNames, setSelectedNames] = useState<string[]>([]);
   
   // Client filters state
   const [clientFilterSidebarOpen, setClientFilterSidebarOpen] = useState(true);
@@ -55,6 +58,8 @@ const CommunicationTower = () => {
       setSelectedProfiles(filters.profiles || []);
       setSelectedTransports(filters.transports || []);
       setSelectedHireStatuses(filters.hireStatuses || []);
+      setSelectedRadius(filters.radius || 15);
+      setSelectedNames(filters.names || []);
     } else if (activeTab === "clients") {
       setSelectedClientCities(filters.cities || []);
       setSelectedClientStates(filters.states || []);
@@ -166,7 +171,9 @@ const CommunicationTower = () => {
                       transports: selectedTransports,
                       hireStatuses: selectedHireStatuses,
                       organizations: selectedOrganizations,
-                      dispatchers: selectedDispatchers
+                      dispatchers: selectedDispatchers,
+                      radius: selectedRadius,
+                      names: selectedNames
                     }}
                   />
                 </div>
