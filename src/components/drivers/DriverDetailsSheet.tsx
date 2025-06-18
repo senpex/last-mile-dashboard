@@ -1,308 +1,335 @@
+import { useState } from "react"
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Edit, FileText, User, Car, CreditCard } from "lucide-react"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { UploadButton } from "@/components/uploadthing"
 
-import { useState } from "react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Edit, FileText, User, Car, CreditCard, Upload, Trash2 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+interface DriverDetailsSheetProps {
+  driver: any // Replace 'any' with the actual type of your driver object
+  isOpen: boolean
+  onClose: () => void
+}
 
-export default function DriverDetailsSheet({ driver, isOpen, onClose }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedDriver, setEditedDriver] = useState(driver ? { ...driver } : {});
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+export default function DriverDetailsSheet({ driver, isOpen, onClose }: DriverDetailsSheetProps) {
+  const [isEditingPersonal, setIsEditingPersonal] = useState(false)
+  const [isEditingDocuments, setIsEditingDocuments] = useState(false)
+  const [isEditingVehicle, setIsEditingVehicle] = useState(false)
   const [documents, setDocuments] = useState([
-    { id: 1, name: "Driver's License", type: "PDF", uploadDate: "2023-01-15", status: "Approved" },
-    { id: 2, name: "Insurance Policy", type: "PDF", uploadDate: "2023-02-20", status: "Pending" },
-    { id: 3, name: "Vehicle Registration", type: "PDF", uploadDate: "2023-03-10", status: "Approved" },
-  ]);
+    {
+      id: "1",
+      name: "Driver's License Front",
+      url: "https://example.com/license-front.pdf",
+    },
+    {
+      id: "2",
+      name: "Driver's License Back",
+      url: "https://example.com/license-back.pdf",
+    },
+    {
+      id: "3",
+      name: "Insurance certificate",
+      url: "https://example.com/insurance.pdf",
+    },
+  ])
+  const [vehicleInfo, setVehicleInfo] = useState({
+    make: "Toyota",
+    model: "Camry",
+    year: 2020,
+    color: "Silver",
+  })
 
-  // Early return if driver is null
-  if (!driver) {
-    return (
-      <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent className="sm:max-w-[600px]">
-          <SheetHeader>
-            <SheetTitle>Driver Details</SheetTitle>
-          </SheetHeader>
-          <p>No driver selected.</p>
-        </SheetContent>
-      </Sheet>
-    );
+  const handleSavePersonal = () => {
+    setIsEditingPersonal(false)
+    // Save personal information logic here
   }
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditedDriver(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+  const handleSaveDocuments = () => {
+    setIsEditingDocuments(false)
+    // Save documents logic here
+  }
 
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
+  const handleSaveVehicle = () => {
+    setIsEditingVehicle(false)
+    // Save vehicle information logic here
+  }
 
-  const handleSaveClick = () => {
-    // Here you would typically save the editedDriver data to your backend
-    console.log("Saving driver data:", editedDriver);
-    setIsEditing(false);
-  };
-
-  const handleDeleteClick = () => {
-    setIsDeleteDialogOpen(true);
-  };
-
-  const handleConfirmDelete = () => {
-    // Here you would typically call an API to delete the driver
-    console.log("Deleting driver:", driver.id);
-    setIsDeleteDialogOpen(false);
-    onClose(); // Close the sheet after deletion
-  };
-
-  const handleCancelDelete = () => {
-    setIsDeleteDialogOpen(false);
-  };
-
-  const handleUploadDocument = (docId) => {
-    const fileInput = document.getElementById(`file-input-${docId}`);
-    if (fileInput) {
-      fileInput.click();
-    }
-  };
-
-  const handleFileChange = (event, docId) => {
-    const file = event.target.files[0];
-    if (file) {
-      console.log(`Uploading file for document ${docId}:`, file.name);
-      // Here you would typically upload the file to your server
-    }
-  };
-
-  const handleDeleteDocument = (docId) => {
-    setDocuments(prevDocs => prevDocs.filter(doc => doc.id !== docId));
-  };
+  const handleDeleteDocument = (id: string) => {
+    setDocuments(documents.filter(doc => doc.id !== id))
+  }
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="sm:max-w-[600px]">
-        <SheetHeader>
-          <SheetTitle>Driver Details</SheetTitle>
+      <SheetContent className="w-[600px] sm:w-[800px] sm:max-w-[90vw] overflow-y-auto">
+        <SheetHeader className="mb-6">
+          <SheetTitle className="text-xl font-semibold">Driver Details</SheetTitle>
         </SheetHeader>
-        <Card>
-          <CardHeader>
-            <CardTitle>Personal Information</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center space-x-4">
-              <Avatar>
-                <AvatarImage src={`https://ui-avatars.com/api/?name=${driver.name || 'Unknown'}`} />
-                <AvatarFallback>{(driver.name || 'U').charAt(0)}</AvatarFallback>
-              </Avatar>
-              <div>
-                {isEditing ? (
-                  <Input
-                    type="text"
-                    name="name"
-                    value={editedDriver.name || ''}
-                    onChange={handleInputChange}
-                    className="w-full"
-                  />
-                ) : (
-                  <h2 className="text-lg font-semibold">{driver.name || 'Unknown'}</h2>
-                )}
-                <p className="text-sm text-muted-foreground">Driver ID: {driver.id || 'N/A'}</p>
-              </div>
-            </div>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label>Email</Label>
-                  {isEditing ? (
-                    <Input
-                      type="email"
-                      name="email"
-                      value={editedDriver.email || ''}
-                      onChange={handleInputChange}
-                      className="w-full"
-                    />
-                  ) : (
-                    <p>{driver.email || 'N/A'}</p>
-                  )}
-                </div>
-                <div>
-                  <Label>Phone</Label>
-                  {isEditing ? (
-                    <Input
-                      type="tel"
-                      name="phone"
-                      value={editedDriver.phone || ''}
-                      onChange={handleInputChange}
-                      className="w-full"
-                    />
-                  ) : (
-                    <p>{driver.phone || 'N/A'}</p>
-                  )}
-                </div>
-              </div>
-              <div>
-                <Label>Address</Label>
-                {isEditing ? (
-                  <Input
-                    type="text"
-                    name="address"
-                    value={editedDriver.address || ''}
-                    onChange={handleInputChange}
-                    className="w-full"
-                  />
-                ) : (
-                  <p>{driver.address || 'N/A'}</p>
-                )}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Vehicle Information</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-6">
+          {/* Personal Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <User className="h-4 w-4" />
+                Personal Information
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsEditingPersonal(!isEditingPersonal)}
+                  className="ml-auto"
+                >
+                  <Edit className="h-4 w-4" />
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center space-x-4">
+                <Avatar>
+                  <AvatarImage src="https://github.com/shadcn.png" alt="Avatar" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
                 <div>
-                  <Label>Make</Label>
-                  {isEditing ? (
-                    <Input
-                      type="text"
-                      name="vehicleMake"
-                      value={editedDriver.vehicleMake || ''}
-                      onChange={handleInputChange}
-                      className="w-full"
-                    />
-                  ) : (
-                    <p>{driver.vehicleMake || 'N/A'}</p>
-                  )}
-                </div>
-                <div>
-                  <Label>Model</Label>
-                  {isEditing ? (
-                    <Input
-                      type="text"
-                      name="vehicleModel"
-                      value={editedDriver.vehicleModel || ''}
-                      onChange={handleInputChange}
-                      className="w-full"
-                    />
-                  ) : (
-                    <p>{driver.vehicleModel || 'N/A'}</p>
-                  )}
-                </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label>Year</Label>
-                  {isEditing ? (
-                    <Input
-                      type="text"
-                      name="vehicleYear"
-                      value={editedDriver.vehicleYear || ''}
-                      onChange={handleInputChange}
-                      className="w-full"
-                    />
-                  ) : (
-                    <p>{driver.vehicleYear || 'N/A'}</p>
-                  )}
-                </div>
-                <div>
-                  <Label>License Plate</Label>
-                  {isEditing ? (
-                    <Input
-                      type="text"
-                      name="licensePlate"
-                      value={editedDriver.licensePlate || ''}
-                      onChange={handleInputChange}
-                      className="w-full"
-                    />
-                  ) : (
-                    <p>{driver.licensePlate || 'N/A'}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Documents</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul>
-              {documents.map(doc => (
-                <li key={doc.id} className="flex items-center justify-between py-2 border-b last:border-b-0">
-                  <div>
-                    <FileText className="inline-block mr-2 h-4 w-4" />
-                    {doc.name}
-                    <Badge className="ml-2">{doc.status}</Badge>
+                  <div className="text-sm font-medium">
+                    {driver?.firstName} {driver?.lastName}
                   </div>
-                  <div>
-                    <input
-                      type="file"
-                      id={`file-input-${doc.id}`}
-                      style={{ display: 'none' }}
-                      onChange={(event) => handleFileChange(event, doc.id)}
-                    />
-                    <Button variant="outline" size="sm" onClick={() => handleUploadDocument(doc.id)} className="bg-blue-500 text-white hover:bg-blue-600">
-                      <Upload className="mr-2 h-4 w-4" />
-                      Upload
-                    </Button>
+                  <div className="text-muted-foreground">
+                    {driver?.email}
                   </div>
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="space-x-2">
+                  <Label>Phone:</Label>
+                  <span>{driver?.phone || "N/A"}</span>
+                </div>
+                <div className="space-x-2">
+                  <Label>Address:</Label>
+                  <span>{driver?.address || "N/A"}</span>
+                </div>
+                <div className="space-x-2">
+                  <Label>City:</Label>
+                  <span>{driver?.city || "N/A"}</span>
+                </div>
+                <div className="space-x-2">
+                  <Label>State:</Label>
+                  <span>{driver?.state || "N/A"}</span>
+                </div>
+                <div className="space-x-2">
+                  <Label>Zip:</Label>
+                  <span>{driver?.zip || "N/A"}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-        <div className="flex justify-end space-x-2">
-          {isEditing ? (
-            <>
-              <Button variant="secondary" onClick={() => setIsEditing(false)}>Cancel</Button>
-              <Button onClick={handleSaveClick}>Save</Button>
-            </>
-          ) : (
-            <>
-              <Button variant="outline" onClick={handleEditClick}>
-                <Edit className="mr-2 h-4 w-4" />
-                Edit
-              </Button>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="destructive">
-                    <Trash2 className="mr-2 h-4 w-4" />
-                    Delete
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete the driver from our servers.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel onClick={handleCancelDelete}>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleConfirmDelete}>Continue</AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </>
-          )}
+          {/* Documents */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                Documents
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsEditingDocuments(!isEditingDocuments)}
+                  className="ml-auto"
+                >
+                  <Edit className="h-4 w-4" />
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Driver's License */}
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <CreditCard className="h-4 w-4 text-muted-foreground" />
+                    <h4 className="text-sm font-medium">Driver's License</h4>
+                  </div>
+                  <div className="space-y-4">
+                    {documents
+                      .filter(doc => doc.name.includes("Driver's License"))
+                      .map(document => (
+                        <div
+                          key={document.id}
+                          className="flex items-center justify-between"
+                        >
+                          <a
+                            href={document.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-blue-500 hover:underline"
+                          >
+                            {document.name}
+                          </a>
+                          <Badge variant="secondary">Uploaded</Badge>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
+                {/* Insurance certificate */}
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <FileText className="h-4 w-4 text-muted-foreground" />
+                    <h4 className="text-sm font-medium">Insurance certificate</h4>
+                  </div>
+                  <div className="space-y-4">
+                    {/* Policy number and Date of expiration fields */}
+                    {isEditingDocuments && (
+                      <div className="space-y-3 mb-4">
+                        <div>
+                          <Label htmlFor="policy-number" className="text-sm font-medium">
+                            Policy number
+                          </Label>
+                          <Input
+                            id="policy-number"
+                            placeholder="Enter policy number"
+                            className="mt-1"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="date-expiration" className="text-sm font-medium">
+                            Date of expiration
+                          </Label>
+                          <Input
+                            id="date-expiration"
+                            type="date"
+                            className="mt-1"
+                          />
+                        </div>
+                      </div>
+                    )}
+                    {documents.filter(doc => !doc.name.includes("Driver's License")).map(document => (
+                      <div
+                        key={document.id}
+                        className="flex items-center justify-between"
+                      >
+                        <a
+                          href={document.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-blue-500 hover:underline"
+                        >
+                          {document.name}
+                        </a>
+                        <div className="flex items-center space-x-2">
+                          <Badge variant="secondary">Uploaded</Badge>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button variant="outline" size="xs" className="h-6">
+                                Delete
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  This action cannot be undone. This will permanently delete
+                                  the document from our servers.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => handleDeleteDocument(document.id)}
+                                >
+                                  Continue
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
+                      </div>
+                    ))}
+                    <UploadButton
+                      endpoint="imageUploader"
+                      onClientUploadComplete={res => {
+                        console.log("Files: ", res)
+                        alert("Upload Completed!")
+                      }}
+                      onUploadError={error => {
+                        alert(`ERROR! ${error.message}`)
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Vehicle Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Car className="h-4 w-4" />
+                Vehicle Information
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsEditingVehicle(!isEditingVehicle)}
+                  className="ml-auto"
+                >
+                  <Edit className="h-4 w-4" />
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <div className="space-x-2">
+                  <Label>Make:</Label>
+                  <span>{vehicleInfo.make || "N/A"}</span>
+                </div>
+                <div className="space-x-2">
+                  <Label>Model:</Label>
+                  <span>{vehicleInfo.model || "N/A"}</span>
+                </div>
+                <div className="space-x-2">
+                  <Label>Year:</Label>
+                  <span>{vehicleInfo.year || "N/A"}</span>
+                </div>
+                <div className="space-x-2">
+                  <Label>Color:</Label>
+                  <span>{vehicleInfo.color || "N/A"}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="flex justify-end space-x-2">
+            <Button variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button onClick={handleSavePersonal}>Save</Button>
+          </div>
         </div>
       </SheetContent>
     </Sheet>
-  );
+  )
 }
