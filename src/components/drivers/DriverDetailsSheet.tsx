@@ -152,6 +152,26 @@ export const DriverDetailsSheet = ({
     status: "Verified"
   }];
 
+  // Driver's license images specifically
+  const driverLicenseImages = [
+    {
+      id: 1,
+      name: "Driver's License - Front",
+      type: "Image",
+      uploadDate: "2024-01-15",
+      status: "Verified",
+      imageUrl: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=250&fit=crop"
+    },
+    {
+      id: 2,
+      name: "Driver's License - Back", 
+      type: "Image",
+      uploadDate: "2024-01-12",
+      status: "Pending",
+      imageUrl: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=250&fit=crop"
+    }
+  ];
+
   // Get actual delivery data for this driver
   const getDeliveriesForDriver = () => {
     return deliveriesData.filter(delivery => delivery.courier === driver.name);
@@ -1091,31 +1111,102 @@ export const DriverDetailsSheet = ({
                             </Button>}
                         </div>
                         <Card>
-                          <CardContent className="pt-6">
-                            <div className="space-y-4">
-                              {documents.map(document => (
-                                <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
-                                  <div className="flex items-center gap-3">
-                                    <Image className="h-4 w-4 text-muted-foreground" />
-                                    <div>
-                                      <p className="text-sm font-medium">{document.name}</p>
-                                      <p className="text-xs text-muted-foreground">
-                                        {document.type} • Uploaded {document.uploadDate}
-                                      </p>
+                          <CardContent className="pt-6 space-y-6">
+                            {/* Driver's License Images Subsection */}
+                            <div>
+                              <div className="flex items-center gap-2 mb-4">
+                                <Image className="h-4 w-4 text-muted-foreground" />
+                                <h4 className="text-sm font-medium">Driver's License Images</h4>
+                              </div>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {driverLicenseImages.map(image => (
+                                  <div key={image.id} className="border rounded-lg p-3 space-y-3">
+                                    <div className="flex items-center justify-between">
+                                      <div>
+                                        <p className="text-sm font-medium">{image.name}</p>
+                                        <p className="text-xs text-muted-foreground">
+                                          Uploaded {image.uploadDate}
+                                        </p>
+                                      </div>
+                                      <Badge variant={image.status === 'Verified' ? 'default' : 'secondary'} className="text-xs">
+                                        {image.status}
+                                      </Badge>
+                                    </div>
+                                    <div className="relative group cursor-pointer border rounded overflow-hidden" onClick={() => handleImageClick(image.imageUrl)}>
+                                      <img 
+                                        src={image.imageUrl} 
+                                        alt={image.name} 
+                                        className="w-full h-32 object-cover transition-transform group-hover:scale-105" 
+                                        onError={(e) => {
+                                          e.currentTarget.style.display = 'none';
+                                        }} 
+                                      />
+                                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
+                                        <Eye className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                                      </div>
+                                    </div>
+                                    <div className="flex gap-2">
+                                      <Button variant="ghost" size="sm" onClick={() => handleViewDocument(image)} className="text-xs">
+                                        View
+                                      </Button>
+                                      {editingSection === 'documents' && (
+                                        <Button variant="outline" size="sm" className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                          <Trash2 className="w-3 h-3" />
+                                        </Button>
+                                      )}
                                     </div>
                                   </div>
-                                  <div className="flex items-center gap-2">
-                                    {editingSection === 'documents' && (
-                                      <Button variant="outline" size="sm" className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
-                                        <Trash2 className="w-3 h-3" />
-                                      </Button>
-                                    )}
-                                    <Button variant="ghost" size="sm" onClick={() => handleViewDocument(document)}>
-                                      View
-                                    </Button>
-                                  </div>
+                                ))}
+                              </div>
+                              {editingSection === 'documents' && (
+                                <div className="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-lg text-center">
+                                  <Input type="file" accept="image/*" className="hidden" id="license-image-upload" multiple />
+                                  <Button 
+                                    variant="outline" 
+                                    onClick={() => document.getElementById('license-image-upload')?.click()}
+                                    className="flex items-center gap-2"
+                                  >
+                                    <Upload className="w-4 h-4" />
+                                    Upload License Images
+                                  </Button>
+                                  <p className="text-xs text-muted-foreground mt-2">
+                                    Upload front and back of driver's license
+                                  </p>
                                 </div>
-                              ))}
+                              )}
+                            </div>
+
+                            {/* Other Documents */}
+                            <div>
+                              <div className="flex items-center gap-2 mb-4">
+                                <FileText className="h-4 w-4 text-muted-foreground" />
+                                <h4 className="text-sm font-medium">Other Documents</h4>
+                              </div>
+                              <div className="space-y-4">
+                                {documents.filter(doc => !doc.name.includes("Driver's License")).map(document => (
+                                  <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
+                                    <div className="flex items-center gap-3">
+                                      <Image className="h-4 w-4 text-muted-foreground" />
+                                      <div>
+                                        <p className="text-sm font-medium">{document.name}</p>
+                                        <p className="text-xs text-muted-foreground">
+                                          {document.type} • Uploaded {document.uploadDate}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      {editingSection === 'documents' && (
+                                        <Button variant="outline" size="sm" className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                          <Trash2 className="w-3 h-3" />
+                                        </Button>
+                                      )}
+                                      <Button variant="ghost" size="sm" onClick={() => handleViewDocument(document)}>
+                                        View
+                                      </Button>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
                               {editingSection === 'documents' && (
                                 <div className="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-lg text-center">
                                   <Input type="file" accept="image/*,.pdf,.doc,.docx" className="hidden" id="document-upload" multiple />
@@ -1130,12 +1221,6 @@ export const DriverDetailsSheet = ({
                                   <p className="text-xs text-muted-foreground mt-2">
                                     Support: Images, PDF, DOC, DOCX
                                   </p>
-                                </div>
-                              )}
-                              {documents.length === 0 && (
-                                <div className="text-center py-8 text-muted-foreground">
-                                  <Image className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                                  <p className="text-sm">No documents uploaded</p>
                                 </div>
                               )}
                             </div>
