@@ -46,6 +46,7 @@ export const OrderControlPanel = ({
   };
   const utcOffsetMinutes = getUtcOffsetMinutes();
   const offsetDisplay = utcOffsetMinutes >= 0 ? `+${utcOffsetMinutes}` : `${utcOffsetMinutes}`;
+  
   const handleFlagToggle = () => {
     onOrderFlag(delivery.id, !isFlagged);
   };
@@ -89,10 +90,10 @@ export const OrderControlPanel = ({
     console.log(`eZcater status set to: ${status}`);
   };
 
-  return <div className="border-t bg-gray-50 p-4 mt-auto">
+  return <div className="border-t bg-muted/30 dark:bg-background/50 p-4 mt-auto">
       <div className="mb-0">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-sm font-medium">Control Panel</h3>
+          <h3 className="text-sm font-medium text-foreground">Control Panel</h3>
           <div className="text-xs text-muted-foreground">
             Time Zone: {currentTimezone} ({offsetDisplay})
           </div>
@@ -102,7 +103,7 @@ export const OrderControlPanel = ({
         <div className="grid grid-cols-1 gap-3">
           {/* Button Section - Now positioned above dropdowns */}
           <div className="grid grid-cols-5 gap-2">
-            <Button size="sm" className="flex items-center gap-1" onClick={handleCancelClick}>
+            <Button size="sm" variant="outline" className="flex items-center gap-1 hover:bg-destructive hover:text-destructive-foreground" onClick={handleCancelClick}>
               <X className="h-4 w-4" /> Cancel
             </Button>
             
