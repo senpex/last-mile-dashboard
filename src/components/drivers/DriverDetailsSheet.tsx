@@ -155,7 +155,7 @@ export const DriverDetailsSheet = ({
   };
   const driverDeliveries = getDeliveriesForDriver();
 
-  // Sample payout data with real delivery order numbers
+  // Sample payout records with real delivery order numbers
   const payoutRecords = [{
     id: 1,
     date: "2024-01-15",
@@ -1323,7 +1323,7 @@ export const DriverDetailsSheet = ({
                                     {ordersOnHands.map((order) => (
                                       <div key={order.id} className="px-4 py-3">
                                         <div className="grid grid-cols-3 gap-4 text-sm">
-                                          <div className="font-medium text-blue-600 hover:text-blue-800 cursor-pointer underline">
+                                          <div className="font-medium text-blue-600 hover:text-blue-800 cursor-pointer underline" onClick={() => handleOrderClick(order.id)}>
                                             #{order.id}
                                           </div>
                                           <div>{order.pickupDate}</div>
