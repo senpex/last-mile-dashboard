@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Search, Users, User, Send, Clock, Paperclip, X, FileText, FileImage, FileSpreadsheet, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -25,6 +24,7 @@ interface CommunicationPanelProps {
     dispatchers?: string[];
     radius?: number;
     names?: string[];
+    clientNames?: string[];
   };
   activeTab?: string;
   setActiveTab?: (tab: string) => void;
@@ -218,7 +218,8 @@ const CommunicationPanel = ({
     (selectedFilters.organizations && selectedFilters.organizations.length > 0) ||
     (selectedFilters.dispatchers && selectedFilters.dispatchers.length > 0) ||
     (selectedFilters.radius && selectedFilters.radius !== 15) ||
-    (selectedFilters.names && selectedFilters.names.length > 0)
+    (selectedFilters.names && selectedFilters.names.length > 0) ||
+    (selectedFilters.clientNames && selectedFilters.clientNames.length > 0)
   );
 
   return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 my-0 flex flex-col h-[calc(100vh-180px)] border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-300 light:border-2 light:border-gray-300 light:hover:border-gray-400 px-[20px]">
