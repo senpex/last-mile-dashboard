@@ -270,11 +270,18 @@ export const DriverDetailsSheet = ({
   };
 
   // Use actual driver deliveries for orders on hands - take first 4 orders
-  const ordersOnHands = driverDeliveries.slice(0, 4).map(delivery => ({
-    id: delivery.id,
-    pickupDate: delivery.pickupTime.split(' ')[0], // Extract just the date part
-    status: delivery.status
-  }));
+  const ordersOnHands = [
+    {
+      id: 100429,
+      pickupDate: "2024-01-26", 
+      status: "In Progress"
+    },
+    ...driverDeliveries.slice(0, 3).map(delivery => ({
+      id: delivery.id,
+      pickupDate: delivery.pickupTime.split(' ')[0], // Extract just the date part
+      status: delivery.status
+    }))
+  ];
 
   const handleViewDocument = (document: typeof documents[0]) => {
     setSelectedDocument(document);
