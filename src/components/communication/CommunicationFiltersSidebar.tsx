@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -576,10 +575,6 @@ export const CommunicationFiltersSidebar = ({
           <Button variant="outline" className="flex-1 gap-1" onClick={handleResetFilters}>
             <RotateCcw className="h-4 w-4" />
             Reset
-          </Button>
-          <Button className="flex-1 gap-1" onClick={handleApplyFilters}>
-            <Save className="h-4 w-4" />
-            Apply
           </Button>
         </div>
       </div>
