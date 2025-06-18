@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -291,6 +292,13 @@ export const DriverDetailsSheet = ({
   };
 
   const handleSave = (section: string) => {
+    // Save the edited data back to the driver object
+    if (section === 'companies') {
+      // Update the driver's dedicated companies
+      driver.dedicatedCompanies = [...editedData.dedicatedCompanies];
+      console.log('Saved dedicated companies:', driver.dedicatedCompanies);
+    }
+    
     setEditingSection(null);
     setSelectedTransportToAdd('');
     setSelectedCompanyToAdd('');
@@ -1244,7 +1252,7 @@ export const DriverDetailsSheet = ({
                               <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={() => handleSave('Dedicated Companies')}
+                                onClick={() => handleSave('companies')}
                                 className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50"
                               >
                                 <Save className="w-3 h-3 mr-1" />
