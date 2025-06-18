@@ -70,6 +70,7 @@ interface DriverDetailsSheetProps {
   };
   renderStatus: (statusId: string) => JSX.Element;
   renderStripeStatus: (status: 'verified' | 'unverified' | 'pending') => JSX.Element;
+  onOpenOrderDetails?: (orderId: number) => void;
 }
 export const DriverDetailsSheet = ({
   isOpen,
@@ -79,7 +80,8 @@ export const DriverDetailsSheet = ({
   statusDictionary,
   hireStatusDictionary,
   renderStatus,
-  renderStripeStatus
+  renderStripeStatus,
+  onOpenOrderDetails
 }: DriverDetailsSheetProps) => {
   const navigate = useNavigate();
   const [selectedDocument, setSelectedDocument] = useState<typeof documents[0] | null>(null);
@@ -1155,11 +1157,6 @@ export const DriverDetailsSheet = ({
                               <span className="hidden sm:inline">Orders on hands</span>
                               <span className="sm:hidden">Orders</span>
                             </TabsTrigger>
-                            <TabsTrigger value="vehicle-info" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
-                              <Award className="w-4 h-4" /> 
-                              <span className="hidden sm:inline">Vehicle Info</span>
-                              <span className="sm:hidden">Vehicle</span>
-                            </TabsTrigger>
                             <TabsTrigger value="communication" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
                               <Mail className="w-4 h-4" /> 
                               <span className="hidden sm:inline">Emails sent</span>
@@ -1338,17 +1335,6 @@ export const DriverDetailsSheet = ({
                                     ))}
                                   </div>
                                 </div>
-                              </CardContent>
-                            </Card>
-                          </TabsContent>
-                          
-                          <TabsContent value="vehicle-info" className="space-y-4">
-                            <Card>
-                              <CardHeader>
-                                <CardTitle>Vehicle Information</CardTitle>
-                              </CardHeader>
-                              <CardContent>
-                                <p className="text-muted-foreground">Vehicle information content would go here.</p>
                               </CardContent>
                             </Card>
                           </TabsContent>
