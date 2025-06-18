@@ -1056,15 +1056,29 @@ export const DriverDetailsSheet = ({
                             <File className="w-4 h-4 mr-2" />
                             Documents
                           </h3>
-                          <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1">
-                            <Edit className="h-3 w-3" />
-                            Edit
-                          </Button>
+                          {editingSection === 'documents' ? (
+                            <div className="flex gap-1">
+                              <Button variant="outline" size="sm" onClick={() => handleSave('Documents')} className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50">
+                                <Save className="w-3 h-3 mr-1" />
+                                Save
+                              </Button>
+                              <Button variant="outline" size="sm" onClick={handleCancel} className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                <X className="w-3 h-3 mr-1" />
+                                Cancel
+                              </Button>
+                            </div>
+                          ) : (
+                            <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1" onClick={() => handleEdit('documents')}>
+                              <Edit className="h-3 w-3" />
+                              Edit
+                            </Button>
+                          )}
                         </div>
                         <Card>
                           <CardContent className="pt-6">
                             <div className="space-y-4">
-                              {documents.map(document => <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
+                              {documents.map(document => (
+                                <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
                                   <div className="flex items-center gap-3">
                                     <Image className="h-4 w-4 text-muted-foreground" />
                                     <div>
@@ -1075,16 +1089,33 @@ export const DriverDetailsSheet = ({
                                     </div>
                                   </div>
                                   <div className="flex items-center gap-2">
-                                    
+                                    {editingSection === 'documents' && (
+                                      <Button variant="outline" size="sm" className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                        <Trash2 className="w-3 h-3" />
+                                      </Button>
+                                    )}
                                     <Button variant="ghost" size="sm" onClick={() => handleViewDocument(document)}>
                                       View
                                     </Button>
                                   </div>
-                                </div>)}
-                              {documents.length === 0 && <div className="text-center py-8 text-muted-foreground">
+                                </div>
+                              ))}
+                              {editingSection === 'documents' && (
+                                <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
+                                  <Upload className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
+                                  <p className="text-sm text-muted-foreground mb-2">Upload new document</p>
+                                  <Button variant="outline" size="sm">
+                                    <Upload className="w-4 h-4 mr-2" />
+                                    Choose File
+                                  </Button>
+                                </div>
+                              )}
+                              {documents.length === 0 && (
+                                <div className="text-center py-8 text-muted-foreground">
                                   <Image className="h-8 w-8 mx-auto mb-2 opacity-50" />
                                   <p className="text-sm">No documents uploaded</p>
-                                </div>}
+                                </div>
+                              )}
                             </div>
                           </CardContent>
                         </Card>
