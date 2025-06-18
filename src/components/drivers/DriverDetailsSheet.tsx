@@ -1229,7 +1229,7 @@ export const DriverDetailsSheet = ({
                                           {upcomingPayment.transactions.map((transaction, index) => <div key={index} className="px-4 py-3">
                                               <div className="grid grid-cols-5 gap-4 text-sm">
                                                 <div className="font-medium text-blue-600 hover:text-blue-800 cursor-pointer underline" onClick={() => handleOrderClick(transaction.orderId)}>
-                                                  #{transaction.orderNumber}
+                                                  {transaction.orderNumber}
                                                 </div>
                                                 <div>{transaction.date}</div>
                                                 <div>${transaction.earning.toFixed(2)}</div>
@@ -1290,7 +1290,7 @@ export const DriverDetailsSheet = ({
                                               {payout.transactions.map((transaction, index) => <div key={index} className="px-4 py-3">
                                                   <div className="grid grid-cols-5 gap-4 text-sm">
                                                     <div className="font-medium text-blue-600 hover:text-blue-800 cursor-pointer underline" onClick={() => handleOrderClick(transaction.orderId)}>
-                                                      #{transaction.orderNumber}
+                                                      {transaction.orderNumber}
                                                     </div>
                                                     <div>{transaction.date}</div>
                                                     <div>${transaction.earning.toFixed(2)}</div>
@@ -1327,7 +1327,7 @@ export const DriverDetailsSheet = ({
                                       <div key={order.id} className="px-4 py-3">
                                         <div className="grid grid-cols-3 gap-4 text-sm">
                                           <div className="font-medium text-blue-600 hover:text-blue-800 cursor-pointer underline" onClick={() => handleOrderClick(order.id)}>
-                                            #{order.id}
+                                            {order.id}
                                           </div>
                                           <div>{order.pickupDate}</div>
                                           <div>
