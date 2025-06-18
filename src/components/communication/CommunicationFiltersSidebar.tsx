@@ -381,6 +381,82 @@ export const CommunicationFiltersSidebar = ({
                   </AccordionContent>
                 </AccordionItem>
 
+                <AccordionItem value="profiles">
+                  <AccordionTrigger className="text-sm font-medium">
+                    Profile Type
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-2 pt-1">
+                      <div className="relative">
+                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input 
+                          placeholder="Search profile type..." 
+                          value={profileSearchTerm} 
+                          onChange={e => setProfileSearchTerm(e.target.value)} 
+                          className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input" 
+                        />
+                      </div>
+                      {filteredProfiles.map(profile => (
+                        <div key={profile.id} className="flex items-center space-x-2">
+                          <Checkbox 
+                            id={`profile-${profile.id}`} 
+                            checked={selectedProfiles.includes(profile.id)} 
+                            onCheckedChange={() => {
+                              if (selectedProfiles.includes(profile.id)) {
+                                setSelectedProfiles?.(selectedProfiles.filter(p => p !== profile.id));
+                              } else {
+                                setSelectedProfiles?.([...selectedProfiles, profile.id]);
+                              }
+                            }} 
+                          />
+                          <Label htmlFor={`profile-${profile.id}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between">
+                            <span>{profile.value}</span>
+                            <Badge variant="outline" className="ml-auto">{getCount()}</Badge>
+                          </Label>
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="hireStatus">
+                  <AccordionTrigger className="text-sm font-medium">
+                    Hire Status
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-2 pt-1">
+                      <div className="relative">
+                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input 
+                          placeholder="Search hire status..." 
+                          value={hireStatusSearchTerm} 
+                          onChange={e => setHireStatusSearchTerm(e.target.value)} 
+                          className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input" 
+                        />
+                      </div>
+                      {filteredHireStatuses.map(status => (
+                        <div key={status.id} className="flex items-center space-x-2">
+                          <Checkbox 
+                            id={`hirestatus-${status.id}`} 
+                            checked={selectedHireStatuses.includes(status.id)} 
+                            onCheckedChange={() => {
+                              if (selectedHireStatuses.includes(status.id)) {
+                                setSelectedHireStatuses?.(selectedHireStatuses.filter(h => h !== status.id));
+                              } else {
+                                setSelectedHireStatuses?.([...selectedHireStatuses, status.id]);
+                              }
+                            }} 
+                          />
+                          <Label htmlFor={`hirestatus-${status.id}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between">
+                            <span>{status.value}</span>
+                            <Badge variant="outline" className="ml-auto">{getCount()}</Badge>
+                          </Label>
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+
                 <AccordionItem value="status">
                   <AccordionTrigger className="text-sm font-medium">
                     Status
