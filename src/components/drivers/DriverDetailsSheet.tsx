@@ -24,6 +24,7 @@ import { OrderDetailsSheet } from "@/components/deliveries/OrderDetailsSheet";
 import { deliveriesData } from "@/data/deliveriesData";
 import { EmailsSentList } from "./EmailsSentList";
 import { RandomImage } from "@/components/ui/random-image";
+
 interface VehicleInfo {
   transportId: string;
   year?: string;
@@ -32,12 +33,19 @@ interface VehicleInfo {
   plateNumber?: string;
   plateImage?: string;
 }
+
 interface DriverLicenseInfo {
   dlNumber?: string;
   expirationDate?: string;
   ssn?: string;
   state?: string;
 }
+
+interface InsuranceInfo {
+  policyNumber?: string;
+  expirationDate?: string;
+}
+
 interface Driver {
   id: number;
   name: string;
@@ -61,7 +69,9 @@ interface Driver {
   banned?: 'yes' | 'no';
   dedicatedCompanies?: string[];
   driverLicenseInfo?: DriverLicenseInfo;
+  insuranceInfo?: InsuranceInfo;
 }
+
 interface DriverDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -79,6 +89,7 @@ interface DriverDetailsSheetProps {
   renderStripeStatus: (status: 'verified' | 'unverified' | 'pending') => JSX.Element;
   onOpenOrderDetails?: (orderId: number) => void;
 }
+
 export const DriverDetailsSheet = ({
   isOpen,
   onClose,
@@ -130,6 +141,10 @@ export const DriverDetailsSheet = ({
       expirationDate: '',
       ssn: '',
       state: ''
+    },
+    insuranceInfo: driver?.insuranceInfo || {
+      policyNumber: '',
+      expirationDate: ''
     }
   });
   if (!driver) return null;
@@ -378,6 +393,10 @@ export const DriverDetailsSheet = ({
         expirationDate: '',
         ssn: '',
         state: ''
+      },
+      insuranceInfo: driver.insuranceInfo || {
+        policyNumber: '',
+        expirationDate: ''
       }
     });
   };
@@ -424,6 +443,10 @@ export const DriverDetailsSheet = ({
         expirationDate: '',
         ssn: '',
         state: ''
+      },
+      insuranceInfo: driver.insuranceInfo || {
+        policyNumber: '',
+        expirationDate: ''
       }
     });
   };
@@ -577,6 +600,15 @@ export const DriverDetailsSheet = ({
       } : img);
       toast.success('License image uploaded successfully');
     }
+  };
+  const handleInsuranceInfoChange = (field: keyof InsuranceInfo, value: string) => {
+    setEditedData(prev => ({
+      ...prev,
+      insuranceInfo: {
+        ...prev.insuranceInfo,
+        [field]: value
+      }
+    }));
   };
   return <>
       <Sheet open={isOpen} onOpenChange={onClose}>
@@ -1226,14 +1258,41 @@ export const DriverDetailsSheet = ({
                               </div>
                             </div>
 
-                            {/* Other Documents */}
+                            {/* Insurance Certificate */}
                             <div>
                               <div className="flex items-center gap-2 mb-4">
                                 <FileText className="h-4 w-4 text-muted-foreground" />
                                 <h4 className="text-sm font-medium">Insurance Certificate</h4>
                               </div>
+                              
+                              {/* Insurance Info Fields */}
+                              <div className="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                  <Label htmlFor="policyNumber">Policy Number</Label>
+                                  <Input 
+                                    id="policyNumber" 
+                                    value={editingSection === 'documents' ? editedData.insuranceInfo.policyNumber : driver.insuranceInfo?.policyNumber || ''} 
+                                    onChange={e => handleInsuranceInfoChange('policyNumber', e.target.value)} 
+                                    readOnly={editingSection !== 'documents'} 
+                                    className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} 
+                                    placeholder="Enter policy number" 
+                                  />
+                                </div>
+                                <div>
+                                  <Label htmlFor="insuranceExpiration">Expire Date</Label>
+                                  <Input 
+                                    id="insuranceExpiration" 
+                                    type="date" 
+                                    value={editingSection === 'documents' ? editedData.insuranceInfo.expirationDate : driver.insuranceInfo?.expirationDate || ''} 
+                                    onChange={e => handleInsuranceInfoChange('expirationDate', e.target.value)} 
+                                    readOnly={editingSection !== 'documents'} 
+                                    className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} 
+                                  />
+                                </div>
+                              </div>
+
                               <div className="space-y-4">
-                                {documents.filter(doc => !doc.name.includes("Driver's License")).map(document => <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
+                                {documents.filter(doc => doc.name.includes("Insurance")).map(document => <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
                                     <div className="flex items-center gap-3">
                                       <Image className="h-4 w-4 text-muted-foreground" />
                                       <div>
