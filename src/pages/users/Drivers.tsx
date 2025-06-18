@@ -693,7 +693,6 @@ const DriversPage = () => {
           hireStatusDictionary={hireStatusDictionary}
           renderStatus={renderStatus}
           renderStripeStatus={renderStripeStatus}
-          renderHireStatus={renderHireStatus}
         />
       </div>
     </Layout>;
