@@ -141,7 +141,7 @@ export const DriverDetailsSheet = ({
     status: "Verified"
   }];
 
-  // Sample payout data with order numbers
+  // Sample payout data with real order IDs from deliveries data
   const payoutRecords = [
     {
       id: 1,
@@ -149,10 +149,10 @@ export const DriverDetailsSheet = ({
       amount: 425.50,
       status: "paid",
       transactions: [
-        { orderNumber: "ORD-2024-001", orderId: 1, date: "2024-01-14", earning: 85.00, commission: 12.75, tip: 15.00 },
-        { orderNumber: "ORD-2024-002", orderId: 2, date: "2024-01-14", earning: 120.00, commission: 18.00, tip: 25.00 },
-        { orderNumber: "ORD-2024-003", orderId: 3, date: "2024-01-15", earning: 95.50, commission: 14.33, tip: 20.00 },
-        { orderNumber: "ORD-2024-004", orderId: 4, date: "2024-01-15", earning: 110.00, commission: 16.50, tip: 18.92 }
+        { orderId: 1, date: "2024-01-14", earning: 85.00, commission: 12.75, tip: 15.00 },
+        { orderId: 2, date: "2024-01-14", earning: 120.00, commission: 18.00, tip: 25.00 },
+        { orderId: 3, date: "2024-01-15", earning: 95.50, commission: 14.33, tip: 20.00 },
+        { orderId: 4, date: "2024-01-15", earning: 110.00, commission: 16.50, tip: 18.92 }
       ]
     },
     {
@@ -161,9 +161,9 @@ export const DriverDetailsSheet = ({
       amount: 312.75,
       status: "paid",
       transactions: [
-        { orderNumber: "ORD-2024-005", orderId: 5, date: "2024-01-07", earning: 75.00, commission: 11.25, tip: 12.00 },
-        { orderNumber: "ORD-2024-006", orderId: 6, date: "2024-01-08", earning: 90.00, commission: 13.50, tip: 22.50 },
-        { orderNumber: "ORD-2024-007", orderId: 7, date: "2024-01-08", earning: 88.50, commission: 13.28, tip: 0.00 }
+        { orderId: 5, date: "2024-01-07", earning: 75.00, commission: 11.25, tip: 12.00 },
+        { orderId: 6, date: "2024-01-08", earning: 90.00, commission: 13.50, tip: 22.50 },
+        { orderId: 7, date: "2024-01-08", earning: 88.50, commission: 13.28, tip: 0.00 }
       ]
     },
     {
@@ -172,22 +172,22 @@ export const DriverDetailsSheet = ({
       amount: 198.25,
       status: "paid",
       transactions: [
-        { orderNumber: "ORD-2023-099", orderId: 99, date: "2023-12-31", earning: 65.00, commission: 9.75, tip: 8.00 },
-        { orderNumber: "ORD-2024-008", orderId: 8, date: "2024-01-01", earning: 115.50, commission: 17.33, tip: 0.00 }
+        { orderId: 8, date: "2023-12-31", earning: 65.00, commission: 9.75, tip: 8.00 },
+        { orderId: 9, date: "2024-01-01", earning: 115.50, commission: 17.33, tip: 0.00 }
       ]
     }
   ];
 
-  // Sample upcoming payment data with order numbers
+  // Sample upcoming payment data with real order IDs
   const upcomingPayment = {
     id: 'upcoming-1',
     date: "2024-01-22",
     amount: 285.75,
     status: "pending",
     transactions: [
-      { orderNumber: "ORD-2024-009", orderId: 9, date: "2024-01-20", earning: 95.00, commission: 14.25, tip: 20.00 },
-      { orderNumber: "ORD-2024-010", orderId: 10, date: "2024-01-21", earning: 80.50, commission: 12.08, tip: 15.00 },
-      { orderNumber: "ORD-2024-011", orderId: 11, date: "2024-01-21", earning: 105.00, commission: 15.75, tip: 12.92 }
+      { orderId: 10, date: "2024-01-20", earning: 95.00, commission: 14.25, tip: 20.00 },
+      { orderId: 11, date: "2024-01-21", earning: 80.50, commission: 12.08, tip: 15.00 },
+      { orderId: 12, date: "2024-01-21", earning: 105.00, commission: 15.75, tip: 12.92 }
     ]
   };
 
@@ -1354,7 +1354,7 @@ export const DriverDetailsSheet = ({
                                                   className="font-medium text-blue-600 hover:text-blue-800 cursor-pointer underline"
                                                   onClick={() => handleOrderClick(transaction.orderId)}
                                                 >
-                                                  {transaction.orderNumber}
+                                                  #{transaction.orderId}
                                                 </div>
                                                 <div>{transaction.date}</div>
                                                 <div>${transaction.earning.toFixed(2)}</div>
@@ -1406,7 +1406,7 @@ export const DriverDetailsSheet = ({
                                           <div className="border rounded-lg overflow-hidden">
                                             <div className="bg-muted/30 px-4 py-2 border-b">
                                               <div className="grid grid-cols-5 gap-4 text-sm font-medium text-muted-foreground">
-                                                <div>Order Number</div>
+                                                <div>Order ID</div>
                                                 <div>Date</div>
                                                 <div>Earning</div>
                                                 <div>Commission</div>
@@ -1421,7 +1421,7 @@ export const DriverDetailsSheet = ({
                                                       className="font-medium text-blue-600 hover:text-blue-800 cursor-pointer underline"
                                                       onClick={() => handleOrderClick(transaction.orderId)}
                                                     >
-                                                      {transaction.orderNumber}
+                                                      #{transaction.orderId}
                                                     </div>
                                                     <div>{transaction.date}</div>
                                                     <div>${transaction.earning.toFixed(2)}</div>
