@@ -138,6 +138,10 @@ const CommunicationTower = () => {
                       setSelectedTransports={setSelectedTransports}
                       selectedHireStatuses={selectedHireStatuses}
                       setSelectedHireStatuses={setSelectedHireStatuses}
+                      selectedRadius={selectedRadius}
+                      setSelectedRadius={setSelectedRadius}
+                      selectedNames={selectedNames}
+                      setSelectedNames={setSelectedNames}
                       
                       // Client filters
                       selectedOrganizations={selectedOrganizations}

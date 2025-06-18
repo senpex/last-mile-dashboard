@@ -33,6 +33,10 @@ interface CommunicationFiltersSidebarProps {
   setSelectedTransports?: (transports: string[]) => void;
   selectedHireStatuses?: string[];
   setSelectedHireStatuses?: (hireStatuses: string[]) => void;
+  selectedRadius?: number;
+  setSelectedRadius?: (radius: number) => void;
+  selectedNames?: string[];
+  setSelectedNames?: (names: string[]) => void;
   
   // Client filters
   selectedOrganizations?: string[];
@@ -70,6 +74,10 @@ export const CommunicationFiltersSidebar = ({
   setSelectedTransports,
   selectedHireStatuses = [],
   setSelectedHireStatuses,
+  selectedRadius = 15,
+  setSelectedRadius,
+  selectedNames = [],
+  setSelectedNames,
   selectedOrganizations = [],
   setSelectedOrganizations,
   selectedDispatchers = [],
@@ -103,9 +111,6 @@ export const CommunicationFiltersSidebar = ({
   const [orgSearchTerm, setOrgSearchTerm] = useState("");
   const [dispatcherSearchTerm, setDispatcherSearchTerm] = useState("");
   const [nameSearchTerm, setNameSearchTerm] = useState("");
-
-  const [selectedRadius, setSelectedRadius] = useState<number>(15);
-  const [selectedNames, setSelectedNames] = useState<string[]>([]);
 
   // Mock driver names data
   const driverNames = [
@@ -161,8 +166,8 @@ export const CommunicationFiltersSidebar = ({
       setSelectedCities?.([]);
       setSelectedStates?.([]);
       setSelectedHireStatuses?.([]);
-      setSelectedNames([]);
-      setSelectedRadius(15);
+      setSelectedNames?.([]);
+      setSelectedRadius?.(15);
     } else if (activeTab === "clients") {
       setSelectedCities?.([]);
       setSelectedStates?.([]);
@@ -284,7 +289,7 @@ export const CommunicationFiltersSidebar = ({
                         </div>
                         <Slider
                           value={[selectedRadius]}
-                          onValueChange={(value) => setSelectedRadius(value[0])}
+                          onValueChange={(value) => setSelectedRadius?.(value[0])}
                           min={1}
                           max={100}
                           step={1}
@@ -321,9 +326,9 @@ export const CommunicationFiltersSidebar = ({
                             checked={selectedNames.includes(name)} 
                             onCheckedChange={() => {
                               if (selectedNames.includes(name)) {
-                                setSelectedNames(selectedNames.filter(n => n !== name));
+                                setSelectedNames?.(selectedNames.filter(n => n !== name));
                               } else {
-                                setSelectedNames([...selectedNames, name]);
+                                setSelectedNames?.([...selectedNames, name]);
                               }
                             }} 
                           />
