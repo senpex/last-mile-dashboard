@@ -1268,9 +1268,6 @@ export const DriverDetailsSheet = ({
                                       </div>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                      <Badge variant={image.status === 'Verified' ? 'default' : 'secondary'} className="text-xs">
-                                        {image.status}
-                                      </Badge>
                                       {editingSection === 'documents' && (
                                         <Button variant="outline" size="sm" className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
                                           <Trash2 className="w-3 h-3" />
