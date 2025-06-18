@@ -42,7 +42,7 @@ export const RecipientList: React.FC<RecipientListProps> = ({
     const groups: FilterGroup[] = [];
     
     if (selectedFilters.statuses?.length) {
-      groups.push({ type: "Status", values: selectedFilters.statuses });
+      groups.push({ type: "Status", values: selectedFilters.statuses.map(String) });
     }
     if (selectedFilters.cities?.length) {
       groups.push({ type: "City", values: selectedFilters.cities });
@@ -83,8 +83,8 @@ export const RecipientList: React.FC<RecipientListProps> = ({
     if (selectedFilters.radius && selectedFilters.radius !== 15) {
       groups.push({ type: "Radius", values: [`${selectedFilters.radius} miles`] });
     }
-    if (selectedFilters.names?.length) {
-      groups.push({ type: "Name", values: selectedFilters.names });
+    if (selectedFilters.names && selectedFilters.names.length > 0) {
+      groups.push({ type: "Names", values: selectedFilters.names });
     }
 
     return groups;

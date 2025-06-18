@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import { Search, Users, User, Send, Clock, Paperclip, X, FileText, FileImage, FileSpreadsheet, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -198,9 +199,10 @@ const CommunicationPanel = ({
       timestamp: new Date().toISOString()
     };
     console.log("Sending message:", messageData);
+    console.log("Selected filters:", selectedFilters);
     toast({
       title: "Message sent",
-      description: `Message sent to ${selectedRecipients.length} recipients and ${hasAnyFilters ? 'filtered audiences' : ''}`
+      description: `Message sent to ${selectedRecipients.length} recipients${hasAnyFilters ? ' and filtered audiences' : ''}`
     });
     setMessage("");
   };
@@ -277,7 +279,11 @@ const CommunicationPanel = ({
                 {selectedRecipients.length} Selected
               </span>
             </div>
-            <RecipientList selectedRecipients={selectedRecipients} onRemoveRecipient={handleSelectRecipient} selectedFilters={selectedFilters} />
+            <RecipientList 
+              selectedRecipients={selectedRecipients} 
+              onRemoveRecipient={handleSelectRecipient} 
+              selectedFilters={selectedFilters} 
+            />
           </div>
         </TabsContent>
 
@@ -321,7 +327,11 @@ const CommunicationPanel = ({
                 {selectedRecipients.length} Selected
               </span>
             </div>
-            <RecipientList selectedRecipients={selectedRecipients} onRemoveRecipient={handleSelectRecipient} selectedFilters={selectedFilters} />
+            <RecipientList 
+              selectedRecipients={selectedRecipients} 
+              onRemoveRecipient={handleSelectRecipient} 
+              selectedFilters={selectedFilters} 
+            />
           </div>
         </TabsContent>
 
@@ -348,7 +358,11 @@ const CommunicationPanel = ({
                 {selectedRecipients.length} Selected
               </span>
             </div>
-            <RecipientList selectedRecipients={selectedRecipients} onRemoveRecipient={handleSelectRecipient} selectedFilters={selectedFilters} />
+            <RecipientList 
+              selectedRecipients={selectedRecipients} 
+              onRemoveRecipient={handleSelectRecipient} 
+              selectedFilters={selectedFilters} 
+            />
           </div>
         </TabsContent>
       </Tabs>
