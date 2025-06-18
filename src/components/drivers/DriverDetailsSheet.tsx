@@ -105,6 +105,7 @@ export const DriverDetailsSheet = ({
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
   const [isOrderDetailsOpen, setIsOrderDetailsOpen] = useState(false);
   const [flaggedOrders, setFlaggedOrders] = useState<Set<number>>(new Set());
+  const [insuranceCertificates, setInsuranceCertificates] = useState<string[]>([]);
 
   // Editing states
   const [editingSection, setEditingSection] = useState<string | null>(null);
@@ -522,6 +523,25 @@ export const DriverDetailsSheet = ({
       toast.success('Image uploaded successfully');
     }
   };
+
+  const handleInsuranceImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const newImages: string[] = [];
+      for (let i = 0; i < files.length; i++) {
+        const imageUrl = URL.createObjectURL(files[i]);
+        newImages.push(imageUrl);
+      }
+      setInsuranceCertificates(prev => [...prev, ...newImages]);
+      toast.success(`${newImages.length} insurance certificate(s) uploaded successfully`);
+    }
+  };
+
+  const handleRemoveInsuranceImage = (imageUrl: string) => {
+    setInsuranceCertificates(prev => prev.filter(img => img !== imageUrl));
+    toast.success('Insurance certificate removed');
+  };
+
   const handleImageClick = (imageUrl: string) => {
     setExpandedImage(imageUrl);
   };
@@ -1249,6 +1269,73 @@ export const DriverDetailsSheet = ({
                               )}
                             </div>
 
+                            {/* Insurance Certificate Subsection */}
+                            <div>
+                              <div className="flex items-center gap-2 mb-4">
+                                <Image className="h-4 w-4 text-muted-foreground" />
+                                <h4 className="text-sm font-medium">Insurance Certificate</h4>
+                              </div>
+                              
+                              {/* Display uploaded insurance certificates */}
+                              {insuranceCertificates.length > 0 && (
+                                <div className="grid grid-cols-2 gap-4 mb-4">
+                                  {insuranceCertificates.map((imageUrl, index) => (
+                                    <div key={index} className="relative group border rounded-lg overflow-hidden">
+                                      <img 
+                                        src={imageUrl} 
+                                        alt={`Insurance Certificate ${index + 1}`} 
+                                        className="w-full h-32 object-cover cursor-pointer transition-transform group-hover:scale-105"
+                                        onClick={() => handleImageClick(imageUrl)}
+                                        onError={e => {
+                                          e.currentTarget.style.display = 'none';
+                                        }}
+                                      />
+                                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
+                                        <Eye className="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                                      </div>
+                                      {editingSection === 'documents' && (
+                                        <Button
+                                          variant="destructive"
+                                          size="sm"
+                                          className="absolute top-2 right-2 h-6 w-6 p-0"
+                                          onClick={() => handleRemoveInsuranceImage(imageUrl)}
+                                        >
+                                          <X className="w-3 h-3" />
+                                        </Button>
+                                      )}
+                                      <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2">
+                                        <p className="text-xs">Insurance Certificate {index + 1}</p>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+
+                              {editingSection === 'documents' && (
+                                <div className="p-4 border-2 border-dashed border-gray-300 rounded-lg text-center">
+                                  <Input 
+                                    type="file" 
+                                    accept="image/*" 
+                                    className="hidden" 
+                                    id="insurance-image-upload" 
+                                    multiple 
+                                    onChange={handleInsuranceImageUpload}
+                                  />
+                                  <Button 
+                                    variant="outline" 
+                                    onClick={() => document.getElementById('insurance-image-upload')?.click()}
+                                    className="flex items-center gap-2"
+                                  >
+                                    <Upload className="w-4 h-4" />
+                                    Upload Insurance Certificate
+                                  </Button>
+                                  <p className="text-xs text-muted-foreground mt-2">
+                                    Upload insurance certificate images
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+
                             {/* Other Documents */}
                             <div>
                               <div className="flex items-center gap-2 mb-4">
@@ -1256,7 +1343,7 @@ export const DriverDetailsSheet = ({
                                 <h4 className="text-sm font-medium">Other Documents</h4>
                               </div>
                               <div className="space-y-4">
-                                {documents.filter(doc => !doc.name.includes("Driver's License")).map(document => (
+                                {documents.filter(doc => !doc.name.includes("Driver's License") && !doc.name.includes("Insurance Certificate")).map(document => (
                                   <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
                                     <div className="flex items-center gap-3">
                                       <Image className="h-4 w-4 text-muted-foreground" />
@@ -1580,10 +1667,10 @@ export const DriverDetailsSheet = ({
       <Dialog open={!!expandedImage} onOpenChange={handleCloseImageModal}>
         <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
-            <DialogTitle>Plate Image Preview</DialogTitle>
+            <DialogTitle>Image Preview</DialogTitle>
           </DialogHeader>
           <div className="flex justify-center p-4">
-            {expandedImage && <img src={expandedImage} alt="Expanded plate image" className="max-w-full max-h-[70vh] object-contain rounded-lg" onError={e => {
+            {expandedImage && <img src={expandedImage} alt="Expanded image" className="max-w-full max-h-[70vh] object-contain rounded-lg" onError={e => {
             e.currentTarget.style.display = 'none';
           }} />}
           </div>
