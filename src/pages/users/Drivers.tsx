@@ -139,6 +139,34 @@ const DriversPage = () => {
     stripeStatus: 'verified' as StripeStatus,
     zipcode: "94105",
     address: "123 Main St, San Francisco, CA",
+    city: "San Francisco",
+    state: "CA",
+    zipCode: "94105",
+    vehicle: {
+      make: "Toyota",
+      model: "Camry",
+      year: 2020,
+      color: "Blue",
+      licensePlate: "ABC123"
+    },
+    documents: [
+      {
+        id: 1,
+        name: "Driver's License",
+        type: "ID Document",
+        uploadDate: "2024-01-15",
+        status: "approved"
+      },
+      {
+        id: 2,
+        name: "Insurance Certificate",
+        type: "Insurance",
+        uploadDate: "2024-01-20",
+        status: "pending"
+      }
+    ],
+    totalDeliveries: 156,
+    joinDate: "2023-06-15",
     notes: "Excellent driver, always on time.",
     profileTypes: ["Driver", "Mover"]
   }, {
@@ -153,6 +181,27 @@ const DriversPage = () => {
     stripeStatus: 'unverified' as StripeStatus,
     zipcode: "90210",
     address: "456 Oak Ave, Beverly Hills, CA",
+    city: "Beverly Hills",
+    state: "CA",
+    zipCode: "90210",
+    vehicle: {
+      make: "Honda",
+      model: "Civic",
+      year: 2019,
+      color: "Red",
+      licensePlate: "XYZ789"
+    },
+    documents: [
+      {
+        id: 3,
+        name: "Driver's License",
+        type: "ID Document",
+        uploadDate: "2024-02-01",
+        status: "approved"
+      }
+    ],
+    totalDeliveries: 89,
+    joinDate: "2023-08-22",
     notes: "Prefers weekend shifts.",
     profileTypes: ["Helper"]
   }, {
@@ -167,6 +216,27 @@ const DriversPage = () => {
     stripeStatus: 'pending' as StripeStatus,
     zipcode: "10001",
     address: "789 Pine Rd, New York, NY",
+    city: "New York",
+    state: "NY",
+    zipCode: "10001",
+    vehicle: {
+      make: "Ford",
+      model: "F-150",
+      year: 2021,
+      color: "Black",
+      licensePlate: "DEF456"
+    },
+    documents: [
+      {
+        id: 4,
+        name: "Commercial License",
+        type: "License",
+        uploadDate: "2024-01-10",
+        status: "approved"
+      }
+    ],
+    totalDeliveries: 234,
+    joinDate: "2023-03-10",
     notes: "Not available on Mondays."
   }]);
   
@@ -688,11 +758,6 @@ const DriversPage = () => {
           isOpen={isDriverDetailsOpen}
           onClose={() => setIsDriverDetailsOpen(false)}
           driver={selectedDriver}
-          transportTypes={transportTypes}
-          statusDictionary={statusDictionary}
-          hireStatusDictionary={hireStatusDictionary}
-          renderStatus={renderStatus}
-          renderStripeStatus={renderStripeStatus}
         />
       </div>
     </Layout>;
