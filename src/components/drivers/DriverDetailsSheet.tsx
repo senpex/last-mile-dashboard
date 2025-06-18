@@ -1150,6 +1150,11 @@ export const DriverDetailsSheet = ({
                               <span className="hidden sm:inline">Payment History</span>
                               <span className="sm:hidden">Payments</span>
                             </TabsTrigger>
+                            <TabsTrigger value="delivery-history" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
+                              <File className="w-4 h-4" /> 
+                              <span className="hidden sm:inline">Orders on hands</span>
+                              <span className="sm:hidden">Orders</span>
+                            </TabsTrigger>
                             <TabsTrigger value="vehicle-info" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
                               <Award className="w-4 h-4" /> 
                               <span className="hidden sm:inline">Vehicle Info</span>
@@ -1288,6 +1293,50 @@ export const DriverDetailsSheet = ({
                                         </div>
                                       </CollapsibleContent>
                                     </Collapsible>)}
+                                </div>
+                              </CardContent>
+                            </Card>
+                          </TabsContent>
+                          
+                          <TabsContent value="delivery-history" className="space-y-4">
+                            <Card>
+                              <CardHeader>
+                                <CardTitle>Orders on Hands</CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <div className="border rounded-lg overflow-hidden">
+                                  <div className="bg-muted/30 px-4 py-2 border-b">
+                                    <div className="grid grid-cols-3 gap-4 text-sm font-medium text-muted-foreground">
+                                      <div>Order ID</div>
+                                      <div>Pickup Date</div>
+                                      <div>Status</div>
+                                    </div>
+                                  </div>
+                                  <div className="divide-y">
+                                    {ordersOnHands.map((order) => (
+                                      <div key={order.id} className="px-4 py-3">
+                                        <div className="grid grid-cols-3 gap-4 text-sm">
+                                          <div className="font-medium text-blue-600 hover:text-blue-800 cursor-pointer underline" onClick={() => handleOrderClick(order.id)}>
+                                            {order.id}
+                                          </div>
+                                          <div>{order.pickupDate}</div>
+                                          <div>
+                                            <Badge 
+                                              variant={
+                                                order.status === 'In Progress' ? 'default' :
+                                                order.status === 'Pending' ? 'secondary' :
+                                                order.status === 'Assigned' ? 'outline' :
+                                                'success'
+                                              }
+                                              className="text-xs"
+                                            >
+                                              {order.status}
+                                            </Badge>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
                                 </div>
                               </CardContent>
                             </Card>
