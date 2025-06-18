@@ -5,7 +5,6 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -27,15 +26,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 
 interface DriverDetailsSheetProps {
-  children: React.ReactNode;
+  isOpen: boolean;
+  onClose: () => void;
   driver: any;
+  transportTypes?: { [key: string]: string };
+  statusDictionary?: { [key: string]: string };
+  hireStatusDictionary?: { [key: string]: string };
+  renderStatus?: (statusId: string) => React.ReactElement;
+  renderStripeStatus?: (status: 'verified' | 'unverified' | 'pending') => React.ReactElement;
 }
 
 const formSchema = z.object({
@@ -54,7 +58,8 @@ const formSchema = z.object({
 });
 
 const DriverDetailsSheet: React.FC<DriverDetailsSheetProps> = ({
-  children,
+  isOpen,
+  onClose,
   driver,
 }) => {
   const [bankDetails, setBankDetails] = useState({
@@ -82,15 +87,14 @@ const DriverDetailsSheet: React.FC<DriverDetailsSheetProps> = ({
       email: driver?.email || "",
       phone: driver?.phone || "",
     });
-  }, [driver, form.reset]);
+  }, [driver, form]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
 
   return (
-    <Sheet>
-      <SheetTrigger asChild>{children}</SheetTrigger>
+    <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="sm:max-w-[625px]">
         <SheetHeader>
           <SheetTitle>Driver Details</SheetTitle>
@@ -106,7 +110,7 @@ const DriverDetailsSheet: React.FC<DriverDetailsSheetProps> = ({
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div>
-              <h4 className="font-semibold">{`${driver?.firstName} ${driver?.lastName}`}</h4>
+              <h4 className="font-semibold">{`${driver?.firstName || driver?.name?.split(' ')[0] || ''} ${driver?.lastName || driver?.name?.split(' ')[1] || ''}`}</h4>
               <Badge variant="secondary">
                 {driver?.status ? "Active" : "Inactive"}
               </Badge>
