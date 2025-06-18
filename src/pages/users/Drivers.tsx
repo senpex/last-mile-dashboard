@@ -688,11 +688,7 @@ const DriversPage = () => {
           isOpen={isDriverDetailsOpen}
           onClose={() => setIsDriverDetailsOpen(false)}
           driver={selectedDriver}
-          transportTypes={transportTypes}
-          statusDictionary={statusDictionary}
-          hireStatusDictionary={hireStatusDictionary}
-          renderStatus={renderStatus}
-          renderStripeStatus={renderStripeStatus}
+          onOpenOrderDetails={(orderId) => console.log('Open order details for:', orderId)}
         />
       </div>
     </Layout>;
