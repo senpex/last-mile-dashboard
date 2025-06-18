@@ -36,19 +36,19 @@ interface Driver {
   rating: number;
   earnings: number;
   lastActive: string;
-  documents?: {
+  documents: {
     license: string;
     insurance: string;
     registration: string;
   };
-  vehicle?: {
+  vehicle: {
     make: string;
     model: string;
     year: number;
     color: string;
     licensePlate: string;
   };
-  paymentHistory?: Array<{
+  paymentHistory: Array<{
     id: string;
     orderId: string;
     amount: number;
@@ -56,7 +56,7 @@ interface Driver {
     status: 'completed' | 'pending' | 'failed';
     type: 'delivery' | 'bonus' | 'adjustment';
   }>;
-  activityLog?: Array<{
+  activityLog: Array<{
     id: string;
     action: string;
     timestamp: string;
@@ -72,19 +72,10 @@ interface DriverDetailsSheetProps {
 }
 
 export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails }: DriverDetailsSheetProps) => {
-  const [selectedDocument, setSelectedDocument] = React.useState<any>(null);
+  const [selectedDocument, setSelectedDocument] = React.useState<string | null>(null);
   const [documentViewerOpen, setDocumentViewerOpen] = React.useState(false);
 
   if (!driver) return null;
-
-  // Provide default values for missing properties
-  const paymentHistory = driver.paymentHistory || [];
-  const activityLog = driver.activityLog || [];
-  const documents = driver.documents || {
-    license: '',
-    insurance: '',
-    registration: ''
-  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -104,15 +95,8 @@ export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails
     }
   };
 
-  const handleDocumentView = (documentType: string) => {
-    const document = {
-      id: 1,
-      name: documentType,
-      type: 'image',
-      uploadDate: '2024-01-01',
-      status: 'verified'
-    };
-    setSelectedDocument(document);
+  const handleDocumentView = (documentUrl: string) => {
+    setSelectedDocument(documentUrl);
     setDocumentViewerOpen(true);
   };
 
@@ -171,11 +155,11 @@ export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails
                             </div>
                             <div className="flex items-center gap-2">
                               <MapPin className="w-4 h-4 text-gray-500" />
-                              <span className="text-sm">{driver.location || 'Location not provided'}</span>
+                              <span className="text-sm">{driver.location}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <Calendar className="w-4 h-4 text-gray-500" />
-                              <span className="text-sm">Joined {driver.joinDate || 'Unknown'}</span>
+                              <span className="text-sm">Joined {driver.joinDate}</span>
                             </div>
                           </div>
                         </CardContent>
@@ -189,19 +173,19 @@ export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails
                         <CardContent>
                           <div className="grid grid-cols-2 gap-4">
                             <div className="text-center">
-                              <div className="text-2xl font-bold text-blue-600">{driver.totalDeliveries || 0}</div>
+                              <div className="text-2xl font-bold text-blue-600">{driver.totalDeliveries}</div>
                               <div className="text-sm text-gray-600">Total Deliveries</div>
                             </div>
                             <div className="text-center">
-                              <div className="text-2xl font-bold text-green-600">{driver.rating || 0}/5</div>
+                              <div className="text-2xl font-bold text-green-600">{driver.rating}/5</div>
                               <div className="text-sm text-gray-600">Rating</div>
                             </div>
                             <div className="text-center">
-                              <div className="text-2xl font-bold text-purple-600">${driver.earnings || 0}</div>
+                              <div className="text-2xl font-bold text-purple-600">${driver.earnings}</div>
                               <div className="text-sm text-gray-600">Total Earnings</div>
                             </div>
                             <div className="text-center">
-                              <div className="text-2xl font-bold text-orange-600">{driver.lastActive || 'Unknown'}</div>
+                              <div className="text-2xl font-bold text-orange-600">{driver.lastActive}</div>
                               <div className="text-sm text-gray-600">Last Active</div>
                             </div>
                           </div>
@@ -222,7 +206,7 @@ export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => handleDocumentView("Driver's License")}
+                              onClick={() => handleDocumentView(driver.documents.license)}
                               className="flex items-center gap-1"
                             >
                               <Eye className="w-4 h-4" />
@@ -235,7 +219,7 @@ export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => handleDocumentView("Insurance")}
+                              onClick={() => handleDocumentView(driver.documents.insurance)}
                               className="flex items-center gap-1"
                             >
                               <Eye className="w-4 h-4" />
@@ -248,7 +232,7 @@ export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => handleDocumentView("Registration")}
+                              onClick={() => handleDocumentView(driver.documents.registration)}
                               className="flex items-center gap-1"
                             >
                               <Eye className="w-4 h-4" />
@@ -265,43 +249,35 @@ export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails
                   <ScrollArea className="h-full">
                     <div className="p-6">
                       <div className="space-y-4">
-                        {paymentHistory.length > 0 ? (
-                          paymentHistory.map((payment) => (
-                            <Card key={payment.id} className="cursor-pointer hover:shadow-md transition-shadow">
-                              <CardContent className="p-4">
-                                <div className="flex items-center justify-between">
-                                  <div className="space-y-1">
-                                    <div className="flex items-center gap-2">
-                                      <span 
-                                        className="font-medium text-blue-600 hover:underline cursor-pointer"
-                                        onClick={() => onOpenOrderDetails(payment.orderId)}
-                                      >
-                                        Order #{payment.orderId}
-                                      </span>
-                                      <Badge className={getPaymentStatusColor(payment.status)}>
-                                        {payment.status}
-                                      </Badge>
-                                    </div>
-                                    <div className="text-sm text-gray-600">
-                                      {payment.type} • {payment.date}
-                                    </div>
+                        {driver.paymentHistory.map((payment) => (
+                          <Card key={payment.id} className="cursor-pointer hover:shadow-md transition-shadow">
+                            <CardContent className="p-4">
+                              <div className="flex items-center justify-between">
+                                <div className="space-y-1">
+                                  <div className="flex items-center gap-2">
+                                    <span 
+                                      className="font-medium text-blue-600 hover:underline cursor-pointer"
+                                      onClick={() => onOpenOrderDetails(payment.orderId)}
+                                    >
+                                      Order #{payment.orderId}
+                                    </span>
+                                    <Badge className={getPaymentStatusColor(payment.status)}>
+                                      {payment.status}
+                                    </Badge>
                                   </div>
-                                  <div className="text-right">
-                                    <div className="font-semibold text-green-600">
-                                      ${payment.amount}
-                                    </div>
+                                  <div className="text-sm text-gray-600">
+                                    {payment.type} • {payment.date}
                                   </div>
                                 </div>
-                              </CardContent>
-                            </Card>
-                          ))
-                        ) : (
-                          <Card>
-                            <CardContent className="p-6 text-center text-gray-500">
-                              No payment history available
+                                <div className="text-right">
+                                  <div className="font-semibold text-green-600">
+                                    ${payment.amount}
+                                  </div>
+                                </div>
+                              </div>
                             </CardContent>
                           </Card>
-                        )}
+                        ))}
                       </div>
                     </div>
                   </ScrollArea>
@@ -310,7 +286,7 @@ export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails
                 <TabsContent value="emails-sent" className="h-full m-0">
                   <ScrollArea className="h-full">
                     <div className="p-6">
-                      <EmailsSentList driverName={driver.name} />
+                      <EmailsSentList driverId={driver.id} />
                     </div>
                   </ScrollArea>
                 </TabsContent>
@@ -319,29 +295,21 @@ export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails
                   <ScrollArea className="h-full">
                     <div className="p-6">
                       <div className="space-y-4">
-                        {activityLog.length > 0 ? (
-                          activityLog.map((activity) => (
-                            <Card key={activity.id}>
-                              <CardContent className="p-4">
-                                <div className="flex items-start justify-between">
-                                  <div className="space-y-1">
-                                    <div className="font-medium">{activity.action}</div>
-                                    <div className="text-sm text-gray-600">{activity.details}</div>
-                                  </div>
-                                  <div className="text-sm text-gray-500">
-                                    {activity.timestamp}
-                                  </div>
+                        {driver.activityLog.map((activity) => (
+                          <Card key={activity.id}>
+                            <CardContent className="p-4">
+                              <div className="flex items-start justify-between">
+                                <div className="space-y-1">
+                                  <div className="font-medium">{activity.action}</div>
+                                  <div className="text-sm text-gray-600">{activity.details}</div>
                                 </div>
-                              </CardContent>
-                            </Card>
-                          ))
-                        ) : (
-                          <Card>
-                            <CardContent className="p-6 text-center text-gray-500">
-                              No activity log available
+                                <div className="text-sm text-gray-500">
+                                  {activity.timestamp}
+                                </div>
+                              </div>
                             </CardContent>
                           </Card>
-                        )}
+                        ))}
                       </div>
                     </div>
                   </ScrollArea>
@@ -355,7 +323,7 @@ export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails
       <DocumentViewerModal
         isOpen={documentViewerOpen}
         onClose={() => setDocumentViewerOpen(false)}
-        document={selectedDocument}
+        documentUrl={selectedDocument}
       />
     </>
   );
