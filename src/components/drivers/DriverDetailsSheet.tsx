@@ -583,19 +583,6 @@ export const DriverDetailsSheet = ({
     }));
   };
 
-  const handleLicenseImageUpload = (imageId: number, event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      // Create a local URL for the image preview
-      const imageUrl = URL.createObjectURL(file);
-      // Update the specific license image
-      const updatedImages = driverLicenseImages.map(img => 
-        img.id === imageId ? { ...img, imageUrl, uploadDate: new Date().toISOString().split('T')[0] } : img
-      );
-      toast.success('License image uploaded successfully');
-    }
-  };
-
   return <>
       <Sheet open={isOpen} onOpenChange={onClose}>
         <SheetContent className="sm:max-w-xl md:max-w-4xl lg:max-w-6xl w-full overflow-hidden p-0 pr-0 mr-0 flex flex-col">
@@ -1266,23 +1253,9 @@ export const DriverDetailsSheet = ({
                                     </div>
                                     <div className="flex items-center gap-2">
                                       {editingSection === 'documents' && (
-                                        <>
-                                          <Input 
-                                            type="file" 
-                                            accept="image/*" 
-                                            className="hidden" 
-                                            id={`license-upload-${image.id}`}
-                                            onChange={e => handleLicenseImageUpload(image.id, e)}
-                                          />
-                                          <Button 
-                                            variant="outline" 
-                                            size="sm" 
-                                            onClick={() => document.getElementById(`license-upload-${image.id}`)?.click()}
-                                            className="h-7 px-2 border-blue-500 text-blue-700 hover:bg-blue-50"
-                                          >
-                                            <Upload className="w-3 h-3" />
-                                          </Button>
-                                        </>
+                                        <Button variant="outline" size="sm" className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                          <Trash2 className="w-3 h-3" />
+                                        </Button>
                                       )}
                                       <Button variant="ghost" size="sm" onClick={() => handleViewDocument(image)}>
                                         View
