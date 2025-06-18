@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { OrderDetailsSheet } from "@/components/deliveries/OrderDetailsSheet";
 import { deliveriesData } from "@/data/deliveriesData";
+import { EmailsSentList } from "./EmailsSentList";
 
 interface VehicleInfo {
   transportId: string;
@@ -1504,7 +1505,7 @@ export const DriverDetailsSheet = ({
                                 <CardTitle>Emails sent</CardTitle>
                               </CardHeader>
                               <CardContent>
-                                <p className="text-muted-foreground">Email communication history would go here.</p>
+                                <EmailsSentList driverName={driver.name} />
                               </CardContent>
                             </Card>
                           </TabsContent>
