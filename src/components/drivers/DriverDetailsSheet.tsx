@@ -14,7 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit, Save, X, Plus, Trash2, Upload, Eye, ChevronDown } from "lucide-react";
+import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit, Save, X, Plus, Trash2, Upload, Eye, ChevronDown, Building } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { DocumentViewerModal } from "./DocumentViewerModal";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -54,6 +54,7 @@ interface Driver {
   driverControl?: 'yes' | 'no';
   planning?: 'enabled' | 'disabled';
   banned?: 'yes' | 'no';
+  dedicatedCompanies?: string[];
 }
 
 interface DriverDetailsSheetProps {
@@ -87,6 +88,7 @@ export const DriverDetailsSheet = ({
   const [selectedDocument, setSelectedDocument] = useState<typeof documents[0] | null>(null);
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
   const [selectedTransportToAdd, setSelectedTransportToAdd] = useState<string>('');
+  const [selectedCompanyToAdd, setSelectedCompanyToAdd] = useState<string>('');
   const [expandedImage, setExpandedImage] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>("driver-info");
   const [activeLogTab, setActiveLogTab] = useState<string>("payment-history");
@@ -115,7 +117,8 @@ export const DriverDetailsSheet = ({
     twoStepVerification: driver?.twoStepVerification || 'no' as const,
     driverControl: driver?.driverControl || 'no' as const,
     planning: driver?.planning || 'disabled' as const,
-    banned: driver?.banned || 'no' as const
+    banned: driver?.banned || 'no' as const,
+    dedicatedCompanies: driver?.dedicatedCompanies || []
   });
 
   if (!driver) return null;
@@ -125,6 +128,20 @@ export const DriverDetailsSheet = ({
 
   // Available transport types - get all available transport types from the dictionary
   const availableTransportTypes = Object.keys(transportTypes);
+
+  // Available dedicated companies
+  const availableCompanies = [
+    'Amazon Logistics',
+    'FedEx Ground',
+    'UPS',
+    'DHL Express',
+    'USPS',
+    'OnTrac',
+    'LaserShip',
+    'Blue Dart',
+    'Aramex',
+    'TNT Express'
+  ];
 
   // Sample documents data - in a real app this would come from the driver data
   const documents = [{
@@ -224,6 +241,7 @@ export const DriverDetailsSheet = ({
   const handleEdit = (section: string) => {
     setEditingSection(section);
     setSelectedTransportToAdd('');
+    setSelectedCompanyToAdd('');
     
     // Initialize vehicle info for all existing transports when editing transports section
     let initialVehicleInfo = driver.vehicleInfo || [];
@@ -267,19 +285,22 @@ export const DriverDetailsSheet = ({
       twoStepVerification: driver.twoStepVerification || 'no',
       driverControl: driver.driverControl || 'no',
       planning: driver.planning || 'disabled',
-      banned: driver.banned || 'no'
+      banned: driver.banned || 'no',
+      dedicatedCompanies: driver.dedicatedCompanies || []
     });
   };
 
   const handleSave = (section: string) => {
     setEditingSection(null);
     setSelectedTransportToAdd('');
+    setSelectedCompanyToAdd('');
     toast.success(`${section} updated successfully`);
   };
 
   const handleCancel = () => {
     setEditingSection(null);
     setSelectedTransportToAdd('');
+    setSelectedCompanyToAdd('');
     // Reset edited data to original values
     setEditedData({
       firstName: driver.name.split(' ')[0] || '',
@@ -300,7 +321,8 @@ export const DriverDetailsSheet = ({
       twoStepVerification: driver.twoStepVerification || 'no',
       driverControl: driver.driverControl || 'no',
       planning: driver.planning || 'disabled',
-      banned: driver.banned || 'no'
+      banned: driver.banned || 'no',
+      dedicatedCompanies: driver.dedicatedCompanies || []
     });
   };
 
@@ -423,6 +445,25 @@ export const DriverDetailsSheet = ({
       }
       return newSet;
     });
+  };
+
+  const handleAddCompany = () => {
+    if (selectedCompanyToAdd && !editedData.dedicatedCompanies.includes(selectedCompanyToAdd)) {
+      const newCompanies = [...editedData.dedicatedCompanies, selectedCompanyToAdd];
+      setEditedData(prev => ({
+        ...prev,
+        dedicatedCompanies: newCompanies
+      }));
+      setSelectedCompanyToAdd('');
+    }
+  };
+
+  const handleRemoveCompany = (company: string) => {
+    const newCompanies = editedData.dedicatedCompanies.filter(c => c !== company);
+    setEditedData(prev => ({
+      ...prev,
+      dedicatedCompanies: newCompanies
+    }));
   };
 
   return (
@@ -1185,6 +1226,133 @@ export const DriverDetailsSheet = ({
                                     </span>
                                   </div>
                                 ))}
+                              </div>
+                            )}
+                          </CardContent>
+                        </Card>
+                      </div>
+
+                      {/* Dedicated Companies */}
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="text-sm font-medium flex items-center">
+                            <Building className="w-4 h-4 mr-2" />
+                            Dedicated Companies
+                          </h3>
+                          {editingSection === 'companies' ? (
+                            <div className="flex gap-1">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleSave('Dedicated Companies')}
+                                className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50"
+                              >
+                                <Save className="w-3 h-3 mr-1" />
+                                Save
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={handleCancel}
+                                className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50"
+                              >
+                                <X className="w-3 h-3 mr-1" />
+                                Cancel
+                              </Button>
+                            </div>
+                          ) : (
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="h-7 text-xs flex items-center gap-1"
+                              onClick={() => handleEdit('companies')}
+                            >
+                              <Edit className="h-3 w-3" />
+                              Edit
+                            </Button>
+                          )}
+                        </div>
+                        <Card>
+                          <CardContent className="pt-6">
+                            {editingSection === 'companies' ? (
+                              <div className="space-y-4">
+                                {/* Add Company Dropdown */}
+                                <div>
+                                  <Label>Add Company</Label>
+                                  <div className="flex gap-2 mt-1">
+                                    <Select 
+                                      value={selectedCompanyToAdd} 
+                                      onValueChange={setSelectedCompanyToAdd}
+                                    >
+                                      <SelectTrigger className="flex-1">
+                                        <SelectValue placeholder="Select company to add" />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        {availableCompanies
+                                          .filter(company => !editedData.dedicatedCompanies.includes(company))
+                                          .map(company => (
+                                            <SelectItem key={company} value={company}>
+                                              <div className="flex items-center gap-2">
+                                                <Building className="w-4 h-4" />
+                                                {company}
+                                              </div>
+                                            </SelectItem>
+                                          ))}
+                                      </SelectContent>
+                                    </Select>
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={handleAddCompany}
+                                      disabled={!selectedCompanyToAdd}
+                                      className="px-3"
+                                    >
+                                      <Plus className="w-4 h-4" />
+                                    </Button>
+                                  </div>
+                                </div>
+
+                                {/* Current Companies */}
+                                <div className="space-y-2">
+                                  {editedData.dedicatedCompanies.map(company => (
+                                    <div key={company} className="flex items-center justify-between p-3 border rounded-lg">
+                                      <div className="flex items-center gap-2">
+                                        <Building className="w-4 h-4" />
+                                        <span className="font-medium">{company}</span>
+                                      </div>
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => handleRemoveCompany(company)}
+                                        className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50"
+                                      >
+                                        <Trash2 className="w-3 h-3" />
+                                      </Button>
+                                    </div>
+                                  ))}
+                                </div>
+
+                                {editedData.dedicatedCompanies.length === 0 && (
+                                  <div className="text-center py-8 text-muted-foreground">
+                                    <Building className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                                    <p className="text-sm">No dedicated companies assigned</p>
+                                  </div>
+                                )}
+                              </div>
+                            ) : (
+                              <div className="flex flex-wrap gap-3">
+                                {(driver.dedicatedCompanies || []).map(company => (
+                                  <div key={company} className="flex items-center gap-2 p-2 border rounded-lg">
+                                    <Building className="w-4 h-4" />
+                                    <span className="text-sm">{company}</span>
+                                  </div>
+                                ))}
+                                {(!driver.dedicatedCompanies || driver.dedicatedCompanies.length === 0) && (
+                                  <div className="text-center py-8 text-muted-foreground w-full">
+                                    <Building className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                                    <p className="text-sm">No dedicated companies assigned</p>
+                                  </div>
+                                )}
                               </div>
                             )}
                           </CardContent>
