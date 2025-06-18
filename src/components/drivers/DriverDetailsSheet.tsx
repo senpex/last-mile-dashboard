@@ -272,22 +272,22 @@ export const DriverDetailsSheet = ({
   // Sample orders on hands data
   const ordersOnHands = [
     {
-      id: 1001,
+      id: driverDeliveries[0]?.id || 100001,
       pickupDate: "2024-01-22",
       status: "In Progress"
     },
     {
-      id: 1002,
+      id: driverDeliveries[1]?.id || 100002,
       pickupDate: "2024-01-23",
       status: "Pending"
     },
     {
-      id: 1003,
+      id: driverDeliveries[2]?.id || 100003,
       pickupDate: "2024-01-24",
       status: "Assigned"
     },
     {
-      id: 1004,
+      id: driverDeliveries[3]?.id || 100004,
       pickupDate: "2024-01-25",
       status: "Ready for Pickup"
     }
