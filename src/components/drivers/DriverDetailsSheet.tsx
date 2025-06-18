@@ -24,7 +24,6 @@ import { OrderDetailsSheet } from "@/components/deliveries/OrderDetailsSheet";
 import { deliveriesData } from "@/data/deliveriesData";
 import { EmailsSentList } from "./EmailsSentList";
 import { RandomImage } from "@/components/ui/random-image";
-
 interface VehicleInfo {
   transportId: string;
   year?: string;
@@ -33,19 +32,16 @@ interface VehicleInfo {
   plateNumber?: string;
   plateImage?: string;
 }
-
 interface DriverLicenseInfo {
   dlNumber?: string;
   expirationDate?: string;
   ssn?: string;
   state?: string;
 }
-
 interface InsuranceInfo {
   policyNumber?: string;
   expirationDate?: string;
 }
-
 interface Driver {
   id: number;
   name: string;
@@ -71,7 +67,6 @@ interface Driver {
   driverLicenseInfo?: DriverLicenseInfo;
   insuranceInfo?: InsuranceInfo;
 }
-
 interface DriverDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -89,7 +84,6 @@ interface DriverDetailsSheetProps {
   renderStripeStatus: (status: 'verified' | 'unverified' | 'pending') => JSX.Element;
   onOpenOrderDetails?: (orderId: number) => void;
 }
-
 export const DriverDetailsSheet = ({
   isOpen,
   onClose,
@@ -1269,48 +1263,16 @@ export const DriverDetailsSheet = ({
                               <div className="grid grid-cols-2 gap-4 mb-4">
                                 <div>
                                   <Label htmlFor="policyNumber">Policy Number</Label>
-                                  <Input 
-                                    id="policyNumber" 
-                                    value={editingSection === 'documents' ? editedData.insuranceInfo.policyNumber : driver.insuranceInfo?.policyNumber || ''} 
-                                    onChange={e => handleInsuranceInfoChange('policyNumber', e.target.value)} 
-                                    readOnly={editingSection !== 'documents'} 
-                                    className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} 
-                                    placeholder="Enter policy number" 
-                                  />
+                                  <Input id="policyNumber" value={editingSection === 'documents' ? editedData.insuranceInfo.policyNumber : driver.insuranceInfo?.policyNumber || ''} onChange={e => handleInsuranceInfoChange('policyNumber', e.target.value)} readOnly={editingSection !== 'documents'} className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} placeholder="Enter policy number" />
                                 </div>
                                 <div>
                                   <Label htmlFor="insuranceExpiration">Expire Date</Label>
-                                  <Input 
-                                    id="insuranceExpiration" 
-                                    type="date" 
-                                    value={editingSection === 'documents' ? editedData.insuranceInfo.expirationDate : driver.insuranceInfo?.expirationDate || ''} 
-                                    onChange={e => handleInsuranceInfoChange('expirationDate', e.target.value)} 
-                                    readOnly={editingSection !== 'documents'} 
-                                    className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} 
-                                  />
+                                  <Input id="insuranceExpiration" type="date" value={editingSection === 'documents' ? editedData.insuranceInfo.expirationDate : driver.insuranceInfo?.expirationDate || ''} onChange={e => handleInsuranceInfoChange('expirationDate', e.target.value)} readOnly={editingSection !== 'documents'} className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} />
                                 </div>
                               </div>
 
                               <div className="space-y-4">
-                                {documents.filter(doc => doc.name.includes("Insurance")).map(document => <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
-                                    <div className="flex items-center gap-3">
-                                      <Image className="h-4 w-4 text-muted-foreground" />
-                                      <div>
-                                        <p className="text-sm font-medium">{document.name}</p>
-                                        <p className="text-xs text-muted-foreground">
-                                          {document.type} • Uploaded {document.uploadDate}
-                                        </p>
-                                      </div>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                      {editingSection === 'documents' && <Button variant="outline" size="sm" className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
-                                          <Trash2 className="w-3 h-3" />
-                                        </Button>}
-                                      <Button variant="ghost" size="sm" onClick={() => handleViewDocument(document)}>
-                                        View
-                                      </Button>
-                                    </div>
-                                  </div>)}
+                                {documents.filter(doc => doc.name.includes("Insurance")).map(document => {})}
                               </div>
                               {editingSection === 'documents' && <div className="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-lg text-center">
                                   <Input type="file" accept="image/*,.pdf,.doc,.docx" className="hidden" id="document-upload" multiple />
