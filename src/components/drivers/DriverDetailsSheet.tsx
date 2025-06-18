@@ -163,10 +163,10 @@ export const DriverDetailsSheet = ({
       amount: 425.50,
       status: "paid",
       transactions: [
-        { orderId: driverDeliveries[0]?.id || 1, orderNumber: driverDeliveries[0]?.orderNumber || "100001", date: "2024-01-14", earning: 85.00, commission: 12.75, tip: 15.00 },
-        { orderId: driverDeliveries[1]?.id || 2, orderNumber: driverDeliveries[1]?.orderNumber || "100002", date: "2024-01-14", earning: 120.00, commission: 18.00, tip: 25.00 },
-        { orderId: driverDeliveries[2]?.id || 3, orderNumber: driverDeliveries[2]?.orderNumber || "100003", date: "2024-01-15", earning: 95.50, commission: 14.33, tip: 20.00 },
-        { orderId: driverDeliveries[3]?.id || 4, orderNumber: driverDeliveries[3]?.orderNumber || "100004", date: "2024-01-15", earning: 110.00, commission: 16.50, tip: 18.92 }
+        { orderId: driverDeliveries[0]?.id || 1, orderNumber: driverDeliveries[0]?.id || "100001", date: "2024-01-14", earning: 85.00, commission: 12.75, tip: 15.00 },
+        { orderId: driverDeliveries[1]?.id || 2, orderNumber: driverDeliveries[1]?.id || "100002", date: "2024-01-14", earning: 120.00, commission: 18.00, tip: 25.00 },
+        { orderId: driverDeliveries[2]?.id || 3, orderNumber: driverDeliveries[2]?.id || "100003", date: "2024-01-15", earning: 95.50, commission: 14.33, tip: 20.00 },
+        { orderId: driverDeliveries[3]?.id || 4, orderNumber: driverDeliveries[3]?.id || "100004", date: "2024-01-15", earning: 110.00, commission: 16.50, tip: 18.92 }
       ]
     },
     {
@@ -175,9 +175,9 @@ export const DriverDetailsSheet = ({
       amount: 312.75,
       status: "paid",
       transactions: [
-        { orderId: driverDeliveries[4]?.id || 5, orderNumber: driverDeliveries[4]?.orderNumber || "100005", date: "2024-01-07", earning: 75.00, commission: 11.25, tip: 12.00 },
-        { orderId: driverDeliveries[5]?.id || 6, orderNumber: driverDeliveries[5]?.orderNumber || "100006", date: "2024-01-08", earning: 90.00, commission: 13.50, tip: 22.50 },
-        { orderId: driverDeliveries[6]?.id || 7, orderNumber: driverDeliveries[6]?.orderNumber || "100007", date: "2024-01-08", earning: 88.50, commission: 13.28, tip: 0.00 }
+        { orderId: driverDeliveries[4]?.id || 5, orderNumber: driverDeliveries[4]?.id || "100005", date: "2024-01-07", earning: 75.00, commission: 11.25, tip: 12.00 },
+        { orderId: driverDeliveries[5]?.id || 6, orderNumber: driverDeliveries[5]?.id || "100006", date: "2024-01-08", earning: 90.00, commission: 13.50, tip: 22.50 },
+        { orderId: driverDeliveries[6]?.id || 7, orderNumber: driverDeliveries[6]?.id || "100007", date: "2024-01-08", earning: 88.50, commission: 13.28, tip: 0.00 }
       ]
     },
     {
@@ -186,8 +186,8 @@ export const DriverDetailsSheet = ({
       amount: 198.25,
       status: "paid",
       transactions: [
-        { orderId: driverDeliveries[7]?.id || 8, orderNumber: driverDeliveries[7]?.orderNumber || "100008", date: "2023-12-31", earning: 65.00, commission: 9.75, tip: 8.00 },
-        { orderId: driverDeliveries[8]?.id || 9, orderNumber: driverDeliveries[8]?.orderNumber || "100009", date: "2024-01-01", earning: 115.50, commission: 17.33, tip: 0.00 }
+        { orderId: driverDeliveries[7]?.id || 8, orderNumber: driverDeliveries[7]?.id || "100008", date: "2023-12-31", earning: 65.00, commission: 9.75, tip: 8.00 },
+        { orderId: driverDeliveries[8]?.id || 9, orderNumber: driverDeliveries[8]?.id || "100009", date: "2024-01-01", earning: 115.50, commission: 17.33, tip: 0.00 }
       ]
     }
   ];
@@ -199,9 +199,9 @@ export const DriverDetailsSheet = ({
     amount: 285.75,
     status: "pending",
     transactions: [
-      { orderId: driverDeliveries[9]?.id || 10, orderNumber: driverDeliveries[9]?.orderNumber || "100010", date: "2024-01-20", earning: 95.00, commission: 14.25, tip: 20.00 },
-      { orderId: driverDeliveries[10]?.id || 11, orderNumber: driverDeliveries[10]?.orderNumber || "100011", date: "2024-01-21", earning: 80.50, commission: 12.08, tip: 15.00 },
-      { orderId: driverDeliveries[11]?.id || 12, orderNumber: driverDeliveries[11]?.orderNumber || "100012", date: "2024-01-21", earning: 105.00, commission: 15.75, tip: 12.92 }
+      { orderId: driverDeliveries[9]?.id || 10, orderNumber: driverDeliveries[9]?.id || "100010", date: "2024-01-20", earning: 95.00, commission: 14.25, tip: 20.00 },
+      { orderId: driverDeliveries[10]?.id || 11, orderNumber: driverDeliveries[10]?.id || "100011", date: "2024-01-21", earning: 80.50, commission: 12.08, tip: 15.00 },
+      { orderId: driverDeliveries[11]?.id || 12, orderNumber: driverDeliveries[11]?.id || "100012", date: "2024-01-21", earning: 105.00, commission: 15.75, tip: 12.92 }
     ]
   };
 
@@ -1328,8 +1328,8 @@ export const DriverDetailsSheet = ({
                             </TabsTrigger>
                             <TabsTrigger value="communication" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
                               <Mail className="w-4 h-4" /> 
-                              <span className="hidden sm:inline">Communication</span>
-                              <span className="sm:hidden">Messages</span>
+                              <span className="hidden sm:inline">Emails sent</span>
+                              <span className="sm:hidden">Emails</span>
                             </TabsTrigger>
                             <TabsTrigger value="activity-log" className="flex items-center gap-1 bg-white/5 border border-gray-200 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white">
                               <Settings className="w-4 h-4" /> 
@@ -1501,10 +1501,10 @@ export const DriverDetailsSheet = ({
                           <TabsContent value="communication" className="space-y-4">
                             <Card>
                               <CardHeader>
-                                <CardTitle>Communication History</CardTitle>
+                                <CardTitle>Emails sent</CardTitle>
                               </CardHeader>
                               <CardContent>
-                                <p className="text-muted-foreground">Communication history content would go here.</p>
+                                <p className="text-muted-foreground">Email communication history would go here.</p>
                               </CardContent>
                             </Card>
                           </TabsContent>
