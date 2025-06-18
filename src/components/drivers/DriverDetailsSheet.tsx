@@ -1060,8 +1060,7 @@ export const DriverDetailsSheet = ({
                         <Card>
                           <CardContent className="pt-6">
                             <div className="space-y-4">
-                              {documents.map(document => (
-                                <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
+                              {documents.map(document => <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
                                   <div className="flex items-center gap-3">
                                     <Image className="h-4 w-4 text-muted-foreground" />
                                     <div>
@@ -1076,14 +1075,11 @@ export const DriverDetailsSheet = ({
                                       View
                                     </Button>
                                   </div>
-                                </div>
-                              ))}
-                              {documents.length === 0 && (
-                                <div className="text-center py-8 text-muted-foreground">
+                                </div>)}
+                              {documents.length === 0 && <div className="text-center py-8 text-muted-foreground">
                                   <Image className="h-8 w-8 mx-auto mb-2 opacity-50" />
                                   <p className="text-sm">No documents uploaded</p>
-                                </div>
-                              )}
+                                </div>}
                             </div>
                           </CardContent>
                         </Card>
@@ -1280,14 +1276,7 @@ export const DriverDetailsSheet = ({
                           </TabsContent>
                           
                           <TabsContent value="delivery-history" className="space-y-4">
-                            <Card>
-                              <CardHeader>
-                                <CardTitle>Delivery History</CardTitle>
-                              </CardHeader>
-                              <CardContent>
-                                <p className="text-muted-foreground">Delivery history content would go here.</p>
-                              </CardContent>
-                            </Card>
+                            
                           </TabsContent>
                           
                           <TabsContent value="vehicle-info" className="space-y-4">
