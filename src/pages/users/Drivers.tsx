@@ -4,7 +4,7 @@ import { DriversTable } from '@/components/drivers/DriversTable';
 import { DriversPagination } from '@/components/drivers/DriversPagination';
 import { DriversFilters } from "@/components/drivers/DriversFilters";
 import { DriversSidebar } from "@/components/drivers/DriversSidebar";
-import { DriverDetailsSheet } from "@/components/drivers/DriverDetailsSheet";
+import DriverDetailsSheet from "@/components/drivers/DriverDetailsSheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Check, X, Clock, ChevronDown } from "lucide-react";
@@ -685,14 +685,9 @@ const DriversPage = () => {
         {chatOpen && selectedCourier && <CourierChat open={chatOpen} courierName={selectedCourier} onClose={handleChatClose} hasUnreadMessages={false} />}
         
         <DriverDetailsSheet
-          isOpen={isDriverDetailsOpen}
-          onClose={() => setIsDriverDetailsOpen(false)}
           driver={selectedDriver}
-          transportTypes={transportTypes}
-          statusDictionary={statusDictionary}
-          hireStatusDictionary={hireStatusDictionary}
-          renderStatus={renderStatus}
-          renderStripeStatus={renderStripeStatus}
+          open={isDriverDetailsOpen}
+          onOpenChange={setIsDriverDetailsOpen}
         />
       </div>
     </Layout>;

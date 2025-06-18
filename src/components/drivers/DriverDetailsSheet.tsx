@@ -1,5 +1,6 @@
+
 import { useState } from "react"
-import { Bank, Edit2, File, ShieldCheck, Truck } from "lucide-react"
+import { Building2, Edit2, File, ShieldCheck, Truck } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -99,7 +100,7 @@ export default function DriverDetailsSheet({ driver, open, onOpenChange }: Drive
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold flex items-center gap-2">
-                <Bank className="h-5 w-5" />
+                <Building2 className="h-5 w-5" />
                 Bank Details
               </h3>
               <Button variant="outline" size="sm">
