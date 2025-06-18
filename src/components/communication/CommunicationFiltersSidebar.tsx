@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -42,6 +41,8 @@ interface CommunicationFiltersSidebarProps {
   // Client filters
   selectedOrganizations?: string[];
   setSelectedOrganizations?: (organizations: string[]) => void;
+  selectedClientNames?: string[];
+  setSelectedClientNames?: (names: string[]) => void;
   
   // Dispatcher filters
   selectedDispatchers?: string[];
@@ -54,6 +55,7 @@ interface CommunicationFiltersSidebarProps {
   allStates?: string[];
   allOrganizations?: string[];
   allDispatchers?: string[];
+  allClientNames?: string[];
 }
 
 export const CommunicationFiltersSidebar = ({
@@ -81,6 +83,8 @@ export const CommunicationFiltersSidebar = ({
   setSelectedNames,
   selectedOrganizations = [],
   setSelectedOrganizations,
+  selectedClientNames = [],
+  setSelectedClientNames,
   selectedDispatchers = [],
   setSelectedDispatchers,
   allDeliveryStatuses = [],
@@ -88,7 +92,8 @@ export const CommunicationFiltersSidebar = ({
   allCities = [],
   allStates = [],
   allOrganizations = [],
-  allDispatchers = []
+  allDispatchers = [],
+  allClientNames = []
 }: CommunicationFiltersSidebarProps) => {
   const [transportTypes, setTransportTypes] = useState<{
     id: string;
@@ -112,6 +117,7 @@ export const CommunicationFiltersSidebar = ({
   const [orgSearchTerm, setOrgSearchTerm] = useState("");
   const [dispatcherSearchTerm, setDispatcherSearchTerm] = useState("");
   const [nameSearchTerm, setNameSearchTerm] = useState("");
+  const [clientNameSearchTerm, setClientNameSearchTerm] = useState("");
 
   // Mock driver names data
   const driverNames = [
@@ -149,14 +155,15 @@ export const CommunicationFiltersSidebar = ({
       onFiltersAdd({
         cities: selectedCities,
         states: selectedStates,
-        organizations: selectedOrganizations
+        organizations: selectedOrganizations,
+        clientNames: selectedClientNames
       });
     } else if (activeTab === "groups") {
       onFiltersAdd({
         dispatchers: selectedDispatchers
       });
     }
-  }, [selectedStatuses, selectedTransports, selectedZipcodes, selectedProfiles, selectedCities, selectedStates, selectedHireStatuses, selectedNames, selectedRadius, selectedOrganizations, selectedDispatchers, activeTab, onFiltersAdd]);
+  }, [selectedStatuses, selectedTransports, selectedZipcodes, selectedProfiles, selectedCities, selectedStates, selectedHireStatuses, selectedNames, selectedRadius, selectedOrganizations, selectedClientNames, selectedDispatchers, activeTab, onFiltersAdd]);
 
   const handleResetFilters = () => {
     if (activeTab === "drivers") {
@@ -173,6 +180,7 @@ export const CommunicationFiltersSidebar = ({
       setSelectedCities?.([]);
       setSelectedStates?.([]);
       setSelectedOrganizations?.([]);
+      setSelectedClientNames?.([]);
     } else if (activeTab === "groups") {
       setSelectedDispatchers?.([]);
     }
@@ -195,7 +203,8 @@ export const CommunicationFiltersSidebar = ({
       onFiltersAdd({
         cities: selectedCities,
         states: selectedStates,
-        organizations: selectedOrganizations
+        organizations: selectedOrganizations,
+        clientNames: selectedClientNames
       });
     } else if (activeTab === "groups") {
       onFiltersAdd({
@@ -251,6 +260,10 @@ export const CommunicationFiltersSidebar = ({
 
   const filteredNames = driverNames.filter(name => 
     name.toLowerCase().includes(nameSearchTerm.toLowerCase())
+  );
+
+  const filteredClientNames = allClientNames.filter(name => 
+    name.toLowerCase().includes(clientNameSearchTerm.toLowerCase())
   );
 
   const getTitle = () => {
@@ -615,47 +628,83 @@ export const CommunicationFiltersSidebar = ({
                     </div>
                   </AccordionContent>
                 </AccordionItem>
-              </>
-            )}
 
-            {activeTab === "clients" && (
-              <AccordionItem value="organizations">
-                <AccordionTrigger className="text-sm font-medium">
-                  Organizations
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="space-y-2 pt-1">
-                    <div className="relative">
-                      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                      <Input 
-                        placeholder="Search organizations..." 
-                        value={orgSearchTerm} 
-                        onChange={e => setOrgSearchTerm(e.target.value)} 
-                        className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input" 
-                      />
-                    </div>
-                    {filteredOrganizations.map(org => (
-                      <div key={org} className="flex items-center space-x-2">
-                        <Checkbox 
-                          id={`org-${org}`} 
-                          checked={selectedOrganizations.includes(org)} 
-                          onCheckedChange={() => {
-                            if (selectedOrganizations.includes(org)) {
-                              setSelectedOrganizations?.(selectedOrganizations.filter(o => o !== org));
-                            } else {
-                              setSelectedOrganizations?.([...selectedOrganizations, org]);
-                            }
-                          }} 
+                <AccordionItem value="clientNames">
+                  <AccordionTrigger className="text-sm font-medium">
+                    Name
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-2 pt-1">
+                      <div className="relative">
+                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input 
+                          placeholder="Search client names..." 
+                          value={clientNameSearchTerm} 
+                          onChange={e => setClientNameSearchTerm(e.target.value)} 
+                          className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input" 
                         />
-                        <Label htmlFor={`org-${org}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between">
-                          <span className="my-0 px-[15px]">{org}</span>
-                          <Badge variant="outline" className="ml-auto">{getCount()}</Badge>
-                        </Label>
                       </div>
-                    ))}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
+                      {filteredClientNames.map(name => (
+                        <div key={name} className="flex items-center space-x-2">
+                          <Checkbox 
+                            id={`client-name-${name}`} 
+                            checked={selectedClientNames.includes(name)} 
+                            onCheckedChange={() => {
+                              if (selectedClientNames.includes(name)) {
+                                setSelectedClientNames?.(selectedClientNames.filter(n => n !== name));
+                              } else {
+                                setSelectedClientNames?.([...selectedClientNames, name]);
+                              }
+                            }} 
+                          />
+                          <Label htmlFor={`client-name-${name}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between">
+                            <span>{name}</span>
+                            <Badge variant="outline" className="ml-auto">{getCount()}</Badge>
+                          </Label>
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="organizations">
+                  <AccordionTrigger className="text-sm font-medium">
+                    Companies
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-2 pt-1">
+                      <div className="relative">
+                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input 
+                          placeholder="Search organizations..." 
+                          value={orgSearchTerm} 
+                          onChange={e => setOrgSearchTerm(e.target.value)} 
+                          className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input" 
+                        />
+                      </div>
+                      {filteredOrganizations.map(org => (
+                        <div key={org} className="flex items-center space-x-2">
+                          <Checkbox 
+                            id={`org-${org}`} 
+                            checked={selectedOrganizations.includes(org)} 
+                            onCheckedChange={() => {
+                              if (selectedOrganizations.includes(org)) {
+                                setSelectedOrganizations?.(selectedOrganizations.filter(o => o !== org));
+                              } else {
+                                setSelectedOrganizations?.([...selectedOrganizations, org]);
+                              }
+                            }} 
+                          />
+                          <Label htmlFor={`org-${org}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between">
+                            <span className="my-0 px-[15px]">{org}</span>
+                            <Badge variant="outline" className="ml-auto">{getCount()}</Badge>
+                          </Label>
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </>
             )}
 
             {activeTab === "groups" && (

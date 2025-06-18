@@ -25,6 +25,7 @@ const CommunicationTower = () => {
   const [selectedClientCities, setSelectedClientCities] = useState<string[]>([]);
   const [selectedClientStates, setSelectedClientStates] = useState<string[]>([]);
   const [selectedOrganizations, setSelectedOrganizations] = useState<string[]>([]);
+  const [selectedClientNames, setSelectedClientNames] = useState<string[]>([]);
   
   // Dispatcher filters state
   const [dispatcherFilterSidebarOpen, setDispatcherFilterSidebarOpen] = useState(true);
@@ -48,6 +49,7 @@ const CommunicationTower = () => {
   const allClientProfiles = ["Business", "Individual", "Enterprise"];
   const allOrganizations = ["Acme Corp", "Globex Corp", "Initech"];
   const allDispatchers = ["John Doe", "Jane Smith", "Mike Johnson", "Sarah Wilson", "Tom Brown"];
+  const allClientNames = ["Alice Johnson", "Bob Smith", "Carol Davis", "David Wilson", "Emma Brown", "Frank Miller", "Grace Taylor"];
 
   const handleFiltersAdd = (filters: any) => {
     if (activeTab === "drivers") {
@@ -64,6 +66,7 @@ const CommunicationTower = () => {
       setSelectedClientCities(filters.cities || []);
       setSelectedClientStates(filters.states || []);
       setSelectedOrganizations(filters.organizations || []);
+      setSelectedClientNames(filters.clientNames || []);
     } else if (activeTab === "groups") {
       setSelectedDispatchers(filters.dispatchers || []);
     }
@@ -146,6 +149,8 @@ const CommunicationTower = () => {
                       // Client filters
                       selectedOrganizations={selectedOrganizations}
                       setSelectedOrganizations={setSelectedOrganizations}
+                      selectedClientNames={selectedClientNames}
+                      setSelectedClientNames={setSelectedClientNames}
                       
                       // Dispatcher filters
                       selectedDispatchers={selectedDispatchers}
@@ -158,6 +163,7 @@ const CommunicationTower = () => {
                       allStates={allStates}
                       allOrganizations={allOrganizations}
                       allDispatchers={allDispatchers}
+                      allClientNames={allClientNames}
                     />
                   </div>
                 )}
@@ -177,7 +183,8 @@ const CommunicationTower = () => {
                       organizations: selectedOrganizations,
                       dispatchers: selectedDispatchers,
                       radius: selectedRadius,
-                      names: selectedNames
+                      names: selectedNames,
+                      clientNames: selectedClientNames
                     }}
                   />
                 </div>

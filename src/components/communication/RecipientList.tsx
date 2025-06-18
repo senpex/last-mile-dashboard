@@ -28,6 +28,7 @@ interface RecipientListProps {
     dispatchers?: string[];
     radius?: number;
     names?: string[];
+    clientNames?: string[];
   };
 }
 
@@ -85,6 +86,9 @@ export const RecipientList: React.FC<RecipientListProps> = ({
     }
     if (selectedFilters.names && selectedFilters.names.length > 0) {
       groups.push({ type: "Names", values: selectedFilters.names });
+    }
+    if (selectedFilters.clientNames && selectedFilters.clientNames.length > 0) {
+      groups.push({ type: "Client Names", values: selectedFilters.clientNames });
     }
 
     return groups;
