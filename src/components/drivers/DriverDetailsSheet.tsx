@@ -72,7 +72,7 @@ interface DriverDetailsSheetProps {
 }
 
 export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails }: DriverDetailsSheetProps) => {
-  const [selectedDocument, setSelectedDocument] = React.useState<string | null>(null);
+  const [selectedDocument, setSelectedDocument] = React.useState<any>(null);
   const [documentViewerOpen, setDocumentViewerOpen] = React.useState(false);
 
   if (!driver) return null;
@@ -95,8 +95,15 @@ export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails
     }
   };
 
-  const handleDocumentView = (documentUrl: string) => {
-    setSelectedDocument(documentUrl);
+  const handleDocumentView = (documentType: string) => {
+    const document = {
+      id: 1,
+      name: documentType,
+      type: 'image',
+      uploadDate: '2024-01-01',
+      status: 'verified'
+    };
+    setSelectedDocument(document);
     setDocumentViewerOpen(true);
   };
 
@@ -206,7 +213,7 @@ export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => handleDocumentView(driver.documents.license)}
+                              onClick={() => handleDocumentView("Driver's License")}
                               className="flex items-center gap-1"
                             >
                               <Eye className="w-4 h-4" />
@@ -219,7 +226,7 @@ export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => handleDocumentView(driver.documents.insurance)}
+                              onClick={() => handleDocumentView("Insurance")}
                               className="flex items-center gap-1"
                             >
                               <Eye className="w-4 h-4" />
@@ -232,7 +239,7 @@ export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => handleDocumentView(driver.documents.registration)}
+                              onClick={() => handleDocumentView("Registration")}
                               className="flex items-center gap-1"
                             >
                               <Eye className="w-4 h-4" />
@@ -286,7 +293,7 @@ export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails
                 <TabsContent value="emails-sent" className="h-full m-0">
                   <ScrollArea className="h-full">
                     <div className="p-6">
-                      <EmailsSentList driverId={driver.id} />
+                      <EmailsSentList driverName={driver.name} />
                     </div>
                   </ScrollArea>
                 </TabsContent>
@@ -323,7 +330,7 @@ export const DriverDetailsSheet = ({ driver, isOpen, onClose, onOpenOrderDetails
       <DocumentViewerModal
         isOpen={documentViewerOpen}
         onClose={() => setDocumentViewerOpen(false)}
-        documentUrl={selectedDocument}
+        document={selectedDocument}
       />
     </>
   );
