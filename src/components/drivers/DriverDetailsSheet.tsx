@@ -24,7 +24,6 @@ import { OrderDetailsSheet } from "@/components/deliveries/OrderDetailsSheet";
 import { deliveriesData } from "@/data/deliveriesData";
 import { EmailsSentList } from "./EmailsSentList";
 import { RandomImage } from "@/components/ui/random-image";
-
 interface VehicleInfo {
   transportId: string;
   year?: string;
@@ -33,14 +32,12 @@ interface VehicleInfo {
   plateNumber?: string;
   plateImage?: string;
 }
-
 interface DriverLicenseInfo {
   dlNumber?: string;
   expirationDate?: string;
   ssn?: string;
   state?: string;
 }
-
 interface Driver {
   id: number;
   name: string;
@@ -65,7 +62,6 @@ interface Driver {
   dedicatedCompanies?: string[];
   driverLicenseInfo?: DriverLicenseInfo;
 }
-
 interface DriverDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -148,15 +144,7 @@ export const DriverDetailsSheet = ({
   const availableCompanies = ['Amazon Logistics', 'FedEx Ground', 'UPS', 'DHL Express', 'USPS', 'OnTrac', 'LaserShip', 'Blue Dart', 'Aramex', 'TNT Express'];
 
   // Available US states
-  const usStates = [
-    'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
-    'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
-    'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
-    'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico',
-    'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania',
-    'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
-    'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-  ];
+  const usStates = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
 
   // Sample documents data - in a real app this would come from the driver data
   const documents = [{
@@ -180,24 +168,21 @@ export const DriverDetailsSheet = ({
   }];
 
   // Driver's license images - now with only 2 original images
-  const driverLicenseImages = [
-    {
-      id: 1,
-      name: "Driver's License - Front",
-      type: "Image",
-      uploadDate: "2024-01-15",
-      status: "Verified",
-      imageUrl: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=250&fit=crop"
-    },
-    {
-      id: 2,
-      name: "Driver's License - Back", 
-      type: "Image",
-      uploadDate: "2024-01-12",
-      status: "Pending",
-      imageUrl: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=250&fit=crop"
-    }
-  ];
+  const driverLicenseImages = [{
+    id: 1,
+    name: "Driver's License - Front",
+    type: "Image",
+    uploadDate: "2024-01-15",
+    status: "Verified",
+    imageUrl: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=250&fit=crop"
+  }, {
+    id: 2,
+    name: "Driver's License - Back",
+    type: "Image",
+    uploadDate: "2024-01-12",
+    status: "Pending",
+    imageUrl: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=250&fit=crop"
+  }];
 
   // Get actual delivery data for this driver
   const getDeliveriesForDriver = () => {
@@ -320,19 +305,16 @@ export const DriverDetailsSheet = ({
   };
 
   // Use actual driver deliveries for orders on hands - take first 4 orders
-  const ordersOnHands = [
-    {
-      id: 100429,
-      pickupDate: "2024-01-26", 
-      status: "In Progress"
-    },
-    ...driverDeliveries.slice(0, 3).map(delivery => ({
-      id: delivery.id,
-      pickupDate: delivery.pickupTime.split(' ')[0], // Extract just the date part
-      status: delivery.status
-    }))
-  ];
-
+  const ordersOnHands = [{
+    id: 100429,
+    pickupDate: "2024-01-26",
+    status: "In Progress"
+  }, ...driverDeliveries.slice(0, 3).map(delivery => ({
+    id: delivery.id,
+    pickupDate: delivery.pickupTime.split(' ')[0],
+    // Extract just the date part
+    status: delivery.status
+  }))];
   const handleViewDocument = (document: typeof documents[0]) => {
     setSelectedDocument(document);
     setIsDocumentModalOpen(true);
@@ -582,20 +564,20 @@ export const DriverDetailsSheet = ({
       }
     }));
   };
-
   const handleLicenseImageUpload = (imageId: number, event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       // Create a local URL for the image preview
       const imageUrl = URL.createObjectURL(file);
       // Update the specific license image
-      const updatedImages = driverLicenseImages.map(img => 
-        img.id === imageId ? { ...img, imageUrl, uploadDate: new Date().toISOString().split('T')[0] } : img
-      );
+      const updatedImages = driverLicenseImages.map(img => img.id === imageId ? {
+        ...img,
+        imageUrl,
+        uploadDate: new Date().toISOString().split('T')[0]
+      } : img);
       toast.success('License image uploaded successfully');
     }
   };
-
   return <>
       <Sheet open={isOpen} onOpenChange={onClose}>
         <SheetContent className="sm:max-w-xl md:max-w-4xl lg:max-w-6xl w-full overflow-hidden p-0 pr-0 mr-0 flex flex-col">
@@ -1185,74 +1167,39 @@ export const DriverDetailsSheet = ({
                               <div className="grid grid-cols-2 gap-4 mb-4">
                                 <div>
                                   <Label htmlFor="dlNumber">DL Number</Label>
-                                  <Input 
-                                    id="dlNumber" 
-                                    value={editingSection === 'documents' ? editedData.driverLicenseInfo.dlNumber : driver.driverLicenseInfo?.dlNumber || ''} 
-                                    onChange={e => handleDriverLicenseInfoChange('dlNumber', e.target.value)}
-                                    readOnly={editingSection !== 'documents'} 
-                                    className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} 
-                                    placeholder="Enter DL number"
-                                  />
+                                  <Input id="dlNumber" value={editingSection === 'documents' ? editedData.driverLicenseInfo.dlNumber : driver.driverLicenseInfo?.dlNumber || ''} onChange={e => handleDriverLicenseInfoChange('dlNumber', e.target.value)} readOnly={editingSection !== 'documents'} className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} placeholder="Enter DL number" />
                                 </div>
                                 <div>
                                   <Label htmlFor="dlExpiration">Date of Expire</Label>
-                                  <Input 
-                                    id="dlExpiration" 
-                                    type="date"
-                                    value={editingSection === 'documents' ? editedData.driverLicenseInfo.expirationDate : driver.driverLicenseInfo?.expirationDate || ''} 
-                                    onChange={e => handleDriverLicenseInfoChange('expirationDate', e.target.value)}
-                                    readOnly={editingSection !== 'documents'} 
-                                    className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} 
-                                  />
+                                  <Input id="dlExpiration" type="date" value={editingSection === 'documents' ? editedData.driverLicenseInfo.expirationDate : driver.driverLicenseInfo?.expirationDate || ''} onChange={e => handleDriverLicenseInfoChange('expirationDate', e.target.value)} readOnly={editingSection !== 'documents'} className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} />
                                 </div>
                                 <div>
                                   <Label htmlFor="ssn">SSN</Label>
-                                  <Input 
-                                    id="ssn" 
-                                    value={editingSection === 'documents' ? editedData.driverLicenseInfo.ssn : driver.driverLicenseInfo?.ssn || ''} 
-                                    onChange={e => handleDriverLicenseInfoChange('ssn', e.target.value)}
-                                    readOnly={editingSection !== 'documents'} 
-                                    className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} 
-                                    placeholder="XXX-XX-XXXX"
-                                    type="password"
-                                  />
+                                  <Input id="ssn" value={editingSection === 'documents' ? editedData.driverLicenseInfo.ssn : driver.driverLicenseInfo?.ssn || ''} onChange={e => handleDriverLicenseInfoChange('ssn', e.target.value)} readOnly={editingSection !== 'documents'} className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} placeholder="XXX-XX-XXXX" type="password" />
                                 </div>
                                 <div>
                                   <Label htmlFor="dlState">State</Label>
-                                  {editingSection === 'documents' ? (
-                                    <Select value={editedData.driverLicenseInfo.state} onValueChange={value => handleDriverLicenseInfoChange('state', value)}>
+                                  {editingSection === 'documents' ? <Select value={editedData.driverLicenseInfo.state} onValueChange={value => handleDriverLicenseInfoChange('state', value)}>
                                       <SelectTrigger className="h-9">
                                         <SelectValue placeholder="Select state" />
                                       </SelectTrigger>
                                       <SelectContent>
-                                        {usStates.map(state => (
-                                          <SelectItem key={state} value={state}>
+                                        {usStates.map(state => <SelectItem key={state} value={state}>
                                             {state}
-                                          </SelectItem>
-                                        ))}
+                                          </SelectItem>)}
                                       </SelectContent>
-                                    </Select>
-                                  ) : (
-                                    <Input 
-                                      id="dlState" 
-                                      value={driver.driverLicenseInfo?.state || ''} 
-                                      readOnly 
-                                      className="bg-muted/50" 
-                                      placeholder="State not specified"
-                                    />
-                                  )}
+                                    </Select> : <Input id="dlState" value={driver.driverLicenseInfo?.state || ''} readOnly className="bg-muted/50" placeholder="State not specified" />}
                                 </div>
                               </div>
 
                               {/* Driver's License Images Grid */}
                               <div className="grid grid-cols-2 gap-4 mb-4">
-                                {driverLicenseImages.map((image) => (
-                                  <div key={image.id} className="flex items-center justify-between p-3 border rounded-lg">
+                                {driverLicenseImages.map(image => <div key={image.id} className="flex items-center justify-between p-3 border rounded-lg">
                                     <div className="flex items-center gap-3">
                                       <div className="relative cursor-pointer group border rounded overflow-hidden" onClick={() => handleImageClick(image.imageUrl)}>
                                         <img src={image.imageUrl} alt={image.name} className="w-16 h-10 object-cover transition-transform group-hover:scale-105" onError={e => {
-                                          e.currentTarget.style.display = 'none';
-                                        }} />
+                                      e.currentTarget.style.display = 'none';
+                                    }} />
                                         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
                                           <Eye className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                                         </div>
@@ -1265,31 +1212,17 @@ export const DriverDetailsSheet = ({
                                       </div>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                      {editingSection === 'documents' && (
-                                        <>
-                                          <Input 
-                                            type="file" 
-                                            accept="image/*" 
-                                            className="hidden" 
-                                            id={`license-upload-${image.id}`}
-                                            onChange={e => handleLicenseImageUpload(image.id, e)}
-                                          />
-                                          <Button 
-                                            variant="outline" 
-                                            size="sm" 
-                                            onClick={() => document.getElementById(`license-upload-${image.id}`)?.click()}
-                                            className="h-7 px-2 border-blue-500 text-blue-700 hover:bg-blue-50"
-                                          >
+                                      {editingSection === 'documents' && <>
+                                          <Input type="file" accept="image/*" className="hidden" id={`license-upload-${image.id}`} onChange={e => handleLicenseImageUpload(image.id, e)} />
+                                          <Button variant="outline" size="sm" onClick={() => document.getElementById(`license-upload-${image.id}`)?.click()} className="h-7 px-2 border-blue-500 text-blue-700 hover:bg-blue-50">
                                             <Upload className="w-3 h-3" />
                                           </Button>
-                                        </>
-                                      )}
+                                        </>}
                                       <Button variant="ghost" size="sm" onClick={() => handleViewDocument(image)}>
                                         View
                                       </Button>
                                     </div>
-                                  </div>
-                                ))}
+                                  </div>)}
                               </div>
                             </div>
 
@@ -1297,11 +1230,10 @@ export const DriverDetailsSheet = ({
                             <div>
                               <div className="flex items-center gap-2 mb-4">
                                 <FileText className="h-4 w-4 text-muted-foreground" />
-                                <h4 className="text-sm font-medium">Other Documents</h4>
+                                <h4 className="text-sm font-medium">Insurance Certificate</h4>
                               </div>
                               <div className="space-y-4">
-                                {documents.filter(doc => !doc.name.includes("Driver's License") && doc.name !== "Insurance Certificate").map(document => (
-                                  <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
+                                {documents.filter(doc => !doc.name.includes("Driver's License")).map(document => <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
                                     <div className="flex items-center gap-3">
                                       <Image className="h-4 w-4 text-muted-foreground" />
                                       <div>
@@ -1312,34 +1244,25 @@ export const DriverDetailsSheet = ({
                                       </div>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                      {editingSection === 'documents' && (
-                                        <Button variant="outline" size="sm" className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                      {editingSection === 'documents' && <Button variant="outline" size="sm" className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
                                           <Trash2 className="w-3 h-3" />
-                                        </Button>
-                                      )}
+                                        </Button>}
                                       <Button variant="ghost" size="sm" onClick={() => handleViewDocument(document)}>
                                         View
                                       </Button>
                                     </div>
-                                  </div>
-                                ))}
+                                  </div>)}
                               </div>
-                              {editingSection === 'documents' && (
-                                <div className="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-lg text-center">
+                              {editingSection === 'documents' && <div className="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-lg text-center">
                                   <Input type="file" accept="image/*,.pdf,.doc,.docx" className="hidden" id="document-upload" multiple />
-                                  <Button 
-                                    variant="outline" 
-                                    onClick={() => document.getElementById('document-upload')?.click()}
-                                    className="flex items-center gap-2"
-                                  >
+                                  <Button variant="outline" onClick={() => document.getElementById('document-upload')?.click()} className="flex items-center gap-2">
                                     <Upload className="w-4 h-4" />
                                     Upload Documents
                                   </Button>
                                   <p className="text-xs text-muted-foreground mt-2">
                                     Support: Images, PDF, DOC, DOCX
                                   </p>
-                                </div>
-                              )}
+                                </div>}
                             </div>
                           </CardContent>
                         </Card>
@@ -1545,29 +1468,19 @@ export const DriverDetailsSheet = ({
                                     </div>
                                   </div>
                                   <div className="divide-y">
-                                    {ordersOnHands.map((order) => (
-                                      <div key={order.id} className="px-4 py-3">
+                                    {ordersOnHands.map(order => <div key={order.id} className="px-4 py-3">
                                         <div className="grid grid-cols-3 gap-4 text-sm">
                                           <div className="font-medium text-blue-600 hover:text-blue-800 cursor-pointer underline" onClick={() => handleOrderClick(order.id)}>
                                             {order.id}
                                           </div>
                                           <div>{order.pickupDate}</div>
                                           <div>
-                                            <Badge 
-                                              variant={
-                                                order.status === 'In Progress' ? 'default' :
-                                                order.status === 'Pending' ? 'secondary' :
-                                                order.status === 'Assigned' ? 'outline' :
-                                                'success'
-                                              }
-                                              className="text-xs"
-                                            >
+                                            <Badge variant={order.status === 'In Progress' ? 'default' : order.status === 'Pending' ? 'secondary' : order.status === 'Assigned' ? 'outline' : 'success'} className="text-xs">
                                               {order.status}
                                             </Badge>
                                           </div>
                                         </div>
-                                      </div>
-                                    ))}
+                                      </div>)}
                                   </div>
                                 </div>
                               </CardContent>
