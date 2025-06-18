@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -1291,10 +1292,18 @@ export const DriverDetailsSheet = ({
                                 </div>
                               </div>
 
-                              <div className="space-y-4">
+                              {/* Insurance Certificate Images Grid - Same structure as Driver's License */}
+                              <div className="grid grid-cols-2 gap-4 mb-4">
                                 {documents.filter(doc => doc.name.includes("Insurance")).map(document => <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
                                     <div className="flex items-center gap-3">
-                                      <Image className="h-4 w-4 text-muted-foreground" />
+                                      <div className="relative cursor-pointer group border rounded overflow-hidden" onClick={() => handleViewDocument(document)}>
+                                        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=250&fit=crop" alt={document.name} className="w-16 h-10 object-cover transition-transform group-hover:scale-105" onError={e => {
+                                      e.currentTarget.style.display = 'none';
+                                    }} />
+                                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
+                                          <Eye className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        </div>
+                                      </div>
                                       <div>
                                         <p className="text-sm font-medium">{document.name}</p>
                                         <p className="text-xs text-muted-foreground">
@@ -1303,15 +1312,19 @@ export const DriverDetailsSheet = ({
                                       </div>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                      {editingSection === 'documents' && <Button variant="outline" size="sm" className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
-                                          <Trash2 className="w-3 h-3" />
-                                        </Button>}
+                                      {editingSection === 'documents' && <>
+                                          <Input type="file" accept="image/*" className="hidden" id={`insurance-upload-${document.id}`} onChange={e => handleLicenseImageUpload(document.id, e)} />
+                                          <Button variant="outline" size="sm" onClick={() => document.getElementById(`insurance-upload-${document.id}`)?.click()} className="h-7 px-2 border-blue-500 text-blue-700 hover:bg-blue-50">
+                                            <Upload className="w-3 h-3" />
+                                          </Button>
+                                        </>}
                                       <Button variant="ghost" size="sm" onClick={() => handleViewDocument(document)}>
                                         View
                                       </Button>
                                     </div>
                                   </div>)}
                               </div>
+                              
                               {editingSection === 'documents' && <div className="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-lg text-center">
                                   <Input type="file" accept="image/*,.pdf,.doc,.docx" className="hidden" id="document-upload" multiple />
                                   <Button variant="outline" onClick={() => document.getElementById('document-upload')?.click()} className="flex items-center gap-2">
