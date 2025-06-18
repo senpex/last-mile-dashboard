@@ -1406,7 +1406,7 @@ export const DriverDetailsSheet = ({
 
       <DocumentViewerModal isOpen={isDocumentModalOpen} onClose={handleCloseDocumentModal} document={selectedDocument} />
 
-      {/* Order Details Sheet */}
+      {/* Order Details Sheet with higher z-index */}
       {selectedOrderId && <OrderDetailsSheet isOpen={isOrderDetailsOpen} onClose={handleCloseOrderDetails} delivery={deliveriesData.find(d => d.id === selectedOrderId)} flaggedOrders={flaggedOrders} onOrderFlag={handleOrderFlag} />}
 
       {/* Image Expansion Modal */}
