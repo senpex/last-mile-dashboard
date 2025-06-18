@@ -33,6 +33,14 @@ interface VehicleInfo {
   plateNumber?: string;
   plateImage?: string;
 }
+
+interface DriverLicenseInfo {
+  dlNumber?: string;
+  expirationDate?: string;
+  ssn?: string;
+  state?: string;
+}
+
 interface Driver {
   id: number;
   name: string;
@@ -55,7 +63,9 @@ interface Driver {
   planning?: 'enabled' | 'disabled';
   banned?: 'yes' | 'no';
   dedicatedCompanies?: string[];
+  driverLicenseInfo?: DriverLicenseInfo;
 }
+
 interface DriverDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -118,7 +128,13 @@ export const DriverDetailsSheet = ({
     driverControl: driver?.driverControl || 'no' as const,
     planning: driver?.planning || 'disabled' as const,
     banned: driver?.banned || 'no' as const,
-    dedicatedCompanies: driver?.dedicatedCompanies || []
+    dedicatedCompanies: driver?.dedicatedCompanies || [],
+    driverLicenseInfo: driver?.driverLicenseInfo || {
+      dlNumber: '',
+      expirationDate: '',
+      ssn: '',
+      state: ''
+    }
   });
   if (!driver) return null;
 
@@ -130,6 +146,17 @@ export const DriverDetailsSheet = ({
 
   // Available dedicated companies
   const availableCompanies = ['Amazon Logistics', 'FedEx Ground', 'UPS', 'DHL Express', 'USPS', 'OnTrac', 'LaserShip', 'Blue Dart', 'Aramex', 'TNT Express'];
+
+  // Available US states
+  const usStates = [
+    'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
+    'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
+    'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
+    'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico',
+    'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania',
+    'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
+    'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+  ];
 
   // Sample documents data - in a real app this would come from the driver data
   const documents = [{
@@ -363,7 +390,13 @@ export const DriverDetailsSheet = ({
       driverControl: driver.driverControl || 'no',
       planning: driver.planning || 'disabled',
       banned: driver.banned || 'no',
-      dedicatedCompanies: driver.dedicatedCompanies || []
+      dedicatedCompanies: driver.dedicatedCompanies || [],
+      driverLicenseInfo: driver.driverLicenseInfo || {
+        dlNumber: '',
+        expirationDate: '',
+        ssn: '',
+        state: ''
+      }
     });
   };
   const handleSave = (section: string) => {
@@ -403,7 +436,13 @@ export const DriverDetailsSheet = ({
       driverControl: driver.driverControl || 'no',
       planning: driver.planning || 'disabled',
       banned: driver.banned || 'no',
-      dedicatedCompanies: driver.dedicatedCompanies || []
+      dedicatedCompanies: driver.dedicatedCompanies || [],
+      driverLicenseInfo: driver.driverLicenseInfo || {
+        dlNumber: '',
+        expirationDate: '',
+        ssn: '',
+        state: ''
+      }
     });
   };
   const handleInputChange = (field: string, value: string | number | string[] | VehicleInfo[]) => {
@@ -534,6 +573,16 @@ export const DriverDetailsSheet = ({
       dedicatedCompanies: newCompanies
     }));
   };
+  const handleDriverLicenseInfoChange = (field: keyof DriverLicenseInfo, value: string) => {
+    setEditedData(prev => ({
+      ...prev,
+      driverLicenseInfo: {
+        ...prev.driverLicenseInfo,
+        [field]: value
+      }
+    }));
+  };
+
   return <>
       <Sheet open={isOpen} onOpenChange={onClose}>
         <SheetContent className="sm:max-w-xl md:max-w-4xl lg:max-w-6xl w-full overflow-hidden p-0 pr-0 mr-0 flex flex-col">
@@ -1118,6 +1167,70 @@ export const DriverDetailsSheet = ({
                                 <Image className="h-4 w-4 text-muted-foreground" />
                                 <h4 className="text-sm font-medium">Driver's License</h4>
                               </div>
+                              
+                              {/* Driver's License Fields */}
+                              <div className="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                  <Label htmlFor="dlNumber">DL Number</Label>
+                                  <Input 
+                                    id="dlNumber" 
+                                    value={editingSection === 'documents' ? editedData.driverLicenseInfo.dlNumber : driver.driverLicenseInfo?.dlNumber || ''} 
+                                    onChange={e => handleDriverLicenseInfoChange('dlNumber', e.target.value)}
+                                    readOnly={editingSection !== 'documents'} 
+                                    className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} 
+                                    placeholder="Enter DL number"
+                                  />
+                                </div>
+                                <div>
+                                  <Label htmlFor="dlExpiration">Date of Expire</Label>
+                                  <Input 
+                                    id="dlExpiration" 
+                                    type="date"
+                                    value={editingSection === 'documents' ? editedData.driverLicenseInfo.expirationDate : driver.driverLicenseInfo?.expirationDate || ''} 
+                                    onChange={e => handleDriverLicenseInfoChange('expirationDate', e.target.value)}
+                                    readOnly={editingSection !== 'documents'} 
+                                    className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} 
+                                  />
+                                </div>
+                                <div>
+                                  <Label htmlFor="ssn">SSN</Label>
+                                  <Input 
+                                    id="ssn" 
+                                    value={editingSection === 'documents' ? editedData.driverLicenseInfo.ssn : driver.driverLicenseInfo?.ssn || ''} 
+                                    onChange={e => handleDriverLicenseInfoChange('ssn', e.target.value)}
+                                    readOnly={editingSection !== 'documents'} 
+                                    className={editingSection !== 'documents' ? 'bg-muted/50' : 'bg-background'} 
+                                    placeholder="XXX-XX-XXXX"
+                                    type="password"
+                                  />
+                                </div>
+                                <div>
+                                  <Label htmlFor="dlState">State</Label>
+                                  {editingSection === 'documents' ? (
+                                    <Select value={editedData.driverLicenseInfo.state} onValueChange={value => handleDriverLicenseInfoChange('state', value)}>
+                                      <SelectTrigger className="h-9">
+                                        <SelectValue placeholder="Select state" />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        {usStates.map(state => (
+                                          <SelectItem key={state} value={state}>
+                                            {state}
+                                          </SelectItem>
+                                        ))}
+                                      </SelectContent>
+                                    </Select>
+                                  ) : (
+                                    <Input 
+                                      id="dlState" 
+                                      value={driver.driverLicenseInfo?.state || ''} 
+                                      readOnly 
+                                      className="bg-muted/50" 
+                                      placeholder="State not specified"
+                                    />
+                                  )}
+                                </div>
+                              </div>
+
                               {editingSection === 'documents' && (
                                 <div className="p-4 border-2 border-dashed border-gray-300 rounded-lg text-center">
                                   <Input type="file" accept="image/*" className="hidden" id="license-image-upload" multiple />
