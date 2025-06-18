@@ -1076,6 +1076,19 @@ export const DriverDetailsSheet = ({
                             <File className="w-4 h-4 mr-2" />
                             Documents
                           </h3>
+                          {editingSection === 'documents' ? <div className="flex gap-1">
+                              <Button variant="outline" size="sm" onClick={() => handleSave('Documents')} className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50">
+                                <Save className="w-3 h-3 mr-1" />
+                                Save
+                              </Button>
+                              <Button variant="outline" size="sm" onClick={handleCancel} className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                <X className="w-3 h-3 mr-1" />
+                                Cancel
+                              </Button>
+                            </div> : <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1" onClick={() => handleEdit('documents')}>
+                              <Edit className="h-3 w-3" />
+                              Edit
+                            </Button>}
                         </div>
                         <Card>
                           <CardContent className="pt-6">
@@ -1092,12 +1105,33 @@ export const DriverDetailsSheet = ({
                                     </div>
                                   </div>
                                   <div className="flex items-center gap-2">
+                                    {editingSection === 'documents' && (
+                                      <Button variant="outline" size="sm" className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                        <Trash2 className="w-3 h-3" />
+                                      </Button>
+                                    )}
                                     <Button variant="ghost" size="sm" onClick={() => handleViewDocument(document)}>
                                       View
                                     </Button>
                                   </div>
                                 </div>
                               ))}
+                              {editingSection === 'documents' && (
+                                <div className="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-lg text-center">
+                                  <Input type="file" accept="image/*,.pdf,.doc,.docx" className="hidden" id="document-upload" multiple />
+                                  <Button 
+                                    variant="outline" 
+                                    onClick={() => document.getElementById('document-upload')?.click()}
+                                    className="flex items-center gap-2"
+                                  >
+                                    <Upload className="w-4 h-4" />
+                                    Upload Documents
+                                  </Button>
+                                  <p className="text-xs text-muted-foreground mt-2">
+                                    Support: Images, PDF, DOC, DOCX
+                                  </p>
+                                </div>
+                              )}
                               {documents.length === 0 && (
                                 <div className="text-center py-8 text-muted-foreground">
                                   <Image className="h-8 w-8 mx-auto mb-2 opacity-50" />
