@@ -1,3 +1,4 @@
+
 import {
   Sheet,
   SheetContent,
@@ -34,7 +35,7 @@ import { useEffect, useState } from "react";
 
 interface DriverDetailsSheetProps {
   children: React.ReactNode;
-  driver: any; // Replace 'any' with the actual type of your driver object
+  driver: any;
 }
 
 const formSchema = z.object({
@@ -75,7 +76,6 @@ const DriverDetailsSheet: React.FC<DriverDetailsSheetProps> = ({
   });
 
   useEffect(() => {
-    // Update form default values when the driver prop changes
     form.reset({
       firstName: driver?.firstName || "",
       lastName: driver?.lastName || "",
@@ -168,8 +168,16 @@ const DriverDetailsSheet: React.FC<DriverDetailsSheetProps> = ({
                 )}
               />
 
+              {/* Documents Section */}
+              <div className="space-y-4 border-t pt-4">
+                <h3 className="text-lg font-semibold">Documents</h3>
+                <div className="text-sm text-muted-foreground">
+                  Driver documents and verification status will be displayed here.
+                </div>
+              </div>
+
               {/* Bank Details Section */}
-              <div className="space-y-4">
+              <div className="space-y-4 border-t pt-4">
                 <h3 className="text-lg font-semibold">Bank Details</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
