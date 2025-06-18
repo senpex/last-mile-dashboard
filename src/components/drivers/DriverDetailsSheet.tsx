@@ -179,7 +179,7 @@ export const DriverDetailsSheet = ({
     status: "Verified"
   }];
 
-  // Driver's license images specifically - now with 4 images
+  // Driver's license images - now with only 2 original images
   const driverLicenseImages = [
     {
       id: 1,
@@ -196,22 +196,6 @@ export const DriverDetailsSheet = ({
       uploadDate: "2024-01-12",
       status: "Pending",
       imageUrl: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=250&fit=crop"
-    },
-    {
-      id: 3,
-      name: "Driver's License - Front Copy",
-      type: "Image",
-      uploadDate: "2024-01-10",
-      status: "Verified",
-      imageUrl: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=250&fit=crop"
-    },
-    {
-      id: 4,
-      name: "Driver's License - Back Copy",
-      type: "Image",
-      uploadDate: "2024-01-10",
-      status: "Pending",
-      imageUrl: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400&h=250&fit=crop"
     }
   ];
 
