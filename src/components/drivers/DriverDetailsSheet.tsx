@@ -14,7 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit, Save, X, Plus, Trash2, Upload, Eye, ChevronDown, Building } from "lucide-react";
+import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit, Save, X, Plus, Trash2, Upload, Eye, ChevronDown, Building, Banknote } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { DocumentViewerModal } from "./DocumentViewerModal";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -46,6 +46,14 @@ interface InsuranceInfo {
   expirationDate?: string;
 }
 
+interface BankInfo {
+  accountHolderName?: string;
+  bankName?: string;
+  accountNumber?: string;
+  routingNumber?: string;
+  accountType?: string;
+}
+
 interface Driver {
   id: number;
   name: string;
@@ -70,6 +78,7 @@ interface Driver {
   dedicatedCompanies?: string[];
   driverLicenseInfo?: DriverLicenseInfo;
   insuranceInfo?: InsuranceInfo;
+  bankInfo?: BankInfo;
 }
 
 interface DriverDetailsSheetProps {
@@ -145,6 +154,13 @@ export const DriverDetailsSheet = ({
     insuranceInfo: driver?.insuranceInfo || {
       policyNumber: '',
       expirationDate: ''
+    },
+    bankInfo: driver?.bankInfo || {
+      accountHolderName: '',
+      bankName: '',
+      accountNumber: '',
+      routingNumber: '',
+      accountType: ''
     }
   });
   if (!driver) return null;
@@ -397,6 +413,13 @@ export const DriverDetailsSheet = ({
       insuranceInfo: driver.insuranceInfo || {
         policyNumber: '',
         expirationDate: ''
+      },
+      bankInfo: driver.bankInfo || {
+        accountHolderName: '',
+        bankName: '',
+        accountNumber: '',
+        routingNumber: '',
+        accountType: ''
       }
     });
   };
@@ -447,6 +470,13 @@ export const DriverDetailsSheet = ({
       insuranceInfo: driver.insuranceInfo || {
         policyNumber: '',
         expirationDate: ''
+      },
+      bankInfo: driver.bankInfo || {
+        accountHolderName: '',
+        bankName: '',
+        accountNumber: '',
+        routingNumber: '',
+        accountType: ''
       }
     });
   };
@@ -606,6 +636,15 @@ export const DriverDetailsSheet = ({
       ...prev,
       insuranceInfo: {
         ...prev.insuranceInfo,
+        [field]: value
+      }
+    }));
+  };
+  const handleBankInfoChange = (field: keyof BankInfo, value: string) => {
+    setEditedData(prev => ({
+      ...prev,
+      bankInfo: {
+        ...prev.bankInfo,
         [field]: value
       }
     }));
@@ -1291,7 +1330,7 @@ export const DriverDetailsSheet = ({
                                 </div>
                               </div>
 
-                              {/* Insurance Certificate Images Grid - Same structure as Driver's License */}
+                              {/* Insurance Certificate Images Grid */}
                               <div className="grid grid-cols-2 gap-4 mb-4">
                                 {documents.filter(doc => doc.name.includes("Insurance")).map(document => <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg">
                                     <div className="flex items-center gap-3">
@@ -1324,6 +1363,101 @@ export const DriverDetailsSheet = ({
                                   </div>)}
                               </div>
                             </div>
+
+                            {/* Bank Details */}
+                            <div>
+                              <div className="flex items-center justify-between mb-3">
+                                <h3 className="text-sm font-medium flex items-center">
+                                  <Banknote className="w-4 h-4 mr-2" />
+                                  Bank Details
+                                </h3>
+                                {editingSection === 'bank' ? <div className="flex gap-1">
+                                    <Button variant="outline" size="sm" onClick={() => handleSave('Bank Details')} className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50">
+                                      <Save className="w-3 h-3 mr-1" />
+                                      Save
+                                    </Button>
+                                    <Button variant="outline" size="sm" onClick={handleCancel} className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                      <X className="w-3 h-3 mr-1" />
+                                      Cancel
+                                    </Button>
+                                  </div> : <Button variant="outline" size="sm" className="h-7 text-xs flex items-center gap-1" onClick={() => handleEdit('bank')}>
+                                    <Edit className="h-3 w-3" />
+                                    Edit
+                                  </Button>}
+                            </div>
+                            <Card>
+                              <CardContent className="pt-6">
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div>
+                                    <Label htmlFor="accountHolderName">Account Holder Name</Label>
+                                    <Input 
+                                      id="accountHolderName" 
+                                      value={editingSection === 'bank' ? editedData.bankInfo.accountHolderName : driver.bankInfo?.accountHolderName || ''} 
+                                      onChange={e => handleBankInfoChange('accountHolderName', e.target.value)} 
+                                      readOnly={editingSection !== 'bank'} 
+                                      className={editingSection !== 'bank' ? 'bg-muted/50' : 'bg-background'} 
+                                      placeholder="Enter account holder name" 
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label htmlFor="bankName">Bank Name</Label>
+                                    <Input 
+                                      id="bankName" 
+                                      value={editingSection === 'bank' ? editedData.bankInfo.bankName : driver.bankInfo?.bankName || ''} 
+                                      onChange={e => handleBankInfoChange('bankName', e.target.value)} 
+                                      readOnly={editingSection !== 'bank'} 
+                                      className={editingSection !== 'bank' ? 'bg-muted/50' : 'bg-background'} 
+                                      placeholder="Enter bank name" 
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label htmlFor="accountNumber">Account Number</Label>
+                                    <Input 
+                                      id="accountNumber" 
+                                      value={editingSection === 'bank' ? editedData.bankInfo.accountNumber : driver.bankInfo?.accountNumber || ''} 
+                                      onChange={e => handleBankInfoChange('accountNumber', e.target.value)} 
+                                      readOnly={editingSection !== 'bank'} 
+                                      className={editingSection !== 'bank' ? 'bg-muted/50' : 'bg-background'} 
+                                      placeholder="Enter account number" 
+                                      type="password"
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label htmlFor="routingNumber">Routing Number</Label>
+                                    <Input 
+                                      id="routingNumber" 
+                                      value={editingSection === 'bank' ? editedData.bankInfo.routingNumber : driver.bankInfo?.routingNumber || ''} 
+                                      onChange={e => handleBankInfoChange('routingNumber', e.target.value)} 
+                                      readOnly={editingSection !== 'bank'} 
+                                      className={editingSection !== 'bank' ? 'bg-muted/50' : 'bg-background'} 
+                                      placeholder="Enter routing number" 
+                                    />
+                                  </div>
+                                  <div className="col-span-2">
+                                    <Label htmlFor="accountType">Account Type</Label>
+                                    {editingSection === 'bank' ? (
+                                      <Select value={editedData.bankInfo.accountType} onValueChange={value => handleBankInfoChange('accountType', value)}>
+                                        <SelectTrigger className="h-9">
+                                          <SelectValue placeholder="Select account type" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          <SelectItem value="checking">Checking</SelectItem>
+                                          <SelectItem value="savings">Savings</SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                    ) : (
+                                      <Input 
+                                        id="accountType" 
+                                        value={driver.bankInfo?.accountType || ''} 
+                                        readOnly 
+                                        className="bg-muted/50" 
+                                        placeholder="Account type not specified" 
+                                      />
+                                    )}
+                                  </div>
+                                </div>
+                              </CardContent>
+                            </Card>
                           </CardContent>
                         </Card>
                       </div>
