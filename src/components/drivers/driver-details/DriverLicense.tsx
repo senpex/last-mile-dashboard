@@ -4,7 +4,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RandomImage } from "@/components/ui/random-image";
 import { Edit, Save, X, Upload, Trash2 } from "lucide-react";
 
 interface DriverLicenseProps {
@@ -56,7 +55,11 @@ const DriverLicense: React.FC<DriverLicenseProps> = ({
           <Label className="text-sm font-medium mb-2 block">License Images</Label>
           <div className="grid grid-cols-2 gap-4">
             <div className="relative">
-              <RandomImage width={200} height={120} className="w-full" alt="Driver License Front" />
+              <img 
+                src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=200&h=120&fit=crop" 
+                alt="Driver License Front" 
+                className="w-full border rounded"
+              />
               {isEditing && (
                 <Button variant="outline" size="sm" className="absolute top-2 right-2 h-6 w-6 p-0 border-red-500 text-red-700 hover:bg-red-50">
                   <Trash2 className="w-3 h-3" />
@@ -64,7 +67,11 @@ const DriverLicense: React.FC<DriverLicenseProps> = ({
               )}
             </div>
             <div className="relative">
-              <RandomImage width={200} height={120} className="w-full" alt="Driver License Back" />
+              <img 
+                src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=200&h=120&fit=crop" 
+                alt="Driver License Back" 
+                className="w-full border rounded"
+              />
               {isEditing && (
                 <Button variant="outline" size="sm" className="absolute top-2 right-2 h-6 w-6 p-0 border-red-500 text-red-700 hover:bg-red-50">
                   <Trash2 className="w-3 h-3" />

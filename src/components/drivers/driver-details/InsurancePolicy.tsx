@@ -4,7 +4,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RandomImage } from "@/components/ui/random-image";
 import { Edit, Save, X, Upload, Trash2 } from "lucide-react";
 
 interface InsurancePolicyProps {
@@ -53,7 +52,11 @@ const InsurancePolicy: React.FC<InsurancePolicyProps> = ({
         <div className="mb-4">
           <Label className="text-sm font-medium mb-2 block">Policy Document</Label>
           <div className="relative w-full max-w-md">
-            <RandomImage width={300} height={200} className="w-full" alt="Insurance Policy Document" />
+            <img 
+              src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&h=200&fit=crop" 
+              alt="Insurance Policy Document" 
+              className="w-full border rounded"
+            />
             {isEditing && (
               <Button variant="outline" size="sm" className="absolute top-2 right-2 h-6 w-6 p-0 border-red-500 text-red-700 hover:bg-red-50">
                 <Trash2 className="w-3 h-3" />
