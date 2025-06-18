@@ -23,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { OrderDetailsSheet } from "@/components/deliveries/OrderDetailsSheet";
 import { deliveriesData } from "@/data/deliveriesData";
 import { EmailsSentList } from "./EmailsSentList";
+
 interface VehicleInfo {
   transportId: string;
   year?: string;
@@ -267,6 +268,31 @@ export const DriverDetailsSheet = ({
       tip: 12.92
     }]
   };
+
+  // Sample orders on hands data
+  const ordersOnHands = [
+    {
+      id: 1001,
+      pickupDate: "2024-01-22",
+      status: "In Progress"
+    },
+    {
+      id: 1002,
+      pickupDate: "2024-01-23",
+      status: "Pending"
+    },
+    {
+      id: 1003,
+      pickupDate: "2024-01-24",
+      status: "Assigned"
+    },
+    {
+      id: 1004,
+      pickupDate: "2024-01-25",
+      status: "Ready for Pickup"
+    }
+  ];
+
   const handleViewDocument = (document: typeof documents[0]) => {
     setSelectedDocument(document);
     setIsDocumentModalOpen(true);
@@ -1282,10 +1308,43 @@ export const DriverDetailsSheet = ({
                           <TabsContent value="delivery-history" className="space-y-4">
                             <Card>
                               <CardHeader>
-                                <CardTitle>Delivery History</CardTitle>
+                                <CardTitle>Orders on Hands</CardTitle>
                               </CardHeader>
                               <CardContent>
-                                <p className="text-muted-foreground">Delivery history content would go here.</p>
+                                <div className="border rounded-lg overflow-hidden">
+                                  <div className="bg-muted/30 px-4 py-2 border-b">
+                                    <div className="grid grid-cols-3 gap-4 text-sm font-medium text-muted-foreground">
+                                      <div>Order ID</div>
+                                      <div>Pickup Date</div>
+                                      <div>Status</div>
+                                    </div>
+                                  </div>
+                                  <div className="divide-y">
+                                    {ordersOnHands.map((order) => (
+                                      <div key={order.id} className="px-4 py-3">
+                                        <div className="grid grid-cols-3 gap-4 text-sm">
+                                          <div className="font-medium text-blue-600 hover:text-blue-800 cursor-pointer underline">
+                                            #{order.id}
+                                          </div>
+                                          <div>{order.pickupDate}</div>
+                                          <div>
+                                            <Badge 
+                                              variant={
+                                                order.status === 'In Progress' ? 'default' :
+                                                order.status === 'Pending' ? 'secondary' :
+                                                order.status === 'Assigned' ? 'outline' :
+                                                'success'
+                                              }
+                                              className="text-xs"
+                                            >
+                                              {order.status}
+                                            </Badge>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
                               </CardContent>
                             </Card>
                           </TabsContent>
