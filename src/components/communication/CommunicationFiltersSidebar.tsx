@@ -155,6 +155,7 @@ export const CommunicationFiltersSidebar = ({
       onFiltersAdd({
         cities: selectedCities,
         states: selectedStates,
+        zipcodes: selectedZipcodes,
         organizations: selectedOrganizations,
         clientNames: selectedClientNames
       });
@@ -179,6 +180,7 @@ export const CommunicationFiltersSidebar = ({
     } else if (activeTab === "clients") {
       setSelectedCities?.([]);
       setSelectedStates?.([]);
+      setSelectedZipcodes?.([]);
       setSelectedOrganizations?.([]);
       setSelectedClientNames?.([]);
     } else if (activeTab === "groups") {
@@ -203,6 +205,7 @@ export const CommunicationFiltersSidebar = ({
       onFiltersAdd({
         cities: selectedCities,
         states: selectedStates,
+        zipcodes: selectedZipcodes,
         organizations: selectedOrganizations,
         clientNames: selectedClientNames
       });

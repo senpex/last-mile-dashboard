@@ -24,6 +24,7 @@ const CommunicationTower = () => {
   const [clientFilterSidebarOpen, setClientFilterSidebarOpen] = useState(true);
   const [selectedClientCities, setSelectedClientCities] = useState<string[]>([]);
   const [selectedClientStates, setSelectedClientStates] = useState<string[]>([]);
+  const [selectedClientZipcodes, setSelectedClientZipcodes] = useState<string[]>([]);
   const [selectedOrganizations, setSelectedOrganizations] = useState<string[]>([]);
   const [selectedClientNames, setSelectedClientNames] = useState<string[]>([]);
   
@@ -65,6 +66,7 @@ const CommunicationTower = () => {
     } else if (activeTab === "clients") {
       setSelectedClientCities(filters.cities || []);
       setSelectedClientStates(filters.states || []);
+      setSelectedClientZipcodes(filters.zipcodes || []);
       setSelectedOrganizations(filters.organizations || []);
       setSelectedClientNames(filters.clientNames || []);
     } else if (activeTab === "groups") {
@@ -129,8 +131,8 @@ const CommunicationTower = () => {
                       // Driver filters
                       selectedStatuses={selectedStatuses}
                       setSelectedStatuses={setSelectedStatuses}
-                      selectedZipcodes={selectedZipcodes}
-                      setSelectedZipcodes={setSelectedZipcodes}
+                      selectedZipcodes={activeTab === "drivers" ? selectedZipcodes : selectedClientZipcodes}
+                      setSelectedZipcodes={activeTab === "drivers" ? setSelectedZipcodes : setSelectedClientZipcodes}
                       selectedCities={activeTab === "drivers" ? selectedCities : selectedClientCities}
                       setSelectedCities={activeTab === "drivers" ? setSelectedCities : setSelectedClientCities}
                       selectedStates={activeTab === "drivers" ? selectedStates : selectedClientStates}
@@ -174,7 +176,7 @@ const CommunicationTower = () => {
                     setActiveTab={setActiveTab}
                     selectedFilters={{
                       statuses: activeTab === "drivers" ? selectedStatuses : [],
-                      zipcodes: selectedZipcodes,
+                      zipcodes: activeTab === "drivers" ? selectedZipcodes : selectedClientZipcodes,
                       cities: activeTab === "drivers" ? selectedCities : selectedClientCities,
                       states: activeTab === "drivers" ? selectedStates : selectedClientStates,
                       profiles: selectedProfiles,
