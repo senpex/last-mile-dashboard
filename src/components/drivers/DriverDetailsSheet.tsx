@@ -1297,7 +1297,7 @@ export const DriverDetailsSheet = ({
                             <div>
                               <div className="flex items-center gap-2 mb-4">
                                 <FileText className="h-4 w-4 text-muted-foreground" />
-                                <h4 className="text-sm font-medium">Insurance certificate</h4>
+                                <h4 className="text-sm font-medium">Other Documents</h4>
                               </div>
                               <div className="space-y-4">
                                 {documents.filter(doc => !doc.name.includes("Driver's License")).map(document => (
