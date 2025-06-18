@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -11,13 +12,27 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 
 export default function DriverDetailsSheet({ driver, isOpen, onClose }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [editedDriver, setEditedDriver] = useState({ ...driver });
+  const [editedDriver, setEditedDriver] = useState(driver ? { ...driver } : {});
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [documents, setDocuments] = useState([
     { id: 1, name: "Driver's License", type: "PDF", uploadDate: "2023-01-15", status: "Approved" },
     { id: 2, name: "Insurance Policy", type: "PDF", uploadDate: "2023-02-20", status: "Pending" },
     { id: 3, name: "Vehicle Registration", type: "PDF", uploadDate: "2023-03-10", status: "Approved" },
   ]);
+
+  // Early return if driver is null
+  if (!driver) {
+    return (
+      <Sheet open={isOpen} onOpenChange={onClose}>
+        <SheetContent className="sm:max-w-[600px]">
+          <SheetHeader>
+            <SheetTitle>Driver Details</SheetTitle>
+          </SheetHeader>
+          <p>No driver selected.</p>
+        </SheetContent>
+      </Sheet>
+    );
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -84,22 +99,22 @@ export default function DriverDetailsSheet({ driver, isOpen, onClose }) {
           <CardContent>
             <div className="flex items-center space-x-4">
               <Avatar>
-                <AvatarImage src={`https://ui-avatars.com/api/?name=${driver.name}`} />
-                <AvatarFallback>{driver.name.charAt(0)}</AvatarFallback>
+                <AvatarImage src={`https://ui-avatars.com/api/?name=${driver.name || 'Unknown'}`} />
+                <AvatarFallback>{(driver.name || 'U').charAt(0)}</AvatarFallback>
               </Avatar>
               <div>
                 {isEditing ? (
                   <Input
                     type="text"
                     name="name"
-                    value={editedDriver.name}
+                    value={editedDriver.name || ''}
                     onChange={handleInputChange}
                     className="w-full"
                   />
                 ) : (
-                  <h2 className="text-lg font-semibold">{driver.name}</h2>
+                  <h2 className="text-lg font-semibold">{driver.name || 'Unknown'}</h2>
                 )}
-                <p className="text-sm text-muted-foreground">Driver ID: {driver.id}</p>
+                <p className="text-sm text-muted-foreground">Driver ID: {driver.id || 'N/A'}</p>
               </div>
             </div>
             <div className="grid gap-4 py-4">
@@ -110,12 +125,12 @@ export default function DriverDetailsSheet({ driver, isOpen, onClose }) {
                     <Input
                       type="email"
                       name="email"
-                      value={editedDriver.email}
+                      value={editedDriver.email || ''}
                       onChange={handleInputChange}
                       className="w-full"
                     />
                   ) : (
-                    <p>{driver.email}</p>
+                    <p>{driver.email || 'N/A'}</p>
                   )}
                 </div>
                 <div>
@@ -124,12 +139,12 @@ export default function DriverDetailsSheet({ driver, isOpen, onClose }) {
                     <Input
                       type="tel"
                       name="phone"
-                      value={editedDriver.phone}
+                      value={editedDriver.phone || ''}
                       onChange={handleInputChange}
                       className="w-full"
                     />
                   ) : (
-                    <p>{driver.phone}</p>
+                    <p>{driver.phone || 'N/A'}</p>
                   )}
                 </div>
               </div>
@@ -139,12 +154,12 @@ export default function DriverDetailsSheet({ driver, isOpen, onClose }) {
                   <Input
                     type="text"
                     name="address"
-                    value={editedDriver.address}
+                    value={editedDriver.address || ''}
                     onChange={handleInputChange}
                     className="w-full"
                   />
                 ) : (
-                  <p>{driver.address}</p>
+                  <p>{driver.address || 'N/A'}</p>
                 )}
               </div>
             </div>
@@ -164,12 +179,12 @@ export default function DriverDetailsSheet({ driver, isOpen, onClose }) {
                     <Input
                       type="text"
                       name="vehicleMake"
-                      value={editedDriver.vehicleMake}
+                      value={editedDriver.vehicleMake || ''}
                       onChange={handleInputChange}
                       className="w-full"
                     />
                   ) : (
-                    <p>{driver.vehicleMake}</p>
+                    <p>{driver.vehicleMake || 'N/A'}</p>
                   )}
                 </div>
                 <div>
@@ -178,12 +193,12 @@ export default function DriverDetailsSheet({ driver, isOpen, onClose }) {
                     <Input
                       type="text"
                       name="vehicleModel"
-                      value={editedDriver.vehicleModel}
+                      value={editedDriver.vehicleModel || ''}
                       onChange={handleInputChange}
                       className="w-full"
                     />
                   ) : (
-                    <p>{driver.vehicleModel}</p>
+                    <p>{driver.vehicleModel || 'N/A'}</p>
                   )}
                 </div>
               </div>
@@ -194,12 +209,12 @@ export default function DriverDetailsSheet({ driver, isOpen, onClose }) {
                     <Input
                       type="text"
                       name="vehicleYear"
-                      value={editedDriver.vehicleYear}
+                      value={editedDriver.vehicleYear || ''}
                       onChange={handleInputChange}
                       className="w-full"
                     />
                   ) : (
-                    <p>{driver.vehicleYear}</p>
+                    <p>{driver.vehicleYear || 'N/A'}</p>
                   )}
                 </div>
                 <div>
@@ -208,12 +223,12 @@ export default function DriverDetailsSheet({ driver, isOpen, onClose }) {
                     <Input
                       type="text"
                       name="licensePlate"
-                      value={editedDriver.licensePlate}
+                      value={editedDriver.licensePlate || ''}
                       onChange={handleInputChange}
                       className="w-full"
                     />
                   ) : (
-                    <p>{driver.licensePlate}</p>
+                    <p>{driver.licensePlate || 'N/A'}</p>
                   )}
                 </div>
               </div>
@@ -241,13 +256,9 @@ export default function DriverDetailsSheet({ driver, isOpen, onClose }) {
                       style={{ display: 'none' }}
                       onChange={(event) => handleFileChange(event, doc.id)}
                     />
-                    <Button variant="outline" size="sm" onClick={() => handleUploadDocument(doc.id)}>
+                    <Button variant="outline" size="sm" onClick={() => handleUploadDocument(doc.id)} className="bg-blue-500 text-white hover:bg-blue-600">
                       <Upload className="mr-2 h-4 w-4" />
                       Upload
-                    </Button>
-                    <Button variant="destructive" size="sm" onClick={() => handleDeleteDocument(doc.id)} className="ml-2">
-                      <Trash2 className="mr-2 h-4 w-4" />
-                      Delete
                     </Button>
                   </div>
                 </li>
