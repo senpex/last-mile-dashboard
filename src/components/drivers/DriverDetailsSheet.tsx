@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -176,6 +175,19 @@ export const DriverDetailsSheet = ({
       ]
     }
   ];
+
+  // Sample upcoming payment data
+  const upcomingPayment = {
+    id: 'upcoming-1',
+    date: "2024-01-22",
+    amount: 285.75,
+    status: "pending",
+    transactions: [
+      { orderNumber: "ORD-2024-009", date: "2024-01-20", earning: 95.00, commission: 14.25, tip: 20.00 },
+      { orderNumber: "ORD-2024-010", date: "2024-01-21", earning: 80.50, commission: 12.08, tip: 15.00 },
+      { orderNumber: "ORD-2024-011", date: "2024-01-21", earning: 105.00, commission: 15.75, tip: 12.92 }
+    ]
+  };
 
   const handleViewDocument = (document: typeof documents[0]) => {
     setSelectedDocument(document);
@@ -1285,6 +1297,67 @@ export const DriverDetailsSheet = ({
                         
                         <div className="mt-4 space-y-4">
                           <TabsContent value="payment-history" className="space-y-4">
+                            {/* Upcoming Payment Section */}
+                            <Card>
+                              <CardHeader>
+                                <CardTitle>Upcoming Payment</CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <Collapsible>
+                                  <CollapsibleTrigger asChild>
+                                    <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors">
+                                      <div className="flex items-center gap-4">
+                                        <div>
+                                          <p className="font-medium">{upcomingPayment.date}</p>
+                                          <p className="text-sm text-muted-foreground">
+                                            {upcomingPayment.transactions.length} transactions
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <div className="flex items-center gap-3">
+                                        <Badge variant="secondary" className="text-xs">
+                                          Pending
+                                        </Badge>
+                                        <span className="font-semibold text-lg">
+                                          ${upcomingPayment.amount.toFixed(2)}
+                                        </span>
+                                        <ChevronDown className="h-4 w-4 transition-transform" />
+                                      </div>
+                                    </div>
+                                  </CollapsibleTrigger>
+                                  <CollapsibleContent>
+                                    <div className="mt-2 ml-4 mr-4 mb-2">
+                                      <div className="border rounded-lg overflow-hidden">
+                                        <div className="bg-muted/30 px-4 py-2 border-b">
+                                          <div className="grid grid-cols-5 gap-4 text-sm font-medium text-muted-foreground">
+                                            <div>Order Number</div>
+                                            <div>Date</div>
+                                            <div>Earning</div>
+                                            <div>Commission</div>
+                                            <div>Tip</div>
+                                          </div>
+                                        </div>
+                                        <div className="divide-y">
+                                          {upcomingPayment.transactions.map((transaction, index) => (
+                                            <div key={index} className="px-4 py-3">
+                                              <div className="grid grid-cols-5 gap-4 text-sm">
+                                                <div className="font-medium">{transaction.orderNumber}</div>
+                                                <div>{transaction.date}</div>
+                                                <div>${transaction.earning.toFixed(2)}</div>
+                                                <div>${transaction.commission.toFixed(2)}</div>
+                                                <div>${transaction.tip.toFixed(2)}</div>
+                                              </div>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </CollapsibleContent>
+                                </Collapsible>
+                              </CardContent>
+                            </Card>
+
+                            {/* Payment History Section */}
                             <Card>
                               <CardHeader>
                                 <CardTitle>Payment History</CardTitle>
