@@ -179,7 +179,7 @@ export const DriverDetailsSheet = ({
     status: "Verified"
   }];
 
-  // Driver's license images specifically
+  // Driver's license images specifically - now with 4 images
   const driverLicenseImages = [
     {
       id: 1,
@@ -196,6 +196,22 @@ export const DriverDetailsSheet = ({
       uploadDate: "2024-01-12",
       status: "Pending",
       imageUrl: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=250&fit=crop"
+    },
+    {
+      id: 3,
+      name: "Driver's License - Front Copy",
+      type: "Image",
+      uploadDate: "2024-01-10",
+      status: "Verified",
+      imageUrl: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=250&fit=crop"
+    },
+    {
+      id: 4,
+      name: "Driver's License - Back Copy",
+      type: "Image",
+      uploadDate: "2024-01-10",
+      status: "Pending",
+      imageUrl: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400&h=250&fit=crop"
     }
   ];
 
@@ -1229,6 +1245,43 @@ export const DriverDetailsSheet = ({
                                     />
                                   )}
                                 </div>
+                              </div>
+
+                              {/* Driver's License Images Grid - Now showing all 4 images */}
+                              <div className="grid grid-cols-2 gap-4 mb-4">
+                                {driverLicenseImages.map((image) => (
+                                  <div key={image.id} className="flex items-center justify-between p-3 border rounded-lg">
+                                    <div className="flex items-center gap-3">
+                                      <div className="relative cursor-pointer group border rounded overflow-hidden" onClick={() => handleImageClick(image.imageUrl)}>
+                                        <img src={image.imageUrl} alt={image.name} className="w-16 h-10 object-cover transition-transform group-hover:scale-105" onError={e => {
+                                          e.currentTarget.style.display = 'none';
+                                        }} />
+                                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
+                                          <Eye className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <p className="text-sm font-medium">{image.name}</p>
+                                        <p className="text-xs text-muted-foreground">
+                                          {image.type} • Uploaded {image.uploadDate}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <Badge variant={image.status === 'Verified' ? 'default' : 'secondary'} className="text-xs">
+                                        {image.status}
+                                      </Badge>
+                                      {editingSection === 'documents' && (
+                                        <Button variant="outline" size="sm" className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
+                                          <Trash2 className="w-3 h-3" />
+                                        </Button>
+                                      )}
+                                      <Button variant="ghost" size="sm" onClick={() => handleViewDocument(image)}>
+                                        View
+                                      </Button>
+                                    </div>
+                                  </div>
+                                ))}
                               </div>
 
                               {editingSection === 'documents' && (
