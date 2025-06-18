@@ -1112,54 +1112,14 @@ export const DriverDetailsSheet = ({
                         </div>
                         <Card>
                           <CardContent className="pt-6 space-y-6">
-                            {/* Driver's License Images Subsection */}
+                            {/* Driver's License Subsection */}
                             <div>
                               <div className="flex items-center gap-2 mb-4">
                                 <Image className="h-4 w-4 text-muted-foreground" />
-                                <h4 className="text-sm font-medium">Driver's License Images</h4>
-                              </div>
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {driverLicenseImages.map(image => (
-                                  <div key={image.id} className="border rounded-lg p-3 space-y-3">
-                                    <div className="flex items-center justify-between">
-                                      <div>
-                                        <p className="text-sm font-medium">{image.name}</p>
-                                        <p className="text-xs text-muted-foreground">
-                                          Uploaded {image.uploadDate}
-                                        </p>
-                                      </div>
-                                      <Badge variant={image.status === 'Verified' ? 'default' : 'secondary'} className="text-xs">
-                                        {image.status}
-                                      </Badge>
-                                    </div>
-                                    <div className="relative group cursor-pointer border rounded overflow-hidden" onClick={() => handleImageClick(image.imageUrl)}>
-                                      <img 
-                                        src={image.imageUrl} 
-                                        alt={image.name} 
-                                        className="w-full h-32 object-cover transition-transform group-hover:scale-105" 
-                                        onError={(e) => {
-                                          e.currentTarget.style.display = 'none';
-                                        }} 
-                                      />
-                                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
-                                        <Eye className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                                      </div>
-                                    </div>
-                                    <div className="flex gap-2">
-                                      <Button variant="ghost" size="sm" onClick={() => handleViewDocument(image)} className="text-xs">
-                                        View
-                                      </Button>
-                                      {editingSection === 'documents' && (
-                                        <Button variant="outline" size="sm" className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
-                                          <Trash2 className="w-3 h-3" />
-                                        </Button>
-                                      )}
-                                    </div>
-                                  </div>
-                                ))}
+                                <h4 className="text-sm font-medium">Driver's License</h4>
                               </div>
                               {editingSection === 'documents' && (
-                                <div className="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-lg text-center">
+                                <div className="p-4 border-2 border-dashed border-gray-300 rounded-lg text-center">
                                   <Input type="file" accept="image/*" className="hidden" id="license-image-upload" multiple />
                                   <Button 
                                     variant="outline" 
