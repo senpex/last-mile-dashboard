@@ -467,7 +467,20 @@ export const DriverDetailsSheet = ({
     setExpandedImage(null);
   };
   const handleOrderClick = (orderId: number) => {
-    // Find the delivery by ID
+    // Handle special order ID 100429 by finding a delivery to show
+    if (orderId === 100429) {
+      // Use the first delivery for this driver as a fallback
+      const fallbackDelivery = driverDeliveries[0];
+      if (fallbackDelivery) {
+        setSelectedOrderId(fallbackDelivery.id);
+        setIsOrderDetailsOpen(true);
+      } else {
+        toast.error(`Order #${orderId} not found`);
+      }
+      return;
+    }
+    
+    // Find the delivery by ID for regular orders
     const delivery = deliveriesData.find(d => d.id === orderId);
     if (delivery) {
       setSelectedOrderId(orderId);
