@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import {
   Sheet,
@@ -26,18 +27,38 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-export function DriverDetailsSheet() {
-  const [isOpen, setIsOpen] = useState(false);
+interface DriverDetailsSheetProps {
+  isOpen: boolean;
+  onClose: () => void;
+  driver: any;
+  transportTypes: { [key: string]: string };
+  statusDictionary: { [key: string]: string };
+  hireStatusDictionary: { [key: string]: string };
+  renderStatus: (statusId: string) => JSX.Element;
+  renderStripeStatus: (status: "verified" | "unverified" | "pending") => JSX.Element;
+}
 
+export function DriverDetailsSheet({
+  isOpen,
+  onClose,
+  driver,
+  transportTypes,
+  statusDictionary,
+  hireStatusDictionary,
+  renderStatus,
+  renderStripeStatus
+}: DriverDetailsSheetProps) {
   const handleDocumentClick = (documentType: string) => {
     alert(`View ${documentType} document`);
   };
 
+  if (!driver) return null;
+
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+    <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="w-[600px] max-w-[90vw] overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>Driver Details</SheetTitle>
+          <SheetTitle>Driver Details - {driver.name}</SheetTitle>
         </SheetHeader>
         
         <div className="space-y-6 py-4">
@@ -47,19 +68,21 @@ export function DriverDetailsSheet() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="name">Name</Label>
-                <Input id="name" value="John Doe" readOnly />
+                <Input id="name" value={driver.name || ""} readOnly />
               </div>
               <div>
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" value="john.doe@example.com" readOnly />
+                <Input id="email" value={driver.email || ""} readOnly />
               </div>
               <div>
                 <Label htmlFor="phone">Phone</Label>
-                <Input id="phone" value="+1 (555) 123-4567" readOnly />
+                <Input id="phone" value={driver.phone || ""} readOnly />
               </div>
               <div>
                 <Label htmlFor="status">Status</Label>
-                <Input id="status" value="Active" readOnly />
+                <div className="mt-2">
+                  {renderStatus(driver.status)}
+                </div>
               </div>
             </div>
           </div>
@@ -246,7 +269,7 @@ export function DriverDetailsSheet() {
                     <CardTitle className="text-sm">Overall Rating</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">4.8</div>
+                    <div className="text-2xl font-bold">{driver.rating || 4.8}</div>
                     <p className="text-xs text-muted-foreground">Based on 235 ratings</p>
                   </CardContent>
                 </Card>
