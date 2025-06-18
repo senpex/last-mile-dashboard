@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -334,6 +335,44 @@ export const CommunicationFiltersSidebar = ({
                           />
                           <Label htmlFor={`name-${name}`} className="flex flex-1 items-center justify-between">
                             <span>{name}</span>
+                            <Badge variant="outline" className="ml-auto">{getCount()}</Badge>
+                          </Label>
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="zipcodes">
+                  <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
+                    Zipcodes
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-2 pt-1">
+                      <div className="relative">
+                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input 
+                          placeholder="Search zipcodes..." 
+                          value={zipcodeSearchTerm} 
+                          onChange={e => setZipcodeSearchTerm(e.target.value)} 
+                          className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input" 
+                        />
+                      </div>
+                      {filteredZipcodes.map(zipcode => (
+                        <div key={zipcode} className="flex items-center space-x-2">
+                          <Checkbox 
+                            id={`zipcode-${zipcode}`} 
+                            checked={selectedZipcodes.includes(zipcode)} 
+                            onCheckedChange={() => {
+                              if (selectedZipcodes.includes(zipcode)) {
+                                setSelectedZipcodes?.(selectedZipcodes.filter(z => z !== zipcode));
+                              } else {
+                                setSelectedZipcodes?.([...selectedZipcodes, zipcode]);
+                              }
+                            }} 
+                          />
+                          <Label htmlFor={`zipcode-${zipcode}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between">
+                            <span>{zipcode}</span>
                             <Badge variant="outline" className="ml-auto">{getCount()}</Badge>
                           </Label>
                         </div>
