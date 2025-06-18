@@ -1,11 +1,9 @@
-
 import React, { useRef } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Image, Upload, X } from "lucide-react";
 import { toast } from "sonner";
-
 interface Document {
   id: number;
   name: string;
@@ -13,26 +11,21 @@ interface Document {
   uploadDate: string;
   status: string;
 }
-
 interface DocumentViewerModalProps {
   isOpen: boolean;
   onClose: () => void;
   document: Document | null;
 }
-
 export const DocumentViewerModal = ({
   isOpen,
   onClose,
   document
 }: DocumentViewerModalProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   if (!document) return null;
-
   const handleUpload = () => {
     fileInputRef.current?.click();
   };
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -47,16 +40,10 @@ export const DocumentViewerModal = ({
       }
     }
   };
-
-  return (
-    <>
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleFileChange}
-        accept="image/*"
-        style={{ display: 'none' }}
-      />
+  return <>
+      <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" style={{
+      display: 'none'
+    }} />
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="sm:max-w-4xl max-h-[90vh] p-0">
           <DialogHeader className="p-6 pb-4 border-b">
@@ -69,9 +56,7 @@ export const DocumentViewerModal = ({
                     <span className="text-sm text-muted-foreground">
                       Image • Uploaded {document.uploadDate}
                     </span>
-                    <Badge variant={document.status === 'Verified' ? 'default' : 'secondary'}>
-                      {document.status}
-                    </Badge>
+                    
                   </div>
                 </div>
               </div>
@@ -97,6 +82,5 @@ export const DocumentViewerModal = ({
           </div>
         </DialogContent>
       </Dialog>
-    </>
-  );
+    </>;
 };
