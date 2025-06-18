@@ -23,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { OrderDetailsSheet } from "@/components/deliveries/OrderDetailsSheet";
 import { deliveriesData } from "@/data/deliveriesData";
 import { EmailsSentList } from "./EmailsSentList";
+import { RandomImage } from "@/components/ui/random-image";
 
 interface VehicleInfo {
   transportId: string;
@@ -523,9 +524,7 @@ export const DriverDetailsSheet = ({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                    <span className="text-lg font-semibold text-primary">
-                      {driver.name.split(' ').map(n => n[0]).join('')}
-                    </span>
+                    <RandomImage width={48} height={48} className="rounded-full" alt="Driver profile" />
                   </div>
                   <div>
                     <SheetTitle className="text-left text-lg">{driver.name}</SheetTitle>
@@ -668,7 +667,7 @@ export const DriverDetailsSheet = ({
                               <div>
                                 <Label>Two Step Verification</Label>
                                 <div className="mt-1">
-                                  {editingSection === 'status' ? <RadioGroup value={editedData.twoStepVerification} onValueChange={value => handleInputChange('twoStepVerification', value)} className="flex gap-4">
+                                  {editingSection === 'status' ? <RadioGroup value={editedData.twoStepVerification === 'yes' ? 'yes' : 'no'} onValueChange={value => handleInputChange('twoStepVerification', value)} className="flex gap-4">
                                       <div className="flex items-center space-x-2">
                                         <RadioGroupItem value="yes" id="two-step-yes" className="border-gray-500 text-gray-600" />
                                         <Label htmlFor="two-step-yes" className="text-sm font-normal text-gray-600">Yes</Label>
@@ -685,7 +684,7 @@ export const DriverDetailsSheet = ({
                               <div>
                                 <Label>Driver Control</Label>
                                 <div className="mt-1">
-                                  {editingSection === 'status' ? <RadioGroup value={editedData.driverControl} onValueChange={value => handleInputChange('driverControl', value)} className="flex gap-4">
+                                  {editingSection === 'status' ? <RadioGroup value={editedData.driverControl === 'yes' ? 'yes' : 'no'} onValueChange={value => handleInputChange('driverControl', value)} className="flex gap-4">
                                       <div className="flex items-center space-x-2">
                                         <RadioGroupItem value="yes" id="driver-control-yes" className="border-gray-500 text-gray-600" />
                                         <Label htmlFor="driver-control-yes" className="text-sm font-normal text-gray-600">Yes</Label>
