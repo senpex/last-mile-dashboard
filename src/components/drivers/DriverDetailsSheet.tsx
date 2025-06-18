@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -1324,17 +1323,6 @@ export const DriverDetailsSheet = ({
                                     </div>
                                   </div>)}
                               </div>
-                              
-                              {editingSection === 'documents' && <div className="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-lg text-center">
-                                  <Input type="file" accept="image/*,.pdf,.doc,.docx" className="hidden" id="document-upload" multiple />
-                                  <Button variant="outline" onClick={() => document.getElementById('document-upload')?.click()} className="flex items-center gap-2">
-                                    <Upload className="w-4 h-4" />
-                                    Upload Documents
-                                  </Button>
-                                  <p className="text-xs text-muted-foreground mt-2">
-                                    Support: Images, PDF, DOC, DOCX
-                                  </p>
-                                </div>}
                             </div>
                           </CardContent>
                         </Card>
