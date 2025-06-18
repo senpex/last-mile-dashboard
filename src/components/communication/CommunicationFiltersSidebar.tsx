@@ -125,6 +125,33 @@ export const CommunicationFiltersSidebar = ({
     }
   }, []);
 
+  // Auto-apply filters when they change
+  useEffect(() => {
+    if (activeTab === "drivers") {
+      onFiltersAdd({
+        statuses: selectedStatuses,
+        transports: selectedTransports,
+        zipcodes: selectedZipcodes,
+        profiles: selectedProfiles,
+        cities: selectedCities,
+        states: selectedStates,
+        hireStatuses: selectedHireStatuses,
+        names: selectedNames,
+        radius: selectedRadius
+      });
+    } else if (activeTab === "clients") {
+      onFiltersAdd({
+        cities: selectedCities,
+        states: selectedStates,
+        organizations: selectedOrganizations
+      });
+    } else if (activeTab === "groups") {
+      onFiltersAdd({
+        dispatchers: selectedDispatchers
+      });
+    }
+  }, [selectedStatuses, selectedTransports, selectedZipcodes, selectedProfiles, selectedCities, selectedStates, selectedHireStatuses, selectedNames, selectedRadius, selectedOrganizations, selectedDispatchers, activeTab, onFiltersAdd]);
+
   const handleResetFilters = () => {
     if (activeTab === "drivers") {
       setSelectedStatuses?.([]);
@@ -136,31 +163,12 @@ export const CommunicationFiltersSidebar = ({
       setSelectedHireStatuses?.([]);
       setSelectedNames([]);
       setSelectedRadius(15);
-      onFiltersAdd({
-        statuses: [],
-        transports: [],
-        zipcodes: [],
-        profiles: [],
-        cities: [],
-        states: [],
-        hireStatuses: [],
-        names: [],
-        radius: 15
-      });
     } else if (activeTab === "clients") {
       setSelectedCities?.([]);
       setSelectedStates?.([]);
       setSelectedOrganizations?.([]);
-      onFiltersAdd({
-        cities: [],
-        states: [],
-        organizations: []
-      });
     } else if (activeTab === "groups") {
       setSelectedDispatchers?.([]);
-      onFiltersAdd({
-        dispatchers: []
-      });
     }
   };
 
