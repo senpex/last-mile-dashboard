@@ -205,7 +205,19 @@ const CommunicationPanel = ({
     setMessage("");
   };
 
-  const hasAnyFilters = selectedFilters && Object.values(selectedFilters).some(filterArray => filterArray && filterArray.length > 0);
+  const hasAnyFilters = selectedFilters && (
+    (selectedFilters.statuses && selectedFilters.statuses.length > 0) ||
+    (selectedFilters.zipcodes && selectedFilters.zipcodes.length > 0) ||
+    (selectedFilters.cities && selectedFilters.cities.length > 0) ||
+    (selectedFilters.states && selectedFilters.states.length > 0) ||
+    (selectedFilters.profiles && selectedFilters.profiles.length > 0) ||
+    (selectedFilters.transports && selectedFilters.transports.length > 0) ||
+    (selectedFilters.hireStatuses && selectedFilters.hireStatuses.length > 0) ||
+    (selectedFilters.organizations && selectedFilters.organizations.length > 0) ||
+    (selectedFilters.dispatchers && selectedFilters.dispatchers.length > 0) ||
+    (selectedFilters.radius && selectedFilters.radius !== 15) ||
+    (selectedFilters.names && selectedFilters.names.length > 0)
+  );
 
   return <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 my-0 flex flex-col h-[calc(100vh-180px)] border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-300 light:border-2 light:border-gray-300 light:hover:border-gray-400 px-[20px]">
     <div className="flex-none">
