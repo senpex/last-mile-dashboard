@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -1244,6 +1243,91 @@ export const DriverDetailsSheet = ({
                             )}
                           </CardContent>
                         </Card>
+                      </div>
+
+                      {/* Driver Performance */}
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Driver Performance</h3>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <p className="text-sm text-muted-foreground">Total Deliveries</p>
+                            <p className="text-2xl font-bold">127</p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Success Rate</p>
+                            <p className="text-2xl font-bold">98.4%</p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Average Rating</p>
+                            <p className="text-2xl font-bold">4.8</p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">On-Time Rate</p>
+                            <p className="text-2xl font-bold">95.2%</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Upcoming Payment */}
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Upcoming Payment</h3>
+                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                          <div className="flex justify-between items-center">
+                            <div>
+                              <p className="font-medium">Weekly Payment</p>
+                              <p className="text-sm text-muted-foreground">
+                                Dec 23, 2024
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-bold text-lg">$1,234.56</p>
+                              <Badge variant="warning">Upcoming</Badge>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Payment History */}
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Payment History</h3>
+                        <div className="space-y-2">
+                          <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                            <div>
+                              <p className="font-medium">Weekly Payment</p>
+                              <p className="text-sm text-muted-foreground">
+                                Dec 16, 2024
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-bold">$1,156.78</p>
+                              <Badge variant="success">Paid</Badge>
+                            </div>
+                          </div>
+                          <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                            <div>
+                              <p className="font-medium">Weekly Payment</p>
+                              <p className="text-sm text-muted-foreground">
+                                Dec 9, 2024
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-bold">$1,089.23</p>
+                              <Badge variant="success">Paid</Badge>
+                            </div>
+                          </div>
+                          <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                            <div>
+                              <p className="font-medium">Weekly Payment</p>
+                              <p className="text-sm text-muted-foreground">
+                                Dec 2, 2024
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-bold">$987.45</p>
+                              <Badge variant="success">Paid</Badge>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </ScrollArea>
