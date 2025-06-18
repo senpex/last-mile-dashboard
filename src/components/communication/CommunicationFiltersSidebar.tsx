@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -556,6 +557,46 @@ export const CommunicationFiltersSidebar = ({
 
             {(activeTab === "drivers" || activeTab === "clients") && (
               <>
+                {activeTab === "clients" && (
+                  <AccordionItem value="client-zipcodes">
+                    <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
+                      Zipcodes
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="space-y-2 pt-1">
+                        <div className="relative">
+                          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                          <Input 
+                            placeholder="Search zipcodes..." 
+                            value={zipcodeSearchTerm} 
+                            onChange={e => setZipcodeSearchTerm(e.target.value)} 
+                            className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input" 
+                          />
+                        </div>
+                        {filteredZipcodes.map(zipcode => (
+                          <div key={zipcode} className="flex items-center space-x-2">
+                            <Checkbox 
+                              id={`client-zipcode-${zipcode}`} 
+                              checked={selectedZipcodes.includes(zipcode)} 
+                              onCheckedChange={() => {
+                                if (selectedZipcodes.includes(zipcode)) {
+                                  setSelectedZipcodes?.(selectedZipcodes.filter(z => z !== zipcode));
+                                } else {
+                                  setSelectedZipcodes?.([...selectedZipcodes, zipcode]);
+                                }
+                              }} 
+                            />
+                            <Label htmlFor={`client-zipcode-${zipcode}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between">
+                              <span>{zipcode}</span>
+                              <Badge variant="outline" className="ml-auto">{getCount()}</Badge>
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                )}
+
                 <AccordionItem value="cities">
                   <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
                     Cities
@@ -632,81 +673,85 @@ export const CommunicationFiltersSidebar = ({
                   </AccordionContent>
                 </AccordionItem>
 
-                <AccordionItem value="clientNames">
-                  <AccordionTrigger className="text-sm font-medium">
-                    Name
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="space-y-2 pt-1">
-                      <div className="relative">
-                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                        <Input 
-                          placeholder="Search client names..." 
-                          value={clientNameSearchTerm} 
-                          onChange={e => setClientNameSearchTerm(e.target.value)} 
-                          className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input" 
-                        />
-                      </div>
-                      {filteredClientNames.map(name => (
-                        <div key={name} className="flex items-center space-x-2">
-                          <Checkbox 
-                            id={`client-name-${name}`} 
-                            checked={selectedClientNames.includes(name)} 
-                            onCheckedChange={() => {
-                              if (selectedClientNames.includes(name)) {
-                                setSelectedClientNames?.(selectedClientNames.filter(n => n !== name));
-                              } else {
-                                setSelectedClientNames?.([...selectedClientNames, name]);
-                              }
-                            }} 
-                          />
-                          <Label htmlFor={`client-name-${name}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between">
-                            <span>{name}</span>
-                            <Badge variant="outline" className="ml-auto">{getCount()}</Badge>
-                          </Label>
+                {activeTab === "clients" && (
+                  <>
+                    <AccordionItem value="clientNames">
+                      <AccordionTrigger className="text-sm font-medium">
+                        Name
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="space-y-2 pt-1">
+                          <div className="relative">
+                            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                            <Input 
+                              placeholder="Search client names..." 
+                              value={clientNameSearchTerm} 
+                              onChange={e => setClientNameSearchTerm(e.target.value)} 
+                              className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input" 
+                            />
+                          </div>
+                          {filteredClientNames.map(name => (
+                            <div key={name} className="flex items-center space-x-2">
+                              <Checkbox 
+                                id={`client-name-${name}`} 
+                                checked={selectedClientNames.includes(name)} 
+                                onCheckedChange={() => {
+                                  if (selectedClientNames.includes(name)) {
+                                    setSelectedClientNames?.(selectedClientNames.filter(n => n !== name));
+                                  } else {
+                                    setSelectedClientNames?.([...selectedClientNames, name]);
+                                  }
+                                }} 
+                              />
+                              <Label htmlFor={`client-name-${name}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between">
+                                <span>{name}</span>
+                                <Badge variant="outline" className="ml-auto">{getCount()}</Badge>
+                              </Label>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
+                      </AccordionContent>
+                    </AccordionItem>
 
-                <AccordionItem value="organizations">
-                  <AccordionTrigger className="text-sm font-medium">
-                    Companies
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="space-y-2 pt-1">
-                      <div className="relative">
-                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                        <Input 
-                          placeholder="Search organizations..." 
-                          value={orgSearchTerm} 
-                          onChange={e => setOrgSearchTerm(e.target.value)} 
-                          className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input" 
-                        />
-                      </div>
-                      {filteredOrganizations.map(org => (
-                        <div key={org} className="flex items-center space-x-2">
-                          <Checkbox 
-                            id={`org-${org}`} 
-                            checked={selectedOrganizations.includes(org)} 
-                            onCheckedChange={() => {
-                              if (selectedOrganizations.includes(org)) {
-                                setSelectedOrganizations?.(selectedOrganizations.filter(o => o !== org));
-                              } else {
-                                setSelectedOrganizations?.([...selectedOrganizations, org]);
-                              }
-                            }} 
-                          />
-                          <Label htmlFor={`org-${org}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between">
-                            <span className="my-0 px-[15px]">{org}</span>
-                            <Badge variant="outline" className="ml-auto">{getCount()}</Badge>
-                          </Label>
+                    <AccordionItem value="organizations">
+                      <AccordionTrigger className="text-sm font-medium">
+                        Companies
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="space-y-2 pt-1">
+                          <div className="relative">
+                            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                            <Input 
+                              placeholder="Search organizations..." 
+                              value={orgSearchTerm} 
+                              onChange={e => setOrgSearchTerm(e.target.value)} 
+                              className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input" 
+                            />
+                          </div>
+                          {filteredOrganizations.map(org => (
+                            <div key={org} className="flex items-center space-x-2">
+                              <Checkbox 
+                                id={`org-${org}`} 
+                                checked={selectedOrganizations.includes(org)} 
+                                onCheckedChange={() => {
+                                  if (selectedOrganizations.includes(org)) {
+                                    setSelectedOrganizations?.(selectedOrganizations.filter(o => o !== org));
+                                  } else {
+                                    setSelectedOrganizations?.([...selectedOrganizations, org]);
+                                  }
+                                }} 
+                              />
+                              <Label htmlFor={`org-${org}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-1 items-center justify-between">
+                                <span className="my-0 px-[15px]">{org}</span>
+                                <Badge variant="outline" className="ml-auto">{getCount()}</Badge>
+                              </Label>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </>
+                )}
               </>
             )}
 
