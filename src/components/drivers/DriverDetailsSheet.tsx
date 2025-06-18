@@ -20,6 +20,8 @@ import { DocumentViewerModal } from "./DocumentViewerModal";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { OrderDetailsSheet } from "@/components/deliveries/OrderDetailsSheet";
+import { deliveriesData } from "@/data/deliveriesData";
 
 interface VehicleInfo {
   transportId: string;
@@ -87,6 +89,9 @@ export const DriverDetailsSheet = ({
   const [expandedImage, setExpandedImage] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>("driver-info");
   const [activeLogTab, setActiveLogTab] = useState<string>("payment-history");
+  const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
+  const [isOrderDetailsOpen, setIsOrderDetailsOpen] = useState(false);
+  const [flaggedOrders, setFlaggedOrders] = useState<Set<number>>(new Set());
   
   // Editing states
   const [editingSection, setEditingSection] = useState<string | null>(null);
@@ -141,7 +146,18 @@ export const DriverDetailsSheet = ({
     status: "Verified"
   }];
 
-  // Sample payout data with real order IDs from deliveries data
+  // Get actual delivery IDs for this driver's transactions
+  const getDeliveryIdsForDriver = () => {
+    // Filter deliveries by driver name and get their IDs
+    const driverDeliveries = deliveriesData.filter(delivery => 
+      delivery.courier === driver.name
+    );
+    return driverDeliveries.map(delivery => delivery.id);
+  };
+
+  const driverDeliveryIds = getDeliveryIdsForDriver();
+
+  // Sample payout data with real delivery IDs
   const payoutRecords = [
     {
       id: 1,
@@ -149,10 +165,10 @@ export const DriverDetailsSheet = ({
       amount: 425.50,
       status: "paid",
       transactions: [
-        { orderId: 1, date: "2024-01-14", earning: 85.00, commission: 12.75, tip: 15.00 },
-        { orderId: 2, date: "2024-01-14", earning: 120.00, commission: 18.00, tip: 25.00 },
-        { orderId: 3, date: "2024-01-15", earning: 95.50, commission: 14.33, tip: 20.00 },
-        { orderId: 4, date: "2024-01-15", earning: 110.00, commission: 16.50, tip: 18.92 }
+        { orderId: driverDeliveryIds[0] || 1, date: "2024-01-14", earning: 85.00, commission: 12.75, tip: 15.00 },
+        { orderId: driverDeliveryIds[1] || 2, date: "2024-01-14", earning: 120.00, commission: 18.00, tip: 25.00 },
+        { orderId: driverDeliveryIds[2] || 3, date: "2024-01-15", earning: 95.50, commission: 14.33, tip: 20.00 },
+        { orderId: driverDeliveryIds[3] || 4, date: "2024-01-15", earning: 110.00, commission: 16.50, tip: 18.92 }
       ]
     },
     {
@@ -161,9 +177,9 @@ export const DriverDetailsSheet = ({
       amount: 312.75,
       status: "paid",
       transactions: [
-        { orderId: 5, date: "2024-01-07", earning: 75.00, commission: 11.25, tip: 12.00 },
-        { orderId: 6, date: "2024-01-08", earning: 90.00, commission: 13.50, tip: 22.50 },
-        { orderId: 7, date: "2024-01-08", earning: 88.50, commission: 13.28, tip: 0.00 }
+        { orderId: driverDeliveryIds[4] || 5, date: "2024-01-07", earning: 75.00, commission: 11.25, tip: 12.00 },
+        { orderId: driverDeliveryIds[5] || 6, date: "2024-01-08", earning: 90.00, commission: 13.50, tip: 22.50 },
+        { orderId: driverDeliveryIds[6] || 7, date: "2024-01-08", earning: 88.50, commission: 13.28, tip: 0.00 }
       ]
     },
     {
@@ -172,22 +188,22 @@ export const DriverDetailsSheet = ({
       amount: 198.25,
       status: "paid",
       transactions: [
-        { orderId: 8, date: "2023-12-31", earning: 65.00, commission: 9.75, tip: 8.00 },
-        { orderId: 9, date: "2024-01-01", earning: 115.50, commission: 17.33, tip: 0.00 }
+        { orderId: driverDeliveryIds[7] || 8, date: "2023-12-31", earning: 65.00, commission: 9.75, tip: 8.00 },
+        { orderId: driverDeliveryIds[8] || 9, date: "2024-01-01", earning: 115.50, commission: 17.33, tip: 0.00 }
       ]
     }
   ];
 
-  // Sample upcoming payment data with real order IDs
+  // Sample upcoming payment data with real delivery IDs
   const upcomingPayment = {
     id: 'upcoming-1',
     date: "2024-01-22",
     amount: 285.75,
     status: "pending",
     transactions: [
-      { orderId: 10, date: "2024-01-20", earning: 95.00, commission: 14.25, tip: 20.00 },
-      { orderId: 11, date: "2024-01-21", earning: 80.50, commission: 12.08, tip: 15.00 },
-      { orderId: 12, date: "2024-01-21", earning: 105.00, commission: 15.75, tip: 12.92 }
+      { orderId: driverDeliveryIds[9] || 10, date: "2024-01-20", earning: 95.00, commission: 14.25, tip: 20.00 },
+      { orderId: driverDeliveryIds[10] || 11, date: "2024-01-21", earning: 80.50, commission: 12.08, tip: 15.00 },
+      { orderId: driverDeliveryIds[11] || 12, date: "2024-01-21", earning: 105.00, commission: 15.75, tip: 12.92 }
     ]
   };
 
@@ -383,10 +399,31 @@ export const DriverDetailsSheet = ({
   };
 
   const handleOrderClick = (orderId: number) => {
-    // Close the driver sheet first
-    onClose();
-    // Navigate to deliveries page and highlight the specific order
-    navigate(`/?orderId=${orderId}`);
+    // Find the delivery by ID
+    const delivery = deliveriesData.find(d => d.id === orderId);
+    if (delivery) {
+      setSelectedOrderId(orderId);
+      setIsOrderDetailsOpen(true);
+    } else {
+      toast.error(`Order #${orderId} not found`);
+    }
+  };
+
+  const handleCloseOrderDetails = () => {
+    setIsOrderDetailsOpen(false);
+    setSelectedOrderId(null);
+  };
+
+  const handleOrderFlag = (orderId: number, isFlagged: boolean) => {
+    setFlaggedOrders(prev => {
+      const newSet = new Set(prev);
+      if (isFlagged) {
+        newSet.add(orderId);
+      } else {
+        newSet.delete(orderId);
+      }
+      return newSet;
+    });
   };
 
   return (
@@ -1509,6 +1546,17 @@ export const DriverDetailsSheet = ({
         onClose={handleCloseDocumentModal}
         document={selectedDocument}
       />
+
+      {/* Order Details Sheet */}
+      {selectedOrderId && (
+        <OrderDetailsSheet
+          isOpen={isOrderDetailsOpen}
+          onClose={handleCloseOrderDetails}
+          delivery={deliveriesData.find(d => d.id === selectedOrderId)}
+          flaggedOrders={flaggedOrders}
+          onOrderFlag={handleOrderFlag}
+        />
+      )}
 
       {/* Image Expansion Modal */}
       <Dialog open={!!expandedImage} onOpenChange={handleCloseImageModal}>
