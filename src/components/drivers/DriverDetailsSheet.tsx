@@ -14,7 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit, Save, X, Plus, Trash2, Upload, Eye, ChevronDown, Building } from "lucide-react";
+import { Phone, Mail, MapPin, Star, FileText, CreditCard, User, Award, Settings, File, Image, Edit, Save, X, Plus, Upload, Eye, ChevronDown, Building } from "lucide-react";
 import TransportIcon, { TransportType } from "@/components/icons/TransportIcon";
 import { DocumentViewerModal } from "./DocumentViewerModal";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -581,6 +581,14 @@ export const DriverDetailsSheet = ({
         [field]: value
       }
     }));
+  };
+
+  const handleDocumentUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      toast.success('Document uploaded successfully');
+      // Here you would handle the actual document upload logic
+    }
   };
 
   return <>
@@ -1253,9 +1261,23 @@ export const DriverDetailsSheet = ({
                                     </div>
                                     <div className="flex items-center gap-2">
                                       {editingSection === 'documents' && (
-                                        <Button variant="outline" size="sm" className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
-                                          <Trash2 className="w-3 h-3" />
-                                        </Button>
+                                        <>
+                                          <Input 
+                                            type="file" 
+                                            accept="image/*" 
+                                            className="hidden" 
+                                            id={`upload-${image.id}`}
+                                            onChange={handleDocumentUpload}
+                                          />
+                                          <Button 
+                                            variant="outline" 
+                                            size="sm" 
+                                            className="h-7 px-2 border-blue-500 text-blue-700 hover:bg-blue-50"
+                                            onClick={() => document.getElementById(`upload-${image.id}`)?.click()}
+                                          >
+                                            <Upload className="w-3 h-3" />
+                                          </Button>
+                                        </>
                                       )}
                                       <Button variant="ghost" size="sm" onClick={() => handleViewDocument(image)}>
                                         View
@@ -1266,11 +1288,11 @@ export const DriverDetailsSheet = ({
                               </div>
                             </div>
 
-                            {/* Other Documents */}
+                            {/* Insurance certificate */}
                             <div>
                               <div className="flex items-center gap-2 mb-4">
                                 <FileText className="h-4 w-4 text-muted-foreground" />
-                                <h4 className="text-sm font-medium">Other Documents</h4>
+                                <h4 className="text-sm font-medium">Insurance certificate</h4>
                               </div>
                               <div className="space-y-4">
                                 {documents.filter(doc => !doc.name.includes("Driver's License")).map(document => (
@@ -1286,9 +1308,23 @@ export const DriverDetailsSheet = ({
                                     </div>
                                     <div className="flex items-center gap-2">
                                       {editingSection === 'documents' && (
-                                        <Button variant="outline" size="sm" className="h-7 px-2 border-red-500 text-red-700 hover:bg-red-50">
-                                          <Trash2 className="w-3 h-3" />
-                                        </Button>
+                                        <>
+                                          <Input 
+                                            type="file" 
+                                            accept="image/*,.pdf,.doc,.docx" 
+                                            className="hidden" 
+                                            id={`upload-doc-${document.id}`}
+                                            onChange={handleDocumentUpload}
+                                          />
+                                          <Button 
+                                            variant="outline" 
+                                            size="sm" 
+                                            className="h-7 px-2 border-blue-500 text-blue-700 hover:bg-blue-50"
+                                            onClick={() => document.getElementById(`upload-doc-${document.id}`)?.click()}
+                                          >
+                                            <Upload className="w-3 h-3" />
+                                          </Button>
+                                        </>
                                       )}
                                       <Button variant="ghost" size="sm" onClick={() => handleViewDocument(document)}>
                                         View
