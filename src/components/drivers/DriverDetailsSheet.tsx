@@ -792,10 +792,10 @@ export const DriverDetailsSheet = ({
                         <div className="flex items-center justify-between mb-3">
                           <h3 className="text-sm font-medium flex items-center">
                             <MapPin className="w-4 h-4 mr-2" />
-                            Location
+                            Address
                           </h3>
                           {editingSection === 'location' ? <div className="flex gap-1">
-                              <Button variant="outline" size="sm" onClick={() => handleSave('Location')} className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50">
+                              <Button variant="outline" size="sm" onClick={() => handleSave('Address')} className="h-7 px-2 border-green-500 text-green-700 hover:bg-green-50">
                                 <Save className="w-3 h-3 mr-1" />
                                 Save
                               </Button>
