@@ -38,6 +38,7 @@ interface DriversSidebarProps {
     hireStatuses?: string[];
     radius?: number;
     names?: string[];
+    extraServices?: string[];
   }) => void;
 }
 
@@ -82,12 +83,26 @@ export function DriversSidebar({
   const [selectedRadius, setSelectedRadius] = useState<number>(15);
   const [selectedNames, setSelectedNames] = useState<string[]>([]);
   const [nameSearchTerm, setNameSearchTerm] = useState("");
+  const [selectedExtraServices, setSelectedExtraServices] = useState<string[]>([]);
+  const [extraServiceSearchTerm, setExtraServiceSearchTerm] = useState("");
 
   // Mock driver names data
   const driverNames = [
     "John Smith", "Maria Rodriguez", "David Chen", "Sarah Johnson", 
     "Michael Brown", "Jennifer Garcia", "Robert Davis", "Lisa Wilson",
     "James Miller", "Ashley Martinez", "Christopher Anderson", "Amanda Taylor"
+  ];
+
+  // Extra services options
+  const extraServicesOptions = [
+    { id: 'assembly', value: 'Assembly Service' },
+    { id: 'packing', value: 'Packing Service' },
+    { id: 'cleaning', value: 'Cleaning Service' },
+    { id: 'storage', value: 'Storage Service' },
+    { id: 'installation', value: 'Installation Service' },
+    { id: 'disassembly', value: 'Disassembly Service' },
+    { id: 'white_glove', value: 'White Glove Service' },
+    { id: 'fragile_handling', value: 'Fragile Item Handling' }
   ];
 
   useEffect(() => {
@@ -103,7 +118,7 @@ export function DriversSidebar({
 
   useEffect(() => {
     updateFilters();
-  }, [selectedStatuses, selectedZipcodes, selectedCities, selectedStates, selectedProfiles, selectedTransports, selectedHireStatuses, selectedRadius, selectedNames]);
+  }, [selectedStatuses, selectedZipcodes, selectedCities, selectedStates, selectedProfiles, selectedTransports, selectedHireStatuses, selectedRadius, selectedNames, selectedExtraServices]);
 
   const handleStatusChange = (status: DeliveryStatus) => {
     if (selectedStatuses.includes(status)) {
@@ -169,6 +184,14 @@ export function DriversSidebar({
     }
   };
 
+  const handleExtraServiceChange = (serviceId: string) => {
+    if (selectedExtraServices.includes(serviceId)) {
+      setSelectedExtraServices(selectedExtraServices.filter(s => s !== serviceId));
+    } else {
+      setSelectedExtraServices([...selectedExtraServices, serviceId]);
+    }
+  };
+
   const handleResetFilters = () => {
     setSelectedStatuses([]);
     setSelectedTransports([]);
@@ -179,6 +202,7 @@ export function DriversSidebar({
     setSelectedHireStatuses([]);
     setSelectedRadius(15);
     setSelectedNames([]);
+    setSelectedExtraServices([]);
   };
 
   const handleRadiusChange = (value: number[]) => {
@@ -195,7 +219,8 @@ export function DriversSidebar({
       transports: selectedTransports,
       hireStatuses: selectedHireStatuses,
       radius: selectedRadius,
-      names: selectedNames
+      names: selectedNames,
+      extraServices: selectedExtraServices
     });
   };
 
@@ -235,6 +260,10 @@ export function DriversSidebar({
     return Math.floor(Math.random() * 5) + 1;
   };
 
+  const getExtraServiceCount = (serviceId: string) => {
+    return Math.floor(Math.random() * 12) + 1;
+  };
+
   const filteredDeliveryStatuses = allDeliveryStatuses.filter(status => !["Picking Up", "In Transit", "Arrived For Pickup", "Dropoff Complete", "Scheduled Order", "Canceled By Customer", "Cancelled By Admin"].includes(status) && status.toLowerCase().includes(statusSearchTerm.toLowerCase()));
   const filteredTransportTypes = transportTypes.filter(transport => transport.value.toLowerCase().includes(transportSearchTerm.toLowerCase()));
   const filteredZipcodes = allZipcodes.filter(zipcode => zipcode.toLowerCase().includes(zipcodeSearchTerm.toLowerCase()));
@@ -266,6 +295,7 @@ export function DriversSidebar({
   const filteredCities = allCities.filter(city => city.toLowerCase().includes(citySearchTerm.toLowerCase()));
   const filteredStates = allStates.filter(state => state.toLowerCase().includes(stateSearchTerm.toLowerCase()));
   const filteredNames = driverNames.filter(name => name.toLowerCase().includes(nameSearchTerm.toLowerCase()));
+  const filteredExtraServices = extraServicesOptions.filter(service => service.value.toLowerCase().includes(extraServiceSearchTerm.toLowerCase()));
 
   const getTitle = () => {
     switch (activeTab) {
@@ -335,6 +365,28 @@ export function DriversSidebar({
                     </Label>
                   </div>)}
                 {filteredNames.length === 0 && <p className="text-sm text-muted-foreground">No matching names found</p>}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="extra-services" className="border-b">
+            <AccordionTrigger className="py-4 w-full text-left flex justify-between pr-1 text-[0.88em]">
+              Extra Services
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="flex flex-col space-y-3 py-2">
+                <div className="relative">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input placeholder="Search services..." value={extraServiceSearchTerm} onChange={e => setExtraServiceSearchTerm(e.target.value)} className="mb-2 pl-8 h-9 transition-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-input" />
+                </div>
+                {filteredExtraServices.map(service => <div key={service.id} className="flex items-center space-x-2">
+                    <Checkbox id={`service-${service.id}`} checked={selectedExtraServices.includes(service.id)} onCheckedChange={() => handleExtraServiceChange(service.id)} />
+                    <Label htmlFor={`service-${service.id}`} className="flex flex-1 items-center justify-between">
+                      <span>{service.value}</span>
+                      <Badge variant="outline" className="ml-auto">{getExtraServiceCount(service.id)}</Badge>
+                    </Label>
+                  </div>)}
+                {filteredExtraServices.length === 0 && <p className="text-sm text-muted-foreground">No matching services found</p>}
               </div>
             </AccordionContent>
           </AccordionItem>
