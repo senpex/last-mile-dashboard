@@ -1,27 +1,15 @@
-
 import React, { useState } from 'react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Car, 
-  FileText, 
-  Download, 
-  Eye, 
-  Trash2,
-  Plus,
-  Calendar,
-  Clock,
-  DollarSign
-} from 'lucide-react';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MapPin, Phone, Mail, Calendar, Car, CreditCard, FileText, MessageSquare, Eye } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 import { DocumentViewerModal } from './DocumentViewerModal';
+import { EmailsSentList } from './EmailsSentList';
 
 interface Driver {
   id: number;
@@ -30,337 +18,297 @@ interface Driver {
   phone: string;
   status: string;
   hireStatus: string;
+  profileType: string;
   transportType: string;
-  location: string;
+  location: {
+    address: string;
+    city: string;
+    state: string;
+    zipcode: string;
+    coordinates?: { lat: number; lng: number };
+  };
+  avatar?: string;
+  rating: number;
+  completedDeliveries: number;
   joinDate: string;
   lastActive: string;
-  totalDeliveries: number;
-  rating: number;
-  earnings: number;
+  vehicleInfo?: {
+    make: string;
+    model: string;
+    year: number;
+    licensePlate: string;
+    color: string;
+  };
+  documents?: Array<{
+    id: number;
+    name: string;
+    type: string;
+    uploadDate: string;
+    status: string;
+  }>;
+  bankInfo?: {
+    accountType: string;
+    lastFour: string;
+    routingNumber: string;
+  };
+  extraServices?: string[];
 }
 
 interface DriverDetailsSheetProps {
-  driver: Driver | null;
   isOpen: boolean;
   onClose: () => void;
+  driver: Driver | null;
 }
 
-interface ExtraService {
-  name: string;
-  description: string;
-  price: string;
-}
-
-const DriverDetailsSheet = ({ driver, isOpen, onClose }: DriverDetailsSheetProps) => {
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  const [selectedDocument, setSelectedDocument] = useState<any>(null);
-  const [isAddServiceDialogOpen, setIsAddServiceDialogOpen] = useState(false);
-  const [extraServices, setExtraServices] = useState<ExtraService[]>([
-    {
-      name: "Express Delivery",
-      description: "Same-day delivery service",
-      price: "15.00"
-    },
-    {
-      name: "Fragile Handling",
-      description: "Special care for fragile items",
-      price: "10.00"
-    }
-  ]);
-  const [newService, setNewService] = useState<ExtraService>({
-    name: '',
-    description: '',
-    price: ''
-  });
-
-  const [documents] = useState([
-    {
-      id: 1,
-      name: 'Driver License',
-      type: 'PDF',
-      uploadDate: '2024-01-15',
-      status: 'Approved'
-    },
-    {
-      id: 2,
-      name: 'Insurance Certificate',
-      type: 'PDF',
-      uploadDate: '2024-01-10',
-      status: 'Pending'
-    },
-    {
-      id: 3,
-      name: 'Vehicle Registration',
-      type: 'PDF',
-      uploadDate: '2024-01-08',
-      status: 'Approved'
-    }
-  ]);
+export const DriverDetailsSheet = ({ isOpen, onClose, driver }: DriverDetailsSheetProps) => {
+  const [selectedDocument, setSelectedDocument] = useState<{
+    id: number;
+    name: string;
+    type: string;
+    uploadDate: string;
+    status: string;
+  } | null>(null);
+  const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
+  const [isEmailsModalOpen, setIsEmailsModalOpen] = useState(false);
 
   if (!driver) return null;
 
-  const handleAddService = () => {
-    if (newService.name.trim() && newService.description.trim() && newService.price.trim()) {
-      setExtraServices([...extraServices, { ...newService }]);
-      setNewService({ name: '', description: '', price: '' });
-      setIsAddServiceDialogOpen(false);
+  const handleDocumentView = (document: {
+    id: number;
+    name: string;
+    type: string;
+    uploadDate: string;
+    status: string;
+  }) => {
+    setSelectedDocument(document);
+    setIsDocumentModalOpen(true);
+  };
+
+  const getStatusBadgeVariant = (status: string): string => {
+    switch (status) {
+      case "Active":
+        return "success";
+      case "Pending":
+        return "secondary";
+      case "Suspended":
+        return "destructive";
+      case "Inactive":
+        return "muted";
+      default:
+        return "default";
     }
   };
 
-  const handleDeleteService = (index: number) => {
-    setExtraServices(extraServices.filter((_, i) => i !== index));
-  };
-
-  const handlePreviewDocument = (document: any) => {
-    setSelectedDocument(document);
-    setIsPreviewOpen(true);
-  };
-
-  const handleDeleteDocument = (documentId: number) => {
-    // This would typically make an API call to delete the document
-    console.log('Delete document:', documentId);
-  };
-
-  const handleDownloadDocument = (document: any) => {
-    // Create a blob URL and trigger download
-    const link = document.createElement('a');
-    link.href = '#';
-    link.download = document.name;
-    link.click();
-  };
-
   return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="sm:max-w-[600px] overflow-y-auto">
-        <SheetHeader>
-          <SheetTitle>Driver Details</SheetTitle>
-        </SheetHeader>
-        
-        <div className="py-6 space-y-6">
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold">Driver Info</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Name</p>
-                <p className="font-medium">{driver.name}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Status</p>
-                <Badge variant="secondary">{driver.status}</Badge>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Hire Status</p>
-                <p className="font-medium">{driver.hireStatus}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Transport Type</p>
-                <p className="font-medium">{driver.transportType}</p>
-              </div>
-            </div>
-          </div>
+    <>
+      <Sheet open={isOpen} onOpenChange={onClose}>
+        <SheetContent className="sm:max-w-2xl w-full overflow-hidden p-0">
+          <SheetHeader className="p-4 border-b">
+            <SheetTitle className="text-lg font-semibold">
+              Driver Details
+            </SheetTitle>
+          </SheetHeader>
 
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold">Contact</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-muted-foreground" />
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Phone</p>
-                  <p className="font-medium">{driver.phone}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-muted-foreground" />
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Email</p>
-                  <p className="font-medium">{driver.email}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-muted-foreground" />
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Location</p>
-                  <p className="font-medium">{driver.location}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold">Vehicle</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex items-center gap-2">
-                <Car className="w-4 h-4 text-muted-foreground" />
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Transport Type</p>
-                  <p className="font-medium">{driver.transportType}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-muted-foreground" />
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Join Date</p>
-                  <p className="font-medium">{driver.joinDate}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-muted-foreground" />
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Last Active</p>
-                  <p className="font-medium">{driver.lastActive}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Extra Services Section */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold">Extra Services</h3>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => setIsAddServiceDialogOpen(true)}
-                className="flex items-center gap-2"
-              >
-                <Plus className="w-4 h-4" />
-                Add Service
-              </Button>
-            </div>
-            
-            <Card>
-              <CardContent className="pt-6">
-                {extraServices.length === 0 ? (
-                  <p className="text-sm text-muted-foreground text-center py-4">
-                    No extra services added yet
-                  </p>
-                ) : (
-                  <div className="space-y-3">
-                    {extraServices.map((service, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div className="flex-1">
-                          <h4 className="font-medium">{service.name}</h4>
-                          <p className="text-sm text-muted-foreground">{service.description}</p>
-                          <p className="text-sm font-medium text-green-600">${service.price}</p>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDeleteService(index)}
-                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold">Documents</h3>
-            <div className="space-y-4">
-              {documents.map((document) => (
-                <div key={document.id} className="flex items-center justify-between p-4 border rounded-lg">
+          <ScrollArea className="flex-1 p-4">
+            <div className="flex flex-col gap-4">
+              {/* Driver Info Card */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Personal Information</CardTitle>
+                </CardHeader>
+                <CardContent className="grid gap-4">
                   <div className="flex items-center gap-4">
-                    <FileText className="w-6 h-6 text-muted-foreground" />
+                    <Avatar className="h-12 w-12">
+                      <AvatarImage src={driver.avatar} alt={driver.name} />
+                      <AvatarFallback>{driver.name.substring(0, 2)}</AvatarFallback>
+                    </Avatar>
                     <div>
-                      <h4 className="font-medium">{document.name}</h4>
-                      <div className="flex items-center gap-2 text-muted-foreground">
-                        <p className="text-sm">{document.type}</p>
-                        <span className="text-xs">•</span>
-                        <p className="text-sm">Uploaded: {document.uploadDate}</p>
+                      <h3 className="font-semibold">{driver.name}</h3>
+                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                        <MapPin className="h-4 w-4" />
+                        {driver.location.city}, {driver.location.state}
+                      </div>
+                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                        Rating: {driver.rating}/5 ({driver.completedDeliveries} deliveries)
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline">{document.status}</Badge>
-                    <Button variant="ghost" size="sm" onClick={() => handlePreviewDocument(document)}>
-                      <Eye className="w-4 h-4" />
-                    </Button>
-                    <Button variant="ghost" size="sm" onClick={() => handleDownloadDocument(document)}>
-                      <Download className="w-4 h-4" />
-                    </Button>
-                    <Button variant="ghost" size="sm" onClick={() => handleDeleteDocument(document.id)}>
-                      <Trash2 className="w-4 h-4 text-red-500" />
-                    </Button>
+
+                  <Separator />
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-muted-foreground" />
+                      <a href={`mailto:${driver.email}`} className="text-sm hover:underline">
+                        {driver.email}
+                      </a>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 text-muted-foreground" />
+                      <a href={`tel:${driver.phone}`} className="text-sm hover:underline">
+                        {driver.phone}
+                      </a>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">Join Date: {driver.joinDate}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">Last Active: {driver.lastActive}</span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                </CardContent>
+              </Card>
+
+              {/* Status and Profile Card */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Status & Profile</CardTitle>
+                </CardHeader>
+                <CardContent className="grid gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Status</p>
+                      <Badge variant={getStatusBadgeVariant(driver.status)}>{driver.status}</Badge>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Hire Status</p>
+                      <Badge variant="secondary">{driver.hireStatus}</Badge>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Profile Type</p>
+                      <Badge variant="secondary">{driver.profileType}</Badge>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Transport Type</p>
+                      <Badge variant="secondary">{driver.transportType}</Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Vehicle Information Card */}
+              {driver.vehicleInfo && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Vehicle Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="grid gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">Make</p>
+                        <span className="text-sm">{driver.vehicleInfo.make}</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">Model</p>
+                        <span className="text-sm">{driver.vehicleInfo.model}</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">Year</p>
+                        <span className="text-sm">{driver.vehicleInfo.year}</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">License Plate</p>
+                        <span className="text-sm">{driver.vehicleInfo.licensePlate}</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">Color</p>
+                        <span className="text-sm">{driver.vehicleInfo.color}</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Documents Card */}
+              {driver.documents && driver.documents.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Documents</CardTitle>
+                  </CardHeader>
+                  <CardContent className="grid gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {driver.documents.map(document => (
+                        <div key={document.id} className="border rounded-md p-3 hover:bg-secondary/50 cursor-pointer" onClick={() => handleDocumentView(document)}>
+                          <div className="flex items-center gap-2">
+                            <FileText className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm font-medium">{document.name}</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground">Type: {document.type}</p>
+                          <p className="text-xs text-muted-foreground">Uploaded: {document.uploadDate}</p>
+                          <Badge variant="outline" className="mt-2">{document.status}</Badge>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Bank Information Card */}
+              {driver.bankInfo && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Bank Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="grid gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">Account Type</p>
+                        <span className="text-sm">{driver.bankInfo.accountType}</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">Last Four Digits</p>
+                        <span className="text-sm">**** **** **** {driver.bankInfo.lastFour}</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">Routing Number</p>
+                        <span className="text-sm">{driver.bankInfo.routingNumber}</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Extra Services Card */}
+              {driver.extraServices && driver.extraServices.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Extra Services</CardTitle>
+                  </CardHeader>
+                  <CardContent className="grid gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                      {driver.extraServices.map((service, index) => (
+                        <Badge key={index} variant="secondary">{service}</Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
             </div>
+          </ScrollArea>
+
+          <div className="p-4 border-t flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setIsEmailsModalOpen(true)}>
+              <MessageSquare className="w-4 h-4 mr-2" />
+              View Emails
+            </Button>
+            <Button onClick={onClose}>Close</Button>
           </div>
-        </div>
+        </SheetContent>
+      </Sheet>
 
-        <DocumentViewerModal 
-          isOpen={isPreviewOpen}
-          onClose={() => setIsPreviewOpen(false)}
-          document={selectedDocument}
-        />
+      <DocumentViewerModal 
+        isOpen={isDocumentModalOpen}
+        onClose={() => setIsDocumentModalOpen(false)}
+        document={selectedDocument}
+      />
 
-        {/* Add Service Dialog */}
-        <Dialog open={isAddServiceDialogOpen} onOpenChange={setIsAddServiceDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add Extra Service</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
-              <div>
-                <label htmlFor="service-name" className="text-sm font-medium block mb-2">
-                  Service Name
-                </label>
-                <Input
-                  id="service-name"
-                  placeholder="Enter service name..."
-                  value={newService.name}
-                  onChange={(e) => setNewService({ ...newService, name: e.target.value })}
-                />
-              </div>
-              <div>
-                <label htmlFor="service-description" className="text-sm font-medium block mb-2">
-                  Description
-                </label>
-                <Textarea
-                  id="service-description"
-                  placeholder="Describe the service..."
-                  value={newService.description}
-                  onChange={(e) => setNewService({ ...newService, description: e.target.value })}
-                />
-              </div>
-              <div>
-                <label htmlFor="service-price" className="text-sm font-medium block mb-2">
-                  Price ($)
-                </label>
-                <Input
-                  id="service-price"
-                  type="number"
-                  placeholder="0.00"
-                  step="0.01"
-                  value={newService.price}
-                  onChange={(e) => setNewService({ ...newService, price: e.target.value })}
-                />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setIsAddServiceDialogOpen(false);
-                  setNewService({ name: '', description: '', price: '' });
-                }}
-              >
-                Cancel
-              </Button>
-              <Button onClick={handleAddService}>
-                Add Service
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </SheetContent>
-    </Sheet>
+      <EmailsSentList 
+        isOpen={isEmailsModalOpen}
+        onClose={() => setIsEmailsModalOpen(false)}
+        driverName={driver.name}
+      />
+    </>
   );
 };
-
-export default DriverDetailsSheet;
