@@ -1331,7 +1331,7 @@ export const DriverDetailsSheet = ({
 
                       {/* Extra Services */}
                       <div>
-                        <ExtraServicesSection />
+                        <ExtraServicesSection showOnlyNames={true} />
                       </div>
 
                       {/* Notes */}
