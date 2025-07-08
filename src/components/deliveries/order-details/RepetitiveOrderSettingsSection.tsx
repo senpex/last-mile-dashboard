@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Calendar, Clock, Edit, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { SendOrderPopup } from "./SendOrderPopup";
 import { toast } from "sonner";
 
 interface DaySchedule {
@@ -26,6 +26,7 @@ const DRIVERS = [
 
 export const RepetitiveOrderSettingsSection = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const [isFindDriverPopupOpen, setIsFindDriverPopupOpen] = useState(false);
   const [startDate, setStartDate] = useState("2024-01-15");
   const [assignedDriverId, setAssignedDriverId] = useState("DRV001");
   const [schedule, setSchedule] = useState<DaySchedule[]>([
@@ -49,6 +50,17 @@ export const RepetitiveOrderSettingsSection = () => {
     setSchedule(prev => prev.map((item, index) => 
       index === dayIndex ? { ...item, enabled } : item
     ));
+  };
+
+  const handleFindDriverClick = () => {
+    setIsFindDriverPopupOpen(true);
+  };
+
+  const handleDriverSelect = (driverId: string) => {
+    setAssignedDriverId(driverId);
+    setIsFindDriverPopupOpen(false);
+    const driver = DRIVERS.find(d => d.id === driverId);
+    toast.success(`Driver assigned: ${driver?.name || driverId}`);
   };
 
   const handleTimeChange = (dayIndex: number, time: string) => {
@@ -179,23 +191,25 @@ export const RepetitiveOrderSettingsSection = () => {
                 <User className="w-3 h-3 mr-1" />
                 Assigned Driver
               </h4>
-              <Select value={assignedDriverId} onValueChange={setAssignedDriverId}>
-                <SelectTrigger className="h-7 text-xs w-64">
-                  <SelectValue placeholder="Select driver..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="unassigned">Unassigned</SelectItem>
-                  {DRIVERS.map(driver => (
-                    <SelectItem key={driver.id} value={driver.id}>
-                      {driver.id} - {driver.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleFindDriverClick}
+                className="h-7 text-xs px-3"
+              >
+                {assignedDriverId === "unassigned" ? "Find Driver" : `${assignedDriverId} - ${getAssignedDriverName()}`}
+              </Button>
             </div>
           </>
         )}
       </div>
+
+      {/* Find Driver Popup */}
+      <SendOrderPopup
+        isOpen={isFindDriverPopupOpen}
+        onClose={() => setIsFindDriverPopupOpen(false)}
+        orderId="REP-ORDER"
+      />
     </div>
   );
 };
