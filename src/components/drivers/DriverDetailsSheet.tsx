@@ -24,6 +24,7 @@ import { OrderDetailsSheet } from "@/components/deliveries/OrderDetailsSheet";
 import { deliveriesData } from "@/data/deliveriesData";
 import { EmailsSentList } from "./EmailsSentList";
 import { RandomImage } from "@/components/ui/random-image";
+import { ExtraServicesSection } from "@/components/deliveries/order-details/ExtraServicesSection";
 
 interface VehicleInfo {
   transportId: string;
@@ -1326,6 +1327,11 @@ export const DriverDetailsSheet = ({
                             </div>
                           </CardContent>
                         </Card>
+                      </div>
+
+                      {/* Extra Services */}
+                      <div>
+                        <ExtraServicesSection />
                       </div>
 
                       {/* Notes */}
