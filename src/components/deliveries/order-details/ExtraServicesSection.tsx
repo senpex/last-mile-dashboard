@@ -308,7 +308,7 @@ export const ExtraServicesSection = ({ onSave, showOnlyNames = false }: ExtraSer
         {(isEditing ? editedServices : services).map((service) => (
           <div key={service.id} className="space-y-2">
             <div className="flex items-center gap-3">
-              {isEditing && (
+              {isEditing && showOnlyNames && (
                 <Checkbox
                   id={`service-${service.id}`}
                   checked={editedServices.find(s => s.id === service.id)?.enabled || false}
