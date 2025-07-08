@@ -133,7 +133,7 @@ export const RepetitiveOrderSettingsSection = () => {
                 {getEnabledDays().map((item, index) => (
                   <div key={index} className="flex justify-between items-center py-1">
                     <span className="text-sm font-medium text-foreground">{item.day}</span>
-                    <span className="text-sm text-muted-foreground font-mono">{item.time}</span>
+                    <span className="text-sm font-medium text-foreground">{item.time}</span>
                   </div>
                 ))}
                 {getEnabledDays().length === 0 && (
