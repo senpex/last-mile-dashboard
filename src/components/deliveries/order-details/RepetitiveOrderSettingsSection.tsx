@@ -99,17 +99,16 @@ export const RepetitiveOrderSettingsSection = () => {
         ) : (
           <div className="flex gap-2">
             <Button 
-              variant="outline" 
               size="sm" 
-              className="h-7 text-xs flex items-center gap-1.5"
+              className="h-6 px-2 text-xs"
               onClick={handleEditClick}
             >
               Save
             </Button>
             <Button 
-              variant="ghost" 
+              variant="outline" 
               size="sm" 
-              className="h-7 text-xs flex items-center gap-1.5"
+              className="h-6 px-2 text-xs"
               onClick={() => setIsEditing(false)}
             >
               Cancel
