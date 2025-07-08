@@ -120,110 +120,124 @@ export const RepetitiveOrderSettingsSection = () => {
         )}
       </div>
       
-      <div className="rounded-md border bg-card/50 p-4 space-y-4">
+      <div className="rounded-md border bg-card/50 p-6 space-y-6">
         {!isEditing ? (
           // View Mode
-          <>
-            <div>
-              <h4 className="text-xs font-medium text-muted-foreground mb-2 flex items-center">
-                <Clock className="w-3 h-3 mr-1" />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="space-y-3">
+              <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center">
+                <Clock className="w-4 h-4 mr-2" />
                 Pickup Schedule
               </h4>
-              <div className="space-y-1">
+              <div className="bg-muted/30 rounded-lg p-3 space-y-2">
                 {getEnabledDays().map((item, index) => (
-                  <div key={index} className="flex justify-between items-center text-xs">
-                    <span className="font-medium">{item.day}</span>
-                    <span className="text-muted-foreground">{item.time}</span>
+                  <div key={index} className="flex justify-between items-center py-1">
+                    <span className="text-sm font-medium text-foreground">{item.day}</span>
+                    <span className="text-sm text-muted-foreground font-mono">{item.time}</span>
                   </div>
                 ))}
                 {getEnabledDays().length === 0 && (
-                  <span className="text-xs text-muted-foreground">No pickup days configured</span>
+                  <div className="text-center py-4">
+                    <span className="text-sm text-muted-foreground italic">No pickup days configured</span>
+                  </div>
                 )}
               </div>
             </div>
 
-            <div>
-              <h4 className="text-xs font-medium text-muted-foreground mb-2 flex items-center">
-                <Calendar className="w-3 h-3 mr-1" />
+            <div className="space-y-3">
+              <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center">
+                <Calendar className="w-4 h-4 mr-2" />
                 Start Date
               </h4>
-              <span className="text-xs font-medium">{startDate}</span>
-            </div>
-
-            <div>
-              <h4 className="text-xs font-medium text-muted-foreground mb-2 flex items-center">
-                <User className="w-3 h-3 mr-1" />
-                Assigned Driver
-              </h4>
-              <span className="text-xs font-medium">
-                {assignedDriverId === "unassigned" ? "—" : `${assignedDriverId} - ${getAssignedDriverName()}`}
-              </span>
-            </div>
-          </>
-        ) : (
-          // Edit Mode
-          <>
-            <div>
-              <h4 className="text-xs font-medium text-muted-foreground mb-3 flex items-center">
-                <Clock className="w-3 h-3 mr-1" />
-                Pickup Schedule
-              </h4>
-              <div className="space-y-2">
-                {schedule.map((item, index) => (
-                  <div key={item.day} className="flex items-center justify-between gap-3">
-                    <div className="flex items-center space-x-2 flex-1">
-                      <Checkbox
-                        id={`day-${index}`}
-                        checked={item.enabled}
-                        onCheckedChange={(checked) => handleDayToggle(index, checked as boolean)}
-                      />
-                      <label 
-                        htmlFor={`day-${index}`} 
-                        className="text-xs font-medium min-w-[70px]"
-                      >
-                        {item.day}
-                      </label>
-                    </div>
-                    <Input
-                      type="time"
-                      value={item.time}
-                      onChange={(e) => handleTimeChange(index, e.target.value)}
-                      disabled={!item.enabled}
-                      className="h-7 text-xs w-20"
-                    />
-                  </div>
-                ))}
+              <div className="bg-muted/30 rounded-lg p-3">
+                <span className="text-sm font-medium text-foreground">{startDate}</span>
               </div>
             </div>
 
-            <div>
-              <h4 className="text-xs font-medium text-muted-foreground mb-2 flex items-center">
-                <Calendar className="w-3 h-3 mr-1" />
-                Start Date
-              </h4>
-              <Input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="h-7 text-xs w-40"
-              />
-            </div>
-
-            <div>
-              <h4 className="text-xs font-medium text-muted-foreground mb-2 flex items-center">
-                <User className="w-3 h-3 mr-1" />
+            <div className="space-y-3">
+              <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center">
+                <User className="w-4 h-4 mr-2" />
                 Assigned Driver
               </h4>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleFindDriverClick}
-                className="h-7 text-xs px-3"
-              >
-                {assignedDriverId === "unassigned" ? "Find Driver" : `${assignedDriverId} - ${getAssignedDriverName()}`}
-              </Button>
+              <div className="bg-muted/30 rounded-lg p-3">
+                <span className="text-sm font-medium text-foreground">
+                  {assignedDriverId === "unassigned" ? "—" : `${assignedDriverId} - ${getAssignedDriverName()}`}
+                </span>
+              </div>
             </div>
-          </>
+          </div>
+        ) : (
+          // Edit Mode
+          <div className="space-y-6">
+            <div className="space-y-4">
+              <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center">
+                <Clock className="w-4 h-4 mr-2" />
+                Pickup Schedule
+              </h4>
+              <div className="bg-muted/30 rounded-lg p-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {schedule.map((item, index) => (
+                    <div key={item.day} className="flex items-center justify-between gap-3 p-2 rounded-md hover:bg-background/50 transition-colors">
+                      <div className="flex items-center space-x-3 flex-1">
+                        <Checkbox
+                          id={`day-${index}`}
+                          checked={item.enabled}
+                          onCheckedChange={(checked) => handleDayToggle(index, checked as boolean)}
+                        />
+                        <label 
+                          htmlFor={`day-${index}`} 
+                          className="text-sm font-medium min-w-[80px] cursor-pointer"
+                        >
+                          {item.day}
+                        </label>
+                      </div>
+                      <Input
+                        type="time"
+                        value={item.time}
+                        onChange={(e) => handleTimeChange(index, e.target.value)}
+                        disabled={!item.enabled}
+                        className="h-8 text-sm w-24"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center">
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Start Date
+                </h4>
+                <div className="bg-muted/30 rounded-lg p-3">
+                  <Input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    className="h-9 text-sm w-full"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center">
+                  <User className="w-4 h-4 mr-2" />
+                  Assigned Driver
+                </h4>
+                <div className="bg-muted/30 rounded-lg p-3">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleFindDriverClick}
+                    className="h-9 text-sm px-4 w-full justify-start"
+                  >
+                    {assignedDriverId === "unassigned" ? "Find Driver" : `${assignedDriverId} - ${getAssignedDriverName()}`}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
       </div>
 
