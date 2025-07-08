@@ -62,6 +62,7 @@ export const RepetitiveOrderSettingsSection = () => {
   };
 
   const getAssignedDriverName = () => {
+    if (assignedDriverId === "unassigned") return "—";
     const driver = DRIVERS.find(d => d.id === assignedDriverId);
     return driver ? driver.name : "—";
   };
@@ -120,7 +121,7 @@ export const RepetitiveOrderSettingsSection = () => {
                 Assigned Driver
               </h4>
               <span className="text-xs font-medium">
-                {assignedDriverId ? `${assignedDriverId} - ${getAssignedDriverName()}` : "—"}
+                {assignedDriverId === "unassigned" ? "—" : `${assignedDriverId} - ${getAssignedDriverName()}`}
               </span>
             </div>
           </>
@@ -183,7 +184,7 @@ export const RepetitiveOrderSettingsSection = () => {
                   <SelectValue placeholder="Select driver..." />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Unassigned</SelectItem>
+                  <SelectItem value="unassigned">Unassigned</SelectItem>
                   {DRIVERS.map(driver => (
                     <SelectItem key={driver.id} value={driver.id}>
                       {driver.id} - {driver.name}
