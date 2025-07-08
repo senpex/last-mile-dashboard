@@ -86,15 +86,36 @@ export const RepetitiveOrderSettingsSection = () => {
           <Calendar className="w-4 h-4 mr-2" />
           Repetitive Order Settings
         </h3>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="h-7 text-xs flex items-center gap-1.5"
-          onClick={handleEditClick}
-        >
-          <Edit className="h-4 w-4" />
-          {isEditing ? "Done" : "Edit"}
-        </Button>
+        {!isEditing ? (
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="h-7 text-xs flex items-center gap-1.5"
+            onClick={handleEditClick}
+          >
+            <Edit className="h-4 w-4" />
+            Edit
+          </Button>
+        ) : (
+          <div className="flex gap-2">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="h-7 text-xs flex items-center gap-1.5"
+              onClick={handleEditClick}
+            >
+              Save
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-7 text-xs flex items-center gap-1.5"
+              onClick={() => setIsEditing(false)}
+            >
+              Cancel
+            </Button>
+          </div>
+        )}
       </div>
       
       <div className="rounded-md border bg-card/50 p-4 space-y-4">
