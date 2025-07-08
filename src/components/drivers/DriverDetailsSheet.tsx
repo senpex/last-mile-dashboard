@@ -24,6 +24,7 @@ import { OrderDetailsSheet } from "@/components/deliveries/OrderDetailsSheet";
 import { deliveriesData } from "@/data/deliveriesData";
 import { EmailsSentList } from "./EmailsSentList";
 import { RandomImage } from "@/components/ui/random-image";
+import { RepetitiveOrderSettingsSection } from "@/components/deliveries/order-details/RepetitiveOrderSettingsSection";
 
 interface VehicleInfo {
   transportId: string;
@@ -1354,6 +1355,11 @@ export const DriverDetailsSheet = ({
                             {editingSection === 'notes' ? <Textarea placeholder="Add notes about this driver..." value={editedData.notes} onChange={e => handleInputChange('notes', e.target.value)} className="min-h-[100px]" /> : <Textarea placeholder="Add notes about this driver..." value={driver.notes || ''} className="min-h-[100px] bg-muted/50" readOnly />}
                           </CardContent>
                         </Card>
+                      </div>
+
+                      {/* Repetitive Order Settings */}
+                      <div>
+                        <RepetitiveOrderSettingsSection />
                       </div>
                     </div>
                   </ScrollArea>
