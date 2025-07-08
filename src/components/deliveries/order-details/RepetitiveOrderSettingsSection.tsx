@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, Edit, User } from "lucide-react";
+import { Calendar, Clock, Edit, User, Save, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -97,20 +97,23 @@ export const RepetitiveOrderSettingsSection = () => {
             Edit
           </Button>
         ) : (
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <Button 
+              variant="outline" 
               size="sm" 
-              className="h-6 px-2 text-xs"
+              className="h-7 text-xs flex items-center gap-1 border-green-500 text-green-700 hover:bg-green-50"
               onClick={handleEditClick}
             >
+              <Save className="h-3 w-3" />
               Save
             </Button>
             <Button 
               variant="outline" 
               size="sm" 
-              className="h-6 px-2 text-xs"
+              className="h-7 text-xs flex items-center gap-1 border-red-500 text-red-700 hover:bg-red-50"
               onClick={() => setIsEditing(false)}
             >
+              <X className="h-3 w-3" />
               Cancel
             </Button>
           </div>
