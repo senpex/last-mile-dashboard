@@ -4,6 +4,7 @@ import { Package, Edit, Save, X } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 
@@ -14,6 +15,7 @@ interface ExtraService {
   courierEarning: string;
   units: string;
   unitType: 'minutes' | 'quantity';
+  enabled?: boolean;
 }
 
 interface ExtraServicesSectionProps {
@@ -250,6 +252,16 @@ export const ExtraServicesSection = ({ onSave, showOnlyNames = false }: ExtraSer
     );
   };
 
+  const handleServiceToggle = (serviceId: string, enabled: boolean) => {
+    setEditedServices(prev => 
+      prev.map(service => 
+        service.id === serviceId 
+          ? { ...service, enabled }
+          : service
+      )
+    );
+  };
+
   return (
     <div>
       <h3 className="text-sm font-medium mb-3 flex items-center justify-between">
@@ -295,7 +307,16 @@ export const ExtraServicesSection = ({ onSave, showOnlyNames = false }: ExtraSer
       <div className="rounded-md border bg-card/50 p-4 space-y-3">
         {(isEditing ? editedServices : services).map((service) => (
           <div key={service.id} className="space-y-2">
-            <h4 className="text-sm font-medium text-gray-700 mb-2">{service.name}</h4>
+            <div className="flex items-center gap-3">
+              {isEditing && (
+                <Checkbox
+                  id={`service-${service.id}`}
+                  checked={editedServices.find(s => s.id === service.id)?.enabled || false}
+                  onCheckedChange={(checked) => handleServiceToggle(service.id, checked as boolean)}
+                />
+              )}
+              <h4 className="text-sm font-medium text-gray-700 mb-2">{service.name}</h4>
+            </div>
             {!showOnlyNames && (
               <div className="flex items-center gap-6">
                 <div className="flex items-center gap-1 flex-1">
