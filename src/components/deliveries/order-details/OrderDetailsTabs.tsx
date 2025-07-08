@@ -10,6 +10,7 @@ import { DriverInfoTable } from "./DriverInfoTable";
 import { OrderDetailsSection } from "./OrderDetailsSection";
 import { OrderSummarySection } from "./OrderSummarySection";
 import { OrderRequirementsSection } from "./OrderRequirementsSection";
+import { RepetitiveOrderSettingsSection } from "./RepetitiveOrderSettingsSection";
 import { ExtraServicesSection } from "./ExtraServicesSection";
 import { ImagesSection } from "./ImagesSection";
 import { PaymentTransactions } from "./PaymentTransactions";
@@ -118,6 +119,8 @@ export const OrderDetailsTabs = ({
               <ExtraServicesSection />
               
               <OrderRequirementsSection />
+              
+              <RepetitiveOrderSettingsSection />
               
               <ImagesSection />
             </div>

@@ -1313,7 +1313,7 @@ export const DriverDetailsSheet = ({
                                     <div className="flex items-center gap-2">
                                       {editingSection === 'documents' && <>
                                           <Input type="file" accept="image/*" className="hidden" id={`insurance-upload-${document.id}`} onChange={e => handleLicenseImageUpload(document.id, e)} />
-                                          <Button variant="outline" size="sm" onClick={() => document.getElementById(`insurance-upload-${document.id}`)?.click()} className="h-7 px-2 border-blue-500 text-blue-700 hover:bg-blue-50">
+                                          <Button variant="outline" size="sm" onClick={() => window.document.getElementById(`insurance-upload-${document.id}`)?.click()} className="h-7 px-2 border-blue-500 text-blue-700 hover:bg-blue-50">
                                             <Upload className="w-3 h-3" />
                                           </Button>
                                         </>}
