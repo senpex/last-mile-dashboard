@@ -59,11 +59,23 @@ export function FilterSidebar({
   const [selectedRadius, setSelectedRadius] = useState<number>(15);
   const [selectedNames, setSelectedNames] = useState<string[]>([]);
   const [nameSearchTerm, setNameSearchTerm] = useState("");
+  const [selectedExtraServices, setSelectedExtraServices] = useState<string[]>([]);
+  const [extraServiceSearchTerm, setExtraServiceSearchTerm] = useState("");
 
   const driverNames = [
     "John Smith", "Maria Rodriguez", "David Chen", "Sarah Johnson", 
     "Michael Brown", "Jennifer Garcia", "Robert Davis", "Lisa Wilson",
     "James Miller", "Ashley Martinez", "Christopher Anderson", "Amanda Taylor"
+  ];
+  
+  const extraServices = [
+    { id: 'heavy_lifting', value: 'Heavy Lifting' },
+    { id: 'after_hours', value: 'After Hours Delivery' },
+    { id: 'white_glove', value: 'White Glove Service' },
+    { id: 'signature', value: 'Signature Required' },
+    { id: 'refrigerated', value: 'Refrigerated Transport' },
+    { id: 'assembly', value: 'Assembly Service' },
+    { id: 'insurance', value: 'Extra Insurance' }
   ];
 
   useEffect(() => {
@@ -87,9 +99,10 @@ export function FilterSidebar({
       transports: selectedTransports,
       hireStatuses: selectedHireStatuses,
       radius: selectedRadius,
-      names: selectedNames
+      names: selectedNames,
+      extraServices: selectedExtraServices
     });
-  }, [selectedStatuses, selectedZipcodes, selectedCities, selectedStates, selectedProfiles, selectedTransports, selectedHireStatuses, selectedRadius, selectedNames, onFiltersAdd]);
+  }, [selectedStatuses, selectedZipcodes, selectedCities, selectedStates, selectedProfiles, selectedTransports, selectedHireStatuses, selectedRadius, selectedNames, selectedExtraServices, onFiltersAdd]);
 
   const handleResetFilters = () => {
     setSelectedStatuses([]);
@@ -101,6 +114,7 @@ export function FilterSidebar({
     setSelectedHireStatuses([]);
     setSelectedRadius(15);
     setSelectedNames([]);
+    setSelectedExtraServices([]);
   };
 
   const filteredDeliveryStatuses = allDeliveryStatuses.filter(status => 
@@ -140,6 +154,10 @@ export function FilterSidebar({
   
   const filteredNames = driverNames.filter(name => 
     name.toLowerCase().includes(nameSearchTerm.toLowerCase())
+  );
+  
+  const filteredExtraServices = extraServices.filter(service => 
+    service.value.toLowerCase().includes(extraServiceSearchTerm.toLowerCase())
   );
 
   return (
@@ -376,6 +394,46 @@ export function FilterSidebar({
                       <span>{zipcode}</span>
                       <Badge variant="outline" className="ml-auto text-xs">
                         {Math.floor(Math.random() * 10) + 1}
+                      </Badge>
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="extra-services" className="border-b">
+            <AccordionTrigger className="py-3 text-sm font-medium">
+              Extra Services
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-3 py-2">
+                <div className="relative">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    placeholder="Search extra services..." 
+                    value={extraServiceSearchTerm} 
+                    onChange={e => setExtraServiceSearchTerm(e.target.value)} 
+                    className="pl-8 h-9" 
+                  />
+                </div>
+                {filteredExtraServices.map(service => (
+                  <div key={service.id} className="flex items-center space-x-2">
+                    <Checkbox 
+                      id={`service-${service.id}`} 
+                      checked={selectedExtraServices.includes(service.id)} 
+                      onCheckedChange={() => {
+                        if (selectedExtraServices.includes(service.id)) {
+                          setSelectedExtraServices(selectedExtraServices.filter(s => s !== service.id));
+                        } else {
+                          setSelectedExtraServices([...selectedExtraServices, service.id]);
+                        }
+                      }} 
+                    />
+                    <Label htmlFor={`service-${service.id}`} className="flex flex-1 items-center justify-between text-sm">
+                      <span>{service.value}</span>
+                      <Badge variant="outline" className="ml-auto text-xs">
+                        {Math.floor(Math.random() * 8) + 1}
                       </Badge>
                     </Label>
                   </div>
